@@ -3,6 +3,8 @@
 PowerSell module for OpenAI API.
 You can use OpenAI functions such as ChatGPT, Speech-to-Text, Text-to-Image from PowerShell.
 
+**This is a community-based project and is not an official offering of OpenAI.**
+
 日本語版のREADMEは[こちら](/README.ja.md)
 
 ----
@@ -206,6 +208,20 @@ PS C:> Request-ChatGPT -Message "Who are you?"
 ## Changelog
 ### 1.0.0
  - Initial public release.
+
+
+----
+## Plans and TODOs.
+
+If you have a feature request or bug report, please tell us in Issue.
+
++ Write Pester test codes.
++ Automated testing including non-Windows environments.
++ Performance improvements.
++ Add GPT-3 fine-tuning support.
++ Add some missing parameters, such like `stop` or `logit_bias`.
++ Add an option for change output types / formats.
++ Logs, verbose messages.
 
 ----
 ## Licenses
