@@ -140,7 +140,12 @@ function Request-ChatCompletion {
         #endregion
 
         #region Parse response object
-        $Response = $Response | ConvertFrom-Json -ErrorAction Ignore
+        try {
+            $Response = $Response | ConvertFrom-Json -ErrorAction Stop
+        }
+        catch {
+            Write-Error -Exception $_.Exception
+        }
         if ($null -ne $Response.choices) {
             $ResponseContent = $Response.choices.message
         }
