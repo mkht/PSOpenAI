@@ -17,7 +17,7 @@ https://platform.openai.com/account/api-keys
 ----
 ## Installation
 
-You can install PSOpenAI from [PowerShell Gallery](https://www.powershellgallery.com/packages/pspm/).
+You can install PSOpenAI from [PowerShell Gallery](https://www.powershellgallery.com/packages/PSOpenAI/).
 ```Powershell
 Install-Module -Name PSOpenAI
 ```

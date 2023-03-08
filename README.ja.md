@@ -16,7 +16,7 @@ https://platform.openai.com/account/api-keys
 ----
 ## インストール
 
-[PowerShell Gallery](https://www.powershellgallery.com/packages/pspm/) からインストールしてください。
+[PowerShell Gallery](https://www.powershellgallery.com/packages/PSOpenAI/) からインストールしてください。
 ```Powershell
 Install-Module -Name PSOpenAI
 ```
