@@ -1,0 +1,3387 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<helpItems schema="maml" xmlns="http://msh">
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Get-OpenAIModels</command:name>
+      <command:verb>Get</command:verb>
+      <command:noun>OpenAIModels</command:noun>
+      <maml:description>
+        <maml:para>Lists the currently available models.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>Lists the currently available models, and provides basic information about each one such as the owner and availability.
+You can refer to the Models documentation to understand what models are available and the differences between them.
+https://platform.openai.com/docs/api-reference/models/list</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Get-OpenAIModels</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="Model, ID">
+          <maml:name>Name</maml:name>
+          <maml:description>
+            <maml:para>Specifies the model name which you wish to get.
+If not specified, lists all available models.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>Token</maml:name>
+          <maml:description>
+            <maml:para>Specifies API key for authentication.
+The type of data should `[string]` or `[securestring]`.
+If not specified, it will try to use `$global:OPENAI_TOKEN` or `$env:OPENAI_TOKEN`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
+          <dev:type>
+            <maml:name>Object</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="Model, ID">
+        <maml:name>Name</maml:name>
+        <maml:description>
+          <maml:para>Specifies the model name which you wish to get.
+If not specified, lists all available models.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>Token</maml:name>
+        <maml:description>
+          <maml:para>Specifies API key for authentication.
+The type of data should `[string]` or `[securestring]`.
+If not specified, it will try to use `$global:OPENAI_TOKEN` or `$env:OPENAI_TOKEN`</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
+        <dev:type>
+          <maml:name>Object</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes />
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>[pscustomobject]</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>------------ Example 1: List all available models. ------------</maml:title>
+        <dev:code>PS C:\&gt; Get-OpenAIModels | select -ExpandProperty ID
+
+babbage
+davinci
+gpt-3.5-turbo-0301
+text-davinci-003
+...</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>---------- Example 2: Get specific model information. ----------</maml:title>
+        <dev:code>PS C:\&gt; Get-OpenAIModels -Name "gpt-3.5-turbo"
+
+id         : gpt-3.5-turbo
+object     : model
+owned_by   : openai
+permission : {@{id=modelperm-QvbW9EnkbwPtWZu...
+root       : gpt-3.5-turbo
+parent     :
+created    : 2023/02/28 18:56:42</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Get-OpenAIModels.md</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>https://platform.openai.com/docs/api-reference/models/list</maml:linkText>
+        <maml:uri>https://platform.openai.com/docs/api-reference/models/list</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Request-AudioTranscription</command:name>
+      <command:verb>Request</command:verb>
+      <command:noun>AudioTranscription</command:noun>
+      <maml:description>
+        <maml:para>Transcribes audio into the input language.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>Transcribes audio into the input language.
+https://platform.openai.com/docs/guides/speech-to-text/speech-to-text</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Request-AudioTranscription</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="none">
+          <maml:name>File</maml:name>
+          <maml:description>
+            <maml:para>(Required) The audio file to transcribe, in one of these formats: `mp3`, `mp4`, `mpeg`, `mpga`, `m4a`, `wav`, or `webm`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Model</maml:name>
+          <maml:description>
+            <maml:para>The name of model to use. The default value is `whisper-1`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>whisper-1</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Prompt</maml:name>
+          <maml:description>
+            <maml:para>An optional text to guide the model's style or continue a previous audio segment.
+The prompt should match the audio language.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="response_format">
+          <maml:name>Format</maml:name>
+          <maml:description>
+            <maml:para>The format of the transcript output, in one of these options: `json`, `text`, `srt`, `verbose_json`, or `vtt`.
+The default value is `text`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>text</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Temperature</maml:name>
+          <maml:description>
+            <maml:para>The sampling temperature, between `0` and `1`.
+Higher values like `0.8` will make the output more random, while lower values like `0.2` will make it more focused and deterministic.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Double</command:parameterValue>
+          <dev:type>
+            <maml:name>Double</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Language</maml:name>
+          <maml:description>
+            <maml:para>The language of the input audio.
+Supplying the input language in `ISO-639-1` format will improve accuracy and latency.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>TimeoutSec</maml:name>
+          <maml:description>
+            <maml:para>Specifies how long the request can be pending before it times out.
+The default value is `0` (infinite).</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>0</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Token</maml:name>
+          <maml:description>
+            <maml:para>Specifies API key for authentication.
+The type of data should `[string]` or `[securestring]`.
+If not specified, it will try to use `$global:OPENAI_TOKEN` or `$env:OPENAI_TOKEN`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
+          <dev:type>
+            <maml:name>Object</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="none">
+        <maml:name>File</maml:name>
+        <maml:description>
+          <maml:para>(Required) The audio file to transcribe, in one of these formats: `mp3`, `mp4`, `mpeg`, `mpga`, `m4a`, `wav`, or `webm`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Model</maml:name>
+        <maml:description>
+          <maml:para>The name of model to use. The default value is `whisper-1`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>whisper-1</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Prompt</maml:name>
+        <maml:description>
+          <maml:para>An optional text to guide the model's style or continue a previous audio segment.
+The prompt should match the audio language.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="response_format">
+        <maml:name>Format</maml:name>
+        <maml:description>
+          <maml:para>The format of the transcript output, in one of these options: `json`, `text`, `srt`, `verbose_json`, or `vtt`.
+The default value is `text`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>text</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Temperature</maml:name>
+        <maml:description>
+          <maml:para>The sampling temperature, between `0` and `1`.
+Higher values like `0.8` will make the output more random, while lower values like `0.2` will make it more focused and deterministic.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Double</command:parameterValue>
+        <dev:type>
+          <maml:name>Double</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Language</maml:name>
+        <maml:description>
+          <maml:para>The language of the input audio.
+Supplying the input language in `ISO-639-1` format will improve accuracy and latency.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>TimeoutSec</maml:name>
+        <maml:description>
+          <maml:para>Specifies how long the request can be pending before it times out.
+The default value is `0` (infinite).</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>0</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Token</maml:name>
+        <maml:description>
+          <maml:para>Specifies API key for authentication.
+The type of data should `[string]` or `[securestring]`.
+If not specified, it will try to use `$global:OPENAI_TOKEN` or `$env:OPENAI_TOKEN`</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
+        <dev:type>
+          <maml:name>Object</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes />
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>[string]</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>------------------- Example 1: Audio-to-Text -------------------</maml:title>
+        <dev:code>PS C:\&gt; Request-AudioTranscription -File C:\sample\audio.mp3 -Format text
+
+Hello, I am david.</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Request-AudioTranscription.md</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>https://platform.openai.com/docs/guides/speech-to-text/speech-to-text</maml:linkText>
+        <maml:uri>https://platform.openai.com/docs/guides/speech-to-text/speech-to-text</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>https://platform.openai.com/docs/api-reference/audio/create</maml:linkText>
+        <maml:uri>https://platform.openai.com/docs/api-reference/audio/create</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Request-AudioTranslation</command:name>
+      <command:verb>Request</command:verb>
+      <command:noun>AudioTranslation</command:noun>
+      <maml:description>
+        <maml:para>Translates audio into English.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>Translates audio into English.
+https://platform.openai.com/docs/guides/speech-to-text/speech-to-text</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Request-AudioTranslation</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="none">
+          <maml:name>File</maml:name>
+          <maml:description>
+            <maml:para>(Required) The audio file to translate, in one of these formats: `mp3`, `mp4`, `mpeg`, `mpga`, `m4a`, `wav`, or `webm`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Model</maml:name>
+          <maml:description>
+            <maml:para>The name of model to use. The default value is `whisper-1`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>whisper-1</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Prompt</maml:name>
+          <maml:description>
+            <maml:para>An optional text to guide the model's style or continue a previous audio segment.
+The prompt should be in English.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="response_format">
+          <maml:name>Format</maml:name>
+          <maml:description>
+            <maml:para>The format of the transcript output, in one of these options: `json`, `text`, `srt`, `verbose_json`, or `vtt`.
+The default value is `text`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>text</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Temperature</maml:name>
+          <maml:description>
+            <maml:para>The sampling temperature, between `0` and `1`.
+Higher values like `0.8` will make the output more random, while lower values like `0.2` will make it more focused and deterministic.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Double</command:parameterValue>
+          <dev:type>
+            <maml:name>Double</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>TimeoutSec</maml:name>
+          <maml:description>
+            <maml:para>Specifies how long the request can be pending before it times out.
+The default value is `0` (infinite).</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>0</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Token</maml:name>
+          <maml:description>
+            <maml:para>Specifies API key for authentication.
+The type of data should `[string]` or `[securestring]`.
+If not specified, it will try to use `$global:OPENAI_TOKEN` or `$env:OPENAI_TOKEN`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
+          <dev:type>
+            <maml:name>Object</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="none">
+        <maml:name>File</maml:name>
+        <maml:description>
+          <maml:para>(Required) The audio file to translate, in one of these formats: `mp3`, `mp4`, `mpeg`, `mpga`, `m4a`, `wav`, or `webm`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Model</maml:name>
+        <maml:description>
+          <maml:para>The name of model to use. The default value is `whisper-1`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>whisper-1</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Prompt</maml:name>
+        <maml:description>
+          <maml:para>An optional text to guide the model's style or continue a previous audio segment.
+The prompt should be in English.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="response_format">
+        <maml:name>Format</maml:name>
+        <maml:description>
+          <maml:para>The format of the transcript output, in one of these options: `json`, `text`, `srt`, `verbose_json`, or `vtt`.
+The default value is `text`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>text</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Temperature</maml:name>
+        <maml:description>
+          <maml:para>The sampling temperature, between `0` and `1`.
+Higher values like `0.8` will make the output more random, while lower values like `0.2` will make it more focused and deterministic.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Double</command:parameterValue>
+        <dev:type>
+          <maml:name>Double</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>TimeoutSec</maml:name>
+        <maml:description>
+          <maml:para>Specifies how long the request can be pending before it times out.
+The default value is `0` (infinite).</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>0</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Token</maml:name>
+        <maml:description>
+          <maml:para>Specifies API key for authentication.
+The type of data should `[string]` or `[securestring]`.
+If not specified, it will try to use `$global:OPENAI_TOKEN` or `$env:OPENAI_TOKEN`</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
+        <dev:type>
+          <maml:name>Object</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes />
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>[string]</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>--------- Example 1: Japanese speech to English text. ---------</maml:title>
+        <dev:code>Request-AudioTranslation -File C:\sample\japanese.mp3 -Format text
+
+Hello, My name is tanaka yoshio.</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Request-AudioTranslation.md</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>https://platform.openai.com/docs/guides/speech-to-text/speech-to-text</maml:linkText>
+        <maml:uri>https://platform.openai.com/docs/guides/speech-to-text/speech-to-text</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>https://platform.openai.com/docs/api-reference/audio/create</maml:linkText>
+        <maml:uri>https://platform.openai.com/docs/api-reference/audio/create</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Request-ChatCompletion</command:name>
+      <command:verb>Request</command:verb>
+      <command:noun>ChatCompletion</command:noun>
+      <maml:description>
+        <maml:para>Creates a completion for the chat message.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>Creates a completion for the chat message.
+https://platform.openai.com/docs/guides/chat/chat-completions</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Request-ChatCompletion</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="1" aliases="none">
+          <maml:name>Message</maml:name>
+          <maml:description>
+            <maml:para>(Required) The messages to generate chat completions.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Model</maml:name>
+          <maml:description>
+            <maml:para>The name of model to use. The default value is `gpt-3.5-turbo`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>gpt-3.5-turbo</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="system">
+          <maml:name>RolePrompt</maml:name>
+          <maml:description>
+            <maml:para>An optional text to set the behavior of the assistant.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Temperature</maml:name>
+          <maml:description>
+            <maml:para>What sampling temperature to use, between `0` and `2`.
+Higher values like `0.8` will make the output more random, while lower values like `0.2` will make it more focused and deterministic.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Double</command:parameterValue>
+          <dev:type>
+            <maml:name>Double</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="top_p">
+          <maml:name>TopP</maml:name>
+          <maml:description>
+            <maml:para>An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top_p probability mass.
+So `0.1` means only the tokens comprising the top `10%` probability mass are considered.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Double</command:parameterValue>
+          <dev:type>
+            <maml:name>Double</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="n">
+          <maml:name>NumberOfAnswers</maml:name>
+          <maml:description>
+            <maml:para>How many chat completion choices to generate for each input message.
+The default value is `1`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">UInt16</command:parameterValue>
+          <dev:type>
+            <maml:name>UInt16</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>1</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="max_tokens">
+          <maml:name>MaxTokens</maml:name>
+          <maml:description>
+            <maml:para>The maximum number of tokens allowed for the generated answer.
+The max value is `4096`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="presence_penalty">
+          <maml:name>PresencePenalty</maml:name>
+          <maml:description>
+            <maml:para>Number between `-2.0` and `2.0`.
+Positive values penalize new tokens based on whether they appear in the text so far, increasing the model's likelihood to talk about new topics.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Double</command:parameterValue>
+          <dev:type>
+            <maml:name>Double</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="frequency_penalty">
+          <maml:name>FrequencyPenalty</maml:name>
+          <maml:description>
+            <maml:para>Number between `-2.0` and `2.0`.
+Positive values penalize new tokens based on their existing frequency in the text so far, decreasing the model's likelihood to repeat the same line verbatim.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Double</command:parameterValue>
+          <dev:type>
+            <maml:name>Double</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>User</maml:name>
+          <maml:description>
+            <maml:para>A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>TimeoutSec</maml:name>
+          <maml:description>
+            <maml:para>Specifies how long the request can be pending before it times out.
+The default value is `0` (infinite).</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>0</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Token</maml:name>
+          <maml:description>
+            <maml:para>Specifies API key for authentication.
+The type of data should `[string]` or `[securestring]`.
+If not specified, it will try to use `$global:OPENAI_TOKEN` or `$env:OPENAI_TOKEN`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
+          <dev:type>
+            <maml:name>Object</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="1" aliases="none">
+        <maml:name>Message</maml:name>
+        <maml:description>
+          <maml:para>(Required) The messages to generate chat completions.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Model</maml:name>
+        <maml:description>
+          <maml:para>The name of model to use. The default value is `gpt-3.5-turbo`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>gpt-3.5-turbo</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="system">
+        <maml:name>RolePrompt</maml:name>
+        <maml:description>
+          <maml:para>An optional text to set the behavior of the assistant.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Temperature</maml:name>
+        <maml:description>
+          <maml:para>What sampling temperature to use, between `0` and `2`.
+Higher values like `0.8` will make the output more random, while lower values like `0.2` will make it more focused and deterministic.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Double</command:parameterValue>
+        <dev:type>
+          <maml:name>Double</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="top_p">
+        <maml:name>TopP</maml:name>
+        <maml:description>
+          <maml:para>An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top_p probability mass.
+So `0.1` means only the tokens comprising the top `10%` probability mass are considered.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Double</command:parameterValue>
+        <dev:type>
+          <maml:name>Double</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="n">
+        <maml:name>NumberOfAnswers</maml:name>
+        <maml:description>
+          <maml:para>How many chat completion choices to generate for each input message.
+The default value is `1`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">UInt16</command:parameterValue>
+        <dev:type>
+          <maml:name>UInt16</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>1</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="max_tokens">
+        <maml:name>MaxTokens</maml:name>
+        <maml:description>
+          <maml:para>The maximum number of tokens allowed for the generated answer.
+The max value is `4096`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="presence_penalty">
+        <maml:name>PresencePenalty</maml:name>
+        <maml:description>
+          <maml:para>Number between `-2.0` and `2.0`.
+Positive values penalize new tokens based on whether they appear in the text so far, increasing the model's likelihood to talk about new topics.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Double</command:parameterValue>
+        <dev:type>
+          <maml:name>Double</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="frequency_penalty">
+        <maml:name>FrequencyPenalty</maml:name>
+        <maml:description>
+          <maml:para>Number between `-2.0` and `2.0`.
+Positive values penalize new tokens based on their existing frequency in the text so far, decreasing the model's likelihood to repeat the same line verbatim.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Double</command:parameterValue>
+        <dev:type>
+          <maml:name>Double</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>User</maml:name>
+        <maml:description>
+          <maml:para>A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>TimeoutSec</maml:name>
+        <maml:description>
+          <maml:para>Specifies how long the request can be pending before it times out.
+The default value is `0` (infinite).</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>0</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Token</maml:name>
+        <maml:description>
+          <maml:para>Specifies API key for authentication.
+The type of data should `[string]` or `[securestring]`.
+If not specified, it will try to use `$global:OPENAI_TOKEN` or `$env:OPENAI_TOKEN`</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
+        <dev:type>
+          <maml:name>Object</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes />
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>[pscustomobject]</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>--- Example 1: Ask one question to ChatGPT, and get answer. ---</maml:title>
+        <dev:code>PS C:\&gt; Request-ChatGPT -Message "Who are you?" | select Answer
+
+I am an AI language model created by OpenAI, designed to assist with ...</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title> Example 2: Multiple questions with context preserved. (chats) </maml:title>
+        <dev:code>PS&gt; $FirstQA = Request-ChatGPT -Message "What is the population of the United States?"
+PS&gt; $FirstQA.Answer
+
+As of September 2021, the estimated population of the United States is around 331.4 million people.
+
+PS\&gt; $SecondQA = $FirstQA | Request-ChatGPT -Message "Translate the previous answer into French."
+PS\&gt; $SecondQA.Answer
+
+En septembre 2021, la population estimée des États-Unis est d'environ 331,4 millions de personnes.</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Request-ChatCompletion.md</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>https://platform.openai.com/docs/guides/chat/chat-completions</maml:linkText>
+        <maml:uri>https://platform.openai.com/docs/guides/chat/chat-completions</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>https://platform.openai.com/docs/api-reference/chat/create</maml:linkText>
+        <maml:uri>https://platform.openai.com/docs/api-reference/chat/create</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Request-CodeEdit</command:name>
+      <command:verb>Request</command:verb>
+      <command:noun>CodeEdit</command:noun>
+      <maml:description>
+        <maml:para>Generate or edit code from the provided prompt and parameters.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>Generate or edit code from the provided prompt and parameters.
+https://platform.openai.com/docs/guides/code/editing-code</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Request-CodeEdit</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="Message">
+          <maml:name>Instruction</maml:name>
+          <maml:description>
+            <maml:para>(Required) The prompt(s) to generate codes for.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Input">
+          <maml:name>Text</maml:name>
+          <maml:description>
+            <maml:para>The input text to use as a starting point for the edit.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Model</maml:name>
+          <maml:description>
+            <maml:para>The name of model to use.
+The default value is `code-davinci-edit-001`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>code-davinci-edit-001</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Temperature</maml:name>
+          <maml:description>
+            <maml:para>What sampling temperature to use, between `0` and `2`.
+Higher values like `0.8` will make the output more random, while lower values like `0.2` will make it more focused and deterministic.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Double</command:parameterValue>
+          <dev:type>
+            <maml:name>Double</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="top_p">
+          <maml:name>TopP</maml:name>
+          <maml:description>
+            <maml:para>An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top_p probability mass.
+So `0.1` means only the tokens comprising the top `10%` probability mass are considered.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Double</command:parameterValue>
+          <dev:type>
+            <maml:name>Double</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="n">
+          <maml:name>NumberOfAnswers</maml:name>
+          <maml:description>
+            <maml:para>How many codes to generate for each prompt.
+The default value is `1`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">UInt16</command:parameterValue>
+          <dev:type>
+            <maml:name>UInt16</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>1</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>TimeoutSec</maml:name>
+          <maml:description>
+            <maml:para>Specifies how long the request can be pending before it times out.
+The default value is `0` (infinite).</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>0</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Token</maml:name>
+          <maml:description>
+            <maml:para>Specifies API key for authentication.
+The type of data should `[string]` or `[securestring]`.
+If not specified, it will try to use `$global:OPENAI_TOKEN` or `$env:OPENAI_TOKEN`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
+          <dev:type>
+            <maml:name>Object</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="Message">
+        <maml:name>Instruction</maml:name>
+        <maml:description>
+          <maml:para>(Required) The prompt(s) to generate codes for.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Input">
+        <maml:name>Text</maml:name>
+        <maml:description>
+          <maml:para>The input text to use as a starting point for the edit.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Model</maml:name>
+        <maml:description>
+          <maml:para>The name of model to use.
+The default value is `code-davinci-edit-001`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>code-davinci-edit-001</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Temperature</maml:name>
+        <maml:description>
+          <maml:para>What sampling temperature to use, between `0` and `2`.
+Higher values like `0.8` will make the output more random, while lower values like `0.2` will make it more focused and deterministic.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Double</command:parameterValue>
+        <dev:type>
+          <maml:name>Double</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="top_p">
+        <maml:name>TopP</maml:name>
+        <maml:description>
+          <maml:para>An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top_p probability mass.
+So `0.1` means only the tokens comprising the top `10%` probability mass are considered.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Double</command:parameterValue>
+        <dev:type>
+          <maml:name>Double</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="n">
+        <maml:name>NumberOfAnswers</maml:name>
+        <maml:description>
+          <maml:para>How many codes to generate for each prompt.
+The default value is `1`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">UInt16</command:parameterValue>
+        <dev:type>
+          <maml:name>UInt16</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>1</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>TimeoutSec</maml:name>
+        <maml:description>
+          <maml:para>Specifies how long the request can be pending before it times out.
+The default value is `0` (infinite).</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>0</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Token</maml:name>
+        <maml:description>
+          <maml:para>Specifies API key for authentication.
+The type of data should `[string]` or `[securestring]`.
+If not specified, it will try to use `$global:OPENAI_TOKEN` or `$env:OPENAI_TOKEN`</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
+        <dev:type>
+          <maml:name>Object</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes />
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>[pscustomobject]</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>----------- Example 1: Create code from instruction. -----------</maml:title>
+        <dev:code>Request-CodeEdit -Instruction 'Fizz Buzz in PowerShell' | select Answer
+
+For ($x=1; $x -le 10; $x++)
+{
+if ($x%3 -eq 0 -and $x%5 -eq 0)
+{"FizzBuzz";}
+ElseIf ($x%3 -eq 0)
+{ "Fizz";}
+ElseIf ($x%5 -eq 0)
+{"Buzz";}
+Else
+{ $x;}
+}</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Request-CodeEdit.md</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>https://platform.openai.com/docs/guides/code/editing-code</maml:linkText>
+        <maml:uri>https://platform.openai.com/docs/guides/code/editing-code</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>https://platform.openai.com/docs/api-reference/edits/create</maml:linkText>
+        <maml:uri>https://platform.openai.com/docs/api-reference/edits/create</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Request-ImageEdit</command:name>
+      <command:verb>Request</command:verb>
+      <command:noun>ImageEdit</command:noun>
+      <maml:description>
+        <maml:para>Creates an edited or extended image given an original image and a prompt.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>Creates an edited or extended image given an original image and a prompt.
+https://platform.openai.com/docs/guides/images/image-generation</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Request-ImageEdit</maml:name>
+      </command:syntaxItem>
+      <command:syntaxItem>
+        <maml:name>Request-ImageEdit</maml:name>
+      </command:syntaxItem>
+      <command:syntaxItem>
+        <maml:name>Request-ImageEdit</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="File">
+          <maml:name>Image</maml:name>
+          <maml:description>
+            <maml:para>(Required) The image to edit.
+Must be a valid PNG file, less than 4MB, and square. If mask is not provided, image must have transparency, which will be used as the mask.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Prompt</maml:name>
+          <maml:description>
+            <maml:para>(Required) A text description of the desired image(s).
+The maximum length is 1000 characters.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Mask</maml:name>
+          <maml:description>
+            <maml:para>An additional image whose fully transparent areas (e.g. where alpha is zero) indicate where image should be edited.
+Must be a valid PNG file, less than 4MB, and have the same dimensions as image.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="n">
+          <maml:name>NumberOfImages</maml:name>
+          <maml:description>
+            <maml:para>The number of images to generate.
+Must be between `1` and `10`. The default value is `1`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">UInt16</command:parameterValue>
+          <dev:type>
+            <maml:name>UInt16</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>1</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Size</maml:name>
+          <maml:description>
+            <maml:para>The size of the generated images.
+Must be one of `256x256`, `512x512`, or `1024x1024`. The default value is `1024x1024`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>1024x1024</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="response_format">
+          <maml:name>Format</maml:name>
+          <maml:description>
+            <maml:para>The format in which the generated images are returned.
+Must be one of `url`, `base64` or `byte`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>url</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>User</maml:name>
+          <maml:description>
+            <maml:para>A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>TimeoutSec</maml:name>
+          <maml:description>
+            <maml:para>Specifies how long the request can be pending before it times out. The default value is `0` (infinite).</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>0</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Token</maml:name>
+          <maml:description>
+            <maml:para>Specifies API key for authentication.
+The type of data should `[string]` or `[securestring]`.
+If not specified, it will try to use `$global:OPENAI_TOKEN` or `$env:OPENAI_TOKEN`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
+          <dev:type>
+            <maml:name>Object</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+      <command:syntaxItem>
+        <maml:name>Request-ImageEdit</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="File">
+          <maml:name>Image</maml:name>
+          <maml:description>
+            <maml:para>(Required) The image to edit.
+Must be a valid PNG file, less than 4MB, and square. If mask is not provided, image must have transparency, which will be used as the mask.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Prompt</maml:name>
+          <maml:description>
+            <maml:para>(Required) A text description of the desired image(s).
+The maximum length is 1000 characters.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Mask</maml:name>
+          <maml:description>
+            <maml:para>An additional image whose fully transparent areas (e.g. where alpha is zero) indicate where image should be edited.
+Must be a valid PNG file, less than 4MB, and have the same dimensions as image.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="n">
+          <maml:name>NumberOfImages</maml:name>
+          <maml:description>
+            <maml:para>The number of images to generate.
+Must be between `1` and `10`. The default value is `1`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">UInt16</command:parameterValue>
+          <dev:type>
+            <maml:name>UInt16</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>1</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Size</maml:name>
+          <maml:description>
+            <maml:para>The size of the generated images.
+Must be one of `256x256`, `512x512`, or `1024x1024`. The default value is `1024x1024`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>1024x1024</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>OutFile</maml:name>
+          <maml:description>
+            <maml:para>Specify the file path where the generated images will be saved.
+This cannot be specified with the `Format` parameter. Also, `NumberOfImages` must be `1`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>User</maml:name>
+          <maml:description>
+            <maml:para>A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>TimeoutSec</maml:name>
+          <maml:description>
+            <maml:para>Specifies how long the request can be pending before it times out. The default value is `0` (infinite).</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>0</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Token</maml:name>
+          <maml:description>
+            <maml:para>Specifies API key for authentication.
+The type of data should `[string]` or `[securestring]`.
+If not specified, it will try to use `$global:OPENAI_TOKEN` or `$env:OPENAI_TOKEN`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
+          <dev:type>
+            <maml:name>Object</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="File">
+        <maml:name>Image</maml:name>
+        <maml:description>
+          <maml:para>(Required) The image to edit.
+Must be a valid PNG file, less than 4MB, and square. If mask is not provided, image must have transparency, which will be used as the mask.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Prompt</maml:name>
+        <maml:description>
+          <maml:para>(Required) A text description of the desired image(s).
+The maximum length is 1000 characters.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Mask</maml:name>
+        <maml:description>
+          <maml:para>An additional image whose fully transparent areas (e.g. where alpha is zero) indicate where image should be edited.
+Must be a valid PNG file, less than 4MB, and have the same dimensions as image.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="n">
+        <maml:name>NumberOfImages</maml:name>
+        <maml:description>
+          <maml:para>The number of images to generate.
+Must be between `1` and `10`. The default value is `1`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">UInt16</command:parameterValue>
+        <dev:type>
+          <maml:name>UInt16</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>1</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Size</maml:name>
+        <maml:description>
+          <maml:para>The size of the generated images.
+Must be one of `256x256`, `512x512`, or `1024x1024`. The default value is `1024x1024`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>1024x1024</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="response_format">
+        <maml:name>Format</maml:name>
+        <maml:description>
+          <maml:para>The format in which the generated images are returned.
+Must be one of `url`, `base64` or `byte`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>url</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>OutFile</maml:name>
+        <maml:description>
+          <maml:para>Specify the file path where the generated images will be saved.
+This cannot be specified with the `Format` parameter. Also, `NumberOfImages` must be `1`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>User</maml:name>
+        <maml:description>
+          <maml:para>A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>TimeoutSec</maml:name>
+        <maml:description>
+          <maml:para>Specifies how long the request can be pending before it times out. The default value is `0` (infinite).</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>0</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Token</maml:name>
+        <maml:description>
+          <maml:para>Specifies API key for authentication.
+The type of data should `[string]` or `[securestring]`.
+If not specified, it will try to use `$global:OPENAI_TOKEN` or `$env:OPENAI_TOKEN`</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
+        <dev:type>
+          <maml:name>Object</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes />
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>Format = url    : string or array of string</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>Format = base64 : Generated image data represented in base64 string.</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>Format = byte   : Byte array of generated image.</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>OutFile         : Nothing.</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>--------------- Example 1: Restore masked image. ---------------</maml:title>
+        <dev:code>Request-ImageEdit -Image C:\sunflower_mask.png -Prompt "sunflower" -OutFile C:\edit.png -Size 256x256</dev:code>
+        <dev:remarks>
+          <maml:para>|Source (sunflower_mask.png)|Generated (edit.png)| |----|----| | ! masked (/Docs/images/sunflower_masked.png)  | ![restored](/Docs/images/sunflower_restored.png)|</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>--- Example 2: Create variation image from source and mask. ---</maml:title>
+        <dev:code>Request-ImageEdit -Image C:\sand_with_feather.png -Mask C:\fether_mask.png -Prompt "A bird on the desert" -OutFile C:\edit2.png</dev:code>
+        <dev:remarks>
+          <maml:para>|Source (sand_with_feather.png)|Mask (fether_mask.png)|Generated (edit2.png)| |----|----|----| | ! masked (/Docs/images/sand_with_feather.png) | ![mask](/Docs/images/fether_mask.png) | ![restored](/Docs/images/edit2.png)|</maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Request-ImageEdit.md</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>https://platform.openai.com/docs/guides/images/image-generation</maml:linkText>
+        <maml:uri>https://platform.openai.com/docs/guides/images/image-generation</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>https://platform.openai.com/docs/api-reference/images/create-edit</maml:linkText>
+        <maml:uri>https://platform.openai.com/docs/api-reference/images/create-edit</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Request-ImageGeneration</command:name>
+      <command:verb>Request</command:verb>
+      <command:noun>ImageGeneration</command:noun>
+      <maml:description>
+        <maml:para>Creates an image given a prompt.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>Creates an image given a prompt.
+https://platform.openai.com/docs/guides/images/image-generation</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Request-ImageGeneration</maml:name>
+      </command:syntaxItem>
+      <command:syntaxItem>
+        <maml:name>Request-ImageGeneration</maml:name>
+      </command:syntaxItem>
+      <command:syntaxItem>
+        <maml:name>Request-ImageGeneration</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="none">
+          <maml:name>Prompt</maml:name>
+          <maml:description>
+            <maml:para>(Required) A text description of the desired image(s).
+The maximum length is 1000 characters.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="n">
+          <maml:name>NumberOfImages</maml:name>
+          <maml:description>
+            <maml:para>The number of images to generate.
+Must be between `1` and `10`. The default value is `1`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">UInt16</command:parameterValue>
+          <dev:type>
+            <maml:name>UInt16</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>1</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Size</maml:name>
+          <maml:description>
+            <maml:para>The size of the generated images.
+Must be one of `256x256`, `512x512`, or `1024x1024`. The default value is `1024x1024`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>1024x1024</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="response_format">
+          <maml:name>Format</maml:name>
+          <maml:description>
+            <maml:para>The format in which the generated images are returned.
+Must be one of `url`, `base64` or `byte`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>url</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>User</maml:name>
+          <maml:description>
+            <maml:para>A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>TimeoutSec</maml:name>
+          <maml:description>
+            <maml:para>Specifies how long the request can be pending before it times out. The default value is `0` (infinite).</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>0</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Token</maml:name>
+          <maml:description>
+            <maml:para>Specifies API key for authentication.
+The type of data should `[string]` or `[securestring]`.
+If not specified, it will try to use `$global:OPENAI_TOKEN` or `$env:OPENAI_TOKEN`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
+          <dev:type>
+            <maml:name>Object</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+      <command:syntaxItem>
+        <maml:name>Request-ImageGeneration</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="none">
+          <maml:name>Prompt</maml:name>
+          <maml:description>
+            <maml:para>(Required) A text description of the desired image(s).
+The maximum length is 1000 characters.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="n">
+          <maml:name>NumberOfImages</maml:name>
+          <maml:description>
+            <maml:para>The number of images to generate.
+Must be between `1` and `10`. The default value is `1`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">UInt16</command:parameterValue>
+          <dev:type>
+            <maml:name>UInt16</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>1</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Size</maml:name>
+          <maml:description>
+            <maml:para>The size of the generated images.
+Must be one of `256x256`, `512x512`, or `1024x1024`. The default value is `1024x1024`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>1024x1024</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>OutFile</maml:name>
+          <maml:description>
+            <maml:para>Specify the file path where the generated images will be saved.
+This cannot be specified with the `Format` parameter. Also, `NumberOfImages` must be `1`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>User</maml:name>
+          <maml:description>
+            <maml:para>A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>TimeoutSec</maml:name>
+          <maml:description>
+            <maml:para>Specifies how long the request can be pending before it times out. The default value is `0` (infinite).</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>0</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Token</maml:name>
+          <maml:description>
+            <maml:para>Specifies API key for authentication.
+The type of data should `[string]` or `[securestring]`.
+If not specified, it will try to use `$global:OPENAI_TOKEN` or `$env:OPENAI_TOKEN`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
+          <dev:type>
+            <maml:name>Object</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="none">
+        <maml:name>Prompt</maml:name>
+        <maml:description>
+          <maml:para>(Required) A text description of the desired image(s).
+The maximum length is 1000 characters.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="n">
+        <maml:name>NumberOfImages</maml:name>
+        <maml:description>
+          <maml:para>The number of images to generate.
+Must be between `1` and `10`. The default value is `1`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">UInt16</command:parameterValue>
+        <dev:type>
+          <maml:name>UInt16</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>1</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Size</maml:name>
+        <maml:description>
+          <maml:para>The size of the generated images.
+Must be one of `256x256`, `512x512`, or `1024x1024`. The default value is `1024x1024`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>1024x1024</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="response_format">
+        <maml:name>Format</maml:name>
+        <maml:description>
+          <maml:para>The format in which the generated images are returned.
+Must be one of `url`, `base64` or `byte`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>url</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>OutFile</maml:name>
+        <maml:description>
+          <maml:para>Specify the file path where the generated images will be saved.
+This cannot be specified with the `Format` parameter. Also, `NumberOfImages` must be `1`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>User</maml:name>
+        <maml:description>
+          <maml:para>A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>TimeoutSec</maml:name>
+        <maml:description>
+          <maml:para>Specifies how long the request can be pending before it times out. The default value is `0` (infinite).</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>0</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Token</maml:name>
+        <maml:description>
+          <maml:para>Specifies API key for authentication.
+The type of data should `[string]` or `[securestring]`.
+If not specified, it will try to use `$global:OPENAI_TOKEN` or `$env:OPENAI_TOKEN`</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
+        <dev:type>
+          <maml:name>Object</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes />
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>Format = url    : string or array of string</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>Format = base64 : Generated image data represented in base64 string.</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>Format = byte   : Byte array of generated image.</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>OutFile         : Nothing.</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>------ Example 1: Creates and save an image from prompt. ------</maml:title>
+        <dev:code>Request-ImageGeneration -Prompt 'A cute baby lion' -Size 256x256 -OutFile C:\babylion.png</dev:code>
+        <dev:remarks>
+          <maml:para>! lion (/Docs/images/babylion.png)</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>Example 2: Creates multiple images at once, and retrieve results by URL.</maml:title>
+        <dev:code>Request-ImageGeneration -Prompt 'Delicious ramen with gyoza' -Format "url" -NumberOfImages 3
+
+https://oaidalleapiprodscus.blob.core.windows.net/private/org-BXLtGIt0xglP9if8FVhkD...
+https://oaidalleapiprodscus.blob.core.windows.net/private/org-BXLtGIt0xglP9if8FVhkD...
+https://oaidalleapiprodscus.blob.core.windows.net/private/org-BXLtGIt0xglP9if8FVhkD...</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Request-ImageGeneration.md</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>https://platform.openai.com/docs/guides/images/image-generation</maml:linkText>
+        <maml:uri>https://platform.openai.com/docs/guides/images/image-generation</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>https://platform.openai.com/docs/api-reference/images/create</maml:linkText>
+        <maml:uri>https://platform.openai.com/docs/api-reference/images/create</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Request-ImageVariation</command:name>
+      <command:verb>Request</command:verb>
+      <command:noun>ImageVariation</command:noun>
+      <maml:description>
+        <maml:para>Creates a variation of a given image.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>Creates a variation of a given image.
+https://platform.openai.com/docs/guides/images/image-generation</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Request-ImageVariation</maml:name>
+      </command:syntaxItem>
+      <command:syntaxItem>
+        <maml:name>Request-ImageVariation</maml:name>
+      </command:syntaxItem>
+      <command:syntaxItem>
+        <maml:name>Request-ImageVariation</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="File">
+          <maml:name>Image</maml:name>
+          <maml:description>
+            <maml:para>(Required) The image to use as the basis for the variation(s).
+Must be a valid PNG file, less than 4MB, and square.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="n">
+          <maml:name>NumberOfImages</maml:name>
+          <maml:description>
+            <maml:para>The number of images to generate.
+Must be between `1` and `10`. The default value is `1`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">UInt16</command:parameterValue>
+          <dev:type>
+            <maml:name>UInt16</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>1</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Size</maml:name>
+          <maml:description>
+            <maml:para>The size of the generated images.
+Must be one of `256x256`, `512x512`, or `1024x1024`. The default value is `1024x1024`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>1024x1024</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="response_format">
+          <maml:name>Format</maml:name>
+          <maml:description>
+            <maml:para>The format in which the generated images are returned.
+Must be one of `url`, `base64` or `byte`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>url</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>User</maml:name>
+          <maml:description>
+            <maml:para>A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>TimeoutSec</maml:name>
+          <maml:description>
+            <maml:para>Specifies how long the request can be pending before it times out. The default value is `0` (infinite).</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>0</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Token</maml:name>
+          <maml:description>
+            <maml:para>Specifies API key for authentication.
+The type of data should `[string]` or `[securestring]`.
+If not specified, it will try to use `$global:OPENAI_TOKEN` or `$env:OPENAI_TOKEN`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
+          <dev:type>
+            <maml:name>Object</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+      <command:syntaxItem>
+        <maml:name>Request-ImageVariation</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="File">
+          <maml:name>Image</maml:name>
+          <maml:description>
+            <maml:para>(Required) The image to use as the basis for the variation(s).
+Must be a valid PNG file, less than 4MB, and square.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="n">
+          <maml:name>NumberOfImages</maml:name>
+          <maml:description>
+            <maml:para>The number of images to generate.
+Must be between `1` and `10`. The default value is `1`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">UInt16</command:parameterValue>
+          <dev:type>
+            <maml:name>UInt16</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>1</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Size</maml:name>
+          <maml:description>
+            <maml:para>The size of the generated images.
+Must be one of `256x256`, `512x512`, or `1024x1024`. The default value is `1024x1024`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>1024x1024</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>OutFile</maml:name>
+          <maml:description>
+            <maml:para>Specify the file path where the generated images will be saved.
+This cannot be specified with the `Format` parameter. Also, `NumberOfImages` must be `1`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>User</maml:name>
+          <maml:description>
+            <maml:para>A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>TimeoutSec</maml:name>
+          <maml:description>
+            <maml:para>Specifies how long the request can be pending before it times out. The default value is `0` (infinite).</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>0</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Token</maml:name>
+          <maml:description>
+            <maml:para>Specifies API key for authentication.
+The type of data should `[string]` or `[securestring]`.
+If not specified, it will try to use `$global:OPENAI_TOKEN` or `$env:OPENAI_TOKEN`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
+          <dev:type>
+            <maml:name>Object</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="File">
+        <maml:name>Image</maml:name>
+        <maml:description>
+          <maml:para>(Required) The image to use as the basis for the variation(s).
+Must be a valid PNG file, less than 4MB, and square.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="n">
+        <maml:name>NumberOfImages</maml:name>
+        <maml:description>
+          <maml:para>The number of images to generate.
+Must be between `1` and `10`. The default value is `1`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">UInt16</command:parameterValue>
+        <dev:type>
+          <maml:name>UInt16</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>1</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Size</maml:name>
+        <maml:description>
+          <maml:para>The size of the generated images.
+Must be one of `256x256`, `512x512`, or `1024x1024`. The default value is `1024x1024`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>1024x1024</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="response_format">
+        <maml:name>Format</maml:name>
+        <maml:description>
+          <maml:para>The format in which the generated images are returned.
+Must be one of `url`, `base64` or `byte`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>url</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>OutFile</maml:name>
+        <maml:description>
+          <maml:para>Specify the file path where the generated images will be saved.
+This cannot be specified with the `Format` parameter. Also, `NumberOfImages` must be `1`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>User</maml:name>
+        <maml:description>
+          <maml:para>A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>TimeoutSec</maml:name>
+        <maml:description>
+          <maml:para>Specifies how long the request can be pending before it times out. The default value is `0` (infinite).</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>0</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Token</maml:name>
+        <maml:description>
+          <maml:para>Specifies API key for authentication.
+The type of data should `[string]` or `[securestring]`.
+If not specified, it will try to use `$global:OPENAI_TOKEN` or `$env:OPENAI_TOKEN`</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
+        <dev:type>
+          <maml:name>Object</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes />
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>Format = url    : string or array of string</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>Format = base64 : Generated image data represented in base64 string.</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>Format = byte   : Byte array of generated image.</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>OutFile         : Nothing.</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>Example 1: Creates a variation of a given image, then save to file.</maml:title>
+        <dev:code>Request-ImageVariation -Image C:\cupcake.png -OutFile C:\cupcake2.png -Size 256x256</dev:code>
+        <dev:remarks>
+          <maml:para>|Source (cupcake.png)|Generated (cupcake2.png)| |----|----| | ! source (/Docs/images/cupcake.png)  | ![output](/Docs/images/cupcake2.png)|</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>Example 2: Creates a variation of a given image, then output as base64 string.</maml:title>
+        <dev:code>Request-ImageVariation -Image C:\cupcake.png -Format "base64"
+
+iVBORw0KGgoAAAANSUhEUgAABAAAAAQACAIAAADwf7zUAAAAaGV......</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Request-ImageVariation.md</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>https://platform.openai.com/docs/guides/images/image-generation</maml:linkText>
+        <maml:uri>https://platform.openai.com/docs/guides/images/image-generation</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>https://platform.openai.com/docs/api-reference/images/create-variation</maml:linkText>
+        <maml:uri>https://platform.openai.com/docs/api-reference/images/create-variation</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Request-Moderation</command:name>
+      <command:verb>Request</command:verb>
+      <command:noun>Moderation</command:noun>
+      <maml:description>
+        <maml:para>Given a input text, outputs if the model classifies it as violating OpenAI's content policy.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>Given a input text, outputs if the model classifies it as violating OpenAI's content policy.
+The moderation endpoint is free to use when monitoring the inputs and outputs of OpenAI APIs.
+https://platform.openai.com/docs/guides/moderation/overview</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Request-Moderation</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="Input">
+          <maml:name>Text</maml:name>
+          <maml:description>
+            <maml:para>(Required) The input text to classify.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Model</maml:name>
+          <maml:description>
+            <maml:para>The name of model to use.
+Two content moderations models are available: `text-moderation-stable` and `text-moderation-latest`.
+The default value is `text-moderation-latest`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>text-moderation-latest</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>TimeoutSec</maml:name>
+          <maml:description>
+            <maml:para>Specifies how long the request can be pending before it times out. The default value is `0` (infinite).</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>0</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Token</maml:name>
+          <maml:description>
+            <maml:para>Specifies API key for authentication.
+The type of data should `[string]` or `[securestring]`.
+If not specified, it will try to use `$global:OPENAI_TOKEN` or `$env:OPENAI_TOKEN`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
+          <dev:type>
+            <maml:name>Object</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="Input">
+        <maml:name>Text</maml:name>
+        <maml:description>
+          <maml:para>(Required) The input text to classify.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+        <dev:type>
+          <maml:name>String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Model</maml:name>
+        <maml:description>
+          <maml:para>The name of model to use.
+Two content moderations models are available: `text-moderation-stable` and `text-moderation-latest`.
+The default value is `text-moderation-latest`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>text-moderation-latest</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>TimeoutSec</maml:name>
+        <maml:description>
+          <maml:para>Specifies how long the request can be pending before it times out. The default value is `0` (infinite).</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>0</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Token</maml:name>
+        <maml:description>
+          <maml:para>Specifies API key for authentication.
+The type of data should `[string]` or `[securestring]`.
+If not specified, it will try to use `$global:OPENAI_TOKEN` or `$env:OPENAI_TOKEN`</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
+        <dev:type>
+          <maml:name>Object</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes />
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>[pscustomobject]</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; $Result = Request-Moderation -Text "I want to kill them."
+PS C:\&gt; $Result.results.categories
+
+sexual           : False
+hate             : False
+violence         : True
+self-harm        : False
+sexual/minors    : False
+hate/threatening : False
+violence/graphic : False</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Request-Moderation.md</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>https://platform.openai.com/docs/guides/moderation/overview</maml:linkText>
+        <maml:uri>https://platform.openai.com/docs/guides/moderation/overview</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>https://platform.openai.com/docs/api-reference/moderations</maml:linkText>
+        <maml:uri>https://platform.openai.com/docs/api-reference/moderations</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Request-TextCompletion</command:name>
+      <command:verb>Request</command:verb>
+      <command:noun>TextCompletion</command:noun>
+      <maml:description>
+        <maml:para>Creates a completion for the provided prompt and parameters.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>Given a prompt, the AI model will return one or more predicted completions.
+https://platform.openai.com/docs/guides/completion/text-completion</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Request-TextCompletion</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="Message">
+          <maml:name>Prompt</maml:name>
+          <maml:description>
+            <maml:para>(Required) The prompt(s) to generate completions for</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Suffix</maml:name>
+          <maml:description>
+            <maml:para>The suffix that comes after a completion of inserted text.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Model</maml:name>
+          <maml:description>
+            <maml:para>The name of model to use. The default value is `text-davinci-003`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>text-davinci-003</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Temperature</maml:name>
+          <maml:description>
+            <maml:para>What sampling temperature to use, between `0` and `2`.
+Higher values like `0.8` will make the output more random, while lower values like `0.2` will make it more focused and deterministic.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Double</command:parameterValue>
+          <dev:type>
+            <maml:name>Double</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="top_p">
+          <maml:name>TopP</maml:name>
+          <maml:description>
+            <maml:para>An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top_p probability mass.
+So `0.1` means only the tokens comprising the top `10%` probability mass are considered.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Double</command:parameterValue>
+          <dev:type>
+            <maml:name>Double</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="n">
+          <maml:name>NumberOfAnswers</maml:name>
+          <maml:description>
+            <maml:para>How many texts to generate for each prompt. The default value is `1`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">UInt16</command:parameterValue>
+          <dev:type>
+            <maml:name>UInt16</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>1</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="max_tokens">
+          <maml:name>MaxTokens</maml:name>
+          <maml:description>
+            <maml:para>The maximum number of tokens allowed for the generated answer.
+The max value depends on models.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="presence_penalty">
+          <maml:name>PresencePenalty</maml:name>
+          <maml:description>
+            <maml:para>Number between `-2.0` and `2.0`.
+Positive values penalize new tokens based on whether they appear in the text so far, increasing the model's likelihood to talk about new topics.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Double</command:parameterValue>
+          <dev:type>
+            <maml:name>Double</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="frequency_penalty">
+          <maml:name>FrequencyPenalty</maml:name>
+          <maml:description>
+            <maml:para>Number between `-2.0` and `2.0`.
+Positive values penalize new tokens based on their existing frequency in the text so far, decreasing the model's likelihood to repeat the same line verbatim.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Double</command:parameterValue>
+          <dev:type>
+            <maml:name>Double</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>User</maml:name>
+          <maml:description>
+            <maml:para>A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Echo</maml:name>
+          <maml:description>
+            <maml:para>Echo back the prompt in addition to the completion. The default value is `$false`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Boolean</command:parameterValue>
+          <dev:type>
+            <maml:name>Boolean</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>$false</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="best_of">
+          <maml:name>BestOf</maml:name>
+          <maml:description>
+            <maml:para>Generates best_of completions server-side and returns the "best" (the one with the highest log probability per token).</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">UInt16</command:parameterValue>
+          <dev:type>
+            <maml:name>UInt16</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>TimeoutSec</maml:name>
+          <maml:description>
+            <maml:para>Specifies how long the request can be pending before it times out. The default value is `0` (infinite).</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>0</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Token</maml:name>
+          <maml:description>
+            <maml:para>Specifies API key for authentication.
+The type of data should `[string]` or `[securestring]`.
+If not specified, it will try to use `$global:OPENAI_TOKEN` or `$env:OPENAI_TOKEN`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
+          <dev:type>
+            <maml:name>Object</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="Message">
+        <maml:name>Prompt</maml:name>
+        <maml:description>
+          <maml:para>(Required) The prompt(s) to generate completions for</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+        <dev:type>
+          <maml:name>String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Suffix</maml:name>
+        <maml:description>
+          <maml:para>The suffix that comes after a completion of inserted text.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Model</maml:name>
+        <maml:description>
+          <maml:para>The name of model to use. The default value is `text-davinci-003`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>text-davinci-003</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Temperature</maml:name>
+        <maml:description>
+          <maml:para>What sampling temperature to use, between `0` and `2`.
+Higher values like `0.8` will make the output more random, while lower values like `0.2` will make it more focused and deterministic.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Double</command:parameterValue>
+        <dev:type>
+          <maml:name>Double</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="top_p">
+        <maml:name>TopP</maml:name>
+        <maml:description>
+          <maml:para>An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top_p probability mass.
+So `0.1` means only the tokens comprising the top `10%` probability mass are considered.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Double</command:parameterValue>
+        <dev:type>
+          <maml:name>Double</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="n">
+        <maml:name>NumberOfAnswers</maml:name>
+        <maml:description>
+          <maml:para>How many texts to generate for each prompt. The default value is `1`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">UInt16</command:parameterValue>
+        <dev:type>
+          <maml:name>UInt16</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>1</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="max_tokens">
+        <maml:name>MaxTokens</maml:name>
+        <maml:description>
+          <maml:para>The maximum number of tokens allowed for the generated answer.
+The max value depends on models.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="presence_penalty">
+        <maml:name>PresencePenalty</maml:name>
+        <maml:description>
+          <maml:para>Number between `-2.0` and `2.0`.
+Positive values penalize new tokens based on whether they appear in the text so far, increasing the model's likelihood to talk about new topics.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Double</command:parameterValue>
+        <dev:type>
+          <maml:name>Double</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="frequency_penalty">
+        <maml:name>FrequencyPenalty</maml:name>
+        <maml:description>
+          <maml:para>Number between `-2.0` and `2.0`.
+Positive values penalize new tokens based on their existing frequency in the text so far, decreasing the model's likelihood to repeat the same line verbatim.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Double</command:parameterValue>
+        <dev:type>
+          <maml:name>Double</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>User</maml:name>
+        <maml:description>
+          <maml:para>A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Echo</maml:name>
+        <maml:description>
+          <maml:para>Echo back the prompt in addition to the completion. The default value is `$false`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Boolean</command:parameterValue>
+        <dev:type>
+          <maml:name>Boolean</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>$false</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="best_of">
+        <maml:name>BestOf</maml:name>
+        <maml:description>
+          <maml:para>Generates best_of completions server-side and returns the "best" (the one with the highest log probability per token).</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">UInt16</command:parameterValue>
+        <dev:type>
+          <maml:name>UInt16</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>TimeoutSec</maml:name>
+        <maml:description>
+          <maml:para>Specifies how long the request can be pending before it times out. The default value is `0` (infinite).</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>0</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Token</maml:name>
+        <maml:description>
+          <maml:para>Specifies API key for authentication.
+The type of data should `[string]` or `[securestring]`.
+If not specified, it will try to use `$global:OPENAI_TOKEN` or `$env:OPENAI_TOKEN`</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
+        <dev:type>
+          <maml:name>Object</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes />
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>[pscustomobject]</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------- Example 1: Estimate the sentences that follow. --------</maml:title>
+        <dev:code>Request-TextCompletion -Prompt 'This is a hamburger store.' | select Answer
+
+We serves
+-classic hamburgers
+-tofu burgers</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Request-TextCompletion.md</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>https://platform.openai.com/docs/guides/completion/text-completion</maml:linkText>
+        <maml:uri>https://platform.openai.com/docs/guides/completion/text-completion</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>https://platform.openai.com/docs/api-reference/completions/create</maml:linkText>
+        <maml:uri>https://platform.openai.com/docs/api-reference/completions/create</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Request-TextEdit</command:name>
+      <command:verb>Request</command:verb>
+      <command:noun>TextEdit</command:noun>
+      <maml:description>
+        <maml:para>Generate or edit text from the provided prompt and parameters.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>Generate or edit text from the provided prompt and parameters.
+https://platform.openai.com/docs/guides/completion/editing-text</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Request-TextEdit</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="Message">
+          <maml:name>Instruction</maml:name>
+          <maml:description>
+            <maml:para>(Required) The prompt(s) to generate text for.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Input">
+          <maml:name>Text</maml:name>
+          <maml:description>
+            <maml:para>The input text to use as a starting point for the edit.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>Model</maml:name>
+          <maml:description>
+            <maml:para>The name of model to use. The default value is `text-davinci-edit-001`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>text-davinci-edit-001</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Temperature</maml:name>
+          <maml:description>
+            <maml:para>What sampling temperature to use, between `0` and `2`.
+Higher values like `0.8` will make the output more random, while lower values like `0.2` will make it more focused and deterministic.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Double</command:parameterValue>
+          <dev:type>
+            <maml:name>Double</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="top_p">
+          <maml:name>TopP</maml:name>
+          <maml:description>
+            <maml:para>An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top_p probability mass. So `0.1` means only the tokens comprising the top `10%` probability mass are considered.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Double</command:parameterValue>
+          <dev:type>
+            <maml:name>Double</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="n">
+          <maml:name>NumberOfAnswers</maml:name>
+          <maml:description>
+            <maml:para>How many texts to generate for each prompt. The default value is `1`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">UInt16</command:parameterValue>
+          <dev:type>
+            <maml:name>UInt16</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>1</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>TimeoutSec</maml:name>
+          <maml:description>
+            <maml:para>Specifies how long the request can be pending before it times out. The default value is `0` (infinite).</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>0</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Token</maml:name>
+          <maml:description>
+            <maml:para>Specifies API key for authentication.
+The type of data should `[string]` or `[securestring]`.
+If not specified, it will try to use `$global:OPENAI_TOKEN` or `$env:OPENAI_TOKEN`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
+          <dev:type>
+            <maml:name>Object</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="Message">
+        <maml:name>Instruction</maml:name>
+        <maml:description>
+          <maml:para>(Required) The prompt(s) to generate text for.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Input">
+        <maml:name>Text</maml:name>
+        <maml:description>
+          <maml:para>The input text to use as a starting point for the edit.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>Model</maml:name>
+        <maml:description>
+          <maml:para>The name of model to use. The default value is `text-davinci-edit-001`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>text-davinci-edit-001</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Temperature</maml:name>
+        <maml:description>
+          <maml:para>What sampling temperature to use, between `0` and `2`.
+Higher values like `0.8` will make the output more random, while lower values like `0.2` will make it more focused and deterministic.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Double</command:parameterValue>
+        <dev:type>
+          <maml:name>Double</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="top_p">
+        <maml:name>TopP</maml:name>
+        <maml:description>
+          <maml:para>An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top_p probability mass. So `0.1` means only the tokens comprising the top `10%` probability mass are considered.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Double</command:parameterValue>
+        <dev:type>
+          <maml:name>Double</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="n">
+        <maml:name>NumberOfAnswers</maml:name>
+        <maml:description>
+          <maml:para>How many texts to generate for each prompt. The default value is `1`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">UInt16</command:parameterValue>
+        <dev:type>
+          <maml:name>UInt16</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>1</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>TimeoutSec</maml:name>
+        <maml:description>
+          <maml:para>Specifies how long the request can be pending before it times out. The default value is `0` (infinite).</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>0</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Token</maml:name>
+        <maml:description>
+          <maml:para>Specifies API key for authentication.
+The type of data should `[string]` or `[securestring]`.
+If not specified, it will try to use `$global:OPENAI_TOKEN` or `$env:OPENAI_TOKEN`</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
+        <dev:type>
+          <maml:name>Object</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes />
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>[pscustomobject]</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>------------ Example 1: Fix the spelling mistakes. ------------</maml:title>
+        <dev:code>Request-TextEdit -Text 'What day of teh wek is it?' -Instruction "Fix the spelling mistakes" | select Answer
+
+What day of the week is it?</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Request-TextEdit.md</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>https://platform.openai.com/docs/guides/completion/editing-text</maml:linkText>
+        <maml:uri>https://platform.openai.com/docs/guides/completion/editing-text</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>https://platform.openai.com/docs/api-reference/edits/create</maml:linkText>
+        <maml:uri>https://platform.openai.com/docs/api-reference/edits/create</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
+  </command:command>
+</helpItems>

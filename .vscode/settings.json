@@ -1,0 +1,9 @@
+{
+    "powershell.codeFormatting.useConstantStrings": true,
+    "powershell.codeFormatting.useCorrectCasing": true,
+    "files.trimTrailingWhitespace": true,
+    "editor.formatOnSave": true,
+    "[markdown]": {
+        "files.trimTrailingWhitespace": false
+    }
+}
