@@ -1,6 +1,6 @@
 @{
     # Version number of this module.
-    ModuleVersion        = '1.0.0'
+    ModuleVersion        = '1.1.0'
 
     # Supported PSEditions
     CompatiblePSEditions = 'Core', 'Desktop'
@@ -32,6 +32,7 @@
         'Request-AudioTranscription',
         'Request-AudioTranslation',
         'Request-ChatCompletion',
+        'Request-CodeCompletion',
         'Request-CodeEdit',
         'Request-ImageEdit',
         'Request-ImageGeneration',
