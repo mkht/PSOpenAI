@@ -1027,6 +1027,426 @@ En septembre 2021, la population estimée des États-Unis est d'environ 331,4 mi
   </command:command>
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
     <command:details>
+      <command:name>Request-CodeCompletion</command:name>
+      <command:verb>Request</command:verb>
+      <command:noun>CodeCompletion</command:noun>
+      <maml:description>
+        <maml:para>Creates a completion for the provided prompt and parameters.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>Given a prompt, the AI model will return one or more predicted completions.
+https://platform.openai.com/docs/guides/code/introduction</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Request-CodeCompletion</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="Message">
+          <maml:name>Prompt</maml:name>
+          <maml:description>
+            <maml:para>(Required) The prompt(s) to generate completions for</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Suffix</maml:name>
+          <maml:description>
+            <maml:para>The suffix that comes after a completion of inserted text.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Model</maml:name>
+          <maml:description>
+            <maml:para>The name of model to use. The default value is `code-davinci-002`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>code-davinci-002</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Temperature</maml:name>
+          <maml:description>
+            <maml:para>What sampling temperature to use, between `0` and `2`.
+Higher values like `0.8` will make the output more random, while lower values like `0.2` will make it more focused and deterministic.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Double</command:parameterValue>
+          <dev:type>
+            <maml:name>Double</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="top_p">
+          <maml:name>TopP</maml:name>
+          <maml:description>
+            <maml:para>An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top_p probability mass.
+So `0.1` means only the tokens comprising the top `10%` probability mass are considered.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Double</command:parameterValue>
+          <dev:type>
+            <maml:name>Double</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="n">
+          <maml:name>NumberOfAnswers</maml:name>
+          <maml:description>
+            <maml:para>How many texts to generate for each prompt. The default value is `1`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">UInt16</command:parameterValue>
+          <dev:type>
+            <maml:name>UInt16</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>1</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="max_tokens">
+          <maml:name>MaxTokens</maml:name>
+          <maml:description>
+            <maml:para>The maximum number of tokens allowed for the generated answer.
+The max value depends on models.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>2048</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="presence_penalty">
+          <maml:name>PresencePenalty</maml:name>
+          <maml:description>
+            <maml:para>Number between `-2.0` and `2.0`.
+Positive values penalize new tokens based on whether they appear in the text so far, increasing the model's likelihood to talk about new topics.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Double</command:parameterValue>
+          <dev:type>
+            <maml:name>Double</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="frequency_penalty">
+          <maml:name>FrequencyPenalty</maml:name>
+          <maml:description>
+            <maml:para>Number between `-2.0` and `2.0`.
+Positive values penalize new tokens based on their existing frequency in the text so far, decreasing the model's likelihood to repeat the same line verbatim.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Double</command:parameterValue>
+          <dev:type>
+            <maml:name>Double</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>User</maml:name>
+          <maml:description>
+            <maml:para>A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Echo</maml:name>
+          <maml:description>
+            <maml:para>Echo back the prompt in addition to the completion. The default value is `$false`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Boolean</command:parameterValue>
+          <dev:type>
+            <maml:name>Boolean</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>$false</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="best_of">
+          <maml:name>BestOf</maml:name>
+          <maml:description>
+            <maml:para>Generates best_of completions server-side and returns the "best" (the one with the highest log probability per token).</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">UInt16</command:parameterValue>
+          <dev:type>
+            <maml:name>UInt16</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>TimeoutSec</maml:name>
+          <maml:description>
+            <maml:para>Specifies how long the request can be pending before it times out. The default value is `0` (infinite).</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>0</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Token</maml:name>
+          <maml:description>
+            <maml:para>Specifies API key for authentication.
+The type of data should `[string]` or `[securestring]`.
+If not specified, it will try to use `$global:OPENAI_TOKEN` or `$env:OPENAI_TOKEN`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
+          <dev:type>
+            <maml:name>Object</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="Message">
+        <maml:name>Prompt</maml:name>
+        <maml:description>
+          <maml:para>(Required) The prompt(s) to generate completions for</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+        <dev:type>
+          <maml:name>String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Suffix</maml:name>
+        <maml:description>
+          <maml:para>The suffix that comes after a completion of inserted text.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Model</maml:name>
+        <maml:description>
+          <maml:para>The name of model to use. The default value is `code-davinci-002`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>code-davinci-002</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Temperature</maml:name>
+        <maml:description>
+          <maml:para>What sampling temperature to use, between `0` and `2`.
+Higher values like `0.8` will make the output more random, while lower values like `0.2` will make it more focused and deterministic.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Double</command:parameterValue>
+        <dev:type>
+          <maml:name>Double</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="top_p">
+        <maml:name>TopP</maml:name>
+        <maml:description>
+          <maml:para>An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top_p probability mass.
+So `0.1` means only the tokens comprising the top `10%` probability mass are considered.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Double</command:parameterValue>
+        <dev:type>
+          <maml:name>Double</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="n">
+        <maml:name>NumberOfAnswers</maml:name>
+        <maml:description>
+          <maml:para>How many texts to generate for each prompt. The default value is `1`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">UInt16</command:parameterValue>
+        <dev:type>
+          <maml:name>UInt16</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>1</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="max_tokens">
+        <maml:name>MaxTokens</maml:name>
+        <maml:description>
+          <maml:para>The maximum number of tokens allowed for the generated answer.
+The max value depends on models.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>2048</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="presence_penalty">
+        <maml:name>PresencePenalty</maml:name>
+        <maml:description>
+          <maml:para>Number between `-2.0` and `2.0`.
+Positive values penalize new tokens based on whether they appear in the text so far, increasing the model's likelihood to talk about new topics.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Double</command:parameterValue>
+        <dev:type>
+          <maml:name>Double</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="frequency_penalty">
+        <maml:name>FrequencyPenalty</maml:name>
+        <maml:description>
+          <maml:para>Number between `-2.0` and `2.0`.
+Positive values penalize new tokens based on their existing frequency in the text so far, decreasing the model's likelihood to repeat the same line verbatim.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Double</command:parameterValue>
+        <dev:type>
+          <maml:name>Double</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>User</maml:name>
+        <maml:description>
+          <maml:para>A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Echo</maml:name>
+        <maml:description>
+          <maml:para>Echo back the prompt in addition to the completion. The default value is `$false`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Boolean</command:parameterValue>
+        <dev:type>
+          <maml:name>Boolean</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>$false</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="best_of">
+        <maml:name>BestOf</maml:name>
+        <maml:description>
+          <maml:para>Generates best_of completions server-side and returns the "best" (the one with the highest log probability per token).</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">UInt16</command:parameterValue>
+        <dev:type>
+          <maml:name>UInt16</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>TimeoutSec</maml:name>
+        <maml:description>
+          <maml:para>Specifies how long the request can be pending before it times out. The default value is `0` (infinite).</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>0</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Token</maml:name>
+        <maml:description>
+          <maml:para>Specifies API key for authentication.
+The type of data should `[string]` or `[securestring]`.
+If not specified, it will try to use `$global:OPENAI_TOKEN` or `$env:OPENAI_TOKEN`</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
+        <dev:type>
+          <maml:name>Object</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes />
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>[pscustomobject]</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>------ Example 1: Generates the rest of the program code. ------</maml:title>
+        <dev:code>Request-CodeCompletion -Prompt "# PowerShell`r`n# This function takes two integers as arguments and returns the product of the two values.`r`nfunction Get-Multiply {`r`n" -Echo $true | select -ExpandProperty Answer
+
+# PowerShell
+# This function takes two integers as arguments and returns the product of the two values.
+function Get-Multiply {
+    param($int1,$int2) 
+    return $int1 * $int2
+}
+# Assign the product of two integer to a variable. Then display the value of the variable on host.
+$product = Get-Multiply 10 20
+$product</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Request-CodeCompletion.md</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>https://platform.openai.com/docs/guides/code/introduction</maml:linkText>
+        <maml:uri>https://platform.openai.com/docs/guides/code/introduction</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>https://platform.openai.com/docs/api-reference/completions</maml:linkText>
+        <maml:uri>https://platform.openai.com/docs/api-reference/completions</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
       <command:name>Request-CodeEdit</command:name>
       <command:verb>Request</command:verb>
       <command:noun>CodeEdit</command:noun>
@@ -2811,7 +3231,7 @@ The max value depends on models.</maml:para>
             <maml:name>Int32</maml:name>
             <maml:uri />
           </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
+          <dev:defaultValue>2048</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="presence_penalty">
           <maml:name>PresencePenalty</maml:name>
@@ -2989,7 +3409,7 @@ The max value depends on models.</maml:para>
           <maml:name>Int32</maml:name>
           <maml:uri />
         </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
+        <dev:defaultValue>2048</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="presence_penalty">
         <maml:name>PresencePenalty</maml:name>

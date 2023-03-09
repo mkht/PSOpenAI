@@ -35,6 +35,7 @@ Install-Module -Name PSOpenAI
 + [Request-AudioTranslation](/Docs/Request-AudioTranslation.md)
 + [Request-ChatCompletion](/Docs/Request-ChatCompletion.md)
 + [Request-ChatGPT](/Docs/Request-ChatCompletion.md)
++ [Request-CodeCompletion](/Docs/Request-CodeCompletion.md)
 + [Request-CodeEdit](/Docs/Request-CodeEdit.md)
 + [Request-ImageEdit](/Docs/Request-ImageEdit.md)
 + [Request-ImageGeneration](/Docs/Request-ImageGeneration.md)
@@ -209,6 +210,12 @@ PS C:> Request-ChatGPT -Message "Who are you?"
 
 ----
 ## Changelog
+### 1.1.0
+ - Improve error handling.
+ - Change the default value of the `MaxTokens` parameter of `Request-TextCompletion` to `2048`. The previous default value of `16` was not useful for most use cases.
+ - Add the `Request-CodeCompletion` function. This performs the same process as `Request-TextCompletion`, but is more suitable for generating program code since the AI model used by default is `code-davinci-002`.
+ - Add Pester tests for all public functions.
+
 ### 1.0.0
  - Initial public release.
 
