@@ -5,6 +5,10 @@ ChatGPT, 音声の文字起こし, テキストからの画像生成などの Op
 
 **これはコミュニティベースの非公式モジュールであり OpenAI による提供ではありません**
 
+OpenAI API の公式ドキュメントはこちら    
+https://platform.openai.com/docs
+
+
 ----
 ## 動作環境
 

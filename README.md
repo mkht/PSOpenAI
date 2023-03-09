@@ -5,6 +5,9 @@ You can use OpenAI functions such as ChatGPT, Speech-to-Text, Text-to-Image from
 
 **This is a community-based project and is not an official offering of OpenAI.**
 
+About OpenAI API  
+https://platform.openai.com/docs
+
 日本語版のREADMEは[こちら](/README.ja.md)
 
 ----
