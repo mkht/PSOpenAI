@@ -123,6 +123,7 @@ Type: Int32
 Aliases: max_tokens
 Required: False
 Position: Named
+Default value: 2048
 ```
 
 ### -PresencePenalty

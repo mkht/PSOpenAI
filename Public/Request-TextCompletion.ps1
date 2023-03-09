@@ -29,7 +29,7 @@ function Request-TextCompletion {
         [Parameter()]
         [ValidateRange(0, 4096)]
         [Alias('max_tokens')]
-        [int]$MaxTokens,
+        [int]$MaxTokens = 2048,
 
         [Parameter()]
         [ValidateRange(-2.0, 2.0)]
@@ -101,7 +101,7 @@ function Request-TextCompletion {
         if ($PSBoundParameters.ContainsKey('NumberOfAnswers')) {
             $PostBody.n = $NumberOfAnswers
         }
-        if ($PSBoundParameters.ContainsKey('MaxTokens')) {
+        if ($MaxTokens -gt 0) {
             $PostBody.max_tokens = $MaxTokens
         }
         if ($PSBoundParameters.ContainsKey('PresencePenalty')) {
