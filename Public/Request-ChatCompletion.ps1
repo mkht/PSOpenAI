@@ -150,7 +150,7 @@ function Request-ChatCompletion {
             $ResponseContent = $Response.choices.message
         }
         # For history, add AI response to messages list.
-        if ($ResponseContent.Count -ge 1) {
+        if (@($ResponseContent).Count -ge 1) {
             $Messages.Add([ordered]@{
                     role    = @($ResponseContent)[0].role
                     content = @($ResponseContent)[0].content

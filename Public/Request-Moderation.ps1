@@ -78,8 +78,8 @@ function Request-Moderation {
         #region Output
         if ($null -ne $Response) {
             # Add custom properties to output object.
-            for ($i = 0; $i -lt $Response.results.Count; $i++) {
-                $Response.results[$i] | Add-Member -MemberType NoteProperty -Name 'Text' -Value @($Text)[$i]
+            for ($i = 0; $i -lt @($Response.results).Count; $i++) {
+                @($Response.results)[$i] | Add-Member -MemberType NoteProperty -Name 'Text' -Value @($Text)[$i]
             }
             Write-Output $Response
         }

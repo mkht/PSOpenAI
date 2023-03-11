@@ -28,7 +28,7 @@ Describe 'Request-ChatCompletion' {
         "index": 0,
         "message": {
         "role": "assistant",
-        "content": "Hello there, how may I assist you today?",
+        "content": "Hello there, how may I assist you today?"
         },
         "finish_reason": "stop"
     }],
@@ -37,7 +37,7 @@ Describe 'Request-ChatCompletion' {
         "completion_tokens": 12,
         "total_tokens": 21
     }
-    }
+}
 '@ }
             { $script:Result = Request-ChatCompletion -Message 'test' -ea Stop } | Should -Not -Throw
             Should -InvokeVerifiable
