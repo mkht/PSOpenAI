@@ -7,14 +7,7 @@ function Get-CultureInfo {
     )
 
     $LanguageName = $LanguageName.Trim()
-    [cultureinfo]$CultureInfo = $null
-    try {
-        $CultureInfo = [cultureinfo]::GetCultureInfo($LanguageName)
-        return $CultureInfo
-    }
-    catch {}
-
-    $CultureInfo = [cultureinfo]::GetCultures([System.Globalization.CultureTypes]::AllCultures) |`
+    [cultureinfo]$CultureInfo = [cultureinfo]::GetCultures([System.Globalization.CultureTypes]::AllCultures) |`
         Where-Object {
         $_.Name -eq $LanguageName `
             -or $_.EnglishName -eq $LanguageName `
