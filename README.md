@@ -212,7 +212,7 @@ PS C:> Request-ChatGPT -Message "Who are you?"
 ----
 ## Changelog
 ### 1.1.2
- - Fix an issue taht the language code may not be set correctly in `Request-AudioTranscription` on macOS and Linux environment.
+ - Fix an issue that the language code may not be set correctly in `Request-AudioTranscription` on macOS and Linux environment.
  - Fix minor issues on Windows PowerShell 5.1
  - Fix Flaky Tests.
 
