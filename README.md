@@ -15,6 +15,7 @@ https://platform.openai.com/docs
 
 + Windows PowerShell 5.1
 + PowerShell 7 or higher
++ Windows, macOS or Linux
 
 You need to sign-up OpenAI account and generates API key for authentication.  
 https://platform.openai.com/account/api-keys
@@ -210,6 +211,11 @@ PS C:> Request-ChatGPT -Message "Who are you?"
 
 ----
 ## Changelog
+### 1.1.2
+ - Fix an issue taht the language code may not be set correctly in `Request-AudioTranscription` on macOS and Linux environment.
+ - Fix minor issues on Windows PowerShell 5.1
+ - Fix Flaky Tests.
+
 ### 1.1.0
  - Improve error handling.
  - Change the default value of the `MaxTokens` parameter of `Request-TextCompletion` to `2048`. The previous default value of `16` was not useful for most use cases.
@@ -225,8 +231,6 @@ PS C:> Request-ChatGPT -Message "Who are you?"
 
 If you have a feature request or bug report, please tell us in Issue.
 
-+ Write Pester test codes.
-+ Automated testing including non-Windows environments.
 + Performance improvements.
 + Add GPT-3 fine-tuning support.
 + Add some missing parameters, such like `stop` or `logit_bias`.

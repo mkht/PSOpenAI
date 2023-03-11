@@ -14,6 +14,7 @@ https://platform.openai.com/docs
 
 + Windows PowerShell 5.1
 + PowerShell 7 or higher
++ Windows, macOS or Linux
 
 使用するには OpenAI のアカウントを作成し、以下URLから API キーを取得する必要があります。  
 https://platform.openai.com/account/api-keys
@@ -213,6 +214,11 @@ PS C:> Request-ChatGPT -Message "Who are you?"
 
 ----
 ## 変更履歴
+### 1.1.2
+ - macOS, Linux環境において`Request-AudioTranscription`関数の`Language`プロパティが意図しない値に設定される場合がある問題を修正
+ - Windows PowerShell 5.1環境での細かい不具合を修正
+ - テストコードの改善
+
 ### 1.1.0
  - エラー処理の改善
  - `Request-TextCompletion`関数における`MaxTokens`パラメータのデフォルト値を`2048`に変更します。以前のデフォルト値 `16` はほとんどの場合において実用的ではありませんでした。
