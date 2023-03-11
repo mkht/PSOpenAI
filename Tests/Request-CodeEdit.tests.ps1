@@ -28,7 +28,10 @@ Describe 'Request-CodeEdit' {
         }
 
         It 'Code Edit' {
-            { $script:Result = Request-CodeEdit -Instruction 'Write a function in python that calculates fibonacci' -TimeoutSec 30 -ea Stop } | Should -Not -Throw
+            { $script:Result = Request-CodeEdit `
+                    -Instruction 'Write a function in python that calculates fibonacci' `
+                    -Temperature 0.1 `
+                    -TimeoutSec 30 -ea Stop } | Should -Not -Throw
             $Result | Should -BeOfType [pscustomobject]
             $Result.object | Should -Be 'edit'
             $Result.Answer | Should -HaveCount 1

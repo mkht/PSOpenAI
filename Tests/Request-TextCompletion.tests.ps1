@@ -70,12 +70,13 @@ Describe 'Request-TextCompletion' {
 
         It 'Text completion (multiple prompts)' {
             { $script:Result = Request-TextCompletion `
-                    -Prompt ('test1', 'test2') `
+                    -Prompt ('The menu list of a hamburger shop.', 'Top 10 Most Common American Family Names') `
+                    -MaxTokens 20 `
                     -TimeoutSec 30 -ea Stop } | Should -Not -Throw
             $Result.Answer | Should -HaveCount 2
             $Result.Answer[0] | Should -Not -BeNullOrEmpty
             $Result.Answer[1] | Should -Not -BeNullOrEmpty
-            $Result.Prompt | Should -Be ('test1', 'test2')
+            $Result.Prompt | Should -Be ('The menu list of a hamburger shop.', 'Top 10 Most Common American Family Names')
             $Result.created | Should -BeOfType [datetime]
         }
     }
