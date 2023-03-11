@@ -1,5 +1,7 @@
 # PSOpenAI
 
+[![Test](https://github.com/mkht/PSOpenAI/actions/workflows/test.yml/badge.svg)](https://github.com/mkht/PSOpenAI/actions/workflows/test.yml)
+
 PowerSell module for OpenAI API.
 You can use OpenAI functions such as ChatGPT, Speech-to-Text, Text-to-Image from PowerShell.
 
