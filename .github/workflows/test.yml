@@ -1,0 +1,58 @@
+name: Test
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - "**.md"
+      - "**.xml"
+      - "docs/**"
+      - ".vscode/**"
+  workflow_dispatch:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  OPENAI_TOKEN: ${{secrets.OPENAI_TOKEN}}
+
+jobs:
+  Tests_WinPS5:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: powershell
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install Pester
+        run: Install-Module Pester -Force -AllowClobber -Scope CurrentUser -SkipPublisherCheck
+
+      - name: Test
+        run: Invoke-Pester -CI -Output Detailed
+
+  Tests_PS7:
+    runs-on: ${{ matrix.os }}
+
+    defaults:
+      run:
+        shell: pwsh
+
+    strategy:
+      matrix:
+        os: [windows-latest, macos-latest, ubuntu-latest]
+      fail-fast: false
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install Pester
+        run: Install-Module Pester -Force -AllowClobber -Scope CurrentUser -SkipPublisherCheck
+
+      - name: Test
+        run: Invoke-Pester -CI -Output Detailed
