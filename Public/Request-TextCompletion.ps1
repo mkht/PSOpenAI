@@ -27,6 +27,11 @@ function Request-TextCompletion {
         [uint16]$NumberOfAnswers,
 
         [Parameter()]
+        [ValidateCount(1, 4)]
+        [Alias('stop')]
+        [string[]]$StopSequence,
+
+        [Parameter()]
         [ValidateRange(0, 4096)]
         [Alias('max_tokens')]
         [int]$MaxTokens = 2048,
@@ -100,6 +105,9 @@ function Request-TextCompletion {
         }
         if ($PSBoundParameters.ContainsKey('NumberOfAnswers')) {
             $PostBody.n = $NumberOfAnswers
+        }
+        if ($PSBoundParameters.ContainsKey('StopSequence')) {
+            $PostBody.stop = $StopSequence
         }
         if ($MaxTokens -gt 0) {
             $PostBody.max_tokens = $MaxTokens

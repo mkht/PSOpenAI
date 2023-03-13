@@ -733,6 +733,18 @@ The default value is `1`.</maml:para>
           </dev:type>
           <dev:defaultValue>1</dev:defaultValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="stop">
+          <maml:name>StopSequence</maml:name>
+          <maml:description>
+            <maml:para>Up to 4 sequences where the API will stop generating further tokens. The returned text will not contain the stop sequence.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="max_tokens">
           <maml:name>MaxTokens</maml:name>
           <maml:description>
@@ -888,6 +900,18 @@ The default value is `1`.</maml:para>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>1</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="stop">
+        <maml:name>StopSequence</maml:name>
+        <maml:description>
+          <maml:para>Up to 4 sequences where the API will stop generating further tokens. The returned text will not contain the stop sequence.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+        <dev:type>
+          <maml:name>String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="max_tokens">
         <maml:name>MaxTokens</maml:name>
@@ -1115,6 +1139,18 @@ So `0.1` means only the tokens comprising the top `10%` probability mass are con
           </dev:type>
           <dev:defaultValue>1</dev:defaultValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="stop">
+          <maml:name>StopSequence</maml:name>
+          <maml:description>
+            <maml:para>Up to 4 sequences where the API will stop generating further tokens. The returned text will not contain the stop sequence.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="max_tokens">
           <maml:name>MaxTokens</maml:name>
           <maml:description>
@@ -1292,6 +1328,18 @@ So `0.1` means only the tokens comprising the top `10%` probability mass are con
           <maml:uri />
         </dev:type>
         <dev:defaultValue>1</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="stop">
+        <maml:name>StopSequence</maml:name>
+        <maml:description>
+          <maml:para>Up to 4 sequences where the API will stop generating further tokens. The returned text will not contain the stop sequence.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+        <dev:type>
+          <maml:name>String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="max_tokens">
         <maml:name>MaxTokens</maml:name>
@@ -3220,6 +3268,18 @@ So `0.1` means only the tokens comprising the top `10%` probability mass are con
           </dev:type>
           <dev:defaultValue>1</dev:defaultValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="stop">
+          <maml:name>StopSequence</maml:name>
+          <maml:description>
+            <maml:para>Up to 4 sequences where the API will stop generating further tokens. The returned text will not contain the stop sequence.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="max_tokens">
           <maml:name>MaxTokens</maml:name>
           <maml:description>
@@ -3397,6 +3457,18 @@ So `0.1` means only the tokens comprising the top `10%` probability mass are con
           <maml:uri />
         </dev:type>
         <dev:defaultValue>1</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="stop">
+        <maml:name>StopSequence</maml:name>
+        <maml:description>
+          <maml:para>Up to 4 sequences where the API will stop generating further tokens. The returned text will not contain the stop sequence.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+        <dev:type>
+          <maml:name>String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="max_tokens">
         <maml:name>MaxTokens</maml:name>

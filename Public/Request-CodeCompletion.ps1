@@ -27,6 +27,11 @@ function Request-CodeCompletion {
         [uint16]$NumberOfAnswers,
 
         [Parameter()]
+        [ValidateCount(1, 4)]
+        [Alias('stop')]
+        [string[]]$StopSequence,
+
+        [Parameter()]
         [ValidateRange(0, 4096)]
         [Alias('max_tokens')]
         [int]$MaxTokens = 2048,

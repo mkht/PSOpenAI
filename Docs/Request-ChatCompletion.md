@@ -20,6 +20,7 @@ Request-ChatGPT
     [-Temperature <Double>]
     [-TopP <Double>]
     [-NumberOfAnswers <UInt16>]
+    [-StopSequence <String[]>]
     [-MaxTokens <Int32>]
     [-PresencePenalty <Double>]
     [-FrequencyPenalty <Double>]
@@ -121,6 +122,16 @@ Aliases: n
 Required: False
 Position: Named
 Default value: 1
+```
+
+### -StopSequence
+Up to 4 sequences where the API will stop generating further tokens. The returned text will not contain the stop sequence.
+
+```yaml
+Type: String[]
+Aliases: stop
+Required: False
+Position: Named
 ```
 
 ### -MaxTokens

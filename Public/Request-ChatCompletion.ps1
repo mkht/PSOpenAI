@@ -29,6 +29,11 @@ function Request-ChatCompletion {
         [uint16]$NumberOfAnswers,
 
         [Parameter()]
+        [ValidateCount(1, 4)]
+        [Alias('stop')]
+        [string[]]$StopSequence,
+
+        [Parameter()]
         [ValidateRange(0, 4096)]
         [Alias('max_tokens')]
         [int]$MaxTokens,
@@ -82,6 +87,9 @@ function Request-ChatCompletion {
         }
         if ($PSBoundParameters.ContainsKey('NumberOfAnswers')) {
             $PostBody.n = $NumberOfAnswers
+        }
+        if ($PSBoundParameters.ContainsKey('StopSequence')) {
+            $PostBody.stop = $StopSequence
         }
         if ($PSBoundParameters.ContainsKey('MaxTokens')) {
             $PostBody.max_tokens = $MaxTokens
