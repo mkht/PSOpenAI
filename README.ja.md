@@ -214,6 +214,15 @@ PS C:> Request-ChatGPT -Message "Who are you?"
 
 ----
 ## 変更履歴
+### 1.2.0
+ - `Request-ChatGPT`, `Request-TextCompletion`, `Request-CodeCompletion`に新しいパラメータ`StopSequence`を追加   
+   特定のワードが出てきた場合にそこで出力を打ち切ることができます  
+   使用例.)
+    ```PowerShell
+    # This code generates only top 4 list.
+    Request-TextCompletion -Prompt 'List of top 10 most populous countries' -StopSequence '5.'
+    ```
+
 ### 1.1.2
  - macOS, Linux環境において`Request-AudioTranscription`関数の`Language`プロパティが意図しない値に設定される場合がある問題を修正
  - Windows PowerShell 5.1環境での細かい不具合を修正

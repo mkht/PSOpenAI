@@ -213,7 +213,7 @@ PS C:> Request-ChatGPT -Message "Who are you?"
 
 ----
 ## Changelog
-### 1.2.0 (Not released yet)
+### 1.2.0
  - Add `StopSequence` parameter for `Request-ChatGPT`, `Request-TextCompletion`, `Request-CodeCompletion`.  
    When specific words are output from the API, subsequent output is stopped.  
    e.g.)
