@@ -213,6 +213,15 @@ PS C:> Request-ChatGPT -Message "Who are you?"
 
 ----
 ## Changelog
+### 1.2.0 (Not released yet)
+ - Add `StopSequence` parameter for `Request-ChatGPT`, `Request-TextCompletion`, `Request-CodeCompletion`.  
+   When specific words are output from the API, subsequent output is stopped.  
+   e.g.)
+    ```PowerShell
+    # This code generates only top 4 list.
+    Request-TextCompletion -Prompt 'List of top 10 most populous countries' -StopSequence '5.'
+    ```
+
 ### 1.1.2
  - Fix an issue that the language code may not be set correctly in `Request-AudioTranscription` on macOS and Linux environment.
  - Fix minor issues on Windows PowerShell 5.1
@@ -235,7 +244,7 @@ If you have a feature request or bug report, please tell us in Issue.
 
 + Performance improvements.
 + Add GPT-3 fine-tuning support.
-+ Add some missing parameters, such like `stop` or `logit_bias`.
++ Add some missing parameters, such like `stream` or `logit_bias`.
 + Add an option for change output types / formats.
 + Logs, verbose messages.
 
