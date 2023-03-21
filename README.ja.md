@@ -63,6 +63,13 @@ Write-Output $Result.Answer
 はじめまして、私はAIアシスタントのGPT-3です。人工知能のプログラムであり、自然言語処理を使って... (以下省略)
 ```
 
+> Tips:  
+> GPT-4を使用したい場合はモデル名を明示的に指定してください。    
+> ```PowerShell
+> Request-ChatGPT -Message "Who are you?" -Model "gpt-4"
+> ```
+> 
+
 ### 音声文字起こし
 
 音声ファイルからテキストに文字起こしをさせます。

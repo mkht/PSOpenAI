@@ -66,6 +66,13 @@ This code ouputs answer from ChatGPT
 I am an AI language model created by OpenAI, designed to assist with ...
 ```
 
+> Tips:  
+> If you can and want to use GPT-4, you can specifies model explicitly like this.  
+> ```PowerShell
+> Request-ChatGPT -Message "Who are you?" -Model "gpt-4"
+> ```
+> 
+
 ### Audio transcription (Speech-to-Text)
 
 Transcribes audio into the input language.
