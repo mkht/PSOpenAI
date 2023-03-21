@@ -11,19 +11,19 @@ function Assert-UnsupportedModels {
         $ListOfUnsupportedModels = @(
             @{
                 Id      = 'code-davinci-001'
-                Expires = '2023-03-28'
+                Expires = '2023-03-23'
             },
             @{
                 Id      = 'code-davinci-002'
-                Expires = '2023-03-28'
+                Expires = '2023-03-23'
             },
             @{
                 Id      = 'code-cushman-001'
-                Expires = '2023-03-28'
+                Expires = '2023-03-23'
             },
             @{
                 Id      = 'code-cushman-002'
-                Expires = '2023-03-28'
+                Expires = '2023-03-23'
             }
         )
     }

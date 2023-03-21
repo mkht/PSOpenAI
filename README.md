@@ -222,7 +222,7 @@ PS C:> Request-ChatGPT -Message "Who are you?"
 ----
 ## Changelog
 ### 1.2.1
- - OpenAI has announced that the Codex API will be discontinued on 2023-03-28, the following functions may no longer work in the future. In the future release, these functions will be completely removed from the module.
+ - OpenAI has announced that the Codex API will be discontinued on 2023-03-23, the following functions may no longer work in the future. In the future release, these functions will be completely removed from the module.
    + `Request-CodeCompletion`
    + `Request-CodeEdit`
  - When a request specifying an AI model that has been or will be discontinued by OpenAI is executed, Warning messages will be output. (the request continues to be executed).  
