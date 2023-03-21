@@ -64,6 +64,7 @@ Write-Output $Result.Answer
 ```
 
 > Tips:  
+> デフォルトで使用するモデルはGPT-3.5です。  
 > GPT-4を使用したい場合はモデル名を明示的に指定してください。    
 > ```PowerShell
 > Request-ChatGPT -Message "Who are you?" -Model "gpt-4"

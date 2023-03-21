@@ -67,6 +67,7 @@ I am an AI language model created by OpenAI, designed to assist with ...
 ```
 
 > Tips:  
+> The default model used is GPT-3.5.  
 > If you can and want to use GPT-4, you can specifies model explicitly like this.  
 > ```PowerShell
 > Request-ChatGPT -Message "Who are you?" -Model "gpt-4"
