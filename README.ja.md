@@ -214,6 +214,17 @@ PS C:> Request-ChatGPT -Message "Who are you?"
 
 ----
 ## 変更履歴
+### 1.2.1
+ - OpenAIがCodex APIを2023-03-28に廃止することを発表したため、以下の関数は今後動作しなくなる可能性があります。将来的にこれらの関数はモジュールから完全に削除される予定です
+   + `Request-CodeCompletion`
+   + `Request-CodeEdit`
+ - OpenAIにより廃止、もしくは廃止予定のAIモデルを指定したリクエストを実行しようとした際に警告メッセージを出力するようにしました（リクエスト自体は引き続き実行されます）  
+   現時点で警告メッセージが出力されるAIモデル：  
+   + `code-davinci-001`
+   + `code-davinci-002`
+   + `code-cushman-001`
+   + `code-cushman-002`
+
 ### 1.2.0
  - `Request-ChatGPT`, `Request-TextCompletion`, `Request-CodeCompletion`に新しいパラメータ`StopSequence`を追加   
    特定のワードが出てきた場合にそこで出力を打ち切ることができます  

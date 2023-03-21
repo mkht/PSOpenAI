@@ -27,6 +27,11 @@ function Invoke-OpenAIAPIRequest {
         [int]$TimeoutSec = 0
     )
 
+    #region Assert selected model is discontinued
+    if ($null -ne $Body -and $null -ne $Body.model) {
+        Assert-UnsupportedModels -Model $Body.model
+    }
+    #endregion
 
     #region PowerShell 6 and higher
     if ($PSVersionTable.PSVersion.Major -ge 6) {

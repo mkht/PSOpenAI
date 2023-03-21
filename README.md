@@ -213,6 +213,17 @@ PS C:> Request-ChatGPT -Message "Who are you?"
 
 ----
 ## Changelog
+### 1.2.1
+ - OpenAI has announced that the Codex API will be discontinued on 2023-03-28, the following functions may no longer work in the future. In the future release, these functions will be completely removed from the module.
+   + `Request-CodeCompletion`
+   + `Request-CodeEdit`
+ - When a request specifying an AI model that has been or will be discontinued by OpenAI is executed, Warning messages will be output. (the request continues to be executed).  
+   AI models that will output warning messages at this time:  
+   + `code-davinci-001`
+   + `code-davinci-002`
+   + `code-cushman-001`
+   + `code-cushman-002`
+
 ### 1.2.0
  - Add `StopSequence` parameter for `Request-ChatGPT`, `Request-TextCompletion`, `Request-CodeCompletion`.  
    When specific words are output from the API, subsequent output is stopped.  

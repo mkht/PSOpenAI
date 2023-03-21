@@ -19,6 +19,14 @@ Describe 'Request-CodeCompletion' {
             $Result.Model | Should -Be 'code-davinci-002'
             $Result.Prompt | Should -Be 'test'
         }
+
+        It 'Codex models are discontinued.' {
+            { Request-CodeCompletion `
+                    -Prompt '# PowerShell' `
+                    -MaxTokens 16 `
+                    -WarningAction Stop `
+                    -TimeoutSec 30 -ea Stop } | Should -Throw '*discontinued*'
+        }
     }
 
     Context 'Integration tests (online)' -Tag 'Online' {
