@@ -21,22 +21,23 @@ Describe 'Request-CodeEdit' {
         }
     }
 
-    Context 'Integration tests (online)' -Tag 'Online' {
+    #### DEPRECATED ################
+    # Context 'Integration tests (online)' -Tag 'Online' {
 
-        BeforeEach {
-            $script:Result = ''
-        }
+    #     BeforeEach {
+    #         $script:Result = ''
+    #     }
 
-        It 'Code Edit' {
-            { $script:Result = Request-CodeEdit `
-                    -Instruction 'Write a function in python that calculates fibonacci' `
-                    -Temperature 0.1 `
-                    -TimeoutSec 30 -ea Stop } | Should -Not -Throw
-            $Result | Should -BeOfType [pscustomobject]
-            $Result.object | Should -Be 'edit'
-            $Result.Answer | Should -HaveCount 1
-            $Result.Instruction | Should -Be 'Write a function in python that calculates fibonacci'
-            $Result.created | Should -BeOfType [datetime]
-        }
-    }
+    #     It 'Code Edit' {
+    #         { $script:Result = Request-CodeEdit `
+    #                 -Instruction 'Write a function in python that calculates fibonacci' `
+    #                 -Temperature 0.1 `
+    #                 -TimeoutSec 30 -ea Stop } | Should -Not -Throw
+    #         $Result | Should -BeOfType [pscustomobject]
+    #         $Result.object | Should -Be 'edit'
+    #         $Result.Answer | Should -HaveCount 1
+    #         $Result.Instruction | Should -Be 'Write a function in python that calculates fibonacci'
+    #         $Result.created | Should -BeOfType [datetime]
+    #     }
+    # }
 }

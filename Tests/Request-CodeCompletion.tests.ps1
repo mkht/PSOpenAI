@@ -29,25 +29,26 @@ Describe 'Request-CodeCompletion' {
         }
     }
 
-    Context 'Integration tests (online)' -Tag 'Online' {
+    #### DEPRECATED ################
+    # Context 'Integration tests (online)' -Tag 'Online' {
 
-        BeforeEach {
-            $script:Result = ''
-        }
+    #     BeforeEach {
+    #         $script:Result = ''
+    #     }
 
-        It 'Code completion' {
-            { $script:Result = Request-CodeCompletion `
-                    -Prompt '# PowerShell' `
-                    -Model 'code-cushman-001' `
-                    -MaxTokens 16 `
-                    -Echo $true `
-                    -TimeoutSec 30 -ea Stop } | Should -Not -Throw
-            $Result | Should -BeOfType [pscustomobject]
-            $Result.object | Should -Be 'text_completion'
-            $Result.Answer | Should -HaveCount 1
-            $Result.Answer[0] | Should -Match '^# PowerShell'
-            $Result.Prompt | Should -Not -BeNullOrEmpty
-            $Result.created | Should -BeOfType [datetime]
-        }
-    }
+    #     It 'Code completion' {
+    #         { $script:Result = Request-CodeCompletion `
+    #                 -Prompt '# PowerShell' `
+    #                 -Model 'code-cushman-001' `
+    #                 -MaxTokens 16 `
+    #                 -Echo $true `
+    #                 -TimeoutSec 30 -ea Stop } | Should -Not -Throw
+    #         $Result | Should -BeOfType [pscustomobject]
+    #         $Result.object | Should -Be 'text_completion'
+    #         $Result.Answer | Should -HaveCount 1
+    #         $Result.Answer[0] | Should -Match '^# PowerShell'
+    #         $Result.Prompt | Should -Not -BeNullOrEmpty
+    #         $Result.created | Should -BeOfType [datetime]
+    #     }
+    # }
 }
