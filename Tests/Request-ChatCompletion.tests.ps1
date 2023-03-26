@@ -51,6 +51,16 @@ Describe 'Request-ChatCompletion' {
             $Result.History[1].Content | Should -Be 'Hello there, how may I assist you today?'
         }
 
+        It 'Stream output' {
+            Mock -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest {
+                '{"id":"chatcmpl-sf547Pa","object":"chat.completion.chunk","created":1679839328,"model":"gpt-3.5-turbo-0301","choices":[{"delta":{"content":"ECHO"},"index":0,"finish_reason":null}]}'
+            }
+            $Result = Request-ChatCompletion -Message 'test' -Stream -InformationVariable StreamOut -ea Stop
+            Should -InvokeVerifiable
+            $Result | Should -Be 'ECHO'
+            $StreamOut | Should -Be 'ECHO'
+        }
+
         It 'Use collect endpoint' {
             Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @"
 {"choices": [{"message": {"content": "$($PesterBoundParameters.Uri)"}}]}
@@ -106,6 +116,18 @@ Describe 'Request-ChatCompletion' {
             $Result.History[2].Role | Should -Be 'user'
             $Result.History[2].Content | Should -Be 'When'
             $Result.History[3].Role | Should -Be 'assistant'
+        }
+
+        It 'Stream output' {
+            $Result = Request-ChatCompletion `
+                -Message 'Please describe about ChatGPT' `
+                -MaxTokens 32 `
+                -Stream `
+                -InformationVariable Info `
+                -TimeoutSec 30 -ea Stop `
+            | select -First 10
+            $Result | Should -HaveCount 10
+            ([string[]]$Info) | Should -Be ([string[]]$Result)
         }
     }
 }

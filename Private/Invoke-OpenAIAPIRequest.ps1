@@ -24,7 +24,10 @@ function Invoke-OpenAIAPIRequest {
         [object]$Body,
 
         [Parameter()]
-        [int]$TimeoutSec = 0
+        [int]$TimeoutSec = 0,
+
+        [Parameter()]
+        [bool]$Stream = $false
     )
 
     #region Assert selected model is discontinued
@@ -33,8 +36,14 @@ function Invoke-OpenAIAPIRequest {
     }
     #endregion
 
+    #region Server-Sent-Events
+    if ($Stream) {
+        Invoke-OpenAIAPIRequestSSE -Method $Method -Uri $Uri -ContentType $ContentType -Token $Token -Body $Body -TimeoutSec $TimeoutSec
+    }
+    #endregion
+
     #region PowerShell 6 and higher
-    if ($PSVersionTable.PSVersion.Major -ge 6) {
+    elseif ($PSVersionTable.PSVersion.Major -ge 6) {
         # Construct parameter for Invoke-WebRequest
         $IwrParam = @{
             Method         = $Method

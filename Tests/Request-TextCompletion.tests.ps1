@@ -49,6 +49,16 @@ Describe 'Request-TextCompletion' {
             $Result.Prompt | Should -Be 'Say this is a test'
             $Result.created | Should -BeOfType [datetime]
         }
+
+        It 'Stream output' {
+            Mock -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest {
+                '{"id":"cmpl-sf547Pa","object":"text_completion","created":1679839328,"model":"text-davinci-003","choices":[{"text":"ECHO","index":0,"finish_reason":null}]}'
+            }
+            $Result = Request-TextCompletion -Prompt 'test' -Stream -InformationVariable StreamOut -ea Stop
+            Should -InvokeVerifiable
+            $Result | Should -Be 'ECHO'
+            $StreamOut | Should -Be 'ECHO'
+        }
     }
 
     Context 'Integration tests (online)' -Tag 'Online' {
@@ -78,6 +88,18 @@ Describe 'Request-TextCompletion' {
             $Result.Answer[1] | Should -Not -BeNullOrEmpty
             $Result.Prompt | Should -Be ('The menu list of a hamburger shop.', 'Top 10 Most Common American Family Names')
             $Result.created | Should -BeOfType [datetime]
+        }
+
+        It 'Stream output' {
+            $Result = Request-TextCompletion `
+                -Prompt 'Top 10 Most Common American Family Names' `
+                -MaxTokens 32 `
+                -Stream `
+                -InformationVariable Info `
+                -TimeoutSec 30 -ea Stop `
+            | select -First 10
+            $Result | Should -HaveCount 10
+            ([string[]]$Info) | Should -Be ([string[]]$Result)
         }
     }
 }

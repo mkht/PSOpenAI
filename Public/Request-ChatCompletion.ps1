@@ -29,6 +29,9 @@ function Request-ChatCompletion {
         [uint16]$NumberOfAnswers,
 
         [Parameter()]
+        [switch]$Stream = $false,
+
+        [Parameter()]
         [ValidateCount(1, 4)]
         [Alias('stop')]
         [string[]]$StopSequence,
@@ -103,6 +106,11 @@ function Request-ChatCompletion {
         if ($PSBoundParameters.ContainsKey('User')) {
             $PostBody.user = $User
         }
+        if ($Stream) {
+            $PostBody.stream = [bool]$Stream
+            # When using the Stream option, limit NumberOfAnswers to 1 to optimize output. (this limit may be relaxed in the future)
+            $PostBody.n = 1
+        }
         #endregion
 
         #region Construct messages
@@ -132,18 +140,54 @@ function Request-ChatCompletion {
         $PostBody.messages = $Messages.ToArray()
         #endregion
 
-        #region Send API Request
-        $Response = Invoke-OpenAIAPIRequest `
-            -Method $OpenAIParameter.Method `
-            -Uri $OpenAIParameter.Uri `
-            -ContentType $OpenAIParameter.ContentType `
-            -TimeoutSec $TimeoutSec `
-            -Token $SecureToken `
-            -Body $PostBody
-
-        # error check
-        if ($null -eq $Response) {
+        #region Send API Request (Stream)
+        if ($Stream) {
+            # Stream output
+            Invoke-OpenAIAPIRequest `
+                -Method $OpenAIParameter.Method `
+                -Uri $OpenAIParameter.Uri `
+                -ContentType $OpenAIParameter.ContentType `
+                -TimeoutSec $TimeoutSec `
+                -Token $SecureToken `
+                -Body $PostBody `
+                -Stream $Stream |`
+                Where-Object {
+                -not [string]::IsNullOrEmpty($_)
+            } | ForEach-Object {
+                try {
+                    $_ | ConvertFrom-Json -ErrorAction Stop
+                }
+                catch {
+                    Write-Error -Exception $_.Exception
+                }
+            } | Where-Object {
+                $null -ne $_.choices -and $_.choices[0].delta.content -is [string]
+            } | ForEach-Object {
+                # Writes content to both the Information stream(6>) and the Standard output stream(1>).
+                $InfoMsg = [System.Management.Automation.HostInformationMessage]::new()
+                $InfoMsg.Message = $_.choices[0].delta.content
+                $InfoMsg.NoNewLine = $true
+                Write-Information $InfoMsg
+                Write-Output $InfoMsg.Message
+            }
             return
+        }
+        #endregion
+
+        #region Send API Request (No Stream)
+        else {
+            $Response = Invoke-OpenAIAPIRequest `
+                -Method $OpenAIParameter.Method `
+                -Uri $OpenAIParameter.Uri `
+                -ContentType $OpenAIParameter.ContentType `
+                -TimeoutSec $TimeoutSec `
+                -Token $SecureToken `
+                -Body $PostBody
+
+            # error check
+            if ($null -eq $Response) {
+                return
+            }
         }
         #endregion
 

@@ -32,6 +32,9 @@ function Request-TextCompletion {
         [string[]]$StopSequence,
 
         [Parameter()]
+        [switch]$Stream = $false,
+
+        [Parameter()]
         [ValidateRange(0, 4096)]
         [Alias('max_tokens')]
         [int]$MaxTokens = 2048,
@@ -127,20 +130,61 @@ function Request-TextCompletion {
         if ($PSBoundParameters.ContainsKey('BestOf')) {
             $PostBody.best_of = $BestOf
         }
+        if ($Stream) {
+            $PostBody.stream = [bool]$Stream
+            # When using the Stream option, limit NumberOfAnswers to 1 to optimize output. (this limit may be relaxed in the future)
+            $PostBody.n = 1
+        }
         #endregion
 
-        #region Send API Request
-        $Response = Invoke-OpenAIAPIRequest `
-            -Method $OpenAIParameter.Method `
-            -Uri $OpenAIParameter.Uri `
-            -ContentType $OpenAIParameter.ContentType `
-            -TimeoutSec $TimeoutSec `
-            -Token $SecureToken `
-            -Body $PostBody
-
-        # error check
-        if ($null -eq $Response) {
+        #region Send API Request (Stream)
+        if ($Stream) {
+            # Stream output
+            Invoke-OpenAIAPIRequest `
+                -Method $OpenAIParameter.Method `
+                -Uri $OpenAIParameter.Uri `
+                -ContentType $OpenAIParameter.ContentType `
+                -TimeoutSec $TimeoutSec `
+                -Token $SecureToken `
+                -Body $PostBody `
+                -Stream $Stream |`
+                Where-Object {
+                -not [string]::IsNullOrEmpty($_)
+            } | ForEach-Object {
+                try {
+                    $_ | ConvertFrom-Json -ErrorAction Stop
+                }
+                catch {
+                    Write-Error -Exception $_.Exception
+                }
+            } | Where-Object {
+                $null -ne $_.choices -and $_.choices[0].text -is [string]
+            } | ForEach-Object {
+                # Writes content to both the Information stream(6>) and the Standard output stream(1>).
+                $InfoMsg = [System.Management.Automation.HostInformationMessage]::new()
+                $InfoMsg.Message = $_.choices[0].text
+                $InfoMsg.NoNewLine = $true
+                Write-Information $InfoMsg
+                Write-Output $InfoMsg.Message
+            }
             return
+        }
+        #endregion
+
+        #region Send API Request (No Stream)
+        else {
+            $Response = Invoke-OpenAIAPIRequest `
+                -Method $OpenAIParameter.Method `
+                -Uri $OpenAIParameter.Uri `
+                -ContentType $OpenAIParameter.ContentType `
+                -TimeoutSec $TimeoutSec `
+                -Token $SecureToken `
+                -Body $PostBody
+
+            # error check
+            if ($null -eq $Response) {
+                return
+            }
         }
         #endregion
 
