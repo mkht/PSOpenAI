@@ -125,32 +125,18 @@ PS C:\> Write-Output $ThirdQA.Answer
 La population des États-Unis est estimée à environ 331,4 millions de personnes.
 ```
 
-### Code generation
+### Stream completion outputs
 
-Generates program code from instructions.
+By default, results are output all at once after all OpenAI responses are complete, so it may take some time before results are available.
+
+To get responses sooner, you can use the `-Stream` option for `Request-ChatGPT` and `Request-TextCompletion`. The results will be returned as a "stream". (similar to how ChatGPT WebUI displays)
 
 ```PowerShell
-Request-CodeEdit -Instruction 'Write a function in python that calculates fibonacci' | select -ExpandProperty Answer
+Request-ChatGPT 'Describe ChatGPT in 100 charactors.' -Stream | Write-Host -NoNewline
 ```
 
-```python
-def fibonacci(num):
-    a = 0
-    b = 1
-    if num ==1:
-       print(a)
-    else:
-        print(a)
-        print(b)
-        #the sequence starts with 0,1
-        for i in range(2,num):
-            c = a+b
-            a = b
-            b = c
-            print(c)
+![Stream](/Docs/images/StreamOutput.gif)
 
-fibonacci(10)
-```
 
 ### Restore masked images
 
@@ -221,6 +207,11 @@ PS C:> Request-ChatGPT -Message "Who are you?"
 
 ----
 ## Changelog
+### Unreleased
+ - Add `-Stream` option for `Request-ChatGPT` and `Request-TextCompletion`.
+ - The AI model `code-davinci-edit-001` has been outdated.
+ - Fix wrong messages about expires date of AI models.
+
 ### 1.2.1
  - OpenAI has announced that the Codex API will be discontinued on 2023-03-23, the following functions may no longer work in the future. In the future release, these functions will be completely removed from the module.
    + `Request-CodeCompletion`
@@ -263,7 +254,7 @@ If you have a feature request or bug report, please tell us in Issue.
 
 + Performance improvements.
 + Add GPT-3 fine-tuning support.
-+ Add some missing parameters, such like `stream` or `logit_bias`.
++ Add some missing parameters, such like `logit_bias`.
 + Add an option for change output types / formats.
 + Logs, verbose messages.
 
