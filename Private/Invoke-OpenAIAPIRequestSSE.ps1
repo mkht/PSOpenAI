@@ -2,6 +2,11 @@ using namespace System.Text
 using namespace System.Net
 using namespace System.Net.Http
 
+# Workaround for assemblies loading issue on PS5.1
+if ($PSVersionTable.PSVersion.Major -le 5) {
+    Add-Type -AssemblyName System.Net.Http
+}
+
 function Invoke-OpenAIAPIRequestSSE {
     [CmdletBinding()]
     param (
@@ -29,10 +34,10 @@ function Invoke-OpenAIAPIRequestSSE {
     $bstr = [Marshal]::SecureStringToBSTR($Token)
     $PlainToken = [Marshal]::PtrToStringBSTR($bstr)
     # Create HttpClient and messages
-    $HttpClient = [HttpClient]::new()
-    $RequestMessage = [HttpRequestMessage]::new($Method, $Uri)
-    $RequestMessage.Content = [StringContent]::new(($Body | ConvertTo-Json -Compress), [Encoding]::UTF8, $ContentType)
-    $RequestMessage.Headers.Authorization = [Headers.AuthenticationHeaderValue]::new('Bearer', $PlainToken)
+    $HttpClient = [System.Net.Http.HttpClient]::new()
+    $RequestMessage = [System.Net.Http.HttpRequestMessage]::new($Method, $Uri)
+    $RequestMessage.Content = [System.Net.Http.StringContent]::new(($Body | ConvertTo-Json -Compress), [Encoding]::UTF8, $ContentType)
+    $RequestMessage.Headers.Authorization = [System.Net.Http.Headers.AuthenticationHeaderValue]::new('Bearer', $PlainToken)
     # Set timeout
     $cts = [System.Threading.CancellationTokenSource]::new()
     if ($TimeoutSec -gt 0 -and $TimeoutSec -lt ([int]::MaxValue / 1000)) {
@@ -42,9 +47,9 @@ function Invoke-OpenAIAPIRequestSSE {
 
     # Send API Request
     try {
-        $HttpResponse = $HttpClient.SendAsync($RequestMessage, [HttpCompletionOption]::ResponseHeadersRead, $CancelToken).GetAwaiter().GetResult()
+        $HttpResponse = $HttpClient.SendAsync($RequestMessage, [System.Net.Http.HttpCompletionOption]::ResponseHeadersRead, $CancelToken).GetAwaiter().GetResult()
         if (-not $HttpResponse.IsSuccessStatusCode) {
-            throw ([HttpRequestException]::new(('OpenAI API returned an {0} ({1})' -f $HttpResponse.StatusCode.value__, $HttpResponse.ReasonPhrase)))
+            throw ([System.Net.Http.HttpRequestException]::new(('OpenAI API returned an {0} ({1})' -f $HttpResponse.StatusCode.value__, $HttpResponse.ReasonPhrase)))
             return
         }
         $ResponseStream = $HttpResponse.Content.ReadAsStreamAsync().Result
