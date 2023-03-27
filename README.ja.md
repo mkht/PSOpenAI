@@ -121,36 +121,18 @@ PS C:\> Write-Output $ThirdQA.Answer
 アメリカと日本の人口は、約3倍以上の開きがあります。
 ```
 
-### プログラムコード生成
+### ストリーム出力
 
-自然言語の指示からプログラムコードを生成する例
+デフォルトではサーバからのレスポンスがすべて完了してから結果がまとめて出力されるため、特に長い出力がある場合は、処理結果が得られるまでに時間がかかります。
+
+`-Stream`オプションを使用するとChatGPTのWebUIのように結果はストリームとして逐次的に出力されるため、UXが改善する場合があります。現在`-Stream`オプションは`Request-ChatGPT`と`Request-TextCompletion`で使用可能です。
 
 ```PowerShell
-Request-CodeEdit -Instruction 'Code for calculates check-digit of ISBN in Python' | select -ExpandProperty Answer
+Request-ChatGPT 'Describe ChatGPT in 100 charactors.' -Stream | Write-Host -NoNewline
 ```
 
-```python
-#!/usr/bin/python3                                                                                                      
-n=int(input("Enter the Nine Digit ISBN Number "))
-sum=0
-count=0
-while(n>0):
-        count=count+1
-        if (count%2==0):
-                sum=sum+n%10
-        else:
-                product=n%10*3
-                sum=sum+product
-        n=n//10
-check=sum+1
-for x in range(8,11):
-        if (check%10==0):
-                check=check//10
-                print("Check-digit= ",check)
-                break
-        else:
-                check=check+x
-```
+![Stream](/Docs/images/StreamOutput.gif)
+
 
 ### 一部が欠けた画像を復元する
 
@@ -222,6 +204,11 @@ PS C:> Request-ChatGPT -Message "Who are you?"
 
 ----
 ## 変更履歴
+### Unreleased
+ - `Request-ChatGPT` と `Request-TextCompletion` に `-Stream` オプションを追加
+ - `code-davinci-edit-001`モデルが廃止されました(OpenAIによって)
+ - AIモデルの廃止日が誤って表示される問題を修正
+
 ### 1.2.1
  - OpenAIがCodex APIを2023-03-23に廃止することを発表したため、以下の関数は今後動作しなくなる可能性があります。将来的にこれらの関数はモジュールから完全に削除される予定です
    + `Request-CodeCompletion`

@@ -20,6 +20,7 @@ Request-TextCompletion
     [-Temperature <Double>]
     [-TopP <Double>]
     [-NumberOfAnswers <UInt16>]
+    [-Stream]
     [-StopSequence <String[]>]
     [-MaxTokens <Int32>]
     [-PresencePenalty <Double>]
@@ -115,6 +116,16 @@ Position: Named
 Default value: 1
 ```
 
+### -Stream
+Whether to stream back partial progress.
+
+```yaml
+Type: System.Management.Automation.SwitchParameter
+Required: False
+Position: Named
+Default value: False
+```
+
 ### -StopSequence
 Up to 4 sequences where the API will stop generating further tokens. The returned text will not contain the stop sequence.
 
@@ -195,7 +206,6 @@ The default value is `0` (infinite).
 
 ```yaml
 Type: Int32
-
 Required: False
 Position: Named
 Default value: 0

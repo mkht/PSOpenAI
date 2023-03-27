@@ -20,6 +20,7 @@ Request-ChatGPT
     [-Temperature <Double>]
     [-TopP <Double>]
     [-NumberOfAnswers <UInt16>]
+    [-Stream]
     [-StopSequence <String[]>]
     [-MaxTokens <Int32>]
     [-PresencePenalty <Double>]
@@ -57,6 +58,14 @@ PS\> $SecondQA.Answer
 
 En septembre 2021, la population estimée des États-Unis est d'environ 331,4 millions de personnes.
 ```
+
+### Example 3: Stream completions.
+```PowerShell
+PS C:\> Request-ChatGPT 'Please describe ChatGPT in 100 charactors.' -Stream | Write-Host -NoNewline
+```
+
+![stream](/Docs/images/StreamOutput.gif)
+
 
 ## PARAMETERS
 
@@ -122,6 +131,16 @@ Aliases: n
 Required: False
 Position: Named
 Default value: 1
+```
+
+### -Stream
+If set, partial message deltas will be sent, like in ChatGPT.
+
+```yaml
+Type: System.Management.Automation.SwitchParameter
+Required: False
+Position: Named
+Default value: False
 ```
 
 ### -StopSequence
