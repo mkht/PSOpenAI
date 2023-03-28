@@ -207,7 +207,7 @@ PS C:> Request-ChatGPT -Message "Who are you?"
 
 ----
 ## Changelog
-### Unreleased
+### 1.3.0
  - Add `-Stream` option for `Request-ChatGPT` and `Request-TextCompletion`.
  - The AI model `code-davinci-edit-001` has been outdated.
  - Fix wrong messages about expires date of AI models.

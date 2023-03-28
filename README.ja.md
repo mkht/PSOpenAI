@@ -204,7 +204,7 @@ PS C:> Request-ChatGPT -Message "Who are you?"
 
 ----
 ## 変更履歴
-### Unreleased
+### 1.3.0
  - `Request-ChatGPT` と `Request-TextCompletion` に `-Stream` オプションを追加
  - `code-davinci-edit-001`モデルが廃止されました(OpenAIによって)
  - AIモデルの廃止日が誤って表示される問題を修正
