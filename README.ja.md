@@ -1,6 +1,6 @@
 # PSOpenAI
 
-OpenAI API を PowerSell から使用するためのラッパーモジュールです。  
+OpenAI API を PowerShell から使用するためのラッパーモジュールです。  
 ChatGPT, 音声の文字起こし, テキストからの画像生成などの OpenAI の提供する機能を使用できます。
 
 **これはコミュニティベースの非公式モジュールであり OpenAI による提供ではありません**
