@@ -30,6 +30,7 @@ Install-Module -Name PSOpenAI
 ----
 ## 使用できる関数
 
++ [Enter-ChatGPT](/Docs/Enter-ChatGPT.md)
 + [Get-OpenAIModels](/Docs/Get-OpenAIModels.md)
 + [Request-AudioTranscription](/Docs/Request-AudioTranscription.md)
 + [Request-AudioTranslation](/Docs/Request-AudioTranslation.md)
@@ -47,7 +48,19 @@ Install-Module -Name PSOpenAI
 ----
 ## 使い方
 
-### ChatGPT
+### ChatGPT (インタラクティブ)
+
+コンソール上でインタラクティブにChatGPTと対話します。
+
+```PowerShell
+$global:OPENAI_TOKEN = '<Put your API key here.>'
+Enter-ChatGPT
+```
+
+![Interactive Chat](/Docs/images/InteractiveChat.gif)
+
+
+### ChatGPT (スクリプティング)
 
 ChatGPTに質問をして回答を得ます。
 
@@ -204,6 +217,9 @@ PS C:> Request-ChatGPT -Message "Who are you?"
 
 ----
 ## 変更履歴
+### 1.4.0
+ - 新しいコマンド [Enter-ChatGPT](/Docs/Enter-ChatGPT.md) を追加。コンソール上でChatGPTとインタラクティブに対話ができます
+
 ### 1.3.0
  - `Request-ChatGPT` と `Request-TextCompletion` に `-Stream` オプションを追加
  - `code-davinci-edit-001`モデルが廃止されました(OpenAIによって)

@@ -33,6 +33,7 @@ Install-Module -Name PSOpenAI
 ----
 ## Functions
 
++ [Enter-ChatGPT](/Docs/Enter-ChatGPT.md)
 + [Get-OpenAIModels](/Docs/Get-OpenAIModels.md)
 + [Request-AudioTranscription](/Docs/Request-AudioTranscription.md)
 + [Request-AudioTranslation](/Docs/Request-AudioTranslation.md)
@@ -50,7 +51,19 @@ Install-Module -Name PSOpenAI
 ----
 ## Usages
 
-### ChatGPT
+### ChatGPT (Interactive)
+
+Communicate with ChatGPT interactively on the console.  
+
+```PowerShell
+$global:OPENAI_TOKEN = '<Put your API key here.>'
+Enter-ChatGPT
+```
+
+![Interactive Chat](/Docs/images/InteractiveChat.gif)
+
+
+### ChatGPT (Scripting)
 
 You can ask questions to ChatGPT.
 
@@ -207,6 +220,9 @@ PS C:> Request-ChatGPT -Message "Who are you?"
 
 ----
 ## Changelog
+### 1.4.0
+ - Add a new command [Enter-ChatGPT](/Docs/Enter-ChatGPT.md). You can communicate with ChatGTP interactively on the console. 
+
 ### 1.3.0
  - Add `-Stream` option for `Request-ChatGPT` and `Request-TextCompletion`.
  - The AI model `code-davinci-edit-001` has been outdated.

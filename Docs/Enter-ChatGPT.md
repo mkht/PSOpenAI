@@ -1,83 +1,38 @@
 ---
 external help file: PSOpenAI-help.xml
 Module Name: PSOpenAI
-online version: https://github.com/mkht/PSOpenAI/blob/main/Docs/Request-ChatCompletion.md
+online version:
 schema: 2.0.0
 ---
 
-# Request-ChatCompletion
+# Enter-ChatGPT
 
 ## SYNOPSIS
-Creates a completion for the chat message.
+Communicate with ChatGPT interactively on the console.
 
 ## SYNTAX
 
 ```
-Request-ChatGPT
-    [-Message] <String>
-    [-Model <String>]
-    [-RolePrompt <String>]
-    [-Temperature <Double>]
-    [-TopP <Double>]
-    [-NumberOfAnswers <UInt16>]
-    [-Stream]
-    [-StopSequence <String[]>]
-    [-MaxTokens <Int32>]
-    [-PresencePenalty <Double>]
-    [-FrequencyPenalty <Double>]
-    [-User <String>]
-    [-TimeoutSec <Int32>]
-    [-Token <Object>]
-    [-History <Object[]>]
-    [<CommonParameters>]
+Enter-ChatGPT [[-Model] <String>] [[-RolePrompt] <String>] [[-Temperature] <Double>] [[-TopP] <Double>]
+ [[-StopSequence] <String[]>] [[-MaxTokens] <Int32>] [[-PresencePenalty] <Double>]
+ [[-FrequencyPenalty] <Double>] [[-TimeoutSec] <Int32>] [[-Token] <Object>] [-NoHeader] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Creates a completion for the chat message.  
-https://platform.openai.com/docs/guides/chat/chat-completions
+Communicate with ChatGPT interactively on the console.  
+This command will wait for user input on the terminal. You type your question to ChatGPT and press Enter twice to send the question and see the answer from ChatGPT. You may then ask additional questions.
 
 ## EXAMPLES
 
-### Example 1: Ask one question to ChatGPT, and get answer.
-```PowerShell
-PS C:\> Request-ChatGPT -Message "Who are you?" | select Answer
-```
-```
-I am an AI language model created by OpenAI, designed to assist with ...
+### Example 1
+```powershell
+PS C:\> Enter-ChatGPT -Token 'YOUR_OPENAI_APIKEY' -NoHeader
 ```
 
-### Example 2: Multiple questions with context preserved. (chats)
-```PowerShell
-PS> $FirstQA = Request-ChatGPT -Message "What is the population of the United States?"
-PS> $FirstQA.Answer
-
-As of September 2021, the estimated population of the United States is around 331.4 million people.
-
-PS\> $SecondQA = $FirstQA | Request-ChatGPT -Message "Translate the previous answer into French."
-PS\> $SecondQA.Answer
-
-En septembre 2021, la population estimée des États-Unis est d'environ 331,4 millions de personnes.
-```
-
-### Example 3: Stream completions.
-```PowerShell
-PS C:\> Request-ChatGPT 'Please describe ChatGPT in 100 charactors.' -Stream | Write-Host -NoNewline
-```
-
-![stream](/Docs/images/StreamOutput.gif)
+![Interactive Chat](/Docs/images/InteractiveChat.gif)
 
 
 ## PARAMETERS
-
-### -Message
-(Required)
-The messages to generate chat completions.
-
-```yaml
-Type: String
-Required: True
-Position: 1
-```
 
 ### -Model
 The name of model to use.
@@ -119,28 +74,6 @@ Type: Double
 Aliases: top_p
 Required: False
 Position: Named
-```
-
-### -NumberOfAnswers
-How many chat completion choices to generate for each input message.  
-The default value is `1`.
-
-```yaml
-Type: UInt16
-Aliases: n
-Required: False
-Position: Named
-Default value: 1
-```
-
-### -Stream
-If set, partial message deltas will be sent, like in ChatGPT.
-
-```yaml
-Type: SwitchParameter
-Required: False
-Position: Named
-Default value: False
 ```
 
 ### -StopSequence
@@ -186,15 +119,6 @@ Required: False
 Position: Named
 ```
 
-### -User
-A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse.
-
-```yaml
-Type: String
-Required: False
-Position: Named
-```
-
 ### -TimeoutSec
 Specifies how long the request can be pending before it times out.  
 The default value is `0` (infinite).
@@ -217,17 +141,24 @@ Required: False
 Position: Named
 ```
 
+### -NoHeader
+Suppresses the display of header strings
+
+```yaml
+Type: SwitchParameter
+Required: False
+Position: Named
+Default value: False
+```
+
+### CommonParameters
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
 ## OUTPUTS
 
-### [pscustomobject]
+### System.Object
 ## NOTES
 
 ## RELATED LINKS
-
-[https://platform.openai.com/docs/guides/chat/chat-completions](https://platform.openai.com/docs/guides/chat/chat-completions)
-
-[https://platform.openai.com/docs/api-reference/chat/create](https://platform.openai.com/docs/api-reference/chat/create)
-

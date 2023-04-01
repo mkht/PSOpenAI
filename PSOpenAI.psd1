@@ -1,6 +1,6 @@
 @{
     # Version number of this module.
-    ModuleVersion        = '1.3.0'
+    ModuleVersion        = '1.4.0'
 
     # Supported PSEditions
     CompatiblePSEditions = 'Core', 'Desktop'
@@ -28,6 +28,7 @@
 
     # Functions to export from this module
     FunctionsToExport    = @(
+        'Enter-ChatGPT',
         'Get-OpenAIModels',
         'Request-AudioTranscription',
         'Request-AudioTranslation',
