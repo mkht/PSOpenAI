@@ -87,7 +87,7 @@ function Enter-ChatGPT {
             [string]$UserPrompt = Get-UserPrompt
 
             #Parase special commands
-            if ($script:Status -eq 'end') {
+            if ($script:Status -eq 'exit') {
                 return
             }
             if (-not [string]::IsNullOrWhiteSpace($script:Model)) {
@@ -132,7 +132,12 @@ function Get-UserPrompt {
         if ($ret.StartsWith('#')) {
             switch -Wildcard ($ret.Substring(1).Trim()) {
                 'end' {
-                    $script:Status = 'end'
+                    $script:Status = 'exit'
+                    return
+                }
+
+                'exit' {
+                    $script:Status = 'exit'
                     return
                 }
 
