@@ -191,11 +191,12 @@ https://platform.openai.com/account/api-keys
 
 関数に API キーを指定するには3種類の方法があります。
 
-### 方法 1: 名前付きパラメータ
-各関数の `Token` パラメータに API キーを指定します。すべての関数呼び出しに都度指定する必要があります。  
+### 方法 1: 環境変数 `OPENAI_TOKEN`. (推奨)
+API キーを環境変数 `OPENAI_TOKEN`に設定します。関数呼び出し時に暗黙的に使用されます。  
 
 ```PowerShell
-PS C:> Request-ChatGPT -Message "Who are you?" -Token '<Put your API key here.>'
+PS C:> $env:OPENAI_TOKEN = '<Put your API key here.>'
+PS C:> Request-ChatGPT -Message "Who are you?"
 ```
 
 ### 方法 2: Global 変数 `OPENAI_TOKEN`
@@ -206,12 +207,11 @@ PS C:> $global:OPENAI_TOKEN = '<Put your API key here.>'
 PS C:> Request-ChatGPT -Message "Who are you?"
 ```
 
-### 方法 3: 環境変数 `OPENAI_TOKEN`.
-API キーを環境変数 `OPENAI_TOKEN`に設定します。関数呼び出し時に暗黙的に使用されます。  
+### 方法 3: 名前付きパラメータ
+各関数の `Token` パラメータに API キーを指定します。すべての関数呼び出しに都度指定する必要があります。  
 
 ```PowerShell
-PS C:> $env:OPENAI_TOKEN = '<Put your API key here.>'
-PS C:> Request-ChatGPT -Message "Who are you?"
+PS C:> Request-ChatGPT -Message "Who are you?" -Token '<Put your API key here.>'
 ```
 
 

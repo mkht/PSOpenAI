@@ -192,12 +192,13 @@ https://platform.openai.com/account/api-keys
 
 There are three ways to give an API key to functions.
 
-### Method 1: Supply as named parameter.
-Specify the API key explicitly in the `Token` parameter. It must be specified each time the function is called.  
-This is best used when the function is called only once or with few calls, such as when executing manually from the console.
+### Method 1: Set an environment variable named `OPENAI_TOKEN`. (RECOMMENDED)
+Set the API key to the environment variable named `OPENAI_TOKEN`.  
+This method is best suited when running on a trusted host or CI/CD pipeline.
 
 ```PowerShell
-PS C:> Request-ChatGPT -Message "Who are you?" -Token '<Put your API key here.>'
+PS C:> $env:OPENAI_TOKEN = '<Put your API key here.>'
+PS C:> Request-ChatGPT -Message "Who are you?"
 ```
 
 ### Method 2: Set a global variable named `OPENAI_TOKEN`.
@@ -208,13 +209,12 @@ PS C:> $global:OPENAI_TOKEN = '<Put your API key here.>'
 PS C:> Request-ChatGPT -Message "Who are you?"
 ```
 
-### Method 3: Set an environment variable named `OPENAI_TOKEN`.
-Set the API key to the environment variable named `OPENAI_TOKEN`.  
-This method is best suited when running on a trusted host or CI/CD pipeline.
+### Method 3: Supply as named parameter.
+Specify the API key explicitly in the `Token` parameter. It must be specified each time the function is called.  
+This is best used when the function is called only once or with few calls, such as when executing manually from the console.
 
 ```PowerShell
-PS C:> $env:OPENAI_TOKEN = '<Put your API key here.>'
-PS C:> Request-ChatGPT -Message "Who are you?"
+PS C:> Request-ChatGPT -Message "Who are you?" -Token '<Put your API key here.>'
 ```
 
 
