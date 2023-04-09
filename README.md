@@ -218,6 +218,14 @@ PS C:> Request-ChatGPT -Message "Who are you?" -Token '<Put your API key here.>'
 
 ----
 ## Changelog
+### 1.5.0
+ - Add `-MaxRetryCount` option for all functions.  
+   Retries up to the maximum number of times specified if an API request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. The retry interval increases exponentially up to 128 seconds.
+ - These obsolated functions are completely removed.
+   + `Request-CodeCompletion`
+   + `Request-CodeEdit`
+ - Minor fixes.
+
 ### 1.4.0
  - Add a new command [Enter-ChatGPT](/Docs/Enter-ChatGPT.md). You can communicate with ChatGTP interactively on the console. 
 

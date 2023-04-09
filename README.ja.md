@@ -215,6 +215,14 @@ PS C:> Request-ChatGPT -Message "Who are you?" -Token '<Put your API key here.>'
 
 ----
 ## 変更履歴
+### 1.5.0
+ - `-MaxRetryCount` オプションを追加  
+   APIリクエストが`429 (レート制限超過)` もしくは `5xx (サーバ側エラー)`で失敗した場合に、指定された最大回数までリトライします。リトライ間隔は最大128秒まで指数的に増加します(ジッター付き指数バックオフアルゴリズム)  
+ - すでに廃止された以下の関数が完全に削除されます
+   + `Request-CodeCompletion`
+   + `Request-CodeEdit`
+ - いくつかの軽微な修正
+
 ### 1.4.0
  - 新しいコマンド [Enter-ChatGPT](/Docs/Enter-ChatGPT.md) を追加。コンソール上でChatGPTとインタラクティブに対話ができます
 
