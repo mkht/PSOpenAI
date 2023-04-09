@@ -30,6 +30,10 @@ function Request-ImageGeneration {
         [int]$TimeoutSec = 0,
 
         [Parameter()]
+        [ValidateRange(0, 100)]
+        [int]$MaxRetryCount = 0,
+
+        [Parameter()]
         [object]$Token
     )
 
@@ -95,6 +99,7 @@ function Request-ImageGeneration {
             -Uri $OpenAIParameter.Uri `
             -ContentType $OpenAIParameter.ContentType `
             -TimeoutSec $TimeoutSec `
+            -MaxRetryCount $MaxRetryCount `
             -Token $SecureToken `
             -Body $PostBody
 
