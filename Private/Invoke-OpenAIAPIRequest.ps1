@@ -155,7 +155,7 @@ function Invoke-OpenAIAPIRequest {
         catch [WebException] {
             $ErrorCode = $_.Exception.Response.StatusCode.value__
             $ErrorReason = $_.Exception.Response.StatusCode.ToString()
-            $ErrorMessage = ($_.ErrorDetails.Message | ConvertFrom-Json -ErrorAction Ignore).error.message
+            $ErrorMessage = try { ($_.ErrorDetails.Message | ConvertFrom-Json -ErrorAction Ignore).error.message }catch {}
             if (-not $ErrorMessage) {
                 $ErrorMessage = $_.Exception.Message
             }
