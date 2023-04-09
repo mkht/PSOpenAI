@@ -27,7 +27,13 @@ function Invoke-OpenAIAPIRequestSSE {
         [object]$Body,
 
         [Parameter()]
-        [int]$TimeoutSec = 0
+        [int]$TimeoutSec = 0,
+
+        [Parameter()]
+        [int]$MaxRetryCount = 0,
+
+        [Parameter()]
+        [int]$RetryCount = 0
     )
 
     # Decrypt securestring
@@ -49,7 +55,23 @@ function Invoke-OpenAIAPIRequestSSE {
     try {
         $HttpResponse = $HttpClient.SendAsync($RequestMessage, [System.Net.Http.HttpCompletionOption]::ResponseHeadersRead, $CancelToken).GetAwaiter().GetResult()
         if (-not $HttpResponse.IsSuccessStatusCode) {
-            throw ([System.Net.Http.HttpRequestException]::new(('OpenAI API returned an {0} ({1})' -f $HttpResponse.StatusCode.value__, $HttpResponse.ReasonPhrase)))
+            $ErrorCode = $HttpResponse.StatusCode.value__
+            $ErrorReason = $HttpResponse.ReasonPhrase
+
+            # Retry on [429] or [5xx]
+            if (($ErrorCode -ge 500 -and $ErrorCode -le 599) -or ($ErrorCode -eq 429)) {
+                if ($RetryCount -lt $MaxRetryCount) {
+                    $Delay = Get-RetryDelay -RetryCount $RetryCount
+                    Write-Warning ('OpenAI API returned an {0} ({1})' -f $ErrorCode, $ErrorReason)
+                    Write-Warning ('Retry the request after waiting {0} ms (retry count: {1})' -f $Delay, $RetryCount)
+                    Start-Sleep -Milliseconds $Delay
+                    $PSBoundParameters.RetryCount = (++$RetryCount)
+                    Invoke-OpenAIAPIRequestSSE @PSBoundParameters
+                    return
+                }
+            }
+
+            throw ([System.Net.Http.HttpRequestException]::new(('OpenAI API returned an {0} ({1})' -f $ErrorCode, $ErrorReason)))
             return
         }
         $ResponseStream = $HttpResponse.Content.ReadAsStreamAsync().Result
