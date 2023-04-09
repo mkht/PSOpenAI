@@ -42,6 +42,10 @@ function Enter-ChatGPT {
         [int]$TimeoutSec = 0,
 
         [Parameter()]
+        [ValidateRange(0, 100)]
+        [int]$MaxRetryCount = 0,
+
+        [Parameter()]
         [object]$Token,
 
         [Parameter()]
