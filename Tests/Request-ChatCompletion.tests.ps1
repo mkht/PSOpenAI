@@ -1,4 +1,4 @@
-#Requires -Modules @{ ModuleName="Pester"; ModuleVersion="5.3.0" }
+﻿#Requires -Modules @{ ModuleName="Pester"; ModuleVersion="5.3.0" }
 
 BeforeAll {
     $script:ModuleRoot = Split-Path $PSScriptRoot -Parent
@@ -128,6 +128,30 @@ Describe 'Request-ChatCompletion' {
             | select -First 10
             $Result | Should -HaveCount 10
             ([string[]]$Info) | Should -Be ([string[]]$Result)
+        }
+
+        It 'Retrying with exponential backoff on Rate-Limit exceeds error' {
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-WebRequest {
+                iwr https://httpstat.us/429 -UseBasicParsing
+            }
+            $StopWatch = [System.Diagnostics.Stopwatch]::new()
+            $StopWatch.Start()
+            { Request-ChatCompletion -Message 'test' -MaxRetryCount 3 -MaxTokens 16 -ea Stop } | Should -Throw
+            $StopWatch.Stop()
+            Should -Invoke -CommandName 'Invoke-WebRequest' -ModuleName $script:ModuleName -Times 3
+            $StopWatch.ElapsedMilliseconds | Should -BeGreaterOrEqual 7000
+        }
+
+        It 'Retrying with exponential backoff on server error' {
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-WebRequest {
+                iwr https://httpstat.us/500 -UseBasicParsing
+            }
+            $StopWatch = [System.Diagnostics.Stopwatch]::new()
+            $StopWatch.Start()
+            { Request-ChatCompletion -Message 'test' -MaxRetryCount 1 -MaxTokens 16 -ea Stop } | Should -Throw
+            $StopWatch.Stop()
+            Should -Invoke -CommandName 'Invoke-WebRequest' -ModuleName $script:ModuleName -Times 1
+            $StopWatch.ElapsedMilliseconds | Should -BeGreaterOrEqual 1000
         }
     }
 }
