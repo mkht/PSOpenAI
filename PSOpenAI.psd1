@@ -33,8 +33,6 @@
         'Request-AudioTranscription',
         'Request-AudioTranslation',
         'Request-ChatCompletion',
-        'Request-CodeCompletion',
-        'Request-CodeEdit',
         'Request-ImageEdit',
         'Request-ImageGeneration',
         'Request-ImageVariation',
