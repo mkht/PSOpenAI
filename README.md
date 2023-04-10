@@ -219,7 +219,7 @@ PS C:> Request-ChatGPT -Message "Who are you?" -ApiKey '<Put your API key here.>
 
 ----
 ## Changelog
-### Unreleased
+### 1.6.0
  - Add a new command [Request-Embeddings](/Docs/Request-Embeddings.md). 
  - **[IMPORTANT CHANGE]**  
    Change the environment variable name of the API auth key from `OPENAI_TOKEN` to `OPENAI_API_KEY`. And also change the parameter name from `-Token` to `-ApiKey`.  

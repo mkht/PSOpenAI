@@ -216,7 +216,7 @@ PS C:> Request-ChatGPT -Message "Who are you?" -ApiKey '<Put your API key here.>
 
 ----
 ## 変更履歴
-### 未リリース
+### 1.6.0
  - 新しい関数 [Request-Embeddings](/Docs/Request-Embeddings.md) を追加
  - **[重大な変更]**  
    API認証用キーの環境変数名を`OPENAI_TOKEN`から`OPENAI_API_KEY`に変更します。関数のパラメータ名も`-Token`から`-ApiKey`に変更します。  
