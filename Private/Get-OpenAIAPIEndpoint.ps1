@@ -78,12 +78,20 @@ function Get-OpenAIAPIEndpoint {
                 ContentType = 'application/json'
             }
         }
-        'Model' {
+        'Models' {
             @{
-                Name        = 'model'
+                Name        = 'models'
                 Method      = 'Get'
                 Uri         = 'https://api.openai.com/v1/models'
                 ContentType = ''
+            }
+        }
+        'Embeddings' {
+            @{
+                Name        = 'embeddings'
+                Method      = 'Post'
+                Uri         = 'https://api.openai.com/v1/embeddings'
+                ContentType = 'application/json'
             }
         }
     }

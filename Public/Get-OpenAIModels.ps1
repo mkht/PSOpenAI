@@ -16,7 +16,7 @@ function Get-OpenAIModels {
         [securestring]$SecureToken = Initialize-APIToken -Token $Token
 
         # Get API endpoint
-        $OpenAIParameter = Get-OpenAIAPIEndpoint -EndpointName 'Model'
+        $OpenAIParameter = Get-OpenAIAPIEndpoint -EndpointName 'Models'
     }
 
     process {

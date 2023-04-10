@@ -33,6 +33,7 @@
         'Request-AudioTranscription',
         'Request-AudioTranslation',
         'Request-ChatCompletion',
+        'Request-Embeddings',
         'Request-ImageEdit',
         'Request-ImageGeneration',
         'Request-ImageVariation',

@@ -39,6 +39,7 @@ Install-Module -Name PSOpenAI
 + [Request-AudioTranslation](/Docs/Request-AudioTranslation.md)
 + [Request-ChatCompletion](/Docs/Request-ChatCompletion.md)
 + [Request-ChatGPT](/Docs/Request-ChatCompletion.md)
++ [Request-Embeddings](/Docs/Request-Embeddings.md)
 + [Request-ImageEdit](/Docs/Request-ImageEdit.md)
 + [Request-ImageGeneration](/Docs/Request-ImageGeneration.md)
 + [Request-ImageVariation](/Docs/Request-ImageVariation.md)
