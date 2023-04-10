@@ -1,7 +1,7 @@
 ---
 external help file: PSOpenAI-help.xml
 Module Name: PSOpenAI
-online version:
+online version: https://github.com/mkht/PSOpenAI/blob/main/Docs/Enter-ChatGPT.md
 schema: 2.0.0
 ---
 
@@ -13,9 +13,20 @@ Communicate with ChatGPT interactively on the console.
 ## SYNTAX
 
 ```
-Enter-ChatGPT [[-Model] <String>] [[-RolePrompt] <String>] [[-Temperature] <Double>] [[-TopP] <Double>]
- [[-StopSequence] <String[]>] [[-MaxTokens] <Int32>] [[-PresencePenalty] <Double>]
- [[-FrequencyPenalty] <Double>] [[-TimeoutSec] <Int32>] [[-MaxRetryCount] <Int32>] [[-Token] <Object>] [-NoHeader] [<CommonParameters>]
+Enter-ChatGPT
+    [[-Model] <String>]
+    [[-RolePrompt] <String>]
+    [[-Temperature] <Double>]
+    [[-TopP] <Double>]
+    [[-StopSequence] <String[]>]
+    [[-MaxTokens] <Int32>]
+    [[-PresencePenalty] <Double>]
+    [[-FrequencyPenalty] <Double>]
+    [[-TimeoutSec] <Int32>]
+    [[-MaxRetryCount] <Int32>]
+    [[-Token] <Object>]
+    [-NoHeader]
+    [<CommonParameters>]
 ```
 
 ## DESCRIPTION
