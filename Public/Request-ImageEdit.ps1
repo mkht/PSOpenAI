@@ -43,12 +43,13 @@ function Request-ImageEdit {
         [int]$MaxRetryCount = 0,
 
         [Parameter()]
-        [object]$Token
+        [Alias('Token')]  #for backword compatibility
+        [object]$ApiKey
     )
 
     begin {
-        # Initialize API token
-        [securestring]$SecureToken = Initialize-APIToken -Token $Token
+        # Initialize API Key
+        [securestring]$SecureToken = Initialize-APIKey -ApiKey $ApiKey
 
         # Get API endpoint
         $OpenAIParameter = Get-OpenAIAPIEndpoint -EndpointName 'Image.Edit'
@@ -146,7 +147,7 @@ function Request-ImageEdit {
                 -ContentType $OpenAIParameter.ContentType `
                 -TimeoutSec $TimeoutSec `
                 -MaxRetryCount $MaxRetryCount `
-                -Token $SecureToken `
+                -ApiKey $SecureToken `
                 -Body $PostBody
         }
         finally {

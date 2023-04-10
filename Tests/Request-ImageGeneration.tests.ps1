@@ -12,7 +12,7 @@ BeforeAll {
 Describe 'Request-ImageGeneration' {
     Context 'Unit tests (offline)' -Tag 'Offline' {
         BeforeAll {
-            Mock -ModuleName $script:ModuleName Initialize-APIToken { [securestring]::new() }
+            Mock -ModuleName $script:ModuleName Initialize-APIKey { [securestring]::new() }
             Mock -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $PesterBoundParameters }
             Mock -ModuleName $script:ModuleName Copy-TempFile {}
             Mock -ModuleName $script:ModuleName Remove-Item {}

@@ -15,7 +15,7 @@ Lists the currently available models.
 ```
 Get-OpenAIModels
     [[-Name] <String>]
-    [-Token <Object>]
+    [-ApiKey <Object>]
     [<CommonParameters>]
 ```
 
@@ -70,10 +70,10 @@ Accept pipeline input: True (ByValue)
 Accept wildcard characters: False
 ```
 
-### -Token
+### -ApiKey
 Specifies API key for authentication.  
 The type of data should `[string]` or `[securestring]`.  
-If not specified, it will try to use `$global:OPENAI_TOKEN` or `$env:OPENAI_TOKEN`
+If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_API_KEY`
 
 ```yaml
 Type: Object

@@ -46,7 +46,8 @@ function Enter-ChatGPT {
         [int]$MaxRetryCount = 0,
 
         [Parameter()]
-        [object]$Token,
+        [Alias('Token')]  #for backword compatibility
+        [object]$ApiKey,
 
         [Parameter()]
         [switch]$NoHeader

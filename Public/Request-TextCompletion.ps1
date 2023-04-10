@@ -67,12 +67,13 @@ function Request-TextCompletion {
         [int]$MaxRetryCount = 0,
 
         [Parameter()]
-        [object]$Token
+        [Alias('Token')]  #for backword compatibility
+        [object]$ApiKey
     )
 
     begin {
-        # Initialize API token
-        [securestring]$SecureToken = Initialize-APIToken -Token $Token
+        # Initialize API Key
+        [securestring]$SecureToken = Initialize-APIKey -ApiKey $ApiKey
 
         # Get API endpoint
         $OpenAIParameter = Get-OpenAIAPIEndpoint -EndpointName 'Text.Completion'
@@ -150,7 +151,7 @@ function Request-TextCompletion {
                 -ContentType $OpenAIParameter.ContentType `
                 -TimeoutSec $TimeoutSec `
                 -MaxRetryCount $MaxRetryCount `
-                -Token $SecureToken `
+                -ApiKey $SecureToken `
                 -Body $PostBody `
                 -Stream $Stream |`
                 Where-Object {
@@ -184,7 +185,7 @@ function Request-TextCompletion {
                 -ContentType $OpenAIParameter.ContentType `
                 -TimeoutSec $TimeoutSec `
                 -MaxRetryCount $MaxRetryCount `
-                -Token $SecureToken `
+                -ApiKey $SecureToken `
                 -Body $PostBody
 
             # error check

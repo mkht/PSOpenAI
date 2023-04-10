@@ -8,12 +8,13 @@ function Get-OpenAIModels {
         [string]$Name,
 
         [Parameter()]
-        [object]$Token
+        [Alias('Token')]  #for backword compatibility
+        [object]$ApiKey
     )
 
     begin {
-        # Initialize API token
-        [securestring]$SecureToken = Initialize-APIToken -Token $Token
+        # Initialize API Key
+        [securestring]$SecureToken = Initialize-APIKey -ApiKey $ApiKey
 
         # Get API endpoint
         $OpenAIParameter = Get-OpenAIAPIEndpoint -EndpointName 'Models'
@@ -29,7 +30,7 @@ function Get-OpenAIModels {
         $Response = Invoke-OpenAIAPIRequest `
             -Method $OpenAIParameter.Method `
             -Uri $OpenAIParameter.Uri `
-            -Token $SecureToken
+            -ApiKey $SecureToken
 
         # error check
         if ($null -eq $Response) {

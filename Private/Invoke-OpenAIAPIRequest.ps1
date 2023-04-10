@@ -18,7 +18,7 @@ function Invoke-OpenAIAPIRequest {
 
         [Parameter(Mandatory = $true)]
         [ValidateNotNull()]
-        [securestring]$Token,
+        [securestring]$ApiKey,
 
         [Parameter()]
         [object]$Body,
@@ -48,7 +48,7 @@ function Invoke-OpenAIAPIRequest {
             -Method $Method `
             -Uri $Uri `
             -ContentType $ContentType `
-            -Token $Token `
+            -ApiKey $ApiKey `
             -Body $Body `
             -TimeoutSec $TimeoutSec `
             -MaxRetryCount $MaxRetryCount
@@ -64,7 +64,7 @@ function Invoke-OpenAIAPIRequest {
             ContentType    = $ContentType
             TimeoutSec     = $TimeoutSec
             Authentication = 'Bearer'
-            Token          = $Token
+            Token          = $ApiKey
         }
 
         if ($null -ne $Body) {
@@ -121,7 +121,7 @@ function Invoke-OpenAIAPIRequest {
     #region Windows PowerShell 5
     elseif ($PSVersionTable.PSVersion.Major -eq 5) {
         # decrypt securestring
-        $bstr = [Marshal]::SecureStringToBSTR($Token)
+        $bstr = [Marshal]::SecureStringToBSTR($ApiKey)
         $PlainToken = [Marshal]::PtrToStringBSTR($bstr)
         $headers = @{Authorization = "Bearer $PlainToken" }
 

@@ -55,7 +55,7 @@ Install-Module -Name PSOpenAI
 Communicate with ChatGPT interactively on the console.  
 
 ```PowerShell
-$global:OPENAI_TOKEN = '<Put your API key here.>'
+$global:OPENAI_API_KEY = '<Put your API key here.>'
 Enter-ChatGPT
 ```
 
@@ -67,7 +67,7 @@ Enter-ChatGPT
 You can ask questions to ChatGPT.
 
 ```PowerShell
-$global:OPENAI_TOKEN = '<Put your API key here.>'
+$global:OPENAI_API_KEY = '<Put your API key here.>'
 $Result = Request-ChatGPT -Message "Who are you?"
 Write-Output $Result.Answer
 ```
@@ -91,7 +91,7 @@ I am an AI language model created by OpenAI, designed to assist with ...
 Transcribes audio into the input language.
 
 ```PowerShell
-$global:OPENAI_TOKEN = '<Put your API key here.>'
+$global:OPENAI_API_KEY = '<Put your API key here.>'
 Request-AudioTranscription -File 'C:\SampleData\audio.mp3' -Format text
 ```
 
@@ -106,7 +106,7 @@ Perhaps he made up to the party afterwards and took her and ...
 Creating images from scratch based on a text prompt.
 
 ```PowerShell
-$global:OPENAI_TOKEN = '<Put your API key here.>'
+$global:OPENAI_API_KEY = '<Put your API key here.>'
 Request-ImageGeneration -Prompt 'A cute baby lion' -Size 256x256 -OutFile 'C:\output\babylion.png'
 ```
 
@@ -191,34 +191,41 @@ https://platform.openai.com/account/api-keys
 
 There are three ways to give an API key to functions.
 
-### Method 1: Set an environment variable named `OPENAI_TOKEN`. (RECOMMENDED)
-Set the API key to the environment variable named `OPENAI_TOKEN`.  
+### Method 1: Set an environment variable named `OPENAI_API_KEY`. (RECOMMENDED)
+Set the API key to the environment variable named `OPENAI_API_KEY`.  
 This method is best suited when running on a trusted host or CI/CD pipeline.
 
 ```PowerShell
-PS C:> $env:OPENAI_TOKEN = '<Put your API key here.>'
+PS C:> $env:OPENAI_API_KEY = '<Put your API key here.>'
 PS C:> Request-ChatGPT -Message "Who are you?"
 ```
 
-### Method 2: Set a global variable named `OPENAI_TOKEN`.
-Set the API key to the `$global:OPENAI_TOKEN` variable. The variable is implicitly used whenever a function is called within the session.  
+### Method 2: Set a global variable named `OPENAI_API_KEY`.
+Set the API key to the `$global:OPENAI_API_KEY` variable. The variable is implicitly used whenever a function is called within the session.  
 
 ```PowerShell
-PS C:> $global:OPENAI_TOKEN = '<Put your API key here.>'
+PS C:> $global:OPENAI_API_KEY = '<Put your API key here.>'
 PS C:> Request-ChatGPT -Message "Who are you?"
 ```
 
 ### Method 3: Supply as named parameter.
-Specify the API key explicitly in the `Token` parameter. It must be specified each time the function is called.  
+Specify the API key explicitly in the `ApiKey` parameter. It must be specified each time the function is called.  
 This is best used when the function is called only once or with few calls, such as when executing manually from the console.
 
 ```PowerShell
-PS C:> Request-ChatGPT -Message "Who are you?" -Token '<Put your API key here.>'
+PS C:> Request-ChatGPT -Message "Who are you?" -ApiKey '<Put your API key here.>'
 ```
 
 
 ----
 ## Changelog
+### Unreleased
+ - Add a new command [Request-Embeddings](/Docs/Request-Embeddings.md). 
+ - **[IMPORTANT CHANGE]**  
+   Change the environment variable name of the API auth key from `OPENAI_TOKEN` to `OPENAI_API_KEY`. And also change the parameter name from `-Token` to `-ApiKey`.  
+   This is because the word "Token" is often confused with a term used in the field of machine learning, and the official OpenAI reference uses this name.  
+   For backward compatibility, `OPENAI_TOKEN` and `-Token` will continue to work, but may be deprecated entirely in the future.
+
 ### 1.5.0
  - Add `-MaxRetryCount` option for all functions.  
    Retries up to the maximum number of times specified if an API request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. The retry interval increases exponentially up to 128 seconds.
@@ -275,6 +282,7 @@ PS C:> Request-ChatGPT -Message "Who are you?" -Token '<Put your API key here.>'
 
 If you have a feature request or bug report, please tell us in Issue.
 
++ More docs, samples.
 + Performance improvements.
 + Add GPT-3 fine-tuning support.
 + Add some missing parameters, such like `logit_bias`.

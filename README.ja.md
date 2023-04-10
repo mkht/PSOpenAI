@@ -52,7 +52,7 @@ Install-Module -Name PSOpenAI
 コンソール上でインタラクティブにChatGPTと対話します。
 
 ```PowerShell
-$global:OPENAI_TOKEN = '<Put your API key here.>'
+$global:OPENAI_API_KEY = '<Put your API key here.>'
 Enter-ChatGPT
 ```
 
@@ -64,7 +64,7 @@ Enter-ChatGPT
 ChatGPTに質問をして回答を得ます。
 
 ```PowerShell
-$global:OPENAI_TOKEN = '<APIキーをここに貼り付ける>'
+$global:OPENAI_API_KEY = '<APIキーをここに貼り付ける>'
 $Result = Request-ChatGPT -Message "自己紹介をしてください"
 Write-Output $Result.Answer
 ```
@@ -88,7 +88,7 @@ Write-Output $Result.Answer
 音声ファイルからテキストに文字起こしをさせます。
 
 ```PowerShell
-$global:OPENAI_TOKEN = '<APIキーをここに貼り付ける>'
+$global:OPENAI_API_KEY = '<APIキーをここに貼り付ける>'
 Request-AudioTranscription -File 'C:\SampleData\audio.mp3' -Format text
 ```
 
@@ -103,7 +103,7 @@ Perhaps he made up to the party afterwards and took her and ...
 テキストで指示を与えると、AIがそれっぽい画像を生成します。
 
 ```PowerShell
-$global:OPENAI_TOKEN = '<APIキーをここに貼り付ける>'
+$global:OPENAI_API_KEY = '<APIキーをここに貼り付ける>'
 Request-ImageGeneration -Prompt 'かわいいライオンの子供' -Size 256x256 -OutFile 'C:\output\babylion.png'
 ```
 
@@ -190,32 +190,39 @@ https://platform.openai.com/account/api-keys
 
 関数に API キーを指定するには3種類の方法があります。
 
-### 方法 1: 環境変数 `OPENAI_TOKEN`. (推奨)
-API キーを環境変数 `OPENAI_TOKEN`に設定します。関数呼び出し時に暗黙的に使用されます。  
+### 方法 1: 環境変数 `OPENAI_API_KEY`. (推奨)
+API キーを環境変数 `OPENAI_API_KEY`に設定します。関数呼び出し時に暗黙的に使用されます。  
 
 ```PowerShell
-PS C:> $env:OPENAI_TOKEN = '<Put your API key here.>'
+PS C:> $env:OPENAI_API_KEY = '<Put your API key here.>'
 PS C:> Request-ChatGPT -Message "Who are you?"
 ```
 
-### 方法 2: Global 変数 `OPENAI_TOKEN`
-API キーを`$global:OPENAI_TOKEN`変数に設定します。関数呼び出し時に暗黙的に使用されます。
+### 方法 2: Global 変数 `OPENAI_API_KEY`
+API キーを`$global:OPENAI_API_KEY`変数に設定します。関数呼び出し時に暗黙的に使用されます。
 
 ```PowerShell
-PS C:> $global:OPENAI_TOKEN = '<Put your API key here.>'
+PS C:> $global:OPENAI_API_KEY = '<Put your API key here.>'
 PS C:> Request-ChatGPT -Message "Who are you?"
 ```
 
 ### 方法 3: 名前付きパラメータ
-各関数の `Token` パラメータに API キーを指定します。すべての関数呼び出しに都度指定する必要があります。  
+各関数の `ApiKey` パラメータに API キーを指定します。すべての関数呼び出しに都度指定する必要があります。  
 
 ```PowerShell
-PS C:> Request-ChatGPT -Message "Who are you?" -Token '<Put your API key here.>'
+PS C:> Request-ChatGPT -Message "Who are you?" -ApiKey '<Put your API key here.>'
 ```
 
 
 ----
 ## 変更履歴
+### 未リリース
+ - 新しい関数 [Request-Embeddings](/Docs/Request-Embeddings.md) を追加
+ - **[重大な変更]**  
+   API認証用キーの環境変数名を`OPENAI_TOKEN`から`OPENAI_API_KEY`に変更します。関数のパラメータ名も`-Token`から`-ApiKey`に変更します。  
+   "Token"という単語が機械学習の分野で使われる用語と混同されやすいことと、OpenAIの公式リファレンスがこの名前を使用していることが理由です。  
+   後方互換性を維持するため`OPENAI_TOKEN`および`-Token`も引き続き機能しますが、将来的に完全に廃止する可能性があるため使用しないでください。
+
 ### 1.5.0
  - `-MaxRetryCount` オプションを追加  
    APIリクエストが`429 (レート制限超過)` もしくは `5xx (サーバ側エラー)`で失敗した場合に、指定された最大回数までリトライします。リトライ間隔は最大128秒まで指数的に増加します(ジッター付き指数バックオフアルゴリズム)  

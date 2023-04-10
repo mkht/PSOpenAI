@@ -146,12 +146,12 @@ Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s
           </dev:type>
           <dev:defaultValue>0</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>Token</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
+          <maml:name>ApiKey</maml:name>
           <maml:description>
             <maml:para>Specifies API key for authentication.
 The type of data should `[string]` or `[securestring]`.
-If not specified, it will try to use `$global:OPENAI_TOKEN` or `$env:OPENAI_TOKEN`</maml:para>
+If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_API_KEY`</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
           <dev:type>
@@ -304,12 +304,12 @@ Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s
         </dev:type>
         <dev:defaultValue>0</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-        <maml:name>Token</maml:name>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
+        <maml:name>ApiKey</maml:name>
         <maml:description>
           <maml:para>Specifies API key for authentication.
 The type of data should `[string]` or `[securestring]`.
-If not specified, it will try to use `$global:OPENAI_TOKEN` or `$env:OPENAI_TOKEN`</maml:para>
+If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_API_KEY`</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
         <dev:type>
@@ -350,7 +350,7 @@ If not specified, it will try to use `$global:OPENAI_TOKEN` or `$env:OPENAI_TOKE
     <command:examples>
       <command:example>
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; Enter-ChatGPT -Token 'YOUR_OPENAI_APIKEY' -NoHeader</dev:code>
+        <dev:code>PS C:\&gt; Enter-ChatGPT -ApiKey 'YOUR_OPENAI_APIKEY' -NoHeader</dev:code>
         <dev:remarks>
           <maml:para>! Interactive Chat (/Docs/images/InteractiveChat.gif)</maml:para>
         </dev:remarks>
@@ -394,11 +394,11 @@ If not specified, lists all available models.</maml:para>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>Token</maml:name>
+          <maml:name>ApiKey</maml:name>
           <maml:description>
             <maml:para>Specifies API key for authentication.
 The type of data should `[string]` or `[securestring]`.
-If not specified, it will try to use `$global:OPENAI_TOKEN` or `$env:OPENAI_TOKEN`</maml:para>
+If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_API_KEY`</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
           <dev:type>
@@ -424,11 +424,11 @@ If not specified, lists all available models.</maml:para>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>Token</maml:name>
+        <maml:name>ApiKey</maml:name>
         <maml:description>
           <maml:para>Specifies API key for authentication.
 The type of data should `[string]` or `[securestring]`.
-If not specified, it will try to use `$global:OPENAI_TOKEN` or `$env:OPENAI_TOKEN`</maml:para>
+If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_API_KEY`</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
         <dev:type>
@@ -616,12 +616,12 @@ Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s
           </dev:type>
           <dev:defaultValue>0</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>Token</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
+          <maml:name>ApiKey</maml:name>
           <maml:description>
             <maml:para>Specifies API key for authentication.
 The type of data should `[string]` or `[securestring]`.
-If not specified, it will try to use `$global:OPENAI_TOKEN` or `$env:OPENAI_TOKEN`</maml:para>
+If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_API_KEY`</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
           <dev:type>
@@ -738,12 +738,12 @@ Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s
         </dev:type>
         <dev:defaultValue>0</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-        <maml:name>Token</maml:name>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
+        <maml:name>ApiKey</maml:name>
         <maml:description>
           <maml:para>Specifies API key for authentication.
 The type of data should `[string]` or `[securestring]`.
-If not specified, it will try to use `$global:OPENAI_TOKEN` or `$env:OPENAI_TOKEN`</maml:para>
+If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_API_KEY`</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
         <dev:type>
@@ -903,12 +903,12 @@ Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s
           </dev:type>
           <dev:defaultValue>0</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>Token</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
+          <maml:name>ApiKey</maml:name>
           <maml:description>
             <maml:para>Specifies API key for authentication.
 The type of data should `[string]` or `[securestring]`.
-If not specified, it will try to use `$global:OPENAI_TOKEN` or `$env:OPENAI_TOKEN`</maml:para>
+If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_API_KEY`</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
           <dev:type>
@@ -1012,12 +1012,12 @@ Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s
         </dev:type>
         <dev:defaultValue>0</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-        <maml:name>Token</maml:name>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
+        <maml:name>ApiKey</maml:name>
         <maml:description>
           <maml:para>Specifies API key for authentication.
 The type of data should `[string]` or `[securestring]`.
-If not specified, it will try to use `$global:OPENAI_TOKEN` or `$env:OPENAI_TOKEN`</maml:para>
+If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_API_KEY`</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
         <dev:type>
@@ -1263,12 +1263,12 @@ Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s
           </dev:type>
           <dev:defaultValue>0</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>Token</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
+          <maml:name>ApiKey</maml:name>
           <maml:description>
             <maml:para>Specifies API key for authentication.
 The type of data should `[string]` or `[securestring]`.
-If not specified, it will try to use `$global:OPENAI_TOKEN` or `$env:OPENAI_TOKEN`</maml:para>
+If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_API_KEY`</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
           <dev:type>
@@ -1459,12 +1459,12 @@ Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s
         </dev:type>
         <dev:defaultValue>0</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-        <maml:name>Token</maml:name>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
+        <maml:name>ApiKey</maml:name>
         <maml:description>
           <maml:para>Specifies API key for authentication.
 The type of data should `[string]` or `[securestring]`.
-If not specified, it will try to use `$global:OPENAI_TOKEN` or `$env:OPENAI_TOKEN`</maml:para>
+If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_API_KEY`</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
         <dev:type>
@@ -1618,12 +1618,12 @@ Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s
           </dev:type>
           <dev:defaultValue>0</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>Token</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
+          <maml:name>ApiKey</maml:name>
           <maml:description>
             <maml:para>Specifies API key for authentication.
 The type of data should `[string]` or `[securestring]`.
-If not specified, it will try to use `$global:OPENAI_TOKEN` or `$env:OPENAI_TOKEN`</maml:para>
+If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_API_KEY`</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
           <dev:type>
@@ -1699,12 +1699,12 @@ Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s
         </dev:type>
         <dev:defaultValue>0</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-        <maml:name>Token</maml:name>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
+        <maml:name>ApiKey</maml:name>
         <maml:description>
           <maml:para>Specifies API key for authentication.
 The type of data should `[string]` or `[securestring]`.
-If not specified, it will try to use `$global:OPENAI_TOKEN` or `$env:OPENAI_TOKEN`</maml:para>
+If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_API_KEY`</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
         <dev:type>
@@ -1899,12 +1899,12 @@ Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s
           </dev:type>
           <dev:defaultValue>0</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>Token</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
+          <maml:name>ApiKey</maml:name>
           <maml:description>
             <maml:para>Specifies API key for authentication.
 The type of data should `[string]` or `[securestring]`.
-If not specified, it will try to use `$global:OPENAI_TOKEN` or `$env:OPENAI_TOKEN`</maml:para>
+If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_API_KEY`</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
           <dev:type>
@@ -2034,12 +2034,12 @@ Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s
           </dev:type>
           <dev:defaultValue>0</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>Token</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
+          <maml:name>ApiKey</maml:name>
           <maml:description>
             <maml:para>Specifies API key for authentication.
 The type of data should `[string]` or `[securestring]`.
-If not specified, it will try to use `$global:OPENAI_TOKEN` or `$env:OPENAI_TOKEN`</maml:para>
+If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_API_KEY`</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
           <dev:type>
@@ -2182,12 +2182,12 @@ Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s
         </dev:type>
         <dev:defaultValue>0</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-        <maml:name>Token</maml:name>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
+        <maml:name>ApiKey</maml:name>
         <maml:description>
           <maml:para>Specifies API key for authentication.
 The type of data should `[string]` or `[securestring]`.
-If not specified, it will try to use `$global:OPENAI_TOKEN` or `$env:OPENAI_TOKEN`</maml:para>
+If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_API_KEY`</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
         <dev:type>
@@ -2382,12 +2382,12 @@ Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s
           </dev:type>
           <dev:defaultValue>0</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>Token</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
+          <maml:name>ApiKey</maml:name>
           <maml:description>
             <maml:para>Specifies API key for authentication.
 The type of data should `[string]` or `[securestring]`.
-If not specified, it will try to use `$global:OPENAI_TOKEN` or `$env:OPENAI_TOKEN`</maml:para>
+If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_API_KEY`</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
           <dev:type>
@@ -2491,12 +2491,12 @@ Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s
           </dev:type>
           <dev:defaultValue>0</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>Token</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
+          <maml:name>ApiKey</maml:name>
           <maml:description>
             <maml:para>Specifies API key for authentication.
 The type of data should `[string]` or `[securestring]`.
-If not specified, it will try to use `$global:OPENAI_TOKEN` or `$env:OPENAI_TOKEN`</maml:para>
+If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_API_KEY`</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
           <dev:type>
@@ -2613,12 +2613,12 @@ Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s
         </dev:type>
         <dev:defaultValue>0</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-        <maml:name>Token</maml:name>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
+        <maml:name>ApiKey</maml:name>
         <maml:description>
           <maml:para>Specifies API key for authentication.
 The type of data should `[string]` or `[securestring]`.
-If not specified, it will try to use `$global:OPENAI_TOKEN` or `$env:OPENAI_TOKEN`</maml:para>
+If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_API_KEY`</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
         <dev:type>
@@ -2817,12 +2817,12 @@ Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s
           </dev:type>
           <dev:defaultValue>0</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>Token</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
+          <maml:name>ApiKey</maml:name>
           <maml:description>
             <maml:para>Specifies API key for authentication.
 The type of data should `[string]` or `[securestring]`.
-If not specified, it will try to use `$global:OPENAI_TOKEN` or `$env:OPENAI_TOKEN`</maml:para>
+If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_API_KEY`</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
           <dev:type>
@@ -2926,12 +2926,12 @@ Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s
           </dev:type>
           <dev:defaultValue>0</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>Token</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
+          <maml:name>ApiKey</maml:name>
           <maml:description>
             <maml:para>Specifies API key for authentication.
 The type of data should `[string]` or `[securestring]`.
-If not specified, it will try to use `$global:OPENAI_TOKEN` or `$env:OPENAI_TOKEN`</maml:para>
+If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_API_KEY`</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
           <dev:type>
@@ -3048,12 +3048,12 @@ Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s
         </dev:type>
         <dev:defaultValue>0</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-        <maml:name>Token</maml:name>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
+        <maml:name>ApiKey</maml:name>
         <maml:description>
           <maml:para>Specifies API key for authentication.
 The type of data should `[string]` or `[securestring]`.
-If not specified, it will try to use `$global:OPENAI_TOKEN` or `$env:OPENAI_TOKEN`</maml:para>
+If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_API_KEY`</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
         <dev:type>
@@ -3207,12 +3207,12 @@ Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s
           </dev:type>
           <dev:defaultValue>0</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>Token</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
+          <maml:name>ApiKey</maml:name>
           <maml:description>
             <maml:para>Specifies API key for authentication.
 The type of data should `[string]` or `[securestring]`.
-If not specified, it will try to use `$global:OPENAI_TOKEN` or `$env:OPENAI_TOKEN`</maml:para>
+If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_API_KEY`</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
           <dev:type>
@@ -3278,12 +3278,12 @@ Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s
         </dev:type>
         <dev:defaultValue>0</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-        <maml:name>Token</maml:name>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
+        <maml:name>ApiKey</maml:name>
         <maml:description>
           <maml:para>Specifies API key for authentication.
 The type of data should `[string]` or `[securestring]`.
-If not specified, it will try to use `$global:OPENAI_TOKEN` or `$env:OPENAI_TOKEN`</maml:para>
+If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_API_KEY`</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
         <dev:type>
@@ -3558,12 +3558,12 @@ Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s
           </dev:type>
           <dev:defaultValue>0</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>Token</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
+          <maml:name>ApiKey</maml:name>
           <maml:description>
             <maml:para>Specifies API key for authentication.
 The type of data should `[string]` or `[securestring]`.
-If not specified, it will try to use `$global:OPENAI_TOKEN` or `$env:OPENAI_TOKEN`</maml:para>
+If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_API_KEY`</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
           <dev:type>
@@ -3776,12 +3776,12 @@ Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s
         </dev:type>
         <dev:defaultValue>0</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-        <maml:name>Token</maml:name>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
+        <maml:name>ApiKey</maml:name>
         <maml:description>
           <maml:para>Specifies API key for authentication.
 The type of data should `[string]` or `[securestring]`.
-If not specified, it will try to use `$global:OPENAI_TOKEN` or `$env:OPENAI_TOKEN`</maml:para>
+If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_API_KEY`</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
         <dev:type>
@@ -3952,12 +3952,12 @@ Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s
           </dev:type>
           <dev:defaultValue>0</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>Token</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
+          <maml:name>ApiKey</maml:name>
           <maml:description>
             <maml:para>Specifies API key for authentication.
 The type of data should `[string]` or `[securestring]`.
-If not specified, it will try to use `$global:OPENAI_TOKEN` or `$env:OPENAI_TOKEN`</maml:para>
+If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_API_KEY`</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
           <dev:type>
@@ -4070,12 +4070,12 @@ Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s
         </dev:type>
         <dev:defaultValue>0</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-        <maml:name>Token</maml:name>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
+        <maml:name>ApiKey</maml:name>
         <maml:description>
           <maml:para>Specifies API key for authentication.
 The type of data should `[string]` or `[securestring]`.
-If not specified, it will try to use `$global:OPENAI_TOKEN` or `$env:OPENAI_TOKEN`</maml:para>
+If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_API_KEY`</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
         <dev:type>

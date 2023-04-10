@@ -21,7 +21,7 @@ function Invoke-OpenAIAPIRequestSSE {
 
         [Parameter(Mandatory = $true)]
         [ValidateNotNull()]
-        [securestring]$Token,
+        [securestring]$ApiKey,
 
         [Parameter()]
         [object]$Body,
@@ -37,7 +37,7 @@ function Invoke-OpenAIAPIRequestSSE {
     )
 
     # Decrypt securestring
-    $bstr = [Marshal]::SecureStringToBSTR($Token)
+    $bstr = [Marshal]::SecureStringToBSTR($ApiKey)
     $PlainToken = [Marshal]::PtrToStringBSTR($bstr)
     # Create HttpClient and messages
     $HttpClient = [System.Net.Http.HttpClient]::new()

@@ -21,7 +21,7 @@ Request-ImageVariation
     [-User <String>]
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
-    [-Token <Object>]
+    [-ApiKey <Object>]
     [<CommonParameters>]
 ```
 
@@ -34,7 +34,7 @@ Request-ImageVariation
     [-User <String>]
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
-    [-Token <Object>]
+    [-ApiKey <Object>]
     [<CommonParameters>]
 ```
 
@@ -164,13 +164,14 @@ Position: Named
 Default value: 0
 ```
 
-### -Token
+### -ApiKey
 Specifies API key for authentication.  
 The type of data should `[string]` or `[securestring]`.  
-If not specified, it will try to use `$global:OPENAI_TOKEN` or `$env:OPENAI_TOKEN`
+If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_API_KEY`
 
 ```yaml
 Type: Object
+Aliases: Token
 Required: False
 Position: Named
 ```

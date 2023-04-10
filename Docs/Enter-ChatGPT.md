@@ -15,16 +15,16 @@ Communicate with ChatGPT interactively on the console.
 ```
 Enter-ChatGPT
     [[-Model] <String>]
-    [[-RolePrompt] <String>]
-    [[-Temperature] <Double>]
-    [[-TopP] <Double>]
-    [[-StopSequence] <String[]>]
-    [[-MaxTokens] <Int32>]
-    [[-PresencePenalty] <Double>]
-    [[-FrequencyPenalty] <Double>]
-    [[-TimeoutSec] <Int32>]
-    [[-MaxRetryCount] <Int32>]
-    [[-Token] <Object>]
+    [-RolePrompt <String>]
+    [-Temperature <Double>]
+    [-TopP <Double>]
+    [-StopSequence <String[]>]
+    [-MaxTokens <Int32>]
+    [-PresencePenalty <Double>]
+    [-FrequencyPenalty <Double>]
+    [-TimeoutSec <Int32>]
+    [-MaxRetryCount <Int32>]
+    [-ApiKey <Object>]
     [-NoHeader]
     [<CommonParameters>]
 ```
@@ -37,7 +37,7 @@ This command will wait for user input on the terminal. You type your question to
 
 ### Example 1
 ```powershell
-PS C:\> Enter-ChatGPT -Token 'YOUR_OPENAI_APIKEY' -NoHeader
+PS C:\> Enter-ChatGPT -ApiKey 'YOUR_OPENAI_APIKEY' -NoHeader
 ```
 
 ![Interactive Chat](/Docs/images/InteractiveChat.gif)
@@ -155,13 +155,14 @@ Position: Named
 Default value: 0
 ```
 
-### -Token
+### -ApiKey
 Specifies API key for authentication.  
 The type of data should `[string]` or `[securestring]`.  
-If not specified, it will try to use `$global:OPENAI_TOKEN` or `$env:OPENAI_TOKEN`
+If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_API_KEY`
 
 ```yaml
 Type: Object
+Aliases: Token
 Required: False
 Position: Named
 ```
