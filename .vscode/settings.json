@@ -5,5 +5,9 @@
     "editor.formatOnSave": true,
     "[markdown]": {
         "files.trimTrailingWhitespace": false
+    },
+    "search.exclude": {
+        "**/src": true,
+        "**/TestData": true
     }
 }
