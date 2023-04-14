@@ -28,6 +28,8 @@
 
     # Functions to export from this module
     FunctionsToExport    = @(
+        'ConvertFrom-Token',
+        'ConvertTo-Token',
         'Enter-ChatGPT',
         'Get-OpenAIModels',
         'Request-AudioTranscription',
