@@ -50,6 +50,10 @@ function Request-TextCompletion {
         [double]$FrequencyPenalty,
 
         [Parameter()]
+        [Alias('logit_bias')]
+        [System.Collections.IDictionary]$LogitBias,
+
+        [Parameter()]
         [string]$User,
 
         [Parameter()]
@@ -125,6 +129,9 @@ function Request-TextCompletion {
         }
         if ($PSBoundParameters.ContainsKey('FrequencyPenalty')) {
             $PostBody.frequency_penalty = $FrequencyPenalty
+        }
+        if ($PSBoundParameters.ContainsKey('LogitBias')) {
+            $PostBody.logit_bias = Convert-LogitBiasDictionary -InputObject $LogitBias -Model $Model
         }
         if ($PSBoundParameters.ContainsKey('User')) {
             $PostBody.user = $User
