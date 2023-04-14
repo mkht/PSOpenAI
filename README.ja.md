@@ -30,6 +30,8 @@ Install-Module -Name PSOpenAI
 ----
 ## 使用できる関数
 
++ [ConvertFrom-Token](/Docs/ConvertFrom-Token.md)
++ [ConvertTo-Token](/Docs/ConvertTo-Token.md)
 + [Enter-ChatGPT](/Docs/Enter-ChatGPT.md)
 + [Get-OpenAIModels](/Docs/Get-OpenAIModels.md)
 + [Request-AudioTranscription](/Docs/Request-AudioTranscription.md)
