@@ -221,6 +221,11 @@ PS C:> Request-ChatGPT -Message "Who are you?" -ApiKey '<Put your API key here.>
 
 ----
 ## Changelog
+### 1.7.0
+ - Add new commands [ConvertTo-Token](/Docs/ConvertTo-Token.md) and [ConvertFrom-Token](/Docs/ConvertFrom-Token.md) for converting text and token IDs to each other.  
+   (Using [microsoft/Tokenizer](https://github.com/microsoft/Tokenizer) library.)  
+ - Add `-LogitBias` option for `Request-ChatGPT` and `Request-TextCompletion`.  
+
 ### 1.6.0
  - Add a new command [Request-Embeddings](/Docs/Request-Embeddings.md). 
  - **[IMPORTANT CHANGE]**  
@@ -287,7 +292,6 @@ If you have a feature request or bug report, please tell us in Issue.
 + More docs, samples.
 + Performance improvements.
 + Add GPT-3 fine-tuning support.
-+ Add some missing parameters, such like `logit_bias`.
 + Add an option for change output types / formats.
 + Logs, verbose messages.
 
