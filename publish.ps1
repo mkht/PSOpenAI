@@ -9,7 +9,7 @@ Param (
 
     [Parameter(Mandatory = $false)]
     [ValidateNotNullOrEmpty()]
-    [string[]]$ExcludeFiles = @('.gitignore', 'test.ps1'),
+    [string[]]$ExcludeFiles = @('.gitignore', '.gitmodules', 'test.ps1'),
 
     [switch]$WhatIf
 )
