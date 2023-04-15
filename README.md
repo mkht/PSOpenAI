@@ -52,6 +52,8 @@ Install-Module -Name PSOpenAI
 ----
 ## Usages
 
+See [Docs](/Docs) and [Examples](/Examples) for more detailed and complex scenario descriptions.
+
 ### ChatGPT (Interactive)
 
 Communicate with ChatGPT interactively on the console.  

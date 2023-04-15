@@ -5,7 +5,7 @@ Param (
 
     [Parameter(Mandatory = $false)]
     [ValidateNotNullOrEmpty()]
-    [string[]]$ExcludeDirs = @('.git', '.github', 'Tests', 'Docs', '.vscode', 'src'),
+    [string[]]$ExcludeDirs = @('.git', '.github', 'Tests', 'Docs', 'Examples', '.vscode', 'src'),
 
     [Parameter(Mandatory = $false)]
     [ValidateNotNullOrEmpty()]

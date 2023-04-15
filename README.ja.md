@@ -49,6 +49,8 @@ Install-Module -Name PSOpenAI
 ----
 ## 使い方
 
+より詳細で複雑なシナリオの説明は [Docs](/Docs) および [Examples](/Examples) も参照してください。
+
 ### ChatGPT (インタラクティブ)
 
 コンソール上でインタラクティブにChatGPTと対話します。
