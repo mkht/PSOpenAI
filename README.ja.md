@@ -218,6 +218,11 @@ PS C:> Request-ChatGPT -Message "Who are you?" -ApiKey '<Put your API key here.>
 
 ----
 ## 変更履歴
+### 1.7.0
+ - 新しいコマンド [ConvertTo-Token](/Docs/ConvertTo-Token.md) と [ConvertFrom-Token](/Docs/ConvertFrom-Token.md) を追加。テキストとトークンIDを相互に変換できます。  
+   ([microsoft/Tokenizer](https://github.com/microsoft/Tokenizer) ライブラリを使用しています)  
+ - `-LogitBias` オプションを `Request-ChatGPT` と `Request-TextCompletion`に追加しました  
+
 ### 1.6.0
  - 新しい関数 [Request-Embeddings](/Docs/Request-Embeddings.md) を追加
  - **[重大な変更]**  
