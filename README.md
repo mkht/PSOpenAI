@@ -223,6 +223,17 @@ PS C:> Request-ChatGPT -Message "Who are you?" -ApiKey '<Put your API key here.>
 
 ----
 ## Changelog
+### Unlereased
+ - Add `-Name` option for `Request-ChatGPT`.  
+   This parameter can be used to specify the name of the messenger.  
+   e.g.)  
+   ```PowerShell
+   PS C:/> (Request-ChatGPT -Message 'Do you know my name?' -Name 'Samuel' -Model 'gpt-4-0314' -Temperature 0).Answer
+   Yes, your name is Samuel.
+   ```
+ - Multiple strings can be specified for `-RolePrompt`.
+ - Some minor changes.
+
 ### 1.7.0
  - Add new commands [ConvertTo-Token](/Docs/ConvertTo-Token.md) and [ConvertFrom-Token](/Docs/ConvertFrom-Token.md) for converting text and token IDs to each other.  
    (Using [microsoft/Tokenizer](https://github.com/microsoft/Tokenizer) library.)  

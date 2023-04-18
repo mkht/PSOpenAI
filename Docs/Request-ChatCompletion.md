@@ -15,8 +15,9 @@ Creates a completion for the chat message.
 ```
 Request-ChatGPT
     [-Message] <String>
+    [-Name <String[]>]
     [-Model <String>]
-    [-RolePrompt <String>]
+    [-RolePrompt <String[]>]
     [-Temperature <Double>]
     [-TopP <Double>]
     [-NumberOfAnswers <UInt16>]
@@ -81,6 +82,16 @@ Required: True
 Position: 1
 ```
 
+### -Name
+The name of messanger.  
+This is an optional field, and may not conatin spaces.
+
+```yaml
+Type: String
+Required: False
+Position: Named
+```
+
 ### -Model
 The name of model to use.
 The default value is `gpt-3.5-turbo`.
@@ -96,7 +107,7 @@ Default value: gpt-3.5-turbo
 An optional text to set the behavior of the assistant.
 
 ```yaml
-Type: String
+Type: String[]
 Aliases: system
 Required: False
 Position: Named
@@ -157,7 +168,7 @@ Position: Named
 
 ### -MaxTokens
 The maximum number of tokens allowed for the generated answer.  
-The max value is `4096`.
+Maximum value depends on model. (`4096` for `gpt-3.5-turbo` or `8192` for `gpt-4`)
 
 ```yaml
 Type: Int32
