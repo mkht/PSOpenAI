@@ -51,7 +51,8 @@ function Get-OpenAIModels {
         #region Output
         foreach ($m in $Models) {
             if ($null -eq $m) { continue }
-            # Add custom properties to output object.
+            # Add custom type name and properties to output object.
+            $m.PSObject.TypeNames.Insert(0, 'PSOpenAI.Model')
             if ($unixtime = $m.created -as [long]) {
                 # convert unixtime to [DateTime] for read suitable
                 $m | Add-Member -MemberType NoteProperty -Name 'created' -Value ([System.DateTimeOffset]::FromUnixTimeSeconds($unixtime).LocalDateTime) -Force

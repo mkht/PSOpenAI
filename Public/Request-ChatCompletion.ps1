@@ -225,13 +225,13 @@ function Request-ChatCompletion {
         #endregion
 
         #region Output
-        # Add custom properties to output object.
+        # Add custom type name and properties to output object.
+        $Response.PSObject.TypeNames.Insert(0, 'PSOpenAI.Chat.Completion')
         if ($unixtime = $Response.created -as [long]) {
             # convert unixtime to [DateTime] for read suitable
             $Response | Add-Member -MemberType NoteProperty -Name 'created' -Value ([System.DateTimeOffset]::FromUnixTimeSeconds($unixtime).LocalDateTime) -Force
         }
         $Response | Add-Member -MemberType NoteProperty -Name 'Message' -Value $Message.Trim()
-        $Response | Add-Member -MemberType NoteProperty -Name 'Answer' -Value ([string[]]$ResponseContent.content)
         $Response | Add-Member -MemberType NoteProperty -Name 'History' -Value $Messages.ToArray()
         Write-Output $Response
         #endregion

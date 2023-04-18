@@ -47,8 +47,14 @@
     # Aliases to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no aliases to export.
     AliasesToExport      = @('Request-ChatGPT')
 
+    TypesToProcess       = @(
+        'PSOpenAI.Types.ps1xml'
+    )
+
     # Format files (.ps1xml) to be loaded when importing this module.
-    # FormatsToProcess     = @()
+    # FormatsToProcess     = @(
+    #     'PSOpenAI.Format.ps1xml'
+    # )
 
     # Private data to pass to the module specified in RootModule/ModuleToProcess. This may also contain a PSData hashtable with additional module metadata used by PowerShell.
     PrivateData          = @{

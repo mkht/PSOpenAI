@@ -209,19 +209,16 @@ function Request-TextCompletion {
         catch {
             Write-Error -Exception $_.Exception
         }
-        if ($null -ne $Response.choices) {
-            $ResponseContent = $Response.choices
-        }
         #endregion
 
         #region Output
-        # Add custom properties to output object.
+        # Add custom type name and properties to output object.
+        $Response.PSObject.TypeNames.Insert(0, 'PSOpenAI.Text.Completion')
         if ($unixtime = $Response.created -as [long]) {
             # convert unixtime to [DateTime] for read suitable
             $Response | Add-Member -MemberType NoteProperty -Name 'created' -Value ([System.DateTimeOffset]::FromUnixTimeSeconds($unixtime).LocalDateTime) -Force
         }
         $Response | Add-Member -MemberType NoteProperty -Name 'Prompt' -Value $Prompt
-        $Response | Add-Member -MemberType NoteProperty -Name 'Answer' -Value ([string[]]$ResponseContent.text)
         Write-Output $Response
         #endregion
     }

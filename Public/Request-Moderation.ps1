@@ -83,7 +83,8 @@ function Request-Moderation {
 
         #region Output
         if ($null -ne $Response) {
-            # Add custom properties to output object.
+            # Add custom type name and properties to output object.
+            $Response.PSObject.TypeNames.Insert(0, 'PSOpenAI.Moderation')
             for ($i = 0; $i -lt @($Response.results).Count; $i++) {
                 @($Response.results)[$i] | Add-Member -MemberType NoteProperty -Name 'Text' -Value @($Text)[$i]
             }
