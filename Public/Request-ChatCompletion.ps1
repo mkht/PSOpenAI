@@ -8,6 +8,10 @@ function Request-ChatCompletion {
         [string]$Message,
 
         [Parameter()]
+        [ValidatePattern('^[^\s]*$')]   # name field may not contain spaces
+        [string]$Name,
+
+        [Parameter()]
         [string]$Model = 'gpt-3.5-turbo',
 
         [Parameter()]
@@ -130,10 +134,15 @@ function Request-ChatCompletion {
         # Append past conversations
         foreach ($msg in $History) {
             if ($msg.role -and $msg.content) {
-                $Messages.Add([ordered]@{
-                        role    = $msg.role
-                        content = $msg.content.Trim()
-                    })
+                $tm = [ordered]@{
+                    role    = [string]$msg.role
+                    content = ([string]$msg.content).Trim()
+                }
+                # name is optional
+                if ($msg.user) {
+                    $tm.name = [string]$msg.name
+                }
+                $Messages.Add($tm)
             }
         }
         # Specifies AI role (only if specified)
@@ -146,10 +155,15 @@ function Request-ChatCompletion {
             }
         }
         # Add user message (question)
-        $Messages.Add([ordered]@{
-                role    = 'user'
-                content = $Message.Trim()
-            })
+        $um = [ordered]@{
+            role    = 'user'
+            content = $Message.Trim()
+        }
+        # name poperty is optional
+        if (-not [string]::IsNullOrWhiteSpace($Name)) {
+            $um.name = $Name.Trim()
+        }
+        $Messages.Add($um)
 
         $PostBody.messages = $Messages.ToArray()
         #endregion
