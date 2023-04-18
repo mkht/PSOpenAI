@@ -13,7 +13,7 @@ function Request-ChatCompletion {
         [Parameter()]
         [AllowEmptyString()]
         [Alias('system')]
-        [string]$RolePrompt = '',
+        [string[]]$RolePrompt,
 
         [Parameter()]
         [ValidateRange(0.0, 2.0)]
@@ -137,11 +137,13 @@ function Request-ChatCompletion {
             }
         }
         # Specifies AI role (only if specified)
-        if (-not [string]::IsNullOrWhiteSpace($RolePrompt)) {
-            $Messages.Add([ordered]@{
-                    role    = 'system'
-                    content = $RolePrompt
-                })
+        foreach ($rp in $RolePrompt) {
+            if (-not [string]::IsNullOrWhiteSpace($rp)) {
+                $Messages.Add([ordered]@{
+                        role    = 'system'
+                        content = $rp.Trim()
+                    })
+            }
         }
         # Add user message (question)
         $Messages.Add([ordered]@{
