@@ -13,7 +13,7 @@ Describe 'ConvertFrom-Token' {
             $script:Result = $null
         }
 
-        It 'Encoding: cl100k_base (<Id>)' -Foreach @(
+        It 'Encoding: cl100k_base (<Id>)' -ForEach @(
             @{ Id = 1; Text = ''; Token = @() }
             @{ Id = 2; Text = 'a'; Token = , 64 }
             @{ Id = 3; Text = 'Hello, World! How are you today? 🌍'; Token = (9906, 11, 4435, 0, 2650, 527, 499, 3432, 30, 11410, 234, 235) }
@@ -24,7 +24,7 @@ Describe 'ConvertFrom-Token' {
             ConvertFrom-Token -Token $Token -Encoding 'cl100k_base' | Should -Be $Text
         }
 
-        It 'Encoding: p50k_base (<Id>)' -Foreach @(
+        It 'Encoding: p50k_base (<Id>)' -ForEach @(
             @{ Id = 1; Text = ''; Token = @() }
             @{ Id = 2; Text = 'a'; Token = , 64 }
             @{ Id = 3; Text = 'Hello, World! How are you today? 🌍'; Token = (15496, 11, 2159, 0, 1374, 389, 345, 1909, 30, 12520, 234, 235) }
@@ -35,7 +35,7 @@ Describe 'ConvertFrom-Token' {
             ConvertFrom-Token -Token $Token -Encoding 'p50k_base' | Should -Be $Text
         }
 
-        It 'Encoding: p50k_edit (<Id>)' -Foreach @(
+        It 'Encoding: p50k_edit (<Id>)' -ForEach @(
             @{ Id = 1; Text = ''; Token = @() }
             @{ Id = 2; Text = 'a'; Token = , 64 }
             @{ Id = 3; Text = 'Hello, World! How are you today? 🌍'; Token = (15496, 11, 2159, 0, 1374, 389, 345, 1909, 30, 12520, 234, 235) }
@@ -46,7 +46,7 @@ Describe 'ConvertFrom-Token' {
             ConvertFrom-Token -Token $Token -Encoding 'p50k_edit' | Should -Be $Text
         }
 
-        It 'Encoding: r50k_base (<Id>)' -Foreach @(
+        It 'Encoding: r50k_base (<Id>)' -ForEach @(
             @{ Id = 1; Text = ''; Token = @() }
             @{ Id = 2; Text = 'a'; Token = , 64 }
             @{ Id = 3; Text = 'Hello, World! How are you today? 🌍'; Token = (15496, 11, 2159, 0, 1374, 389, 345, 1909, 30, 12520, 234, 235) }
@@ -57,7 +57,7 @@ Describe 'ConvertFrom-Token' {
             ConvertFrom-Token -Token $Token -Encoding 'r50k_base' | Should -Be $Text
         }
 
-        It 'Encoding: gpt2 (<Id>)' -Foreach @(
+        It 'Encoding: gpt2 (<Id>)' -ForEach @(
             @{ Id = 1; Text = ''; Token = @() }
             @{ Id = 2; Text = 'a'; Token = , 64 }
             @{ Id = 3; Text = 'Hello, World! How are you today? 🌍'; Token = (15496, 11, 2159, 0, 1374, 389, 345, 1909, 30, 12520, 234, 235) }
@@ -71,6 +71,11 @@ Describe 'ConvertFrom-Token' {
         It 'Input from pipeline' {
             $script:Result = (9468, 235, 237, 9468, 235, 236, 9468, 235, 238, 9468, 235, 232, 9468, 235, 233, 9468, 235, 234, 9468, 235, 231, 9468, 235, 229, 9468, 235, 241, 9468, 235, 230, 9468, 235, 240, 9468, 235, 239) | ConvertFrom-Token
             $script:Result | Should -Be '🍏🍎🍐🍊🍋🍌🍉🍇🍓🍈🍒🍑'
+        }
+
+        It 'AsArray option' {
+            $script:Result = (9906, 11, 4435, 0) | ConvertFrom-Token -AsArray
+            $script:Result | Should -Be @('Hello', ',', ' world', '!')
         }
     }
 }

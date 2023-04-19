@@ -17,6 +17,7 @@ Decode tokens to original text.
 ConvertFrom-Token
     [-Token] <Int32[]>
     [[-Encoding] <String>]
+    [-AsArray]
     [<CommonParameters>]
 ```
 
@@ -25,6 +26,7 @@ ConvertFrom-Token
 ConvertFrom-Token
     [-Token] <Int32[]>
     [-Model] <String>
+    [-AsArray]
     [<CommonParameters>]
 ```
 
@@ -81,6 +83,16 @@ Parameter Sets: model
 Required: True
 Position: 1
 Default value: None
+```
+
+### -AsArray
+If set, output as an array of strings decoded token by token.
+
+```yaml
+Type: SwitchParameter
+Required: False
+Position: Named
+Default value: False
 ```
 
 ### CommonParameters
