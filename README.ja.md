@@ -220,6 +220,19 @@ PS C:> Request-ChatGPT -Message "Who are you?" -ApiKey '<Put your API key here.>
 
 ----
 ## 変更履歴
+### 1.8.0
+ - `Request-ChatGPT`に`-Name`オプションを追加  
+   ChatGPTにユーザの名前を指示することができます  
+   使用例.)
+   ```PowerShell
+   PS C:/> (Request-ChatGPT -Message 'Do you know my name?' -Name 'Samuel' -Model 'gpt-4-0314' -Temperature 0).Answer
+   Yes, your name is Samuel.
+   ```
+ - `Request-ChatGPT`の`-Message`パラメータを必須ではなくオプションにしました。またパイプラインから入力可能にしました
+ - `Request-ChatGPT`の`-RolePrompt`に複数の文字列を指定可能にしました  
+ - `ConvertFrom-Token`に`-AsArray`を追加    
+ - いくつかの細かい変更
+
 ### 1.7.0
  - 新しいコマンド [ConvertTo-Token](/Docs/ConvertTo-Token.md) と [ConvertFrom-Token](/Docs/ConvertFrom-Token.md) を追加。テキストとトークンIDを相互に変換できます。  
    ([microsoft/Tokenizer](https://github.com/microsoft/Tokenizer) ライブラリを使用しています)  

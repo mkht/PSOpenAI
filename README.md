@@ -223,7 +223,7 @@ PS C:> Request-ChatGPT -Message "Who are you?" -ApiKey '<Put your API key here.>
 
 ----
 ## Changelog
-### Unlereased
+### 1.8.0
  - Add `-Name` option for `Request-ChatGPT`.  
    This parameter can be used to specify the name of the messenger.  
    e.g.)  

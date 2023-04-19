@@ -47,6 +47,17 @@ It cannot be specified with the model name.</maml:para>
           </dev:type>
           <dev:defaultValue>cl100k_base</dev:defaultValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>AsArray</maml:name>
+          <maml:description>
+            <maml:para>If set, output as an array of strings decoded token by token.</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
       </command:syntaxItem>
       <command:syntaxItem>
         <maml:name>ConvertFrom-Token</maml:name>
@@ -74,6 +85,17 @@ It cannot be specified with the encoding name.</maml:para>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>AsArray</maml:name>
+          <maml:description>
+            <maml:para>If set, output as an array of strings decoded token by token.</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
         </command:parameter>
       </command:syntaxItem>
     </command:syntax>
@@ -115,6 +137,18 @@ It cannot be specified with the encoding name.</maml:para>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>AsArray</maml:name>
+        <maml:description>
+          <maml:para>If set, output as an array of strings decoded token by token.</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
       </command:parameter>
     </command:parameters>
     <command:inputTypes>
@@ -1430,10 +1464,23 @@ https://platform.openai.com/docs/guides/chat/chat-completions</maml:para>
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Request-ChatCompletion</maml:name>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="1" aliases="none">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValueFromPipeline)" position="1" aliases="none">
           <maml:name>Message</maml:name>
           <maml:description>
-            <maml:para>(Required) The messages to generate chat completions.</maml:para>
+            <maml:para>The messages to generate chat completions.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Name</maml:name>
+          <maml:description>
+            <maml:para>The name of messanger.
+This is an optional field, and may not conatin spaces.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1459,9 +1506,9 @@ https://platform.openai.com/docs/guides/chat/chat-completions</maml:para>
           <maml:description>
             <maml:para>An optional text to set the behavior of the assistant.</maml:para>
           </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>String[]</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -1532,7 +1579,7 @@ The default value is `1`.</maml:para>
           <maml:name>MaxTokens</maml:name>
           <maml:description>
             <maml:para>The maximum number of tokens allowed for the generated answer.
-The max value is `4096`.</maml:para>
+Maximum value depends on model. (`4096` for `gpt-3.5-turbo` or `8192` for `gpt-4`)</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -1637,13 +1684,38 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValueFromPipeline)" position="named" aliases="none">
+          <maml:name>History</maml:name>
+          <maml:description>
+            <maml:para>An object for keeping the conversation history.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Object[]</command:parameterValue>
+          <dev:type>
+            <maml:name>Object[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="1" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValueFromPipeline)" position="1" aliases="none">
         <maml:name>Message</maml:name>
         <maml:description>
-          <maml:para>(Required) The messages to generate chat completions.</maml:para>
+          <maml:para>The messages to generate chat completions.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Name</maml:name>
+        <maml:description>
+          <maml:para>The name of messanger.
+This is an optional field, and may not conatin spaces.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1669,9 +1741,9 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
         <maml:description>
           <maml:para>An optional text to set the behavior of the assistant.</maml:para>
         </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>String[]</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -1743,7 +1815,7 @@ The default value is `1`.</maml:para>
         <maml:name>MaxTokens</maml:name>
         <maml:description>
           <maml:para>The maximum number of tokens allowed for the generated answer.
-The max value is `4096`.</maml:para>
+Maximum value depends on model. (`4096` for `gpt-3.5-turbo` or `8192` for `gpt-4`)</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
@@ -1844,6 +1916,18 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
         <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
         <dev:type>
           <maml:name>Object</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValueFromPipeline)" position="named" aliases="none">
+        <maml:name>History</maml:name>
+        <maml:description>
+          <maml:para>An object for keeping the conversation history.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Object[]</command:parameterValue>
+        <dev:type>
+          <maml:name>Object[]</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
