@@ -231,7 +231,9 @@ PS C:> Request-ChatGPT -Message "Who are you?" -ApiKey '<Put your API key here.>
    PS C:/> (Request-ChatGPT -Message 'Do you know my name?' -Name 'Samuel' -Model 'gpt-4-0314' -Temperature 0).Answer
    Yes, your name is Samuel.
    ```
+ - Change the `-Message` parameter of `Request-ChatGPT` to optional and accepts input from pipeline by property name.  
  - Multiple strings can be specified for `-RolePrompt`.
+ - Add `-AsArray` option for `ConvertFrom-Token`.  
  - Some minor changes.
 
 ### 1.7.0
