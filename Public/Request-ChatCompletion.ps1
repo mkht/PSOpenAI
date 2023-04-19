@@ -139,7 +139,7 @@ function Request-ChatCompletion {
                     content = ([string]$msg.content).Trim()
                 }
                 # name is optional
-                if ($msg.user) {
+                if ($msg.name) {
                     $tm.name = [string]$msg.name
                 }
                 $Messages.Add($tm)
