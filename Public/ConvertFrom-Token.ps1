@@ -11,7 +11,10 @@ function ConvertFrom-Token {
 
         [Parameter(Mandatory = $false, Position = 1, ParameterSetName = 'encoding')]
         [ValidateSet('cl100k_base', 'p50k_base', 'p50k_edit', 'r50k_base', 'gpt2')]
-        [string]$Encoding = 'cl100k_base'
+        [string]$Encoding = 'cl100k_base',
+
+        [Parameter()]
+        [switch]$AsArray
     )
 
     begin {
@@ -49,18 +52,30 @@ function ConvertFrom-Token {
     }
 
     process {
-        foreach ($t in $Token) {
-            $TokenList.Add($t)
+        try {
+            foreach ($t in $Token) {
+                if (-not $AsArray) {
+                    $TokenList.Add($t)
+                }
+                else {
+                    [int[]]$t_array = , $t
+                    $Tokenizer.Decode($t_array)
+                }
+            }
+        }
+        catch {
+            Write-Error -Exception $_.Exception
         }
     }
 
     end {
-        if ($null -eq $Tokenizer) {
-            $e = [System.InvalidOperationException]::new('Toknizer object does not initilized.')
-            Write-Error -Exception $e
-            return
+        if (-not $AsArray) {
+            try {
+                $Tokenizer.Decode($TokenList.ToArray())
+            }
+            catch {
+                Write-Error -Exception $_.Exception
+            }
         }
-
-        $Tokenizer.Decode($TokenList.ToArray())
     }
 }
