@@ -3,7 +3,7 @@ function Request-ChatCompletion {
     [OutputType([pscustomobject])]
     [Alias('Request-ChatGPT')]
     param (
-        [Parameter(Mandatory = $true, Position = 0)]
+        [Parameter(Mandatory = $false, Position = 0, ValueFromPipelineByPropertyName = $true)]
         [ValidateNotNullOrEmpty()]
         [string]$Message,
 
@@ -86,10 +86,9 @@ function Request-ChatCompletion {
     }
 
     process {
-        # Message is required
-        if ([string]::IsNullOrWhiteSpace($Message)) {
-            Write-Error -Exception ([System.ArgumentException]::new('"Message" property is required.'))
-            return
+        # Warning
+        if ($PSBoundParameters.ContainsKey('Name') -and (-not $PSBoundParameters.ContainsKey('Message'))) {
+            Write-Warning 'Name parameter is ignored because the Message parameter is not specified.'
         }
 
         #region Construct parameters for API request
@@ -155,15 +154,22 @@ function Request-ChatCompletion {
             }
         }
         # Add user message (question)
-        $um = [ordered]@{
-            role    = 'user'
-            content = $Message.Trim()
+        if (-not [string]::IsNullOrWhiteSpace($Message)) {
+            $um = [ordered]@{
+                role    = 'user'
+                content = $Message.Trim()
+            }
+            # name poperty is optional
+            if (-not [string]::IsNullOrWhiteSpace($Name)) {
+                $um.name = $Name.Trim()
+            }
+            $Messages.Add($um)
         }
-        # name poperty is optional
-        if (-not [string]::IsNullOrWhiteSpace($Name)) {
-            $um.name = $Name.Trim()
+
+        # Error if messages is empty.
+        if ($Messages.Count -eq 0) {
+            Write-Error 'No message is specified. You must specify one or more messages.'
         }
-        $Messages.Add($um)
 
         $PostBody.messages = $Messages.ToArray()
         #endregion

@@ -73,13 +73,13 @@ PS C:\> Request-ChatGPT 'Please describe ChatGPT in 100 charactors.' -Stream | W
 ## PARAMETERS
 
 ### -Message
-(Required)
 The messages to generate chat completions.
 
 ```yaml
 Type: String
-Required: True
+Required: False
 Position: 1
+Accept pipeline input: True (ByValueFromPipeline)
 ```
 
 ### -Name
@@ -258,6 +258,15 @@ Required: False
 Position: Named
 ```
 
+### -History
+An object for keeping the conversation history.
+
+```yaml
+Type: Object[]
+Required: False
+Position: Named
+Accept pipeline input: True (ByValueFromPipeline)
+```
 
 ## INPUTS
 
