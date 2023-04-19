@@ -209,6 +209,9 @@ function Request-TextCompletion {
         catch {
             Write-Error -Exception $_.Exception
         }
+        if ($null -ne $Response.choices) {
+            $ResponseContent = $Response.choices
+        }
         #endregion
 
         #region Output
@@ -219,6 +222,7 @@ function Request-TextCompletion {
             $Response | Add-Member -MemberType NoteProperty -Name 'created' -Value ([System.DateTimeOffset]::FromUnixTimeSeconds($unixtime).LocalDateTime) -Force
         }
         $Response | Add-Member -MemberType NoteProperty -Name 'Prompt' -Value $Prompt
+        $Response | Add-Member -MemberType NoteProperty -Name 'Answer' -Value ([string[]]$ResponseContent.text)
         Write-Output $Response
         #endregion
     }

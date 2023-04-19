@@ -1,39 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Types>
     <Type>
-        <Name>PSOpenAI.Chat.Completion</Name>
-        <Members>
-            <ScriptProperty>
-                <Name>Answer</Name>
-                <GetScriptBlock>
-                    $this.choices.message.content
-                </GetScriptBlock>
-            </ScriptProperty>
-        </Members>
-    </Type>
-    <Type>
-        <Name>PSOpenAI.Text.Completion</Name>
-        <Members>
-            <ScriptProperty>
-                <Name>Answer</Name>
-                <GetScriptBlock>
-                    $this.choices.text
-                </GetScriptBlock>
-            </ScriptProperty>
-        </Members>
-    </Type>
-    <Type>
-        <Name>PSOpenAI.Text.Edit</Name>
-        <Members>
-            <ScriptProperty>
-                <Name>Answer</Name>
-                <GetScriptBlock>
-                    $this.choices.text
-                </GetScriptBlock>
-            </ScriptProperty>
-        </Members>
-    </Type>
-    <Type>
         <Name>PSOpenAI.Model</Name>
         <Members>
             <MemberSet>
