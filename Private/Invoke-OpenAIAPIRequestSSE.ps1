@@ -33,7 +33,11 @@ function Invoke-OpenAIAPIRequestSSE {
         [int]$MaxRetryCount = 0,
 
         [Parameter()]
-        [int]$RetryCount = 0
+        [int]$RetryCount = 0,
+
+        [Parameter()]
+        [ValidateSet('openai', 'azure', 'azure_ad')]
+        [string]$AuthType = 'openai'
     )
 
     # Decrypt securestring
@@ -43,7 +47,19 @@ function Invoke-OpenAIAPIRequestSSE {
     $HttpClient = [System.Net.Http.HttpClient]::new()
     $RequestMessage = [System.Net.Http.HttpRequestMessage]::new($Method, $Uri)
     $RequestMessage.Content = [System.Net.Http.StringContent]::new(($Body | ConvertTo-Json -Compress), [Encoding]::UTF8, $ContentType)
-    $RequestMessage.Headers.Authorization = [System.Net.Http.Headers.AuthenticationHeaderValue]::new('Bearer', $PlainToken)
+
+    switch ($AuthType) {
+        'openai' {
+            $RequestMessage.Headers.Authorization = [System.Net.Http.Headers.AuthenticationHeaderValue]::new('Bearer', $PlainToken)
+        }
+        'azure' {
+            $RequestMessage.Headers.Add('api-key', $PlainToken)
+        }
+        'azure_ad' {
+            $RequestMessage.Headers.Authorization = [System.Net.Http.Headers.AuthenticationHeaderValue]::new('Bearer', $PlainToken)
+        }
+    }
+
     # Set timeout
     $cts = [System.Threading.CancellationTokenSource]::new()
     if ($TimeoutSec -gt 0 -and $TimeoutSec -lt ([int]::MaxValue / 1000)) {

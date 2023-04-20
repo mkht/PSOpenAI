@@ -33,7 +33,11 @@ function Invoke-OpenAIAPIRequest {
         [int]$RetryCount = 0,
 
         [Parameter()]
-        [bool]$Stream = $false
+        [bool]$Stream = $false,
+
+        [Parameter()]
+        [ValidateSet('openai', 'azure', 'azure_ad')]
+        [string]$AuthType = 'openai'
     )
 
     #region Assert selected model is discontinued
@@ -49,6 +53,7 @@ function Invoke-OpenAIAPIRequest {
             -Uri $Uri `
             -ContentType $ContentType `
             -ApiKey $ApiKey `
+            -AuthType $AuthType `
             -Body $Body `
             -TimeoutSec $TimeoutSec `
             -MaxRetryCount $MaxRetryCount
@@ -59,12 +64,28 @@ function Invoke-OpenAIAPIRequest {
     elseif ($PSVersionTable.PSVersion.Major -ge 6) {
         # Construct parameter for Invoke-WebRequest
         $IwrParam = @{
-            Method         = $Method
-            Uri            = $Uri
-            ContentType    = $ContentType
-            TimeoutSec     = $TimeoutSec
-            Authentication = 'Bearer'
-            Token          = $ApiKey
+            Method      = $Method
+            Uri         = $Uri
+            ContentType = $ContentType
+            TimeoutSec  = $TimeoutSec
+        }
+
+        switch ($AuthType) {
+            'openai' {
+                $IwrParam.Authentication = 'Bearer'
+                $IwrParam.Token = $ApiKey
+            }
+            'azure' {
+                # decrypt securestring
+                $bstr = [Marshal]::SecureStringToBSTR($ApiKey)
+                $PlainToken = [Marshal]::PtrToStringBSTR($bstr)
+                $IwrParam.Headers = @{'api-key' = $PlainToken }
+                $bstr = $PlainToken = $null
+            }
+            'azure_ad' {
+                $IwrParam.Authentication = 'Bearer'
+                $IwrParam.Token = $ApiKey
+            }
         }
 
         if ($null -ne $Body) {
@@ -123,7 +144,6 @@ function Invoke-OpenAIAPIRequest {
         # decrypt securestring
         $bstr = [Marshal]::SecureStringToBSTR($ApiKey)
         $PlainToken = [Marshal]::PtrToStringBSTR($bstr)
-        $headers = @{Authorization = "Bearer $PlainToken" }
 
         # Construct parameter for Invoke-WebRequest
         $IwrParam = @{
@@ -131,9 +151,21 @@ function Invoke-OpenAIAPIRequest {
             Uri             = $Uri
             ContentType     = $ContentType
             TimeoutSec      = $TimeoutSec
-            Headers         = $headers
             UseBasicParsing = $true
         }
+
+        switch ($AuthType) {
+            'openai' {
+                $IwrParam.Headers = @{Authorization = "Bearer $PlainToken" }
+            }
+            'azure' {
+                $IwrParam.Headers = @{'api-key' = $PlainToken }
+            }
+            'azure_ad' {
+                $IwrParam.Headers = @{Authorization = "Bearer $PlainToken" }
+            }
+        }
+
         if ($null -ne $Body) {
             if ($ContentType -match 'multipart/form-data') {
                 $Boundary = New-MultipartFormBoundary
@@ -181,7 +213,7 @@ function Invoke-OpenAIAPIRequest {
             return
         }
         finally {
-            $bstr = $PlainToken = $headers = $null
+            $bstr = $PlainToken = $null
         }
         #endregion
 
