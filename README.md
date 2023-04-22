@@ -33,6 +33,7 @@ Install-Module -Name PSOpenAI
 ----
 ## Functions
 
+### OpenAI
 + [ConvertFrom-Token](/Docs/ConvertFrom-Token.md)
 + [ConvertTo-Token](/Docs/ConvertTo-Token.md)
 + [Enter-ChatGPT](/Docs/Enter-ChatGPT.md)
@@ -48,6 +49,12 @@ Install-Module -Name PSOpenAI
 + [Request-Moderation](/Docs/Request-Moderation.md)
 + [Request-TextCompletion](/Docs/Request-TextCompletion.md)
 + [Request-TextEdit](/Docs/Request-TextEdit.md)
+
+### Azure OpenAI Service
++ [Request-AzureChatCompletion](/Docs/Request-AzureChatCompletion.md)
++ [Request-AzureChatGPT](/Docs/Request-AZureChatCompletion.md)
++ [Request-AzureEmbeddings](/Docs/Request-AzureEmbeddings.md)
++ [Request-AzureTextCompletion](/Docs/Request-AzureTextCompletion.md)
 
 ----
 ## Usages
@@ -223,6 +230,12 @@ PS C:> Request-ChatGPT -Message "Who are you?" -ApiKey '<Put your API key here.>
 
 ----
 ## Changelog
+### Unreleased
+ - Now PSOpenAI has experimental supports for Azure OpenAI Service. These new commands added.  
+   + [Request-AzureChatGPT](/Docs/Request-AzureChatCompletion.md)
+   + [Request-AzureEmbeddings](/Docs/Request-AzureEmbeddings.md)
+   + [Request-AzureTextCompletion](/Docs/Request-AzureTextCompletion.md)
+
 ### 1.8.0
  - Add `-Name` option for `Request-ChatGPT`.  
    This parameter can be used to specify the name of the messenger.  
