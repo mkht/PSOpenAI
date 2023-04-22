@@ -30,6 +30,7 @@ Install-Module -Name PSOpenAI
 ----
 ## 使用できる関数
 
+### OpenAI
 + [ConvertFrom-Token](/Docs/ConvertFrom-Token.md)
 + [ConvertTo-Token](/Docs/ConvertTo-Token.md)
 + [Enter-ChatGPT](/Docs/Enter-ChatGPT.md)
@@ -45,6 +46,12 @@ Install-Module -Name PSOpenAI
 + [Request-Moderation](/Docs/Request-Moderation.md)
 + [Request-TextCompletion](/Docs/Request-TextCompletion.md)
 + [Request-TextEdit](/Docs/Request-TextEdit.md)
+
+### Azure OpenAI Service
++ [Request-AzureChatCompletion](/Docs/Request-AzureChatCompletion.md)
++ [Request-AzureChatGPT](/Docs/Request-AZureChatCompletion.md)
++ [Request-AzureEmbeddings](/Docs/Request-AzureEmbeddings.md)
++ [Request-AzureTextCompletion](/Docs/Request-AzureTextCompletion.md)
 
 ----
 ## 使い方
@@ -220,6 +227,12 @@ PS C:> Request-ChatGPT -Message "Who are you?" -ApiKey '<Put your API key here.>
 
 ----
 ## 変更履歴
+### 1.9.0
+ - 以下の関数で Azure OpenAI Service を試験的にサポートします
+   + [Request-AzureChatGPT](/Docs/Request-AzureChatCompletion.md)
+   + [Request-AzureEmbeddings](/Docs/Request-AzureEmbeddings.md)
+   + [Request-AzureTextCompletion](/Docs/Request-AzureTextCompletion.md)
+
 ### 1.8.0
  - `Request-ChatGPT`に`-Name`オプションを追加  
    ChatGPTにユーザの名前を指示することができます  

@@ -230,7 +230,7 @@ PS C:> Request-ChatGPT -Message "Who are you?" -ApiKey '<Put your API key here.>
 
 ----
 ## Changelog
-### Unreleased
+### 1.9.0
  - Now PSOpenAI has experimental supports for Azure OpenAI Service. These new commands added.  
    + [Request-AzureChatGPT](/Docs/Request-AzureChatCompletion.md)
    + [Request-AzureEmbeddings](/Docs/Request-AzureEmbeddings.md)

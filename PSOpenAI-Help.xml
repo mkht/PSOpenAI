@@ -1450,6 +1450,1518 @@ Hello, My name is tanaka yoshio.</dev:code>
   </command:command>
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
     <command:details>
+      <command:name>Request-AzureChatCompletion</command:name>
+      <command:verb>Request</command:verb>
+      <command:noun>AzureChatCompletion</command:noun>
+      <maml:description>
+        <maml:para>Creates a completion for the chat message.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>Creates a completion for the chat message by Azure OpenAI Service.
+https://learn.microsoft.com/en-us/azure/cognitive-services/openai/reference?source=recommendations#chat-completions</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Request-AzureChatCompletion</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValueFromPipeline)" position="1" aliases="none">
+          <maml:name>Message</maml:name>
+          <maml:description>
+            <maml:para>The messages to generate chat completions.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Name</maml:name>
+          <maml:description>
+            <maml:para>The name of messanger.
+This is an optional field, and may not conatin spaces.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Engine">
+          <maml:name>Deployment</maml:name>
+          <maml:description>
+            <maml:para>The deployment name you chose when you deployed the model.
+Deployments must be created in Azure Portal in advance.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="system">
+          <maml:name>RolePrompt</maml:name>
+          <maml:description>
+            <maml:para>An optional text to set the behavior of the assistant.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Temperature</maml:name>
+          <maml:description>
+            <maml:para>What sampling temperature to use, between `0` and `2`.
+Higher values like `0.8` will make the output more random, while lower values like `0.2` will make it more focused and deterministic.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Double</command:parameterValue>
+          <dev:type>
+            <maml:name>Double</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="top_p">
+          <maml:name>TopP</maml:name>
+          <maml:description>
+            <maml:para>An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top_p probability mass.
+So `0.1` means only the tokens comprising the top `10%` probability mass are considered.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Double</command:parameterValue>
+          <dev:type>
+            <maml:name>Double</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="n">
+          <maml:name>NumberOfAnswers</maml:name>
+          <maml:description>
+            <maml:para>How many chat completion choices to generate for each input message.
+The default value is `1`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">UInt16</command:parameterValue>
+          <dev:type>
+            <maml:name>UInt16</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>1</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Stream</maml:name>
+          <maml:description>
+            <maml:para>If set, partial message deltas will be sent, like in ChatGPT.</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="stop">
+          <maml:name>StopSequence</maml:name>
+          <maml:description>
+            <maml:para>Up to 4 sequences where the API will stop generating further tokens. The returned text will not contain the stop sequence.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="max_tokens">
+          <maml:name>MaxTokens</maml:name>
+          <maml:description>
+            <maml:para>The maximum number of tokens allowed for the generated answer.
+Maximum value depends on model. (`4096` for `gpt-3.5-turbo` or `8192` for `gpt-4`)</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="presence_penalty">
+          <maml:name>PresencePenalty</maml:name>
+          <maml:description>
+            <maml:para>Number between `-2.0` and `2.0`.
+Positive values penalize new tokens based on whether they appear in the text so far, increasing the model's likelihood to talk about new topics.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Double</command:parameterValue>
+          <dev:type>
+            <maml:name>Double</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="frequency_penalty">
+          <maml:name>FrequencyPenalty</maml:name>
+          <maml:description>
+            <maml:para>Number between `-2.0` and `2.0`.
+Positive values penalize new tokens based on their existing frequency in the text so far, decreasing the model's likelihood to repeat the same line verbatim.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Double</command:parameterValue>
+          <dev:type>
+            <maml:name>Double</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="logit_bias">
+          <maml:name>LogitBias</maml:name>
+          <maml:description>
+            <maml:para>Modify the likelihood of specified tokens appearing in the completion.
+Accepts a maps of tokens to an associated bias value from `-100` to `100`. You can use `ConvertTo-Token` to convert text to token IDs. Mathematically, the bias is added to the logits generated by the model prior to sampling. The exact effect will vary per model, but values between `-1` and `1` should decrease or increase likelihood of selection; values like `-100` or `100` should result in a ban or exclusive selection of the relevant token.
+As an example, you can pass like so: `@{23182 = 20; 88847 = -100}`
+ID 23182 maps to "apple" and ID 88847 maps to "banana". Thus, this example increases the likelihood of the word "apple" being included in the response from the AI and greatly reduces the likelihood of the word "banana" being included.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">IDictionary</command:parameterValue>
+          <dev:type>
+            <maml:name>IDictionary</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>User</maml:name>
+          <maml:description>
+            <maml:para>A unique identifier representing for your end-user. This will help Azure OpenAI monitor and detect abuse.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>TimeoutSec</maml:name>
+          <maml:description>
+            <maml:para>Specifies how long the request can be pending before it times out.
+The default value is `0` (infinite).</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>0</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>MaxRetryCount</maml:name>
+          <maml:description>
+            <maml:para>Number between `0` and `100`.
+Specifies the maximum number of retries if the request fails.
+The default value is `0` (No retry).
+Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>0</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>ApiBase</maml:name>
+          <maml:description>
+            <maml:para>Specifies yhe name of your Azure OpenAI resource endpoint such like:  `https://{your-resource-name}.openai.azure.com/`
+If not specified, it will try to use `$global:OPENAI_API_BASE` or `$env:OPENAI_API_BASE`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Uri</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
+          <maml:name>ApiVersion</maml:name>
+          <maml:description>
+            <maml:para>The API version to use for this operation.
+The default value is `2023-03-15-preview`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+          <dev:type>
+            <maml:name>string</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>"2023-03-15-preview"</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
+          <maml:name>ApiKey</maml:name>
+          <maml:description>
+            <maml:para>Specifies API key for authentication.
+The type of data should `[string]` or `[securestring]`.
+If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_API_KEY`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
+          <dev:type>
+            <maml:name>Object</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>AuthType</maml:name>
+          <maml:description>
+            <maml:para>Specifies the authentication type.
+You can choose from `azure` or `azure_ad`.
+The default value is `azure`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+          <dev:type>
+            <maml:name>string</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>"azure"</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValueFromPipeline)" position="named" aliases="none">
+          <maml:name>History</maml:name>
+          <maml:description>
+            <maml:para>An object for keeping the conversation history.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Object[]</command:parameterValue>
+          <dev:type>
+            <maml:name>Object[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValueFromPipeline)" position="1" aliases="none">
+        <maml:name>Message</maml:name>
+        <maml:description>
+          <maml:para>The messages to generate chat completions.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Name</maml:name>
+        <maml:description>
+          <maml:para>The name of messanger.
+This is an optional field, and may not conatin spaces.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Engine">
+        <maml:name>Deployment</maml:name>
+        <maml:description>
+          <maml:para>The deployment name you chose when you deployed the model.
+Deployments must be created in Azure Portal in advance.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="system">
+        <maml:name>RolePrompt</maml:name>
+        <maml:description>
+          <maml:para>An optional text to set the behavior of the assistant.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+        <dev:type>
+          <maml:name>String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Temperature</maml:name>
+        <maml:description>
+          <maml:para>What sampling temperature to use, between `0` and `2`.
+Higher values like `0.8` will make the output more random, while lower values like `0.2` will make it more focused and deterministic.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Double</command:parameterValue>
+        <dev:type>
+          <maml:name>Double</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="top_p">
+        <maml:name>TopP</maml:name>
+        <maml:description>
+          <maml:para>An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top_p probability mass.
+So `0.1` means only the tokens comprising the top `10%` probability mass are considered.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Double</command:parameterValue>
+        <dev:type>
+          <maml:name>Double</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="n">
+        <maml:name>NumberOfAnswers</maml:name>
+        <maml:description>
+          <maml:para>How many chat completion choices to generate for each input message.
+The default value is `1`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">UInt16</command:parameterValue>
+        <dev:type>
+          <maml:name>UInt16</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>1</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Stream</maml:name>
+        <maml:description>
+          <maml:para>If set, partial message deltas will be sent, like in ChatGPT.</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="stop">
+        <maml:name>StopSequence</maml:name>
+        <maml:description>
+          <maml:para>Up to 4 sequences where the API will stop generating further tokens. The returned text will not contain the stop sequence.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+        <dev:type>
+          <maml:name>String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="max_tokens">
+        <maml:name>MaxTokens</maml:name>
+        <maml:description>
+          <maml:para>The maximum number of tokens allowed for the generated answer.
+Maximum value depends on model. (`4096` for `gpt-3.5-turbo` or `8192` for `gpt-4`)</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="presence_penalty">
+        <maml:name>PresencePenalty</maml:name>
+        <maml:description>
+          <maml:para>Number between `-2.0` and `2.0`.
+Positive values penalize new tokens based on whether they appear in the text so far, increasing the model's likelihood to talk about new topics.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Double</command:parameterValue>
+        <dev:type>
+          <maml:name>Double</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="frequency_penalty">
+        <maml:name>FrequencyPenalty</maml:name>
+        <maml:description>
+          <maml:para>Number between `-2.0` and `2.0`.
+Positive values penalize new tokens based on their existing frequency in the text so far, decreasing the model's likelihood to repeat the same line verbatim.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Double</command:parameterValue>
+        <dev:type>
+          <maml:name>Double</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="logit_bias">
+        <maml:name>LogitBias</maml:name>
+        <maml:description>
+          <maml:para>Modify the likelihood of specified tokens appearing in the completion.
+Accepts a maps of tokens to an associated bias value from `-100` to `100`. You can use `ConvertTo-Token` to convert text to token IDs. Mathematically, the bias is added to the logits generated by the model prior to sampling. The exact effect will vary per model, but values between `-1` and `1` should decrease or increase likelihood of selection; values like `-100` or `100` should result in a ban or exclusive selection of the relevant token.
+As an example, you can pass like so: `@{23182 = 20; 88847 = -100}`
+ID 23182 maps to "apple" and ID 88847 maps to "banana". Thus, this example increases the likelihood of the word "apple" being included in the response from the AI and greatly reduces the likelihood of the word "banana" being included.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">IDictionary</command:parameterValue>
+        <dev:type>
+          <maml:name>IDictionary</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>User</maml:name>
+        <maml:description>
+          <maml:para>A unique identifier representing for your end-user. This will help Azure OpenAI monitor and detect abuse.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>TimeoutSec</maml:name>
+        <maml:description>
+          <maml:para>Specifies how long the request can be pending before it times out.
+The default value is `0` (infinite).</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>0</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>MaxRetryCount</maml:name>
+        <maml:description>
+          <maml:para>Number between `0` and `100`.
+Specifies the maximum number of retries if the request fails.
+The default value is `0` (No retry).
+Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>0</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>ApiBase</maml:name>
+        <maml:description>
+          <maml:para>Specifies yhe name of your Azure OpenAI resource endpoint such like:  `https://{your-resource-name}.openai.azure.com/`
+If not specified, it will try to use `$global:OPENAI_API_BASE` or `$env:OPENAI_API_BASE`</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
+        <dev:type>
+          <maml:name>System.Uri</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
+        <maml:name>ApiVersion</maml:name>
+        <maml:description>
+          <maml:para>The API version to use for this operation.
+The default value is `2023-03-15-preview`</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+        <dev:type>
+          <maml:name>string</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>"2023-03-15-preview"</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
+        <maml:name>ApiKey</maml:name>
+        <maml:description>
+          <maml:para>Specifies API key for authentication.
+The type of data should `[string]` or `[securestring]`.
+If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_API_KEY`</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
+        <dev:type>
+          <maml:name>Object</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>AuthType</maml:name>
+        <maml:description>
+          <maml:para>Specifies the authentication type.
+You can choose from `azure` or `azure_ad`.
+The default value is `azure`</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+        <dev:type>
+          <maml:name>string</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>"azure"</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValueFromPipeline)" position="named" aliases="none">
+        <maml:name>History</maml:name>
+        <maml:description>
+          <maml:para>An object for keeping the conversation history.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Object[]</command:parameterValue>
+        <dev:type>
+          <maml:name>Object[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes />
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>[pscustomobject]</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
+        <dev:code></dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>Example 1: Ask one question to Azure OpenAI Service, and get an answer.</maml:title>
+        <dev:code>PS C:\&gt; Request-AzureChatGPT -Message "Who are you?" -Deployment 'YourDeploymentName' | select Answer
+
+I am an AI language model created by OpenAI, designed to assist with ...</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Request-AzureChatCompletion.md</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>https://learn.microsoft.com/en-us/azure/cognitive-services/openai/reference?source=recommendations#chat-completions</maml:linkText>
+        <maml:uri>https://learn.microsoft.com/en-us/azure/cognitive-services/openai/reference?source=recommendations#chat-completions</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Request-AzureEmbeddings</command:name>
+      <command:verb>Request</command:verb>
+      <command:noun>AzureEmbeddings</command:noun>
+      <maml:description>
+        <maml:para>Creates an embedding vector representing the input text.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>Creates an embedding vector representing the input text by Azure OpenAI Service.
+https://learn.microsoft.com/en-us/azure/cognitive-services/openai/reference#embeddings</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Request-AzureEmbeddings</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="Input">
+          <maml:name>Text</maml:name>
+          <maml:description>
+            <maml:para>(Required) Input text to get embeddings for</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Deployment</maml:name>
+          <maml:description>
+            <maml:para>The deployment name you chose when you deployed the model.
+Deployments must be created in Azure Portal in advance.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>User</maml:name>
+          <maml:description>
+            <maml:para>A unique identifier representing for your end-user. This will help Azure OpenAI monitor and detect abuse.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>TimeoutSec</maml:name>
+          <maml:description>
+            <maml:para>Specifies how long the request can be pending before it times out. The default value is `0` (infinite).</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>0</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>MaxRetryCount</maml:name>
+          <maml:description>
+            <maml:para>Number between `0` and `100`.
+Specifies the maximum number of retries if the request fails.
+The default value is `0` (No retry).
+Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>0</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>ApiBase</maml:name>
+          <maml:description>
+            <maml:para>Specifies yhe name of your Azure OpenAI resource endpoint such like:  `https://{your-resource-name}.openai.azure.com/`
+If not specified, it will try to use `$global:OPENAI_API_BASE` or `$env:OPENAI_API_BASE`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Uri</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
+          <maml:name>ApiVersion</maml:name>
+          <maml:description>
+            <maml:para>The API version to use for this operation.
+The default value is `2023-03-15-preview`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+          <dev:type>
+            <maml:name>string</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>"2023-03-15-preview"</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
+          <maml:name>ApiKey</maml:name>
+          <maml:description>
+            <maml:para>Specifies API key for authentication.
+The type of data should `[string]` or `[securestring]`.
+If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_API_KEY`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
+          <dev:type>
+            <maml:name>Object</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>AuthType</maml:name>
+          <maml:description>
+            <maml:para>Specifies the authentication type.
+You can choose from `azure` or `azure_ad`.
+The default value is `azure`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+          <dev:type>
+            <maml:name>string</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>"azure"</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="Input">
+        <maml:name>Text</maml:name>
+        <maml:description>
+          <maml:para>(Required) Input text to get embeddings for</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+        <dev:type>
+          <maml:name>String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Deployment</maml:name>
+        <maml:description>
+          <maml:para>The deployment name you chose when you deployed the model.
+Deployments must be created in Azure Portal in advance.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>User</maml:name>
+        <maml:description>
+          <maml:para>A unique identifier representing for your end-user. This will help Azure OpenAI monitor and detect abuse.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>TimeoutSec</maml:name>
+        <maml:description>
+          <maml:para>Specifies how long the request can be pending before it times out. The default value is `0` (infinite).</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>0</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>MaxRetryCount</maml:name>
+        <maml:description>
+          <maml:para>Number between `0` and `100`.
+Specifies the maximum number of retries if the request fails.
+The default value is `0` (No retry).
+Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>0</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>ApiBase</maml:name>
+        <maml:description>
+          <maml:para>Specifies yhe name of your Azure OpenAI resource endpoint such like:  `https://{your-resource-name}.openai.azure.com/`
+If not specified, it will try to use `$global:OPENAI_API_BASE` or `$env:OPENAI_API_BASE`</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
+        <dev:type>
+          <maml:name>System.Uri</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
+        <maml:name>ApiVersion</maml:name>
+        <maml:description>
+          <maml:para>The API version to use for this operation.
+The default value is `2023-03-15-preview`</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+        <dev:type>
+          <maml:name>string</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>"2023-03-15-preview"</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
+        <maml:name>ApiKey</maml:name>
+        <maml:description>
+          <maml:para>Specifies API key for authentication.
+The type of data should `[string]` or `[securestring]`.
+If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_API_KEY`</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
+        <dev:type>
+          <maml:name>Object</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>AuthType</maml:name>
+        <maml:description>
+          <maml:para>Specifies the authentication type.
+You can choose from `azure` or `azure_ad`.
+The default value is `azure`</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+        <dev:type>
+          <maml:name>string</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>"azure"</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes />
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>[pscustomobject]</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>--- Example 1: Get a vector representation of a given input. ---</maml:title>
+        <dev:code>Request-Embeddings -Text 'Waiter, the food was delicious...' -Deployment 'YourDeploymentName' | select -ExpandProperty data
+
+object    : embedding
+index     : 0
+embedding : {0.01004226, -0.01884855, 0.01824344, -0.01565562…}
+Text      : Waiter, the food was delicious...</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Request-AzureEmbeddings.md</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>https://learn.microsoft.com/en-us/azure/cognitive-services/openai/reference#embeddings</maml:linkText>
+        <maml:uri>https://learn.microsoft.com/en-us/azure/cognitive-services/openai/reference#embeddings</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Request-AzureTextCompletion</command:name>
+      <command:verb>Request</command:verb>
+      <command:noun>AzureTextCompletion</command:noun>
+      <maml:description>
+        <maml:para>Creates a completion for the provided prompt and parameters.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>Given a prompt, the AI model will return one or more predicted completions.
+https://learn.microsoft.com/en-us/azure/cognitive-services/openai/reference#completions</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Request-AzureTextCompletion</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="Message">
+          <maml:name>Prompt</maml:name>
+          <maml:description>
+            <maml:para>(Required) The prompt(s) to generate completions for</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Suffix</maml:name>
+          <maml:description>
+            <maml:para>The suffix that comes after a completion of inserted text.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Deployment</maml:name>
+          <maml:description>
+            <maml:para>The deployment name you chose when you deployed the model.
+Deployments must be created in Azure Portal in advance.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Temperature</maml:name>
+          <maml:description>
+            <maml:para>What sampling temperature to use, between `0` and `2`.
+Higher values like `0.8` will make the output more random, while lower values like `0.2` will make it more focused and deterministic.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Double</command:parameterValue>
+          <dev:type>
+            <maml:name>Double</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="top_p">
+          <maml:name>TopP</maml:name>
+          <maml:description>
+            <maml:para>An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top_p probability mass.
+So `0.1` means only the tokens comprising the top `10%` probability mass are considered.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Double</command:parameterValue>
+          <dev:type>
+            <maml:name>Double</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="n">
+          <maml:name>NumberOfAnswers</maml:name>
+          <maml:description>
+            <maml:para>How many texts to generate for each prompt. The default value is `1`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">UInt16</command:parameterValue>
+          <dev:type>
+            <maml:name>UInt16</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>1</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Stream</maml:name>
+          <maml:description>
+            <maml:para>Whether to stream back partial progress.</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>System.Management.Automation.SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="stop">
+          <maml:name>StopSequence</maml:name>
+          <maml:description>
+            <maml:para>Up to 4 sequences where the API will stop generating further tokens. The returned text will not contain the stop sequence.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="max_tokens">
+          <maml:name>MaxTokens</maml:name>
+          <maml:description>
+            <maml:para>The maximum number of tokens allowed for the generated answer.
+The max value depends on models.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>2048</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="presence_penalty">
+          <maml:name>PresencePenalty</maml:name>
+          <maml:description>
+            <maml:para>Number between `-2.0` and `2.0`.
+Positive values penalize new tokens based on whether they appear in the text so far, increasing the model's likelihood to talk about new topics.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Double</command:parameterValue>
+          <dev:type>
+            <maml:name>Double</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="frequency_penalty">
+          <maml:name>FrequencyPenalty</maml:name>
+          <maml:description>
+            <maml:para>Number between `-2.0` and `2.0`.
+Positive values penalize new tokens based on their existing frequency in the text so far, decreasing the model's likelihood to repeat the same line verbatim.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Double</command:parameterValue>
+          <dev:type>
+            <maml:name>Double</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="logit_bias">
+          <maml:name>LogitBias</maml:name>
+          <maml:description>
+            <maml:para>Modify the likelihood of specified tokens appearing in the completion.
+Accepts a maps of tokens to an associated bias value from `-100` to `100`. You can use `ConvertTo-Token` to convert text to token IDs. Mathematically, the bias is added to the logits generated by the model prior to sampling. The exact effect will vary per model, but values between `-1` and `1` should decrease or increase likelihood of selection; values like `-100` or `100` should result in a ban or exclusive selection of the relevant token.
+As an example, you can pass like so: `@{23182 = 20; 88847 = -100}`
+ID 23182 maps to "apple" and ID 88847 maps to "banana". Thus, this example increases the likelihood of the word "apple" being included in the response from the AI and greatly reduces the likelihood of the word "banana" being included.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">IDictionary</command:parameterValue>
+          <dev:type>
+            <maml:name>IDictionary</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>User</maml:name>
+          <maml:description>
+            <maml:para>A unique identifier representing for your end-user. This will help Azure OpenAI monitor and detect abuse.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Echo</maml:name>
+          <maml:description>
+            <maml:para>Echo back the prompt in addition to the completion. The default value is `$false`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Boolean</command:parameterValue>
+          <dev:type>
+            <maml:name>Boolean</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>$false</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="best_of">
+          <maml:name>BestOf</maml:name>
+          <maml:description>
+            <maml:para>Generates best_of completions server-side and returns the "best" (the one with the highest log probability per token).</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">UInt16</command:parameterValue>
+          <dev:type>
+            <maml:name>UInt16</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>TimeoutSec</maml:name>
+          <maml:description>
+            <maml:para>Specifies how long the request can be pending before it times out. The default value is `0` (infinite).</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>0</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>MaxRetryCount</maml:name>
+          <maml:description>
+            <maml:para>Number between `0` and `100`.
+Specifies the maximum number of retries if the request fails.
+The default value is `0` (No retry).
+Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>0</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>ApiBase</maml:name>
+          <maml:description>
+            <maml:para>Specifies yhe name of your Azure OpenAI resource endpoint such like:  `https://{your-resource-name}.openai.azure.com/`
+If not specified, it will try to use `$global:OPENAI_API_BASE` or `$env:OPENAI_API_BASE`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Uri</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
+          <maml:name>ApiVersion</maml:name>
+          <maml:description>
+            <maml:para>The API version to use for this operation.
+The default value is `2023-03-15-preview`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+          <dev:type>
+            <maml:name>string</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>"2023-03-15-preview"</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
+          <maml:name>ApiKey</maml:name>
+          <maml:description>
+            <maml:para>Specifies API key for authentication.
+The type of data should `[string]` or `[securestring]`.
+If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_API_KEY`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
+          <dev:type>
+            <maml:name>Object</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>AuthType</maml:name>
+          <maml:description>
+            <maml:para>Specifies the authentication type.
+You can choose from `azure` or `azure_ad`.
+The default value is `azure`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+          <dev:type>
+            <maml:name>string</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>"azure"</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="Message">
+        <maml:name>Prompt</maml:name>
+        <maml:description>
+          <maml:para>(Required) The prompt(s) to generate completions for</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+        <dev:type>
+          <maml:name>String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Suffix</maml:name>
+        <maml:description>
+          <maml:para>The suffix that comes after a completion of inserted text.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Deployment</maml:name>
+        <maml:description>
+          <maml:para>The deployment name you chose when you deployed the model.
+Deployments must be created in Azure Portal in advance.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Temperature</maml:name>
+        <maml:description>
+          <maml:para>What sampling temperature to use, between `0` and `2`.
+Higher values like `0.8` will make the output more random, while lower values like `0.2` will make it more focused and deterministic.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Double</command:parameterValue>
+        <dev:type>
+          <maml:name>Double</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="top_p">
+        <maml:name>TopP</maml:name>
+        <maml:description>
+          <maml:para>An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top_p probability mass.
+So `0.1` means only the tokens comprising the top `10%` probability mass are considered.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Double</command:parameterValue>
+        <dev:type>
+          <maml:name>Double</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="n">
+        <maml:name>NumberOfAnswers</maml:name>
+        <maml:description>
+          <maml:para>How many texts to generate for each prompt. The default value is `1`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">UInt16</command:parameterValue>
+        <dev:type>
+          <maml:name>UInt16</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>1</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Stream</maml:name>
+        <maml:description>
+          <maml:para>Whether to stream back partial progress.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">System.Management.Automation.SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>System.Management.Automation.SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="stop">
+        <maml:name>StopSequence</maml:name>
+        <maml:description>
+          <maml:para>Up to 4 sequences where the API will stop generating further tokens. The returned text will not contain the stop sequence.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+        <dev:type>
+          <maml:name>String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="max_tokens">
+        <maml:name>MaxTokens</maml:name>
+        <maml:description>
+          <maml:para>The maximum number of tokens allowed for the generated answer.
+The max value depends on models.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>2048</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="presence_penalty">
+        <maml:name>PresencePenalty</maml:name>
+        <maml:description>
+          <maml:para>Number between `-2.0` and `2.0`.
+Positive values penalize new tokens based on whether they appear in the text so far, increasing the model's likelihood to talk about new topics.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Double</command:parameterValue>
+        <dev:type>
+          <maml:name>Double</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="frequency_penalty">
+        <maml:name>FrequencyPenalty</maml:name>
+        <maml:description>
+          <maml:para>Number between `-2.0` and `2.0`.
+Positive values penalize new tokens based on their existing frequency in the text so far, decreasing the model's likelihood to repeat the same line verbatim.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Double</command:parameterValue>
+        <dev:type>
+          <maml:name>Double</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="logit_bias">
+        <maml:name>LogitBias</maml:name>
+        <maml:description>
+          <maml:para>Modify the likelihood of specified tokens appearing in the completion.
+Accepts a maps of tokens to an associated bias value from `-100` to `100`. You can use `ConvertTo-Token` to convert text to token IDs. Mathematically, the bias is added to the logits generated by the model prior to sampling. The exact effect will vary per model, but values between `-1` and `1` should decrease or increase likelihood of selection; values like `-100` or `100` should result in a ban or exclusive selection of the relevant token.
+As an example, you can pass like so: `@{23182 = 20; 88847 = -100}`
+ID 23182 maps to "apple" and ID 88847 maps to "banana". Thus, this example increases the likelihood of the word "apple" being included in the response from the AI and greatly reduces the likelihood of the word "banana" being included.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">IDictionary</command:parameterValue>
+        <dev:type>
+          <maml:name>IDictionary</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>User</maml:name>
+        <maml:description>
+          <maml:para>A unique identifier representing for your end-user. This will help Azure OpenAI monitor and detect abuse.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Echo</maml:name>
+        <maml:description>
+          <maml:para>Echo back the prompt in addition to the completion. The default value is `$false`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Boolean</command:parameterValue>
+        <dev:type>
+          <maml:name>Boolean</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>$false</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="best_of">
+        <maml:name>BestOf</maml:name>
+        <maml:description>
+          <maml:para>Generates best_of completions server-side and returns the "best" (the one with the highest log probability per token).</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">UInt16</command:parameterValue>
+        <dev:type>
+          <maml:name>UInt16</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>TimeoutSec</maml:name>
+        <maml:description>
+          <maml:para>Specifies how long the request can be pending before it times out. The default value is `0` (infinite).</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>0</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>MaxRetryCount</maml:name>
+        <maml:description>
+          <maml:para>Number between `0` and `100`.
+Specifies the maximum number of retries if the request fails.
+The default value is `0` (No retry).
+Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>0</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>ApiBase</maml:name>
+        <maml:description>
+          <maml:para>Specifies yhe name of your Azure OpenAI resource endpoint such like:  `https://{your-resource-name}.openai.azure.com/`
+If not specified, it will try to use `$global:OPENAI_API_BASE` or `$env:OPENAI_API_BASE`</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
+        <dev:type>
+          <maml:name>System.Uri</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
+        <maml:name>ApiVersion</maml:name>
+        <maml:description>
+          <maml:para>The API version to use for this operation.
+The default value is `2023-03-15-preview`</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+        <dev:type>
+          <maml:name>string</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>"2023-03-15-preview"</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
+        <maml:name>ApiKey</maml:name>
+        <maml:description>
+          <maml:para>Specifies API key for authentication.
+The type of data should `[string]` or `[securestring]`.
+If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_API_KEY`</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
+        <dev:type>
+          <maml:name>Object</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>AuthType</maml:name>
+        <maml:description>
+          <maml:para>Specifies the authentication type.
+You can choose from `azure` or `azure_ad`.
+The default value is `azure`</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+        <dev:type>
+          <maml:name>string</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>"azure"</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes />
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>[pscustomobject]</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------- Example 1: Estimate the sentences that follow. --------</maml:title>
+        <dev:code>Request-TextCompletion -Prompt 'This is a hamburger store.' -Deployment 'YourDeploymentName' | select Answer
+
+We serves
+-classic hamburgers
+-tofu burgers</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Request-AzureTextCompletion.md</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>https://learn.microsoft.com/en-us/azure/cognitive-services/openai/reference#completions</maml:linkText>
+        <maml:uri>https://learn.microsoft.com/en-us/azure/cognitive-services/openai/reference#completions</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
       <command:name>Request-ChatCompletion</command:name>
       <command:verb>Request</command:verb>
       <command:noun>ChatCompletion</command:noun>
