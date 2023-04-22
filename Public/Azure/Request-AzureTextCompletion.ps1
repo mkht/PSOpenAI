@@ -11,7 +11,8 @@ function Request-AzureTextCompletion {
         [string]$Suffix,
 
         [Parameter(Mandatory = $true)]
-        [string]$Engine,
+        [Alias('Engine')]
+        [string]$Deployment,
 
         [Parameter()]
         [ValidateRange(0.0, 2.0)]
@@ -92,7 +93,7 @@ function Request-AzureTextCompletion {
         $ApiBase = Initialize-AzureAPIBase -ApiBase $ApiBase
 
         # Get API endpoint
-        $OpenAIParameter = Get-AzureOpenAIAPIEndpoint -EndpointName 'Text.Completion' -Engine $Engine -ApiBase $ApiBase -ApiVersion $ApiVersion
+        $OpenAIParameter = Get-AzureOpenAIAPIEndpoint -EndpointName 'Text.Completion' -Engine $Deployment -ApiBase $ApiBase -ApiVersion $ApiVersion
 
         # Temporal model name
         $Model = 'text-davinci-003'

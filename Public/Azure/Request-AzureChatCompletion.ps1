@@ -12,7 +12,8 @@ function Request-AzureChatCompletion {
         [string]$Name,
 
         [Parameter(Mandatory = $true)]
-        [string]$Engine,
+        [Alias('Engine')]
+        [string]$Deployment,
 
         [Parameter()]
         [AllowEmptyString()]
@@ -94,7 +95,7 @@ function Request-AzureChatCompletion {
         $ApiBase = Initialize-AzureAPIBase -ApiBase $ApiBase
 
         # Get API endpoint
-        $OpenAIParameter = Get-AzureOpenAIAPIEndpoint -EndpointName 'Chat.Completion' -Engine $Engine -ApiBase $ApiBase -ApiVersion $ApiVersion
+        $OpenAIParameter = Get-AzureOpenAIAPIEndpoint -EndpointName 'Chat.Completion' -Engine $Deployment -ApiBase $ApiBase -ApiVersion $ApiVersion
 
         # Temporal model name
         $Model = 'gpt-3.5-turbo'

@@ -13,7 +13,8 @@ function Request-AzureEmbeddings {
         [string[]]$Text,
 
         [Parameter(Mandatory = $true)]
-        [string]$Engine,
+        [Alias('Engine')]
+        [string]$Deployment,
 
         [Parameter()]
         [string]$User,
@@ -46,7 +47,7 @@ function Request-AzureEmbeddings {
         $ApiBase = Initialize-AzureAPIBase -ApiBase $ApiBase
 
         # Get API endpoint
-        $OpenAIParameter = Get-AzureOpenAIAPIEndpoint -EndpointName 'Embeddings' -Engine $Engine -ApiBase $ApiBase -ApiVersion $ApiVersion
+        $OpenAIParameter = Get-AzureOpenAIAPIEndpoint -EndpointName 'Embeddings' -Engine $Deployment -ApiBase $ApiBase -ApiVersion $ApiVersion
     }
 
     process {
