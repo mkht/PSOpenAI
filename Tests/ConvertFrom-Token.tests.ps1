@@ -73,6 +73,14 @@ Describe 'ConvertFrom-Token' {
             $script:Result | Should -Be '🍏🍎🍐🍊🍋🍌🍉🍇🍓🍈🍒🍑'
         }
 
+        It 'Input from pipeline (jagged array)' {
+            $JaggedArray = @(@(9906, 856, 5575, 13), @(4438, 527, 499, 3432, 30))
+            $script:Result = $JaggedArray | ConvertFrom-Token
+            $script:Result | Should -HaveCount 2
+            $script:Result[0] | Should -BeExactly 'Hello my student.'
+            $script:Result[1] | Should -BeExactly 'How are you today?'
+        }
+
         It 'AsArray option' {
             $script:Result = (9906, 11, 4435, 0) | ConvertFrom-Token -AsArray
             $script:Result | Should -Be @('Hello', ',', ' world', '!')

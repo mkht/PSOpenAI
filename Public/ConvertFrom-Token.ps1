@@ -53,14 +53,25 @@ function ConvertFrom-Token {
 
     process {
         try {
-            foreach ($t in $Token) {
-                if (-not $AsArray) {
-                    $TokenList.Add($t)
-                }
-                else {
+            if ($AsArray) {
+                foreach ($t in $Token) {
                     [int[]]$t_array = , $t
                     $Tokenizer.Decode($t_array)
                 }
+            }
+            elseif ($Token.Length -eq 0) {
+                [string]::Empty
+            }
+            elseif ($Token.Length -eq 1) {
+                $TokenList.Add($Token[0])
+            }
+            else {
+                $TokenList.Clear()
+                $PartialTokenList = [System.Collections.Generic.List[int]]::new()
+                foreach ($t in $Token) {
+                    $PartialTokenList.Add($t)
+                }
+                $Tokenizer.Decode($PartialTokenList.ToArray())
             }
         }
         catch {
@@ -69,7 +80,7 @@ function ConvertFrom-Token {
     }
 
     end {
-        if (-not $AsArray) {
+        if ($TokenList.Count -ne 0) {
             try {
                 $Tokenizer.Decode($TokenList.ToArray())
             }

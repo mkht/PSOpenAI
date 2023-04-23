@@ -48,12 +48,12 @@ function ConvertTo-Token {
 
     process {
         if ($null -eq $Tokenizer) {
-            $e = [System.InvalidOperationException]::new('Toknizer object does not initilized.')
+            $e = [System.InvalidOperationException]::new('Tokenizer object does not initilized.')
             Write-Error -Exception $e
             return
         }
 
-        $Tokenizer.Encode($Text, [System.Collections.Generic.List[string]]::new()).ToArray()
+        , $Tokenizer.Encode($Text, [System.Collections.Generic.List[string]]::new()).ToArray()
     }
 
     end {
