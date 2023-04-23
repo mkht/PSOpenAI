@@ -33,9 +33,12 @@ Install-Module -Name PSOpenAI
 ----
 ## Functions
 
-### OpenAI
+### Common
 + [ConvertFrom-Token](/Docs/ConvertFrom-Token.md)
 + [ConvertTo-Token](/Docs/ConvertTo-Token.md)
++ [Get-CosineSimilarity](/Docs/Get-CosineSimilarity.md)
+
+### OpenAI
 + [Enter-ChatGPT](/Docs/Enter-ChatGPT.md)
 + [Get-OpenAIModels](/Docs/Get-OpenAIModels.md)
 + [Request-AudioTranscription](/Docs/Request-AudioTranscription.md)
@@ -230,6 +233,10 @@ PS C:> Request-ChatGPT -Message "Who are you?" -ApiKey '<Put your API key here.>
 
 ----
 ## Changelog
+### 1.9.2
+ - Add new commands [Get-CosineSimilarity](/Docs/Get-CosineSimilarity.md) for caalculates cosine similarity between two vectors.  
+   Note: Added for convenience, not good implementation for performance or accuracy. For production use, it is recommended to use an external library such as [Math.NET Numerics](https://numerics.mathdotnet.com/).
+
 ### 1.9.1
  - Improve behavior of `ConvertTo-Token` and `ConvertFrom-Token` when a jagged array is input via pipeline.
 

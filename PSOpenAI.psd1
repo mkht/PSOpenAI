@@ -1,6 +1,6 @@
 @{
     # Version number of this module.
-    ModuleVersion        = '1.9.1'
+    ModuleVersion        = '1.9.2'
 
     # Supported PSEditions
     CompatiblePSEditions = 'Core', 'Desktop'
@@ -31,6 +31,7 @@
         'ConvertFrom-Token',
         'ConvertTo-Token',
         'Enter-ChatGPT',
+        'Get-CosineSimilarity',
         'Get-OpenAIModels',
         'Request-AudioTranscription',
         'Request-AudioTranslation',

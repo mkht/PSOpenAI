@@ -30,9 +30,12 @@ Install-Module -Name PSOpenAI
 ----
 ## 使用できる関数
 
-### OpenAI
+### 共通
 + [ConvertFrom-Token](/Docs/ConvertFrom-Token.md)
 + [ConvertTo-Token](/Docs/ConvertTo-Token.md)
++ [Get-CosineSimilarity](/Docs/Get-CosineSimilarity.md)
+
+### OpenAI
 + [Enter-ChatGPT](/Docs/Enter-ChatGPT.md)
 + [Get-OpenAIModels](/Docs/Get-OpenAIModels.md)
 + [Request-AudioTranscription](/Docs/Request-AudioTranscription.md)
@@ -227,6 +230,10 @@ PS C:> Request-ChatGPT -Message "Who are you?" -ApiKey '<Put your API key here.>
 
 ----
 ## 変更履歴
+### 1.9.2
+ - 新しいコマンド [Get-CosineSimilarity](/Docs/Get-CosineSimilarity.md) を追加。2つのベクトルのコサイン類似度を計算します  
+   注意: パフォーマンスや精度を重視していない簡易的な実装です。運用環境では[Math.NET Numerics](https://numerics.mathdotnet.com/)など別の外部ライブラリを使用することをおすすめします
+
 ### 1.9.1
  - `ConvertTo-Token` および `ConvertFrom-Token` に複数のオブジェクトをパイプライン経由で入力した場合に予期しない動作をする問題を改善
 
