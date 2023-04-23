@@ -230,6 +230,9 @@ PS C:> Request-ChatGPT -Message "Who are you?" -ApiKey '<Put your API key here.>
 
 ----
 ## Changelog
+### 1.9.1
+ - Improve behavior of `ConvertTo-Token` and `ConvertFrom-Token` when a jagged array is input via pipeline.
+
 ### 1.9.0
  - Now PSOpenAI has experimental supports for Azure OpenAI Service. These new commands added.  
    + [Request-AzureChatGPT](/Docs/Request-AzureChatCompletion.md)

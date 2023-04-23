@@ -227,6 +227,9 @@ PS C:> Request-ChatGPT -Message "Who are you?" -ApiKey '<Put your API key here.>
 
 ----
 ## 変更履歴
+### 1.9.1
+ - `ConvertTo-Token` および `ConvertFrom-Token` に複数のオブジェクトをパイプライン経由で入力した場合に予期しない動作をする問題を改善
+
 ### 1.9.0
  - 以下の関数で Azure OpenAI Service を試験的にサポートします
    + [Request-AzureChatGPT](/Docs/Request-AzureChatCompletion.md)
