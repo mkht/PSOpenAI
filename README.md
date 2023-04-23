@@ -234,7 +234,7 @@ PS C:> Request-ChatGPT -Message "Who are you?" -ApiKey '<Put your API key here.>
 ----
 ## Changelog
 ### 1.9.2
- - Add new commands [Get-CosineSimilarity](/Docs/Get-CosineSimilarity.md) for caalculates cosine similarity between two vectors.  
+ - Add new commands [Get-CosineSimilarity](/Docs/Get-CosineSimilarity.md) for calculates cosine similarity between two vectors.  
    Note: Added for convenience, not good implementation for performance or accuracy. For production use, it is recommended to use an external library such as [Math.NET Numerics](https://numerics.mathdotnet.com/).
 
 ### 1.9.1
