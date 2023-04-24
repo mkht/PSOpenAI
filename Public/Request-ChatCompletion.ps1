@@ -8,7 +8,7 @@ function Request-ChatCompletion {
         [string]$Message,
 
         [Parameter()]
-        [ValidatePattern('^[^\s]*$')]   # name field may not contain spaces
+        [ValidatePattern('^[a-zA-Z0-9_-]{1,64}$')]   # May contain a-z, A-Z, 0-9, hyphens, and underscores, with a maximum length of 64 characters.
         [string]$Name,
 
         [Parameter()]

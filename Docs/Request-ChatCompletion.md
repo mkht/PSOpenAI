@@ -83,8 +83,8 @@ Accept pipeline input: True (ByValueFromPipeline)
 ```
 
 ### -Name
-The name of messanger.  
-This is an optional field, and may not conatin spaces.
+The name of the author of this message.  
+This is an optional field, and may contain a-z, A-Z, 0-9, hyphens, and underscores, with a maximum length of 64 characters.
 
 ```yaml
 Type: String
