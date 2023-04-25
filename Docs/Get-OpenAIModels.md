@@ -16,6 +16,7 @@ Lists the currently available models.
 Get-OpenAIModels
     [[-Name] <String>]
     [-ApiKey <Object>]
+    [-Organization <string>]
     [<CommonParameters>]
 ```
 
@@ -85,6 +86,17 @@ Position: Named
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
+```
+
+### -Organization
+Specifies Organization ID which used for an API request.  
+If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPENAI_ORGANIZATION`
+
+```yaml
+Type: string
+Aliases: OrgId
+Required: False
+Position: Named
 ```
 
 ## INPUTS

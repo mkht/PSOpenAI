@@ -73,6 +73,10 @@ function Request-ChatCompletion {
         [Alias('Token')]  #for backword compatibility
         [object]$ApiKey,
 
+        [Parameter()]
+        [Alias('OrgId')]
+        [string]$Organization,
+
         [Parameter(ValueFromPipelineByPropertyName = $true)]
         [object[]]$History
     )
@@ -80,6 +84,9 @@ function Request-ChatCompletion {
     begin {
         # Initialize API Key
         [securestring]$SecureToken = Initialize-APIKey -ApiKey $ApiKey
+
+        # Initialize Organization ID
+        $Organization = Initialize-OrganizationID -OrgId $Organization
 
         # Get API endpoint
         $OpenAIParameter = Get-OpenAIAPIEndpoint -EndpointName 'Chat.Completion'
@@ -184,6 +191,7 @@ function Request-ChatCompletion {
                 -TimeoutSec $TimeoutSec `
                 -MaxRetryCount $MaxRetryCount `
                 -ApiKey $SecureToken `
+                -Organization $Organization `
                 -Body $PostBody `
                 -Stream $Stream |`
                 Where-Object {
@@ -218,6 +226,7 @@ function Request-ChatCompletion {
                 -TimeoutSec $TimeoutSec `
                 -MaxRetryCount $MaxRetryCount `
                 -ApiKey $SecureToken `
+                -Organization $Organization `
                 -Body $PostBody
 
             # error check

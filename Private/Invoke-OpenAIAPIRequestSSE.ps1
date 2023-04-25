@@ -24,6 +24,9 @@ function Invoke-OpenAIAPIRequestSSE {
         [securestring]$ApiKey,
 
         [Parameter()]
+        [string]$Organization,
+
+        [Parameter()]
         [object]$Body,
 
         [Parameter()]

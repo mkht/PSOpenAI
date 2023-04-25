@@ -21,6 +21,10 @@ function Invoke-OpenAIAPIRequest {
         [securestring]$ApiKey,
 
         [Parameter()]
+        [AllowEmptyString()]
+        [string]$Organization,
+
+        [Parameter()]
         [object]$Body,
 
         [Parameter()]
@@ -53,6 +57,7 @@ function Invoke-OpenAIAPIRequest {
             -Uri $Uri `
             -ContentType $ContentType `
             -ApiKey $ApiKey `
+            -Organization $Organization `
             -AuthType $AuthType `
             -Body $Body `
             -TimeoutSec $TimeoutSec `
@@ -86,6 +91,13 @@ function Invoke-OpenAIAPIRequest {
                 $IwrParam.Authentication = 'Bearer'
                 $IwrParam.Token = $ApiKey
             }
+        }
+
+        if (-not [string]::IsNullOrWhiteSpace($Organization)) {
+            if (-not $IwrParam.ContainsKey('Headers')) {
+                $IwrParam.Headers = @{}
+            }
+            $IwrParam.Headers['OpenAI-Organization'] = $Organization.Trim()
         }
 
         if ($null -ne $Body) {
@@ -164,6 +176,13 @@ function Invoke-OpenAIAPIRequest {
             'azure_ad' {
                 $IwrParam.Headers = @{Authorization = "Bearer $PlainToken" }
             }
+        }
+
+        if (-not [string]::IsNullOrWhiteSpace($Organization)) {
+            if (-not $IwrParam.ContainsKey('Headers')) {
+                $IwrParam.Headers = @{}
+            }
+            $IwrParam.Headers['OpenAI-Organization'] = $Organization.Trim()
         }
 
         if ($null -ne $Body) {

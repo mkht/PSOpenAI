@@ -50,6 +50,10 @@ function Enter-ChatGPT {
         [object]$ApiKey,
 
         [Parameter()]
+        [Alias('OrgId')]
+        [string]$Organization,
+
+        [Parameter()]
         [switch]$NoHeader
     )
 

@@ -20,6 +20,7 @@ Request-Embeddings
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
     [-ApiKey <Object>]
+    [-Organization <String>]
     [<CommonParameters>]
 ```
 
@@ -108,6 +109,17 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
 ```yaml
 Type: Object
 Aliases: Token
+Required: False
+Position: Named
+```
+
+### -Organization
+Specifies Organization ID which used for an API request.  
+If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPENAI_ORGANIZATION`
+
+```yaml
+Type: string
+Aliases: OrgId
 Required: False
 Position: Named
 ```
