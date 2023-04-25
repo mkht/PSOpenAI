@@ -44,11 +44,21 @@ function Invoke-OpenAIAPIRequest {
         [string]$AuthType = 'openai'
     )
 
+    $IsDebug = Test-Debug
+
     #region Assert selected model is discontinued
     if ($null -ne $Body -and $null -ne $Body.model) {
         Assert-UnsupportedModels -Model $Body.model
     }
     #endregion
+
+    # Headers dictionary
+    $RequestHeaders = @{}
+
+    # Set debug header
+    if ($IsDebug) {
+        $RequestHeaders['OpenAI-Debug'] = 'true'
+    }
 
     #region Server-Sent-Events
     if ($Stream) {
@@ -84,7 +94,7 @@ function Invoke-OpenAIAPIRequest {
                 # decrypt securestring
                 $bstr = [Marshal]::SecureStringToBSTR($ApiKey)
                 $PlainToken = [Marshal]::PtrToStringBSTR($bstr)
-                $IwrParam.Headers = @{'api-key' = $PlainToken }
+                $RequestHeaders['api-key'] = $PlainToken
                 $bstr = $PlainToken = $null
             }
             'azure_ad' {
@@ -94,22 +104,33 @@ function Invoke-OpenAIAPIRequest {
         }
 
         if (-not [string]::IsNullOrWhiteSpace($Organization)) {
-            if (-not $IwrParam.ContainsKey('Headers')) {
-                $IwrParam.Headers = @{}
-            }
-            $IwrParam.Headers['OpenAI-Organization'] = $Organization.Trim()
+            $RequestHeaders['OpenAI-Organization'] = $Organization.Trim()
         }
 
         if ($null -ne $Body) {
+            $RawBody = $Body
             if ($ContentType -match 'multipart/form-data') {
                 $IwrParam.Form = $Body
             }
             elseif ($ContentType -match 'application/json') {
-                $IwrParam.Body = ([System.Text.Encoding]::UTF8.GetBytes(($Body | ConvertTo-Json -Compress)))
+                try { $RawBody = ($Body | ConvertTo-Json -Compress) }catch { Write-Error -Exception $_.Exception }
+                $IwrParam.Body = ([System.Text.Encoding]::UTF8.GetBytes($RawBody))
             }
             else {
                 $IwrParam.Body = $Body
             }
+        }
+
+        # Set http request headers
+        if ($null -ne $RequestHeaders -and $RequestHeaders.Count -ne 0) {
+            $IwrParam.Headers = $RequestHeaders
+        }
+
+        # Verbose / Debug output
+        Write-Verbose -Message 'Request to OpenAI API'
+        if ($IsDebug) {
+            Write-Debug -Message ('Request parameters: ' + (([pscustomobject]$IwrParam) | fl Method, Uri, ContentType, Headers, Authentication | Out-String)).TrimEnd()
+            Write-Debug -Message ('Post body: ' + $RawBody)
         }
 
         #region Send API Request
@@ -146,6 +167,18 @@ function Invoke-OpenAIAPIRequest {
         }
         #endregion
 
+        # Verbose / Debug output
+        Write-Verbose -Message ('OpenAI API response: ' + ($Response | fl `
+                    StatusCode, `
+                @{name = 'processing_ms'; expression = { $_.Headers['openai-processing-ms'] } }, `
+                @{name = 'request_id'; expression = { $_.Headers['X-Request-Id'] } } `
+                | Out-String)).TrimEnd()
+        # Don't read the whole stream for debug logging unless necessary.
+        if ($IsDebug) {
+            Write-Debug -Message ('API response header: ' + ($Response.Headers | ft -Hide | Out-String)).TrimEnd()
+            Write-Debug -Message ('API response body: ' + ($Response.Content | Out-String)).TrimEnd()
+        }
+
         # Output
         Write-Output $Response.Content
     }
@@ -168,35 +201,47 @@ function Invoke-OpenAIAPIRequest {
 
         switch ($AuthType) {
             'openai' {
-                $IwrParam.Headers = @{Authorization = "Bearer $PlainToken" }
+                $RequestHeaders['Authorization'] = "Bearer $PlainToken"
             }
             'azure' {
-                $IwrParam.Headers = @{'api-key' = $PlainToken }
+                $RequestHeaders['api-key'] = $PlainToken
             }
             'azure_ad' {
-                $IwrParam.Headers = @{Authorization = "Bearer $PlainToken" }
+                $RequestHeaders['Authorization'] = "Bearer $PlainToken"
             }
         }
 
         if (-not [string]::IsNullOrWhiteSpace($Organization)) {
-            if (-not $IwrParam.ContainsKey('Headers')) {
-                $IwrParam.Headers = @{}
-            }
-            $IwrParam.Headers['OpenAI-Organization'] = $Organization.Trim()
+            $RequestHeaders['OpenAI-Organization'] = $Organization.Trim()
         }
 
         if ($null -ne $Body) {
+            $RawBody = $Body
             if ($ContentType -match 'multipart/form-data') {
                 $Boundary = New-MultipartFormBoundary
-                $IwrParam.Body = New-MultipartFormContent -FormData $Body -Boundary $Boundary
+                $RawBody = New-MultipartFormContent -FormData $Body -Boundary $Boundary
+                $IwrParam.Body = $RawBody
                 $IwrParam.ContentType = ('multipart/form-data; boundary="{0}"' -f $Boundary)
             }
             elseif ($ContentType -match 'application/json') {
-                $IwrParam.Body = ([System.Text.Encoding]::UTF8.GetBytes(($Body | ConvertTo-Json -Compress)))
+                $RawBody = ($Body | ConvertTo-Json -Compress)
+                $IwrParam.Body = ([System.Text.Encoding]::UTF8.GetBytes($RawBody))
             }
             else {
                 $IwrParam.Body = $Body
             }
+        }
+
+        # Set http request headers
+        if ($null -ne $RequestHeaders -and $RequestHeaders.Count -ne 0) {
+            $IwrParam.Headers = $RequestHeaders
+        }
+
+        # Verbose / Debug output
+        Write-Verbose -Message 'Request to OpenAI API'
+        if ($IsDebug) {
+            Write-Debug -Message ('Request parameters: ' + (([pscustomobject]$IwrParam) | fl Method, Uri, ContentType, Headers, Authentication | Out-String)).TrimEnd()
+            Write-Debug -Message ('Post body: ' + $RawBody)
         }
 
         #region Send API Request
@@ -242,6 +287,18 @@ function Invoke-OpenAIAPIRequest {
         }
         else {
             $Content = $Response.Content
+        }
+
+        # Verbose / Debug output
+        Write-Verbose -Message ('OpenAI API response: ' + ($Response | fl `
+                    StatusCode, `
+                @{name = 'processing_ms'; expression = { $_.Headers['openai-processing-ms'] } }, `
+                @{name = 'request_id'; expression = { $_.Headers['X-Request-Id'] } } `
+                | Out-String)).TrimEnd()
+        # Don't read the whole stream for debug logging unless necessary.
+        if ($IsDebug) {
+            Write-Debug -Message ('API response header: ' + ($Response.Headers | ft -Hide | Out-String)).TrimEnd()
+            Write-Debug -Message ('API response body: ' + ($Content | Out-String)).TrimEnd()
         }
 
         # Output

@@ -43,6 +43,8 @@ function Invoke-OpenAIAPIRequestSSE {
         [string]$AuthType = 'openai'
     )
 
+    $IsDebug = Test-Debug
+
     # Decrypt securestring
     $bstr = [Marshal]::SecureStringToBSTR($ApiKey)
     $PlainToken = [Marshal]::PtrToStringBSTR($bstr)
@@ -50,6 +52,11 @@ function Invoke-OpenAIAPIRequestSSE {
     $HttpClient = [System.Net.Http.HttpClient]::new()
     $RequestMessage = [System.Net.Http.HttpRequestMessage]::new($Method, $Uri)
     $RequestMessage.Content = [System.Net.Http.StringContent]::new(($Body | ConvertTo-Json -Compress), [Encoding]::UTF8, $ContentType)
+
+    # Set debug header
+    if ($IsDebug) {
+        $RequestMessage.Headers.Add('OpenAI-Debug', 'true')
+    }
 
     switch ($AuthType) {
         'openai' {
@@ -69,6 +76,16 @@ function Invoke-OpenAIAPIRequestSSE {
         $cts.CancelAfter($TimeoutSec * 1000)
     }
     $CancelToken = $cts.Token
+
+    # Verbose / Debug output
+    Write-Verbose -Message 'Request to OpenAI API'
+    if ($IsDebug) {
+        Write-Debug -Message ('Request parameters: ' + ($RequestMessage | fl `
+                    Method, `
+                    RequestUri, `
+                @{name = 'Headers'; expression = { $_.Headers } } `
+                | Out-String)).TrimEnd()
+    }
 
     # Send API Request
     try {
@@ -96,13 +113,30 @@ function Invoke-OpenAIAPIRequestSSE {
         $ResponseStream = $HttpResponse.Content.ReadAsStreamAsync().Result
         $StreamReader = [System.IO.StreamReader]::new($ResponseStream, [Encoding]::UTF8)
 
+        # Verbose / Debug output
+        Write-Verbose -Message ('OpenAI API response: ' + ($HttpResponse | fl `
+                    StatusCode, `
+                @{name = 'processing_ms'; expression = { $_.Headers.GetValues('openai-processing-ms')[0] } }, `
+                @{name = 'request_id'; expression = { $_.Headers.GetValues('X-Request-Id')[0] } } `
+                | Out-String)).TrimEnd()
+        # Don't read the whole stream for debug logging unless necessary.
+        if ($IsDebug) {
+            Write-Debug -Message ('API response header: ' + ($HttpResponse.Headers | ft -Hide | Out-String)).TrimEnd()
+        }
+
         while (-not $StreamReader.EndOfStream) {
             $data = $null
             #Timeout
             $CancelToken.ThrowIfCancellationRequested()
             #Retrive response content
             $data = [string]$StreamReader.ReadLine()
+            # Skip on empty
             if (-not $data.StartsWith('data: ')) { continue }
+            # Debug output
+            if ($IsDebug) {
+                Write-Debug -Message ('API response body: ' + ($data | Out-String)).TrimEnd()
+            }
+            # End of stream
             if ($data -eq 'data: [DONE]') { break }
             #Output
             Write-Output $data.Substring(6)    # ("data: ").Length -> 6
