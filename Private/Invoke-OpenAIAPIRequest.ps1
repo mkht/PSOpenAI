@@ -224,7 +224,7 @@ function Invoke-OpenAIAPIRequest {
                 $IwrParam.ContentType = ('multipart/form-data; boundary="{0}"' -f $Boundary)
             }
             elseif ($ContentType -match 'application/json') {
-                $RawBody = ($Body | ConvertTo-Json -Compress)
+                try { $RawBody = ($Body | ConvertTo-Json -Compress) }catch { Write-Error -Exception $_.Exception }
                 $IwrParam.Body = ([System.Text.Encoding]::UTF8.GetBytes($RawBody))
             }
             else {
