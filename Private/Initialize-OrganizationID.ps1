@@ -18,10 +18,12 @@ function Initialize-OrganizationID {
         #   1. Global variable "OPENAI_ORGANIZATION"
         if ($SearchGlobal -and $null -ne $global:OPENAI_ORGANIZATION -and $global:OPENAI_ORGANIZATION -is [string]) {
             $OrgId = [string]$global:OPENAI_ORGANIZATION
+            Write-Verbose -Message 'Organization-ID found in global variable "OPENAI_ORGANIZATION".'
         }
         #   2. Environment variable "OPENAI_ORGANIZATION"
         elseif ($SearchEnv -and $null -ne $env:OPENAI_ORGANIZATION -and $env:OPENAI_ORGANIZATION -is [string]) {
             $OrgId = [string]$env:OPENAI_ORGANIZATION
+            Write-Verbose -Message 'Organization-ID found in environment variable "OPENAI_ORGANIZATION".'
         }
         else {
             $OrgId = [string]::Empty

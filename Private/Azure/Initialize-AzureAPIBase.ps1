@@ -21,10 +21,12 @@ function Initialize-AzureAPIBase {
     #   1. Global variable "OPENAI_API_BASE"
     elseif ($SearchGlobal -and $null -ne $global:OPENAI_API_BASE -and $global:OPENAI_API_BASE -as [uri]) {
         $Result = [uri]$global:OPENAI_API_BASE
+        Write-Verbose -Message 'API base found in global variable "OPENAI_API_BASE".'
     }
     #   2. Environment variable "OPENAI_API_BASE"
     elseif ($SearchEnv -and $null -ne $env:OPENAI_API_BASE -and $env:OPENAI_API_BASE -as [uri]) {
         $Result = [uri]$env:OPENAI_API_BASE
+        Write-Verbose -Message 'API base found in environment variable "OPENAI_API_BASE".'
     }
 
     if ($null -eq $Result) {

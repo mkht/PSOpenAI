@@ -28,21 +28,25 @@ function Initialize-APIKey {
         if ($SearchGlobal -and $null -ne $global:OPENAI_API_KEY -and $global:OPENAI_API_KEY -is [string]) {
             $ApiKey = [string]$global:OPENAI_API_KEY
             $SecureToken = (ConvertTo-SecureString -AsPlainText -String $ApiKey -Force)
+            Write-Verbose -Message 'API Key found in global variable "OPENAI_API_KEY".'
         }
         #   2. Environment variable "OPENAI_API_KEY"
         elseif ($SearchEnv -and $null -ne $env:OPENAI_API_KEY -and $env:OPENAI_API_KEY -as [string]) {
             $ApiKey = [string]$env:OPENAI_API_KEY
             $SecureToken = (ConvertTo-SecureString -AsPlainText -String $ApiKey -Force)
+            Write-Verbose -Message 'API Key found in environment variable "OPENAI_API_KEY".'
         }
         #   3. Global variable "OPENAI_TOKEN" (For backward compatibility)
         elseif ($SearchGlobal -and $null -ne $global:OPENAI_TOKEN -and $global:OPENAI_TOKEN -is [string]) {
             $ApiKey = [string]$global:OPENAI_TOKEN
             $SecureToken = (ConvertTo-SecureString -AsPlainText -String $ApiKey -Force)
+            Write-Verbose -Message 'API Key found in global variable "OPENAI_TOKEN".'
         }
         #   4. Environment variable "OPENAI_TOKEN" (For backward compatibility)
         elseif ($SearchEnv -and $null -ne $env:OPENAI_TOKEN -and $env:OPENAI_TOKEN -as [string]) {
             $ApiKey = [string]$env:OPENAI_TOKEN
             $SecureToken = (ConvertTo-SecureString -AsPlainText -String $ApiKey -Force)
+            Write-Verbose -Message 'API Key found in environment variable "OPENAI_TOKEN".'
         }
     }
     else {
