@@ -15,18 +15,6 @@ function ConvertTo-Token {
     )
 
     begin {
-        if (-not ('Microsoft.DeepDev.TokenizerBuilder' -as [type])) {
-            $DllPath = Join-Path $PSScriptRoot '../Libs/TokenizerLib/netstandard2.0/Microsoft.DeepDev.TokenizerLib.dll'
-            if (-not (Test-Path -LiteralPath $DllPath -PathType Leaf)) {
-                $e = [System.InvalidOperationException]::new('Unable to find type [Microsoft.DeepDev.TokenizerBuilder].')
-                Write-Error -Exception $e
-                return
-            }
-            else {
-                Add-Type -Path $DllPath
-            }
-        }
-
         $Tokenizer = $null
         try {
             if ($PSCmdlet.ParameterSetName -eq 'Model') {

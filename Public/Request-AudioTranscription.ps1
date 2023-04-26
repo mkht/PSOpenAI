@@ -36,7 +36,7 @@ function Request-AudioTranscription {
 
         [Parameter()]
         [Alias('Token')]  #for backword compatibility
-        [object]$ApiKey,
+        [securestring][SecureStringTransformation()]$ApiKey,
 
         [Parameter()]
         [Alias('OrgId')]

@@ -26,6 +26,12 @@
     # Minimum version of the Windows PowerShell engine required by this module
     PowerShellVersion    = '5.1'
 
+    # Assemblies that must be loaded prior to importing this module
+    RequiredAssemblies   = @(
+        'Libs\CustomAttributes\netstandard2.0\CustomAttributes.dll',
+        'Libs\TokenizerLib\netstandard2.0\Microsoft.DeepDev.TokenizerLib.dll'
+    )
+
     # Functions to export from this module
     FunctionsToExport    = @(
         'ConvertFrom-Token',

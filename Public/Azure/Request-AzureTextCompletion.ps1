@@ -78,7 +78,7 @@ function Request-AzureTextCompletion {
         [string]$ApiVersion,
 
         [Parameter()]
-        [object]$ApiKey,
+        [securestring][SecureStringTransformation()]$ApiKey,
 
         [Parameter()]
         [ValidateSet('azure', 'azure_ad')]
