@@ -230,6 +230,12 @@ PS C:> Request-ChatGPT -Message "Who are you?" -ApiKey '<Put your API key here.>
 
 ----
 ## 変更履歴
+### 1.10.0
+ - APIリクエストに組織IDを指定する`-Organization`パラメータを追加
+ - デバッグメッセージと詳細メッセージの出力を強化
+ - モデル名のタブ補完を可能にしました
+ - 様々な改善
+
 ### 1.9.2
  - 新しいコマンド [Get-CosineSimilarity](/Docs/Get-CosineSimilarity.md) を追加。2つのベクトルのコサイン類似度を計算します  
    注意: パフォーマンスや精度を重視していない簡易的な実装です。運用環境では[Math.NET Numerics](https://numerics.mathdotnet.com/)など別の外部ライブラリを使用することをおすすめします

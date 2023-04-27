@@ -233,7 +233,7 @@ PS C:> Request-ChatGPT -Message "Who are you?" -ApiKey '<Put your API key here.>
 
 ----
 ## Changelog
-### Unreleased
+### 1.10.0
  - Add `-Organization` parameter to specify the Organization ID used for API requests.
  - Improve output of verbose and debug messages.
  - Enable tab completion for model names.
