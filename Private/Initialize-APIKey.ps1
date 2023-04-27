@@ -54,7 +54,7 @@ function Initialize-APIKey {
     }
 
     if ($p.StartsWith('sk-')) { $first = 6 }else { $first = 3 }
-    Write-Verbose -Message (('API key to be used is {0}' -f $p) | Get-MaskedString -Target $p -First $first -Last 2  -MaxNumberOfAsterisks 45)
+    Write-Verbose -Message (('API key to be used is {0}' -f $p) | Get-MaskedString -Target $p -First $first -Last 2 -MaxNumberOfAsterisks 45)
     $p = $null
     $ApiKey
 }
