@@ -13,7 +13,7 @@ function Request-Moderation {
         [string[]]$Text,
 
         [Parameter()]
-        [ValidateSet('text-moderation-latest', 'text-moderation-stable')]
+        [Completions('text-moderation-latest', 'text-moderation-stable')]
         [string]$Model,
 
         [Parameter()]

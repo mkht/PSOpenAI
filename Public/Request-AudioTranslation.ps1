@@ -7,6 +7,7 @@ function Request-AudioTranslation {
         [string]$File,
 
         [Parameter()]
+        [Completions('whisper-1')]
         [string]$Model = 'whisper-1',
 
         [Parameter()]
