@@ -235,6 +235,8 @@ PS C:> Request-ChatGPT -Message "Who are you?" -ApiKey '<Put your API key here.>
 ## Changelog
 ### Unreleased
  - Add `-Organization` parameter to specify the Organization ID used for API requests.
+ - Improve output of verbose and debug messages.
+ - Enable tab completion for model names.
  - Misc improvements.
 
 ### 1.9.2
@@ -335,7 +337,6 @@ If you have a feature request or bug report, please tell us in Issue.
 + Performance improvements.
 + Add GPT-3 fine-tuning support.
 + Add an option for change output types / formats.
-+ Logs, verbose messages.
 
 ----
 ## Licenses
