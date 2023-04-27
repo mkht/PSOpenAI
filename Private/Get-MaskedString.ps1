@@ -12,16 +12,16 @@ function Get-MaskedString {
         [securestring][SecureStringTransformation()]$Target,
 
         [Parameter()]
-        [uint]$First = 0,
+        [uint32]$First = 0,
 
         [Parameter()]
-        [uint]$Last = 0,
+        [uint32]$Last = 0,
 
         [Parameter()]
-        [uint]$MaxNumberOfAsterisks = [int]::MaxValue,
+        [uint32]$MaxNumberOfAsterisks = [int]::MaxValue,
 
         [Parameter()]
-        [uint]$MinNumberOfAsterisks = 0
+        [uint32]$MinNumberOfAsterisks = 0
     )
 
     begin {
