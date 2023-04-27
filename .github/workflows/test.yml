@@ -42,7 +42,11 @@ jobs:
         run: Install-Module Pester -Force -AllowClobber -Scope CurrentUser -SkipPublisherCheck
 
       - name: Test
-        run: Invoke-Pester -CI -Output Detailed
+        run: |
+          $pesterParam = @{CI = $true; Output = 'Detailed'}
+          if('${{ inputs.target }}' -eq ''){$pesterParam.Tag = 'Offline'}
+          elseif('${{ inputs.target }}' -ne 'all'){$pesterParam.Tag = '${{ inputs.target }}'}
+          Invoke-Pester @pesterParam
 
   Tests_PS7:
     runs-on: ${{ matrix.os }}
