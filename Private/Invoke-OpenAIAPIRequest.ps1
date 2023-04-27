@@ -129,8 +129,14 @@ function Invoke-OpenAIAPIRequest {
         # Verbose / Debug output
         Write-Verbose -Message 'Request to OpenAI API'
         if ($IsDebug) {
-            Write-Debug -Message ('Request parameters: ' + (([pscustomobject]$IwrParam) | fl Method, Uri, ContentType, Headers, Authentication | Out-String)).TrimEnd()
-            Write-Debug -Message ('Post body: ' + $RawBody)
+            $startIdx = $lastIdx = 2
+            if ($AuthType -eq 'openai') { $startIdx += 3 } # 'sk-'
+            Write-Debug -Message (Get-MaskedString `
+                ('Request parameters: ' + (([pscustomobject]$IwrParam) | fl Method, Uri, ContentType, Headers, Authentication | Out-String)).TrimEnd() `
+                    -Target $ApiKey -First $startIdx -Last $lastIdx -MaxNumberOfAsterisks 45)
+            Write-Debug -Message (Get-MaskedString `
+                ('Post body: ' + $RawBody) `
+                    -Target $ApiKey -First $startIdx -Last $lastIdx -MaxNumberOfAsterisks 45)
         }
 
         #region Send API Request
@@ -175,8 +181,14 @@ function Invoke-OpenAIAPIRequest {
                 | Out-String)).TrimEnd()
         # Don't read the whole stream for debug logging unless necessary.
         if ($IsDebug) {
-            Write-Debug -Message ('API response header: ' + ($Response.Headers | ft -Hide | Out-String)).TrimEnd()
-            Write-Debug -Message ('API response body: ' + ($Response.Content | Out-String)).TrimEnd()
+            $startIdx = $lastIdx = 2
+            if ($AuthType -eq 'openai') { $startIdx += 3 } # 'sk-'
+            Write-Debug -Message (Get-MaskedString `
+                ('API response header: ' + ($Response.Headers | ft -Hide | Out-String)).TrimEnd() `
+                    -Target $ApiKey -First $startIdx -Last $lastIdx -MaxNumberOfAsterisks 45)
+            Write-Debug -Message (Get-MaskedString `
+                ('API response body: ' + ($Response.Content | Out-String)).TrimEnd() `
+                    -Target $ApiKey -First $startIdx -Last $lastIdx -MaxNumberOfAsterisks 45)
         }
 
         # Output
@@ -240,8 +252,14 @@ function Invoke-OpenAIAPIRequest {
         # Verbose / Debug output
         Write-Verbose -Message 'Request to OpenAI API'
         if ($IsDebug) {
-            Write-Debug -Message ('Request parameters: ' + (([pscustomobject]$IwrParam) | fl Method, Uri, ContentType, Headers, Authentication | Out-String)).TrimEnd()
-            Write-Debug -Message ('Post body: ' + $RawBody)
+            $startIdx = $lastIdx = 2
+            if ($AuthType -eq 'openai') { $startIdx += 3 } # 'sk-'
+            Write-Debug -Message (Get-MaskedString `
+                ('Request parameters: ' + (([pscustomobject]$IwrParam) | fl Method, Uri, ContentType, Headers, Authentication | Out-String)).TrimEnd() `
+                    -Target $ApiKey -First $startIdx -Last $lastIdx -MaxNumberOfAsterisks 45)
+            Write-Debug -Message (Get-MaskedString `
+                ('Post body: ' + $RawBody) `
+                    -Target $ApiKey -First $startIdx -Last $lastIdx -MaxNumberOfAsterisks 45)
         }
 
         #region Send API Request
@@ -297,8 +315,14 @@ function Invoke-OpenAIAPIRequest {
                 | Out-String)).TrimEnd()
         # Don't read the whole stream for debug logging unless necessary.
         if ($IsDebug) {
-            Write-Debug -Message ('API response header: ' + ($Response.Headers | ft -Hide | Out-String)).TrimEnd()
-            Write-Debug -Message ('API response body: ' + ($Content | Out-String)).TrimEnd()
+            $startIdx = $lastIdx = 2
+            if ($AuthType -eq 'openai') { $startIdx += 3 } # 'sk-'
+            Write-Debug -Message (Get-MaskedString `
+                ('API response header: ' + ($Response.Headers | ft -Hide | Out-String)).TrimEnd() `
+                    -Target $ApiKey -First $startIdx -Last $lastIdx -MaxNumberOfAsterisks 45)
+            Write-Debug -Message (Get-MaskedString `
+                ('API response body: ' + ($Content | Out-String)).TrimEnd() `
+                    -Target $ApiKey -First $startIdx -Last $lastIdx -MaxNumberOfAsterisks 45)
         }
 
         # Output
