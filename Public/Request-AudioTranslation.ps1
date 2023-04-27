@@ -8,7 +8,7 @@ function Request-AudioTranslation {
 
         [Parameter()]
         [Completions('whisper-1')]
-        [string]$Model = 'whisper-1',
+        [string][LowerCaseTransformation()]$Model = 'whisper-1',
 
         [Parameter()]
         [string]$Prompt,

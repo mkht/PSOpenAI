@@ -12,7 +12,7 @@ function Request-TextCompletion {
 
         [Parameter()]
         [Completions('text-davinci-003', 'text-davinci-002', 'text-curie-001', 'text-babbage-001', 'text-ada-001')]
-        [string]$Model = 'text-davinci-003',
+        [string][LowerCaseTransformation()]$Model = 'text-davinci-003',
 
         [Parameter()]
         [ValidateRange(0.0, 2.0)]

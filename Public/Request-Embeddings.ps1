@@ -14,7 +14,7 @@ function Request-Embeddings {
 
         [Parameter()]
         [Completions('text-embedding-ada-002', 'text-search-ada-doc-001')]
-        [string]$Model = 'text-embedding-ada-002',
+        [string][LowerCaseTransformation()]$Model = 'text-embedding-ada-002',
 
         [Parameter()]
         [string]$User,

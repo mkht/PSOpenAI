@@ -19,7 +19,7 @@ function Request-TextEdit {
 
         [Parameter()]
         [Completions('text-davinci-edit-001')]
-        [string]$Model = 'text-davinci-edit-001',
+        [string][LowerCaseTransformation()]$Model = 'text-davinci-edit-001',
 
         [Parameter()]
         [ValidateRange(0.0, 2.0)]
