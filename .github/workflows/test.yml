@@ -67,5 +67,6 @@ jobs:
       - name: Test
         run: |
           $pesterParam = @{CI = $true; Output = 'Detailed'}
-          if('${{ inputs.target }}' -ne 'all'){$pesterParam.Tag = '${{ inputs.target }}'}
+          if('${{ inputs.target }}' -eq ''){$pesterParam.Tag = 'Offline'}
+          elseif('${{ inputs.target }}' -ne 'all'){$pesterParam.Tag = '${{ inputs.target }}'}
           Invoke-Pester @pesterParam
