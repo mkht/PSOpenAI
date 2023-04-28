@@ -4,7 +4,7 @@ function Get-AzureOpenAIAPIEndpoint {
         [Parameter(Mandatory, Position = 0)]
         [string]$EndpointName,
 
-        [Parameter(Mandatory)]
+        [Parameter()]
         [string]$Engine,
 
         [Parameter(Mandatory)]
@@ -49,6 +49,17 @@ function Get-AzureOpenAIAPIEndpoint {
                 Method      = 'Post'
                 Uri         = $UriBuilder.Uri
                 ContentType = 'application/json'
+            }
+        }
+        'Models' {
+            # https://learn.microsoft.com/en-us/rest/api/cognitiveservices/azureopenaistable/models/list
+            $UriBuilder.Path = '/openai/models'
+            $UriBuilder.Query = ('api-version={0}' -f $ApiVersion.Trim())
+            @{
+                Name        = 'models'
+                Method      = 'Get'
+                Uri         = $UriBuilder.Uri
+                ContentType = ''
             }
         }
     }

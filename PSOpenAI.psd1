@@ -49,6 +49,7 @@
         'Request-Moderation',
         'Request-TextCompletion',
         'Request-TextEdit',
+        'Get-AzureOpenAIModels',
         'Request-AzureChatCompletion',
         'Request-AzureEmbeddings',
         'Request-AzureTextCompletion'
