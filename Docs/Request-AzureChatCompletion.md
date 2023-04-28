@@ -246,7 +246,6 @@ The default value is `2023-03-15-preview`
 
 ```yaml
 Type: string
-Aliases: Token
 Required: False
 Position: Named
 Default value: "2023-03-15-preview"
@@ -259,7 +258,6 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
 
 ```yaml
 Type: Object
-Aliases: Token
 Required: False
 Position: Named
 ```
