@@ -89,6 +89,10 @@ function Invoke-OpenAIAPIRequest {
             'openai' {
                 $IwrParam.Authentication = 'Bearer'
                 $IwrParam.Token = $ApiKey
+                # Set an Organization-ID
+                if (-not [string]::IsNullOrWhiteSpace($Organization)) {
+                    $RequestHeaders['OpenAI-Organization'] = $Organization.Trim()
+                }
             }
             'azure' {
                 # decrypt securestring
@@ -101,10 +105,6 @@ function Invoke-OpenAIAPIRequest {
                 $IwrParam.Authentication = 'Bearer'
                 $IwrParam.Token = $ApiKey
             }
-        }
-
-        if (-not [string]::IsNullOrWhiteSpace($Organization)) {
-            $RequestHeaders['OpenAI-Organization'] = $Organization.Trim()
         }
 
         if ($null -ne $Body) {
@@ -214,6 +214,10 @@ function Invoke-OpenAIAPIRequest {
         switch ($AuthType) {
             'openai' {
                 $RequestHeaders['Authorization'] = "Bearer $PlainToken"
+                # Set an Organization-ID
+                if (-not [string]::IsNullOrWhiteSpace($Organization)) {
+                    $RequestHeaders['OpenAI-Organization'] = $Organization.Trim()
+                }
             }
             'azure' {
                 $RequestHeaders['api-key'] = $PlainToken
@@ -221,10 +225,6 @@ function Invoke-OpenAIAPIRequest {
             'azure_ad' {
                 $RequestHeaders['Authorization'] = "Bearer $PlainToken"
             }
-        }
-
-        if (-not [string]::IsNullOrWhiteSpace($Organization)) {
-            $RequestHeaders['OpenAI-Organization'] = $Organization.Trim()
         }
 
         if ($null -ne $Body) {
