@@ -50,6 +50,9 @@
         'Request-TextCompletion',
         'Request-TextEdit',
         'Get-AzureOpenAIModels',
+        'Get-AzureOpenAIDeployments',
+        'New-AzureOpenAIDeployments',
+        'Remove-AzureOpenAIDeployments',
         'Request-AzureChatCompletion',
         'Request-AzureEmbeddings',
         'Request-AzureTextCompletion'

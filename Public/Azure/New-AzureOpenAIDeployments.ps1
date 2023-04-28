@@ -1,11 +1,17 @@
-function Get-AzureOpenAIModels {
+function New-AzureOpenAIDeployments {
     [CmdletBinding()]
     [OutputType([pscustomobject])]
     param (
-        [Parameter(Position = 0, ValueFromPipeline = $true)]
-        [Alias('ID')]
-        [Alias('Model')]
-        [string]$Name,
+        [Parameter(Mandatory, Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
+        [ValidateNotNullOrEmpty()]
+        [string][LowerCaseTransformation()]$Model,
+
+        [Parameter()]
+        [ValidateSet('standard', 'manual')]
+        [string][LowerCaseTransformation()]$ScaleType = 'standard',
+
+        [Parameter()]
+        [int]$ScaleCapacity = 1,
 
         [Parameter()]
         [System.Uri]$ApiBase,
@@ -36,25 +42,29 @@ function Get-AzureOpenAIModels {
         $ApiBase = Initialize-AzureAPIBase -ApiBase $ApiBase
 
         # Get API endpoint
-        $OpenAIParameter = Get-AzureOpenAIAPIEndpoint -EndpointName 'Models' -ApiBase $ApiBase -ApiVersion $ApiVersion
+        $OpenAIParameter = Get-AzureOpenAIAPIEndpoint -EndpointName 'Deployments' -ApiBase $ApiBase -ApiVersion $ApiVersion
     }
 
     process {
-        if ($Name) {
-            $Name = $Name.ToLower()
-            $UriBuilder = [System.UriBuilder]::new($OpenAIParameter.Uri)
-            $UriBuilder.Path += "/$Name"
-            $OpenAIParameter.Uri = $UriBuilder.Uri
+        #region Construct parameters for API request
+        $PostBody = [System.Collections.Specialized.OrderedDictionary]::new()
+        $PostBody.model = $Model
+        $PostBody.scale_settings = @{'scale_type' = $ScaleType }
+        if ($ScaleType -eq 'manual') {
+            $PostBody.scale_settings['capacity'] = $ScaleCapacity
         }
+        #endregion
 
         #region Send API Request
         $Response = Invoke-OpenAIAPIRequest `
-            -Method $OpenAIParameter.Method `
+            -Method 'Post' `
             -Uri $OpenAIParameter.Uri `
+            -ContentType $OpenAIParameter.ContentType `
             -ApiKey $SecureToken `
             -AuthType $AuthType `
             -TimeoutSec $TimeoutSec `
-            -MaxRetryCount $MaxRetryCount
+            -MaxRetryCount $MaxRetryCount `
+            -Body $PostBody
 
         # error check
         if ($null -eq $Response) {
@@ -65,15 +75,15 @@ function Get-AzureOpenAIModels {
         #region Parse response object
         $Response = try { ($Response | ConvertFrom-Json -ErrorAction Ignore) }catch { Write-Error -Exception $_.Exception }
         if ($Response.data.Count -ge 1) {
-            $Models = @($Response.data)
+            $Deployments = @($Response.data)
         }
         else {
-            $Models = @($Response)
+            $Deployments = @($Response)
         }
         #endregion
 
         #region Output
-        foreach ($m in $Models) {
+        foreach ($m in $Deployments) {
             if ($null -eq $m) { continue }
             # Add custom type name and properties to output object.
             # $m.PSObject.TypeNames.Insert(0, 'PSOpenAI.Model')

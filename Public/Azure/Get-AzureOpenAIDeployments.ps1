@@ -1,11 +1,10 @@
-function Get-AzureOpenAIModels {
+function Get-AzureOpenAIDeployments {
     [CmdletBinding()]
     [OutputType([pscustomobject])]
     param (
         [Parameter(Position = 0, ValueFromPipeline = $true)]
-        [Alias('ID')]
-        [Alias('Model')]
-        [string]$Name,
+        [Alias('Engine', 'id')]
+        [string]$Deployment,
 
         [Parameter()]
         [System.Uri]$ApiBase,
@@ -36,20 +35,19 @@ function Get-AzureOpenAIModels {
         $ApiBase = Initialize-AzureAPIBase -ApiBase $ApiBase
 
         # Get API endpoint
-        $OpenAIParameter = Get-AzureOpenAIAPIEndpoint -EndpointName 'Models' -ApiBase $ApiBase -ApiVersion $ApiVersion
+        $OpenAIParameter = Get-AzureOpenAIAPIEndpoint -EndpointName 'Deployments' -ApiBase $ApiBase -ApiVersion $ApiVersion
     }
 
     process {
-        if ($Name) {
-            $Name = $Name.ToLower()
+        if ($Deployment) {
             $UriBuilder = [System.UriBuilder]::new($OpenAIParameter.Uri)
-            $UriBuilder.Path += "/$Name"
+            $UriBuilder.Path += "/$Deployment"
             $OpenAIParameter.Uri = $UriBuilder.Uri
         }
 
         #region Send API Request
         $Response = Invoke-OpenAIAPIRequest `
-            -Method $OpenAIParameter.Method `
+            -Method 'Get' `
             -Uri $OpenAIParameter.Uri `
             -ApiKey $SecureToken `
             -AuthType $AuthType `
@@ -65,15 +63,15 @@ function Get-AzureOpenAIModels {
         #region Parse response object
         $Response = try { ($Response | ConvertFrom-Json -ErrorAction Ignore) }catch { Write-Error -Exception $_.Exception }
         if ($Response.data.Count -ge 1) {
-            $Models = @($Response.data)
+            $Deployments = @($Response.data)
         }
         else {
-            $Models = @($Response)
+            $Deployments = @($Response)
         }
         #endregion
 
         #region Output
-        foreach ($m in $Models) {
+        foreach ($m in $Deployments) {
             if ($null -eq $m) { continue }
             # Add custom type name and properties to output object.
             # $m.PSObject.TypeNames.Insert(0, 'PSOpenAI.Model')

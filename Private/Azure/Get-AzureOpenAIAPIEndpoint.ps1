@@ -62,5 +62,16 @@ function Get-AzureOpenAIAPIEndpoint {
                 ContentType = ''
             }
         }
+        'Deployments' {
+            # https://learn.microsoft.com/en-us/rest/api/cognitiveservices/azureopenaistable/deployments/list
+            $UriBuilder.Path = '/openai/deployments'
+            $UriBuilder.Query = ('api-version={0}' -f $ApiVersion.Trim())
+            @{
+                Name        = 'deployments'
+                Method      = 'Get'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+        }
     }
 }
