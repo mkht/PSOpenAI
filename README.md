@@ -54,6 +54,10 @@ Install-Module -Name PSOpenAI
 + [Request-TextEdit](/Docs/Request-TextEdit.md)
 
 ### Azure OpenAI Service
++ [Get-AzureOpenAIModels](/Docs/Get-AzureOpenAIModels.md)
++ [Get-AzureOpenAIDeployments](/Docs/Get-AzureOpenAIDeployments.md)
++ [New-AzureOpenAIDeployments](/Docs/New-AzureOpenAIDeployments.md)
++ [Remove-AzureOpenAIDeployments](/Docs/Remove-AzureOpenAIDeployments.md)
 + [Request-AzureChatCompletion](/Docs/Request-AzureChatCompletion.md)
 + [Request-AzureChatGPT](/Docs/Request-AZureChatCompletion.md)
 + [Request-AzureEmbeddings](/Docs/Request-AzureEmbeddings.md)
@@ -233,6 +237,16 @@ PS C:> Request-ChatGPT -Message "Who are you?" -ApiKey '<Put your API key here.>
 
 ----
 ## Changelog
+### 1.11.0
+ - Add new commands for Azure OpenAI Service.  
+  + [Get-AzureOpenAIModels](/Docs/Get-AzureOpenAIModels.md)
+  + [Get-AzureOpenAIDeployments](/Docs/Get-AzureOpenAIDeployments.md)
+  + [New-AzureOpenAIDeployments](/Docs/New-AzureOpenAIDeployments.md)
+  + [Remove-AzureOpenAIDeployments](/Docs/Remove-AzureOpenAIDeployments.md)
+ - Fix an issue that unmasked API key would unintentionally be exposed in debug messages when using `-Stream`.
+ - Fix issue with organization ID not being used correctly when using `-Stream`.
+ - Minor fixes.
+
 ### 1.10.0
  - Add `-Organization` parameter to specify the Organization ID used for API requests.
  - Improve output of verbose and debug messages.

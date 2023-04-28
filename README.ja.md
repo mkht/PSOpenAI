@@ -51,6 +51,10 @@ Install-Module -Name PSOpenAI
 + [Request-TextEdit](/Docs/Request-TextEdit.md)
 
 ### Azure OpenAI Service
++ [Get-AzureOpenAIModels](/Docs/Get-AzureOpenAIModels.md)
++ [Get-AzureOpenAIDeployments](/Docs/Get-AzureOpenAIDeployments.md)
++ [New-AzureOpenAIDeployments](/Docs/New-AzureOpenAIDeployments.md)
++ [Remove-AzureOpenAIDeployments](/Docs/Remove-AzureOpenAIDeployments.md)
 + [Request-AzureChatCompletion](/Docs/Request-AzureChatCompletion.md)
 + [Request-AzureChatGPT](/Docs/Request-AZureChatCompletion.md)
 + [Request-AzureEmbeddings](/Docs/Request-AzureEmbeddings.md)
@@ -230,6 +234,16 @@ PS C:> Request-ChatGPT -Message "Who are you?" -ApiKey '<Put your API key here.>
 
 ----
 ## 変更履歴
+### 1.11.0
+ - Azure OpenAI Service のための新しいコマンドの追加  
+  + [Get-AzureOpenAIModels](/Docs/Get-AzureOpenAIModels.md)
+  + [Get-AzureOpenAIDeployments](/Docs/Get-AzureOpenAIDeployments.md)
+  + [New-AzureOpenAIDeployments](/Docs/New-AzureOpenAIDeployments.md)
+  + [Remove-AzureOpenAIDeployments](/Docs/Remove-AzureOpenAIDeployments.md)
+ - `-Stream`を使用した際にAPIキーがマスクされずにDebugストリームに出力されていた問題を修正
+ - `-Stream`を使用した際にOpenAI組織IDがAPIリクエストに付与されない問題を修正
+ - その他の軽微な修正
+
 ### 1.10.0
  - APIリクエストに組織IDを指定する`-Organization`パラメータを追加
  - デバッグメッセージと詳細メッセージの出力を強化
