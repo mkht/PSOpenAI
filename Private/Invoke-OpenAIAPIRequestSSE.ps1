@@ -67,6 +67,9 @@ function Invoke-OpenAIAPIRequestSSE {
     switch ($AuthType) {
         'openai' {
             $RequestMessage.Headers.Authorization = [System.Net.Http.Headers.AuthenticationHeaderValue]::new('Bearer', $PlainToken)
+            if (-not [string]::IsNullOrWhiteSpace($Organization)) {
+                $RequestMessage.Headers.Add('OpenAI-Organization', $Organization.Trim())
+            }
         }
         'azure' {
             $RequestMessage.Headers.Add('api-key', $PlainToken)
