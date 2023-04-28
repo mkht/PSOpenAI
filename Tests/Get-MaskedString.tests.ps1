@@ -127,6 +127,20 @@ Describe 'Get-MaskedString' {
                 $Target = ConvertTo-SecureString 'stk-yDYabcdefgfBqD6IPNTukJsABCDEFG8l02ksb4X' -AsPlainText -Force
                 Get-MaskedString -Source $TestSource -Target $Target | Should -BeExactly $TestOutput
             }
+
+            It 'Mask target (11)' {
+                $TestSource = 'Token1: ABCDEFG / Token2:  01234567'
+                $TestOutput = 'Token1: ******* / Token2:  ********'
+                $Target = ('ABCDEFG', '01234567')
+                Get-MaskedString -Source $TestSource -Target $Target | Should -BeExactly $TestOutput
+            }
+
+            It 'Mask target (12)' {
+                $TestSource = 'Token1: ABCDEFG / Token2:  01234567'
+                $TestOutput = 'Token1: ******* / Token2:  01234567'
+                $Target = ('ABCDEFG', $null)
+                Get-MaskedString -Source $TestSource -Target $Target | Should -BeExactly $TestOutput
+            }
         }
     }
 }

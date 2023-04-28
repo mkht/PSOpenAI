@@ -9,7 +9,8 @@ function Get-MaskedString {
         [string]$Source,
 
         [Parameter(Mandatory, Position = 1)]
-        [securestring][SecureStringTransformation()]$Target,
+        [AllowNull()]
+        [securestring[]][SecureStringTransformation()]$Target,
 
         [Parameter()]
         [uint32]$First = 0,
@@ -26,10 +27,12 @@ function Get-MaskedString {
 
     begin {
         # decrypt securestring
-        [string]$PlainTarget = ''
-        if ($null -ne $Source) {
-            $bstr = [Marshal]::SecureStringToBSTR($Target)
-            $PlainTarget = [Marshal]::PtrToStringBSTR($bstr)
+        [string[]]$PlainTarget = @()
+        foreach ($t in $Target) {
+            if ($null -ne $t) {
+                $bstr = [Marshal]::SecureStringToBSTR($t)
+                $PlainTarget += [Marshal]::PtrToStringBSTR($bstr)
+            }
         }
     }
 
@@ -38,25 +41,28 @@ function Get-MaskedString {
             [string]::Empty
             return
         }
-        if ([string]::IsNullOrEmpty($PlainTarget)) {
-            $Source
-            return
-        }
-        if ($First + $Last -gt $PlainTarget.Length) {
-            $Source
-            return
-        }
-        [int]$numberOfAsterisks = $PlainTarget.Length - $First - $Last
-        if ($numberOfAsterisks -lt $MinNumberOfAsterisks) { $numberOfAsterisks = $MinNumberOfAsterisks }
-        if ($numberOfAsterisks -gt $MaxNumberOfAsterisks) { $numberOfAsterisks = $MaxNumberOfAsterisks }
 
-        [string]$Masked = [string]::Concat(
-            $PlainTarget.Substring(0, $First),
-            ''.PadLeft($numberOfAsterisks, '*'),
-            $PlainTarget.Substring($PlainTarget.Length - $Last, $Last)
-        )
+        foreach ($pt in $PlainTarget) {
+            if ([string]::IsNullOrEmpty($pt)) {
+                continue
+            }
+            if ($First + $Last -gt $pt.Length) {
+                continue
+            }
+            [int]$numberOfAsterisks = $pt.Length - $First - $Last
+            if ($numberOfAsterisks -lt $MinNumberOfAsterisks) { $numberOfAsterisks = $MinNumberOfAsterisks }
+            if ($numberOfAsterisks -gt $MaxNumberOfAsterisks) { $numberOfAsterisks = $MaxNumberOfAsterisks }
 
-        [regex]::Replace($Source, $PlainTarget, $Masked, [System.Text.RegularExpressions.RegexOptions]::IgnoreCase)
+            [string]$Masked = [string]::Concat(
+                $pt.Substring(0, $First),
+                ''.PadLeft($numberOfAsterisks, '*'),
+                $pt.Substring($pt.Length - $Last, $Last)
+            )
+
+            $Source = [regex]::Replace($Source, $pt, $Masked, [System.Text.RegularExpressions.RegexOptions]::IgnoreCase)
+        }
+
+        $Source
     }
 
     end {}

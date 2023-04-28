@@ -89,11 +89,15 @@ function Invoke-OpenAIAPIRequestSSE {
     # Verbose / Debug output
     Write-Verbose -Message "Request to $ServiceName API"
     if ($IsDebug) {
-        Write-Debug -Message ('Request parameters: ' + ($RequestMessage | fl `
-                    Method, `
-                    RequestUri, `
-                @{name = 'Headers'; expression = { $_.Headers } } `
-                | Out-String)).TrimEnd()
+        $startIdx = $lastIdx = 2
+        if ($AuthType -eq 'openai') { $startIdx += 4 } # 'org-'
+        Write-Debug -Message (Get-MaskedString `
+            ('Request parameters: ' + ($RequestMessage | fl `
+                        Method, `
+                        RequestUri, `
+                    @{name = 'Headers'; expression = { $_.Headers.ToString() } } `
+                    | Out-String)).TrimEnd() `
+                -Target ($ApiKey, $Organization) -First $startIdx -Last $lastIdx -MaxNumberOfAsterisks 45)
     }
 
     # Send API Request
@@ -130,7 +134,11 @@ function Invoke-OpenAIAPIRequestSSE {
                 | Out-String)).TrimEnd()
         # Don't read the whole stream for debug logging unless necessary.
         if ($IsDebug) {
-            Write-Debug -Message ('API response header: ' + ($HttpResponse.Headers | ft -Hide | Out-String)).TrimEnd()
+            $startIdx = $lastIdx = 2
+            if ($AuthType -eq 'openai') { $startIdx += 4 } # 'org-'
+            Write-Debug -Message (Get-MaskedString `
+                ('API response header: ' + ($HttpResponse.Headers | ft -Hide | Out-String)).TrimEnd() `
+                    -Target ($ApiKey, $Organization) -First $startIdx -Last $lastIdx -MaxNumberOfAsterisks 45)
         }
 
         while (-not $StreamReader.EndOfStream) {

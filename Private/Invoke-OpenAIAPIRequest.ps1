@@ -136,13 +136,13 @@ function Invoke-OpenAIAPIRequest {
         Write-Verbose -Message "Request to $ServiceName API"
         if ($IsDebug) {
             $startIdx = $lastIdx = 2
-            if ($AuthType -eq 'openai') { $startIdx += 3 } # 'sk-'
+            if ($AuthType -eq 'openai') { $startIdx += 4 } # 'org-'
             Write-Debug -Message (Get-MaskedString `
                 ('Request parameters: ' + (([pscustomobject]$IwrParam) | fl Method, Uri, ContentType, Headers, Authentication | Out-String)).TrimEnd() `
-                    -Target $ApiKey -First $startIdx -Last $lastIdx -MaxNumberOfAsterisks 45)
+                    -Target ($ApiKey, $Organization) -First $startIdx -Last $lastIdx -MaxNumberOfAsterisks 45)
             Write-Debug -Message (Get-MaskedString `
                 ('Post body: ' + $RawBody) `
-                    -Target $ApiKey -First $startIdx -Last $lastIdx -MaxNumberOfAsterisks 45)
+                    -Target ($ApiKey, $Organization) -First $startIdx -Last $lastIdx -MaxNumberOfAsterisks 45)
         }
 
         #region Send API Request
@@ -188,13 +188,13 @@ function Invoke-OpenAIAPIRequest {
         # Don't read the whole stream for debug logging unless necessary.
         if ($IsDebug) {
             $startIdx = $lastIdx = 2
-            if ($AuthType -eq 'openai') { $startIdx += 3 } # 'sk-'
+            if ($AuthType -eq 'openai') { $startIdx += 4 } # 'org-'
             Write-Debug -Message (Get-MaskedString `
                 ('API response header: ' + ($Response.Headers | ft -Hide | Out-String)).TrimEnd() `
-                    -Target $ApiKey -First $startIdx -Last $lastIdx -MaxNumberOfAsterisks 45)
+                    -Target ($ApiKey, $Organization) -First $startIdx -Last $lastIdx -MaxNumberOfAsterisks 45)
             Write-Debug -Message (Get-MaskedString `
                 ('API response body: ' + ($Response.Content | Out-String)).TrimEnd() `
-                    -Target $ApiKey -First $startIdx -Last $lastIdx -MaxNumberOfAsterisks 45)
+                    -Target ($ApiKey, $Organization) -First $startIdx -Last $lastIdx -MaxNumberOfAsterisks 45)
         }
 
         # Output
@@ -259,13 +259,13 @@ function Invoke-OpenAIAPIRequest {
         Write-Verbose -Message "Request to $ServiceName API"
         if ($IsDebug) {
             $startIdx = $lastIdx = 2
-            if ($AuthType -eq 'openai') { $startIdx += 3 } # 'sk-'
+            if ($AuthType -eq 'openai') { $startIdx += 4 } # 'org-'
             Write-Debug -Message (Get-MaskedString `
                 ('Request parameters: ' + (([pscustomobject]$IwrParam) | fl Method, Uri, ContentType, Headers, Authentication | Out-String)).TrimEnd() `
-                    -Target $ApiKey -First $startIdx -Last $lastIdx -MaxNumberOfAsterisks 45)
+                    -Target ($ApiKey, $Organization) -First $startIdx -Last $lastIdx -MaxNumberOfAsterisks 45)
             Write-Debug -Message (Get-MaskedString `
                 ('Post body: ' + $RawBody) `
-                    -Target $ApiKey -First $startIdx -Last $lastIdx -MaxNumberOfAsterisks 45)
+                    -Target ($ApiKey, $Organization) -First $startIdx -Last $lastIdx -MaxNumberOfAsterisks 45)
         }
 
         #region Send API Request
@@ -322,13 +322,13 @@ function Invoke-OpenAIAPIRequest {
         # Don't read the whole stream for debug logging unless necessary.
         if ($IsDebug) {
             $startIdx = $lastIdx = 2
-            if ($AuthType -eq 'openai') { $startIdx += 3 } # 'sk-'
+            if ($AuthType -eq 'openai') { $startIdx += 4 } # 'org-'
             Write-Debug -Message (Get-MaskedString `
                 ('API response header: ' + ($Response.Headers | ft -Hide | Out-String)).TrimEnd() `
-                    -Target $ApiKey -First $startIdx -Last $lastIdx -MaxNumberOfAsterisks 45)
+                    -Target ($ApiKey, $Organization) -First $startIdx -Last $lastIdx -MaxNumberOfAsterisks 45)
             Write-Debug -Message (Get-MaskedString `
                 ('API response body: ' + ($Content | Out-String)).TrimEnd() `
-                    -Target $ApiKey -First $startIdx -Last $lastIdx -MaxNumberOfAsterisks 45)
+                    -Target ($ApiKey, $Organization) -First $startIdx -Last $lastIdx -MaxNumberOfAsterisks 45)
         }
 
         # Output
