@@ -44,7 +44,13 @@ function Invoke-OpenAIAPIRequest {
         [string]$AuthType = 'openai'
     )
 
+    #region Set variables
     $IsDebug = Test-Debug
+    $ServiceName = switch -Wildcard ($AuthType) {
+        'openai*' { 'OpenAI' }
+        'azure*' { 'Azure' }
+    }
+    #endregion
 
     #region Assert selected model is discontinued
     if ($null -ne $Body -and $null -ne $Body.model) {
@@ -89,7 +95,7 @@ function Invoke-OpenAIAPIRequest {
             'openai' {
                 $IwrParam.Authentication = 'Bearer'
                 $IwrParam.Token = $ApiKey
-                # Set an Organization-ID
+                # Set Organization-ID
                 if (-not [string]::IsNullOrWhiteSpace($Organization)) {
                     $RequestHeaders['OpenAI-Organization'] = $Organization.Trim()
                 }
@@ -127,7 +133,7 @@ function Invoke-OpenAIAPIRequest {
         }
 
         # Verbose / Debug output
-        Write-Verbose -Message 'Request to OpenAI API'
+        Write-Verbose -Message "Request to $ServiceName API"
         if ($IsDebug) {
             $startIdx = $lastIdx = 2
             if ($AuthType -eq 'openai') { $startIdx += 3 } # 'sk-'
@@ -155,7 +161,7 @@ function Invoke-OpenAIAPIRequest {
             if (($ErrorCode -ge 500 -and $ErrorCode -le 599) -or ($ErrorCode -eq 429 -and ($ErrorMessage -notmatch 'quota'))) {
                 if ($RetryCount -lt $MaxRetryCount) {
                     $Delay = Get-RetryDelay -RetryCount $RetryCount
-                    Write-Warning ('OpenAI API returned an {0} ({1}) Error: {2}' -f $ErrorCode, $ErrorReason, $ErrorMessage)
+                    Write-Warning ('{3} API returned an {0} ({1}) Error: {2}' -f $ErrorCode, $ErrorReason, $ErrorMessage, $ServiceName)
                     Write-Warning ('Retry the request after waiting {0} ms (retry count: {1})' -f $Delay, $RetryCount)
                     Start-Sleep -Milliseconds $Delay
                     $PSBoundParameters.RetryCount = (++$RetryCount)
@@ -164,7 +170,7 @@ function Invoke-OpenAIAPIRequest {
                 }
             }
 
-            Write-Error ('OpenAI API returned an {0} ({1}) Error: {2}' -f $ErrorCode, $ErrorReason, $ErrorMessage)
+            Write-Error ('{3} API returned an {0} ({1}) Error: {2}' -f $ErrorCode, $ErrorReason, $ErrorMessage, $ServiceName)
             return
         }
         catch {
@@ -174,7 +180,7 @@ function Invoke-OpenAIAPIRequest {
         #endregion
 
         # Verbose / Debug output
-        Write-Verbose -Message ('OpenAI API response: ' + ($Response | fl `
+        Write-Verbose -Message ("$ServiceName API response: " + ($Response | fl `
                     StatusCode, `
                 @{name = 'processing_ms'; expression = { $_.Headers['openai-processing-ms'] } }, `
                 @{name = 'request_id'; expression = { $_.Headers['X-Request-Id'] } } `
@@ -214,7 +220,7 @@ function Invoke-OpenAIAPIRequest {
         switch ($AuthType) {
             'openai' {
                 $RequestHeaders['Authorization'] = "Bearer $PlainToken"
-                # Set an Organization-ID
+                # Set Organization-ID
                 if (-not [string]::IsNullOrWhiteSpace($Organization)) {
                     $RequestHeaders['OpenAI-Organization'] = $Organization.Trim()
                 }
@@ -250,7 +256,7 @@ function Invoke-OpenAIAPIRequest {
         }
 
         # Verbose / Debug output
-        Write-Verbose -Message 'Request to OpenAI API'
+        Write-Verbose -Message "Request to $ServiceName API"
         if ($IsDebug) {
             $startIdx = $lastIdx = 2
             if ($AuthType -eq 'openai') { $startIdx += 3 } # 'sk-'
@@ -278,7 +284,7 @@ function Invoke-OpenAIAPIRequest {
             if (($ErrorCode -ge 500 -and $ErrorCode -le 599) -or ($ErrorCode -eq 429 -and ($ErrorMessage -notmatch 'quota'))) {
                 if ($RetryCount -lt $MaxRetryCount) {
                     $Delay = Get-RetryDelay -RetryCount $RetryCount
-                    Write-Warning ('OpenAI API returned an {0} ({1}) Error: {2}' -f $ErrorCode, $ErrorReason, $ErrorMessage)
+                    Write-Warning ('{3} API returned an {0} ({1}) Error: {2}' -f $ErrorCode, $ErrorReason, $ErrorMessage, $ServiceName)
                     Write-Warning ('Retry the request after waiting {0} ms (retry count: {1})' -f $Delay, $RetryCount)
                     Start-Sleep -Milliseconds $Delay
                     $PSBoundParameters.RetryCount = (++$RetryCount)
@@ -287,7 +293,7 @@ function Invoke-OpenAIAPIRequest {
                 }
             }
 
-            Write-Error ('OpenAI API returned an {0} ({1}) Error: {2}' -f $ErrorCode, $ErrorReason, $ErrorMessage)
+            Write-Error ('{3} API returned an {0} ({1}) Error: {2}' -f $ErrorCode, $ErrorReason, $ErrorMessage, $ServiceName)
             return
         }
         catch {
@@ -308,7 +314,7 @@ function Invoke-OpenAIAPIRequest {
         }
 
         # Verbose / Debug output
-        Write-Verbose -Message ('OpenAI API response: ' + ($Response | fl `
+        Write-Verbose -Message ("$ServiceName API response: " + ($Response | fl `
                     StatusCode, `
                 @{name = 'processing_ms'; expression = { $_.Headers['openai-processing-ms'] } }, `
                 @{name = 'request_id'; expression = { $_.Headers['X-Request-Id'] } } `

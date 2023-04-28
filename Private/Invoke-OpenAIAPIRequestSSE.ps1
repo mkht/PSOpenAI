@@ -43,7 +43,13 @@ function Invoke-OpenAIAPIRequestSSE {
         [string]$AuthType = 'openai'
     )
 
+    #region Set variables
     $IsDebug = Test-Debug
+    $ServiceName = switch -Wildcard ($AuthType) {
+        'openai*' { 'OpenAI' }
+        'azure*' { 'Azure' }
+    }
+    #endregion
 
     # Decrypt securestring
     $bstr = [Marshal]::SecureStringToBSTR($ApiKey)
@@ -78,7 +84,7 @@ function Invoke-OpenAIAPIRequestSSE {
     $CancelToken = $cts.Token
 
     # Verbose / Debug output
-    Write-Verbose -Message 'Request to OpenAI API'
+    Write-Verbose -Message "Request to $ServiceName API"
     if ($IsDebug) {
         Write-Debug -Message ('Request parameters: ' + ($RequestMessage | fl `
                     Method, `
@@ -98,7 +104,7 @@ function Invoke-OpenAIAPIRequestSSE {
             if (($ErrorCode -ge 500 -and $ErrorCode -le 599) -or ($ErrorCode -eq 429)) {
                 if ($RetryCount -lt $MaxRetryCount) {
                     $Delay = Get-RetryDelay -RetryCount $RetryCount
-                    Write-Warning ('OpenAI API returned an {0} ({1})' -f $ErrorCode, $ErrorReason)
+                    Write-Warning ('{2} API returned an {0} ({1})' -f $ErrorCode, $ErrorReason, $ServiceName)
                     Write-Warning ('Retry the request after waiting {0} ms (retry count: {1})' -f $Delay, $RetryCount)
                     Start-Sleep -Milliseconds $Delay
                     $PSBoundParameters.RetryCount = (++$RetryCount)
@@ -107,14 +113,14 @@ function Invoke-OpenAIAPIRequestSSE {
                 }
             }
 
-            throw ([System.Net.Http.HttpRequestException]::new(('OpenAI API returned an {0} ({1})' -f $ErrorCode, $ErrorReason)))
+            throw ([System.Net.Http.HttpRequestException]::new(('{2} API returned an {0} ({1})' -f $ErrorCode, $ErrorReason, $ServiceName)))
             return
         }
         $ResponseStream = $HttpResponse.Content.ReadAsStreamAsync().Result
         $StreamReader = [System.IO.StreamReader]::new($ResponseStream, [Encoding]::UTF8)
 
         # Verbose / Debug output
-        Write-Verbose -Message ('OpenAI API response: ' + ($HttpResponse | fl `
+        Write-Verbose -Message ("$ServiceName API response: " + ($HttpResponse | fl `
                     StatusCode, `
                 @{name = 'processing_ms'; expression = { $_.Headers.GetValues('openai-processing-ms')[0] } }, `
                 @{name = 'request_id'; expression = { $_.Headers.GetValues('X-Request-Id')[0] } } `
