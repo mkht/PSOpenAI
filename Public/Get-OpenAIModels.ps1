@@ -8,6 +8,13 @@ function Get-OpenAIModels {
         [string]$Name,
 
         [Parameter()]
+        [int]$TimeoutSec = 0,
+
+        [Parameter()]
+        [ValidateRange(0, 100)]
+        [int]$MaxRetryCount = 0,
+
+        [Parameter()]
         [Alias('Token')]  #for backword compatibility
         [securestring][SecureStringTransformation()]$ApiKey,
 
@@ -38,7 +45,9 @@ function Get-OpenAIModels {
             -Method $OpenAIParameter.Method `
             -Uri $OpenAIParameter.Uri `
             -ApiKey $SecureToken `
-            -Organization $Organization
+            -Organization $Organization `
+            -TimeoutSec $TimeoutSec `
+            -MaxRetryCount $MaxRetryCount
 
         # error check
         if ($null -eq $Response) {
@@ -47,7 +56,7 @@ function Get-OpenAIModels {
         #endregion
 
         #region Parse response object
-        $Response = ($Response | ConvertFrom-Json -ErrorAction Ignore)
+        $Response = try { ($Response | ConvertFrom-Json -ErrorAction Ignore) }catch { Write-Error -Exception $_.Exception }
         if ($Response.object -eq 'list') {
             $Models = @($Response.data)
         }

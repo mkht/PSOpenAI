@@ -15,6 +15,8 @@ Lists the currently available models.
 ```
 Get-OpenAIModels
     [[-Name] <String>]
+    [-TimeoutSec <Int32>]
+    [-MaxRetryCount <Int32>]
     [-ApiKey <Object>]
     [-Organization <string>]
     [<CommonParameters>]
@@ -69,6 +71,31 @@ Position: 1
 Default value: None
 Accept pipeline input: True (ByValue)
 Accept wildcard characters: False
+```
+
+### -TimeoutSec
+Specifies how long the request can be pending before it times out.  
+The default value is `0` (infinite).
+
+```yaml
+Type: Int32
+Required: False
+Position: Named
+Default value: 0
+```
+
+### -MaxRetryCount
+Number between `0` and `100`.  
+Specifies the maximum number of retries if the request fails.  
+The default value is `0` (No retry).  
+Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.  
+Note 2: Retry intervals increase exponentially with jitters, such as `1s > 2s > 4s > 8s > 16s`
+
+```yaml
+Type: Int32
+Required: False
+Position: Named
+Default value: 0
 ```
 
 ### -ApiKey
