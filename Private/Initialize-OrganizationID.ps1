@@ -30,7 +30,12 @@ function Initialize-OrganizationID {
         }
     }
 
-    if ($OrgId.StartsWith('org-')) { $first = 6 }else { $first = 3 }
-    Write-Verbose -Message (('Organization-ID to be used is {0}' -f $OrgId) | Get-MaskedString -Target $OrgId -First $first -Last 2 -MaxNumberOfAsterisks 45)
+    if ([string]::IsNullOrEmpty($OrgId)) {
+        Write-Verbose -Message ('Organization-ID was not found. Not to be used.')
+    }
+    else {
+        if ($OrgId.StartsWith('org-')) { $first = 6 }else { $first = 3 }
+        Write-Verbose -Message (('Organization-ID to be used is {0}' -f $OrgId) | Get-MaskedString -Target $OrgId -First $first -Last 2 -MaxNumberOfAsterisks 45)
+    }
     $OrgId
 }
