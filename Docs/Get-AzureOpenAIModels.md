@@ -142,5 +142,5 @@ Position: Named
 
 ## RELATED LINKS
 
-[https://platform.openai.com/docs/api-reference/models/list](https://platform.openai.com/docs/api-reference/models/list)
+[https://learn.microsoft.com/en-us/rest/api/cognitiveservices/azureopenaistable/models/list](https://learn.microsoft.com/en-us/rest/api/cognitiveservices/azureopenaistable/models/list)
 
