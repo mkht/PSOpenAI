@@ -13,7 +13,7 @@ https://platform.openai.com/docs
 日本語版のREADMEは[こちら](/README.ja.md)
 
 ----
-## Requirements
+## Supported Platforms
 
 + Windows PowerShell 5.1
 + PowerShell 7 or higher

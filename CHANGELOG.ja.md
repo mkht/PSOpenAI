@@ -1,4 +1,15 @@
 # 変更履歴
+### 1.12.0
+- メッセージをパイプラインから直接入力できるようになりました (`Request-ChatGPT`)  
+   ```PowerShell
+   PS C:/> "人気のジャズ音楽を教えて" | Request-ChatGPT | Select-Object -ExpandProperty Answer
+   人気のジャズ音楽には、以下のようなものがあります...
+   ```
+- `Request-Moderation` がコンテンツポリシー抵触を検出した際に警告メッセージを出力するようになりました。警告メッセージを非表示にしたい場合は`-WarningAction Ignore`を指定してください  
+   ```PowerShell
+   PS C:/> Request-Moderation -Text "これは有害なメッセージです" -WarningAction Ignore
+   ```
+- コマンドヘルプメッセージのリンクURLの間違いを修正
 
 ### 1.11.0
   - Azure OpenAI Service のための新しいコマンドの追加  

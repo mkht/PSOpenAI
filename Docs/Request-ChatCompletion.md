@@ -78,9 +78,10 @@ The messages to generate chat completions.
 
 ```yaml
 Type: String
+Aliases: Text
 Required: False
 Position: 1
-Accept pipeline input: True (ByValueFromPipeline)
+Accept pipeline input: True (ByPropertyName, ByValue)
 ```
 
 ### -Name
@@ -277,7 +278,7 @@ An object for keeping the conversation history.
 Type: Object[]
 Required: False
 Position: Named
-Accept pipeline input: True (ByValueFromPipeline)
+Accept pipeline input: True (ByPropertyName)
 ```
 
 ## INPUTS

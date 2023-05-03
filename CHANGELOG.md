@@ -1,4 +1,15 @@
 # Changelog
+### 1.12.0
+- Messages can now be entered directly from the pipeline. (`Request-ChatGPT`)  
+   ```PowerShell
+   PS C:/> "Can you recommend some music?" | Request-ChatGPT | Select-Object -ExpandProperty Answer
+   I can suggest some popular and diverse genres and artists that listeners enjoy...
+   ```
+- `Request-Moderation` now outputs a warning message when content policies are violated. To suppress this, specify `-WarningAction Ignore`.  
+   ```PowerShell
+   PS C:/> Request-Moderation -Text "This is a harmful message" -WarningAction Ignore
+   ```
+- Fix incorrect links in the comannd help.
 
 ### 1.11.0
 - Add new commands for Azure OpenAI Service.  
