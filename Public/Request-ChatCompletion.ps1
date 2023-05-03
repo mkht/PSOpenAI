@@ -3,7 +3,8 @@ function Request-ChatCompletion {
     [OutputType([pscustomobject])]
     [Alias('Request-ChatGPT')]
     param (
-        [Parameter(Mandatory = $false, Position = 0, ValueFromPipelineByPropertyName = $true)]
+        [Parameter(Mandatory = $false, Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
+        [Alias('Text')]
         [ValidateNotNullOrEmpty()]
         [string]$Message,
 

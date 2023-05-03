@@ -105,6 +105,13 @@ Describe 'Request-ChatCompletion' {
             $Result.Answer | Should -HaveCount 2
         }
 
+        It 'Pipeline input (Message)' {
+            { $script:Result = 'What your name' | Request-ChatCompletion -MaxTokens 10 -TimeoutSec 30 -ea Stop } | Should -Not -Throw
+            $Result | Should -BeOfType [pscustomobject]
+            $Result.object | Should -Be 'chat.completion'
+            $Result.Answer | Should -HaveCount 1
+        }
+
         It 'Pipeline input (Conversations)' {
             { $script:First = Request-ChatCompletion -Message 'What' -MaxTokens 10 -TimeoutSec 30 -ea Stop } | Should -Not -Throw
             { $script:Result = $script:First | Request-ChatCompletion -Message 'When' -MaxTokens 10 -TimeoutSec 30 -ea Stop } | Should -Not -Throw
