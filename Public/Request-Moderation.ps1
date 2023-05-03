@@ -95,6 +95,12 @@ function Request-Moderation {
             $Response.PSObject.TypeNames.Insert(0, 'PSOpenAI.Moderation')
             for ($i = 0; $i -lt @($Response.results).Count; $i++) {
                 @($Response.results)[$i] | Add-Member -MemberType NoteProperty -Name 'Text' -Value @($Text)[$i]
+
+                # Output a warning message when input text violates the content policy
+                if (@($Response.results)[$i].flagged -eq $true) {
+                    $Violate = @($Response.results)[$i].categories.psobject.Properties.Where({ $_.Value -eq $true }).Name -join ', '
+                    Write-Warning "This content may violate the content policy. ($Violate)"
+                }
             }
             Write-Output $Response
         }
