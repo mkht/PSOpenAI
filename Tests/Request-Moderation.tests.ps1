@@ -30,6 +30,11 @@ Describe 'Request-Moderation' {
             $Result.results[0].flagged | Should -BeTrue
             $Result.results[0].Text | Should -Be 'I want to kill them.'
         }
+
+        It 'Output warning when the message violates the policy' {
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { gc ($script:TestData + '/moderation_flagged_true.json') -raw }
+            { $script:Result = Request-Moderation -Text 'I want to kill them.' -WarningAction Stop } | Should -Throw
+        }
     }
 
     Context 'Integration tests (online)' -Tag 'Online' {
