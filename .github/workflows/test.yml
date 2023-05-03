@@ -44,8 +44,8 @@ jobs:
       - name: Test
         run: |
           $pesterParam = @{CI = $true; Output = 'Detailed'}
-          if('${{ inputs.target }}' -eq ''){$pesterParam.Tag = 'Offline'}
-          elseif('${{ inputs.target }}' -ne 'all'){$pesterParam.Tag = '${{ inputs.target }}'}
+          if('${{ inputs.tag }}' -eq ''){$pesterParam.Tag = 'Offline'}
+          elseif('${{ inputs.tag }}' -ne 'all'){$pesterParam.Tag = '${{ inputs.tag }}'}
           Invoke-Pester @pesterParam
 
   Tests_PS7:
@@ -71,6 +71,6 @@ jobs:
       - name: Test
         run: |
           $pesterParam = @{CI = $true; Output = 'Detailed'}
-          if('${{ inputs.target }}' -eq ''){$pesterParam.Tag = 'Offline'}
-          elseif('${{ inputs.target }}' -ne 'all'){$pesterParam.Tag = '${{ inputs.target }}'}
+          if('${{ inputs.tag }}' -eq ''){$pesterParam.Tag = 'Offline'}
+          elseif('${{ inputs.tag }}' -ne 'all'){$pesterParam.Tag = '${{ inputs.tag }}'}
           Invoke-Pester @pesterParam
