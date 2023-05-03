@@ -2,12 +2,12 @@
 ### 1.12.0
 - メッセージをパイプラインから直接入力できるようになりました (`Request-ChatGPT`)  
    ```PowerShell
-   PS C:/> "人気のジャズ音楽を教えて" | Request-ChatGPT | Select-Object -ExpandProperty Answer
+   PS C:\> "人気のジャズ音楽を教えて" | Request-ChatGPT | Select-Object -ExpandProperty Answer
    人気のジャズ音楽には、以下のようなものがあります...
    ```
 - `Request-Moderation` がコンテンツポリシー抵触を検出した際に警告メッセージを出力するようになりました。警告メッセージを非表示にしたい場合は`-WarningAction Ignore`を指定してください  
    ```PowerShell
-   PS C:/> Request-Moderation -Text "これは有害なメッセージです" -WarningAction Ignore
+   PS C:\> Request-Moderation -Text "これは有害なメッセージです" -WarningAction Ignore
    ```
 - コマンドヘルプメッセージのリンクURLの間違いを修正
 
@@ -45,7 +45,7 @@
    ChatGPTにユーザの名前を指示することができます  
    使用例.)
    ```PowerShell
-   PS C:/> (Request-ChatGPT -Message 'Do you know my name?' -Name 'Samuel' -Model 'gpt-4-0314' -Temperature 0).Answer
+   PS C:\> (Request-ChatGPT -Message 'Do you know my name?' -Name 'Samuel' -Model 'gpt-4-0314' -Temperature 0).Answer
    Yes, your name is Samuel.
    ```
  - `Request-ChatGPT`の`-Message`パラメータを必須ではなくオプションにしました。またパイプラインから入力可能にしました

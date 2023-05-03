@@ -2,14 +2,14 @@
 ### 1.12.0
 - Messages can now be entered directly from the pipeline. (`Request-ChatGPT`)  
    ```PowerShell
-   PS C:/> "Can you recommend some music?" | Request-ChatGPT | Select-Object -ExpandProperty Answer
+   PS C:\> "Can you recommend some music?" | Request-ChatGPT | Select-Object -ExpandProperty Answer
    I can suggest some popular and diverse genres and artists that listeners enjoy...
    ```
 - `Request-Moderation` now outputs a warning message when content policies are violated. To suppress this, specify `-WarningAction Ignore`.  
    ```PowerShell
-   PS C:/> Request-Moderation -Text "This is a harmful message" -WarningAction Ignore
+   PS C:\> Request-Moderation -Text "This is a harmful message" -WarningAction Ignore
    ```
-- Fix incorrect links in the comannd help.
+- Fix incorrect links in the command help.
 
 ### 1.11.0
 - Add new commands for Azure OpenAI Service.  
@@ -45,7 +45,7 @@
    This parameter can be used to specify the name of the messenger.  
    e.g.)  
    ```PowerShell
-   PS C:/> (Request-ChatGPT -Message 'Do you know my name?' -Name 'Samuel' -Model 'gpt-4-0314' -Temperature 0).Answer
+   PS C:\> (Request-ChatGPT -Message 'Do you know my name?' -Name 'Samuel' -Model 'gpt-4-0314' -Temperature 0).Answer
    Yes, your name is Samuel.
    ```
  - Change the `-Message` parameter of `Request-ChatGPT` to optional and accepts input from pipeline by property name.  
