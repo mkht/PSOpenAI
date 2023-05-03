@@ -1268,8 +1268,8 @@ updated_at       : 2023/03/09 9:00:00</dev:code>
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Get-AzureOpenAIModels.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/models/list</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/models/list</maml:uri>
+        <maml:linkText>https://learn.microsoft.com/en-us/rest/api/cognitiveservices/azureopenaistable/models/list</maml:linkText>
+        <maml:uri>https://learn.microsoft.com/en-us/rest/api/cognitiveservices/azureopenaistable/models/list</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -2863,7 +2863,7 @@ https://learn.microsoft.com/en-us/azure/cognitive-services/openai/reference?sour
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Request-AzureChatCompletion</maml:name>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValueFromPipeline)" position="1" aliases="none">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="1" aliases="Text">
           <maml:name>Message</maml:name>
           <maml:description>
             <maml:para>The messages to generate chat completions.</maml:para>
@@ -3124,7 +3124,7 @@ The default value is `azure`</maml:para>
           </dev:type>
           <dev:defaultValue>"azure"</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValueFromPipeline)" position="named" aliases="none">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>History</maml:name>
           <maml:description>
             <maml:para>An object for keeping the conversation history.</maml:para>
@@ -3139,7 +3139,7 @@ The default value is `azure`</maml:para>
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValueFromPipeline)" position="1" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="1" aliases="Text">
         <maml:name>Message</maml:name>
         <maml:description>
           <maml:para>The messages to generate chat completions.</maml:para>
@@ -3401,7 +3401,7 @@ The default value is `azure`</maml:para>
         </dev:type>
         <dev:defaultValue>"azure"</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValueFromPipeline)" position="named" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
         <maml:name>History</maml:name>
         <maml:description>
           <maml:para>An object for keeping the conversation history.</maml:para>
@@ -4375,7 +4375,7 @@ https://platform.openai.com/docs/guides/chat/chat-completions</maml:para>
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Request-ChatCompletion</maml:name>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValueFromPipeline)" position="1" aliases="none">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="1" aliases="Text">
           <maml:name>Message</maml:name>
           <maml:description>
             <maml:para>The messages to generate chat completions.</maml:para>
@@ -4608,7 +4608,7 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValueFromPipeline)" position="named" aliases="none">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>History</maml:name>
           <maml:description>
             <maml:para>An object for keeping the conversation history.</maml:para>
@@ -4623,7 +4623,7 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValueFromPipeline)" position="1" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="1" aliases="Text">
         <maml:name>Message</maml:name>
         <maml:description>
           <maml:para>The messages to generate chat completions.</maml:para>
@@ -4857,7 +4857,7 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValueFromPipeline)" position="named" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
         <maml:name>History</maml:name>
         <maml:description>
           <maml:para>An object for keeping the conversation history.</maml:para>
