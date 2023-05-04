@@ -1,4 +1,7 @@
 # Changelog
+### 1.12.1
+- Improve error handling.
+
 ### 1.12.0
 - Messages can now be entered directly from the pipeline. (`Request-ChatGPT`)  
    ```PowerShell
