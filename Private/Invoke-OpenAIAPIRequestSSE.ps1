@@ -106,12 +106,14 @@ function Invoke-OpenAIAPIRequestSSE {
         if (-not $HttpResponse.IsSuccessStatusCode) {
             $ErrorCode = $HttpResponse.StatusCode.value__
             $ErrorReason = $HttpResponse.ReasonPhrase
+            $ErrorResponse = $HttpResponse.Content.ReadAsStringAsync().GetAwaiter().GetResult()
+            $ErrorMessage = try { ($ErrorResponse | ConvertFrom-Json -ErrorAction Ignore).error.message }catch {}
 
             # Retry on [429] or [5xx]
-            if (($ErrorCode -ge 500 -and $ErrorCode -le 599) -or ($ErrorCode -eq 429)) {
+            if (($ErrorCode -ge 500 -and $ErrorCode -le 599) -or ($ErrorCode -eq 429 -and ($ErrorMessage -notmatch 'quota'))) {
                 if ($RetryCount -lt $MaxRetryCount) {
                     $Delay = Get-RetryDelay -RetryCount $RetryCount
-                    Write-Warning ('{2} API returned an {0} ({1})' -f $ErrorCode, $ErrorReason, $ServiceName)
+                    Write-Warning ('{3} API returned an {0} ({1}) Error: {2}' -f $ErrorCode, $ErrorReason, $ErrorMessage, $ServiceName)
                     Write-Warning ('Retry the request after waiting {0} ms (retry count: {1})' -f $Delay, $RetryCount)
                     Start-Sleep -Milliseconds $Delay
                     $PSBoundParameters.RetryCount = (++$RetryCount)
@@ -120,7 +122,15 @@ function Invoke-OpenAIAPIRequestSSE {
                 }
             }
 
-            throw ([System.Net.Http.HttpRequestException]::new(('{2} API returned an {0} ({1})' -f $ErrorCode, $ErrorReason, $ServiceName)))
+            if ($PSVersionTable.PSVersion.Major -ge 6) {
+                throw ([Microsoft.PowerShell.Commands.HttpResponseException]::new(('{3} API returned an {0} ({1}) Error: {2}' -f $ErrorCode, $ErrorReason, $ErrorMessage, $ServiceName), $HttpResponse))
+            }
+            else {
+                # Throws Webexception (Not HttpRequestException) for consistency with
+                # exceptions thrown by Invoke-WebRequest on Windows PowerShell 5.1
+                # (this may change in the future)
+                throw ([WebException]::new(('{3} API returned an {0} ({1}) Error: {2}' -f $ErrorCode, $ErrorReason, $ErrorMessage, $ServiceName)))
+            }
             return
         }
         $ResponseStream = $HttpResponse.Content.ReadAsStreamAsync().Result
@@ -172,11 +182,11 @@ function Invoke-OpenAIAPIRequestSSE {
     finally {
         $bstr = $PlainToken = $null
         try {
-            $cts.Dispose()
-            $HttpClient.Dispose()
-            $HttpResponse.Dispose()
-            $ResponseStream.Dispose()
-            $RequestMessage.Dispose()
+            if ($null -ne $cts) { $cts.Dispose() }
+            if ($null -ne $HttpClient) { $HttpClient.Dispose() }
+            if ($null -ne $HttpResponse) { $HttpResponse.Dispose() }
+            if ($null -ne $ResponseStream) { $ResponseStream.Dispose() }
+            if ($null -ne $RequestMessage) { $RequestMessage.Dispose() }
         }
         catch {}
     }

@@ -170,7 +170,7 @@ function Invoke-OpenAIAPIRequest {
                 }
             }
 
-            Write-Error ('{3} API returned an {0} ({1}) Error: {2}' -f $ErrorCode, $ErrorReason, $ErrorMessage, $ServiceName)
+            Write-Error -Exception ([Microsoft.PowerShell.Commands.HttpResponseException]::new(('{3} API returned an {0} ({1}) Error: {2}' -f $ErrorCode, $ErrorReason, $ErrorMessage, $ServiceName), $_.Exception.Response))
             return
         }
         catch {
@@ -297,7 +297,7 @@ function Invoke-OpenAIAPIRequest {
                 }
             }
 
-            Write-Error ('{3} API returned an {0} ({1}) Error: {2}' -f $ErrorCode, $ErrorReason, $ErrorMessage, $ServiceName)
+            Write-Error -Exception ([WebException]::new(('{3} API returned an {0} ({1}) Error: {2}' -f $ErrorCode, $ErrorReason, $ErrorMessage, $ServiceName), $_.Exception, $_.Exception.Status, $_.Exception.Response))
             return
         }
         catch {
@@ -342,7 +342,7 @@ function Invoke-OpenAIAPIRequest {
 
     # Others (error)
     else {
-        Write-Error 'This version of the PowerShell is not supported.'
+        Write-Error -Exception ([System.PlatformNotSupportedException]::new('This version of the PowerShell is not supported.'))
         return
     }
 }
