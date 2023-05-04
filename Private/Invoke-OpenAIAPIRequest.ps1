@@ -275,7 +275,11 @@ function Invoke-OpenAIAPIRequest {
         catch [WebException] {
             $ErrorCode = $_.Exception.Response.StatusCode.value__
             $ErrorReason = $_.Exception.Response.StatusCode.ToString()
-            $ErrorMessage = try { ($_.ErrorDetails.Message | ConvertFrom-Json -ErrorAction Ignore).error.message }catch {}
+            $ResponseStream = $_.Exception.Response.GetResponseStream()
+            $ResponseStream.Position = 0
+            $Reader = [System.IO.StreamReader]::new($ResponseStream)
+            $ErrorResponse = try { $Reader.ReadToEnd() }finally { if ($null -ne $Reader) { $Reader.Close() } }
+            $ErrorMessage = try { ($ErrorResponse | ConvertFrom-Json -ErrorAction Ignore).error.message }catch {}
             if (-not $ErrorMessage) {
                 $ErrorMessage = $_.Exception.Message
             }
