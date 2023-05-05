@@ -1,3 +1,0 @@
-[submodule "Libs/TokenizerLib/src"]
-	path = Libs/TokenizerLib/src
-	url = https://github.com/mkht/Tokenizer
