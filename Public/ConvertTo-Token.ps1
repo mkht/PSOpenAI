@@ -15,36 +15,36 @@ function ConvertTo-Token {
     )
 
     begin {
-        $Tokenizer = $null
+        if ($PSCmdlet.ParameterSetName -eq 'Model') {
+            if ([string]::IsNullOrWhiteSpace($Model)) {
+                Write-Error -Exception ([System.ArgumentException]::new('The model name not specifed properly.'))
+                return
+            }
+            # Convert model name to encoding name
+            $Encoding = Convert-ModelToEncoding -Model $Model
+            if (-not $Encoding) {
+                Write-Error -Exception ([System.ArgumentException]::new('The model name not specifed properly.'))
+                return
+            }
+        }
+
+        $Encoder = switch ($Encoding) {
+            'cl100k_base' { [PSOpenAI.TokenizerLib.Cl100kBaseTokenizer]::Encode }
+            'p50k_base' { [PSOpenAI.TokenizerLib.P50kBaseTokenizer]::Encode }
+            'p50k_edit' { [PSOpenAI.TokenizerLib.P50kEditTokenizer]::Encode }
+            'r50k_base' { [PSOpenAI.TokenizerLib.R50kBaseTokenizer]::Encode }
+            'gpt2' { [PSOpenAI.TokenizerLib.Gpt2Tokenizer]::Encode }
+        }
+    }
+
+    process {
         try {
-            if ($PSCmdlet.ParameterSetName -eq 'Model') {
-                if ([string]::IsNullOrWhiteSpace($Model)) {
-                    throw [System.ArgumentException]::new('The model name not specifed properly.')
-                }
-                else {
-                    $Tokenizer = [Microsoft.DeepDev.TokenizerBuilder]::CreateByModelName($Model)
-                }
-            }
-            else {
-                $Tokenizer = [Microsoft.DeepDev.TokenizerBuilder]::CreateByEncoderName($Encoding)
-            }
+            , $Encoder.Invoke($Text).ToArray()
         }
         catch {
             Write-Error -Exception $_.Exception
         }
     }
 
-    process {
-        if ($null -eq $Tokenizer) {
-            $e = [System.InvalidOperationException]::new('Tokenizer object does not initilized.')
-            Write-Error -Exception $e
-            return
-        }
-
-        , $Tokenizer.Encode($Text, [System.Collections.Generic.List[string]]::new()).ToArray()
-    }
-
-    end {
-
-    }
+    end {}
 }

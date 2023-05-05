@@ -29,7 +29,7 @@
     # Assemblies that must be loaded prior to importing this module
     RequiredAssemblies   = @(
         'Libs\CustomAttributes\netstandard2.0\CustomAttributes.dll',
-        'Libs\TokenizerLib\netstandard2.0\Microsoft.DeepDev.TokenizerLib.dll'
+        'Libs\TokenizerLib\netstandard2.0\TokenizerLib.dll'
     )
 
     # Functions to export from this module

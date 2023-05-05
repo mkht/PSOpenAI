@@ -18,22 +18,25 @@ function ConvertFrom-Token {
     )
 
     begin {
-        $Tokenizer = $null
-        try {
-            if ($PSCmdlet.ParameterSetName -eq 'Model') {
-                if ([string]::IsNullOrWhiteSpace($Model)) {
-                    throw [System.ArgumentException]::new('The model name not specifed properly.')
-                }
-                else {
-                    $Tokenizer = [Microsoft.DeepDev.TokenizerBuilder]::CreateByModelName($Model)
-                }
+        if ($PSCmdlet.ParameterSetName -eq 'Model') {
+            if ([string]::IsNullOrWhiteSpace($Model)) {
+                Write-Error -Exception ([System.ArgumentException]::new('The model name not specifed properly.'))
+                return
             }
-            else {
-                $Tokenizer = [Microsoft.DeepDev.TokenizerBuilder]::CreateByEncoderName($Encoding)
+            # Convert model name to encoding name
+            $Encoding = Convert-ModelToEncoding -Model $Model
+            if (-not $Encoding) {
+                Write-Error -Exception ([System.ArgumentException]::new('The model name not specifed properly.'))
+                return
             }
         }
-        catch {
-            Write-Error -Exception $_.Exception
+
+        $Decoder = switch ($Encoding) {
+            'cl100k_base' { [PSOpenAI.TokenizerLib.Cl100kBaseTokenizer]::Decode }
+            'p50k_base' { [PSOpenAI.TokenizerLib.P50kBaseTokenizer]::Decode }
+            'p50k_edit' { [PSOpenAI.TokenizerLib.P50kEditTokenizer]::Decode }
+            'r50k_base' { [PSOpenAI.TokenizerLib.R50kBaseTokenizer]::Decode }
+            'gpt2' { [PSOpenAI.TokenizerLib.Gpt2Tokenizer]::Decode }
         }
 
         $TokenList = [System.Collections.Generic.List[int]]::new()
@@ -44,7 +47,7 @@ function ConvertFrom-Token {
             if ($AsArray) {
                 foreach ($t in $Token) {
                     [int[]]$t_array = , $t
-                    $Tokenizer.Decode($t_array)
+                    $Decoder.Invoke($t_array)
                 }
             }
             elseif ($Token.Length -eq 0) {
@@ -59,7 +62,7 @@ function ConvertFrom-Token {
                 foreach ($t in $Token) {
                     $PartialTokenList.Add($t)
                 }
-                $Tokenizer.Decode($PartialTokenList.ToArray())
+                $Decoder.Invoke($PartialTokenList.ToArray())
             }
         }
         catch {
@@ -70,7 +73,7 @@ function ConvertFrom-Token {
     end {
         if ($TokenList.Count -ne 0) {
             try {
-                $Tokenizer.Decode($TokenList.ToArray())
+                $Decoder.Invoke($TokenList.ToArray())
             }
             catch {
                 Write-Error -Exception $_.Exception
