@@ -1,4 +1,7 @@
 # Changelog
+### 1.12.2
+- `ConvertTo-Token` and `ConvertFrom-Token` performance has been significantly improved. (Up to 100 times faster)
+
 ### 1.12.1
 - Improve error handling.
 
