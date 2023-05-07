@@ -1,4 +1,9 @@
 # Changelog
+### Unreleased
+- Improve error handling.
+- The `code-davinci-edit-001` model is restored.  
+  It appears that the previous unavailability was a temporary problem rather than a permanent retirement.
+
 ### 1.12.2
 - `ConvertTo-Token` and `ConvertFrom-Token` performance has been significantly improved. (Up to 100 times faster)
 
