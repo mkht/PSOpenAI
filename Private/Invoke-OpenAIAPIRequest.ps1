@@ -3,6 +3,8 @@ using namespace System.Text
 using namespace System.Net
 using namespace System.Net.Http
 using namespace System.Runtime.InteropServices
+using namespace System.Management.Automation
+using namespace Microsoft.PowerShell.Commands
 
 function Invoke-OpenAIAPIRequest {
     [CmdletBinding()]
@@ -150,6 +152,9 @@ function Invoke-OpenAIAPIRequest {
             $Response = Microsoft.PowerShell.Utility\Invoke-WebRequest @IwrParam
         }
         catch [HttpRequestException] {
+            # Trash last error from cmdlet
+            if ($global:Error[0].FullyQualifiedErrorId.StartsWith('WebCmdletWebResponseException')) { $global:Error.RemoveAt(0) }
+            # Parse error details
             $ErrorCode = $_.Exception.Response.StatusCode.value__
             $ErrorReason = $_.Exception.Response.ReasonPhrase
             $ErrorMessage = try { ($_.ErrorDetails.Message | ConvertFrom-Json -ErrorAction Ignore).error.message }catch {}
@@ -170,12 +175,19 @@ function Invoke-OpenAIAPIRequest {
                 }
             }
 
-            Write-Error -Exception ([Microsoft.PowerShell.Commands.HttpResponseException]::new(('{3} API returned an {0} ({1}) Error: {2}' -f $ErrorCode, $ErrorReason, $ErrorMessage, $ServiceName), $_.Exception.Response))
-            return
+
+            $detailMessage = ('{3} API returned an {0} ({1}) Error: {2}' -f $ErrorCode, $ErrorReason, $ErrorMessage, $ServiceName)
+            $er = [ErrorRecord]::new(
+                ([HttpResponseException]::new($detailMessage, $_.Exception.Response)),
+                'PSOpenAI.APIRequest.HttpResponseException',
+                [ErrorCategory]::InvalidOperation,
+                $IwrParam
+            )
+            $er.ErrorDetails = $detailMessage
+            $PSCmdlet.ThrowTerminatingError($er)
         }
         catch {
-            Write-Error -Exception $_.Exception
-            return
+            $PSCmdlet.ThrowTerminatingError($_)
         }
         #endregion
 
@@ -273,6 +285,9 @@ function Invoke-OpenAIAPIRequest {
             $Response = Microsoft.PowerShell.Utility\Invoke-WebRequest @IwrParam
         }
         catch [WebException] {
+            # Trash last error from cmdlet
+            if ($global:Error[0].FullyQualifiedErrorId.StartsWith('WebCmdletWebResponseException')) { $global:Error.RemoveAt(0) }
+            # Parse error details
             $ErrorCode = $_.Exception.Response.StatusCode.value__
             $ErrorReason = $_.Exception.Response.StatusCode.ToString()
             $ResponseStream = $_.Exception.Response.GetResponseStream()
@@ -296,13 +311,18 @@ function Invoke-OpenAIAPIRequest {
                     return
                 }
             }
-
-            Write-Error -Exception ([WebException]::new(('{3} API returned an {0} ({1}) Error: {2}' -f $ErrorCode, $ErrorReason, $ErrorMessage, $ServiceName), $_.Exception, $_.Exception.Status, $_.Exception.Response))
-            return
+            $detailMessage = ('{3} API returned an {0} ({1}) Error: {2}' -f $ErrorCode, $ErrorReason, $ErrorMessage, $ServiceName)
+            $er = [ErrorRecord]::new(
+                ([WebException]::new($detailMessage, $_.Exception, $_.Exception.Status, $_.Exception.Response)),
+                'PSOpenAI.APIRequest.HttpResponseException',
+                [ErrorCategory]::InvalidOperation,
+                $IwrParam
+            )
+            $er.ErrorDetails = $detailMessage
+            $PSCmdlet.ThrowTerminatingError($er)
         }
         catch {
-            Write-Error -Exception $_.Exception
-            return
+            $PSCmdlet.ThrowTerminatingError($_)
         }
         finally {
             $bstr = $PlainToken = $null

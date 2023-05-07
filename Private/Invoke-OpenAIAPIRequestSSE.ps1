@@ -1,6 +1,8 @@
 using namespace System.Text
 using namespace System.Net
 using namespace System.Net.Http
+using namespace System.Management.Automation
+using namespace Microsoft.PowerShell.Commands
 
 # Workaround for assemblies loading issue on PS5.1
 if ($PSVersionTable.PSVersion.Major -le 5) {
@@ -103,6 +105,8 @@ function Invoke-OpenAIAPIRequestSSE {
     # Send API Request
     try {
         $HttpResponse = $HttpClient.SendAsync($RequestMessage, [System.Net.Http.HttpCompletionOption]::ResponseHeadersRead, $CancelToken).GetAwaiter().GetResult()
+
+        #region On HTTP error
         if (-not $HttpResponse.IsSuccessStatusCode) {
             $ErrorCode = $HttpResponse.StatusCode.value__
             $ErrorReason = $HttpResponse.ReasonPhrase
@@ -122,17 +126,30 @@ function Invoke-OpenAIAPIRequestSSE {
                 }
             }
 
+            # Throw exception
             if ($PSVersionTable.PSVersion.Major -ge 6) {
-                throw ([Microsoft.PowerShell.Commands.HttpResponseException]::new(('{3} API returned an {0} ({1}) Error: {2}' -f $ErrorCode, $ErrorReason, $ErrorMessage, $ServiceName), $HttpResponse))
+                $detailMessage = ('{3} API returned an {0} ({1}) Error: {2}' -f $ErrorCode, $ErrorReason, $ErrorMessage, $ServiceName)
+                $ex = ([HttpResponseException]::new($detailMessage, $HttpResponse))
             }
             else {
                 # Throws Webexception (Not HttpRequestException) for consistency with
                 # exceptions thrown by Invoke-WebRequest on Windows PowerShell 5.1
                 # (this may change in the future)
-                throw ([WebException]::new(('{3} API returned an {0} ({1}) Error: {2}' -f $ErrorCode, $ErrorReason, $ErrorMessage, $ServiceName)))
+                $detailMessage = ('{3} API returned an {0} ({1}) Error: {2}' -f $ErrorCode, $ErrorReason, $ErrorMessage, $ServiceName)
+                $ex = ([WebException]::new($detailMessage))
             }
+            $er = [ErrorRecord]::new(
+                $ex,
+                'PSOpenAI.APIRequest.HttpResponseException',
+                [ErrorCategory]::InvalidOperation,
+                $RequestMessage
+            )
+            $er.ErrorDetails = $detailMessage
+            $PSCmdlet.ThrowTerminatingError($er)
             return
         }
+        #endregion
+
         $ResponseStream = $HttpResponse.Content.ReadAsStreamAsync().Result
         $StreamReader = [System.IO.StreamReader]::new($ResponseStream, [Encoding]::UTF8)
 
@@ -172,12 +189,17 @@ function Invoke-OpenAIAPIRequestSSE {
     }
     catch [OperationCanceledException] {
         # Convert OperationCanceledException to TimeoutException
-        Write-Error -Exception ([TimeoutException]::new('The operation was canceled due to timeout.', $_.Exception))
-        return
+        $er = [ErrorRecord]::new(
+            ([TimeoutException]::new('The operation was canceled due to timeout.', $_.Exception)),
+            'PSOpenAI.APIRequest.TimeoutException',
+            [ErrorCategory]::OperationTimeout,
+            $RequestMessage
+        )
+        $er.ErrorDetails = $_.Exception.Message
+        $PSCmdlet.ThrowTerminatingError($er)
     }
     catch {
-        Write-Error -Exception $_.Exception
-        return
+        $PSCmdlet.ThrowTerminatingError($_)
     }
     finally {
         $bstr = $PlainToken = $null
