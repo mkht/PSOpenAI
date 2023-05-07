@@ -24,10 +24,6 @@ function Assert-UnsupportedModels {
             @{
                 Id      = 'code-cushman-002'
                 Expires = '2023-03-23'
-            },
-            @{
-                Id      = 'code-davinci-edit-001'
-                Expires = '2023-03-23'
             }
         )
     }

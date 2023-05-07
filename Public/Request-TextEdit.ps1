@@ -18,7 +18,7 @@ function Request-TextEdit {
         [string]$Text = '',
 
         [Parameter()]
-        [Completions('text-davinci-edit-001')]
+        [Completions('text-davinci-edit-001', 'code-davinci-edit-001')]
         [string][LowerCaseTransformation()]$Model = 'text-davinci-edit-001',
 
         [Parameter()]
