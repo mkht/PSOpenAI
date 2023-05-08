@@ -1,5 +1,5 @@
 # Changelog
-### Unreleased
+### 1.12.3
 - Improve error handling.
 - The `code-davinci-edit-001` model is restored.  
   It appears that the previous unavailability was a temporary problem rather than a permanent retirement.
