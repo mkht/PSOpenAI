@@ -93,6 +93,11 @@ function Invoke-OpenAIAPIRequest {
             TimeoutSec  = $TimeoutSec
         }
 
+        # Use HTTP/2 (if possible)
+        if ($null -ne (Get-Command 'Microsoft.PowerShell.Utility\Invoke-WebRequest').Parameters.HttpVersion) {
+            $IwrParam.HttpVersion = [version]::new(2, 0)
+        }
+
         switch ($AuthType) {
             'openai' {
                 $IwrParam.Authentication = 'Bearer'
@@ -149,7 +154,7 @@ function Invoke-OpenAIAPIRequest {
 
         #region Send API Request
         try {
-            $Response = Microsoft.PowerShell.Utility\Invoke-WebRequest @IwrParam
+            $Response = Microsoft.PowerShell.Utility\Invoke-WebRequest @IwrParam -HttpVersion 3.0
         }
         catch [HttpRequestException] {
             # Trash last error from cmdlet

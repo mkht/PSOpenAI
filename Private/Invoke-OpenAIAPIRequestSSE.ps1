@@ -59,7 +59,13 @@ function Invoke-OpenAIAPIRequestSSE {
     # Create HttpClient and messages
     $HttpClient = [System.Net.Http.HttpClient]::new()
     $RequestMessage = [System.Net.Http.HttpRequestMessage]::new($Method, $Uri)
-    $RequestMessage.Content = [System.Net.Http.StringContent]::new(($Body | ConvertTo-Json -Compress), [Encoding]::UTF8, $ContentType)
+    # Use HTTP/2
+    if ($null -ne [System.Net.HttpVersion]::Version20) {
+        $RequestMessage.Version = [System.Net.HttpVersion]::Version20
+    }
+    if ($null -ne $Body) {
+        $RequestMessage.Content = [System.Net.Http.StringContent]::new(($Body | ConvertTo-Json -Compress), [Encoding]::UTF8, $ContentType)
+    }
 
     # Set debug header
     if ($IsDebug) {
@@ -90,6 +96,9 @@ function Invoke-OpenAIAPIRequestSSE {
 
     # Verbose / Debug output
     Write-Verbose -Message "Request to $ServiceName API"
+    Write-Verbose -Message ('Request HTTP/{0} {1} with {2}-byte payload' -f `
+            $RequestMessage.Version, $RequestMessage.Method, `
+        $($RequestMessage.Content.Headers.ContentLength -as [Int64]))
     if ($IsDebug) {
         $startIdx = $lastIdx = 2
         if ($AuthType -eq 'openai') { $startIdx += 4 } # 'org-'
@@ -154,6 +163,7 @@ function Invoke-OpenAIAPIRequestSSE {
         $StreamReader = [System.IO.StreamReader]::new($ResponseStream, [Encoding]::UTF8)
 
         # Verbose / Debug output
+        Write-Verbose -Message ('Received HTTP/{0} response of content type {1}' -f $HttpResponse.Version, $HttpResponse.Content.Headers.ContentType.MediaType)
         Write-Verbose -Message ("$ServiceName API response: " + ($HttpResponse | fl `
                     StatusCode, `
                 @{name = 'processing_ms'; expression = { $_.Headers.GetValues('openai-processing-ms')[0] } }, `
