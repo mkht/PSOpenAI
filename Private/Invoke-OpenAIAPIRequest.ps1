@@ -154,7 +154,7 @@ function Invoke-OpenAIAPIRequest {
 
         #region Send API Request
         try {
-            $Response = Microsoft.PowerShell.Utility\Invoke-WebRequest @IwrParam -HttpVersion 3.0
+            $Response = Microsoft.PowerShell.Utility\Invoke-WebRequest @IwrParam
         }
         catch [HttpRequestException] {
             # Trash last error from cmdlet
