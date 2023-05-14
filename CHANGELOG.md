@@ -1,4 +1,8 @@
 # Changelog
+### 1.12.4
+- Use HTTP/2 for API requests if the platform is supported.
+- Adjust retry intervals for API requests.
+
 ### 1.12.3
 - Improve error handling.
 - The `code-davinci-edit-001` model is restored.  
