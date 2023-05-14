@@ -186,7 +186,8 @@ Describe 'Request-ChatCompletion' {
             { Request-ChatCompletion -Message 'test' -MaxRetryCount 3 -MaxTokens 16 -ea Stop } | Should -Throw
             $StopWatch.Stop()
             Should -Invoke -CommandName 'Invoke-WebRequest' -ModuleName $script:ModuleName -Times 3
-            $StopWatch.ElapsedMilliseconds | Should -BeGreaterOrEqual 7000
+            # The retry interval is given a jitter of 0.8 to 1.2 times, so the minimum is 5.6 seconds. ((1+2+4)*0.8)
+            $StopWatch.ElapsedMilliseconds | Should -BeGreaterOrEqual 5600
         }
 
         It 'Retrying with exponential backoff on server error' {
@@ -198,7 +199,8 @@ Describe 'Request-ChatCompletion' {
             { Request-ChatCompletion -Message 'test' -MaxRetryCount 1 -MaxTokens 16 -ea Stop } | Should -Throw
             $StopWatch.Stop()
             Should -Invoke -CommandName 'Invoke-WebRequest' -ModuleName $script:ModuleName -Times 1
-            $StopWatch.ElapsedMilliseconds | Should -BeGreaterOrEqual 1000
+            # The retry interval is given a jitter of 0.8 to 1.2 times, so the minimum is 0.8 seconds.
+            $StopWatch.ElapsedMilliseconds | Should -BeGreaterOrEqual 800
         }
     }
 }
