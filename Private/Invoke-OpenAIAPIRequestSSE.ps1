@@ -67,6 +67,12 @@ function Invoke-OpenAIAPIRequestSSE {
         $RequestMessage.Content = [System.Net.Http.StringContent]::new(($Body | ConvertTo-Json -Compress), [Encoding]::UTF8, $ContentType)
     }
 
+    # Set User-Agent
+    if (-not $script:UserAgent) {
+        $script:UserAgent = Get-UserAgent
+    }
+    $RequestMessage.Headers.Add('User-Agent', $script:UserAgent)
+
     # Set debug header
     if ($IsDebug) {
         $RequestMessage.Headers.Add('OpenAI-Debug', 'true')
