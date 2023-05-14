@@ -9,6 +9,11 @@ function Get-RetryDelay {
 
     # Exponential backoff
     # 2^RetryCount * BaseDelay * Random(0.8 to 1.2)
-    $Random = [System.Random]::new()
-    [int][Math]::Min(([Math]::Pow(2, $RetryCount) * $BaseDelay * ($Random.NextDouble() * 0.4 + 0.8) * [double]$UseJitter), $MaxDelay)
+    if ($UseJitter) {
+        $jitter = [System.Random]::new().NextDouble() * 0.4 + 0.8
+    }
+    else {
+        $jitter = 1.0
+    }
+    [int][Math]::Min([Math]::Pow(2, $RetryCount) * $BaseDelay * $jitter, $MaxDelay)
 }
