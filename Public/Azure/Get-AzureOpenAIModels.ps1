@@ -5,7 +5,7 @@ function Get-AzureOpenAIModels {
         [Parameter(Position = 0, ValueFromPipeline = $true)]
         [Alias('ID')]
         [Alias('Model')]
-        [string]$Name,
+        [string][LowerCaseTransformation()]$Name,
 
         [Parameter()]
         [System.Uri]$ApiBase,
@@ -41,7 +41,6 @@ function Get-AzureOpenAIModels {
 
     process {
         if ($Name) {
-            $Name = $Name.ToLower()
             $UriBuilder = [System.UriBuilder]::new($OpenAIParameter.Uri)
             $UriBuilder.Path += "/$Name"
             $OpenAIParameter.Uri = $UriBuilder.Uri

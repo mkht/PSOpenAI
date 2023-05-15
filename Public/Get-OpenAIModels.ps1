@@ -5,7 +5,7 @@ function Get-OpenAIModels {
         [Parameter(Position = 0, ValueFromPipeline = $true)]
         [Alias('ID')]
         [Alias('Model')]
-        [string]$Name,
+        [string][LowerCaseTransformation()]$Name,
 
         [Parameter()]
         [int]$TimeoutSec = 0,
@@ -36,7 +36,6 @@ function Get-OpenAIModels {
 
     process {
         if ($Name) {
-            $Name = $Name.ToLower()
             $OpenAIParameter.Uri = $OpenAIParameter.Uri + "/$Name"
         }
 
