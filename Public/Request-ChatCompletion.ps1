@@ -178,6 +178,7 @@ function Request-ChatCompletion {
         # Error if messages is empty.
         if ($Messages.Count -eq 0) {
             Write-Error 'No message is specified. You must specify one or more messages.'
+            return
         }
 
         $PostBody.messages = $Messages.ToArray()
