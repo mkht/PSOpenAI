@@ -1,4 +1,8 @@
 # Changelog
+### 1.12.5
+- Fix an issue that the User-Agent was not set in stream requests.
+- Minor fixes/improvements.
+
 ### 1.12.4
 - Use HTTP/2 for API requests if the platform is supported.
 - Adjust retry intervals for API requests.
