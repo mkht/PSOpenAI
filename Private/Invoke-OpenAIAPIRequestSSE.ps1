@@ -144,7 +144,7 @@ function Invoke-OpenAIAPIRequestSSE {
             # Throw exception
             if ($PSVersionTable.PSVersion.Major -ge 6) {
                 $detailMessage = ('{3} API returned an {0} ({1}) Error: {2}' -f $ErrorCode, $ErrorReason, $ErrorMessage, $ServiceName)
-                $ex = ([HttpResponseException]::new($detailMessage, $HttpResponse))
+                $ex = ([Microsoft.PowerShell.Commands.HttpResponseException]::new($detailMessage, $HttpResponse))
             }
             else {
                 # Throws Webexception (Not HttpRequestException) for consistency with

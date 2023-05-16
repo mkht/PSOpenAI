@@ -183,7 +183,7 @@ function Invoke-OpenAIAPIRequest {
 
             $detailMessage = ('{3} API returned an {0} ({1}) Error: {2}' -f $ErrorCode, $ErrorReason, $ErrorMessage, $ServiceName)
             $er = [ErrorRecord]::new(
-                ([HttpResponseException]::new($detailMessage, $_.Exception.Response)),
+                ([Microsoft.PowerShell.Commands.HttpResponseException]::new($detailMessage, $_.Exception.Response)),
                 'PSOpenAI.APIRequest.HttpResponseException',
                 [ErrorCategory]::InvalidOperation,
                 $IwrParam
