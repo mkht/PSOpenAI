@@ -34,7 +34,9 @@ https://learn.microsoft.com/en-us/azure/cognitive-services/openai/reference#embe
 
 ### Example 1: Get a vector representation of a given input.
 ```powershell
-Request-Embeddings -Text 'Waiter, the food was delicious...' -Deployment 'YourDeploymentName' | select -ExpandProperty data
+PS C:\> $global:OPENAI_API_KEY = '<Put your api key here>'
+PS C:\> $global:OPENAI_API_BASE  = 'https://<resource-name>.openai.azure.com/'
+PS C:\> Request-Embeddings -Text 'Waiter, the food was delicious...' -Deployment 'YourDeploymentName' | select -ExpandProperty data
 ```
 
 ```yaml

@@ -45,7 +45,9 @@ https://learn.microsoft.com/en-us/azure/cognitive-services/openai/reference#comp
 ## EXAMPLES
 ### Example 1: Estimate the sentences that follow.
 ```PowerShell
-Request-TextCompletion -Prompt 'This is a hamburger store.' -Deployment 'YourDeploymentName' | select Answer
+PS C:\> $global:OPENAI_API_KEY = '<Put your api key here>'
+PS C:\> $global:OPENAI_API_BASE  = 'https://<resource-name>.openai.azure.com/'
+PS C:\> Request-TextCompletion -Prompt 'This is a hamburger store.' -Deployment 'YourDeploymentName' | select Answer
 ```
 ```
 We serves

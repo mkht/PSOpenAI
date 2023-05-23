@@ -26,6 +26,8 @@ https://learn.microsoft.com/en-us/rest/api/cognitiveservices/azureopenaistable/d
 
 ### Example 1: Creating a deployment.
 ```powershell
+PS C:\> $global:OPENAI_API_KEY = '<Put your api key here>'
+PS C:\> $global:OPENAI_API_BASE  = 'https://<resource-name>.openai.azure.com/'
 PS C:\> New-AzureOpenAIDeployments -Model text-davinci-002
 ```
 

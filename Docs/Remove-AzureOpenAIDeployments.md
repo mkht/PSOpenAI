@@ -35,6 +35,8 @@ https://learn.microsoft.com/en-us/rest/api/cognitiveservices/azureopenaistable/d
 
 ### Example 1: Delete a deployment.
 ```powershell
+PS C:\> $global:OPENAI_API_KEY = '<Put your api key here>'
+PS C:\> $global:OPENAI_API_BASE  = 'https://<resource-name>.openai.azure.com/'
 PS C:\> Remove-AzureOpenAIDeployments -Deployment 'deployment-afa0669ca01e4693ae3a93baf40f26d6'
 ```
 

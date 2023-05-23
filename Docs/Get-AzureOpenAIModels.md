@@ -32,6 +32,8 @@ https://learn.microsoft.com/en-us/rest/api/cognitiveservices/azureopenaistable/m
 
 ### Example 1: List all available models.
 ```PowerShell
+PS C:\> $global:OPENAI_API_KEY = '<Put your api key here>'
+PS C:\> $global:OPENAI_API_BASE  = 'https://<resource-name>.openai.azure.com/'
 PS C:\> Get-AzureOpenAIModels | select -ExpandProperty ID
 ```
 ```yaml

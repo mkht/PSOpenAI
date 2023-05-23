@@ -47,6 +47,8 @@ https://learn.microsoft.com/en-us/azure/cognitive-services/openai/reference?sour
 ### Example 1
 ### Example 1: Ask one question to Azure OpenAI Service, and get an answer.
 ```PowerShell
+PS C:\> $global:OPENAI_API_KEY = '<Put your api key here>'
+PS C:\> $global:OPENAI_API_BASE  = 'https://<resource-name>.openai.azure.com/'
 PS C:\> Request-AzureChatGPT -Message "Who are you?" -Deployment 'YourDeploymentName' | select Answer
 ```
 ```
