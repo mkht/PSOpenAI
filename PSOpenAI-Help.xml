@@ -997,7 +997,9 @@ Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s
     <command:examples>
       <command:example>
         <maml:title>-------------- Example 1: List all depoloyments. --------------</maml:title>
-        <dev:code>PS C:\&gt; Get-AzureOpenAIDeployments | select -ExpandProperty id
+        <dev:code>PS C:\&gt; $global:OPENAI_API_KEY = '&lt;Put your api key here&gt;'
+PS C:\&gt; $global:OPENAI_API_BASE  = 'https://&lt;resource-name&gt;.openai.azure.com/'
+PS C:\&gt; Get-AzureOpenAIDeployments | select -ExpandProperty id
 
 deployment-afa0669ca01e4693ae3a93baf40f26d6
 deployment-d09c49daeccc4ee5a5a9cd9aacc640c5
@@ -1234,7 +1236,9 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
     <command:examples>
       <command:example>
         <maml:title>------------ Example 1: List all available models. ------------</maml:title>
-        <dev:code>PS C:\&gt; Get-AzureOpenAIModels | select -ExpandProperty ID
+        <dev:code>PS C:\&gt; $global:OPENAI_API_KEY = '&lt;Put your api key here&gt;'
+PS C:\&gt; $global:OPENAI_API_BASE  = 'https://&lt;resource-name&gt;.openai.azure.com/'
+PS C:\&gt; Get-AzureOpenAIModels | select -ExpandProperty ID
 
 text-curie-001
 text-davinci-001
@@ -1872,7 +1876,9 @@ Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s
     <command:examples>
       <command:example>
         <maml:title>-------------- Example 1: Creating a deployment. --------------</maml:title>
-        <dev:code>PS C:\&gt; New-AzureOpenAIDeployments -Model text-davinci-002
+        <dev:code>PS C:\&gt; $global:OPENAI_API_KEY = '&lt;Put your api key here&gt;'
+PS C:\&gt; $global:OPENAI_API_BASE  = 'https://&lt;resource-name&gt;.openai.azure.com/'
+PS C:\&gt; New-AzureOpenAIDeployments -Model text-davinci-002
 
 scale_settings : @{scale_type=standard}
 model          : text-davinci-002
@@ -2201,7 +2207,9 @@ Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s
     <command:examples>
       <command:example>
         <maml:title>--------------- Example 1: Delete a deployment. ---------------</maml:title>
-        <dev:code>PS C:\&gt; Remove-AzureOpenAIDeployments -Deployment 'deployment-afa0669ca01e4693ae3a93baf40f26d6'</dev:code>
+        <dev:code>PS C:\&gt; $global:OPENAI_API_KEY = '&lt;Put your api key here&gt;'
+PS C:\&gt; $global:OPENAI_API_BASE  = 'https://&lt;resource-name&gt;.openai.azure.com/'
+PS C:\&gt; Remove-AzureOpenAIDeployments -Deployment 'deployment-afa0669ca01e4693ae3a93baf40f26d6'</dev:code>
         <dev:remarks>
           <maml:para></maml:para>
         </dev:remarks>
@@ -3440,7 +3448,9 @@ The default value is `azure`</maml:para>
       </command:example>
       <command:example>
         <maml:title>Example 1: Ask one question to Azure OpenAI Service, and get an answer.</maml:title>
-        <dev:code>PS C:\&gt; Request-AzureChatGPT -Message "Who are you?" -Deployment 'YourDeploymentName' | select Answer
+        <dev:code>PS C:\&gt; $global:OPENAI_API_KEY = '&lt;Put your api key here&gt;'
+PS C:\&gt; $global:OPENAI_API_BASE  = 'https://&lt;resource-name&gt;.openai.azure.com/'
+PS C:\&gt; Request-AzureChatGPT -Message "Who are you?" -Deployment 'YourDeploymentName' | select Answer
 
 I am an AI language model created by OpenAI, designed to assist with ...</dev:code>
         <dev:remarks>
@@ -3736,7 +3746,9 @@ The default value is `azure`</maml:para>
     <command:examples>
       <command:example>
         <maml:title>--- Example 1: Get a vector representation of a given input. ---</maml:title>
-        <dev:code>Request-Embeddings -Text 'Waiter, the food was delicious...' -Deployment 'YourDeploymentName' | select -ExpandProperty data
+        <dev:code>PS C:\&gt; $global:OPENAI_API_KEY = '&lt;Put your api key here&gt;'
+PS C:\&gt; $global:OPENAI_API_BASE  = 'https://&lt;resource-name&gt;.openai.azure.com/'
+PS C:\&gt; Request-Embeddings -Text 'Waiter, the food was delicious...' -Deployment 'YourDeploymentName' | select -ExpandProperty data
 
 object    : embedding
 index     : 0
@@ -4338,7 +4350,9 @@ The default value is `azure`</maml:para>
     <command:examples>
       <command:example>
         <maml:title>-------- Example 1: Estimate the sentences that follow. --------</maml:title>
-        <dev:code>Request-TextCompletion -Prompt 'This is a hamburger store.' -Deployment 'YourDeploymentName' | select Answer
+        <dev:code>PS C:\&gt; $global:OPENAI_API_KEY = '&lt;Put your api key here&gt;'
+PS C:\&gt; $global:OPENAI_API_BASE  = 'https://&lt;resource-name&gt;.openai.azure.com/'
+PS C:\&gt; Request-TextCompletion -Prompt 'This is a hamburger store.' -Deployment 'YourDeploymentName' | select Answer
 
 We serves
 -classic hamburgers

@@ -1,4 +1,8 @@
 # Changelog
+### 1.12.6
+- Update Azure API version to `2023-05-15` of latest stable.
+- Update docs and examples.
+
 ### 1.12.5
 - Fix an issue that the User-Agent was not set in stream requests.
 - Minor fixes/improvements.
