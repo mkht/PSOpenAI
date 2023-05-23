@@ -17,7 +17,7 @@ function Get-AzureOpenAIAPIEndpoint {
 
     $UriBuilder = [System.UriBuilder]::new($ApiBase)
     if ([string]::IsNullOrWhiteSpace($ApiVersion)) {
-        $ApiVersion = '2023-03-15-preview'  # default api version
+        $ApiVersion = '2023-05-15'  # default api version
     }
 
     switch ($EndpointName) {
@@ -65,7 +65,7 @@ function Get-AzureOpenAIAPIEndpoint {
         'Deployments' {
             # https://learn.microsoft.com/en-us/rest/api/cognitiveservices/azureopenaistable/deployments/list
             $UriBuilder.Path = '/openai/deployments'
-            $UriBuilder.Query = ('api-version={0}' -f $ApiVersion.Trim())
+            $UriBuilder.Query = ('api-version={0}' -f '2023-03-15-preview')
             @{
                 Name        = 'deployments'
                 Method      = 'Get'
