@@ -43,7 +43,10 @@ function Invoke-OpenAIAPIRequest {
 
         [Parameter()]
         [ValidateSet('openai', 'azure', 'azure_ad')]
-        [string]$AuthType = 'openai'
+        [string]$AuthType = 'openai',
+
+        [Parameter()]
+        [bool]$ReturnRawResponse = $false
     )
 
     #region Set variables
@@ -215,7 +218,12 @@ function Invoke-OpenAIAPIRequest {
         }
 
         # Output
-        Write-Output $Response.Content
+        if ($ReturnRawResponse) {
+            Write-Output $Response
+        }
+        else {
+            Write-Output $Response.Content
+        }
     }
     #endregion
 
@@ -361,7 +369,12 @@ function Invoke-OpenAIAPIRequest {
         }
 
         # Output
-        Write-Output $Content
+        if ($ReturnRawResponse) {
+            Write-Output $Response
+        }
+        else {
+            Write-Output $Content
+        }
     }
     #endregion
 

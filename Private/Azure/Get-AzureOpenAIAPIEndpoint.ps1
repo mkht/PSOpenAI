@@ -41,6 +41,16 @@ function Get-AzureOpenAIAPIEndpoint {
                 ContentType = 'application/json'
             }
         }
+        'Image.Generation' {
+            $UriBuilder.Path = '/openai/images/generations:submit'
+            $UriBuilder.Query = ('api-version={0}' -f '2023-06-01-preview')
+            @{
+                Name        = 'image.generation'
+                Method      = 'Post'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+        }
         'Embeddings' {
             $UriBuilder.Path = ('/openai/deployments/{0}/embeddings' -f $Engine.Replace('/', '').Trim())
             $UriBuilder.Query = ('api-version={0}' -f $ApiVersion.Trim())
