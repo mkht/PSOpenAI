@@ -135,7 +135,7 @@ function Request-AzureImageGeneration {
             0
         }
 
-        Write-Verbose ('Wainting for the task completed...')
+        Write-Verbose ('Waiting for the task completed...')
         Start-Sleep -Milliseconds $InitialWait
         try {
             while ($Status -ne 'succeeded') {
