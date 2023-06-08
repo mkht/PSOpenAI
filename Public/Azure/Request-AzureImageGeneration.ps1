@@ -138,9 +138,9 @@ function Request-AzureImageGeneration {
 
         try {
             Write-Verbose ('Waiting for the task completed...')
-            [System.Threading.Tasks.Task]::Delay($InitialWait , $Cancellation.Token).Wait()
+            [System.Threading.Tasks.Task]::Delay($InitialWait , $Cancellation.Token).GetAwaiter().GetResult()
             while ($Status -ne 'succeeded') {
-                [System.Threading.Tasks.Task]::Delay($Interval , $Cancellation.Token).Wait()
+                [System.Threading.Tasks.Task]::Delay($Interval , $Cancellation.Token).GetAwaiter().GetResult()
                 $ResponseContent = $null
                 $SubResponse = Invoke-OpenAIAPIRequest `
                     -Method 'Get' `
@@ -160,7 +160,13 @@ function Request-AzureImageGeneration {
             }
         }
         catch {
-            Write-Error -Exception $_.Exception
+            if ($_.FullyQualifiedErrorId -eq 'TaskCanceledException') {
+                # Not sure why, but PowerShell wraps TaskCanceledException with MethodInvocationException, so it should unwrap
+                Write-Error -Exception $_.Exception.InnerException
+            }
+            else {
+                Write-Error -Exception $_.Exception
+            }
             return
         }
         finally {
