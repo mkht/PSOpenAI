@@ -130,7 +130,7 @@ function Request-AzureImageGeneration {
         $StopStatus = @('canceled', 'failed', 'deleted')
         $Interval = 200
         $InitialWait = if ($Response.Headers.ContainsKey('Retry-After') -and $Response.Headers['Retry-After'] -as [uint16]) {
-            ([uint16]$Response.Headers['Retry-after']) * 1000
+            ([uint16]$Response.Headers['Retry-After']) * 1000
         }
         else {
             0
@@ -138,9 +138,9 @@ function Request-AzureImageGeneration {
 
         try {
             Write-Verbose ('Waiting for the task completed...')
-            [System.Threading.Tasks.Task]::Delay($InitialWait ,$Cancellation.Token).Wait()
+            [System.Threading.Tasks.Task]::Delay($InitialWait , $Cancellation.Token).Wait()
             while ($Status -ne 'succeeded') {
-                [System.Threading.Tasks.Task]::Delay($Interval ,$Cancellation.Token).Wait()
+                [System.Threading.Tasks.Task]::Delay($Interval , $Cancellation.Token).Wait()
                 $ResponseContent = $null
                 $SubResponse = Invoke-OpenAIAPIRequest `
                     -Method 'Get' `
@@ -164,7 +164,9 @@ function Request-AzureImageGeneration {
             return
         }
         finally {
-            if ($null -ne $Cancellation) { $Cancellation.Dispose() }
+            if ($null -ne $Cancellation) {
+                $Cancellation.Dispose()
+            }
         }
 
         if ($null -eq $ResponseContent) {
