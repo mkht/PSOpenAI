@@ -89,8 +89,9 @@ function Request-AzureImageGeneration {
         #endregion
 
         # Create cancellation token for timeout
-        if ($TimeoutSec -ge 1) {
-            $Cancellation = [System.Threading.CancellationTokenSource]::new($TimeoutSec * 1000)
+        $Cancellation = [System.Threading.CancellationTokenSource]::new()
+        if ($TimeoutSec -gt 0) {
+            $Cancellation.CancelAfter([timespan]::FromSeconds($TimeoutSec))
         }
 
         #region Send API Request
@@ -135,15 +136,11 @@ function Request-AzureImageGeneration {
             0
         }
 
-        Write-Verbose ('Waiting for the task completed...')
-        Start-Sleep -Milliseconds $InitialWait
         try {
+            Write-Verbose ('Waiting for the task completed...')
+            [System.Threading.Tasks.Task]::Delay($InitialWait ,$Cancellation.Token).Wait()
             while ($Status -ne 'succeeded') {
-                if ($null -ne $Cancellation) {
-                    $Cancellation.Token.ThrowIfCancellationRequested()
-                }
-                Start-Sleep -Milliseconds $Interval
-
+                [System.Threading.Tasks.Task]::Delay($Interval ,$Cancellation.Token).Wait()
                 $ResponseContent = $null
                 $SubResponse = Invoke-OpenAIAPIRequest `
                     -Method 'Get' `
