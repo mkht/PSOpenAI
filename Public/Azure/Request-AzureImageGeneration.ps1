@@ -138,9 +138,9 @@ function Request-AzureImageGeneration {
 
         try {
             Write-Verbose ('Waiting for the task completed...')
-            [System.Threading.Tasks.Task]::Delay($InitialWait , $Cancellation.Token).GetAwaiter().GetResult()
+            $null = [System.Threading.Tasks.Task]::Delay($InitialWait , $Cancellation.Token).GetAwaiter().GetResult()
             while ($Status -ne 'succeeded') {
-                [System.Threading.Tasks.Task]::Delay($Interval , $Cancellation.Token).GetAwaiter().GetResult()
+                $null = [System.Threading.Tasks.Task]::Delay($Interval , $Cancellation.Token).GetAwaiter().GetResult()
                 $ResponseContent = $null
                 $SubResponse = Invoke-OpenAIAPIRequest `
                     -Method 'Get' `
