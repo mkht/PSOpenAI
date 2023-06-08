@@ -16,14 +16,14 @@ function Get-AzureOpenAIAPIEndpoint {
     )
 
     $UriBuilder = [System.UriBuilder]::new($ApiBase)
-    if ([string]::IsNullOrWhiteSpace($ApiVersion)) {
-        $ApiVersion = '2023-05-15'  # default api version
-    }
+    $ApiVersion = $ApiVersion.Trim()
+    $DefaultApiVersion = '2023-05-15'
 
     switch ($EndpointName) {
         'Chat.Completion' {
+            $InnerApiVersion = if ($ApiVersion) { $ApiVersion }else { $DefaultApiVersion }
             $UriBuilder.Path = ('/openai/deployments/{0}/chat/completions' -f $Engine.Replace('/', '').Trim())
-            $UriBuilder.Query = ('api-version={0}' -f $ApiVersion.Trim())
+            $UriBuilder.Query = ('api-version={0}' -f $InnerApiVersion)
             @{
                 Name        = 'chat.completion'
                 Method      = 'Post'
@@ -32,8 +32,9 @@ function Get-AzureOpenAIAPIEndpoint {
             }
         }
         'Text.Completion' {
+            $InnerApiVersion = if ($ApiVersion) { $ApiVersion }else { $DefaultApiVersion }
             $UriBuilder.Path = ('/openai/deployments/{0}/completions' -f $Engine.Replace('/', '').Trim())
-            $UriBuilder.Query = ('api-version={0}' -f $ApiVersion.Trim())
+            $UriBuilder.Query = ('api-version={0}' -f $InnerApiVersion)
             @{
                 Name        = 'text.completion'
                 Method      = 'Post'
@@ -42,8 +43,9 @@ function Get-AzureOpenAIAPIEndpoint {
             }
         }
         'Image.Generation' {
+            $InnerApiVersion = if ($ApiVersion) { $ApiVersion }else { '2023-06-01-preview' }
             $UriBuilder.Path = '/openai/images/generations:submit'
-            $UriBuilder.Query = ('api-version={0}' -f '2023-06-01-preview')
+            $UriBuilder.Query = ('api-version={0}' -f $InnerApiVersion)
             @{
                 Name        = 'image.generation'
                 Method      = 'Post'
@@ -52,8 +54,9 @@ function Get-AzureOpenAIAPIEndpoint {
             }
         }
         'Embeddings' {
+            $InnerApiVersion = if ($ApiVersion) { $ApiVersion }else { $DefaultApiVersion }
             $UriBuilder.Path = ('/openai/deployments/{0}/embeddings' -f $Engine.Replace('/', '').Trim())
-            $UriBuilder.Query = ('api-version={0}' -f $ApiVersion.Trim())
+            $UriBuilder.Query = ('api-version={0}' -f $InnerApiVersion)
             @{
                 Name        = 'embeddings'
                 Method      = 'Post'
@@ -63,8 +66,9 @@ function Get-AzureOpenAIAPIEndpoint {
         }
         'Models' {
             # https://learn.microsoft.com/en-us/rest/api/cognitiveservices/azureopenaistable/models/list
+            $InnerApiVersion = if ($ApiVersion) { $ApiVersion }else { $DefaultApiVersion }
             $UriBuilder.Path = '/openai/models'
-            $UriBuilder.Query = ('api-version={0}' -f $ApiVersion.Trim())
+            $UriBuilder.Query = ('api-version={0}' -f $InnerApiVersion)
             @{
                 Name        = 'models'
                 Method      = 'Get'
@@ -74,8 +78,9 @@ function Get-AzureOpenAIAPIEndpoint {
         }
         'Deployments' {
             # https://learn.microsoft.com/en-us/rest/api/cognitiveservices/azureopenaistable/deployments/list
+            $InnerApiVersion = if ($ApiVersion) { $ApiVersion }else { '2023-03-15-preview' }
             $UriBuilder.Path = '/openai/deployments'
-            $UriBuilder.Query = ('api-version={0}' -f '2023-03-15-preview')
+            $UriBuilder.Query = ('api-version={0}' -f $InnerApiVersion)
             @{
                 Name        = 'deployments'
                 Method      = 'Get'
