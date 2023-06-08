@@ -245,13 +245,11 @@ Position: Named
 
 ### -ApiVersion
 The API version to use for this operation.  
-The default value is `2023-03-15-preview`
 
 ```yaml
 Type: string
 Required: False
 Position: Named
-Default value: "2023-03-15-preview"
 ```
 
 ### -ApiKey

@@ -13,9 +13,17 @@ Creates a new deployment for the Azure OpenAI resource according to the given sp
 ## SYNTAX
 
 ```
-New-AzureOpenAIDeployments [-Model] <String> [-ScaleType <String>] [-ScaleCapacity <Int32>] [-ApiBase <Uri>]
- [-ApiVersion <String>] [-ApiKey <SecureString>] [-AuthType <String>] [-TimeoutSec <Int32>]
- [-MaxRetryCount <Int32>] [<CommonParameters>]
+New-AzureOpenAIDeployments
+    [-Model] <String>
+    [-ScaleType <String>]
+    [-ScaleCapacity <Int32>]
+    [-ApiBase <Uri>]
+    [-ApiVersion <String>]
+    [-ApiKey <SecureString>]
+    [-AuthType <String>]
+    [-TimeoutSec <Int32>]
+    [-MaxRetryCount <Int32>]
+    [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -88,13 +96,11 @@ Position: Named
 
 ### -ApiVersion
 The API version to use for this operation.  
-The default value is `2023-03-15-preview`
 
 ```yaml
 Type: string
 Required: False
 Position: Named
-Default value: "2023-03-15-preview"
 ```
 
 ### -ApiKey
