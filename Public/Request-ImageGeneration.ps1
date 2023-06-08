@@ -145,6 +145,7 @@ function Request-ImageGeneration {
 
             # Download image
             $ResponseContent | Select-Object -ExpandProperty 'url' | select -First 1 | % {
+                Write-Verbose ('Downloading image to {0}' -f $OutFile)
                 Microsoft.PowerShell.Utility\Invoke-WebRequest `
                     -Uri $_ `
                     -Method Get `
