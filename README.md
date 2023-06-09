@@ -2,13 +2,16 @@
 
 [![Test](https://github.com/mkht/PSOpenAI/actions/workflows/test.yml/badge.svg)](https://github.com/mkht/PSOpenAI/actions/workflows/test.yml)
 
-PowerShell module for OpenAI API.
+PowerShell module for OpenAI and Azure OpenAI Service.
 You can use OpenAI functions such as ChatGPT, Speech-to-Text, Text-to-Image from PowerShell.
 
 **This is a community-based project and is not an official offering of OpenAI.**
 
-About OpenAI API  
++ About OpenAI API  
 https://platform.openai.com/docs
+
++ About Azure OpenAI Service  
+https://learn.microsoft.com/en-us/azure/cognitive-services/openai/overview
 
 日本語版のREADMEは[こちら](/README.ja.md)
 
@@ -61,6 +64,7 @@ Install-Module -Name PSOpenAI
 + [Request-AzureChatCompletion](/Docs/Request-AzureChatCompletion.md)
 + [Request-AzureChatGPT](/Docs/Request-AZureChatCompletion.md)
 + [Request-AzureEmbeddings](/Docs/Request-AzureEmbeddings.md)
++ [Request-AzureImageGeneration](/Docs/Request-AzureImageGeneration.md)
 + [Request-AzureTextCompletion](/Docs/Request-AzureTextCompletion.md)
 
 ----
@@ -176,9 +180,9 @@ Request-ImageEdit -Image 'C:\sunflower_masked.png' -Prompt 'sunflower' -OutFile 
 
 Masked image is restored to full images by AI models.
 
-|Source|Generated|
-|----|----|
-| ![masked](/Docs/images/sunflower_masked.png)  | ![restored](/Docs/images/sunflower_restored.png)   |
+| Source                                       | Generated                                        |
+| -------------------------------------------- | ------------------------------------------------ |
+| ![masked](/Docs/images/sunflower_masked.png) | ![restored](/Docs/images/sunflower_restored.png) |
 
 
 ### Moderation
@@ -234,6 +238,20 @@ This is best used when the function is called only once or with few calls, such 
 PS C:> Request-ChatGPT -Message "Who are you?" -ApiKey '<Put your API key here.>'
 ```
 
+## Azure OpenAI Service
+If you want to use Azure OpenAI Service instead of OpenAI. You should create Azure OpenAI resource to your Azure tenant, and get API key and endpoint url. See examples for more details.
+
++ [How to use with Azure OpenAI Service](Examples/How_to_use_with_Azure_OpenAI_Service.ipynb)
+
+### Sample code for Azure
+```powershell
+$global:OPENAI_API_KEY = '<Put your api key here>'
+$global:OPENAI_API_BASE  = 'https://<resource-name>.openai.azure.com/'
+
+Request-AzureChatCompletion `
+  -Message 'Hello Azure OpenAI Service.' `
+  -Deployment 'gpt-35-turbo `
+```
 
 ----
 ## Changelog

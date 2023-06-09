@@ -1,4 +1,7 @@
 # Changelog
+### 1.13.0
+- Add [Request-AzureImageGeneration](/Docs/Request-AzureImageGeneration.md) for Azure DALL-E
+
 ### 1.12.6
 - Update Azure API version to `2023-05-15` of latest stable.
 - Update docs and examples.

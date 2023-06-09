@@ -813,14 +813,14 @@ If not specified, it will try to use `$global:OPENAI_API_BASE` or `$env:OPENAI_A
           <maml:name>ApiVersion</maml:name>
           <maml:description>
             <maml:para>The API version to use for this operation.
-The default value is `2023-03-15-preview`</maml:para>
+</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
           <dev:type>
             <maml:name>string</maml:name>
             <maml:uri />
           </dev:type>
-          <dev:defaultValue>"2023-03-15-preview"</dev:defaultValue>
+          <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>ApiKey</maml:name>
@@ -911,14 +911,14 @@ If not specified, it will try to use `$global:OPENAI_API_BASE` or `$env:OPENAI_A
         <maml:name>ApiVersion</maml:name>
         <maml:description>
           <maml:para>The API version to use for this operation.
-The default value is `2023-03-15-preview`</maml:para>
+</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
         <dev:type>
           <maml:name>string</maml:name>
           <maml:uri />
         </dev:type>
-        <dev:defaultValue>"2023-03-15-preview"</dev:defaultValue>
+        <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>ApiKey</maml:name>
@@ -1108,14 +1108,14 @@ If not specified, it will try to use `$global:OPENAI_API_BASE` or `$env:OPENAI_A
           <maml:name>ApiVersion</maml:name>
           <maml:description>
             <maml:para>The API version to use for this operation.
-The default value is `2023-03-15-preview`</maml:para>
+</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
           <dev:type>
             <maml:name>string</maml:name>
             <maml:uri />
           </dev:type>
-          <dev:defaultValue>"2023-03-15-preview"</dev:defaultValue>
+          <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>ApiKey</maml:name>
@@ -1193,14 +1193,14 @@ If not specified, it will try to use `$global:OPENAI_API_BASE` or `$env:OPENAI_A
         <maml:name>ApiVersion</maml:name>
         <maml:description>
           <maml:para>The API version to use for this operation.
-The default value is `2023-03-15-preview`</maml:para>
+</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
         <dev:type>
           <maml:name>string</maml:name>
           <maml:uri />
         </dev:type>
-        <dev:defaultValue>"2023-03-15-preview"</dev:defaultValue>
+        <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>ApiKey</maml:name>
@@ -1668,14 +1668,14 @@ If not specified, it will try to use `$global:OPENAI_API_BASE` or `$env:OPENAI_A
           <maml:name>ApiVersion</maml:name>
           <maml:description>
             <maml:para>The API version to use for this operation.
-The default value is `2023-03-15-preview`</maml:para>
+</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
           <dev:type>
             <maml:name>string</maml:name>
             <maml:uri />
           </dev:type>
-          <dev:defaultValue>"2023-03-15-preview"</dev:defaultValue>
+          <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>ApiKey</maml:name>
@@ -1790,14 +1790,14 @@ If not specified, it will try to use `$global:OPENAI_API_BASE` or `$env:OPENAI_A
         <maml:name>ApiVersion</maml:name>
         <maml:description>
           <maml:para>The API version to use for this operation.
-The default value is `2023-03-15-preview`</maml:para>
+</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
         <dev:type>
           <maml:name>string</maml:name>
           <maml:uri />
         </dev:type>
-        <dev:defaultValue>"2023-03-15-preview"</dev:defaultValue>
+        <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>ApiKey</maml:name>
@@ -1945,14 +1945,14 @@ If not specified, it will try to use `$global:OPENAI_API_BASE` or `$env:OPENAI_A
           <maml:name>ApiVersion</maml:name>
           <maml:description>
             <maml:para>The API version to use for this operation.
-The default value is `2023-03-15-preview`</maml:para>
+</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
           <dev:type>
             <maml:name>string</maml:name>
             <maml:uri />
           </dev:type>
-          <dev:defaultValue>"2023-03-15-preview"</dev:defaultValue>
+          <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>ApiKey</maml:name>
@@ -2076,14 +2076,14 @@ If not specified, it will try to use `$global:OPENAI_API_BASE` or `$env:OPENAI_A
         <maml:name>ApiVersion</maml:name>
         <maml:description>
           <maml:para>The API version to use for this operation.
-The default value is `2023-03-15-preview`</maml:para>
+</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
         <dev:type>
           <maml:name>string</maml:name>
           <maml:uri />
         </dev:type>
-        <dev:defaultValue>"2023-03-15-preview"</dev:defaultValue>
+        <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>ApiKey</maml:name>
@@ -3095,14 +3095,14 @@ If not specified, it will try to use `$global:OPENAI_API_BASE` or `$env:OPENAI_A
           <maml:name>ApiVersion</maml:name>
           <maml:description>
             <maml:para>The API version to use for this operation.
-The default value is `2023-03-15-preview`</maml:para>
+</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
           <dev:type>
             <maml:name>string</maml:name>
             <maml:uri />
           </dev:type>
-          <dev:defaultValue>"2023-03-15-preview"</dev:defaultValue>
+          <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>ApiKey</maml:name>
@@ -3372,14 +3372,14 @@ If not specified, it will try to use `$global:OPENAI_API_BASE` or `$env:OPENAI_A
         <maml:name>ApiVersion</maml:name>
         <maml:description>
           <maml:para>The API version to use for this operation.
-The default value is `2023-03-15-preview`</maml:para>
+</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
         <dev:type>
           <maml:name>string</maml:name>
           <maml:uri />
         </dev:type>
-        <dev:defaultValue>"2023-03-15-preview"</dev:defaultValue>
+        <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>ApiKey</maml:name>
@@ -3567,14 +3567,14 @@ If not specified, it will try to use `$global:OPENAI_API_BASE` or `$env:OPENAI_A
           <maml:name>ApiVersion</maml:name>
           <maml:description>
             <maml:para>The API version to use for this operation.
-The default value is `2023-03-15-preview`</maml:para>
+</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
           <dev:type>
             <maml:name>string</maml:name>
             <maml:uri />
           </dev:type>
-          <dev:defaultValue>"2023-03-15-preview"</dev:defaultValue>
+          <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>ApiKey</maml:name>
@@ -3689,14 +3689,14 @@ If not specified, it will try to use `$global:OPENAI_API_BASE` or `$env:OPENAI_A
         <maml:name>ApiVersion</maml:name>
         <maml:description>
           <maml:para>The API version to use for this operation.
-The default value is `2023-03-15-preview`</maml:para>
+</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
         <dev:type>
           <maml:name>string</maml:name>
           <maml:uri />
         </dev:type>
-        <dev:defaultValue>"2023-03-15-preview"</dev:defaultValue>
+        <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>ApiKey</maml:name>
@@ -3767,6 +3767,499 @@ Text      : Waiter, the food was delicious...</dev:code>
       <maml:navigationLink>
         <maml:linkText>https://learn.microsoft.com/en-us/azure/cognitive-services/openai/reference#embeddings</maml:linkText>
         <maml:uri>https://learn.microsoft.com/en-us/azure/cognitive-services/openai/reference#embeddings</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Request-AzureImageGeneration</command:name>
+      <command:verb>Request</command:verb>
+      <command:noun>AzureImageGeneration</command:noun>
+      <maml:description>
+        <maml:para>Creates an image given a prompt.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>Creates an image given a prompt.
+https://learn.microsoft.com/en-us/azure/cognitive-services/openai/reference#image-generation</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Request-AzureImageGeneration</maml:name>
+      </command:syntaxItem>
+      <command:syntaxItem>
+        <maml:name>Request-AzureImageGeneration</maml:name>
+      </command:syntaxItem>
+      <command:syntaxItem>
+        <maml:name>Request-AzureImageGeneration</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="none">
+          <maml:name>Prompt</maml:name>
+          <maml:description>
+            <maml:para>(Required) A text description of the desired image(s).
+The maximum length is 1000 characters.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="n">
+          <maml:name>NumberOfImages</maml:name>
+          <maml:description>
+            <maml:para>The number of images to generate.
+Must be between `1` and `5`. The default value is `1`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">UInt16</command:parameterValue>
+          <dev:type>
+            <maml:name>UInt16</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>1</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Size</maml:name>
+          <maml:description>
+            <maml:para>The size of the generated images.
+Must be one of `256x256`, `512x512`, or `1024x1024`. The default value is `1024x1024`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>1024x1024</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="response_format">
+          <maml:name>Format</maml:name>
+          <maml:description>
+            <maml:para>The format in which the generated images are returned.
+Currently, only supports as `url`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>url</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>User</maml:name>
+          <maml:description>
+            <maml:para>A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>TimeoutSec</maml:name>
+          <maml:description>
+            <maml:para>Specifies how long the request can be pending before it times out. The default value is `0` (infinite).</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>0</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>MaxRetryCount</maml:name>
+          <maml:description>
+            <maml:para>Number between `0` and `100`.
+Specifies the maximum number of retries if the request fails.
+The default value is `0` (No retry).
+Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>0</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>ApiBase</maml:name>
+          <maml:description>
+            <maml:para>Specifies yhe name of your Azure OpenAI resource endpoint such like:  `https://{your-resource-name}.openai.azure.com/`
+If not specified, it will try to use `$global:OPENAI_API_BASE` or `$env:OPENAI_API_BASE`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Uri</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>ApiVersion</maml:name>
+          <maml:description>
+            <maml:para>The API version to use for this operation.
+</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+          <dev:type>
+            <maml:name>string</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>ApiKey</maml:name>
+          <maml:description>
+            <maml:para>Specifies API key for authentication.
+The type of data should `[string]` or `[securestring]`.
+If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_API_KEY`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
+          <dev:type>
+            <maml:name>Object</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+      <command:syntaxItem>
+        <maml:name>Request-AzureImageGeneration</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="none">
+          <maml:name>Prompt</maml:name>
+          <maml:description>
+            <maml:para>(Required) A text description of the desired image(s).
+The maximum length is 1000 characters.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="n">
+          <maml:name>NumberOfImages</maml:name>
+          <maml:description>
+            <maml:para>The number of images to generate.
+Must be between `1` and `5`. The default value is `1`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">UInt16</command:parameterValue>
+          <dev:type>
+            <maml:name>UInt16</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>1</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Size</maml:name>
+          <maml:description>
+            <maml:para>The size of the generated images.
+Must be one of `256x256`, `512x512`, or `1024x1024`. The default value is `1024x1024`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>1024x1024</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>OutFile</maml:name>
+          <maml:description>
+            <maml:para>Specify the file path where the generated images will be saved.
+This cannot be specified with the `Format` parameter. Also, `NumberOfImages` must be `1`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>User</maml:name>
+          <maml:description>
+            <maml:para>A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>TimeoutSec</maml:name>
+          <maml:description>
+            <maml:para>Specifies how long the request can be pending before it times out. The default value is `0` (infinite).</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>0</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>MaxRetryCount</maml:name>
+          <maml:description>
+            <maml:para>Number between `0` and `100`.
+Specifies the maximum number of retries if the request fails.
+The default value is `0` (No retry).
+Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>0</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>ApiBase</maml:name>
+          <maml:description>
+            <maml:para>Specifies yhe name of your Azure OpenAI resource endpoint such like:  `https://{your-resource-name}.openai.azure.com/`
+If not specified, it will try to use `$global:OPENAI_API_BASE` or `$env:OPENAI_API_BASE`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Uri</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>ApiVersion</maml:name>
+          <maml:description>
+            <maml:para>The API version to use for this operation.
+</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+          <dev:type>
+            <maml:name>string</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>ApiKey</maml:name>
+          <maml:description>
+            <maml:para>Specifies API key for authentication.
+The type of data should `[string]` or `[securestring]`.
+If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_API_KEY`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
+          <dev:type>
+            <maml:name>Object</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="none">
+        <maml:name>Prompt</maml:name>
+        <maml:description>
+          <maml:para>(Required) A text description of the desired image(s).
+The maximum length is 1000 characters.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="n">
+        <maml:name>NumberOfImages</maml:name>
+        <maml:description>
+          <maml:para>The number of images to generate.
+Must be between `1` and `5`. The default value is `1`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">UInt16</command:parameterValue>
+        <dev:type>
+          <maml:name>UInt16</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>1</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Size</maml:name>
+        <maml:description>
+          <maml:para>The size of the generated images.
+Must be one of `256x256`, `512x512`, or `1024x1024`. The default value is `1024x1024`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>1024x1024</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="response_format">
+        <maml:name>Format</maml:name>
+        <maml:description>
+          <maml:para>The format in which the generated images are returned.
+Currently, only supports as `url`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>url</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>OutFile</maml:name>
+        <maml:description>
+          <maml:para>Specify the file path where the generated images will be saved.
+This cannot be specified with the `Format` parameter. Also, `NumberOfImages` must be `1`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>User</maml:name>
+        <maml:description>
+          <maml:para>A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>TimeoutSec</maml:name>
+        <maml:description>
+          <maml:para>Specifies how long the request can be pending before it times out. The default value is `0` (infinite).</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>0</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>MaxRetryCount</maml:name>
+        <maml:description>
+          <maml:para>Number between `0` and `100`.
+Specifies the maximum number of retries if the request fails.
+The default value is `0` (No retry).
+Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>0</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>ApiBase</maml:name>
+        <maml:description>
+          <maml:para>Specifies yhe name of your Azure OpenAI resource endpoint such like:  `https://{your-resource-name}.openai.azure.com/`
+If not specified, it will try to use `$global:OPENAI_API_BASE` or `$env:OPENAI_API_BASE`</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
+        <dev:type>
+          <maml:name>System.Uri</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>ApiVersion</maml:name>
+        <maml:description>
+          <maml:para>The API version to use for this operation.
+</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+        <dev:type>
+          <maml:name>string</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>ApiKey</maml:name>
+        <maml:description>
+          <maml:para>Specifies API key for authentication.
+The type of data should `[string]` or `[securestring]`.
+If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_API_KEY`</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
+        <dev:type>
+          <maml:name>Object</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes />
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>Format = url    : string or array of string</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>OutFile         : Nothing.</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>------ Example 1: Creates and save an image from prompt. ------</maml:title>
+        <dev:code>Request-AzureImageGeneration -Prompt 'A cute baby lion' -Size 256x256 -OutFile C:\babylion.png</dev:code>
+        <dev:remarks>
+          <maml:para>! lion (/Docs/images/babylion.png)</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>Example 2: Creates multiple images at once, and retrieve results by URL.</maml:title>
+        <dev:code>Request-AzureImageGeneration -Prompt 'Delicious ramen with gyoza' -Format "url" -NumberOfImages 3
+
+https://oaidalleapiprodscus.blob.core.windows.net/private/org-BXLtGIt0xglP9if8FVhkD...
+https://oaidalleapiprodscus.blob.core.windows.net/private/org-BXLtGIt0xglP9if8FVhkD...
+https://oaidalleapiprodscus.blob.core.windows.net/private/org-BXLtGIt0xglP9if8FVhkD...</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Request-AzureImageGeneration.md</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>https://learn.microsoft.com/en-us/azure/cognitive-services/openai/reference#image-generation</maml:linkText>
+        <maml:uri>https://learn.microsoft.com/en-us/azure/cognitive-services/openai/reference#image-generation</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -4019,14 +4512,14 @@ If not specified, it will try to use `$global:OPENAI_API_BASE` or `$env:OPENAI_A
           <maml:name>ApiVersion</maml:name>
           <maml:description>
             <maml:para>The API version to use for this operation.
-The default value is `2023-03-15-preview`</maml:para>
+</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
           <dev:type>
             <maml:name>string</maml:name>
             <maml:uri />
           </dev:type>
-          <dev:defaultValue>"2023-03-15-preview"</dev:defaultValue>
+          <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>ApiKey</maml:name>
@@ -4293,14 +4786,14 @@ If not specified, it will try to use `$global:OPENAI_API_BASE` or `$env:OPENAI_A
         <maml:name>ApiVersion</maml:name>
         <maml:description>
           <maml:para>The API version to use for this operation.
-The default value is `2023-03-15-preview`</maml:para>
+</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
         <dev:type>
           <maml:name>string</maml:name>
           <maml:uri />
         </dev:type>
-        <dev:defaultValue>"2023-03-15-preview"</dev:defaultValue>
+        <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>ApiKey</maml:name>

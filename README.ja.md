@@ -1,13 +1,15 @@
 # PSOpenAI
 
-OpenAI API を PowerShell から使用するためのラッパーモジュールです。  
+OpenAI および Azure OpenAI Service を PowerShell から使用するためのラッパーモジュールです。  
 ChatGPT, 音声の文字起こし, テキストからの画像生成などの OpenAI の提供する機能を使用できます。
 
 **これはコミュニティベースの非公式モジュールであり OpenAI による提供ではありません**
 
-OpenAI API の公式ドキュメントはこちら    
++ OpenAI API について  
 https://platform.openai.com/docs
 
++ Azure OpenAI Service について  
+https://learn.microsoft.com/en-us/azure/cognitive-services/openai/overview
 
 ----
 ## 動作環境
@@ -58,6 +60,7 @@ Install-Module -Name PSOpenAI
 + [Request-AzureChatCompletion](/Docs/Request-AzureChatCompletion.md)
 + [Request-AzureChatGPT](/Docs/Request-AZureChatCompletion.md)
 + [Request-AzureEmbeddings](/Docs/Request-AzureEmbeddings.md)
++ [Request-AzureImageGeneration](/Docs/Request-AzureImageGeneration.md)
 + [Request-AzureTextCompletion](/Docs/Request-AzureTextCompletion.md)
 
 ----
@@ -175,9 +178,9 @@ Request-ImageEdit -Image 'C:\sunflower_masked.png' -Prompt 'sunflower' -OutFile 
 
 左が与えた画像、右が生成された画像です。
 
-|Source|Generated|
-|----|----|
-| ![masked](/Docs/images/sunflower_masked.png)  | ![restored](/Docs/images/sunflower_restored.png)   |
+| Source                                       | Generated                                        |
+| -------------------------------------------- | ------------------------------------------------ |
+| ![masked](/Docs/images/sunflower_masked.png) | ![restored](/Docs/images/sunflower_restored.png) |
 
 
 ### モデレーション
@@ -231,6 +234,20 @@ PS C:> Request-ChatGPT -Message "Who are you?"
 PS C:> Request-ChatGPT -Message "Who are you?" -ApiKey '<Put your API key here.>'
 ```
 
+## Azure OpenAI Service
+OpenAI ではなく Azure OpenAI Service を使用する場合は、AzureテナントにOpenAIリソースを作成し、APIキーとエンドポイントURLを取得する必要があります。詳細な手順はExampleを参照してください。
+
++ [How to use with Azure OpenAI Service](Examples/How_to_use_with_Azure_OpenAI_Service.ipynb)
+
+### Azure のサンプルコード
+```powershell
+$global:OPENAI_API_KEY = '<Put your api key here>'
+$global:OPENAI_API_BASE  = 'https://<resource-name>.openai.azure.com/'
+
+Request-AzureChatCompletion `
+  -Message 'Hello Azure OpenAI Service.' `
+  -Deployment 'gpt-35-turbo `
+```
 
 ----
 ## 変更履歴

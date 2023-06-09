@@ -1,4 +1,7 @@
 # 変更履歴
+### 1.13.0
+- Azure DALL-Eを使用するための [Request-AzureImageGeneration](/Docs/Request-AzureImageGeneration.md) コマンドを追加します
+
 ### 1.12.6
 - Azure API のバージョンを最新の安定板である`2023-05-15`に更新
 - ドキュメント更新
