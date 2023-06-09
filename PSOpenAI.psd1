@@ -26,6 +26,10 @@
     # Minimum version of the Windows PowerShell engine required by this module
     PowerShellVersion    = '5.1'
 
+    NestedModules        = @(
+        'Libs\CancelableWait\netstandard2.0\CancelableWait.dll'
+    )
+
     # Assemblies that must be loaded prior to importing this module
     RequiredAssemblies   = @(
         'Libs\CustomAttributes\netstandard2.0\CustomAttributes.dll',
