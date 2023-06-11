@@ -144,7 +144,7 @@ function Invoke-OpenAIAPIRequest {
 
         # Verbose / Debug output
         Write-Verbose -Message "Request to $ServiceName API"
-        Write-Verbose -Message "API Endpoint: $Uri"
+        Write-Verbose -Message "Method = $Method, Path = $Uri"
         if ($IsDebug) {
             $startIdx = $lastIdx = 2
             if ($AuthType -eq 'openai') { $startIdx += 4 } # 'org-'
@@ -283,7 +283,7 @@ function Invoke-OpenAIAPIRequest {
 
         # Verbose / Debug output
         Write-Verbose -Message "Request to $ServiceName API"
-        Write-Verbose -Message "API Endpoint: $Uri"
+        Write-Verbose -Message "Method = $Method, Path = $Uri"
         if ($IsDebug) {
             $startIdx = $lastIdx = 2
             if ($AuthType -eq 'openai') { $startIdx += 4 } # 'org-'
