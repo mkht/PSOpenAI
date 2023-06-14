@@ -8,8 +8,8 @@ function Convert-ModelToEncoding {
 
     switch -Wildcard ($Model) {
         # chat
-        'gpt-3.5-turbo-*' { 'cl100k_base'; continue } # e.g, gpt-3.5-turbo-0301, -0401, etc.
-        'gpt-4-*' { 'cl100k_base'; continue }  # e.g., gpt-4-0314, etc., plus gpt-4-32k
+        'gpt-3.5-turbo-*' { 'cl100k_base'; continue } # e.g, gpt-3.5-turbo-16k, -0401, etc.
+        'gpt-4-*' { 'cl100k_base'; continue }  # e.g., gpt-4-0414, gpt-4-32k, etc.
         'gpt-3.5-turbo' { 'cl100k_base'; continue }
         'gpt-4' { 'cl100k_base'; continue }
         # text

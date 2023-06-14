@@ -10,6 +10,18 @@ function Assert-UnsupportedModels {
         #Should this list be separated as a JSON or PSD1 static file?
         $ListOfUnsupportedModels = @(
             @{
+                Id      = 'gpt-3.5-turbo-0301'
+                Expires = '2023-09-13'
+            },
+            @{
+                Id      = 'gpt-4-0314'
+                Expires = '2023-09-13'
+            },
+            @{
+                Id      = 'gpt-4-32k-0314'
+                Expires = '2023-09-13'
+            },
+            @{
                 Id      = 'code-davinci-001'
                 Expires = '2023-03-23'
             },
@@ -29,15 +41,19 @@ function Assert-UnsupportedModels {
     }
 
     Process {
+        $now = [datetime]::Now
         $m = $ListOfUnsupportedModels | Where-Object { $_.Id -eq $Model } | Select-Object -First 1
-        if ($m) {
-            if ([datetime]::Now -ge $m.Expires) {
+        if ($expires = $m.Expires -as [datetime]) {
+            if ($now -ge $expires) {
                 $msg = ('The {0} model has been discontinued on {1}. Please consider using a different model.' -f $m.Id, $m.Expires)
             }
-            else {
+            elseif (($now - $expires) -ge [timespan]::FromDays(-30)) {
                 $msg = ('The {0} model will be discontinued on {1}. Please consider using a different model.' -f $m.Id, $m.Expires)
             }
-            Write-Warning -Message $msg
+
+            if ($msg) {
+                Write-Warning -Message $msg
+            }
         }
     }
 
