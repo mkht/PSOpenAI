@@ -19,7 +19,8 @@ function Request-AzureChatCompletion {
         [Parameter()]
         [AllowEmptyString()]
         [Alias('system')]
-        [string[]]$RolePrompt,
+        [Alias('RolePrompt')]
+        [string[]]$SystemMessage,
 
         [Parameter()]
         [ValidateRange(0.0, 2.0)]
@@ -162,8 +163,8 @@ function Request-AzureChatCompletion {
                 $Messages.Add($tm)
             }
         }
-        # Specifies AI role (only if specified)
-        foreach ($rp in $RolePrompt) {
+        # Specifies system messages (only if specified)
+        foreach ($rp in $SystemMessage) {
             if (-not [string]::IsNullOrWhiteSpace($rp)) {
                 $Messages.Add([ordered]@{
                         role    = 'system'

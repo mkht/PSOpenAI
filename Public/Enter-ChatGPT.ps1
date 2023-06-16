@@ -17,7 +17,8 @@ function Enter-ChatGPT {
         [Parameter()]
         [AllowEmptyString()]
         [Alias('system')]
-        [string]$RolePrompt = '',
+        [Alias('RolePrompt')]
+        [string]$SystemMessage = '',
 
         [Parameter()]
         [ValidateRange(0.0, 2.0)]

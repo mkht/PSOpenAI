@@ -15,7 +15,7 @@ Communicate with ChatGPT interactively on the console.
 ```
 Enter-ChatGPT
     [[-Model] <String>]
-    [-RolePrompt <String>]
+    [-SystemMessage <String>]
     [-Temperature <Double>]
     [-TopP <Double>]
     [-StopSequence <String[]>]
@@ -57,12 +57,12 @@ Position: Named
 Default value: gpt-3.5-turbo
 ```
 
-### -RolePrompt
+### -SystemMessage
 An optional text to set the behavior of the assistant.
 
 ```yaml
 Type: String
-Aliases: system
+Aliases: system, RolePrompt
 Required: False
 Position: Named
 ```

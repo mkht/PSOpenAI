@@ -17,7 +17,7 @@ Request-AzureChatGPT
     [-Message] <String>
     [-Name <String[]>]
     -Deployment <String>
-    [-RolePrompt <String[]>]
+    [-SystemMessage <String[]>]
     [-Temperature <Double>]
     [-TopP <Double>]
     [-NumberOfAnswers <UInt16>]
@@ -89,12 +89,12 @@ Required: True
 Position: Named
 ```
 
-### -RolePrompt
+### -SystemMessage
 An optional text to set the behavior of the assistant.
 
 ```yaml
 Type: String[]
-Aliases: system
+Aliases: system, RolePrompt
 Required: False
 Position: Named
 ```
