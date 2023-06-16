@@ -345,12 +345,19 @@ function Request-ChatCompletion {
             $fCall = $Response.choices[0].message.function_call
             Write-Verbose ('AI assistant preferes to call a function. (function:{0}, arguments:{1})' -f $fCall.name, ($fCall.arguments -replace '[\r\n]', ''))
 
-            try {
-                $fCommandResult = Invoke-ChatCompletionFunction -Name $fCall.name -Arguments $fCall.arguments -InvokeFunctionOnCallMode $InvokeFunctionOnCallMode -ErrorAction Stop
+            # Check the command name matches the list supplied
+            if ($fCall.name -notin $Functions.name) {
+                Write-Error ('"{0}" does not matches the list of functions. This command should not be executed.' -f $fCall.name)
             }
-            catch {
-                Write-Error -ErrorRecord $_
-                $fCommandResult = '[ERROR] ' + $_.Exception.Message
+            else {
+                try {
+                    # Execute command
+                    $fCommandResult = Invoke-ChatCompletionFunction -Name $fCall.name -Arguments $fCall.arguments -InvokeFunctionOnCallMode $InvokeFunctionOnCallMode -ErrorAction Stop
+                }
+                catch {
+                    Write-Error -ErrorRecord $_
+                    $fCommandResult = '[ERROR] ' + $_.Exception.Message
+                }
             }
 
             # Second request
