@@ -183,12 +183,12 @@ function ParseParameterType {
             type = 'boolean'
         }
     }
-    elseif ($ParameterType -in ([int32], [int64], [int16], [int128], [bigint])) {
+    elseif ($ParameterType -in ([int32], [int64], [int16], [bigint])) {
         @{
             type = 'integer'
         }
     }
-    elseif ($ParameterType -in ([uint32], [uint64], [uint16], [uint128])) {
+    elseif ($ParameterType -in ([uint32], [uint64], [uint16])) {
         @{
             type    = 'integer'
             minimum = 0
