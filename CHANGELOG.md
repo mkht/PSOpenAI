@@ -1,5 +1,7 @@
 # Changelog
 ### Unreleased
+- Add initial support for Function calling method of the OpenAI ChatCompletion API .
+- Change the name of `-RolePrompt` to `-SystemMessage` (`-RolePrompt` can also continue to be used as an alias )
 - Add new ChatGPT models. 
   + `gpt-3.5-turbo-16k`
   + `gpt-3.5-turbo-0613`
