@@ -38,6 +38,7 @@
 
     # Functions to export from this module
     FunctionsToExport    = @(
+        'New-ChatCompletionFunction',
         'ConvertFrom-Token',
         'ConvertTo-Token',
         'Enter-ChatGPT',

@@ -129,7 +129,7 @@ function Invoke-OpenAIAPIRequest {
                 $IwrParam.Form = $Body
             }
             elseif ($ContentType -match 'application/json') {
-                try { $RawBody = ($Body | ConvertTo-Json -Compress) }catch { Write-Error -Exception $_.Exception }
+                try { $RawBody = ($Body | ConvertTo-Json -Compress -Depth 100) }catch { Write-Error -Exception $_.Exception }
                 $IwrParam.Body = ([System.Text.Encoding]::UTF8.GetBytes($RawBody))
             }
             else {
@@ -268,7 +268,7 @@ function Invoke-OpenAIAPIRequest {
                 $IwrParam.ContentType = ('multipart/form-data; boundary="{0}"' -f $Boundary)
             }
             elseif ($ContentType -match 'application/json') {
-                try { $RawBody = ($Body | ConvertTo-Json -Compress) }catch { Write-Error -Exception $_.Exception }
+                try { $RawBody = ($Body | ConvertTo-Json -Compress -Depth 100) }catch { Write-Error -Exception $_.Exception }
                 $IwrParam.Body = ([System.Text.Encoding]::UTF8.GetBytes($RawBody))
             }
             else {
