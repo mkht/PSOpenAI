@@ -99,7 +99,7 @@ function New-ChatCompletionFunctionFromPSCommand {
         $FunctionDefinition.Add('description', $Description)
     }
     elseif ($CommandHelp.description) {
-        $FunctionDefinition.Add('description', ($CommandHelp.description.text -join "`n"))
+        $FunctionDefinition.Add('description', (($CommandHelp.description.text -join "`n") -replace "`r", ''))
     }
 
     $paramHash = [ordered]@{type = 'object' }
@@ -113,7 +113,7 @@ function New-ChatCompletionFunctionFromPSCommand {
 
         $propHash = ParseParameterType($param.ParameterType)
 
-        $helpmsg = ($CommandHelp.parameters.parameter | ? { $_.name -eq $pName }).description.text -join "`n"
+        $helpmsg = (($CommandHelp.parameters.parameter | ? { $_.name -eq $pName }).description.text -join "`n") -replace "`r", ''
         if ([string]::IsNullOrWhiteSpace($helpmsg)) {
             $helpmsg = [string]$param.HelpMessage
         }
@@ -126,7 +126,7 @@ function New-ChatCompletionFunctionFromPSCommand {
                 $isHiddenParam = $true
             }
             elseif ($attr -is [ValidatePattern]) {
-                $propHash.pattern = $attr.RegexPattern
+                if ($attr.RegexPattern) { $propHash.pattern = $attr.RegexPattern }
             }
             elseif ($attr -is [ValidateCount]) {
                 $propHash.minItems = $attr.MinLength
@@ -137,8 +137,8 @@ function New-ChatCompletionFunctionFromPSCommand {
                 $propHash.maxLength = $attr.MaxLength
             }
             elseif ($attr -is [ValidateRange]) {
-                $propHash.minimum = $attr.MinRange
-                $propHash.maximum = $attr.MaxRange
+                if ($null -ne $attr.MinRange) { $propHash.minimum = $attr.MinRange }
+                if ($null -ne $attr.MaxRange) { $propHash.maximum = $attr.MaxRange }
             }
             elseif ($attr -is [ValidateSet]) {
                 $propHash.enum = $attr.ValidValues
@@ -206,7 +206,7 @@ function ParseParameterType {
             type = 'number'
         }
     }
-    elseif ($ParameterType -in ([string])) {
+    elseif ($ParameterType -is [string]) {
         @{
             type = 'string'
         }
@@ -217,16 +217,34 @@ function ParseParameterType {
             enum = [string[]][enum]::GetValues($ParameterType)
         }
     }
-    elseif ($ParameterType -in ([datetime])) {
+    elseif ($ParameterType -is [datetime]) {
         @{
             type   = 'string'
             format = 'date-time'
         }
     }
-    elseif ($ParameterType -in ([uri])) {
+    elseif ($ParameterType -is [regex]) {
+        @{
+            type   = 'string'
+            format = 'regex'
+        }
+    }
+    elseif ($ParameterType -is [uri]) {
         @{
             type   = 'string'
             format = 'uri'
+        }
+    }
+    elseif ($ParameterType -is [guid]) {
+        @{
+            type   = 'string'
+            format = 'uuid'
+        }
+    }
+    elseif ($ParameterType -is [mailaddress]) {
+        @{
+            type   = 'string'
+            format = 'email'
         }
     }
     elseif ($ParameterType.ImplementedInterfaces -contains [System.Collections.IDictionary]) {

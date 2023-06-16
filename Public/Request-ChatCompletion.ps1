@@ -249,6 +249,7 @@ function Request-ChatCompletion {
 
         #region Send API Request (Stream)
         if ($Stream) {
+            $IsContinue = $false
             # Stream output
             Invoke-OpenAIAPIRequest `
                 -Method $OpenAIParameter.Method `
@@ -270,16 +271,30 @@ function Request-ChatCompletion {
                     Write-Error -Exception $_.Exception
                 }
             } | Where-Object {
-                $null -ne $_.choices -and $_.choices[0].delta.content -is [string]
-            } | ForEach-Object {
-                # Writes content to both the Information stream(6>) and the Standard output stream(1>).
-                $InfoMsg = [System.Management.Automation.HostInformationMessage]::new()
-                $InfoMsg.Message = $_.choices[0].delta.content
-                $InfoMsg.NoNewLine = $true
-                Write-Information $InfoMsg
-                Write-Output $InfoMsg.Message
+                $null -ne $_.choices -and ($_.choices[0].delta.content -is [string] -or $_.choices[0].delta.function_call)
+            } | ForEach-Object -Begin { $FuncCallObject = @() } -Process {
+                if ($_.choices[0].delta.content) {
+                    $InfoMsg = $_.choices[0].delta.function_call
+                    # Writes content to both the Information stream(6>) and the Standard output stream(1>).
+                    $InfoMsg = [System.Management.Automation.HostInformationMessage]::new()
+                    $InfoMsg.Message = $_.choices[0].delta.content
+                    $InfoMsg.NoNewLine = $true
+                    Write-Information $InfoMsg
+                    Write-Output $InfoMsg.Message
+                }
+                elseif ($_.choices[0].delta.function_call) {
+                    $FuncCallObject += $_.choices[0].delta.function_call
+                }
+            } -End {
+                if ($FuncCallObject.Count -gt 0) {
+                    $Response = ConvertFrom-Json '{"choices":[{"message":{"role":"assistant","content":"","function_call":{"name":"","arguments":""}},"finish_reason":"function_call"}]}'
+                    $Response.choices[0].message.function_call.name = (-join $FuncCallObject.name)
+                    $Response.choices[0].message.function_call.arguments = (-join $FuncCallObject.arguments)
+                    $IsContinue = $true
+                }
             }
-            return
+
+            if (-not $IsContinue) { return }
         }
         #endregion
 
@@ -299,23 +314,20 @@ function Request-ChatCompletion {
             if ($null -eq $Response) {
                 return
             }
+            # Parse response object
+            try {
+                $Response = $Response | ConvertFrom-Json -ErrorAction Stop
+            }
+            catch {
+                Write-Error -Exception $_.Exception
+                return
+            }
         }
         #endregion
 
-        #region Parse response object
-        try {
-            $Response = $Response | ConvertFrom-Json -ErrorAction Stop
-        }
-        catch {
-            Write-Error -Exception $_.Exception
-            return
-        }
-        if ($null -ne $Response.choices) {
-            $ResponseContent = $Response.choices.message
-        }
-        # For history, add AI response to messages list.
-        if (@($ResponseContent).Count -ge 1) {
-            $tr = @($ResponseContent)[0]
+        #region For history, add AI response to messages list.
+        if (@($Response.choices.message).Count -ge 1) {
+            $tr = @($Response.choices.message)[0]
             $rcm = [ordered]@{
                 role    = $tr.role
                 content = $tr.content
@@ -364,12 +376,12 @@ function Request-ChatCompletion {
         #region Output
         # Add custom type name and properties to output object.
         $Response.PSObject.TypeNames.Insert(0, 'PSOpenAI.Chat.Completion')
-        if ($unixtime = $Response.created -as [long]) {
+        if ($null -ne $Response.created -and ($unixtime = $Response.created -as [long])) {
             # convert unixtime to [DateTime] for read suitable
             $Response | Add-Member -MemberType NoteProperty -Name 'created' -Value ([System.DateTimeOffset]::FromUnixTimeSeconds($unixtime).LocalDateTime) -Force
         }
         $Response | Add-Member -MemberType NoteProperty -Name 'Message' -Value ($Messages.Where({ $_.role -eq 'user' })[-1].content)
-        $Response | Add-Member -MemberType NoteProperty -Name 'Answer' -Value ([string[]]$ResponseContent.content)
+        $Response | Add-Member -MemberType NoteProperty -Name 'Answer' -Value ([string[]]$Response.choices.message.content)
         $Response | Add-Member -MemberType NoteProperty -Name 'History' -Value $Messages.ToArray()
         Write-Output $Response
         #endregion

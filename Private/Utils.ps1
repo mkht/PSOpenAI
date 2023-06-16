@@ -41,7 +41,6 @@ function ObjectToContent {
             $InputObject -is [bool] -or `
             $InputObject -is [datetime] -or `
             $InputObject -is [System.DateTimeOffset] -or `
-            $InputObject -is [guid] -or `
             $InputObject -is [uri] -or `
             $InputObject -is [double] -or `
             $InputObject -is [float] -or `
@@ -49,6 +48,15 @@ function ObjectToContent {
             $InputObject -is [double]
     ) {
         $InputObject
+    }
+    elseif (
+        $InputObject -is [timespan] -or `
+            $InputObject -is [guid] -or `
+            $InputObject -is [regex] -or `
+            $InputObject -is [ipaddress] -or `
+            $InputObject -is [mailaddress]
+    ) {
+        $InputObject.ToString()
     }
     else {
         $t = $InputObject.GetType()
@@ -62,7 +70,7 @@ function ObjectToContent {
             [string]$InputObject
         }
         else {
-            $InputObject | Format-List | Out-String
+            ($InputObject | Format-List | Out-String) -replace "`r", ''
         }
     }
 }
