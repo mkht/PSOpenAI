@@ -8,7 +8,8 @@ function Request-ChatCompletion {
         [ValidateNotNullOrEmpty()]
         [string]$Message,
 
-        [Parameter(DontShow = $true)]
+        [Parameter()]
+        [ValidateNotNullOrEmpty()]
         [Completions('user', 'system', 'function')]
         [string][LowerCaseTransformation()]$Role = 'user',
 
@@ -37,6 +38,7 @@ function Request-ChatCompletion {
 
         #region Function call params
         [Parameter()]
+        [ValidateNotNullOrEmpty()]
         [System.Collections.IDictionary[]]$Functions,
 
         [Parameter()]
@@ -46,7 +48,7 @@ function Request-ChatCompletion {
 
         [Parameter()]
         [ValidateSet('None', 'Auto', 'Confirm')]
-        [string]$InvokeFunctionOnCallMode = 'Confirm',
+        [string]$InvokeFunctionOnCallMode = 'None',
 
         [Parameter()]
         [ValidateRange(0, 65535)]

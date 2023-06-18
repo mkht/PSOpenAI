@@ -101,6 +101,9 @@ function New-ChatCompletionFunctionFromPSCommand {
     elseif ($CommandHelp.description) {
         $FunctionDefinition.Add('description', (($CommandHelp.description.text -join "`n") -replace "`r", ''))
     }
+    elseif ($CommandHelp.Synopsis) {
+        $FunctionDefinition.Add('description', (($CommandHelp.Synopsis.text -join "`n") -replace "`r", ''))
+    }
 
     $paramHash = [ordered]@{type = 'object' }
     $props = [ordered]@{}
