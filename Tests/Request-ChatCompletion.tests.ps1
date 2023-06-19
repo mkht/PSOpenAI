@@ -223,10 +223,10 @@ Describe 'Request-ChatCompletion' {
                 parameters  = @{
                     type       = 'object'
                     properties = @{
-                        'TargetName' = @{type = 'string' }
-                        'Count'      = @{type = 'integer'; description = 'Specifies the number of echo requests to send. The default value is 4.' }
+                        'ComputerName' = @{type = 'string'; description = 'Specifies the target host name or ip address, e.g, "8.8.8.8" ' }
+                        'Count'        = @{type = 'integer'; description = 'Specifies the number of echo requests to send. The default value is 4.' }
                     }
-                    required   = @('TargetName')
+                    required   = @('ComputerName')
                 }
             }
 
@@ -251,10 +251,10 @@ Describe 'Request-ChatCompletion' {
                 parameters  = @{
                     type       = 'object'
                     properties = @{
-                        'TargetName' = @{type = 'string' }
-                        'Count'      = @{type = 'integer'; description = 'Specifies the number of echo requests to send. The default value is 4.' }
+                        'ComputerName' = @{type = 'string'; description = 'Specifies the target host name or ip address, e.g, "8.8.8.8" ' }
+                        'Count'        = @{type = 'integer'; description = 'Specifies the number of echo requests to send. The default value is 4.' }
                     }
-                    required   = @('TargetName')
+                    required   = @('ComputerName')
                 }
             }
 
