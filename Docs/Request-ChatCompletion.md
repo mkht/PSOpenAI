@@ -15,9 +15,14 @@ Creates a completion for the chat message.
 ```
 Request-ChatGPT
     [-Message] <String>
-    [-Name <String[]>]
+    [-Role <String>]
+    [-Name <String>]
     [-Model <String>]
     [-SystemMessage <String[]>]
+    [-Functions <IDictionary[]>]
+    [-FunctionCall <Object>]
+    [-InvokeFunctionOnCallMode <String>]
+    [-MaxFunctionCallCount <UInt16>]
     [-Temperature <Double>]
     [-TopP <Double>]
     [-NumberOfAnswers <UInt16>]
@@ -70,6 +75,13 @@ PS C:\> Request-ChatGPT 'Please describe ChatGPT in 100 charactors.' -Stream | W
 
 ![stream](/Docs/images/StreamOutput.gif)
 
+### Example 4: Function call
+```PowerShell
+PS C:\> $PingFunction = New-ChatCompletionFunction -Command 'Test-Connection' -IncludeParameters ('TargetName','Count')
+PS C:\> $Message = 'Ping the Google Public DNS address three times and briefly report the results.'
+PS C:\> $GPTPingAnswer = Request-ChatCompletion -Message $Message -Model gpt-3.5-turbo-0613 -Functions $PingFunction -InvokeFunctionOnCallMode Auto
+PS C:\> $GPTPingAnswer | select Answer
+```
 
 ## PARAMETERS
 
@@ -82,6 +94,16 @@ Aliases: Text
 Required: False
 Position: 1
 Accept pipeline input: True (ByPropertyName, ByValue)
+```
+
+### -Role
+The role of the messages author. One of `user`, `system`, or `function`.  
+The default is `user`.
+
+```yaml
+Type: String
+Required: False
+Position: Named
 ```
 
 ### -Name
@@ -113,6 +135,51 @@ Type: String[]
 Aliases: system, RolePrompt
 Required: False
 Position: Named
+```
+
+### -Functions
+A list of function specifications the model may generate JSON inputs for.  
+The function name, description, and parameters must be given as a hash table. See the guide for more information.  
+https://github.com/mkht/PSOpenAI/blob/main/Examples/How_to_call_functions_with_ChatGPT.ipynb
+
+```yaml
+Type: System.Collections.IDictionary[]
+Required: False
+Position: Named
+```
+
+### -FunctionCall
+Controls how the model responds to function calls.  
+`none` means the model does not call a function, and responds to the end-user. `auto` means the model can pick between an end-user or calling a function.  
+Specifying a particular function via `@{name = "my_function"}` forces the model to call that function.
+
+```yaml
+Type: Object
+Aliases: function_call
+Required: False
+Position: Named
+```
+
+### -InvokeFunctionOnCallMode
+Selects the action to be taken when the GPT model requests a function call.  
+- `None`: The requested function is not executed. This is the default.  
+- `Auto`: Automatically executes the requested function.  
+- `Confirm`: Displays a confirmation to the user before executing the requested function.
+
+```yaml
+Type: String
+Required: False
+Position: Named
+```
+
+### -MaxFunctionCallCount
+Limit the maximum number of function calls a model can request within a chat session. The default value is `4`.
+
+```yaml
+Type: Int32
+Required: False
+Position: Named
+Default value: 4
 ```
 
 ### -Temperature
