@@ -351,6 +351,9 @@ function Request-ChatCompletion {
             if ($fCall.name -notin $Functions.name) {
                 Write-Error ('"{0}" does not matches the list of functions. This command should not be executed.' -f $fCall.name)
             }
+            elseif ($FunctionCall -eq 'none') {
+                Write-Error 'The number of function calls in this chat session has exceeded the value specified in the MaxFunctionCallCount. This command should not be executed.'
+            }
             else {
                 try {
                     # Execute command
