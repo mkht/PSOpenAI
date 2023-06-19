@@ -44,6 +44,7 @@ Install-Module -Name PSOpenAI
 ### OpenAI
 + [Enter-ChatGPT](/Docs/Enter-ChatGPT.md)
 + [Get-OpenAIModels](/Docs/Get-OpenAIModels.md)
++ [New-ChatCompletionFunction](/Docs/New-ChatCompletionFunction.md)
 + [Request-AudioTranscription](/Docs/Request-AudioTranscription.md)
 + [Request-AudioTranslation](/Docs/Request-AudioTranslation.md)
 + [Request-ChatCompletion](/Docs/Request-ChatCompletion.md)
@@ -171,6 +172,17 @@ Request-ChatGPT 'Describe ChatGPT in 100 charactors.' -Stream | Write-Host -NoNe
 
 ![Stream](/Docs/images/StreamOutput.gif)
 
+### Function call
+
+`Function call` is an optional capabilities in the Chat Completion API which can be used to provide function specifications. The purpose of this is to enable models to generate function arguments which adhere to the provided specifications.
+
+See detailed usage guide [here](/Examples/How_to_call_functions_with_ChatGPT.ipynb).
+
+```PowerShell
+$Message = 'Ping the Google Public DNS address three times and briefly report the results.'
+$PingFunction = New-ChatCompletionFunction -Command 'Test-Connection' -IncludeParameters ('TargetName', 'Count')
+$Answer = Request-ChatCompletion -Message $Message -Model gpt-3.5-turbo-0613 -Functions $PingFunction -InvokeFunctionOnCallMode Auto
+```
 
 ### Restore masked images
 
@@ -265,7 +277,6 @@ If you have a feature request or bug report, please tell us in Issue.
 
 + More docs, samples.
 + Performance improvements.
-+ Add GPT-3 fine-tuning support.
 + Add an option for change output types / formats.
 
 ----

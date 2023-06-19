@@ -1,4 +1,18 @@
 # 変更履歴
+### 1.14.0
+- OpenAI チャットAPIの関数呼び出し機能に対応しました. 使い方は[ガイド](/Examples/How_to_call_functions_with_ChatGPT.ipynb)を参照してください
+- パラメータ名を`-RolePrompt` から `-SystemMessage`に変更します (`-RolePrompt`もエイリアスとして引き続き使用可能です)
+- ChatGPTの新しいモデルに対応します
+  + `gpt-3.5-turbo-16k`
+  + `gpt-3.5-turbo-0613`
+  + `gpt-3.5-turbo-16k-0613`
+  + `gpt-4-0613`
+  + `gpt-4-32k-0613`
+- 2023-09-13に廃止予定の古いモデルはタブ補完に表示されなくなります（廃止日までは引き続き使用可能です）
+  + `gpt-3.5-turbo-0301`
+  + `gpt-4-0314`
+  + `gpt-4-32k-0314`
+
 ### 1.13.0
 - Azure DALL-Eを使用するための [Request-AzureImageGeneration](/Docs/Request-AzureImageGeneration.md) コマンドを追加します
 

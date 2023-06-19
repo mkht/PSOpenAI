@@ -40,6 +40,7 @@ Install-Module -Name PSOpenAI
 ### OpenAI
 + [Enter-ChatGPT](/Docs/Enter-ChatGPT.md)
 + [Get-OpenAIModels](/Docs/Get-OpenAIModels.md)
++ [New-ChatCompletionFunction](/Docs/New-ChatCompletionFunction.md)
 + [Request-AudioTranscription](/Docs/Request-AudioTranscription.md)
 + [Request-AudioTranslation](/Docs/Request-AudioTranslation.md)
 + [Request-ChatCompletion](/Docs/Request-ChatCompletion.md)
@@ -165,6 +166,19 @@ Request-ChatGPT 'Describe ChatGPT in 100 charactors.' -Stream | Write-Host -NoNe
 ```
 
 ![Stream](/Docs/images/StreamOutput.gif)
+
+### 関数呼び出し
+
+関数呼び出し は Chat Completion API のオプション機能です。  
+関数の定義をパラメータとしてGPTモデルに与えると、モデルが呼び出すべき関数の名前と引数を生成します。
+
+詳しい使い方は[ガイド](/Examples/How_to_call_functions_with_ChatGPT.ipynb)を参照してください。
+
+```PowerShell
+$Message = 'Ping the Google Public DNS address three times and briefly report the results.'
+$PingFunction = New-ChatCompletionFunction -Command 'Test-Connection' -IncludeParameters ('TargetName', 'Count')
+$Answer = Request-ChatCompletion -Message $Message -Model gpt-3.5-turbo-0613 -Functions $PingFunction -InvokeFunctionOnCallMode Auto
+```
 
 
 ### 一部が欠けた画像を復元する
