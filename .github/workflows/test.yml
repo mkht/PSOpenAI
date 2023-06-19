@@ -29,6 +29,7 @@ env:
 jobs:
   Tests_WinPS5:
     runs-on: windows-latest
+    timeout-minutes: 15
     defaults:
       run:
         shell: powershell
@@ -50,7 +51,7 @@ jobs:
 
   Tests_PS7:
     runs-on: ${{ matrix.os }}
-
+    timeout-minutes: 15
     defaults:
       run:
         shell: pwsh
