@@ -53,7 +53,7 @@ Describe 'New-ChatCompletionFunction' {
         }
 
         It 'Resolve alias' {
-            $FuncSpec = New-ChatCompletionFunction 'cat'
+            $FuncSpec = New-ChatCompletionFunction 'gc'
             $FuncSpec | Should -BeOfType [System.Collections.IDictionary]
             $FuncSpec.name | Should -Be 'Get-Content'
         }
