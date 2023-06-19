@@ -407,8 +407,8 @@ This command will wait for user input on the terminal. You type your question to
           </dev:type>
           <dev:defaultValue>gpt-3.5-turbo</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="system">
-          <maml:name>RolePrompt</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="system, RolePrompt">
+          <maml:name>SystemMessage</maml:name>
           <maml:description>
             <maml:para>An optional text to set the behavior of the assistant.</maml:para>
           </maml:description>
@@ -578,8 +578,8 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         </dev:type>
         <dev:defaultValue>gpt-3.5-turbo</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="system">
-        <maml:name>RolePrompt</maml:name>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="system, RolePrompt">
+        <maml:name>SystemMessage</maml:name>
         <maml:description>
           <maml:para>An optional text to set the behavior of the assistant.</maml:para>
         </maml:description>
@@ -1561,7 +1561,7 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
 
 babbage
 davinci
-gpt-3.5-turbo-0301
+gpt-3.5-turbo-0613
 text-davinci-003
 ...</dev:code>
         <dev:remarks>
@@ -1897,6 +1897,208 @@ updated_at     : 2023/04/28 12:53:27</dev:code>
       <maml:navigationLink>
         <maml:linkText>Online Version:</maml:linkText>
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/New-AzureOpenAIDeployments.md</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>New-ChatCompletionFunction</command:name>
+      <command:verb>New</command:verb>
+      <command:noun>ChatCompletionFunction</command:noun>
+      <maml:description>
+        <maml:para>Generate function spcifications for ChatGPT Function Call from PowerShell commands</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>Generate function spcifications for ChatGPT Function Call from PowerShell commands
+The generated function spcification is a hash table that can be converted to a JSON string following JSON Schema.
+https://platform.openai.com/docs/guides/gpt/function-calling</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>New-ChatCompletionFunction</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="0" aliases="none">
+          <maml:name>Command</maml:name>
+          <maml:description>
+            <maml:para>Specify the name of the PowerShell command.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Description</maml:name>
+          <maml:description>
+            <maml:para>Specifies the descriptive text of the PowerShell command. If not specified, the command help description will be used.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>ExcludeParameters</maml:name>
+          <maml:description>
+            <maml:para>Names of parameters that should not be included in the function definition.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>IncludeParameters</maml:name>
+          <maml:description>
+            <maml:para>Name of the parameter to be included in the function definition. If this parameter is specified, any unspecified parameters will not be included in the function definition.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>ParameterSetName</maml:name>
+          <maml:description>
+            <maml:para>If a PowerShell command has multiple parameter sets, the default parameter set is selected by default.
+If you want to use a non-default parameter set, specify the set name in this parameter.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="0" aliases="none">
+        <maml:name>Command</maml:name>
+        <maml:description>
+          <maml:para>Specify the name of the PowerShell command.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Description</maml:name>
+        <maml:description>
+          <maml:para>Specifies the descriptive text of the PowerShell command. If not specified, the command help description will be used.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>ExcludeParameters</maml:name>
+        <maml:description>
+          <maml:para>Names of parameters that should not be included in the function definition.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+        <dev:type>
+          <maml:name>String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>IncludeParameters</maml:name>
+        <maml:description>
+          <maml:para>Name of the parameter to be included in the function definition. If this parameter is specified, any unspecified parameters will not be included in the function definition.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+        <dev:type>
+          <maml:name>String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>ParameterSetName</maml:name>
+        <maml:description>
+          <maml:para>If a PowerShell command has multiple parameter sets, the default parameter set is selected by default.
+If you want to use a non-default parameter set, specify the set name in this parameter.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>None</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>System.Collections.Specialized.OrderedDictionary</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; New-ChatCompletionFunction -Command "New-Item"</dev:code>
+        <dev:remarks>
+          <maml:para>Generates a function definition for the `New-Item` command.</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------------------------- Example 2 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; New-ChatCompletionFunction -Command "Test-Connection" -IncludeParameters ('TargetName', 'Count', 'Delay')</dev:code>
+        <dev:remarks>
+          <maml:para>Generate a function spcification for the `Test-Connection` command. Only three parameters are included in the function definition: `TargetName`, `Count`, and `Delay`.</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------------------------- Example 3 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; New-ChatCompletionFunction -Command "Test-NetConnection" -ParameterSetName "RemotePort" -Description "This command tests TCP connectivity of the specified hosts or address and displays the results."</dev:code>
+        <dev:remarks>
+          <maml:para>Generate a function definition for the `Test-NetConnection` command. Explicitly specifies the parameter set name and command description.</maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/New-ChatCompletionFunction.md</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>https://platform.openai.com/docs/guides/gpt/function-calling</maml:linkText>
+        <maml:uri>https://platform.openai.com/docs/guides/gpt/function-calling</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -2909,8 +3111,8 @@ Deployments must be created in Azure Portal in advance.</maml:para>
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="system">
-          <maml:name>RolePrompt</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="system, RolePrompt">
+          <maml:name>SystemMessage</maml:name>
           <maml:description>
             <maml:para>An optional text to set the behavior of the assistant.</maml:para>
           </maml:description>
@@ -3185,8 +3387,8 @@ Deployments must be created in Azure Portal in advance.</maml:para>
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="system">
-        <maml:name>RolePrompt</maml:name>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="system, RolePrompt">
+        <maml:name>SystemMessage</maml:name>
         <maml:description>
           <maml:para>An optional text to set the behavior of the assistant.</maml:para>
         </maml:description>
@@ -4895,6 +5097,19 @@ https://platform.openai.com/docs/guides/chat/chat-completions</maml:para>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Role</maml:name>
+          <maml:description>
+            <maml:para>The role of the messages author. One of `user`, `system`, or `function`.
+The default is `user`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>Name</maml:name>
           <maml:description>
             <maml:para>The name of the author of this message.
@@ -4919,8 +5134,8 @@ This is an optional field, and may contain a-z, A-Z, 0-9, hyphens, and underscor
           </dev:type>
           <dev:defaultValue>gpt-3.5-turbo</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="system">
-          <maml:name>RolePrompt</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="system, RolePrompt">
+          <maml:name>SystemMessage</maml:name>
           <maml:description>
             <maml:para>An optional text to set the behavior of the assistant.</maml:para>
           </maml:description>
@@ -4930,6 +5145,61 @@ This is an optional field, and may contain a-z, A-Z, 0-9, hyphens, and underscor
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Functions</maml:name>
+          <maml:description>
+            <maml:para>A list of function specifications the model may generate JSON inputs for.
+The function name, description, and parameters must be given as a hash table. See the guide for more information.
+https://github.com/mkht/PSOpenAI/blob/main/Examples/How_to_call_functions_with_ChatGPT.ipynb</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">System.Collections.IDictionary[]</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Collections.IDictionary[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="function_call">
+          <maml:name>FunctionCall</maml:name>
+          <maml:description>
+            <maml:para>Controls how the model responds to function calls.
+`none` means the model does not call a function, and responds to the end-user. `auto` means the model can pick between an end-user or calling a function.
+Specifying a particular function via `@{name = "my_function"}` forces the model to call that function.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
+          <dev:type>
+            <maml:name>Object</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>InvokeFunctionOnCallMode</maml:name>
+          <maml:description>
+            <maml:para>Selects the action to be taken when the GPT model requests a function call.
+- `None`: The requested function is not executed. This is the default.
+- `Auto`: Automatically executes the requested function.
+- `Confirm`: Displays a confirmation to the user before executing the requested function.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>MaxFunctionCallCount</maml:name>
+          <maml:description>
+            <maml:para>Limit the maximum number of function calls a model can request within a chat session. The default value is `4`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>4</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>Temperature</maml:name>
@@ -5143,6 +5413,19 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Role</maml:name>
+        <maml:description>
+          <maml:para>The role of the messages author. One of `user`, `system`, or `function`.
+The default is `user`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>Name</maml:name>
         <maml:description>
           <maml:para>The name of the author of this message.
@@ -5167,8 +5450,8 @@ This is an optional field, and may contain a-z, A-Z, 0-9, hyphens, and underscor
         </dev:type>
         <dev:defaultValue>gpt-3.5-turbo</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="system">
-        <maml:name>RolePrompt</maml:name>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="system, RolePrompt">
+        <maml:name>SystemMessage</maml:name>
         <maml:description>
           <maml:para>An optional text to set the behavior of the assistant.</maml:para>
         </maml:description>
@@ -5178,6 +5461,61 @@ This is an optional field, and may contain a-z, A-Z, 0-9, hyphens, and underscor
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Functions</maml:name>
+        <maml:description>
+          <maml:para>A list of function specifications the model may generate JSON inputs for.
+The function name, description, and parameters must be given as a hash table. See the guide for more information.
+https://github.com/mkht/PSOpenAI/blob/main/Examples/How_to_call_functions_with_ChatGPT.ipynb</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">System.Collections.IDictionary[]</command:parameterValue>
+        <dev:type>
+          <maml:name>System.Collections.IDictionary[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="function_call">
+        <maml:name>FunctionCall</maml:name>
+        <maml:description>
+          <maml:para>Controls how the model responds to function calls.
+`none` means the model does not call a function, and responds to the end-user. `auto` means the model can pick between an end-user or calling a function.
+Specifying a particular function via `@{name = "my_function"}` forces the model to call that function.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
+        <dev:type>
+          <maml:name>Object</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>InvokeFunctionOnCallMode</maml:name>
+        <maml:description>
+          <maml:para>Selects the action to be taken when the GPT model requests a function call.
+- `None`: The requested function is not executed. This is the default.
+- `Auto`: Automatically executes the requested function.
+- `Confirm`: Displays a confirmation to the user before executing the requested function.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>MaxFunctionCallCount</maml:name>
+        <maml:description>
+          <maml:para>Limit the maximum number of function calls a model can request within a chat session. The default value is `4`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>4</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>Temperature</maml:name>
@@ -5423,6 +5761,16 @@ En septembre 2021, la population estimée des États-Unis est d'environ 331,4 mi
         <dev:code>PS C:\&gt; Request-ChatGPT 'Please describe ChatGPT in 100 charactors.' -Stream | Write-Host -NoNewline</dev:code>
         <dev:remarks>
           <maml:para>! stream (/Docs/images/StreamOutput.gif)</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>------------------- Example 4: Function call -------------------</maml:title>
+        <dev:code>PS C:\&gt; $PingFunction = New-ChatCompletionFunction -Command 'Test-Connection' -IncludeParameters ('TargetName','Count')
+PS C:\&gt; $Message = 'Ping the Google Public DNS address three times and briefly report the results.'
+PS C:\&gt; $GPTPingAnswer = Request-ChatCompletion -Message $Message -Model gpt-3.5-turbo-0613 -Functions $PingFunction -InvokeFunctionOnCallMode Auto
+PS C:\&gt; $GPTPingAnswer | select Answer</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>
