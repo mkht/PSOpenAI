@@ -9,6 +9,11 @@ function Request-AzureChatCompletion {
         [string]$Message,
 
         [Parameter()]
+        [ValidateNotNullOrEmpty()]
+        [Completions('user', 'system')]
+        [string][LowerCaseTransformation()]$Role = 'user',
+
+        [Parameter()]
         [ValidatePattern('^[a-zA-Z0-9_-]{1,64}$')]   # May contain a-z, A-Z, 0-9, hyphens, and underscores, with a maximum length of 64 characters.
         [string]$Name,
 
@@ -104,10 +109,12 @@ function Request-AzureChatCompletion {
     }
 
     process {
+        #region Parameter Validation
         # Warning
         if ($PSBoundParameters.ContainsKey('Name') -and (-not $PSBoundParameters.ContainsKey('Message'))) {
             Write-Warning 'Name parameter is ignored because the Message parameter is not specified.'
         }
+        #endregion
 
         #region Construct parameters for API request
         $PostBody = [System.Collections.Specialized.OrderedDictionary]::new()
@@ -175,7 +182,7 @@ function Request-AzureChatCompletion {
         # Add user message (question)
         if (-not [string]::IsNullOrWhiteSpace($Message)) {
             $um = [ordered]@{
-                role    = 'user'
+                role    = $Role
                 content = $Message.Trim()
             }
             # name poperty is optional
@@ -246,37 +253,37 @@ function Request-AzureChatCompletion {
             if ($null -eq $Response) {
                 return
             }
+            # Parse response object
+            try {
+                $Response = $Response | ConvertFrom-Json -ErrorAction Stop
+            }
+            catch {
+                Write-Error -Exception $_.Exception
+                return
+            }
         }
         #endregion
 
-        #region Parse response object
-        try {
-            $Response = $Response | ConvertFrom-Json -ErrorAction Stop
-        }
-        catch {
-            Write-Error -Exception $_.Exception
-        }
-        if ($null -ne $Response.choices) {
-            $ResponseContent = $Response.choices.message
-        }
-        # For history, add AI response to messages list.
-        if (@($ResponseContent).Count -ge 1) {
-            $Messages.Add([ordered]@{
-                    role    = @($ResponseContent)[0].role
-                    content = @($ResponseContent)[0].content
-                })
+        #region For history, add AI response to messages list.
+        if (@($Response.choices.message).Count -ge 1) {
+            $tr = @($Response.choices.message)[0]
+            $rcm = [ordered]@{
+                role    = $tr.role
+                content = $tr.content
+            }
+            $Messages.Add($rcm)
         }
         #endregion
 
         #region Output
         # Add custom type name and properties to output object.
         $Response.PSObject.TypeNames.Insert(0, 'PSOpenAI.Chat.Completion')
-        if ($unixtime = $Response.created -as [long]) {
+        if ($null -ne $Response.created -and ($unixtime = $Response.created -as [long])) {
             # convert unixtime to [DateTime] for read suitable
             $Response | Add-Member -MemberType NoteProperty -Name 'created' -Value ([System.DateTimeOffset]::FromUnixTimeSeconds($unixtime).LocalDateTime) -Force
         }
-        $Response | Add-Member -MemberType NoteProperty -Name 'Message' -Value $Message.Trim()
-        $Response | Add-Member -MemberType NoteProperty -Name 'Answer' -Value ([string[]]$ResponseContent.content)
+        $Response | Add-Member -MemberType NoteProperty -Name 'Message' -Value ($Messages.Where({ $_.role -eq 'user' })[-1].content)
+        $Response | Add-Member -MemberType NoteProperty -Name 'Answer' -Value ([string[]]$Response.choices.message.content)
         $Response | Add-Member -MemberType NoteProperty -Name 'History' -Value $Messages.ToArray()
         Write-Output $Response
         #endregion

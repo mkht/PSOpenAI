@@ -15,7 +15,8 @@ Creates a completion for the chat message.
 ```
 Request-AzureChatGPT
     [-Message] <String>
-    [-Name <String[]>]
+    [-Role <String>]
+    [-Name <String>]
     -Deployment <String>
     [-SystemMessage <String[]>]
     [-Temperature <Double>]
@@ -66,6 +67,16 @@ Aliases: Text
 Required: False
 Position: 1
 Accept pipeline input: True (ByPropertyName, ByValue)
+```
+
+### -Role
+The role of the messages author. One of `user` or `system`.  
+The default is `user`.
+
+```yaml
+Type: String
+Required: False
+Position: Named
 ```
 
 ### -Name
