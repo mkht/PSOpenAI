@@ -13,12 +13,12 @@ Generate function spcifications for ChatGPT Function Call from PowerShell comman
 ## SYNTAX
 
 ```
-New-ChatCompletionFunction`
-    [-Command] <String>`
-    [-Description <String>]`
-    [-IncludeParameters <String[]>]`
-    [-ExcludeParameters <String[]>]`
-    [-ParameterSetName <String>]`
+New-ChatCompletionFunction
+    [-Command] <String>
+    [-Description <String>]
+    [-IncludeParameters <String[]>]
+    [-ExcludeParameters <String[]>]
+    [-ParameterSetName <String>]
     [<CommonParameters>]
 ```
 
