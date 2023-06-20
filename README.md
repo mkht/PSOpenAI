@@ -172,9 +172,9 @@ Request-ChatGPT 'Describe ChatGPT in 100 charactors.' -Stream | Write-Host -NoNe
 
 ![Stream](/Docs/images/StreamOutput.gif)
 
-### Function call
+### Function calling
 
-`Function call` is an optional capabilities in the Chat Completion API which can be used to provide function specifications. The purpose of this is to enable models to generate function arguments which adhere to the provided specifications.
+`Function calling` is an optional capabilities in the Chat Completions API which can be used to provide function specifications. The purpose of this is to enable models to generate function arguments which adhere to the provided specifications.
 
 See detailed usage guide [here](/Examples/How_to_call_functions_with_ChatGPT.ipynb).
 

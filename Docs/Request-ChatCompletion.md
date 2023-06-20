@@ -75,7 +75,7 @@ PS C:\> Request-ChatGPT 'Please describe ChatGPT in 100 charactors.' -Stream | W
 
 ![stream](/Docs/images/StreamOutput.gif)
 
-### Example 4: Function call
+### Example 4: Function calling
 ```PowerShell
 PS C:\> $PingFunction = New-ChatCompletionFunction -Command 'Test-Connection' -IncludeParameters ('TargetName','Count')
 PS C:\> $Message = 'Ping the Google Public DNS address three times and briefly report the results.'

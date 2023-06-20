@@ -8,7 +8,7 @@ schema: 2.0.0
 # New-ChatCompletionFunction
 
 ## SYNOPSIS
-Generate function spcifications for ChatGPT Function Call from PowerShell commands
+Generate function spcifications for ChatGPT Function calling from PowerShell commands
 
 ## SYNTAX
 
@@ -23,7 +23,7 @@ New-ChatCompletionFunction
 ```
 
 ## DESCRIPTION
-Generate function spcifications for ChatGPT Function Call from PowerShell commands  
+Generate function spcifications for ChatGPT Function calling from PowerShell commands  
 The generated function spcification is a hash table that can be converted to a JSON string following JSON Schema.  
 https://platform.openai.com/docs/guides/gpt/function-calling
 
