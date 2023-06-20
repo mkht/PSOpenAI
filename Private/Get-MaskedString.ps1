@@ -30,8 +30,7 @@ function Get-MaskedString {
         [string[]]$PlainTarget = @()
         foreach ($t in $Target) {
             if ($null -ne $t) {
-                $bstr = [Marshal]::SecureStringToBSTR($t)
-                $PlainTarget += [Marshal]::PtrToStringBSTR($bstr)
+                $PlainTarget += DecryptSecureString $t
             }
         }
     }

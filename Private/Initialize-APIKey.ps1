@@ -16,9 +16,7 @@ function Initialize-APIKey {
     )
 
     if ($null -ne $ApiKey) {
-        # decrypt securestring
-        $bstr = [Marshal]::SecureStringToBSTR($ApiKey)
-        $p = [Marshal]::PtrToStringBSTR($bstr)
+        $p = DecryptSecureString $ApiKey
     }
     else {
         # Search API key below priorities.

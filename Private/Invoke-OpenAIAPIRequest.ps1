@@ -30,6 +30,9 @@ function Invoke-OpenAIAPIRequest {
         [object]$Body,
 
         [Parameter()]
+        [IDictionary]$Headers,
+
+        [Parameter()]
         [int]$TimeoutSec = 0,
 
         [Parameter()]
@@ -65,6 +68,9 @@ function Invoke-OpenAIAPIRequest {
 
     # Headers dictionary
     $RequestHeaders = @{}
+    if ($PSBoundParameters.ContainsKey('Headers') -and $null -ne $Headers) {
+        $RequestHeaders = Merge-Dictionary $Headers $RequestHeaders
+    }
 
     # Set debug header
     if ($IsDebug) {
@@ -81,6 +87,7 @@ function Invoke-OpenAIAPIRequest {
             -Organization $Organization `
             -AuthType $AuthType `
             -Body $Body `
+            -Headers $RequestHeaders `
             -TimeoutSec $TimeoutSec `
             -MaxRetryCount $MaxRetryCount
     }
@@ -111,11 +118,7 @@ function Invoke-OpenAIAPIRequest {
                 }
             }
             'azure' {
-                # decrypt securestring
-                $bstr = [Marshal]::SecureStringToBSTR($ApiKey)
-                $PlainToken = [Marshal]::PtrToStringBSTR($bstr)
-                $RequestHeaders['api-key'] = $PlainToken
-                $bstr = $PlainToken = $null
+                $RequestHeaders['api-key'] = (DecryptSecureString $ApiKey)
             }
             'azure_ad' {
                 $IwrParam.Authentication = 'Bearer'
@@ -230,9 +233,7 @@ function Invoke-OpenAIAPIRequest {
 
     #region Windows PowerShell 5
     elseif ($PSVersionTable.PSVersion.Major -eq 5) {
-        # decrypt securestring
-        $bstr = [Marshal]::SecureStringToBSTR($ApiKey)
-        $PlainToken = [Marshal]::PtrToStringBSTR($bstr)
+        $PlainToken = DecryptSecureString $ApiKey
 
         # Construct parameter for Invoke-WebRequest
         $IwrParam = @{
@@ -340,7 +341,7 @@ function Invoke-OpenAIAPIRequest {
             $PSCmdlet.ThrowTerminatingError($_)
         }
         finally {
-            $bstr = $PlainToken = $null
+            $PlainToken = $null
         }
         #endregion
 

@@ -32,6 +32,9 @@ function Invoke-OpenAIAPIRequestSSE {
         [object]$Body,
 
         [Parameter()]
+        [IDictionary]$Headers,
+
+        [Parameter()]
         [int]$TimeoutSec = 0,
 
         [Parameter()]
@@ -54,8 +57,7 @@ function Invoke-OpenAIAPIRequestSSE {
     #endregion
 
     # Decrypt securestring
-    $bstr = [Marshal]::SecureStringToBSTR($ApiKey)
-    $PlainToken = [Marshal]::PtrToStringBSTR($bstr)
+    $PlainToken = DecryptSecureString $ApiKey
     # Create HttpClient and messages
     $HttpClient = [System.Net.Http.HttpClient]::new()
     $RequestMessage = [System.Net.Http.HttpRequestMessage]::new($Method, $Uri)
@@ -76,6 +78,15 @@ function Invoke-OpenAIAPIRequestSSE {
     # Set debug header
     if ($IsDebug) {
         $RequestMessage.Headers.Add('OpenAI-Debug', 'true')
+    }
+
+    # Set other headers
+    if ($PSBoundParameters.ContainsKey('Headers') -and $null -ne $Headers) {
+        foreach ($h in $Headers.GetEnumerator()) {
+            if (-not $RequestMessage.Headers.Contains($h.Key)) {
+                $RequestMessage.Headers.Add($h.Key, $h.Value)
+            }
+        }
     }
 
     switch ($AuthType) {
@@ -219,7 +230,7 @@ function Invoke-OpenAIAPIRequestSSE {
         $PSCmdlet.ThrowTerminatingError($_)
     }
     finally {
-        $bstr = $PlainToken = $null
+        $PlainToken = $null
         try {
             if ($null -ne $cts) { $cts.Dispose() }
             if ($null -ne $HttpClient) { $HttpClient.Dispose() }

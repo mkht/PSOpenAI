@@ -74,3 +74,42 @@ function ObjectToContent {
         }
     }
 }
+
+function Merge-Dictionary {
+    [CmdletBinding()]
+    [OutputType([hashtable])]
+    param(
+        [Parameter(Mandatory, Position = 0)]
+        [System.Collections.IDictionary]$d1,
+        [Parameter(Mandatory, Position = 1)]
+        [System.Collections.IDictionary]$d2
+    )
+    $o = @{}
+    foreach ($s in $d1.GetEnumerator()) {
+        $o[$s.Key] = $s.Value
+    }
+    foreach ($s in $d2.GetEnumerator()) {
+        $o[$s.Key] = $s.Value
+    }
+    $o
+}
+
+function DecryptSecureString {
+    [CmdletBinding()]
+    [OutputType([string])]
+    param(
+        [Parameter(Mandatory, Position = 0)]
+        [securestring]$SecureString
+    )
+    try {
+        $bstr = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($SecureString)
+        $PlainToken = [System.Runtime.InteropServices.Marshal]::PtrToStringBSTR($bstr)
+        $PlainToken
+    }
+    catch {
+        Write-Error -Exception $_.Exception
+    }
+    finally {
+        $bstr = $PlainToken = $null
+    }
+}

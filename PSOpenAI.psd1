@@ -59,6 +59,7 @@
         'New-AzureOpenAIDeployments',
         'Remove-AzureOpenAIDeployments',
         'Request-AzureChatCompletion',
+        'Request-AzureExtensionsChatCompletion',
         'Request-AzureEmbeddings',
         'Request-AzureTextCompletion',
         'Request-AzureImageGeneration'
