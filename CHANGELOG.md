@@ -1,4 +1,10 @@
 # Changelog
+### Unreleased
+- Remove warning messages about the expiration dates of these models. Because OpenAI has announced that the discontinued dates for these models will be postponed for the time being.
+  + `gpt-3.5-turbo-0301`
+  + `gpt-4-0314`
+  + `gpt-4-32k-0314`
+
 ### 1.14.0
 - Add initial support for Function calling method of the OpenAI ChatCompletion API. See the [guide](/Examples/How_to_call_functions_with_ChatGPT.ipynb).
 - Change the name of `-RolePrompt` to `-SystemMessage` (`-RolePrompt` can also continue to be used as an alias )
