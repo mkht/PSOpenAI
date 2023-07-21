@@ -10,18 +10,6 @@ function Assert-UnsupportedModels {
         #Should this list be separated as a JSON or PSD1 static file?
         $ListOfUnsupportedModels = @(
             @{
-                Id      = 'gpt-3.5-turbo-0301'
-                Expires = '2023-09-13'
-            },
-            @{
-                Id      = 'gpt-4-0314'
-                Expires = '2023-09-13'
-            },
-            @{
-                Id      = 'gpt-4-32k-0314'
-                Expires = '2023-09-13'
-            },
-            @{
                 Id      = 'code-davinci-001'
                 Expires = '2023-03-23'
             },
