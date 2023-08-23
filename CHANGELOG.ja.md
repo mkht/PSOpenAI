@@ -1,4 +1,14 @@
 # 変更履歴
+### 1.14.2
+- `Request-TextCompletion`のモデル名タブ補完を更新しました
+  + 破壊的変更を避けるためデフォルトで使用するモデルは古い`text-davinci-003`のままですが、将来的には変更される予定です。
+- 廃止予定がアナウンスされているモデルに関する警告メッセージを更新しました。
+  + https://platform.openai.com/docs/deprecations
+- 以下のモデルの廃止予定は延期されたため、警告メッセージの表示をとりやめました。
+  + `gpt-3.5-turbo-0301`
+  + `gpt-4-0314`
+  + `gpt-4-32k-0314`
+
 ### 1.14.0
 - OpenAI チャットAPIの関数呼び出し機能に対応しました. 使い方は[ガイド](/Examples/How_to_call_functions_with_ChatGPT.ipynb)を参照してください
 - パラメータ名を`-RolePrompt` から `-SystemMessage`に変更します (`-RolePrompt`もエイリアスとして引き続き使用可能です)
