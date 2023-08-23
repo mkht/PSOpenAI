@@ -1,6 +1,6 @@
 # Changelog
 ### 1.14.2
-- Upddate tab completions for models of `Request-TextCompletion`.
+- Update tab completions for models of `Request-TextCompletion`.
   + To avoid breaking change, the default model used remains legacy `text-davinci-003`. We plan to change it on the future release.
 - Update warning messages about the deprecation models that has been announced by OpenAI.
   + https://platform.openai.com/docs/deprecations
