@@ -1,4 +1,7 @@
 # Changelog
+### 1.14.3
+- Add a new `gpt-3.5-turbo-instruct` model to tab completions of `Request-TextCompletion`.
+
 ### 1.14.2
 - Update tab completions for models of `Request-TextCompletion`.
   + To avoid breaking change, the default model used remains legacy `text-davinci-003`. We plan to change it on the future release.

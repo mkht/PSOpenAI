@@ -1,4 +1,7 @@
 # 変更履歴
+### 1.14.3
+- 新しい`gpt-3.5-turbo-instruct`モデルを`Request-TextCompletion`のモデル名タブ補完に追加します
+
 ### 1.14.2
 - `Request-TextCompletion`のモデル名タブ補完を更新しました
   + 破壊的変更を避けるためデフォルトで使用するモデルは古い`text-davinci-003`のままですが、将来的には変更される予定です。
