@@ -11,7 +11,7 @@ function Request-TextCompletion {
         [string]$Suffix,
 
         [Parameter()]
-        [Completions('babbage-002', 'davinci-002')]
+        [Completions('gpt-3.5-turbo-instruct', 'babbage-002', 'davinci-002')]
         [string][LowerCaseTransformation()]$Model = 'text-davinci-003',
 
         [Parameter()]
