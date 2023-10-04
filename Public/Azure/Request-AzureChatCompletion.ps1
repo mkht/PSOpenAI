@@ -377,7 +377,7 @@ function Request-AzureChatCompletion {
                 $SecondRequestParam.Name = $fCall.name
                 # $SecondRequestParam.Remove('Functions')
                 $SecondRequestParam.History = $Messages.ToArray()
-                Request-ChatCompletion @SecondRequestParam
+                Request-AzureChatCompletion @SecondRequestParam
                 return
             }
         }
