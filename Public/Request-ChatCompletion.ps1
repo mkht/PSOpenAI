@@ -375,6 +375,9 @@ function Request-ChatCompletion {
                 else {
                     $SecondRequestParam.Message = (ConvertTo-Json $fCommandResult)
                 }
+                if ($SecondRequestParam.ContainsKey('SystemMessage')) {
+                    $SecondRequestParam.Remove('SystemMessage')
+                }
                 $SecondRequestParam.Role = 'function'
                 $SecondRequestParam.Name = $fCall.name
                 # $SecondRequestParam.Remove('Functions')
