@@ -17,7 +17,7 @@ function Get-AzureOpenAIAPIEndpoint {
 
     $UriBuilder = [System.UriBuilder]::new($ApiBase)
     $ApiVersion = $ApiVersion.Trim()
-    $DefaultApiVersion = '2023-05-15'
+    $DefaultApiVersion = '2023-09-01-preview'
 
     switch ($EndpointName) {
         'Chat.Completion' {
@@ -32,7 +32,7 @@ function Get-AzureOpenAIAPIEndpoint {
             }
         }
         'Chat.Completion.Extensions' {
-            $InnerApiVersion = if ($ApiVersion) { $ApiVersion }else { '2023-06-01-preview' }
+            $InnerApiVersion = if ($ApiVersion) { $ApiVersion }else { $DefaultApiVersion }
             $UriBuilder.Path = ('/openai/deployments/{0}/extensions/chat/completions' -f $Engine.Replace('/', '').Trim())
             $UriBuilder.Query = ('api-version={0}' -f $InnerApiVersion)
             @{
@@ -54,7 +54,7 @@ function Get-AzureOpenAIAPIEndpoint {
             }
         }
         'Image.Generation' {
-            $InnerApiVersion = if ($ApiVersion) { $ApiVersion }else { '2023-06-01-preview' }
+            $InnerApiVersion = if ($ApiVersion) { $ApiVersion }else { $DefaultApiVersion }
             $UriBuilder.Path = '/openai/images/generations:submit'
             $UriBuilder.Query = ('api-version={0}' -f $InnerApiVersion)
             @{
