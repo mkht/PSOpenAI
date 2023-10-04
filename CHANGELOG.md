@@ -1,4 +1,12 @@
 # Changelog
+### 1.15.0
+- Add new whisper functions for Azure OpenAI Service
+    + [Request-AzureAudioTranscription](/Docs/Request-AzureAudioTranscription.md)
+    + [Request-AzureAudioTranslation](/Docs/Request-AzureAudioTranslation.md)
+- Remove the upper limit on the `-MaxTokens` parameter. (The maximum number of tokens depends on the model used)
+- Add support for Function calling method on Azure OpenAI Service.
+- Change default api version of Azure OpenAI Service to `2023-09-01-preview`
+
 ### 1.14.3
 - Add a new `gpt-3.5-turbo-instruct` model to tab completions of `Request-TextCompletion`.
 

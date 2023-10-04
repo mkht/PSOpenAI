@@ -1,4 +1,12 @@
 # 変更履歴
+### 1.15.0
+- Azure OpenAI Serviceの音声認識モデル(Whisper)に対応する関数を追加しました。
+    + [Request-AzureAudioTranscription](/Docs/Request-AzureAudioTranscription.md)
+    + [Request-AzureAudioTranslation](/Docs/Request-AzureAudioTranslation.md)
+- `-MaxTokens`パラメータの上限値制限を削除しました。 (実際の上限値は使用するモデルによって変わります)
+- Azure OpenAI ServiceのチャットAPIを使用した関数呼び出し機能に対応しました。
+- Azure OpenAI ServiceのデフォルトAPIバージョンを`2023-09-01-preview`に変更しました。
+
 ### 1.14.3
 - 新しい`gpt-3.5-turbo-instruct`モデルを`Request-TextCompletion`のモデル名タブ補完に追加します
 
