@@ -58,6 +58,8 @@
         'Get-AzureOpenAIDeployments',
         'New-AzureOpenAIDeployments',
         'Remove-AzureOpenAIDeployments',
+        'Request-AzureAudioTranscription',
+        'Request-AzureAudioTranslation',
         'Request-AzureChatCompletion',
         'Request-AzureExtensionsChatCompletion',
         'Request-AzureEmbeddings',

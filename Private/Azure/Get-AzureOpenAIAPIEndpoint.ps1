@@ -64,6 +64,28 @@ function Get-AzureOpenAIAPIEndpoint {
                 ContentType = 'application/json'
             }
         }
+        'Audio.Transcription' {
+            $InnerApiVersion = if ($ApiVersion) { $ApiVersion }else { $DefaultApiVersion }
+            $UriBuilder.Path = ('/openai/deployments/{0}/audio/transcriptions' -f $Engine.Replace('/', '').Trim())
+            $UriBuilder.Query = ('api-version={0}' -f $InnerApiVersion)
+            @{
+                Name        = 'audio.transcription'
+                Method      = 'Post'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'multipart/form-data'
+            }
+        }
+        'Audio.Translation' {
+            $InnerApiVersion = if ($ApiVersion) { $ApiVersion }else { $DefaultApiVersion }
+            $UriBuilder.Path = ('/openai/deployments/{0}/audio/translations' -f $Engine.Replace('/', '').Trim())
+            $UriBuilder.Query = ('api-version={0}' -f $InnerApiVersion)
+            @{
+                Name        = 'audio.transcription'
+                Method      = 'Post'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'multipart/form-data'
+            }
+        }
         'Embeddings' {
             $InnerApiVersion = if ($ApiVersion) { $ApiVersion }else { $DefaultApiVersion }
             $UriBuilder.Path = ('/openai/deployments/{0}/embeddings' -f $Engine.Replace('/', '').Trim())
