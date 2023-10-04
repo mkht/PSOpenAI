@@ -1,4 +1,7 @@
 # Changelog
+### 1.15.1
+- Fix various issues about Function calling.
+
 ### 1.15.0
 - Add new whisper functions for Azure OpenAI Service
     + [Request-AzureAudioTranscription](/Docs/Request-AzureAudioTranscription.md)

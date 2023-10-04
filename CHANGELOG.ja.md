@@ -1,4 +1,7 @@
 # 変更履歴
+### 1.15.1
+- 関数呼び出しに関する複数の不具合を修正しました。
+
 ### 1.15.0
 - Azure OpenAI Serviceの音声認識モデル(Whisper)に対応する関数を追加しました。
     + [Request-AzureAudioTranscription](/Docs/Request-AzureAudioTranscription.md)
