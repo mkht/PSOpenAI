@@ -100,7 +100,7 @@ Position: Named
 
 ### -MaxTokens
 The maximum number of tokens allowed for the generated answer.  
-The max value is `4096`.
+Maximum value depends on model. (`4096` for `gpt-3.5-turbo` or `8192` for `gpt-4`)
 
 ```yaml
 Type: Int32

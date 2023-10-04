@@ -36,7 +36,7 @@ function Request-AzureTextCompletion {
         [switch]$Stream = $false,
 
         [Parameter()]
-        [ValidateRange(0, 4096)]
+        [ValidateRange(0, 2147483647)]
         [Alias('max_tokens')]
         [int]$MaxTokens = 2048,
 

@@ -77,7 +77,7 @@ function Request-ChatCompletion {
         [string[]]$StopSequence,
 
         [Parameter()]
-        [ValidateRange(0, 4096)]
+        [ValidateRange(0, 2147483647)]
         [Alias('max_tokens')]
         [int]$MaxTokens,
 
