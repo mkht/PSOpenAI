@@ -44,7 +44,7 @@ Hello, My name is tanaka yoshio.
 
 ### -File
 (Required)
-The audio file to translate, in one of these formats: `mp3`, `mp4`, `mpeg`, `mpga`, `m4a`, `wav`, or `webm`.
+The audio file to translate, in one of these formats: `flac`, `mp3`, `mp4`, `mpeg`, `mpga`, `m4a`, `ogg`, `wav`, or `webm`.  
 
 ```yaml
 Type: String

@@ -1,46 +1,47 @@
 ---
 external help file: PSOpenAI-help.xml
 Module Name: PSOpenAI
-online version: https://github.com/mkht/PSOpenAI/blob/main/Docs/Request-AudioTranscription.md
+online version: https://github.com/mkht/PSOpenAI/blob/main/Docs/Request-AzureAudioTranslation.md
 schema: 2.0.0
 ---
 
-# Request-AudioTranscription
+# Request-AzureAudioTranslation
 
 ## SYNOPSIS
-Transcribes audio into the input language.
+Translates audio into English.
 
 ## SYNTAX
 
-### Language (Default)
 ```
-Request-AudioTranscription
+Request-AzureAudioTranslation
     [[-File] <String>]
-    [-Model <String>]
+    -Deployment <String>
     [-Prompt <String>]
     [-Format <String>]
     [-Temperature <Double>]
-    [-Language <String>]
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
+    [-ApiBase <System.Uri>]
+    [-ApiVersion <string>]
     [-ApiKey <Object>]
-    [-Organization <String>]
+    [-AuthType <string>]
     [<CommonParameters>]
 ```
 
-
 ## DESCRIPTION
-Transcribes audio into the input language.  
-https://platform.openai.com/docs/guides/speech-to-text/speech-to-text
+Translates audio into English.  
+https://learn.microsoft.com/en-us/azure/ai-services/openai/reference#request-a-speech-to-text-translation
 
 ## EXAMPLES
 
-### Example 1: Audio-to-Text
+### Example 1: Japanese speech to English text.
 ```PowerShell
-PS C:\> Request-AudioTranscription -File C:\sample\audio.mp3 -Format text
+PS C:\> $global:OPENAI_API_KEY = '<Put your api key here>'
+PS C:\> $global:OPENAI_API_BASE  = 'https://<resource-name>.openai.azure.com/'
+PS C:\> Request-AzureAudioTranslation -File C:\sample\japanese.mp3 -Format text -Deployment 'YourDeploymentName'
 ```
 ```
-Hello, I am david.
+Hello, My name is tanaka yoshio.
 ```
 
 ## PARAMETERS
@@ -48,29 +49,30 @@ Hello, I am david.
 ### -File
 (Required)
 The audio file to transcribe, in one of these formats: `flac`, `mp3`, `mp4`, `mpeg`, `mpga`, `m4a`, `ogg`, `wav`, or `webm`.  
+The file size limit for the Azure OpenAI Whisper model is 25 MB.
 
 ```yaml
 Type: String
-Required: True
+Required: False
 Position: 1
 Accept pipeline input: True (ByValue)
 Accept wildcard characters: False
 ```
 
-### -Model
-The name of model to use.
-The default value is `whisper-1`.
+### -Deployment
+The deployment name you chose when you deployed the model.  
+Deployments must be created in Azure Portal in advance.
 
 ```yaml
 Type: String
-Required: False
+Aliases: Engine
+Required: True
 Position: Named
-Default value: whisper-1
 ```
 
 ### -Prompt
 An optional text to guide the model's style or continue a previous audio segment.  
-The prompt should match the audio language.
+The prompt should be in English.
 
 ```yaml
 Type: String
@@ -100,16 +102,6 @@ Required: False
 Position: Named
 ```
 
-### -Language
-The language of the input audio.  
-Supplying the input language in `ISO-639-1` format will improve accuracy and latency.
-
-```yaml
-Type: String
-Required: False
-Position: Named
-```
-
 ### -TimeoutSec
 Specifies how long the request can be pending before it times out.  
 The default value is `0` (infinite).
@@ -135,6 +127,25 @@ Position: Named
 Default value: 0
 ```
 
+### -ApiBase
+Specifies yhe name of your Azure OpenAI resource endpoint such like: `https://{your-resource-name}.openai.azure.com/`  
+If not specified, it will try to use `$global:OPENAI_API_BASE` or `$env:OPENAI_API_BASE`
+
+```yaml
+Type: System.Uri
+Required: False
+Position: Named
+```
+
+### -ApiVersion
+The API version to use for this operation.  
+
+```yaml
+Type: string
+Required: False
+Position: Named
+```
+
 ### -ApiKey
 Specifies API key for authentication.  
 The type of data should `[string]` or `[securestring]`.  
@@ -142,20 +153,20 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
 
 ```yaml
 Type: Object
-Aliases: Token
 Required: False
 Position: Named
 ```
 
-### -Organization
-Specifies Organization ID which used for an API request.  
-If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPENAI_ORGANIZATION`
+### -AuthType
+Specifies the authentication type.  
+You can choose from `azure` or `azure_ad`.  
+The default value is `azure`
 
 ```yaml
 Type: string
-Aliases: OrgId
 Required: False
 Position: Named
+Default value: "azure"
 ```
 
 ## INPUTS
@@ -167,7 +178,5 @@ Position: Named
 
 ## RELATED LINKS
 
-[https://platform.openai.com/docs/guides/speech-to-text/speech-to-text](https://platform.openai.com/docs/guides/speech-to-text/speech-to-text)
-
-[https://platform.openai.com/docs/api-reference/audio/create](https://platform.openai.com/docs/api-reference/audio/create)
+[https://learn.microsoft.com/en-us/azure/ai-services/openai/reference#request-a-speech-to-text-translation](https://learn.microsoft.com/en-us/azure/ai-services/openai/reference#request-a-speech-to-text-translation)
 

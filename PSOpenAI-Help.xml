@@ -461,7 +461,7 @@ So `0.1` means only the tokens comprising the top `10%` probability mass are con
           <maml:name>MaxTokens</maml:name>
           <maml:description>
             <maml:para>The maximum number of tokens allowed for the generated answer.
-The max value is `4096`.</maml:para>
+Maximum value depends on model. (`4096` for `gpt-3.5-turbo` or `8192` for `gpt-4`)</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -632,7 +632,7 @@ So `0.1` means only the tokens comprising the top `10%` probability mass are con
         <maml:name>MaxTokens</maml:name>
         <maml:description>
           <maml:para>The maximum number of tokens allowed for the generated answer.
-The max value is `4096`.</maml:para>
+Maximum value depends on model. (`4096` for `gpt-3.5-turbo` or `8192` for `gpt-4`)</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
@@ -1906,11 +1906,11 @@ updated_at     : 2023/04/28 12:53:27</dev:code>
       <command:verb>New</command:verb>
       <command:noun>ChatCompletionFunction</command:noun>
       <maml:description>
-        <maml:para>Generate function spcifications for ChatGPT Function Call from PowerShell commands</maml:para>
+        <maml:para>Generate function spcifications for ChatGPT Function calling from PowerShell commands</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Generate function spcifications for ChatGPT Function Call from PowerShell commands
+      <maml:para>Generate function spcifications for ChatGPT Function calling from PowerShell commands
 The generated function spcification is a hash table that can be converted to a JSON string following JSON Schema.
 https://platform.openai.com/docs/guides/gpt/function-calling</maml:para>
     </maml:description>
@@ -2450,7 +2450,8 @@ https://platform.openai.com/docs/guides/speech-to-text/speech-to-text</maml:para
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="none">
           <maml:name>File</maml:name>
           <maml:description>
-            <maml:para>(Required) The audio file to transcribe, in one of these formats: `mp3`, `mp4`, `mpeg`, `mpga`, `m4a`, `wav`, or `webm`.</maml:para>
+            <maml:para>(Required) The audio file to transcribe, in one of these formats: `flac`, `mp3`, `mp4`, `mpeg`, `mpga`, `m4a`, `ogg`, `wav`, or `webm`.
+</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -2585,7 +2586,8 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="none">
         <maml:name>File</maml:name>
         <maml:description>
-          <maml:para>(Required) The audio file to transcribe, in one of these formats: `mp3`, `mp4`, `mpeg`, `mpga`, `m4a`, `wav`, or `webm`.</maml:para>
+          <maml:para>(Required) The audio file to transcribe, in one of these formats: `flac`, `mp3`, `mp4`, `mpeg`, `mpga`, `m4a`, `ogg`, `wav`, or `webm`.
+</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -2776,7 +2778,8 @@ https://platform.openai.com/docs/guides/speech-to-text/speech-to-text</maml:para
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="none">
           <maml:name>File</maml:name>
           <maml:description>
-            <maml:para>(Required) The audio file to translate, in one of these formats: `mp3`, `mp4`, `mpeg`, `mpga`, `m4a`, `wav`, or `webm`.</maml:para>
+            <maml:para>(Required) The audio file to transcribe, in one of these formats: `flac`, `mp3`, `mp4`, `mpeg`, `mpga`, `m4a`, `ogg`, `wav`, or `webm`.
+</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -2898,7 +2901,8 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="none">
         <maml:name>File</maml:name>
         <maml:description>
-          <maml:para>(Required) The audio file to translate, in one of these formats: `mp3`, `mp4`, `mpeg`, `mpga`, `m4a`, `wav`, or `webm`.</maml:para>
+          <maml:para>(Required) The audio file to transcribe, in one of these formats: `flac`, `mp3`, `mp4`, `mpeg`, `mpga`, `m4a`, `ogg`, `wav`, or `webm`.
+</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -3059,6 +3063,744 @@ Hello, My name is tanaka yoshio.</dev:code>
   </command:command>
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
     <command:details>
+      <command:name>Request-AzureAudioTranscription</command:name>
+      <command:verb>Request</command:verb>
+      <command:noun>AzureAudioTranscription</command:noun>
+      <maml:description>
+        <maml:para>Transcribes audio into the input language.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>Transcribes audio into the input language.
+https://learn.microsoft.com/en-us/azure/ai-services/openai/reference#speech-to-text</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Request-AzureAudioTranscription</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="none">
+          <maml:name>File</maml:name>
+          <maml:description>
+            <maml:para>(Required) The audio file to transcribe, in one of these formats: `flac`, `mp3`, `mp4`, `mpeg`, `mpga`, `m4a`, `ogg`, `wav`, or `webm`.
+The file size limit for the Azure OpenAI Whisper model is 25 MB.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Engine">
+          <maml:name>Deployment</maml:name>
+          <maml:description>
+            <maml:para>The deployment name you chose when you deployed the model.
+Deployments must be created in Azure Portal in advance.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Prompt</maml:name>
+          <maml:description>
+            <maml:para>An optional text to guide the model's style or continue a previous audio segment.
+The prompt should match the audio language.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="response_format">
+          <maml:name>Format</maml:name>
+          <maml:description>
+            <maml:para>The format of the transcript output, in one of these options: `json`, `text`, `srt`, `verbose_json`, or `vtt`.
+The default value is `text`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>text</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Temperature</maml:name>
+          <maml:description>
+            <maml:para>The sampling temperature, between `0` and `1`.
+Higher values like `0.8` will make the output more random, while lower values like `0.2` will make it more focused and deterministic.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Double</command:parameterValue>
+          <dev:type>
+            <maml:name>Double</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Language</maml:name>
+          <maml:description>
+            <maml:para>The language of the input audio.
+Supplying the input language in `ISO-639-1` format will improve accuracy and latency.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>TimeoutSec</maml:name>
+          <maml:description>
+            <maml:para>Specifies how long the request can be pending before it times out.
+The default value is `0` (infinite).</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>0</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>MaxRetryCount</maml:name>
+          <maml:description>
+            <maml:para>Number between `0` and `100`.
+Specifies the maximum number of retries if the request fails.
+The default value is `0` (No retry).
+Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>0</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>ApiBase</maml:name>
+          <maml:description>
+            <maml:para>Specifies yhe name of your Azure OpenAI resource endpoint such like: `https://{your-resource-name}.openai.azure.com/`
+If not specified, it will try to use `$global:OPENAI_API_BASE` or `$env:OPENAI_API_BASE`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Uri</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>ApiVersion</maml:name>
+          <maml:description>
+            <maml:para>The API version to use for this operation.
+</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+          <dev:type>
+            <maml:name>string</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>ApiKey</maml:name>
+          <maml:description>
+            <maml:para>Specifies API key for authentication.
+The type of data should `[string]` or `[securestring]`.
+If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_API_KEY`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
+          <dev:type>
+            <maml:name>Object</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>AuthType</maml:name>
+          <maml:description>
+            <maml:para>Specifies the authentication type.
+You can choose from `azure` or `azure_ad`.
+The default value is `azure`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+          <dev:type>
+            <maml:name>string</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>"azure"</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="none">
+        <maml:name>File</maml:name>
+        <maml:description>
+          <maml:para>(Required) The audio file to transcribe, in one of these formats: `flac`, `mp3`, `mp4`, `mpeg`, `mpga`, `m4a`, `ogg`, `wav`, or `webm`.
+The file size limit for the Azure OpenAI Whisper model is 25 MB.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Engine">
+        <maml:name>Deployment</maml:name>
+        <maml:description>
+          <maml:para>The deployment name you chose when you deployed the model.
+Deployments must be created in Azure Portal in advance.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Prompt</maml:name>
+        <maml:description>
+          <maml:para>An optional text to guide the model's style or continue a previous audio segment.
+The prompt should match the audio language.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="response_format">
+        <maml:name>Format</maml:name>
+        <maml:description>
+          <maml:para>The format of the transcript output, in one of these options: `json`, `text`, `srt`, `verbose_json`, or `vtt`.
+The default value is `text`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>text</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Temperature</maml:name>
+        <maml:description>
+          <maml:para>The sampling temperature, between `0` and `1`.
+Higher values like `0.8` will make the output more random, while lower values like `0.2` will make it more focused and deterministic.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Double</command:parameterValue>
+        <dev:type>
+          <maml:name>Double</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Language</maml:name>
+        <maml:description>
+          <maml:para>The language of the input audio.
+Supplying the input language in `ISO-639-1` format will improve accuracy and latency.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>TimeoutSec</maml:name>
+        <maml:description>
+          <maml:para>Specifies how long the request can be pending before it times out.
+The default value is `0` (infinite).</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>0</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>MaxRetryCount</maml:name>
+        <maml:description>
+          <maml:para>Number between `0` and `100`.
+Specifies the maximum number of retries if the request fails.
+The default value is `0` (No retry).
+Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>0</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>ApiBase</maml:name>
+        <maml:description>
+          <maml:para>Specifies yhe name of your Azure OpenAI resource endpoint such like: `https://{your-resource-name}.openai.azure.com/`
+If not specified, it will try to use `$global:OPENAI_API_BASE` or `$env:OPENAI_API_BASE`</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
+        <dev:type>
+          <maml:name>System.Uri</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>ApiVersion</maml:name>
+        <maml:description>
+          <maml:para>The API version to use for this operation.
+</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+        <dev:type>
+          <maml:name>string</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>ApiKey</maml:name>
+        <maml:description>
+          <maml:para>Specifies API key for authentication.
+The type of data should `[string]` or `[securestring]`.
+If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_API_KEY`</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
+        <dev:type>
+          <maml:name>Object</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>AuthType</maml:name>
+        <maml:description>
+          <maml:para>Specifies the authentication type.
+You can choose from `azure` or `azure_ad`.
+The default value is `azure`</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+        <dev:type>
+          <maml:name>string</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>"azure"</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes />
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>[string]</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>------------------- Example 1: Audio-to-Text -------------------</maml:title>
+        <dev:code>PS C:\&gt; $global:OPENAI_API_KEY = '&lt;Put your api key here&gt;'
+PS C:\&gt; $global:OPENAI_API_BASE  = 'https://&lt;resource-name&gt;.openai.azure.com/'
+PS C:\&gt; Request-AzureAudioTranscription -File C:\sample\audio.mp3 -Format text -Deployment 'YourDeploymentName'
+
+Hello, I am david.</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Request-AzureAudioTranscription.md</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>https://learn.microsoft.com/en-us/azure/ai-services/openai/reference#speech-to-text</maml:linkText>
+        <maml:uri>https://learn.microsoft.com/en-us/azure/ai-services/openai/reference#speech-to-text</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Request-AzureAudioTranslation</command:name>
+      <command:verb>Request</command:verb>
+      <command:noun>AzureAudioTranslation</command:noun>
+      <maml:description>
+        <maml:para>Translates audio into English.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>Translates audio into English.
+https://learn.microsoft.com/en-us/azure/ai-services/openai/reference#request-a-speech-to-text-translation</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Request-AzureAudioTranslation</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="none">
+          <maml:name>File</maml:name>
+          <maml:description>
+            <maml:para>(Required) The audio file to transcribe, in one of these formats: `flac`, `mp3`, `mp4`, `mpeg`, `mpga`, `m4a`, `ogg`, `wav`, or `webm`.
+The file size limit for the Azure OpenAI Whisper model is 25 MB.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Engine">
+          <maml:name>Deployment</maml:name>
+          <maml:description>
+            <maml:para>The deployment name you chose when you deployed the model.
+Deployments must be created in Azure Portal in advance.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Prompt</maml:name>
+          <maml:description>
+            <maml:para>An optional text to guide the model's style or continue a previous audio segment.
+The prompt should be in English.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="response_format">
+          <maml:name>Format</maml:name>
+          <maml:description>
+            <maml:para>The format of the transcript output, in one of these options: `json`, `text`, `srt`, `verbose_json`, or `vtt`.
+The default value is `text`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>text</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Temperature</maml:name>
+          <maml:description>
+            <maml:para>The sampling temperature, between `0` and `1`.
+Higher values like `0.8` will make the output more random, while lower values like `0.2` will make it more focused and deterministic.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Double</command:parameterValue>
+          <dev:type>
+            <maml:name>Double</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>TimeoutSec</maml:name>
+          <maml:description>
+            <maml:para>Specifies how long the request can be pending before it times out.
+The default value is `0` (infinite).</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>0</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>MaxRetryCount</maml:name>
+          <maml:description>
+            <maml:para>Number between `0` and `100`.
+Specifies the maximum number of retries if the request fails.
+The default value is `0` (No retry).
+Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>0</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>ApiBase</maml:name>
+          <maml:description>
+            <maml:para>Specifies yhe name of your Azure OpenAI resource endpoint such like: `https://{your-resource-name}.openai.azure.com/`
+If not specified, it will try to use `$global:OPENAI_API_BASE` or `$env:OPENAI_API_BASE`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Uri</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>ApiVersion</maml:name>
+          <maml:description>
+            <maml:para>The API version to use for this operation.
+</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+          <dev:type>
+            <maml:name>string</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>ApiKey</maml:name>
+          <maml:description>
+            <maml:para>Specifies API key for authentication.
+The type of data should `[string]` or `[securestring]`.
+If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_API_KEY`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
+          <dev:type>
+            <maml:name>Object</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>AuthType</maml:name>
+          <maml:description>
+            <maml:para>Specifies the authentication type.
+You can choose from `azure` or `azure_ad`.
+The default value is `azure`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+          <dev:type>
+            <maml:name>string</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>"azure"</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="none">
+        <maml:name>File</maml:name>
+        <maml:description>
+          <maml:para>(Required) The audio file to transcribe, in one of these formats: `flac`, `mp3`, `mp4`, `mpeg`, `mpga`, `m4a`, `ogg`, `wav`, or `webm`.
+The file size limit for the Azure OpenAI Whisper model is 25 MB.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Engine">
+        <maml:name>Deployment</maml:name>
+        <maml:description>
+          <maml:para>The deployment name you chose when you deployed the model.
+Deployments must be created in Azure Portal in advance.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Prompt</maml:name>
+        <maml:description>
+          <maml:para>An optional text to guide the model's style or continue a previous audio segment.
+The prompt should be in English.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="response_format">
+        <maml:name>Format</maml:name>
+        <maml:description>
+          <maml:para>The format of the transcript output, in one of these options: `json`, `text`, `srt`, `verbose_json`, or `vtt`.
+The default value is `text`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>text</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Temperature</maml:name>
+        <maml:description>
+          <maml:para>The sampling temperature, between `0` and `1`.
+Higher values like `0.8` will make the output more random, while lower values like `0.2` will make it more focused and deterministic.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Double</command:parameterValue>
+        <dev:type>
+          <maml:name>Double</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>TimeoutSec</maml:name>
+        <maml:description>
+          <maml:para>Specifies how long the request can be pending before it times out.
+The default value is `0` (infinite).</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>0</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>MaxRetryCount</maml:name>
+        <maml:description>
+          <maml:para>Number between `0` and `100`.
+Specifies the maximum number of retries if the request fails.
+The default value is `0` (No retry).
+Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>0</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>ApiBase</maml:name>
+        <maml:description>
+          <maml:para>Specifies yhe name of your Azure OpenAI resource endpoint such like: `https://{your-resource-name}.openai.azure.com/`
+If not specified, it will try to use `$global:OPENAI_API_BASE` or `$env:OPENAI_API_BASE`</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
+        <dev:type>
+          <maml:name>System.Uri</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>ApiVersion</maml:name>
+        <maml:description>
+          <maml:para>The API version to use for this operation.
+</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+        <dev:type>
+          <maml:name>string</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>ApiKey</maml:name>
+        <maml:description>
+          <maml:para>Specifies API key for authentication.
+The type of data should `[string]` or `[securestring]`.
+If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_API_KEY`</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
+        <dev:type>
+          <maml:name>Object</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>AuthType</maml:name>
+        <maml:description>
+          <maml:para>Specifies the authentication type.
+You can choose from `azure` or `azure_ad`.
+The default value is `azure`</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+        <dev:type>
+          <maml:name>string</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>"azure"</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes />
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>[string]</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>--------- Example 1: Japanese speech to English text. ---------</maml:title>
+        <dev:code>PS C:\&gt; $global:OPENAI_API_KEY = '&lt;Put your api key here&gt;'
+PS C:\&gt; $global:OPENAI_API_BASE  = 'https://&lt;resource-name&gt;.openai.azure.com/'
+PS C:\&gt; Request-AzureAudioTranslation -File C:\sample\japanese.mp3 -Format text -Deployment 'YourDeploymentName'
+
+Hello, My name is tanaka yoshio.</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Request-AzureAudioTranslation.md</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>https://learn.microsoft.com/en-us/azure/ai-services/openai/reference#request-a-speech-to-text-translation</maml:linkText>
+        <maml:uri>https://learn.microsoft.com/en-us/azure/ai-services/openai/reference#request-a-speech-to-text-translation</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
       <command:name>Request-AzureChatCompletion</command:name>
       <command:verb>Request</command:verb>
       <command:noun>AzureChatCompletion</command:noun>
@@ -3077,6 +3819,19 @@ https://learn.microsoft.com/en-us/azure/cognitive-services/openai/reference?sour
           <maml:name>Message</maml:name>
           <maml:description>
             <maml:para>The messages to generate chat completions.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Role</maml:name>
+          <maml:description>
+            <maml:para>The role of the messages author. One of `user` or `system`.
+The default is `user`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -3353,6 +4108,19 @@ The default value is `azure`</maml:para>
         <maml:name>Message</maml:name>
         <maml:description>
           <maml:para>The messages to generate chat completions.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Role</maml:name>
+        <maml:description>
+          <maml:para>The role of the messages author. One of `user` or `system`.
+The default is `user`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -5764,7 +6532,7 @@ En septembre 2021, la population estimée des États-Unis est d'environ 331,4 mi
         </dev:remarks>
       </command:example>
       <command:example>
-        <maml:title>------------------- Example 4: Function call -------------------</maml:title>
+        <maml:title>----------------- Example 4: Function calling -----------------</maml:title>
         <dev:code>PS C:\&gt; $PingFunction = New-ChatCompletionFunction -Command 'Test-Connection' -IncludeParameters ('TargetName','Count')
 PS C:\&gt; $Message = 'Ping the Google Public DNS address three times and briefly report the results.'
 PS C:\&gt; $GPTPingAnswer = Request-ChatCompletion -Message $Message -Model gpt-3.5-turbo-0613 -Functions $PingFunction -InvokeFunctionOnCallMode Auto
