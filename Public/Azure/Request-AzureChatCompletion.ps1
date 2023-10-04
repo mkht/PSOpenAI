@@ -374,7 +374,7 @@ function Request-AzureChatCompletion {
                     $SecondRequestParam.Message = (ConvertTo-Json $fCommandResult)
                 }
                 if ($SecondRequestParam.ContainsKey('SystemMessage')) {
-                    $SecondRequestParam.Remove('SystemMessage')
+                    $null = $SecondRequestParam.Remove('SystemMessage')
                 }
                 $SecondRequestParam.Role = 'function'
                 $SecondRequestParam.Name = $fCall.name
