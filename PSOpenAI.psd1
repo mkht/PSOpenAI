@@ -55,7 +55,6 @@
         'Request-TextCompletion',
         'Request-TextEdit',
         'Get-AzureOpenAIModels',
-        'Get-AzureOpenAIDeployments',
         'Request-AzureAudioTranscription',
         'Request-AzureAudioTranslation',
         'Request-AzureChatCompletion',
