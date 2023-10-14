@@ -102,7 +102,7 @@ Default value: 0
 ```
 
 ### -ApiBase
-Specifies yhe name of your Azure OpenAI resource endpoint such like: 
+Specifies the name of your Azure OpenAI resource endpoint such like: 
 `https://{your-resource-name}.openai.azure.com/`  
 If not specified, it will try to use `$global:OPENAI_API_BASE` or `$env:OPENAI_API_BASE`
 
