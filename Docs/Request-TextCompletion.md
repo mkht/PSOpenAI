@@ -31,6 +31,7 @@ Request-TextCompletion
     [-BestOf <UInt16>]
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
+    [-ApiBase <Uri>]
     [-ApiKey <Object>]
     [-Organization <String>]
     [<CommonParameters>]
@@ -77,13 +78,13 @@ Position: Named
 
 ### -Model
 The name of model to use.
-The default value is `text-davinci-003`.
+The default value is `gpt-3.5-turbo-instruct`.
 
 ```yaml
 Type: String
 Required: False
 Position: Named
-Default value: text-davinci-003
+Default value: gpt-3.5-turbo-instruct
 ```
 
 ### -Temperature
@@ -239,6 +240,17 @@ Type: Int32
 Required: False
 Position: Named
 Default value: 0
+```
+
+### -ApiBase
+Specifies an API endpoint URL such like: `https://your-api-endpoint.test/v1`  
+If not specified, it will use `https://api.openai.com/v1`
+
+```yaml
+Type: System.Uri
+Required: False
+Position: Named
+Default value: https://api.openai.com/v1
 ```
 
 ### -ApiKey

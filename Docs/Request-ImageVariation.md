@@ -21,6 +21,7 @@ Request-ImageVariation
     [-User <String>]
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
+    [-ApiBase <Uri>]
     [-ApiKey <Object>]
     [-Organization <String>]
     [<CommonParameters>]
@@ -35,6 +36,7 @@ Request-ImageVariation
     [-User <String>]
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
+    [-ApiBase <Uri>]
     [-ApiKey <Object>]
     [-Organization <String>]
     [<CommonParameters>]
@@ -51,9 +53,9 @@ https://platform.openai.com/docs/guides/images/image-generation
 Request-ImageVariation -Image C:\cupcake.png -OutFile C:\cupcake2.png -Size 256x256
 ```
 
-|Source (cupcake.png)|Generated (cupcake2.png)|
-|----|----|
-| ![source](/Docs/images/cupcake.png)  | ![output](/Docs/images/cupcake2.png)   |
+| Source (cupcake.png)                | Generated (cupcake2.png)             |
+| ----------------------------------- | ------------------------------------ |
+| ![source](/Docs/images/cupcake.png) | ![output](/Docs/images/cupcake2.png) |
 
 
 
@@ -164,6 +166,17 @@ Type: Int32
 Required: False
 Position: Named
 Default value: 0
+```
+
+### -ApiBase
+Specifies an API endpoint URL such like: `https://your-api-endpoint.test/v1`  
+If not specified, it will use `https://api.openai.com/v1`
+
+```yaml
+Type: System.Uri
+Required: False
+Position: Named
+Default value: https://api.openai.com/v1
 ```
 
 ### -ApiKey

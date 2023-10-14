@@ -22,6 +22,7 @@ Request-TextEdit
     [-NumberOfAnswers <UInt16>]
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
+    [-ApiBase <Uri>]
     [-ApiKey <Object>]
     [-Organization <String>]
     [<CommonParameters>]
@@ -134,6 +135,17 @@ Type: Int32
 Required: False
 Position: Named
 Default value: 0
+```
+
+### -ApiBase
+Specifies an API endpoint URL such like: `https://your-api-endpoint.test/v1`  
+If not specified, it will use `https://api.openai.com/v1`
+
+```yaml
+Type: System.Uri
+Required: False
+Position: Named
+Default value: https://api.openai.com/v1
 ```
 
 ### -ApiKey
