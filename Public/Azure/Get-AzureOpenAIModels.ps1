@@ -34,10 +34,6 @@ function Get-AzureOpenAIModels {
         $Parameters.ApiType = [OpenAIApiType]::Azure
         $Parameters.AuthType = $AuthType
 
-        # Initialize API Base
-        $ApiBase = Initialize-AzureAPIBase -ApiBase $ApiBase
-        $Parameters.ApiBase = $ApiBase
-
         # Invoke base function
         $steppablePipeline = {
             Get-OpenAIModels @Parameters

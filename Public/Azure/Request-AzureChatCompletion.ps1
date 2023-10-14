@@ -121,10 +121,6 @@ function Request-AzureChatCompletion {
         $Parameters.Model = $Deployment
         $null = $Parameters.Remove('Deployment')
 
-        # Initialize API Base
-        $ApiBase = Initialize-AzureAPIBase -ApiBase $ApiBase
-        $Parameters.ApiBase = $ApiBase
-
         # Invoke Request-ChatCompletion
         $steppablePipeline = {
             Request-ChatCompletion @Parameters

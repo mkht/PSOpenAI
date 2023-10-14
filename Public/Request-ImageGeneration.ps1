@@ -57,6 +57,9 @@ function Request-ImageGeneration {
         # Initialize API Key
         [securestring]$SecureToken = Initialize-APIKey -ApiKey $ApiKey
 
+        # Initialize API Base
+        $ApiBase = Initialize-APIBase -ApiBase $ApiBase -ApiType [OpenAIApiType]::OpenAI
+
         # Initialize Organization ID
         $Organization = Initialize-OrganizationID -OrgId $Organization
 

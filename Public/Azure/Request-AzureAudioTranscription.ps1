@@ -57,10 +57,6 @@ function Request-AzureAudioTranscription {
         $Parameters.Model = $Deployment
         $null = $Parameters.Remove('Deployment')
 
-        # Initialize API Base
-        $ApiBase = Initialize-AzureAPIBase -ApiBase $ApiBase
-        $Parameters.ApiBase = $ApiBase
-
         # Invoke base function
         $steppablePipeline = {
             Request-AudioTranscription @Parameters
