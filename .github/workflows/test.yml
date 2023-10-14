@@ -12,8 +12,6 @@ on:
       - "Docs/**"
       - ".vscode/**"
   workflow_dispatch:
-    branches:
-      - main
     inputs:
       tag:
         required: false
