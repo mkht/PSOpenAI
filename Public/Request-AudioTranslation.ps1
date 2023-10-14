@@ -42,7 +42,6 @@ function Request-AudioTranslation {
         [string]$AuthType = 'openai',
 
         [Parameter()]
-        [Alias('Token')]  #for backword compatibility
         [securestring][SecureStringTransformation()]$ApiKey,
 
         [Parameter()]
