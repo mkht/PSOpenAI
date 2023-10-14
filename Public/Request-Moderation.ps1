@@ -20,6 +20,9 @@ function Request-Moderation {
         [int]$TimeoutSec = 0,
 
         [Parameter()]
+        [System.Uri]$ApiBase,
+
+        [Parameter()]
         [ValidateRange(0, 100)]
         [int]$MaxRetryCount = 0,
 
@@ -40,7 +43,7 @@ function Request-Moderation {
         $Organization = Initialize-OrganizationID -OrgId $Organization
 
         # Get API endpoint
-        $OpenAIParameter = Get-OpenAIAPIEndpoint -EndpointName 'Moderation'
+        $OpenAIParameter = Get-OpenAIAPIEndpoint -EndpointName 'Moderation' -ApiBase $ApiBase
     }
 
     process {

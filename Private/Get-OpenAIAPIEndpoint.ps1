@@ -2,97 +2,129 @@ function Get-OpenAIAPIEndpoint {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory, Position = 0)]
-        [string]$EndpointName
+        [string]$EndpointName,
+
+        [Parameter()]
+        [System.Uri]$ApiBase
     )
+
+    #Default base API URI
+    if (-not $ApiBase.IsAbsoluteUri) {
+        $ApiBase = [System.Uri]::new('https://api.openai.com/v1')
+    }
+    $UriBuilder = [System.UriBuilder]::new($ApiBase)
+    $UriBuilder.Path = $UriBuilder.Path.TrimEnd('/')
 
     switch ($EndpointName) {
         'Chat.Completion' {
+            $UriBuilder.Path += '/chat/completions'
             @{
                 Name        = 'chat.completion'
                 Method      = 'Post'
-                Uri         = 'https://api.openai.com/v1/chat/completions'
+                Uri         = $UriBuilder.Uri
                 ContentType = 'application/json'
             }
+            continue
         }
         'Text.Completion' {
+            $UriBuilder.Path += '/completions'
             @{
                 Name        = 'text.completion'
                 Method      = 'Post'
-                Uri         = 'https://api.openai.com/v1/completions'
+                Uri         = $UriBuilder.Uri
                 ContentType = 'application/json'
             }
+            continue
         }
         'Text.Edit' {
+            $UriBuilder.Path += '/edits'
             @{
                 Name        = 'text.edit'
                 Method      = 'Post'
-                Uri         = 'https://api.openai.com/v1/edits'
+                Uri         = $UriBuilder.Uri
                 ContentType = 'application/json'
             }
+            continue
         }
         'Image.Generation' {
+            $UriBuilder.Path += '/images/generations'
             @{
                 Name        = 'image.generation'
                 Method      = 'Post'
-                Uri         = 'https://api.openai.com/v1/images/generations'
+                Uri         = $UriBuilder.Uri
                 ContentType = 'application/json'
             }
+            continue
         }
         'Image.Edit' {
+            $UriBuilder.Path += '/images/edits'
             @{
                 Name        = 'image.edit'
                 Method      = 'Post'
-                Uri         = 'https://api.openai.com/v1/images/edits'
+                Uri         = $UriBuilder.Uri
                 ContentType = 'multipart/form-data'
             }
+            continue
         }
         'Image.Variation' {
+            $UriBuilder.Path += '/images/variations'
             @{
                 Name        = 'image.variation'
                 Method      = 'Post'
-                Uri         = 'https://api.openai.com/v1/images/variations'
+                Uri         = $UriBuilder.Uri
                 ContentType = 'multipart/form-data'
             }
+            continue
         }
         'Audio.Transcription' {
+            $UriBuilder.Path += '/audio/transcriptions'
             @{
                 Name        = 'audio.transcription'
                 Method      = 'Post'
-                Uri         = 'https://api.openai.com/v1/audio/transcriptions'
+                Uri         = $UriBuilder.Uri
                 ContentType = 'multipart/form-data'
             }
+            continue
         }
         'Audio.Translation' {
+            $UriBuilder.Path += '/audio/translations'
             @{
                 Name        = 'audio.translation'
                 Method      = 'Post'
-                Uri         = 'https://api.openai.com/v1/audio/translations'
+                Uri         = $UriBuilder.Uri
                 ContentType = 'multipart/form-data'
             }
+            continue
         }
         'Moderation' {
+            $UriBuilder.Path += '/moderations'
             @{
                 Name        = 'moderation'
                 Method      = 'Post'
-                Uri         = 'https://api.openai.com/v1/moderations'
+                Uri         = $UriBuilder.Uri
                 ContentType = 'application/json'
             }
+            continue
         }
         'Models' {
+            $UriBuilder.Path += '/models'
             @{
                 Name        = 'models'
                 Method      = 'Get'
-                Uri         = 'https://api.openai.com/v1/models'
+                Uri         = $UriBuilder.Uri
                 ContentType = ''
             }
+            continue
         }
         'Embeddings' {
+            $UriBuilder.Path += '/embeddings'
             @{
                 Name        = 'embeddings'
                 Method      = 'Post'
-                Uri         = 'https://api.openai.com/v1/embeddings'
+                Uri         = $UriBuilder.Uri
                 ContentType = 'application/json'
             }
+            continue
         }
     }
 }

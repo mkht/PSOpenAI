@@ -38,6 +38,9 @@ function Request-TextEdit {
         [int]$TimeoutSec = 0,
 
         [Parameter()]
+        [System.Uri]$ApiBase,
+
+        [Parameter()]
         [ValidateRange(0, 100)]
         [int]$MaxRetryCount = 0,
 
@@ -58,7 +61,7 @@ function Request-TextEdit {
         $Organization = Initialize-OrganizationID -OrgId $Organization
 
         # Get API endpoint
-        $OpenAIParameter = Get-OpenAIAPIEndpoint -EndpointName 'Text.Edit'
+        $OpenAIParameter = Get-OpenAIAPIEndpoint -EndpointName 'Text.Edit' -ApiBase $ApiBase
     }
 
     process {

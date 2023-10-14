@@ -29,6 +29,18 @@ function Request-AudioTranslation {
         [ValidateRange(0, 100)]
         [int]$MaxRetryCount = 0,
 
+        [Parameter(DontShow = $true)]
+        [OpenAIApiType]$ApiType = [OpenAIApiType]::OpenAI,
+
+        [Parameter()]
+        [System.Uri]$ApiBase,
+
+        [Parameter(DontShow = $true)]
+        [string]$ApiVersion,
+
+        [Parameter(DontShow = $true)]
+        [string]$AuthType = 'openai',
+
         [Parameter()]
         [Alias('Token')]  #for backword compatibility
         [securestring][SecureStringTransformation()]$ApiKey,
@@ -46,7 +58,12 @@ function Request-AudioTranslation {
         $Organization = Initialize-OrganizationID -OrgId $Organization
 
         # Get API endpoint
-        $OpenAIParameter = Get-OpenAIAPIEndpoint -EndpointName 'Audio.Translation'
+        if ($ApiType -eq [OpenAIApiType]::Azure) {
+            $OpenAIParameter = Get-AzureOpenAIAPIEndpoint -EndpointName 'Audio.Translation' -Engine $Model -ApiBase $ApiBase -ApiVersion $ApiVersion
+        }
+        else {
+            $OpenAIParameter = Get-OpenAIAPIEndpoint -EndpointName 'Audio.Translation' -ApiBase $ApiBase
+        }
     }
 
     process {
@@ -88,6 +105,7 @@ function Request-AudioTranslation {
                 -TimeoutSec $TimeoutSec `
                 -MaxRetryCount $MaxRetryCount `
                 -ApiKey $SecureToken `
+                -AuthType $AuthType `
                 -Organization $Organization `
                 -Body $PostBody
         }

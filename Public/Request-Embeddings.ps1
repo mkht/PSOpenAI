@@ -26,6 +26,18 @@ function Request-Embeddings {
         [ValidateRange(0, 100)]
         [int]$MaxRetryCount = 0,
 
+        [Parameter(DontShow = $true)]
+        [OpenAIApiType]$ApiType = [OpenAIApiType]::OpenAI,
+
+        [Parameter()]
+        [System.Uri]$ApiBase,
+
+        [Parameter(DontShow = $true)]
+        [string]$ApiVersion,
+
+        [Parameter(DontShow = $true)]
+        [string]$AuthType = 'openai',
+
         [Parameter()]
         [Alias('Token')]  #for backword compatibility
         [securestring][SecureStringTransformation()]$ApiKey,
@@ -43,7 +55,12 @@ function Request-Embeddings {
         $Organization = Initialize-OrganizationID -OrgId $Organization
 
         # Get API endpoint
-        $OpenAIParameter = Get-OpenAIAPIEndpoint -EndpointName 'Embeddings'
+        if ($ApiType -eq [OpenAIApiType]::Azure) {
+            $OpenAIParameter = Get-AzureOpenAIAPIEndpoint -EndpointName 'Embeddings' -Engine $Model -ApiBase $ApiBase -ApiVersion $ApiVersion
+        }
+        else {
+            $OpenAIParameter = Get-OpenAIAPIEndpoint -EndpointName 'Embeddings' -ApiBase $ApiBase
+        }
     }
 
     process {
@@ -55,7 +72,9 @@ function Request-Embeddings {
 
         #region Construct parameters for API request
         $PostBody = [System.Collections.Specialized.OrderedDictionary]::new()
-        $PostBody.model = $Model
+        if ($ApiType -eq [OpenAIApiType]::OpenAI) {
+            $PostBody.model = $Model
+        }
         if ($Text.Count -eq 1) {
             $PostBody.input = [string](@($Text)[0])
         }
@@ -75,6 +94,7 @@ function Request-Embeddings {
             -TimeoutSec $TimeoutSec `
             -MaxRetryCount $MaxRetryCount `
             -ApiKey $SecureToken `
+            -AuthType $AuthType `
             -Organization $Organization `
             -Body $PostBody
 

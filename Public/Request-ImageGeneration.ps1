@@ -29,6 +29,18 @@ function Request-ImageGeneration {
         [Parameter()]
         [int]$TimeoutSec = 0,
 
+        # [Parameter(DontShow = $true)]
+        # [OpenAIApiType]$ApiType = [OpenAIApiType]::OpenAI,
+
+        [Parameter()]
+        [System.Uri]$ApiBase,
+
+        # [Parameter(DontShow = $true)]
+        # [string]$ApiVersion,
+
+        # [Parameter(DontShow = $true)]
+        # [string]$AuthType = 'openai',
+
         [Parameter()]
         [ValidateRange(0, 100)]
         [int]$MaxRetryCount = 0,
@@ -50,7 +62,7 @@ function Request-ImageGeneration {
         $Organization = Initialize-OrganizationID -OrgId $Organization
 
         # Get API endpoint
-        $OpenAIParameter = Get-OpenAIAPIEndpoint -EndpointName 'Image.Generation'
+        $OpenAIParameter = Get-OpenAIAPIEndpoint -EndpointName 'Image.Generation' -ApiBase $ApiBase
     }
 
     process {

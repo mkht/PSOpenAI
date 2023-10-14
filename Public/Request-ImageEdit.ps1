@@ -38,6 +38,19 @@ function Request-ImageEdit {
         [Parameter()]
         [int]$TimeoutSec = 0,
 
+        # [Parameter(DontShow = $true)]
+        # [OpenAIApiType]$ApiType = [OpenAIApiType]::OpenAI,
+
+        [Parameter()]
+        [System.Uri]$ApiBase,
+
+        # [Parameter(DontShow = $true)]
+        # [string]$ApiVersion,
+
+        # [Parameter(DontShow = $true)]
+        # [string]$AuthType = 'openai',
+
+
         [Parameter()]
         [ValidateRange(0, 100)]
         [int]$MaxRetryCount = 0,
@@ -59,7 +72,7 @@ function Request-ImageEdit {
         $Organization = Initialize-OrganizationID -OrgId $Organization
 
         # Get API endpoint
-        $OpenAIParameter = Get-OpenAIAPIEndpoint -EndpointName 'Image.Edit'
+        $OpenAIParameter = Get-OpenAIAPIEndpoint -EndpointName 'Image.Edit' -ApiBase $ApiBase
     }
 
     process {
