@@ -97,10 +97,11 @@ function Invoke-OpenAIAPIRequest {
     elseif ($PSVersionTable.PSVersion.Major -ge 6) {
         # Construct parameter for Invoke-WebRequest
         $IwrParam = @{
-            Method      = $Method
-            Uri         = $Uri
-            ContentType = $ContentType
-            TimeoutSec  = $TimeoutSec
+            Method                         = $Method
+            Uri                            = $Uri
+            ContentType                    = $ContentType
+            TimeoutSec                     = $TimeoutSec
+            AllowUnencryptedAuthentication = $true
         }
 
         # Use HTTP/2 (if possible)
