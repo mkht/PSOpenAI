@@ -12,9 +12,7 @@ BeforeAll {
 
     # backup current key
     $script:BackupGlobalApiKey = $global:OPENAI_API_KEY
-    $script:BackupGlobalToken = $global:OPENAI_TOKEN
     $script:BackupEnvApiKey = $env:OPENAI_API_KEY
-    $script:BackupEnvToken = $env:OPENAI_TOKEN
 
     function Get-PlainTextFromSecureString ($securestring) {
         $p = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($securestring)
@@ -26,9 +24,7 @@ BeforeAll {
 AfterAll {
     #Restore key
     $global:OPENAI_API_KEY = $script:BackupGlobalApiKey
-    $global:OPENAI_TOKEN = $script:BackupGlobalToken
     $env:OPENAI_API_KEY = $script:BackupEnvApiKey
-    $env:OPENAI_TOKEN = $script:BackupEnvToken
     $script:BackupGlobalApiKey = $script:BackupEnvApiKey = $script:BackupGlobalToken = $script:BackupEnvToken = $null
 }
 
@@ -46,9 +42,7 @@ Describe 'Initialize-APIKey' {
 
             BeforeEach {
                 $global:OPENAI_API_KEY = $null
-                $global:OPENAI_TOKEN = $null
                 $env:OPENAI_API_KEY = $null
-                $env:OPENAI_TOKEN = $null
             }
 
             It 'ApiKey from parameter' {
@@ -70,25 +64,11 @@ Describe 'Initialize-APIKey' {
                 Get-PlainTextFromSecureString $ret | Should -Be 'GLOBALAPIKEY'
             }
 
-            It 'ApiKey from global variable (OPENAI_TOKEN)' {
-                $global:OPENAI_TOKEN = 'GLOBALTOKEN'
-                $ret = Initialize-APIKey -ApiKey $null
-                $ret | Should -BeOfType [securestring]
-                Get-PlainTextFromSecureString $ret | Should -Be 'GLOBALTOKEN'
-            }
-
             It 'ApiKey from environment variable (OPENAI_API_KEY)' {
                 $env:OPENAI_API_KEY = 'ENVAPIKEY'
                 $ret = Initialize-APIKey -ApiKey $null
                 $ret | Should -BeOfType [securestring]
                 Get-PlainTextFromSecureString $ret | Should -Be 'ENVAPIKEY'
-            }
-
-            It 'ApiKey from environment variable (OPENAI_TOKEN)' {
-                $env:OPENAI_TOKEN = 'ENVTOKEN'
-                $ret = Initialize-APIKey -ApiKey $null
-                $ret | Should -BeOfType [securestring]
-                Get-PlainTextFromSecureString $ret | Should -Be 'ENVTOKEN'
             }
 
             It '1: ApiKey > Global > Env' {
