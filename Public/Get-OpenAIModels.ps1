@@ -14,8 +14,19 @@ function Get-OpenAIModels {
         [ValidateRange(0, 100)]
         [int]$MaxRetryCount = 0,
 
+        [Parameter(DontShow = $true)]
+        [OpenAIApiType]$ApiType = [OpenAIApiType]::OpenAI,
+
         [Parameter()]
-        [Alias('Token')]  #for backword compatibility
+        [System.Uri]$ApiBase,
+
+        [Parameter(DontShow = $true)]
+        [string]$ApiVersion,
+
+        [Parameter(DontShow = $true)]
+        [string]$AuthType = 'openai',
+
+        [Parameter()]
         [securestring][SecureStringTransformation()]$ApiKey,
 
         [Parameter()]
@@ -27,16 +38,26 @@ function Get-OpenAIModels {
         # Initialize API Key
         [securestring]$SecureToken = Initialize-APIKey -ApiKey $ApiKey
 
+        # Initialize API Base
+        $ApiBase = Initialize-APIBase -ApiBase $ApiBase -ApiType $ApiType
+
         # Initialize Organization ID
         $Organization = Initialize-OrganizationID -OrgId $Organization
 
         # Get API endpoint
-        $OpenAIParameter = Get-OpenAIAPIEndpoint -EndpointName 'Models'
+        if ($ApiType -eq [OpenAIApiType]::Azure) {
+            $OpenAIParameter = Get-AzureOpenAIAPIEndpoint -EndpointName 'Models' -ApiBase $ApiBase -ApiVersion $ApiVersion
+        }
+        else {
+            $OpenAIParameter = Get-OpenAIAPIEndpoint -EndpointName 'Models' -ApiBase $ApiBase
+        }
     }
 
     process {
         if ($Name) {
-            $OpenAIParameter.Uri = $OpenAIParameter.Uri + "/$Name"
+            $UriBuilder = [System.UriBuilder]::new($OpenAIParameter.Uri)
+            $UriBuilder.Path = $UriBuilder.Path.TrimEnd('/') + "/$Name"
+            $OpenAIParameter.Uri = $UriBuilder.Uri
         }
 
         #region Send API Request
@@ -44,6 +65,7 @@ function Get-OpenAIModels {
             -Method $OpenAIParameter.Method `
             -Uri $OpenAIParameter.Uri `
             -ApiKey $SecureToken `
+            -AuthType $AuthType `
             -Organization $Organization `
             -TimeoutSec $TimeoutSec `
             -MaxRetryCount $MaxRetryCount
@@ -68,10 +90,20 @@ function Get-OpenAIModels {
         foreach ($m in $Models) {
             if ($null -eq $m) { continue }
             # Add custom type name and properties to output object.
-            $m.PSObject.TypeNames.Insert(0, 'PSOpenAI.Model')
+            if ($ApiType -eq [OpenAIApiType]::OpenAI) {
+                $m.PSObject.TypeNames.Insert(0, 'PSOpenAI.Model')
+            }
             if ($unixtime = $m.created -as [long]) {
                 # convert unixtime to [DateTime] for read suitable
                 $m | Add-Member -MemberType NoteProperty -Name 'created' -Value ([System.DateTimeOffset]::FromUnixTimeSeconds($unixtime).LocalDateTime) -Force
+            }
+            if ($unixtime = $m.created_at -as [long]) {
+                # convert unixtime to [DateTime] for read suitable
+                $m | Add-Member -MemberType NoteProperty -Name 'created_at' -Value ([System.DateTimeOffset]::FromUnixTimeSeconds($unixtime).LocalDateTime) -Force
+            }
+            if ($unixtime = $m.updated_at -as [long]) {
+                # convert unixtime to [DateTime] for read suitable
+                $m | Add-Member -MemberType NoteProperty -Name 'updated_at' -Value ([System.DateTimeOffset]::FromUnixTimeSeconds($unixtime).LocalDateTime) -Force
             }
             Write-Output $m
         }

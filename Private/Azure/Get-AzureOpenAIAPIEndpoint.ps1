@@ -16,13 +16,14 @@ function Get-AzureOpenAIAPIEndpoint {
     )
 
     $UriBuilder = [System.UriBuilder]::new($ApiBase)
+    $UriBuilder.Path = $UriBuilder.Path.TrimEnd('/')
     $ApiVersion = $ApiVersion.Trim()
     $DefaultApiVersion = '2023-09-01-preview'
 
     switch ($EndpointName) {
         'Chat.Completion' {
             $InnerApiVersion = if ($ApiVersion) { $ApiVersion }else { $DefaultApiVersion }
-            $UriBuilder.Path = ('/openai/deployments/{0}/chat/completions' -f $Engine.Replace('/', '').Trim())
+            $UriBuilder.Path += ('/openai/deployments/{0}/chat/completions' -f $Engine.Replace('/', '').Trim())
             $UriBuilder.Query = ('api-version={0}' -f $InnerApiVersion)
             @{
                 Name        = 'chat.completion'
@@ -30,10 +31,11 @@ function Get-AzureOpenAIAPIEndpoint {
                 Uri         = $UriBuilder.Uri
                 ContentType = 'application/json'
             }
+            continue
         }
         'Chat.Completion.Extensions' {
             $InnerApiVersion = if ($ApiVersion) { $ApiVersion }else { $DefaultApiVersion }
-            $UriBuilder.Path = ('/openai/deployments/{0}/extensions/chat/completions' -f $Engine.Replace('/', '').Trim())
+            $UriBuilder.Path += ('/openai/deployments/{0}/extensions/chat/completions' -f $Engine.Replace('/', '').Trim())
             $UriBuilder.Query = ('api-version={0}' -f $InnerApiVersion)
             @{
                 Name        = 'chat.completion.extensions'
@@ -41,10 +43,11 @@ function Get-AzureOpenAIAPIEndpoint {
                 Uri         = $UriBuilder.Uri
                 ContentType = 'application/json'
             }
+            continue
         }
         'Text.Completion' {
             $InnerApiVersion = if ($ApiVersion) { $ApiVersion }else { $DefaultApiVersion }
-            $UriBuilder.Path = ('/openai/deployments/{0}/completions' -f $Engine.Replace('/', '').Trim())
+            $UriBuilder.Path += ('/openai/deployments/{0}/completions' -f $Engine.Replace('/', '').Trim())
             $UriBuilder.Query = ('api-version={0}' -f $InnerApiVersion)
             @{
                 Name        = 'text.completion'
@@ -52,10 +55,11 @@ function Get-AzureOpenAIAPIEndpoint {
                 Uri         = $UriBuilder.Uri
                 ContentType = 'application/json'
             }
+            continue
         }
         'Image.Generation' {
             $InnerApiVersion = if ($ApiVersion) { $ApiVersion }else { $DefaultApiVersion }
-            $UriBuilder.Path = '/openai/images/generations:submit'
+            $UriBuilder.Path += '/openai/images/generations:submit'
             $UriBuilder.Query = ('api-version={0}' -f $InnerApiVersion)
             @{
                 Name        = 'image.generation'
@@ -63,10 +67,11 @@ function Get-AzureOpenAIAPIEndpoint {
                 Uri         = $UriBuilder.Uri
                 ContentType = 'application/json'
             }
+            continue
         }
         'Audio.Transcription' {
             $InnerApiVersion = if ($ApiVersion) { $ApiVersion }else { $DefaultApiVersion }
-            $UriBuilder.Path = ('/openai/deployments/{0}/audio/transcriptions' -f $Engine.Replace('/', '').Trim())
+            $UriBuilder.Path += ('/openai/deployments/{0}/audio/transcriptions' -f $Engine.Replace('/', '').Trim())
             $UriBuilder.Query = ('api-version={0}' -f $InnerApiVersion)
             @{
                 Name        = 'audio.transcription'
@@ -74,10 +79,11 @@ function Get-AzureOpenAIAPIEndpoint {
                 Uri         = $UriBuilder.Uri
                 ContentType = 'multipart/form-data'
             }
+            continue
         }
         'Audio.Translation' {
             $InnerApiVersion = if ($ApiVersion) { $ApiVersion }else { $DefaultApiVersion }
-            $UriBuilder.Path = ('/openai/deployments/{0}/audio/translations' -f $Engine.Replace('/', '').Trim())
+            $UriBuilder.Path += ('/openai/deployments/{0}/audio/translations' -f $Engine.Replace('/', '').Trim())
             $UriBuilder.Query = ('api-version={0}' -f $InnerApiVersion)
             @{
                 Name        = 'audio.transcription'
@@ -85,10 +91,11 @@ function Get-AzureOpenAIAPIEndpoint {
                 Uri         = $UriBuilder.Uri
                 ContentType = 'multipart/form-data'
             }
+            continue
         }
         'Embeddings' {
             $InnerApiVersion = if ($ApiVersion) { $ApiVersion }else { $DefaultApiVersion }
-            $UriBuilder.Path = ('/openai/deployments/{0}/embeddings' -f $Engine.Replace('/', '').Trim())
+            $UriBuilder.Path += ('/openai/deployments/{0}/embeddings' -f $Engine.Replace('/', '').Trim())
             $UriBuilder.Query = ('api-version={0}' -f $InnerApiVersion)
             @{
                 Name        = 'embeddings'
@@ -96,11 +103,12 @@ function Get-AzureOpenAIAPIEndpoint {
                 Uri         = $UriBuilder.Uri
                 ContentType = 'application/json'
             }
+            continue
         }
         'Models' {
             # https://learn.microsoft.com/en-us/rest/api/cognitiveservices/azureopenaistable/models/list
             $InnerApiVersion = if ($ApiVersion) { $ApiVersion }else { $DefaultApiVersion }
-            $UriBuilder.Path = '/openai/models'
+            $UriBuilder.Path += '/openai/models'
             $UriBuilder.Query = ('api-version={0}' -f $InnerApiVersion)
             @{
                 Name        = 'models'
@@ -108,18 +116,7 @@ function Get-AzureOpenAIAPIEndpoint {
                 Uri         = $UriBuilder.Uri
                 ContentType = ''
             }
-        }
-        'Deployments' {
-            # https://learn.microsoft.com/en-us/rest/api/cognitiveservices/azureopenaistable/deployments/list
-            $InnerApiVersion = if ($ApiVersion) { $ApiVersion }else { '2023-03-15-preview' }
-            $UriBuilder.Path = '/openai/deployments'
-            $UriBuilder.Query = ('api-version={0}' -f $InnerApiVersion)
-            @{
-                Name        = 'deployments'
-                Method      = 'Get'
-                Uri         = $UriBuilder.Uri
-                ContentType = 'application/json'
-            }
+            continue
         }
     }
 }

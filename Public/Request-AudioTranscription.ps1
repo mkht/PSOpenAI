@@ -35,8 +35,19 @@ function Request-AudioTranscription {
         [ValidateRange(0, 100)]
         [int]$MaxRetryCount = 0,
 
+        [Parameter(DontShow = $true)]
+        [OpenAIApiType]$ApiType = [OpenAIApiType]::OpenAI,
+
         [Parameter()]
-        [Alias('Token')]  #for backword compatibility
+        [System.Uri]$ApiBase,
+
+        [Parameter(DontShow = $true)]
+        [string]$ApiVersion,
+
+        [Parameter(DontShow = $true)]
+        [string]$AuthType = 'openai',
+
+        [Parameter()]
         [securestring][SecureStringTransformation()]$ApiKey,
 
         [Parameter()]
@@ -48,11 +59,19 @@ function Request-AudioTranscription {
         # Initialize API Key
         [securestring]$SecureToken = Initialize-APIKey -ApiKey $ApiKey
 
+        # Initialize API Base
+        $ApiBase = Initialize-APIBase -ApiBase $ApiBase -ApiType $ApiType
+
         # Initialize Organization ID
         $Organization = Initialize-OrganizationID -OrgId $Organization
 
         # Get API endpoint
-        $OpenAIParameter = Get-OpenAIAPIEndpoint -EndpointName 'Audio.Transcription'
+        if ($ApiType -eq [OpenAIApiType]::Azure) {
+            $OpenAIParameter = Get-AzureOpenAIAPIEndpoint -EndpointName 'Audio.Transcription' -Engine $Model -ApiBase $ApiBase -ApiVersion $ApiVersion
+        }
+        else {
+            $OpenAIParameter = Get-OpenAIAPIEndpoint -EndpointName 'Audio.Transcription' -ApiBase $ApiBase
+        }
 
         # Convert language name to ISO-639-1 format (if we can)
         if ($PSCmdlet.ParameterSetName -eq 'Language' -and $PSBoundParameters.ContainsKey('Language')) {
@@ -84,7 +103,9 @@ function Request-AudioTranscription {
 
         #region Construct parameters for API request
         $PostBody = [System.Collections.Specialized.OrderedDictionary]::new()
-        $PostBody.model = $Model
+        if ($ApiType -eq [OpenAIApiType]::OpenAI) {
+            $PostBody.model = $Model
+        }
         $PostBody.file = $FileInfo
         if ($Format) {
             $PostBody.response_format = $Format
@@ -108,6 +129,7 @@ function Request-AudioTranscription {
                 -TimeoutSec $TimeoutSec `
                 -MaxRetryCount $MaxRetryCount `
                 -ApiKey $SecureToken `
+                -AuthType $AuthType `
                 -Organization $Organization `
                 -Body $PostBody
         }

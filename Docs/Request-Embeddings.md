@@ -16,9 +16,11 @@ Creates an embedding vector representing the input text.
 Request-Embeddings
     [-Text] <String[]>
     [-Model <String>]
+    [-Format <String>]
     [-User <String>]
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
+    [-ApiBase <Uri>]
     [-ApiKey <Object>]
     [-Organization <String>]
     [<CommonParameters>]
@@ -67,6 +69,17 @@ Position: Named
 Default value: text-embedding-ada-002
 ```
 
+### -Format
+The format to return the embeddings in. Can be either `float` or `base64`
+The default value is `float`.
+
+```yaml
+Type: String
+Required: False
+Position: Named
+Default value: float
+```
+
 ### -User
 A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse.
 
@@ -99,6 +112,17 @@ Type: Int32
 Required: False
 Position: Named
 Default value: 0
+```
+
+### -ApiBase
+Specifies an API endpoint URL such like: `https://your-api-endpoint.test/v1`  
+If not specified, it will use `https://api.openai.com/v1`
+
+```yaml
+Type: System.Uri
+Required: False
+Position: Named
+Default value: https://api.openai.com/v1
 ```
 
 ### -ApiKey

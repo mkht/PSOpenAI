@@ -1,9 +1,12 @@
-function Initialize-AzureAPIBase {
+function Initialize-APIBase {
     [CmdletBinding()]
     [OutputType([System.Uri])]
     Param(
         [Parameter(Mandatory = $false, Position = 0)]
         [System.Uri]$ApiBase,
+
+        [Parameter()]
+        [OpenAIApiType]$ApiType = [OpenAIApiType]::OpenAI,
 
         [Parameter()]
         [bool]$SearchGlobal = $true,
@@ -29,7 +32,7 @@ function Initialize-AzureAPIBase {
         Write-Verbose -Message 'API base found in environment variable "OPENAI_API_BASE".'
     }
 
-    if ($null -eq $Result) {
+    if ($null -eq $Result -and $ApiType -eq [OpenAIApiType]::Azure) {
         Write-Error -Exception ([System.ArgumentException]::new('Please specify your Azure OpenAI Endpoint to "ApiBase" parameter.'))
         return
     }

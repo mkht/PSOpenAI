@@ -52,12 +52,23 @@ function Enter-ChatGPT {
         [Parameter()]
         [int]$TimeoutSec = 0,
 
+        [Parameter(DontShow = $true)]
+        [OpenAIApiType]$ApiType = [OpenAIApiType]::OpenAI,
+
+        [Parameter()]
+        [System.Uri]$ApiBase,
+
+        [Parameter(DontShow = $true)]
+        [string]$ApiVersion,
+
+        [Parameter(DontShow = $true)]
+        [string]$AuthType = 'openai',
+
         [Parameter()]
         [ValidateRange(0, 100)]
         [int]$MaxRetryCount = 0,
 
         [Parameter()]
-        [Alias('Token')]  #for backword compatibility
         [securestring][SecureStringTransformation()]$ApiKey,
 
         [Parameter()]

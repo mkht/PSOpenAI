@@ -105,8 +105,19 @@ function Request-ChatCompletion {
         [ValidateRange(0, 100)]
         [int]$MaxRetryCount = 0,
 
+        [Parameter(DontShow = $true)]
+        [OpenAIApiType]$ApiType = [OpenAIApiType]::OpenAI,
+
         [Parameter()]
-        [Alias('Token')]  #for backword compatibility
+        [System.Uri]$ApiBase,
+
+        [Parameter(DontShow = $true)]
+        [string]$ApiVersion,
+
+        [Parameter(DontShow = $true)]
+        [string]$AuthType = 'openai',
+
+        [Parameter()]
         [securestring][SecureStringTransformation()]$ApiKey,
 
         [Parameter()]
@@ -121,11 +132,27 @@ function Request-ChatCompletion {
         # Initialize API Key
         [securestring]$SecureToken = Initialize-APIKey -ApiKey $ApiKey
 
+        # Initialize API Base
+        $ApiBase = Initialize-APIBase -ApiBase $ApiBase -ApiType $ApiType
+
         # Initialize Organization ID
         $Organization = Initialize-OrganizationID -OrgId $Organization
 
         # Get API endpoint
-        $OpenAIParameter = Get-OpenAIAPIEndpoint -EndpointName 'Chat.Completion'
+        if ($ApiType -eq [OpenAIApiType]::Azure) {
+            $OpenAIParameter = Get-AzureOpenAIAPIEndpoint -EndpointName 'Chat.Completion' -Engine $Model -ApiBase $ApiBase -ApiVersion $ApiVersion
+        }
+        else {
+            $OpenAIParameter = Get-OpenAIAPIEndpoint -EndpointName 'Chat.Completion' -ApiBase $ApiBase
+        }
+
+        if ($ApiType -eq [OpenAIApiType]::Azure) {
+            # Temporal engine name for Azure
+            $Engine = 'gpt-3.5-turbo'
+        }
+        else {
+            $Engine = $Model
+        }
     }
 
     process {
@@ -144,7 +171,9 @@ function Request-ChatCompletion {
         #region Construct parameters for API request
         $Response = $null
         $PostBody = [System.Collections.Specialized.OrderedDictionary]::new()
-        $PostBody.model = $Model
+        if ($ApiType -eq [OpenAIApiType]::OpenAI) {
+            $PostBody.model = $Model
+        }
         if ($PSBoundParameters.ContainsKey('Functions')) {
             $PostBody.functions = @($Functions)
         }
@@ -173,7 +202,7 @@ function Request-ChatCompletion {
             $PostBody.frequency_penalty = $FrequencyPenalty
         }
         if ($PSBoundParameters.ContainsKey('LogitBias')) {
-            $PostBody.logit_bias = Convert-LogitBiasDictionary -InputObject $LogitBias -Model $Model
+            $PostBody.logit_bias = Convert-LogitBiasDictionary -InputObject $LogitBias -Model $Engine
         }
         if ($PSBoundParameters.ContainsKey('User')) {
             $PostBody.user = $User
@@ -260,6 +289,7 @@ function Request-ChatCompletion {
                 -TimeoutSec $TimeoutSec `
                 -MaxRetryCount $MaxRetryCount `
                 -ApiKey $SecureToken `
+                -AuthType $AuthType `
                 -Organization $Organization `
                 -Body $PostBody `
                 -Stream $Stream |`
@@ -309,6 +339,7 @@ function Request-ChatCompletion {
                 -TimeoutSec $TimeoutSec `
                 -MaxRetryCount $MaxRetryCount `
                 -ApiKey $SecureToken `
+                -AuthType $AuthType `
                 -Organization $Organization `
                 -Body $PostBody
 

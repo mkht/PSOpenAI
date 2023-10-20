@@ -1,6 +1,6 @@
 @{
     # Version number of this module.
-    ModuleVersion        = '1.15.2'
+    ModuleVersion        = '2.0.0'
 
     # Supported PSEditions
     CompatiblePSEditions = 'Core', 'Desktop'
@@ -55,9 +55,6 @@
         'Request-TextCompletion',
         'Request-TextEdit',
         'Get-AzureOpenAIModels',
-        'Get-AzureOpenAIDeployments',
-        'New-AzureOpenAIDeployments',
-        'Remove-AzureOpenAIDeployments',
         'Request-AzureAudioTranscription',
         'Request-AzureAudioTranslation',
         'Request-AzureChatCompletion',

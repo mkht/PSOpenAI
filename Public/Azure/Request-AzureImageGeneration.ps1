@@ -52,7 +52,7 @@ function Request-AzureImageGeneration {
         [securestring]$SecureToken = Initialize-APIKey -ApiKey $ApiKey
 
         # Initialize API Base
-        $ApiBase = Initialize-AzureAPIBase -ApiBase $ApiBase
+        $ApiBase = Initialize-APIBase -ApiBase $ApiBase -ApiType [OpenAIApiType]::Azure
 
         # Get API endpoint
         $OpenAIParameter = Get-AzureOpenAIAPIEndpoint -EndpointName 'Image.Generation' -ApiBase $ApiBase -ApiVersion $ApiVersion

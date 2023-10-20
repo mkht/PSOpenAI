@@ -17,6 +17,11 @@ function Request-Embeddings {
         [string][LowerCaseTransformation()]$Model = 'text-embedding-ada-002',
 
         [Parameter()]
+        [Alias('encoding_format')]
+        [ValidateSet('float', 'base64')]
+        [string]$Format = 'float',
+
+        [Parameter()]
         [string]$User,
 
         [Parameter()]
@@ -26,8 +31,19 @@ function Request-Embeddings {
         [ValidateRange(0, 100)]
         [int]$MaxRetryCount = 0,
 
+        [Parameter(DontShow = $true)]
+        [OpenAIApiType]$ApiType = [OpenAIApiType]::OpenAI,
+
         [Parameter()]
-        [Alias('Token')]  #for backword compatibility
+        [System.Uri]$ApiBase,
+
+        [Parameter(DontShow = $true)]
+        [string]$ApiVersion,
+
+        [Parameter(DontShow = $true)]
+        [string]$AuthType = 'openai',
+
+        [Parameter()]
         [securestring][SecureStringTransformation()]$ApiKey,
 
         [Parameter()]
@@ -39,11 +55,19 @@ function Request-Embeddings {
         # Initialize API Key
         [securestring]$SecureToken = Initialize-APIKey -ApiKey $ApiKey
 
+        # Initialize API Base
+        $ApiBase = Initialize-APIBase -ApiBase $ApiBase -ApiType $ApiType
+
         # Initialize Organization ID
         $Organization = Initialize-OrganizationID -OrgId $Organization
 
         # Get API endpoint
-        $OpenAIParameter = Get-OpenAIAPIEndpoint -EndpointName 'Embeddings'
+        if ($ApiType -eq [OpenAIApiType]::Azure) {
+            $OpenAIParameter = Get-AzureOpenAIAPIEndpoint -EndpointName 'Embeddings' -Engine $Model -ApiBase $ApiBase -ApiVersion $ApiVersion
+        }
+        else {
+            $OpenAIParameter = Get-OpenAIAPIEndpoint -EndpointName 'Embeddings' -ApiBase $ApiBase
+        }
     }
 
     process {
@@ -55,7 +79,9 @@ function Request-Embeddings {
 
         #region Construct parameters for API request
         $PostBody = [System.Collections.Specialized.OrderedDictionary]::new()
-        $PostBody.model = $Model
+        if ($ApiType -eq [OpenAIApiType]::OpenAI) {
+            $PostBody.model = $Model
+        }
         if ($Text.Count -eq 1) {
             $PostBody.input = [string](@($Text)[0])
         }
@@ -64,6 +90,9 @@ function Request-Embeddings {
         }
         if ($PSBoundParameters.ContainsKey('User')) {
             $PostBody.user = $User
+        }
+        if ($PSBoundParameters.ContainsKey('Format')) {
+            $PostBody.encoding_format = $Format
         }
         #endregion
 
@@ -75,6 +104,7 @@ function Request-Embeddings {
             -TimeoutSec $TimeoutSec `
             -MaxRetryCount $MaxRetryCount `
             -ApiKey $SecureToken `
+            -AuthType $AuthType `
             -Organization $Organization `
             -Body $PostBody
 
@@ -96,8 +126,10 @@ function Request-Embeddings {
         #region Output
         if ($null -ne $Response) {
             for ($i = 0; $i -lt @($Response.data).Count; $i++) {
-                # Convert [Object[]] to [float[]]
-                @($Response.data)[$i].embedding = [float[]]@($Response.data)[$i].embedding
+                if ($Format -eq 'float') {
+                    # Convert [Object[]] to [float[]]
+                    @($Response.data)[$i].embedding = [float[]]@($Response.data)[$i].embedding
+                }
                 # Add custom properties to output object.
                 @($Response.data)[$i] | Add-Member -MemberType NoteProperty -Name 'Text' -Value @($Text)[$i]
             }

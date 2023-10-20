@@ -38,11 +38,13 @@ function Request-TextEdit {
         [int]$TimeoutSec = 0,
 
         [Parameter()]
+        [System.Uri]$ApiBase,
+
+        [Parameter()]
         [ValidateRange(0, 100)]
         [int]$MaxRetryCount = 0,
 
         [Parameter()]
-        [Alias('Token')]  #for backword compatibility
         [securestring][SecureStringTransformation()]$ApiKey,
 
         [Parameter()]
@@ -54,11 +56,14 @@ function Request-TextEdit {
         # Initialize API Key
         [securestring]$SecureToken = Initialize-APIKey -ApiKey $ApiKey
 
+        # Initialize API Base
+        $ApiBase = Initialize-APIBase -ApiBase $ApiBase -ApiType [OpenAIApiType]::OpenAI
+
         # Initialize Organization ID
         $Organization = Initialize-OrganizationID -OrgId $Organization
 
         # Get API endpoint
-        $OpenAIParameter = Get-OpenAIAPIEndpoint -EndpointName 'Text.Edit'
+        $OpenAIParameter = Get-OpenAIAPIEndpoint -EndpointName 'Text.Edit' -ApiBase $ApiBase
     }
 
     process {

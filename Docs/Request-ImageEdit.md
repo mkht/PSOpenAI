@@ -23,6 +23,7 @@ Request-ImageEdit
     [-User <String>]
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
+    [-ApiBase <Uri>]
     [-ApiKey <Object>]
     [-Organization <String>]
     [<CommonParameters>]
@@ -54,9 +55,9 @@ https://platform.openai.com/docs/guides/images/image-generation
 Request-ImageEdit -Image C:\sunflower_mask.png -Prompt "sunflower" -OutFile C:\edit.png -Size 256x256
 ```
 
-|Source (sunflower_mask.png)|Generated (edit.png)|
-|----|----|
-| ![masked](/Docs/images/sunflower_masked.png)  | ![restored](/Docs/images/sunflower_restored.png)   |
+| Source (sunflower_mask.png)                  | Generated (edit.png)                             |
+| -------------------------------------------- | ------------------------------------------------ |
+| ![masked](/Docs/images/sunflower_masked.png) | ![restored](/Docs/images/sunflower_restored.png) |
 
 
 ### Example 2: Create variation image from source and mask.
@@ -64,9 +65,9 @@ Request-ImageEdit -Image C:\sunflower_mask.png -Prompt "sunflower" -OutFile C:\e
 Request-ImageEdit -Image C:\sand_with_feather.png -Mask C:\fether_mask.png -Prompt "A bird on the desert" -OutFile C:\edit2.png
 ```
 
-|Source (sand_with_feather.png)|Mask (fether_mask.png)|Generated (edit2.png)|
-|----|----|----|
-| ![masked](/Docs/images/sand_with_feather.png) | ![mask](/Docs/images/fether_mask.png) | ![restored](/Docs/images/edit2.png)   |
+| Source (sand_with_feather.png)                | Mask (fether_mask.png)                | Generated (edit2.png)               |
+| --------------------------------------------- | ------------------------------------- | ----------------------------------- |
+| ![masked](/Docs/images/sand_with_feather.png) | ![mask](/Docs/images/fether_mask.png) | ![restored](/Docs/images/edit2.png) |
 
 
 
@@ -189,6 +190,17 @@ Type: Int32
 Required: False
 Position: Named
 Default value: 0
+```
+
+### -ApiBase
+Specifies an API endpoint URL such like: `https://your-api-endpoint.test/v1`  
+If not specified, it will use `https://api.openai.com/v1`
+
+```yaml
+Type: System.Uri
+Required: False
+Position: Named
+Default value: https://api.openai.com/v1
 ```
 
 ### -ApiKey

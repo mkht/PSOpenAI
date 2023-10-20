@@ -12,7 +12,7 @@ function Request-TextCompletion {
 
         [Parameter()]
         [Completions('gpt-3.5-turbo-instruct', 'babbage-002', 'davinci-002')]
-        [string][LowerCaseTransformation()]$Model = 'text-davinci-003',
+        [string][LowerCaseTransformation()]$Model = 'gpt-3.5-turbo-instruct',
 
         [Parameter()]
         [ValidateRange(0.0, 2.0)]
@@ -67,12 +67,23 @@ function Request-TextCompletion {
         [Parameter()]
         [int]$TimeoutSec = 0,
 
+        [Parameter(DontShow = $true)]
+        [OpenAIApiType]$ApiType = [OpenAIApiType]::OpenAI,
+
+        [Parameter()]
+        [System.Uri]$ApiBase,
+
+        [Parameter(DontShow = $true)]
+        [string]$ApiVersion,
+
+        [Parameter(DontShow = $true)]
+        [string]$AuthType = 'openai',
+
         [Parameter()]
         [ValidateRange(0, 100)]
         [int]$MaxRetryCount = 0,
 
         [Parameter()]
-        [Alias('Token')]  #for backword compatibility
         [securestring][SecureStringTransformation()]$ApiKey,
 
         [Parameter()]
@@ -84,11 +95,27 @@ function Request-TextCompletion {
         # Initialize API Key
         [securestring]$SecureToken = Initialize-APIKey -ApiKey $ApiKey
 
+        # Initialize API Base
+        $ApiBase = Initialize-APIBase -ApiBase $ApiBase -ApiType $ApiType
+
         # Initialize Organization ID
         $Organization = Initialize-OrganizationID -OrgId $Organization
 
         # Get API endpoint
-        $OpenAIParameter = Get-OpenAIAPIEndpoint -EndpointName 'Text.Completion'
+        if ($ApiType -eq [OpenAIApiType]::Azure) {
+            $OpenAIParameter = Get-AzureOpenAIAPIEndpoint -EndpointName 'Text.Completion' -Engine $Model -ApiBase $ApiBase -ApiVersion $ApiVersion
+        }
+        else {
+            $OpenAIParameter = Get-OpenAIAPIEndpoint -EndpointName 'Text.Completion' -ApiBase $ApiBase
+        }
+
+        if ($ApiType -eq [OpenAIApiType]::Azure) {
+            # Temporal engine name for Azure
+            $Engine = 'text-davinci-003'
+        }
+        else {
+            $Engine = $Model
+        }
     }
 
     process {
@@ -108,7 +135,9 @@ function Request-TextCompletion {
 
         #region Construct parameters for API request
         $PostBody = [System.Collections.Specialized.OrderedDictionary]::new()
-        $PostBody.model = $Model
+        if ($ApiType -eq [OpenAIApiType]::OpenAI) {
+            $PostBody.model = $Model
+        }
         if ($PSBoundParameters.ContainsKey('Prompt')) {
             if ($Prompt.Count -eq 1) {
                 $PostBody.prompt = [string](@($Prompt)[0])
@@ -139,7 +168,7 @@ function Request-TextCompletion {
             $PostBody.frequency_penalty = $FrequencyPenalty
         }
         if ($PSBoundParameters.ContainsKey('LogitBias')) {
-            $PostBody.logit_bias = Convert-LogitBiasDictionary -InputObject $LogitBias -Model $Model
+            $PostBody.logit_bias = Convert-LogitBiasDictionary -InputObject $LogitBias -Model $Engine
         }
         if ($PSBoundParameters.ContainsKey('User')) {
             $PostBody.user = $User
@@ -167,6 +196,7 @@ function Request-TextCompletion {
                 -TimeoutSec $TimeoutSec `
                 -MaxRetryCount $MaxRetryCount `
                 -ApiKey $SecureToken `
+                -AuthType $AuthType `
                 -Organization $Organization `
                 -Body $PostBody `
                 -Stream $Stream |`
@@ -202,6 +232,7 @@ function Request-TextCompletion {
                 -TimeoutSec $TimeoutSec `
                 -MaxRetryCount $MaxRetryCount `
                 -ApiKey $SecureToken `
+                -AuthType $AuthType `
                 -Organization $Organization `
                 -Body $PostBody
 

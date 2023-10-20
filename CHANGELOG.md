@@ -1,4 +1,17 @@
 # Changelog
+### 2.0.0
+**This is a major release that includes breaking changes.**
+- Add `-ApiBase` parameter to specify the base URL of the API endpoint.  
+  This is useful for using the OpenAI compatible API such like [FastChat](https://github.com/lm-sys/FastChat) or [LM Studio](https://lmstudio.ai/) in a private environment.  
+  ```PowerShell
+  PS C:\> Request-ChatCompletion -Message 'Hello' -ApiBase 'https://localhost:8000/v1'
+  ```
+- `Get/New/Remove-AzureOpenAIDeployments` functions are removed.  
+- Remove `-Token` parameter from all functions. Use `-ApiKey` instead.
+- `OPENAI_TOKEN` environment variable is deprecated. Use `OPENAI_API_KEY` instead.
+- The default model for `Request-TextCompletion` is changed to `gpt-3.5-turbo-instruct` from `text-davinci-003`.
+- Add `-Format` parameter to `Request-Embeddings` function. This parameter can be used to specify the format of the returned embeddings.  
+
 ### 1.15.2
 - Fix various issues about Function calling.
 

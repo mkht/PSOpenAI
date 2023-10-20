@@ -30,12 +30,23 @@ function Request-ImageVariation {
         [Parameter()]
         [int]$TimeoutSec = 0,
 
+        # [Parameter(DontShow = $true)]
+        # [OpenAIApiType]$ApiType = [OpenAIApiType]::OpenAI,
+
+        [Parameter()]
+        [System.Uri]$ApiBase,
+
+        # [Parameter(DontShow = $true)]
+        # [string]$ApiVersion,
+
+        # [Parameter(DontShow = $true)]
+        # [string]$AuthType = 'openai',
+
         [Parameter()]
         [ValidateRange(0, 100)]
         [int]$MaxRetryCount = 0,
 
         [Parameter()]
-        [Alias('Token')]  #for backword compatibility
         [securestring][SecureStringTransformation()]$ApiKey,
 
         [Parameter()]
@@ -47,11 +58,14 @@ function Request-ImageVariation {
         # Initialize API Key
         [securestring]$SecureToken = Initialize-APIKey -ApiKey $ApiKey
 
+        # Initialize API Base
+        $ApiBase = Initialize-APIBase -ApiBase $ApiBase -ApiType [OpenAIApiType]::OpenAI
+
         # Initialize Organization ID
         $Organization = Initialize-OrganizationID -OrgId $Organization
 
         # Get API endpoint
-        $OpenAIParameter = Get-OpenAIAPIEndpoint -EndpointName 'Image.Variation'
+        $OpenAIParameter = Get-OpenAIAPIEndpoint -EndpointName 'Image.Variation' -ApiBase $ApiBase
     }
 
     process {
