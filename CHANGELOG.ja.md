@@ -1,4 +1,17 @@
 # 変更履歴
+### 2.0.0
+**これは、破壊的な変更を含むメジャーリリースです。**
+- `-ApiBase`パラメータを追加して、APIエンドポイントのURLを指定できるようにしました  
+  [FastChat](https://github.com/lm-sys/FastChat)や[LM Studio](https://lmstudio.ai/)などのOpenAI互換APIを使用することができます。
+  ```PowerShell
+  PS C:\> Request-ChatCompletion -Message 'Hello' -ApiBase 'https://localhost:8000/v1'
+  ```
+- `Get/New/Remove-AzureOpenAIDeployments`関数を削除しました。
+- すべての関数から`-Token`パラメータを削除しました。代わりに`-ApiKey`を使用してください。
+- `OPENAI_TOKEN`環境変数は参照されなくなりました。代わりに`OPENAI_API_KEY`を使用してください。
+- `Request-TextCompletion`のデフォルトモデルを`text-davinci-003`から`gpt-3.5-turbo-instruct`に変更しました。
+- `Request-Embeddings`関数に`-Format`パラメータを追加しました。このパラメータを使用して、返される埋め込みの形式を指定できます。
+
 ### 1.15.1
 - 関数呼び出しに関する複数の不具合を修正しました。
 
