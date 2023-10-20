@@ -71,5 +71,13 @@ Describe 'Request-Embeddings' {
             , $Result.data[1].embedding | Should -BeOfType [float[]]
             $Result.data[1].embedding | Should -HaveCount 1536
         }
+
+        It 'As base64 format' {
+            { $script:Result = Request-Embeddings -Text 'Banana' -Format base64 -TimeoutSec 30 -ea Stop } | Should -Not -Throw
+            $Result | Should -BeOfType [pscustomobject]
+            $Result.data | Should -HaveCount 1
+            $Result.data[0].embedding | Should -BeOfType [string]
+            [System.Convert]::FromBase64String($Result.data[0].embedding) | Should -HaveCount (1536 * 4)
+        }
     }
 }
