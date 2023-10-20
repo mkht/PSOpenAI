@@ -1,5 +1,5 @@
 # Changelog
-### 2.0.0 (Not released yet)
+### 2.0.0
 **This is a major release that includes breaking changes.**
 - Add `-ApiBase` parameter to specify the base URL of the API endpoint.  
   This is useful for using the OpenAI compatible API such like [FastChat](https://github.com/lm-sys/FastChat) or [LM Studio](https://lmstudio.ai/) in a private environment.  

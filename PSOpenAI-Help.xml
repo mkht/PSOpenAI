@@ -525,6 +525,19 @@ Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s
           </dev:type>
           <dev:defaultValue>0</dev:defaultValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>ApiBase</maml:name>
+          <maml:description>
+            <maml:para>Specifies an API endpoint URL such like: `https://your-api-endpoint.test/v1`
+If not specified, it will use `https://api.openai.com/v1`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Uri</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>https://api.openai.com/v1</dev:defaultValue>
+        </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
           <maml:name>ApiKey</maml:name>
           <maml:description>
@@ -696,6 +709,19 @@ Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s
         </dev:type>
         <dev:defaultValue>0</dev:defaultValue>
       </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>ApiBase</maml:name>
+        <maml:description>
+          <maml:para>Specifies an API endpoint URL such like: `https://your-api-endpoint.test/v1`
+If not specified, it will use `https://api.openai.com/v1`</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
+        <dev:type>
+          <maml:name>System.Uri</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>https://api.openai.com/v1</dev:defaultValue>
+      </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
         <maml:name>ApiKey</maml:name>
         <maml:description>
@@ -770,271 +796,6 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
   </command:command>
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
     <command:details>
-      <command:name>Get-AzureOpenAIDeployments</command:name>
-      <command:verb>Get</command:verb>
-      <command:noun>AzureOpenAIDeployments</command:noun>
-      <maml:description>
-        <maml:para>Gets the list of deployments owned by the Azure OpenAI resource.</maml:para>
-      </maml:description>
-    </command:details>
-    <maml:description>
-      <maml:para>Gets the list of deployments owned by the Azure OpenAI resource.
-https://learn.microsoft.com/en-us/rest/api/cognitiveservices/azureopenaistable/deployments/list</maml:para>
-    </maml:description>
-    <command:syntax>
-      <command:syntaxItem>
-        <maml:name>Get-AzureOpenAIDeployments</maml:name>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="0" aliases="Engine, id">
-          <maml:name>Deployment</maml:name>
-          <maml:description>
-            <maml:para>The identifier of the deployment. If not specified, lists all available deployments.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>ApiBase</maml:name>
-          <maml:description>
-            <maml:para>Specifies yhe name of your Azure OpenAI resource endpoint such like:  `https://{your-resource-name}.openai.azure.com/`
-If not specified, it will try to use `$global:OPENAI_API_BASE` or `$env:OPENAI_API_BASE`</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
-          <dev:type>
-            <maml:name>System.Uri</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>ApiVersion</maml:name>
-          <maml:description>
-            <maml:para>The API version to use for this operation.
-</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
-          <dev:type>
-            <maml:name>string</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>ApiKey</maml:name>
-          <maml:description>
-            <maml:para>Specifies API key for authentication.
-The type of data should `[string]` or `[securestring]`.
-If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_API_KEY`</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
-          <dev:type>
-            <maml:name>Object</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>AuthType</maml:name>
-          <maml:description>
-            <maml:para>Specifies the authentication type.
-You can choose from `azure` or `azure_ad`.
-The default value is `azure`</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
-          <dev:type>
-            <maml:name>string</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>"azure"</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>TimeoutSec</maml:name>
-          <maml:description>
-            <maml:para>Specifies how long the request can be pending before it times out.
-The default value is `0` (infinite).</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-          <dev:type>
-            <maml:name>Int32</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>0</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>MaxRetryCount</maml:name>
-          <maml:description>
-            <maml:para>Number between `0` and `100`.
-Specifies the maximum number of retries if the request fails.
-The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-          <dev:type>
-            <maml:name>Int32</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>0</dev:defaultValue>
-        </command:parameter>
-      </command:syntaxItem>
-    </command:syntax>
-    <command:parameters>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="0" aliases="Engine, id">
-        <maml:name>Deployment</maml:name>
-        <maml:description>
-          <maml:para>The identifier of the deployment. If not specified, lists all available deployments.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-        <maml:name>ApiBase</maml:name>
-        <maml:description>
-          <maml:para>Specifies yhe name of your Azure OpenAI resource endpoint such like:  `https://{your-resource-name}.openai.azure.com/`
-If not specified, it will try to use `$global:OPENAI_API_BASE` or `$env:OPENAI_API_BASE`</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
-        <dev:type>
-          <maml:name>System.Uri</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-        <maml:name>ApiVersion</maml:name>
-        <maml:description>
-          <maml:para>The API version to use for this operation.
-</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
-        <dev:type>
-          <maml:name>string</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-        <maml:name>ApiKey</maml:name>
-        <maml:description>
-          <maml:para>Specifies API key for authentication.
-The type of data should `[string]` or `[securestring]`.
-If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_API_KEY`</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
-        <dev:type>
-          <maml:name>Object</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-        <maml:name>AuthType</maml:name>
-        <maml:description>
-          <maml:para>Specifies the authentication type.
-You can choose from `azure` or `azure_ad`.
-The default value is `azure`</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
-        <dev:type>
-          <maml:name>string</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>"azure"</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-        <maml:name>TimeoutSec</maml:name>
-        <maml:description>
-          <maml:para>Specifies how long the request can be pending before it times out.
-The default value is `0` (infinite).</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-        <dev:type>
-          <maml:name>Int32</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>0</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-        <maml:name>MaxRetryCount</maml:name>
-        <maml:description>
-          <maml:para>Number between `0` and `100`.
-Specifies the maximum number of retries if the request fails.
-The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-        <dev:type>
-          <maml:name>Int32</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>0</dev:defaultValue>
-      </command:parameter>
-    </command:parameters>
-    <command:inputTypes />
-    <command:returnValues>
-      <command:returnValue>
-        <dev:type>
-          <maml:name>[pscustomobject]</maml:name>
-        </dev:type>
-        <maml:description>
-          <maml:para></maml:para>
-        </maml:description>
-      </command:returnValue>
-    </command:returnValues>
-    <maml:alertSet>
-      <maml:alert>
-        <maml:para></maml:para>
-      </maml:alert>
-    </maml:alertSet>
-    <command:examples>
-      <command:example>
-        <maml:title>-------------- Example 1: List all depoloyments. --------------</maml:title>
-        <dev:code>PS C:\&gt; $global:OPENAI_API_KEY = '&lt;Put your api key here&gt;'
-PS C:\&gt; $global:OPENAI_API_BASE  = 'https://&lt;resource-name&gt;.openai.azure.com/'
-PS C:\&gt; Get-AzureOpenAIDeployments | select -ExpandProperty id
-
-deployment-afa0669ca01e4693ae3a93baf40f26d6
-deployment-d09c49daeccc4ee5a5a9cd9aacc640c5
-deployment-706f763eb09b45d1b179e42128974cd4
-...</dev:code>
-        <dev:remarks>
-          <maml:para></maml:para>
-        </dev:remarks>
-      </command:example>
-      <command:example>
-        <maml:title>------- Example 2: Get specific deployment information. -------</maml:title>
-        <dev:code>PS C:\&gt; Get-AzureOpenAIDeployments -Deployment "deployment-d09c49daeccc4ee5a5a9cd9aacc640c5"
-
-scale_settings : @{scale_type=standard}
-model          : gpt-35-turbo
-owner          : organization-owner
-id             : deployment-706f763eb09b45d1b179e42128974cd4
-status         : succeeded
-object         : deployment
-created_at     : 2023/04/21 10:09:33
-updated_at     : 2023/04/21 10:09:33</dev:code>
-        <dev:remarks>
-          <maml:para></maml:para>
-        </dev:remarks>
-      </command:example>
-    </command:examples>
-    <command:relatedLinks>
-      <maml:navigationLink>
-        <maml:linkText>Online Version:</maml:linkText>
-        <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Enter-ChatGPT.md</maml:uri>
-      </maml:navigationLink>
-    </command:relatedLinks>
-  </command:command>
-  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
-    <command:details>
       <command:name>Get-AzureOpenAIModels</command:name>
       <command:verb>Get</command:verb>
       <command:noun>AzureOpenAIModels</command:noun>
@@ -1094,7 +855,7 @@ Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>ApiBase</maml:name>
           <maml:description>
-            <maml:para>Specifies yhe name of your Azure OpenAI resource endpoint such like:  `https://{your-resource-name}.openai.azure.com/`
+            <maml:para>Specifies the name of your Azure OpenAI resource endpoint such like:  `https://{your-resource-name}.openai.azure.com/`
 If not specified, it will try to use `$global:OPENAI_API_BASE` or `$env:OPENAI_API_BASE`</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
@@ -1179,7 +940,7 @@ Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>ApiBase</maml:name>
         <maml:description>
-          <maml:para>Specifies yhe name of your Azure OpenAI resource endpoint such like:  `https://{your-resource-name}.openai.azure.com/`
+          <maml:para>Specifies the name of your Azure OpenAI resource endpoint such like:  `https://{your-resource-name}.openai.azure.com/`
 If not specified, it will try to use `$global:OPENAI_API_BASE` or `$env:OPENAI_API_BASE`</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
@@ -1438,6 +1199,19 @@ Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s
           </dev:type>
           <dev:defaultValue>0</dev:defaultValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>ApiBase</maml:name>
+          <maml:description>
+            <maml:para>Specifies an API endpoint URL such like: `https://your-api-endpoint.test/v1`
+If not specified, it will use `https://api.openai.com/v1`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Uri</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>https://api.openai.com/v1</dev:defaultValue>
+        </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>ApiKey</maml:name>
           <maml:description>
@@ -1509,6 +1283,19 @@ Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s
           <maml:uri />
         </dev:type>
         <dev:defaultValue>0</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>ApiBase</maml:name>
+        <maml:description>
+          <maml:para>Specifies an API endpoint URL such like: `https://your-api-endpoint.test/v1`
+If not specified, it will use `https://api.openai.com/v1`</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
+        <dev:type>
+          <maml:name>System.Uri</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>https://api.openai.com/v1</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>ApiKey</maml:name>
@@ -1592,311 +1379,6 @@ created    : 2023/02/28 18:56:42</dev:code>
       <maml:navigationLink>
         <maml:linkText>https://platform.openai.com/docs/api-reference/models/list</maml:linkText>
         <maml:uri>https://platform.openai.com/docs/api-reference/models/list</maml:uri>
-      </maml:navigationLink>
-    </command:relatedLinks>
-  </command:command>
-  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
-    <command:details>
-      <command:name>New-AzureOpenAIDeployments</command:name>
-      <command:verb>New</command:verb>
-      <command:noun>AzureOpenAIDeployments</command:noun>
-      <maml:description>
-        <maml:para>Creates a new deployment for the Azure OpenAI resource according to the given specification.</maml:para>
-      </maml:description>
-    </command:details>
-    <maml:description>
-      <maml:para>Creates a new deployment for the Azure OpenAI resource according to the given specification.
-https://learn.microsoft.com/en-us/rest/api/cognitiveservices/azureopenaistable/deployments/create</maml:para>
-    </maml:description>
-    <command:syntax>
-      <command:syntaxItem>
-        <maml:name>New-AzureOpenAIDeployments</maml:name>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="none">
-          <maml:name>Model</maml:name>
-          <maml:description>
-            <maml:para>The OpenAI model identifier (model-id) to deploy.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>ScaleType</maml:name>
-          <maml:description>
-            <maml:para>Defines how scaling operations will be executed.</maml:para>
-          </maml:description>
-          <command:parameterValueGroup>
-            <command:parameterValue required="false" command:variableLength="false">standard</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">manual</command:parameterValue>
-          </command:parameterValueGroup>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>"standard"</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>ScaleCapacity</maml:name>
-          <maml:description>
-            <maml:para>The constant reserved capacity of the inference endpoint for this deployment. This parameter is effenctive only when the `-ScaleType` as `manual`.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-          <dev:type>
-            <maml:name>Int32</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>1</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>ApiBase</maml:name>
-          <maml:description>
-            <maml:para>Specifies yhe name of your Azure OpenAI resource endpoint such like:  `https://{your-resource-name}.openai.azure.com/`
-If not specified, it will try to use `$global:OPENAI_API_BASE` or `$env:OPENAI_API_BASE`</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
-          <dev:type>
-            <maml:name>System.Uri</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>ApiVersion</maml:name>
-          <maml:description>
-            <maml:para>The API version to use for this operation.
-</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
-          <dev:type>
-            <maml:name>string</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>ApiKey</maml:name>
-          <maml:description>
-            <maml:para>Specifies API key for authentication.
-The type of data should `[string]` or `[securestring]`.
-If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_API_KEY`</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
-          <dev:type>
-            <maml:name>Object</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>AuthType</maml:name>
-          <maml:description>
-            <maml:para>Specifies the authentication type.
-You can choose from `azure` or `azure_ad`.
-The default value is `azure`</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
-          <dev:type>
-            <maml:name>string</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>"azure"</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>TimeoutSec</maml:name>
-          <maml:description>
-            <maml:para>Specifies how long the request can be pending before it times out.
-The default value is `0` (infinite).</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-          <dev:type>
-            <maml:name>Int32</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>0</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>MaxRetryCount</maml:name>
-          <maml:description>
-            <maml:para>Number between `0` and `100`.
-Specifies the maximum number of retries if the request fails.
-The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-          <dev:type>
-            <maml:name>Int32</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>0</dev:defaultValue>
-        </command:parameter>
-      </command:syntaxItem>
-    </command:syntax>
-    <command:parameters>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="none">
-        <maml:name>Model</maml:name>
-        <maml:description>
-          <maml:para>The OpenAI model identifier (model-id) to deploy.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-        <maml:name>ScaleType</maml:name>
-        <maml:description>
-          <maml:para>Defines how scaling operations will be executed.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>"standard"</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-        <maml:name>ScaleCapacity</maml:name>
-        <maml:description>
-          <maml:para>The constant reserved capacity of the inference endpoint for this deployment. This parameter is effenctive only when the `-ScaleType` as `manual`.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-        <dev:type>
-          <maml:name>Int32</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>1</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-        <maml:name>ApiBase</maml:name>
-        <maml:description>
-          <maml:para>Specifies yhe name of your Azure OpenAI resource endpoint such like:  `https://{your-resource-name}.openai.azure.com/`
-If not specified, it will try to use `$global:OPENAI_API_BASE` or `$env:OPENAI_API_BASE`</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
-        <dev:type>
-          <maml:name>System.Uri</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-        <maml:name>ApiVersion</maml:name>
-        <maml:description>
-          <maml:para>The API version to use for this operation.
-</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
-        <dev:type>
-          <maml:name>string</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-        <maml:name>ApiKey</maml:name>
-        <maml:description>
-          <maml:para>Specifies API key for authentication.
-The type of data should `[string]` or `[securestring]`.
-If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_API_KEY`</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
-        <dev:type>
-          <maml:name>Object</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-        <maml:name>AuthType</maml:name>
-        <maml:description>
-          <maml:para>Specifies the authentication type.
-You can choose from `azure` or `azure_ad`.
-The default value is `azure`</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
-        <dev:type>
-          <maml:name>string</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>"azure"</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-        <maml:name>TimeoutSec</maml:name>
-        <maml:description>
-          <maml:para>Specifies how long the request can be pending before it times out.
-The default value is `0` (infinite).</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-        <dev:type>
-          <maml:name>Int32</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>0</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-        <maml:name>MaxRetryCount</maml:name>
-        <maml:description>
-          <maml:para>Number between `0` and `100`.
-Specifies the maximum number of retries if the request fails.
-The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-        <dev:type>
-          <maml:name>Int32</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>0</dev:defaultValue>
-      </command:parameter>
-    </command:parameters>
-    <command:inputTypes />
-    <command:returnValues>
-      <command:returnValue>
-        <dev:type>
-          <maml:name>[pscustomobject]</maml:name>
-        </dev:type>
-        <maml:description>
-          <maml:para></maml:para>
-        </maml:description>
-      </command:returnValue>
-    </command:returnValues>
-    <maml:alertSet>
-      <maml:alert>
-        <maml:para></maml:para>
-      </maml:alert>
-    </maml:alertSet>
-    <command:examples>
-      <command:example>
-        <maml:title>-------------- Example 1: Creating a deployment. --------------</maml:title>
-        <dev:code>PS C:\&gt; $global:OPENAI_API_KEY = '&lt;Put your api key here&gt;'
-PS C:\&gt; $global:OPENAI_API_BASE  = 'https://&lt;resource-name&gt;.openai.azure.com/'
-PS C:\&gt; New-AzureOpenAIDeployments -Model text-davinci-002
-
-scale_settings : @{scale_type=standard}
-model          : text-davinci-002
-owner          : organization-owner
-id             : deployment-afa0669ca01e4693ae3a93baf40f26d6
-status         : succeeded
-object         : deployment
-created_at     : 2023/04/28 12:53:27
-updated_at     : 2023/04/28 12:53:27</dev:code>
-        <dev:remarks>
-          <maml:para></maml:para>
-        </dev:remarks>
-      </command:example>
-    </command:examples>
-    <command:relatedLinks>
-      <maml:navigationLink>
-        <maml:linkText>Online Version:</maml:linkText>
-        <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/New-AzureOpenAIDeployments.md</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -2104,335 +1586,6 @@ If you want to use a non-default parameter set, specify the set name in this par
   </command:command>
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
     <command:details>
-      <command:name>Remove-AzureOpenAIDeployments</command:name>
-      <command:verb>Remove</command:verb>
-      <command:noun>AzureOpenAIDeployments</command:noun>
-      <maml:description>
-        <maml:para>Deletes the deployment specified by the given deployment-id.</maml:para>
-      </maml:description>
-    </command:details>
-    <maml:description>
-      <maml:para>Deletes the deployment specified by the given deployment-id.
-https://learn.microsoft.com/en-us/rest/api/cognitiveservices/azureopenaistable/deployments/delete</maml:para>
-    </maml:description>
-    <command:syntax>
-      <command:syntaxItem>
-        <maml:name>Remove-AzureOpenAIDeployments</maml:name>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="Engine, id">
-          <maml:name>Deployment</maml:name>
-          <maml:description>
-            <maml:para>The name (id) of the deployment for deleting.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>ApiBase</maml:name>
-          <maml:description>
-            <maml:para>Specifies yhe name of your Azure OpenAI resource endpoint such like:  `https://{your-resource-name}.openai.azure.com/`
-If not specified, it will try to use `$global:OPENAI_API_BASE` or `$env:OPENAI_API_BASE`</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
-          <dev:type>
-            <maml:name>System.Uri</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>ApiVersion</maml:name>
-          <maml:description>
-            <maml:para>The API version to use for this operation.
-</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
-          <dev:type>
-            <maml:name>string</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>ApiKey</maml:name>
-          <maml:description>
-            <maml:para>Specifies API key for authentication.
-The type of data should `[string]` or `[securestring]`.
-If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_API_KEY`</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
-          <dev:type>
-            <maml:name>Object</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>AuthType</maml:name>
-          <maml:description>
-            <maml:para>Specifies the authentication type.
-You can choose from `azure` or `azure_ad`.
-The default value is `azure`</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
-          <dev:type>
-            <maml:name>string</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>"azure"</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>TimeoutSec</maml:name>
-          <maml:description>
-            <maml:para>Specifies how long the request can be pending before it times out.
-The default value is `0` (infinite).</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-          <dev:type>
-            <maml:name>Int32</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>0</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>MaxRetryCount</maml:name>
-          <maml:description>
-            <maml:para>Number between `0` and `100`.
-Specifies the maximum number of retries if the request fails.
-The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-          <dev:type>
-            <maml:name>Int32</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>0</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="cf">
-          <maml:name>Confirm</maml:name>
-          <maml:description>
-            <maml:para>Prompts you for confirmation before running the cmdlet.</maml:para>
-          </maml:description>
-          <dev:type>
-            <maml:name>SwitchParameter</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>False</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>Force</maml:name>
-          <maml:description>
-            <maml:para>Supress prompts for confirmation.</maml:para>
-          </maml:description>
-          <dev:type>
-            <maml:name>SwitchParameter</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>False</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="wi">
-          <maml:name>WhatIf</maml:name>
-          <maml:description>
-            <maml:para>Shows what would happen if the cmdlet runs. The cmdlet is not run.</maml:para>
-          </maml:description>
-          <dev:type>
-            <maml:name>SwitchParameter</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>False</dev:defaultValue>
-        </command:parameter>
-      </command:syntaxItem>
-    </command:syntax>
-    <command:parameters>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="Engine, id">
-        <maml:name>Deployment</maml:name>
-        <maml:description>
-          <maml:para>The name (id) of the deployment for deleting.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-        <maml:name>ApiBase</maml:name>
-        <maml:description>
-          <maml:para>Specifies yhe name of your Azure OpenAI resource endpoint such like:  `https://{your-resource-name}.openai.azure.com/`
-If not specified, it will try to use `$global:OPENAI_API_BASE` or `$env:OPENAI_API_BASE`</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
-        <dev:type>
-          <maml:name>System.Uri</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-        <maml:name>ApiVersion</maml:name>
-        <maml:description>
-          <maml:para>The API version to use for this operation.
-</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
-        <dev:type>
-          <maml:name>string</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-        <maml:name>ApiKey</maml:name>
-        <maml:description>
-          <maml:para>Specifies API key for authentication.
-The type of data should `[string]` or `[securestring]`.
-If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_API_KEY`</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
-        <dev:type>
-          <maml:name>Object</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-        <maml:name>AuthType</maml:name>
-        <maml:description>
-          <maml:para>Specifies the authentication type.
-You can choose from `azure` or `azure_ad`.
-The default value is `azure`</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
-        <dev:type>
-          <maml:name>string</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>"azure"</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-        <maml:name>TimeoutSec</maml:name>
-        <maml:description>
-          <maml:para>Specifies how long the request can be pending before it times out.
-The default value is `0` (infinite).</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-        <dev:type>
-          <maml:name>Int32</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>0</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-        <maml:name>MaxRetryCount</maml:name>
-        <maml:description>
-          <maml:para>Number between `0` and `100`.
-Specifies the maximum number of retries if the request fails.
-The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-        <dev:type>
-          <maml:name>Int32</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>0</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="cf">
-        <maml:name>Confirm</maml:name>
-        <maml:description>
-          <maml:para>Prompts you for confirmation before running the cmdlet.</maml:para>
-        </maml:description>
-        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
-        <dev:type>
-          <maml:name>SwitchParameter</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>False</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-        <maml:name>Force</maml:name>
-        <maml:description>
-          <maml:para>Supress prompts for confirmation.</maml:para>
-        </maml:description>
-        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
-        <dev:type>
-          <maml:name>SwitchParameter</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>False</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="wi">
-        <maml:name>WhatIf</maml:name>
-        <maml:description>
-          <maml:para>Shows what would happen if the cmdlet runs. The cmdlet is not run.</maml:para>
-        </maml:description>
-        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
-        <dev:type>
-          <maml:name>SwitchParameter</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>False</dev:defaultValue>
-      </command:parameter>
-    </command:parameters>
-    <command:inputTypes>
-      <command:inputType>
-        <dev:type>
-          <maml:name>System.String</maml:name>
-        </dev:type>
-        <maml:description>
-          <maml:para></maml:para>
-        </maml:description>
-      </command:inputType>
-    </command:inputTypes>
-    <command:returnValues>
-      <command:returnValue>
-        <dev:type>
-          <maml:name>System.Void</maml:name>
-        </dev:type>
-        <maml:description>
-          <maml:para></maml:para>
-        </maml:description>
-      </command:returnValue>
-    </command:returnValues>
-    <maml:alertSet>
-      <maml:alert>
-        <maml:para></maml:para>
-      </maml:alert>
-    </maml:alertSet>
-    <command:examples>
-      <command:example>
-        <maml:title>--------------- Example 1: Delete a deployment. ---------------</maml:title>
-        <dev:code>PS C:\&gt; $global:OPENAI_API_KEY = '&lt;Put your api key here&gt;'
-PS C:\&gt; $global:OPENAI_API_BASE  = 'https://&lt;resource-name&gt;.openai.azure.com/'
-PS C:\&gt; Remove-AzureOpenAIDeployments -Deployment 'deployment-afa0669ca01e4693ae3a93baf40f26d6'</dev:code>
-        <dev:remarks>
-          <maml:para></maml:para>
-        </dev:remarks>
-      </command:example>
-      <command:example>
-        <maml:title>--------- Example 2: Specifies a target from pipeline. ---------</maml:title>
-        <dev:code>PS C:\&gt; Get-AzureOpenAIDeployments -Deployment 'deployment-afa0669ca01e4693ae3a93baf40f26d6' | Remove-AzureOpenAIDeployments -Force</dev:code>
-        <dev:remarks>
-          <maml:para></maml:para>
-        </dev:remarks>
-      </command:example>
-    </command:examples>
-    <command:relatedLinks>
-      <maml:navigationLink>
-        <maml:linkText>Online Version:</maml:linkText>
-        <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Remove-AzureOpenAIDeployments.md</maml:uri>
-      </maml:navigationLink>
-    </command:relatedLinks>
-  </command:command>
-  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
-    <command:details>
       <command:name>Request-AudioTranscription</command:name>
       <command:verb>Request</command:verb>
       <command:noun>AudioTranscription</command:noun>
@@ -2552,6 +1705,19 @@ Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s
             <maml:uri />
           </dev:type>
           <dev:defaultValue>0</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>ApiBase</maml:name>
+          <maml:description>
+            <maml:para>Specifies an API endpoint URL such like: `https://your-api-endpoint.test/v1`
+If not specified, it will use `https://api.openai.com/v1`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Uri</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>https://api.openai.com/v1</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
           <maml:name>ApiKey</maml:name>
@@ -2689,6 +1855,19 @@ Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s
         </dev:type>
         <dev:defaultValue>0</dev:defaultValue>
       </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>ApiBase</maml:name>
+        <maml:description>
+          <maml:para>Specifies an API endpoint URL such like: `https://your-api-endpoint.test/v1`
+If not specified, it will use `https://api.openai.com/v1`</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
+        <dev:type>
+          <maml:name>System.Uri</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>https://api.openai.com/v1</dev:defaultValue>
+      </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
         <maml:name>ApiKey</maml:name>
         <maml:description>
@@ -2778,7 +1957,7 @@ https://platform.openai.com/docs/guides/speech-to-text/speech-to-text</maml:para
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="none">
           <maml:name>File</maml:name>
           <maml:description>
-            <maml:para>(Required) The audio file to transcribe, in one of these formats: `flac`, `mp3`, `mp4`, `mpeg`, `mpga`, `m4a`, `ogg`, `wav`, or `webm`.
+            <maml:para>(Required) The audio file to translate, in one of these formats: `flac`, `mp3`, `mp4`, `mpeg`, `mpga`, `m4a`, `ogg`, `wav`, or `webm`.
 </maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -2868,6 +2047,19 @@ Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s
           </dev:type>
           <dev:defaultValue>0</dev:defaultValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>ApiBase</maml:name>
+          <maml:description>
+            <maml:para>Specifies an API endpoint URL such like: `https://your-api-endpoint.test/v1`
+If not specified, it will use `https://api.openai.com/v1`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Uri</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>https://api.openai.com/v1</dev:defaultValue>
+        </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
           <maml:name>ApiKey</maml:name>
           <maml:description>
@@ -2901,7 +2093,7 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="none">
         <maml:name>File</maml:name>
         <maml:description>
-          <maml:para>(Required) The audio file to transcribe, in one of these formats: `flac`, `mp3`, `mp4`, `mpeg`, `mpga`, `m4a`, `ogg`, `wav`, or `webm`.
+          <maml:para>(Required) The audio file to translate, in one of these formats: `flac`, `mp3`, `mp4`, `mpeg`, `mpga`, `m4a`, `ogg`, `wav`, or `webm`.
 </maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -2990,6 +2182,19 @@ Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s
           <maml:uri />
         </dev:type>
         <dev:defaultValue>0</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>ApiBase</maml:name>
+        <maml:description>
+          <maml:para>Specifies an API endpoint URL such like: `https://your-api-endpoint.test/v1`
+If not specified, it will use `https://api.openai.com/v1`</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
+        <dev:type>
+          <maml:name>System.Uri</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>https://api.openai.com/v1</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
         <maml:name>ApiKey</maml:name>
@@ -3187,7 +2392,7 @@ Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>ApiBase</maml:name>
           <maml:description>
-            <maml:para>Specifies yhe name of your Azure OpenAI resource endpoint such like: `https://{your-resource-name}.openai.azure.com/`
+            <maml:para>Specifies the name of your Azure OpenAI resource endpoint such like: `https://{your-resource-name}.openai.azure.com/`
 If not specified, it will try to use `$global:OPENAI_API_BASE` or `$env:OPENAI_API_BASE`</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
@@ -3351,7 +2556,7 @@ Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>ApiBase</maml:name>
         <maml:description>
-          <maml:para>Specifies yhe name of your Azure OpenAI resource endpoint such like: `https://{your-resource-name}.openai.azure.com/`
+          <maml:para>Specifies the name of your Azure OpenAI resource endpoint such like: `https://{your-resource-name}.openai.azure.com/`
 If not specified, it will try to use `$global:OPENAI_API_BASE` or `$env:OPENAI_API_BASE`</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
@@ -3556,7 +2761,7 @@ Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>ApiBase</maml:name>
           <maml:description>
-            <maml:para>Specifies yhe name of your Azure OpenAI resource endpoint such like: `https://{your-resource-name}.openai.azure.com/`
+            <maml:para>Specifies the name of your Azure OpenAI resource endpoint such like: `https://{your-resource-name}.openai.azure.com/`
 If not specified, it will try to use `$global:OPENAI_API_BASE` or `$env:OPENAI_API_BASE`</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
@@ -3707,7 +2912,7 @@ Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>ApiBase</maml:name>
         <maml:description>
-          <maml:para>Specifies yhe name of your Azure OpenAI resource endpoint such like: `https://{your-resource-name}.openai.azure.com/`
+          <maml:para>Specifies the name of your Azure OpenAI resource endpoint such like: `https://{your-resource-name}.openai.azure.com/`
 If not specified, it will try to use `$global:OPENAI_API_BASE` or `$env:OPENAI_API_BASE`</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
@@ -4038,7 +3243,7 @@ Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>ApiBase</maml:name>
           <maml:description>
-            <maml:para>Specifies yhe name of your Azure OpenAI resource endpoint such like:  `https://{your-resource-name}.openai.azure.com/`
+            <maml:para>Specifies the name of your Azure OpenAI resource endpoint such like:  `https://{your-resource-name}.openai.azure.com/`
 If not specified, it will try to use `$global:OPENAI_API_BASE` or `$env:OPENAI_API_BASE`</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
@@ -4328,7 +3533,7 @@ Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>ApiBase</maml:name>
         <maml:description>
-          <maml:para>Specifies yhe name of your Azure OpenAI resource endpoint such like:  `https://{your-resource-name}.openai.azure.com/`
+          <maml:para>Specifies the name of your Azure OpenAI resource endpoint such like:  `https://{your-resource-name}.openai.azure.com/`
 If not specified, it will try to use `$global:OPENAI_API_BASE` or `$env:OPENAI_API_BASE`</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
@@ -4523,7 +3728,7 @@ Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>ApiBase</maml:name>
           <maml:description>
-            <maml:para>Specifies yhe name of your Azure OpenAI resource endpoint such like:  `https://{your-resource-name}.openai.azure.com/`
+            <maml:para>Specifies the name of your Azure OpenAI resource endpoint such like:  `https://{your-resource-name}.openai.azure.com/`
 If not specified, it will try to use `$global:OPENAI_API_BASE` or `$env:OPENAI_API_BASE`</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
@@ -4645,7 +3850,7 @@ Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>ApiBase</maml:name>
         <maml:description>
-          <maml:para>Specifies yhe name of your Azure OpenAI resource endpoint such like:  `https://{your-resource-name}.openai.azure.com/`
+          <maml:para>Specifies the name of your Azure OpenAI resource endpoint such like:  `https://{your-resource-name}.openai.azure.com/`
 If not specified, it will try to use `$global:OPENAI_API_BASE` or `$env:OPENAI_API_BASE`</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
@@ -4857,7 +4062,7 @@ Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>ApiBase</maml:name>
           <maml:description>
-            <maml:para>Specifies yhe name of your Azure OpenAI resource endpoint such like:  `https://{your-resource-name}.openai.azure.com/`
+            <maml:para>Specifies the name of your Azure OpenAI resource endpoint such like:  `https://{your-resource-name}.openai.azure.com/`
 If not specified, it will try to use `$global:OPENAI_API_BASE` or `$env:OPENAI_API_BASE`</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
@@ -4992,7 +4197,7 @@ Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>ApiBase</maml:name>
           <maml:description>
-            <maml:para>Specifies yhe name of your Azure OpenAI resource endpoint such like:  `https://{your-resource-name}.openai.azure.com/`
+            <maml:para>Specifies the name of your Azure OpenAI resource endpoint such like:  `https://{your-resource-name}.openai.azure.com/`
 If not specified, it will try to use `$global:OPENAI_API_BASE` or `$env:OPENAI_API_BASE`</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
@@ -5140,7 +4345,7 @@ Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>ApiBase</maml:name>
         <maml:description>
-          <maml:para>Specifies yhe name of your Azure OpenAI resource endpoint such like:  `https://{your-resource-name}.openai.azure.com/`
+          <maml:para>Specifies the name of your Azure OpenAI resource endpoint such like:  `https://{your-resource-name}.openai.azure.com/`
 If not specified, it will try to use `$global:OPENAI_API_BASE` or `$env:OPENAI_API_BASE`</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
@@ -5468,7 +4673,7 @@ Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>ApiBase</maml:name>
           <maml:description>
-            <maml:para>Specifies yhe name of your Azure OpenAI resource endpoint such like:  `https://{your-resource-name}.openai.azure.com/`
+            <maml:para>Specifies the name of your Azure OpenAI resource endpoint such like:  `https://{your-resource-name}.openai.azure.com/`
 If not specified, it will try to use `$global:OPENAI_API_BASE` or `$env:OPENAI_API_BASE`</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
@@ -5742,7 +4947,7 @@ Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>ApiBase</maml:name>
         <maml:description>
-          <maml:para>Specifies yhe name of your Azure OpenAI resource endpoint such like:  `https://{your-resource-name}.openai.azure.com/`
+          <maml:para>Specifies the name of your Azure OpenAI resource endpoint such like:  `https://{your-resource-name}.openai.azure.com/`
 If not specified, it will try to use `$global:OPENAI_API_BASE` or `$env:OPENAI_API_BASE`</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
@@ -6126,6 +5331,19 @@ Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s
           </dev:type>
           <dev:defaultValue>0</dev:defaultValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>ApiBase</maml:name>
+          <maml:description>
+            <maml:para>Specifies an API endpoint URL such like: `https://your-api-endpoint.test/v1`
+If not specified, it will use `https://api.openai.com/v1`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Uri</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>https://api.openai.com/v1</dev:defaultValue>
+        </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
           <maml:name>ApiKey</maml:name>
           <maml:description>
@@ -6443,6 +5661,19 @@ Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s
         </dev:type>
         <dev:defaultValue>0</dev:defaultValue>
       </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>ApiBase</maml:name>
+        <maml:description>
+          <maml:para>Specifies an API endpoint URL such like: `https://your-api-endpoint.test/v1`
+If not specified, it will use `https://api.openai.com/v1`</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
+        <dev:type>
+          <maml:name>System.Uri</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>https://api.openai.com/v1</dev:defaultValue>
+      </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
         <maml:name>ApiKey</maml:name>
         <maml:description>
@@ -6598,6 +5829,18 @@ https://platform.openai.com/docs/guides/embeddings</maml:para>
           <dev:defaultValue>text-embedding-ada-002</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Format</maml:name>
+          <maml:description>
+            <maml:para>The format to return the embeddings in. Can be either `float` or `base64` The default value is `float`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>float</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>User</maml:name>
           <maml:description>
             <maml:para>A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse.</maml:para>
@@ -6636,6 +5879,19 @@ Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s
             <maml:uri />
           </dev:type>
           <dev:defaultValue>0</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>ApiBase</maml:name>
+          <maml:description>
+            <maml:para>Specifies an API endpoint URL such like: `https://your-api-endpoint.test/v1`
+If not specified, it will use `https://api.openai.com/v1`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Uri</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>https://api.openai.com/v1</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
           <maml:name>ApiKey</maml:name>
@@ -6692,6 +5948,18 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <dev:defaultValue>text-embedding-ada-002</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Format</maml:name>
+        <maml:description>
+          <maml:para>The format to return the embeddings in. Can be either `float` or `base64` The default value is `float`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>float</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>User</maml:name>
         <maml:description>
           <maml:para>A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse.</maml:para>
@@ -6730,6 +5998,19 @@ Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s
           <maml:uri />
         </dev:type>
         <dev:defaultValue>0</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>ApiBase</maml:name>
+        <maml:description>
+          <maml:para>Specifies an API endpoint URL such like: `https://your-api-endpoint.test/v1`
+If not specified, it will use `https://api.openai.com/v1`</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
+        <dev:type>
+          <maml:name>System.Uri</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>https://api.openai.com/v1</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
         <maml:name>ApiKey</maml:name>
@@ -6944,6 +6225,19 @@ Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s
           </dev:type>
           <dev:defaultValue>0</dev:defaultValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>ApiBase</maml:name>
+          <maml:description>
+            <maml:para>Specifies an API endpoint URL such like: `https://your-api-endpoint.test/v1`
+If not specified, it will use `https://api.openai.com/v1`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Uri</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>https://api.openai.com/v1</dev:defaultValue>
+        </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
           <maml:name>ApiKey</maml:name>
           <maml:description>
@@ -7091,6 +6385,19 @@ Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s
             <maml:uri />
           </dev:type>
           <dev:defaultValue>0</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>ApiBase</maml:name>
+          <maml:description>
+            <maml:para>Specifies an API endpoint URL such like: `https://your-api-endpoint.test/v1`
+If not specified, it will use `https://api.openai.com/v1`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Uri</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>https://api.openai.com/v1</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
           <maml:name>ApiKey</maml:name>
@@ -7253,6 +6560,19 @@ Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s
         </dev:type>
         <dev:defaultValue>0</dev:defaultValue>
       </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>ApiBase</maml:name>
+        <maml:description>
+          <maml:para>Specifies an API endpoint URL such like: `https://your-api-endpoint.test/v1`
+If not specified, it will use `https://api.openai.com/v1`</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
+        <dev:type>
+          <maml:name>System.Uri</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>https://api.openai.com/v1</dev:defaultValue>
+      </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
         <maml:name>ApiKey</maml:name>
         <maml:description>
@@ -7326,14 +6646,14 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <maml:title>--------------- Example 1: Restore masked image. ---------------</maml:title>
         <dev:code>Request-ImageEdit -Image C:\sunflower_mask.png -Prompt "sunflower" -OutFile C:\edit.png -Size 256x256</dev:code>
         <dev:remarks>
-          <maml:para>|Source (sunflower_mask.png)|Generated (edit.png)| |----|----| | ! masked (/Docs/images/sunflower_masked.png)  | ![restored](/Docs/images/sunflower_restored.png)|</maml:para>
+          <maml:para>| Source (sunflower_mask.png)                  | Generated (edit.png)                             | | -------------------------------------------- | ------------------------------------------------ | | ! masked (/Docs/images/sunflower_masked.png) | ![restored](/Docs/images/sunflower_restored.png)|</maml:para>
         </dev:remarks>
       </command:example>
       <command:example>
         <maml:title>--- Example 2: Create variation image from source and mask. ---</maml:title>
         <dev:code>Request-ImageEdit -Image C:\sand_with_feather.png -Mask C:\fether_mask.png -Prompt "A bird on the desert" -OutFile C:\edit2.png</dev:code>
         <dev:remarks>
-          <maml:para>|Source (sand_with_feather.png)|Mask (fether_mask.png)|Generated (edit2.png)| |----|----|----| | ! masked (/Docs/images/sand_with_feather.png) | ![mask](/Docs/images/fether_mask.png) | ![restored](/Docs/images/edit2.png)|</maml:para>
+          <maml:para>| Source (sand_with_feather.png)                | Mask (fether_mask.png)                | Generated (edit2.png)               | | --------------------------------------------- | ------------------------------------- | ----------------------------------- | | ! masked (/Docs/images/sand_with_feather.png) | ![mask](/Docs/images/fether_mask.png) | ![restored](/Docs/images/edit2.png)|</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>
@@ -7466,6 +6786,19 @@ Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s
           </dev:type>
           <dev:defaultValue>0</dev:defaultValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>ApiBase</maml:name>
+          <maml:description>
+            <maml:para>Specifies an API endpoint URL such like: `https://your-api-endpoint.test/v1`
+If not specified, it will use `https://api.openai.com/v1`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Uri</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>https://api.openai.com/v1</dev:defaultValue>
+        </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
           <maml:name>ApiKey</maml:name>
           <maml:description>
@@ -7587,6 +6920,19 @@ Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s
             <maml:uri />
           </dev:type>
           <dev:defaultValue>0</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>ApiBase</maml:name>
+          <maml:description>
+            <maml:para>Specifies an API endpoint URL such like: `https://your-api-endpoint.test/v1`
+If not specified, it will use `https://api.openai.com/v1`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Uri</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>https://api.openai.com/v1</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
           <maml:name>ApiKey</maml:name>
@@ -7722,6 +7068,19 @@ Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s
           <maml:uri />
         </dev:type>
         <dev:defaultValue>0</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>ApiBase</maml:name>
+        <maml:description>
+          <maml:para>Specifies an API endpoint URL such like: `https://your-api-endpoint.test/v1`
+If not specified, it will use `https://api.openai.com/v1`</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
+        <dev:type>
+          <maml:name>System.Uri</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>https://api.openai.com/v1</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
         <maml:name>ApiKey</maml:name>
@@ -7940,6 +7299,19 @@ Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s
           </dev:type>
           <dev:defaultValue>0</dev:defaultValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>ApiBase</maml:name>
+          <maml:description>
+            <maml:para>Specifies an API endpoint URL such like: `https://your-api-endpoint.test/v1`
+If not specified, it will use `https://api.openai.com/v1`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Uri</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>https://api.openai.com/v1</dev:defaultValue>
+        </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
           <maml:name>ApiKey</maml:name>
           <maml:description>
@@ -8061,6 +7433,19 @@ Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s
             <maml:uri />
           </dev:type>
           <dev:defaultValue>0</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>ApiBase</maml:name>
+          <maml:description>
+            <maml:para>Specifies an API endpoint URL such like: `https://your-api-endpoint.test/v1`
+If not specified, it will use `https://api.openai.com/v1`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Uri</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>https://api.openai.com/v1</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
           <maml:name>ApiKey</maml:name>
@@ -8197,6 +7582,19 @@ Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s
         </dev:type>
         <dev:defaultValue>0</dev:defaultValue>
       </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>ApiBase</maml:name>
+        <maml:description>
+          <maml:para>Specifies an API endpoint URL such like: `https://your-api-endpoint.test/v1`
+If not specified, it will use `https://api.openai.com/v1`</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
+        <dev:type>
+          <maml:name>System.Uri</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>https://api.openai.com/v1</dev:defaultValue>
+      </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
         <maml:name>ApiKey</maml:name>
         <maml:description>
@@ -8270,7 +7668,7 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <maml:title>Example 1: Creates a variation of a given image, then save to file.</maml:title>
         <dev:code>Request-ImageVariation -Image C:\cupcake.png -OutFile C:\cupcake2.png -Size 256x256</dev:code>
         <dev:remarks>
-          <maml:para>|Source (cupcake.png)|Generated (cupcake2.png)| |----|----| | ! source (/Docs/images/cupcake.png)  | ![output](/Docs/images/cupcake2.png)|</maml:para>
+          <maml:para>| Source (cupcake.png)                | Generated (cupcake2.png)             | | ----------------------------------- | ------------------------------------ | | ! source (/Docs/images/cupcake.png) | ![output](/Docs/images/cupcake2.png)|</maml:para>
         </dev:remarks>
       </command:example>
       <command:example>
@@ -8369,6 +7767,19 @@ Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s
           </dev:type>
           <dev:defaultValue>0</dev:defaultValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>ApiBase</maml:name>
+          <maml:description>
+            <maml:para>Specifies an API endpoint URL such like: `https://your-api-endpoint.test/v1`
+If not specified, it will use `https://api.openai.com/v1`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Uri</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>https://api.openai.com/v1</dev:defaultValue>
+        </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
           <maml:name>ApiKey</maml:name>
           <maml:description>
@@ -8452,6 +7863,19 @@ Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s
           <maml:uri />
         </dev:type>
         <dev:defaultValue>0</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>ApiBase</maml:name>
+        <maml:description>
+          <maml:para>Specifies an API endpoint URL such like: `https://your-api-endpoint.test/v1`
+If not specified, it will use `https://api.openai.com/v1`</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
+        <dev:type>
+          <maml:name>System.Uri</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>https://api.openai.com/v1</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
         <maml:name>ApiKey</maml:name>
@@ -8573,14 +7997,14 @@ https://platform.openai.com/docs/guides/completion/text-completion</maml:para>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>Model</maml:name>
           <maml:description>
-            <maml:para>The name of model to use. The default value is `text-davinci-003`.</maml:para>
+            <maml:para>The name of model to use. The default value is `gpt-3.5-turbo-instruct`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
             <maml:name>String</maml:name>
             <maml:uri />
           </dev:type>
-          <dev:defaultValue>text-davinci-003</dev:defaultValue>
+          <dev:defaultValue>gpt-3.5-turbo-instruct</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>Temperature</maml:name>
@@ -8761,6 +8185,19 @@ Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s
           </dev:type>
           <dev:defaultValue>0</dev:defaultValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>ApiBase</maml:name>
+          <maml:description>
+            <maml:para>Specifies an API endpoint URL such like: `https://your-api-endpoint.test/v1`
+If not specified, it will use `https://api.openai.com/v1`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Uri</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>https://api.openai.com/v1</dev:defaultValue>
+        </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
           <maml:name>ApiKey</maml:name>
           <maml:description>
@@ -8818,14 +8255,14 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>Model</maml:name>
         <maml:description>
-          <maml:para>The name of model to use. The default value is `text-davinci-003`.</maml:para>
+          <maml:para>The name of model to use. The default value is `gpt-3.5-turbo-instruct`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
           <maml:name>String</maml:name>
           <maml:uri />
         </dev:type>
-        <dev:defaultValue>text-davinci-003</dev:defaultValue>
+        <dev:defaultValue>gpt-3.5-turbo-instruct</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>Temperature</maml:name>
@@ -9006,6 +8443,19 @@ Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s
           <maml:uri />
         </dev:type>
         <dev:defaultValue>0</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>ApiBase</maml:name>
+        <maml:description>
+          <maml:para>Specifies an API endpoint URL such like: `https://your-api-endpoint.test/v1`
+If not specified, it will use `https://api.openai.com/v1`</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
+        <dev:type>
+          <maml:name>System.Uri</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>https://api.openai.com/v1</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
         <maml:name>ApiKey</maml:name>
@@ -9196,6 +8646,19 @@ Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s
           </dev:type>
           <dev:defaultValue>0</dev:defaultValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>ApiBase</maml:name>
+          <maml:description>
+            <maml:para>Specifies an API endpoint URL such like: `https://your-api-endpoint.test/v1`
+If not specified, it will use `https://api.openai.com/v1`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Uri</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>https://api.openai.com/v1</dev:defaultValue>
+        </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
           <maml:name>ApiKey</maml:name>
           <maml:description>
@@ -9326,6 +8789,19 @@ Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s
           <maml:uri />
         </dev:type>
         <dev:defaultValue>0</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>ApiBase</maml:name>
+        <maml:description>
+          <maml:para>Specifies an API endpoint URL such like: `https://your-api-endpoint.test/v1`
+If not specified, it will use `https://api.openai.com/v1`</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
+        <dev:type>
+          <maml:name>System.Uri</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>https://api.openai.com/v1</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
         <maml:name>ApiKey</maml:name>
