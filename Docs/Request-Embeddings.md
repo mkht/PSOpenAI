@@ -16,6 +16,7 @@ Creates an embedding vector representing the input text.
 Request-Embeddings
     [-Text] <String[]>
     [-Model <String>]
+    [-Format <String>]
     [-User <String>]
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
@@ -66,6 +67,17 @@ Type: String
 Required: False
 Position: Named
 Default value: text-embedding-ada-002
+```
+
+### -Format
+The format to return the embeddings in. Can be either `float` or `base64`
+The default value is `float`.
+
+```yaml
+Type: String
+Required: False
+Position: Named
+Default value: float
 ```
 
 ### -User

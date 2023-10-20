@@ -17,6 +17,11 @@ function Request-Embeddings {
         [string][LowerCaseTransformation()]$Model = 'text-embedding-ada-002',
 
         [Parameter()]
+        [Alias('encoding_format')]
+        [ValidateSet('float', 'base64')]
+        [string]$Format = 'float',
+
+        [Parameter()]
         [string]$User,
 
         [Parameter()]
@@ -86,6 +91,9 @@ function Request-Embeddings {
         if ($PSBoundParameters.ContainsKey('User')) {
             $PostBody.user = $User
         }
+        if ($PSBoundParameters.ContainsKey('Format')) {
+            $PostBody.encoding_format = $Format
+        }
         #endregion
 
         #region Send API Request
@@ -118,8 +126,10 @@ function Request-Embeddings {
         #region Output
         if ($null -ne $Response) {
             for ($i = 0; $i -lt @($Response.data).Count; $i++) {
-                # Convert [Object[]] to [float[]]
-                @($Response.data)[$i].embedding = [float[]]@($Response.data)[$i].embedding
+                if ($Format -eq 'float') {
+                    # Convert [Object[]] to [float[]]
+                    @($Response.data)[$i].embedding = [float[]]@($Response.data)[$i].embedding
+                }
                 # Add custom properties to output object.
                 @($Response.data)[$i] | Add-Member -MemberType NoteProperty -Name 'Text' -Value @($Text)[$i]
             }

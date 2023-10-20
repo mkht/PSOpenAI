@@ -10,6 +10,7 @@
 - Remove `-Token` parameter from all functions. Use `-ApiKey` instead.
 - `OPENAI_TOKEN` environment variable is deprecated. Use `OPENAI_API_KEY` instead.
 - The default model for `Request-TextCompletion` is changed to `gpt-3.5-turbo-instruct` from `text-davinci-003`.
+- Add `-Format` parameter to `Request-Embeddings` function. This parameter can be used to specify the format of the returned embeddings.  
 
 ### 1.15.2
 - Fix various issues about Function calling.
