@@ -1,4 +1,12 @@
 # 変更履歴
+### 2.1.0
+OpenAI Dev Day 2023で発表された新しい機能への対応を進めています。  
+ThreadsやAssistantsなどの機能へはまだ対応していませんが、今後のリリースで対応予定です。  
+- `Request-ChatComplention`のいくつかのパラメータを追加/変更/廃止しました
+- 新しいモデルを`Request-ChatComplention`のモデル名タブ補完に追加します
+- `Request-ImageGeneration`に`-Model`パラメータを追加しました。`dall-e-2`と`dall-e-3`を選択できます
+- `Request-ImageGeneration`に`-Quality`と`-Style`パラメータを追加しました。これらは`dall-e-3`専用です
+
 ### 2.0.0
 **これは、破壊的な変更を含むメジャーリリースです。**
 - `-ApiBase`パラメータを追加して、APIエンドポイントのURLを指定できるようにしました  

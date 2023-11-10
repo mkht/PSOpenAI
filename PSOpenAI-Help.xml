@@ -5120,10 +5120,35 @@ This is an optional field, and may contain a-z, A-Z, 0-9, hyphens, and underscor
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>Functions</maml:name>
+          <maml:name>Images</maml:name>
           <maml:description>
-            <maml:para>A list of function specifications the model may generate JSON inputs for.
-The function name, description, and parameters must be given as a hash table. See the guide for more information.
+            <maml:para>An array of images to passing the model. You can specifies local image file or remote url.
+Image input is only supported when using the `gpt-4-visual-preview` model.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>ImageDetail</maml:name>
+          <maml:description>
+            <maml:para>Controls how the model processes the image and generates its textual understanding. You can select from `Low` or `High`.
+See more details : https://platform.openai.com/docs/guides/vision/low-or-high-fidelity-image-understanding</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>Auto</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Tools</maml:name>
+          <maml:description>
+            <maml:para>A list of tools the model may call. Use this to provide a list of functions the model may generate JSON inputs for.
 https://github.com/mkht/PSOpenAI/blob/main/Examples/How_to_call_functions_with_ChatGPT.ipynb</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">System.Collections.IDictionary[]</command:parameterValue>
@@ -5133,12 +5158,13 @@ https://github.com/mkht/PSOpenAI/blob/main/Examples/How_to_call_functions_with_C
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="function_call">
-          <maml:name>FunctionCall</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="tool_choice">
+          <maml:name>ToolChoice</maml:name>
           <maml:description>
             <maml:para>Controls how the model responds to function calls.
-`none` means the model does not call a function, and responds to the end-user. `auto` means the model can pick between an end-user or calling a function.
-Specifying a particular function via `@{name = "my_function"}` forces the model to call that function.</maml:para>
+- `none` means the model does not call a function, and responds to the end-user.
+- `auto` means the model can pick between an end-user or calling a function.
+Specifying a particular function via `@{type = "function"; function = @{name = "my_function"}}` forces the model to call that function.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
           <dev:type>
@@ -5148,7 +5174,7 @@ Specifying a particular function via `@{name = "my_function"}` forces the model 
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>InvokeFunctionOnCallMode</maml:name>
+          <maml:name>InvokeTools</maml:name>
           <maml:description>
             <maml:para>Selects the action to be taken when the GPT model requests a function call.
 - `None`: The requested function is not executed. This is the default.
@@ -5161,18 +5187,6 @@ Specifying a particular function via `@{name = "my_function"}` forces the model 
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>MaxFunctionCallCount</maml:name>
-          <maml:description>
-            <maml:para>Limit the maximum number of function calls a model can request within a chat session. The default value is `4`.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-          <dev:type>
-            <maml:name>Int32</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>4</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>Temperature</maml:name>
@@ -5286,6 +5300,33 @@ ID 23182 maps to "apple" and ID 88847 maps to "banana". Thus, this example incre
           <command:parameterValue required="true" variableLength="false">IDictionary</command:parameterValue>
           <dev:type>
             <maml:name>IDictionary</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="response_format">
+          <maml:name>Format</maml:name>
+          <maml:description>
+            <maml:para>Specifies the format that the model must output.
+- `text` is default.
+- `json_object` enables JSON mode, which guarantees the message the model generates is valid JSON.
+- `raw_response` returns raw response content from API.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Seed</maml:name>
+          <maml:description>
+            <maml:para>If specified, the system will make a best effort to sample deterministically, such that repeated requests with the same seed and parameters should return the same result.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int64</command:parameterValue>
+          <dev:type>
+            <maml:name>Int64</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -5449,10 +5490,35 @@ This is an optional field, and may contain a-z, A-Z, 0-9, hyphens, and underscor
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-        <maml:name>Functions</maml:name>
+        <maml:name>Images</maml:name>
         <maml:description>
-          <maml:para>A list of function specifications the model may generate JSON inputs for.
-The function name, description, and parameters must be given as a hash table. See the guide for more information.
+          <maml:para>An array of images to passing the model. You can specifies local image file or remote url.
+Image input is only supported when using the `gpt-4-visual-preview` model.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+        <dev:type>
+          <maml:name>String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>ImageDetail</maml:name>
+        <maml:description>
+          <maml:para>Controls how the model processes the image and generates its textual understanding. You can select from `Low` or `High`.
+See more details : https://platform.openai.com/docs/guides/vision/low-or-high-fidelity-image-understanding</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>Auto</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Tools</maml:name>
+        <maml:description>
+          <maml:para>A list of tools the model may call. Use this to provide a list of functions the model may generate JSON inputs for.
 https://github.com/mkht/PSOpenAI/blob/main/Examples/How_to_call_functions_with_ChatGPT.ipynb</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">System.Collections.IDictionary[]</command:parameterValue>
@@ -5462,12 +5528,13 @@ https://github.com/mkht/PSOpenAI/blob/main/Examples/How_to_call_functions_with_C
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="function_call">
-        <maml:name>FunctionCall</maml:name>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="tool_choice">
+        <maml:name>ToolChoice</maml:name>
         <maml:description>
           <maml:para>Controls how the model responds to function calls.
-`none` means the model does not call a function, and responds to the end-user. `auto` means the model can pick between an end-user or calling a function.
-Specifying a particular function via `@{name = "my_function"}` forces the model to call that function.</maml:para>
+- `none` means the model does not call a function, and responds to the end-user.
+- `auto` means the model can pick between an end-user or calling a function.
+Specifying a particular function via `@{type = "function"; function = @{name = "my_function"}}` forces the model to call that function.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
         <dev:type>
@@ -5477,7 +5544,7 @@ Specifying a particular function via `@{name = "my_function"}` forces the model 
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-        <maml:name>InvokeFunctionOnCallMode</maml:name>
+        <maml:name>InvokeTools</maml:name>
         <maml:description>
           <maml:para>Selects the action to be taken when the GPT model requests a function call.
 - `None`: The requested function is not executed. This is the default.
@@ -5490,18 +5557,6 @@ Specifying a particular function via `@{name = "my_function"}` forces the model 
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-        <maml:name>MaxFunctionCallCount</maml:name>
-        <maml:description>
-          <maml:para>Limit the maximum number of function calls a model can request within a chat session. The default value is `4`.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-        <dev:type>
-          <maml:name>Int32</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>4</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>Temperature</maml:name>
@@ -5616,6 +5671,33 @@ ID 23182 maps to "apple" and ID 88847 maps to "banana". Thus, this example incre
         <command:parameterValue required="true" variableLength="false">IDictionary</command:parameterValue>
         <dev:type>
           <maml:name>IDictionary</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="response_format">
+        <maml:name>Format</maml:name>
+        <maml:description>
+          <maml:para>Specifies the format that the model must output.
+- `text` is default.
+- `json_object` enables JSON mode, which guarantees the message the model generates is valid JSON.
+- `raw_response` returns raw response content from API.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Seed</maml:name>
+        <maml:description>
+          <maml:para>If specified, the system will make a best effort to sample deterministically, such that repeated requests with the same seed and parameters should return the same result.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Int64</command:parameterValue>
+        <dev:type>
+          <maml:name>Int64</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -5766,8 +5848,15 @@ En septembre 2021, la population estimée des États-Unis est d'environ 331,4 mi
         <maml:title>----------------- Example 4: Function calling -----------------</maml:title>
         <dev:code>PS C:\&gt; $PingFunction = New-ChatCompletionFunction -Command 'Test-Connection' -IncludeParameters ('TargetName','Count')
 PS C:\&gt; $Message = 'Ping the Google Public DNS address three times and briefly report the results.'
-PS C:\&gt; $GPTPingAnswer = Request-ChatCompletion -Message $Message -Model gpt-3.5-turbo-0613 -Functions $PingFunction -InvokeFunctionOnCallMode Auto
+PS C:\&gt; $GPTPingAnswer = Request-ChatCompletion -Message $Message -Model gpt-3.5-turbo-1106 -Tools $PingFunction -InvokeTools Auto
 PS C:\&gt; $GPTPingAnswer | select Answer</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>--------------- Example 5: Image input (Vision) ---------------</maml:title>
+        <dev:code>PS C:\&gt; Request-ChatCompletion -Message $Message -Model gpt-4-vision-preview -Images "C:\image.png"</dev:code>
         <dev:remarks>
           <maml:para></maml:para>
         </dev:remarks>
@@ -6707,11 +6796,22 @@ The maximum length is 1000 characters.</maml:para>
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Model</maml:name>
+          <maml:description>
+            <maml:para>The model to use for image generation. The default is `dall-e-2`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>dall-e-2</dev:defaultValue>
+        </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="n">
           <maml:name>NumberOfImages</maml:name>
           <maml:description>
-            <maml:para>The number of images to generate.
-Must be between `1` and `10`. The default value is `1`.</maml:para>
+            <maml:para>The number of images to generate. Must be between 1 and 10. For `dall-e-3`, only `1` is supported.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">UInt16</command:parameterValue>
           <dev:type>
@@ -6723,8 +6823,8 @@ Must be between `1` and `10`. The default value is `1`.</maml:para>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>Size</maml:name>
           <maml:description>
-            <maml:para>The size of the generated images.
-Must be one of `256x256`, `512x512`, or `1024x1024`. The default value is `1024x1024`.</maml:para>
+            <maml:para>The size of the generated images. Must be one of `256x256`, `512x512`, or `1024x1024` for `dall-e-2`. Must be one of `1024x1024`, `1792x1024`, or `1024x1792` for `dall-e-3` models.
+The default value is `1024x1024`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -6733,11 +6833,35 @@ Must be one of `256x256`, `512x512`, or `1024x1024`. The default value is `1024x
           </dev:type>
           <dev:defaultValue>1024x1024</dev:defaultValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Quality</maml:name>
+          <maml:description>
+            <maml:para>The quality of the image that will be generated. `hd` creates images with finer details and greater consistency across the image. This param is only supported for `dall-e-3`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>standard</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Style</maml:name>
+          <maml:description>
+            <maml:para>The style of the generated images. Must be one of `vivid` or `natural`. Vivid causes the model to lean towards generating hyper-real and dramatic images. Natural causes the model to produce more natural, less hyper-real looking images. This param is only supported for `dall-e-3`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>vivid</dev:defaultValue>
+        </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="response_format">
           <maml:name>Format</maml:name>
           <maml:description>
             <maml:para>The format in which the generated images are returned.
-Must be one of `url`, `base64` or `byte`.</maml:para>
+Must be one of `url`, `base64`, `byte` or `raw_response`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -6842,11 +6966,22 @@ The maximum length is 1000 characters.</maml:para>
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Model</maml:name>
+          <maml:description>
+            <maml:para>The model to use for image generation. The default is `dall-e-2`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>dall-e-2</dev:defaultValue>
+        </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="n">
           <maml:name>NumberOfImages</maml:name>
           <maml:description>
-            <maml:para>The number of images to generate.
-Must be between `1` and `10`. The default value is `1`.</maml:para>
+            <maml:para>The number of images to generate. Must be between 1 and 10. For `dall-e-3`, only `1` is supported.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">UInt16</command:parameterValue>
           <dev:type>
@@ -6858,8 +6993,8 @@ Must be between `1` and `10`. The default value is `1`.</maml:para>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>Size</maml:name>
           <maml:description>
-            <maml:para>The size of the generated images.
-Must be one of `256x256`, `512x512`, or `1024x1024`. The default value is `1024x1024`.</maml:para>
+            <maml:para>The size of the generated images. Must be one of `256x256`, `512x512`, or `1024x1024` for `dall-e-2`. Must be one of `1024x1024`, `1792x1024`, or `1024x1792` for `dall-e-3` models.
+The default value is `1024x1024`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -6867,6 +7002,30 @@ Must be one of `256x256`, `512x512`, or `1024x1024`. The default value is `1024x
             <maml:uri />
           </dev:type>
           <dev:defaultValue>1024x1024</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Quality</maml:name>
+          <maml:description>
+            <maml:para>The quality of the image that will be generated. `hd` creates images with finer details and greater consistency across the image. This param is only supported for `dall-e-3`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>standard</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Style</maml:name>
+          <maml:description>
+            <maml:para>The style of the generated images. Must be one of `vivid` or `natural`. Vivid causes the model to lean towards generating hyper-real and dramatic images. Natural causes the model to produce more natural, less hyper-real looking images. This param is only supported for `dall-e-3`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>vivid</dev:defaultValue>
         </command:parameter>
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>OutFile</maml:name>
@@ -6977,11 +7136,22 @@ The maximum length is 1000 characters.</maml:para>
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Model</maml:name>
+        <maml:description>
+          <maml:para>The model to use for image generation. The default is `dall-e-2`</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>dall-e-2</dev:defaultValue>
+      </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="n">
         <maml:name>NumberOfImages</maml:name>
         <maml:description>
-          <maml:para>The number of images to generate.
-Must be between `1` and `10`. The default value is `1`.</maml:para>
+          <maml:para>The number of images to generate. Must be between 1 and 10. For `dall-e-3`, only `1` is supported.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">UInt16</command:parameterValue>
         <dev:type>
@@ -6993,8 +7163,8 @@ Must be between `1` and `10`. The default value is `1`.</maml:para>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>Size</maml:name>
         <maml:description>
-          <maml:para>The size of the generated images.
-Must be one of `256x256`, `512x512`, or `1024x1024`. The default value is `1024x1024`.</maml:para>
+          <maml:para>The size of the generated images. Must be one of `256x256`, `512x512`, or `1024x1024` for `dall-e-2`. Must be one of `1024x1024`, `1792x1024`, or `1024x1792` for `dall-e-3` models.
+The default value is `1024x1024`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -7003,11 +7173,35 @@ Must be one of `256x256`, `512x512`, or `1024x1024`. The default value is `1024x
         </dev:type>
         <dev:defaultValue>1024x1024</dev:defaultValue>
       </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Quality</maml:name>
+        <maml:description>
+          <maml:para>The quality of the image that will be generated. `hd` creates images with finer details and greater consistency across the image. This param is only supported for `dall-e-3`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>standard</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Style</maml:name>
+        <maml:description>
+          <maml:para>The style of the generated images. Must be one of `vivid` or `natural`. Vivid causes the model to lean towards generating hyper-real and dramatic images. Natural causes the model to produce more natural, less hyper-real looking images. This param is only supported for `dall-e-3`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>vivid</dev:defaultValue>
+      </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="response_format">
         <maml:name>Format</maml:name>
         <maml:description>
           <maml:para>The format in which the generated images are returned.
-Must be one of `url`, `base64` or `byte`.</maml:para>
+Must be one of `url`, `base64`, `byte` or `raw_response`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -7114,7 +7308,7 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>Format = url    : string or array of string</maml:name>
+          <maml:name>Format = url             : string or array of string</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -7122,7 +7316,7 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
       </command:returnValue>
       <command:returnValue>
         <dev:type>
-          <maml:name>Format = base64 : Generated image data represented in base64 string.</maml:name>
+          <maml:name>Format = base64          : Generated image data represented in base64 string.</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -7130,7 +7324,7 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
       </command:returnValue>
       <command:returnValue>
         <dev:type>
-          <maml:name>Format = byte   : Byte array of generated image.</maml:name>
+          <maml:name>Format = byte            : Byte array of generated image.</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -7138,7 +7332,15 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
       </command:returnValue>
       <command:returnValue>
         <dev:type>
-          <maml:name>OutFile         : Nothing.</maml:name>
+          <maml:name>Format = raw_response    : string</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>OutFile                  : Nothing.</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -7160,7 +7362,7 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
       </command:example>
       <command:example>
         <maml:title>Example 2: Creates multiple images at once, and retrieve results by URL.</maml:title>
-        <dev:code>Request-ImageGeneration -Prompt 'Delicious ramen with gyoza' -Format "url" -NumberOfImages 3
+        <dev:code>Request-ImageGeneration -Prompt 'Delicious ramen with gyoza' -Model dall-e-2 -Format "url" -NumberOfImages 3
 
 https://oaidalleapiprodscus.blob.core.windows.net/private/org-BXLtGIt0xglP9if8FVhkD...
 https://oaidalleapiprodscus.blob.core.windows.net/private/org-BXLtGIt0xglP9if8FVhkD...
