@@ -1,4 +1,16 @@
 # Changelog
+### 2.1.0
+Implements some updates that announced in OpenAI Dev Day 2023.  
+  (New features such as Threads or Assistants does not implemented yet. We are working in progress.)
+- Add / Rename / Remove some parameters to `Request-ChatComplention`.
+  + Add : `-Images`, `-ImageDetail`, `-Tools`, `-ToolChoice`, `-Format`, `-Seed`  
+  + Remove : `-Functions`, `-FunctionCall`, `-MaxFunctionCallCount`  
+  + Rename : `-InvokeFunctionOnCallMode` to `-InvokeTools`  
+- Add new models to tab completions of `Request-ChatComplention`.
+  + `gpt-3.5-turbo-1106`, `gpt-4-1106-preview`, `gpt-4-vision-preview`
+- Add `-Model` parameter to `Request-ImageGeneration`. You can specifiy the model name. (`dall-e-2` or `dall-e-3`)
+- Add `-Quality` and `-Style` parameters to `Request-ImageGeneration` (for `dall-e-3`)
+
 ### 2.0.0
 **This is a major release that includes breaking changes.**
 - Add `-ApiBase` parameter to specify the base URL of the API endpoint.  

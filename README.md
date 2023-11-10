@@ -129,7 +129,7 @@ Creating images from scratch based on a text prompt.
 
 ```PowerShell
 $global:OPENAI_API_KEY = '<Put your API key here.>'
-Request-ImageGeneration -Prompt 'A cute baby lion' -Size 256x256 -OutFile 'C:\output\babylion.png'
+Request-ImageGeneration -Prompt 'A cute baby lion' -Model 'dall-e-2' -Size 256x256 -OutFile 'C:\output\babylion.png'
 ```
 
 This sample code saves image to `C:\output\babylion.png`.

@@ -23,7 +23,7 @@ Describe 'Request-ImageGeneration' {
         }
 
         It 'Generate image. format = url' {
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+            $TestResponse = @'
 {
     "created": 1678359675,
     "data": [
@@ -32,11 +32,30 @@ Describe 'Request-ImageGeneration' {
         }
     ]
 }
-'@ }
+'@
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $TestResponse }
             { $script:Result = Request-ImageGeneration -Prompt 'sunflower' -Format url -ea Stop } | Should -Not -Throw
             Should -InvokeVerifiable
             $Result | Should -BeOfType [string]
             $Result | Should -Be 'https://dummyimage.example.com'
+        }
+
+        It 'Generate image. format = raw_response' {
+            $TestResponse = @'
+{
+    "created": 1678359675,
+    "data": [
+        {
+        "url": "https://dummyimage.example.com"
+        }
+    ]
+}
+'@
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $TestResponse }
+            { $script:Result = Request-ImageGeneration -Prompt 'sunflower' -Format raw_response -ea Stop } | Should -Not -Throw
+            Should -InvokeVerifiable
+            $Result | Should -BeOfType [string]
+            $Result | Should -BeExactly $TestResponse
         }
     }
 
@@ -56,7 +75,7 @@ Describe 'Request-ImageGeneration' {
             (Join-Path $TestDrive 'file1.png') | Should -Exist
         }
 
-        It 'Image edit. Format = url' {
+        It 'Image generation. Format = url' {
             { $script:Result = Request-ImageGeneration `
                     -Prompt 'Pigs' `
                     -Format url `
@@ -66,7 +85,7 @@ Describe 'Request-ImageGeneration' {
             $Result | Should -Match '^https://'
         }
 
-        It 'Image edit. Format = base64' {
+        It 'Image generation. Format = base64' {
             { $script:Result = Request-ImageGeneration `
                     -Prompt 'Dog' `
                     -Format base64 `
@@ -76,7 +95,7 @@ Describe 'Request-ImageGeneration' {
             { [Convert]::FromBase64String($script:Result) } | Should -Not -Throw
         }
 
-        It 'Image edit. Format = byte' {
+        It 'Image generation. Format = byte' {
             { $script:Result = Request-ImageGeneration `
                     -Prompt 'Fox' `
                     -Format byte `
@@ -84,6 +103,18 @@ Describe 'Request-ImageGeneration' {
                     -TimeoutSec 30 -ea Stop } | Should -Not -Throw
             $Result.GetType().Name | Should -Be 'Byte[]'
             $Result.Count | Should -BeGreaterThan 1
+        }
+
+        It 'Image generation. Specifies model name (dall-e-3) and styles.' {
+            { $script:Result = Request-ImageGeneration `
+                    -Prompt 'A cute baby lion' `
+                    -Model 'dall-e-3' `
+                    -Format url `
+                    -Quality HD `
+                    -Style natural `
+                    -TimeoutSec 30 -ea Stop } | Should -Not -Throw
+            $Result | Should -BeOfType [string]
+            $Result | Should -Match '^https://'
         }
     }
 }

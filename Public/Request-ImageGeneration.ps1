@@ -2,8 +2,15 @@ function Request-ImageGeneration {
     [CmdletBinding(DefaultParameterSetName = 'Format')]
     param (
         [Parameter(Mandatory = $true, Position = 0, ValueFromPipeline = $true)]
-        [ValidateLength(1, 1000)]
+        [ValidateNotNullOrEmpty()]
         [string]$Prompt,
+
+        [Parameter()]
+        [Completions(
+            'dall-e-2',
+            'dall-e-3'
+        )]
+        [string][LowerCaseTransformation()]$Model = 'dall-e-2',
 
         [Parameter()]
         [ValidateRange(1, 10)]
@@ -11,12 +18,20 @@ function Request-ImageGeneration {
         [uint16]$NumberOfImages = 1,
 
         [Parameter()]
-        [ValidateSet('256', '512', '1024', '256x256', '512x512', '1024x1024')]
+        [ValidateSet('256', '512', '1024', '256x256', '512x512', '1024x1024', '1792x1024', '1024x1792')]
         [string]$Size = '1024x1024',
+
+        [Parameter()]
+        [ValidateSet('standard', 'hd')]
+        [string][LowerCaseTransformation()]$Quality = 'standard',
+
+        [Parameter()]
+        [ValidateSet('vivid', 'natural')]
+        [string][LowerCaseTransformation()]$Style = 'vivid',
 
         [Parameter(ParameterSetName = 'Format')]
         [Alias('response_format')]
-        [ValidateSet('url', 'base64', 'byte')]
+        [ValidateSet('url', 'base64', 'byte', 'raw_response')]
         [string]$Format = 'url',
 
         [Parameter(ParameterSetName = 'OutFile', Mandatory = $true)]
@@ -110,8 +125,14 @@ function Request-ImageGeneration {
                 break
             }
         }
-        if ($PSBoundParameters.ContainsKey('User')) {
-            $PostBody.user = $User
+        if ($PSBoundParameters.ContainsKey('Model')) {
+            $PostBody.model = $Model
+        }
+        if ($PSBoundParameters.ContainsKey('Quality')) {
+            $PostBody.quality = $Quality
+        }
+        if ($PSBoundParameters.ContainsKey('Style')) {
+            $PostBody.style = $Style
         }
         #endregion
 
@@ -133,6 +154,10 @@ function Request-ImageGeneration {
         #endregion
 
         #region Parse response object
+        if ($Format -eq 'raw_response') {
+            Write-Output $Response
+            return
+        }
         try {
             $Response = $Response | ConvertFrom-Json -ErrorAction Stop
         }
