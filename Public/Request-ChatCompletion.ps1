@@ -217,6 +217,16 @@ function Request-ChatCompletion {
             }
             $Tools = $tmpTools
         }
+        elseif ($PSBoundParameters.ContainsKey('Functions')) {
+            $tmpTools = [System.Collections.IDictionary[]]::new($Functions.Count)
+            for ($i = 0; $i -lt $Functions.Count; $i++) {
+                $tmpTools[$i] = @{
+                    'type'     = 'function'
+                    'function' = $Functions[$i]
+                }
+            }
+            $Tools = $tmpTools
+        }
         #endregion
 
         #region Construct parameters for API request
@@ -473,15 +483,11 @@ function Request-ChatCompletion {
             }
 
             foreach ($fCall in $fCalls) {
-                if ($ToolChoice -eq 'none') {
-                    Write-Error 'This tool should not be executed.'
-                    break
-                }
                 if ($fCall.type -ne 'function') {
                     continue
                 }
                 if ($fCall.function.name -notin $Tools.Where({ $_.type -eq 'function' }).function.name) {
-                    Write-Error ('"{0}" does not matches the list of functions. This command should not be executed.' -f $fCall.name)
+                    Write-Error ('"{0}" does not matches the list of functions. This command should not be executed.' -f $fCall.function.name)
                     continue
                 }
                 Write-Verbose ('AI assistant preferes to call a function. (function:{0}, arguments:{1})' -f $fCall.function.name, ($fCall.function.arguments -replace '[\r\n]', ''))
