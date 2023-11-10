@@ -112,7 +112,7 @@ Describe 'Request-ImageGeneration' {
                     -Format url `
                     -Quality HD `
                     -Style natural `
-                    -TimeoutSec 30 -ea Stop } | Should -Not -Throw
+                    -TimeoutSec 30 -MaxRetryCount 5 -ea Stop } | Should -Not -Throw
             $Result | Should -BeOfType [string]
             $Result | Should -Match '^https://'
         }
