@@ -61,7 +61,20 @@ Describe 'Request-ChatCompletion' {
             $StreamOut | Should -Be 'ECHO'
         }
 
-        It 'Function call (non execution)' {
+        It 'Output format = raw_response' {
+            $Response_json = @'
+{
+    "id": "chatcmpl-123",
+    "object": "chat.completion"
+}
+'@
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $Response_json }
+            { $script:Result = Request-ChatCompletion -Message 'test' -Format raw_response -ea Stop } | Should -Not -Throw
+            Should -InvokeVerifiable
+            $Result | Should -BeExactly $Response_json
+        }
+
+        It 'Function call (non execution) - Legacy' {
             Mock Test-Path { return $true }
             Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
 {
@@ -106,6 +119,73 @@ Describe 'Request-ChatCompletion' {
             $Result.Answer | Should -BeNullOrEmpty
             $Result.Message | Should -Be 'test'
             $Result.choices[0].message.function_call.name | Should -BeExactly 'Test-Path'
+            $Result.History[0].Role | Should -Be 'user'
+            $Result.History[0].Content | Should -Be 'test'
+            $Result.History[1].Role | Should -Be 'assistant'
+            $Result.History[1].Content | Should -BeNullOrEmpty
+        }
+
+        It 'Tool calls (non execution)' {
+            Mock Test-Path { return $true }
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+{
+    "id": "chatcmpl-8Iv2FuLeNiC4TLvU0q1fYBUt4WFop",
+    "object": "chat.completion",
+    "created": 1699458335,
+    "model": "gpt-3.5-turbo-1106",
+    "choices": [
+        {
+        "index": 0,
+        "message": {
+            "role": "assistant",
+            "content": null,
+            "tool_calls": [
+            {
+                "id": "call_WBhNSCSE4saHB4KXuSxLXiRW",
+                "type": "function",
+                "function": {
+                "name": "Test-Path",
+                "arguments": "{\"Path\":[\"C:\\test.txt\"],\"PathType\":\"Leaf\"}"
+                }
+            }
+            ]
+        },
+        "finish_reason": "tool_calls"
+        }
+    ],
+    "usage": {
+        "prompt_tokens": 255,
+        "completion_tokens": 23,
+        "total_tokens": 278
+    },
+    "system_fingerprint": "fp_eeff13180a"
+    }
+'@ }
+            $ToolsSpec = @(@{
+                    type     = 'function'
+                    function = @{
+                        name        = 'Test-Path'
+                        description = 'test path'
+                        parameters  = @{
+                            type       = 'object'
+                            properties = @{
+                                'Path'     = @{type = 'string' }
+                                'PathType' = @{type = 'string'; enum = ('Leaf', 'Container', 'Any') }
+                            }
+                            required   = @('Path')
+                        }
+                    }
+                })
+
+            { $script:Result = Request-ChatCompletion -Message 'test' -Tools $ToolsSpec -InvokeTools None -ea Stop } | Should -Not -Throw
+            Should -Invoke -CommandName 'Test-Path' -Times 0
+            Should -InvokeVerifiable
+            $Result.Answer | Should -BeNullOrEmpty
+            $Result.Message | Should -Be 'test'
+            $Result.choices[0].message.tool_calls.GetType().Name | Should -Be 'Object[]'
+            $Result.choices[0].message.tool_calls[0].id | Should -BeOfType [string]
+            $Result.choices[0].message.tool_calls[0].type | Should -Be 'function'
+            $Result.choices[0].message.tool_calls[0].function.name | Should -BeExactly 'Test-Path'
             $Result.History[0].Role | Should -Be 'user'
             $Result.History[0].Content | Should -Be 'test'
             $Result.History[1].Role | Should -Be 'assistant'
@@ -216,7 +296,76 @@ Describe 'Request-ChatCompletion' {
             $Result.Answer[0] | Should -BeOfType [string]
         }
 
-        It 'Function call (non execution)' {
+        It 'Tool calls (non execution)' {
+            $ToolsSpec = @(@{
+                    type     = 'function'
+                    function = @{
+                        name        = 'Test-Connection'
+                        description = 'The Test-Connection command sends pings to remote computers and returns replies.'
+                        parameters  = @{
+                            type       = 'object'
+                            properties = @{
+                                'ComputerName' = @{type = 'string'; description = 'Specifies the target host name or ip address, e.g, "8.8.8.8" ' }
+                                'Count'        = @{type = 'integer'; description = 'Specifies the number of echo requests to send. The default value is 4.' }
+                            }
+                            required   = @('ComputerName')
+                        }
+                    }
+                })
+
+            $Message = 'Ping the Google Public DNS address three times and briefly report the results.'
+            { $script:Result = Request-ChatCompletion `
+                    -Message $Message `
+                    -Model gpt-3.5-turbo-1106 `
+                    -Temperature 0.1 `
+                    -Tools $ToolsSpec `
+                    -InvokeTools None `
+                    -ea Stop `
+            } | Should -Not -Throw
+            $Result.Answer | Should -BeNullOrEmpty
+            $Result.Message | Should -Be $Message
+            $Result.choices[0].message.tool_calls[0].function.name | Should -BeExactly 'Test-Connection'
+        }
+
+        It 'Tool calls (implicit execution)' {
+            $ToolsSpec = @(@{
+                    type     = 'function'
+                    function = @{
+                        name        = 'Test-Connection'
+                        description = 'The Test-Connection command sends pings to remote computers and returns replies.'
+                        parameters  = @{
+                            type       = 'object'
+                            properties = @{
+                                'ComputerName' = @{type = 'string'; description = 'Specifies the target host name or ip address, e.g, "8.8.8.8" ' }
+                                'Count'        = @{type = 'integer'; description = 'Specifies the number of echo requests to send. The default value is 4.' }
+                            }
+                            required   = @('ComputerName')
+                        }
+                    }
+                })
+
+            $Message = 'Ping the Google Public DNS address three times and briefly report the results.'
+            { $script:Result = Request-ChatCompletion `
+                    -Message $Message `
+                    -Model gpt-3.5-turbo-1106 `
+                    -Temperature 0.1 `
+                    -Tools $ToolsSpec `
+                    -InvokeTools Auto `
+                    -ea Stop `
+            } | Should -Not -Throw
+            $Result.Answer | Should -Not -BeNullOrEmpty
+            $Result.Message | Should -Be $Message
+            $Result.History[0].Role | Should -Be 'user'
+            $Result.History[0].Content | Should -Be $Message
+            $Result.History[1].Role | Should -Be 'assistant'
+            $Result.History[1].tool_calls | Should -Not -BeNullOrEmpty
+            $Result.History[2].Role | Should -Be 'tool'
+            $Result.History[2].tool_call_id | Should -BeExactly ($Result.History[1].tool_calls[0].id)
+            $Result.History[3].Role | Should -Be 'assistant'
+            $Result.History[3].Content | Should -Not -BeNullOrEmpty
+        }
+
+        It 'Function call (non execution) - Legacy' {
             $FunctionSpec = @{
                 name        = 'Test-Connection'
                 description = 'The Test-Connection command sends pings to remote computers and returns replies.'
@@ -244,7 +393,7 @@ Describe 'Request-ChatCompletion' {
             $Result.choices[0].message.function_call.name | Should -BeExactly 'Test-Connection'
         }
 
-        It 'Function call (implicit execution)' {
+        It 'Function call (implicit execution) - Legacy' {
             $FunctionSpec = @{
                 name        = 'Test-Connection'
                 description = 'The Test-Connection command sends pings to remote computers and returns replies.'
@@ -315,6 +464,31 @@ Describe 'Request-ChatCompletion' {
             Should -Invoke -CommandName 'Invoke-WebRequest' -ModuleName $script:ModuleName -Times 1
             # The retry interval is given a jitter of 0.8 to 1.2 times, so the minimum is 0.8 seconds.
             $StopWatch.ElapsedMilliseconds | Should -BeGreaterOrEqual 800
+        }
+
+        It 'Image input (url)' {
+            $RemoteImageUrl = 'https://upload.wikimedia.org/wikipedia/commons/a/a8/Dons_Coaches_coach_1957_Bedford_SB3_Yeates_Europa_NKY_161_at_Aldham_Old_Tyme_Rally_2014.jpg'
+            { $script:Result = Request-ChatCompletion -Model 'gpt-4-vision-preview' -Message "What's in this image?" -Images ($RemoteImageUrl) -ImageDetail Low  -TimeoutSec 30 -ea Stop } | Should -Not -Throw
+            $Result | Should -BeOfType [pscustomobject]
+            $Result.object | Should -Be 'chat.completion'
+            $Result.Answer | Should -HaveCount 1
+            $Result.Answer[0] | Should -BeOfType [string]
+            $Result.created | Should -BeOfType [datetime]
+            $Result.Message | Should -Be "What's in this image?"
+            $Result.History[0].Role | Should -Be 'user'
+            $Result.History[1].Role | Should -Be 'assistant'
+        }
+
+        It 'Image input (local file)' {
+            { $script:Result = Request-ChatCompletion -Model 'gpt-4-vision-preview' -Message "What's in this image?" -Images ($script:TestData + '/sweets_donut.png')  -TimeoutSec 30 -ea Stop } | Should -Not -Throw
+            $Result | Should -BeOfType [pscustomobject]
+            $Result.object | Should -Be 'chat.completion'
+            $Result.Answer | Should -HaveCount 1
+            $Result.Answer[0] | Should -BeOfType [string]
+            $Result.created | Should -BeOfType [datetime]
+            $Result.Message | Should -Be "What's in this image?"
+            $Result.History[0].Role | Should -Be 'user'
+            $Result.History[1].Role | Should -Be 'assistant'
         }
     }
 }

@@ -24,9 +24,12 @@ function Request-ChatCompletion {
             'gpt-3.5-turbo-16k',
             'gpt-3.5-turbo-0613',
             'gpt-3.5-turbo-16k-0613',
+            'gpt-3.5-turbo-1106',
             'gpt-4-0613',
             'gpt-4-32k',
-            'gpt-4-32k-0613'
+            'gpt-4-32k-0613',
+            'gpt-4-1106-preview',
+            'gpt-4-vision-preview'
         )]
         [string][LowerCaseTransformation()]$Model = 'gpt-3.5-turbo',
 
@@ -36,23 +39,42 @@ function Request-ChatCompletion {
         [Alias('RolePrompt')]
         [string[]]$SystemMessage,
 
+        [Parameter()]
+        [string[]]$Images,
+
+        [Parameter()]
+        [ValidateSet('auto', 'low', 'high')]
+        [string][LowerCaseTransformation()]$ImageDetail = 'auto',
+
         #region Function call params
         [Parameter()]
+        [ValidateNotNullOrEmpty()]
+        [System.Collections.IDictionary[]]$Tools,
+
+        # deprecated
+        [Parameter(DontShow = $true)]
         [ValidateNotNullOrEmpty()]
         [System.Collections.IDictionary[]]$Functions,
 
         [Parameter()]
+        [Alias('tool_choice')]
+        [Completions('none', 'auto')]
+        [object]$ToolChoice,
+
+        # deprecated
+        [Parameter(DontShow = $true)]
         [Alias('function_call')]
         [Completions('none', 'auto')]
         [object]$FunctionCall,
 
         [Parameter()]
+        [Alias('InvokeFunctionOnCallMode')] # For backward compatibilty
         [ValidateSet('None', 'Auto', 'Confirm')]
-        [string]$InvokeFunctionOnCallMode = 'None',
+        [string]$InvokeTools = 'None',
 
-        [Parameter()]
-        [ValidateRange(0, 65535)]
-        [uint16]$MaxFunctionCallCount = 4,
+        # deprecated
+        [Parameter(DontShow = $true)]
+        [uint16]$MaxFunctionCallCount,
         #endregion Function call params
 
         [Parameter()]
@@ -94,6 +116,14 @@ function Request-ChatCompletion {
         [Parameter()]
         [Alias('logit_bias')]
         [System.Collections.IDictionary]$LogitBias,
+
+        [Parameter()]
+        [Alias('response_format')]
+        [ValidateSet('text', 'json_object', 'raw_response')]
+        [string][LowerCaseTransformation()]$Format = 'text',
+
+        [Parameter()]
+        [int64]$Seed,
 
         [Parameter()]
         [string]$User,
@@ -166,6 +196,27 @@ function Request-ChatCompletion {
         if ($PSBoundParameters.ContainsKey('Name') -and (-not $PSBoundParameters.ContainsKey('Message'))) {
             Write-Warning 'Name parameter is ignored because the Message parameter is not specified.'
         }
+        if ($PSBoundParameters.ContainsKey('MaxFunctionCallCount')) {
+            Write-Warning 'MaxFunctionCallCount parameter is deprecated.'
+        }
+        #endregion
+
+        #region Tools paramter validation
+        if ($PSBoundParameters.ContainsKey('Tools')) {
+            $tmpTools = [System.Collections.IDictionary[]]::new($Tools.Count)
+            for ($i = 0; $i -lt $Tools.Count; $i++) {
+                if ($Tools[$i].Contains('type')) {
+                    $tmpTools[$i] = $Tools[$i]
+                }
+                else {
+                    $tmpTools[$i] = @{
+                        'type'     = 'function'
+                        'function' = $Tools[$i]
+                    }
+                }
+            }
+            $Tools = $tmpTools
+        }
         #endregion
 
         #region Construct parameters for API request
@@ -174,9 +225,17 @@ function Request-ChatCompletion {
         if ($ApiType -eq [OpenAIApiType]::OpenAI) {
             $PostBody.model = $Model
         }
+        if ($PSBoundParameters.ContainsKey('Tools')) {
+            $PostBody.tools = @($Tools)
+        }
+        # deprecated
         if ($PSBoundParameters.ContainsKey('Functions')) {
             $PostBody.functions = @($Functions)
         }
+        if ($PSBoundParameters.ContainsKey('ToolChoice')) {
+            $PostBody.tool_choice = $ToolChoice
+        }
+        # deprecated
         if ($PSBoundParameters.ContainsKey('FunctionCall')) {
             $PostBody.function_call = $FunctionCall
         }
@@ -204,6 +263,12 @@ function Request-ChatCompletion {
         if ($PSBoundParameters.ContainsKey('LogitBias')) {
             $PostBody.logit_bias = Convert-LogitBiasDictionary -InputObject $LogitBias -Model $Engine
         }
+        if ($PSBoundParameters.ContainsKey('Format') -and $Format -ne 'raw_response') {
+            $PostBody.response_format = @{'type' = $Format }
+        }
+        if ($PSBoundParameters.ContainsKey('Seed')) {
+            $PostBody.seed = $Seed
+        }
         if ($PSBoundParameters.ContainsKey('User')) {
             $PostBody.user = $User
         }
@@ -220,18 +285,20 @@ function Request-ChatCompletion {
         foreach ($msg in $History) {
             if ($msg.role) {
                 $tm = [ordered]@{
-                    role = [string]$msg.role
-                }
-                # content is mandatory
-                if ($null -eq $msg.content) {
-                    $tm.content = $null
-                }
-                else {
-                    $tm.content = ([string]$msg.content).Trim()
+                    role    = [string]$msg.role
+                    content = $msg.content
                 }
                 # name is optional
                 if ($msg.name) {
                     $tm.name = [string]$msg.name
+                }
+                # tool_calls is optional
+                if ($msg.tool_calls) {
+                    $tm.tool_calls = $msg.tool_calls
+                }
+                # tool_call_id is optional
+                if ($msg.tool_call_id) {
+                    $tm.tool_call_id = $msg.tool_call_id
                 }
                 # function_call is optional
                 if ($msg.function_call) {
@@ -255,6 +322,26 @@ function Request-ChatCompletion {
                 role    = $Role
                 content = $Message.Trim()
             }
+            # For GPT-4 with Vison
+            if ($PSBoundParameters.ContainsKey('Images')) {
+                $um.content = @(
+                    @{type = 'text'; text = $Message.Trim() }
+                )
+                foreach ($image in $Images) {
+                    $imc = $null
+                    if (Test-Path -LiteralPath $image -PathType Leaf) {
+                        $imc = @{type = 'image_url'; image_url = @{url = (Convert-ImageToDataURL $image) } }
+                    }
+                    else {
+                        $imc = @{type = 'image_url'; image_url = @{url = $image } }
+                    }
+                    if ($null -eq $imc) { continue }
+                    if ($PSBoundParameters.ContainsKey('ImageDetail')) {
+                        $imc.image_url.detail = $ImageDetail
+                    }
+                    $um.content += $imc
+                }
+            }
             # name poperty is optional
             if (-not [string]::IsNullOrWhiteSpace($Name)) {
                 $um.name = $Name.Trim()
@@ -268,19 +355,11 @@ function Request-ChatCompletion {
             return
         }
 
-        # Do not accept function call when the number of function calls has reached to limit.
-        if ($Messages.Where({ $_.function_call }).Count -ge $MaxFunctionCallCount) {
-            Write-Warning 'The number of function calls in this chat session has reached the value specified in the MaxFunctionCallCount. No more function calls will be accepted.'
-            $FunctionCall = 'none'
-            $PostBody.function_call = $FunctionCall
-        }
-
         $PostBody.messages = $Messages.ToArray()
         #endregion
 
         #region Send API Request (Stream)
         if ($Stream) {
-            $IsContinue = $false
             # Stream output
             Invoke-OpenAIAPIRequest `
                 -Method $OpenAIParameter.Method `
@@ -296,17 +375,24 @@ function Request-ChatCompletion {
                 Where-Object {
                 -not [string]::IsNullOrEmpty($_)
             } | ForEach-Object {
-                try {
-                    $_ | ConvertFrom-Json -ErrorAction Stop
+                if ($Format -eq 'raw_response') {
+                    $_
                 }
-                catch {
-                    Write-Error -Exception $_.Exception
+                else {
+                    try {
+                        $_ | ConvertFrom-Json -ErrorAction Stop
+                    }
+                    catch {
+                        Write-Error -Exception $_.Exception
+                    }
                 }
             } | Where-Object {
-                $null -ne $_.choices -and ($_.choices[0].delta.content -is [string] -or $_.choices[0].delta.function_call)
-            } | ForEach-Object -Begin { $FuncCallObject = @() } -Process {
-                if ($_.choices[0].delta.content) {
-                    $InfoMsg = $_.choices[0].delta.function_call
+                $Format -eq 'raw_response' -or ($null -ne $_.choices -and ($_.choices[0].delta.content -is [string]))
+            } | ForEach-Object -Process {
+                if ($Format -eq 'raw_response') {
+                    Write-Output $_
+                }
+                else {
                     # Writes content to both the Information stream(6>) and the Standard output stream(1>).
                     $InfoMsg = [System.Management.Automation.HostInformationMessage]::new()
                     $InfoMsg.Message = $_.choices[0].delta.content
@@ -314,19 +400,9 @@ function Request-ChatCompletion {
                     Write-Information $InfoMsg
                     Write-Output $InfoMsg.Message
                 }
-                elseif ($_.choices[0].delta.function_call) {
-                    $FuncCallObject += $_.choices[0].delta.function_call
-                }
-            } -End {
-                if ($FuncCallObject.Count -gt 0) {
-                    $Response = ConvertFrom-Json '{"choices":[{"message":{"role":"assistant","content":"","function_call":{"name":"","arguments":""}},"finish_reason":"function_call"}]}'
-                    $Response.choices[0].message.function_call.name = (-join $FuncCallObject.name)
-                    $Response.choices[0].message.function_call.arguments = (-join $FuncCallObject.arguments)
-                    $IsContinue = $true
-                }
             }
 
-            if (-not $IsContinue) { return }
+            return
         }
         #endregion
 
@@ -347,6 +423,10 @@ function Request-ChatCompletion {
             if ($null -eq $Response) {
                 return
             }
+            if ($Format -eq 'raw_response') {
+                Write-Output $Response
+                return
+            }
             # Parse response object
             try {
                 $Response = $Response | ConvertFrom-Json -ErrorAction Stop
@@ -365,6 +445,10 @@ function Request-ChatCompletion {
                 role    = $tr.role
                 content = $tr.content
             }
+            if ($tr.tool_calls) {
+                $rcm.Add('tool_calls', $tr.tool_calls)
+            }
+            #deprecated
             if ($tr.function_call) {
                 $rcm.Add('function_call', $tr.function_call)
             }
@@ -373,45 +457,72 @@ function Request-ChatCompletion {
         #endregion
 
         #region Function call
-        if ($null -ne $Response.choices -and $Response.choices[0].finish_reason -eq 'function_call') {
-            $fCommandResult = $null
-            $fCall = $Response.choices[0].message.function_call
-            Write-Verbose ('AI assistant preferes to call a function. (function:{0}, arguments:{1})' -f $fCall.name, ($fCall.arguments -replace '[\r\n]', ''))
-
-            # Check the command name matches the list supplied
-            if ($fCall.name -notin $Functions.name) {
-                Write-Error ('"{0}" does not matches the list of functions. This command should not be executed.' -f $fCall.name)
-            }
-            elseif ($FunctionCall -eq 'none') {
-                Write-Error 'The number of function calls in this chat session has exceeded the value specified in the MaxFunctionCallCount. This command should not be executed.'
+        if ($null -ne $Response.choices -and $Response.choices[0].finish_reason -in ('tool_calls', 'function_call')) {
+            $ToolCallResults = @()
+            $fCalls = @()
+            if ($Response.choices[0].finish_reason -eq 'tool_calls') {
+                $fCalls = @($Response.choices[0].message.tool_calls)
             }
             else {
+                # function_call (deprecared)
+                $IsLegacyFunctionCall = $true
+                $fCalls = @(@{
+                        type     = 'function'
+                        function = $Response.choices[0].message.function_call
+                    })
+            }
+
+            foreach ($fCall in $fCalls) {
+                if ($ToolChoice -eq 'none') {
+                    Write-Error 'This tool should not be executed.'
+                    break
+                }
+                if ($fCall.type -ne 'function') {
+                    continue
+                }
+                if ($fCall.function.name -notin $Tools.Where({ $_.type -eq 'function' }).function.name) {
+                    Write-Error ('"{0}" does not matches the list of functions. This command should not be executed.' -f $fCall.name)
+                    continue
+                }
+                Write-Verbose ('AI assistant preferes to call a function. (function:{0}, arguments:{1})' -f $fCall.function.name, ($fCall.function.arguments -replace '[\r\n]', ''))
+
+                $fCommandResult = $null
                 try {
                     # Execute command
-                    $fCommandResult = Invoke-ChatCompletionFunction -Name $fCall.name -Arguments $fCall.arguments -InvokeFunctionOnCallMode $InvokeFunctionOnCallMode -ErrorAction Stop
+                    $fCommandResult = Invoke-ChatCompletionFunction -Name $fCall.function.name -Arguments $fCall.function.arguments -InvokeFunctionOnCallMode $InvokeTools -ErrorAction Stop
                 }
                 catch {
                     Write-Error -ErrorRecord $_
                     $fCommandResult = '[ERROR] ' + $_.Exception.Message
                 }
+                if ($null -eq $fCommandResult) {
+                    continue
+                }
+                if (-not $IsLegacyFunctionCall) {
+                    $ToolCallResults += @{
+                        role         = 'tool'
+                        content      = $(if ($fCommandResult -is [string]) { $fCommandResult }else { (ConvertTo-Json $fCommandResult) })
+                        tool_call_id = $fCall.id
+                    }
+                }
+                else {
+                    $ToolCallResults += @{
+                        role    = 'function'
+                        content = $(if ($fCommandResult -is [string]) { $fCommandResult }else { (ConvertTo-Json $fCommandResult) })
+                        name    = $fCall.function.name
+                    }
+                }
             }
 
             # Second request
-            if ($null -ne $fCommandResult) {
+            if ($ToolCallResults.Count -gt 0) {
                 Write-Verbose 'The function has been executed. The result of the execution is sent to the API.'
                 $SecondRequestParam = $PSBoundParameters
-                if ($fCommandResult -is [string]) {
-                    $SecondRequestParam.Message = $fCommandResult
-                }
-                else {
-                    $SecondRequestParam.Message = (ConvertTo-Json $fCommandResult)
-                }
-                if ($SecondRequestParam.ContainsKey('SystemMessage')) {
-                    $null = $SecondRequestParam.Remove('SystemMessage')
-                }
-                $SecondRequestParam.Role = 'function'
-                $SecondRequestParam.Name = $fCall.name
-                # $SecondRequestParam.Remove('Functions')
+                $null = $SecondRequestParam.Remove('Message')
+                $null = $SecondRequestParam.Remove('Role')
+                $null = $SecondRequestParam.Remove('Name')
+                $null = $SecondRequestParam.Remove('SystemMessage')
+                $Messages.AddRange($ToolCallResults)
                 $SecondRequestParam.History = $Messages.ToArray()
                 Request-ChatCompletion @SecondRequestParam
                 return
@@ -426,7 +537,11 @@ function Request-ChatCompletion {
             # convert unixtime to [DateTime] for read suitable
             $Response | Add-Member -MemberType NoteProperty -Name 'created' -Value ([System.DateTimeOffset]::FromUnixTimeSeconds($unixtime).LocalDateTime) -Force
         }
-        $Response | Add-Member -MemberType NoteProperty -Name 'Message' -Value ($Messages.Where({ $_.role -eq 'user' })[-1].content)
+        $LastUserMessage = ($Messages.Where({ $_.role -eq 'user' })[-1].content)
+        if ($LastUserMessage -isnot [string]) {
+            $LastUserMessage = [string]($LastUserMessage | ? { $_.type -eq 'text' } | select -Last 1 -ExpandProperty text)
+        }
+        $Response | Add-Member -MemberType NoteProperty -Name 'Message' -Value $LastUserMessage
         $Response | Add-Member -MemberType NoteProperty -Name 'Answer' -Value ([string[]]$Response.choices.message.content)
         $Response | Add-Member -MemberType NoteProperty -Name 'History' -Value $Messages.ToArray()
         Write-Output $Response

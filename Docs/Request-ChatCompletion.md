@@ -19,10 +19,11 @@ Request-ChatGPT
     [-Name <String>]
     [-Model <String>]
     [-SystemMessage <String[]>]
-    [-Functions <IDictionary[]>]
-    [-FunctionCall <Object>]
-    [-InvokeFunctionOnCallMode <String>]
-    [-MaxFunctionCallCount <UInt16>]
+    [-Images <String[]>]
+    [-ImageDetail <String>]
+    [-Tools <IDictionary[]>]
+    [-ToolChoice <Object>]
+    [-InvokeTools <String>]
     [-Temperature <Double>]
     [-TopP <Double>]
     [-NumberOfAnswers <UInt16>]
@@ -32,6 +33,8 @@ Request-ChatGPT
     [-PresencePenalty <Double>]
     [-FrequencyPenalty <Double>]
     [-LogitBias <IDictionary>]
+    [-Format <String>]
+    [-Seed <Int64>]
     [-User <String>]
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
@@ -80,8 +83,13 @@ PS C:\> Request-ChatGPT 'Please describe ChatGPT in 100 charactors.' -Stream | W
 ```PowerShell
 PS C:\> $PingFunction = New-ChatCompletionFunction -Command 'Test-Connection' -IncludeParameters ('TargetName','Count')
 PS C:\> $Message = 'Ping the Google Public DNS address three times and briefly report the results.'
-PS C:\> $GPTPingAnswer = Request-ChatCompletion -Message $Message -Model gpt-3.5-turbo-0613 -Functions $PingFunction -InvokeFunctionOnCallMode Auto
+PS C:\> $GPTPingAnswer = Request-ChatCompletion -Message $Message -Model gpt-3.5-turbo-1106 -Tools $PingFunction -InvokeTools Auto
 PS C:\> $GPTPingAnswer | select Answer
+```
+
+### Example 5: Image input (Vision)
+```PowerShell
+PS C:\> Request-ChatCompletion -Message $Message -Model gpt-4-vision-preview -Images "C:\image.png"
 ```
 
 ## PARAMETERS
@@ -138,9 +146,29 @@ Required: False
 Position: Named
 ```
 
-### -Functions
-A list of function specifications the model may generate JSON inputs for.  
-The function name, description, and parameters must be given as a hash table. See the guide for more information.  
+### -Images
+An array of images to passing the model. You can specifies local image file or remote url.  
+Image input is only supported when using the `gpt-4-visual-preview` model.
+
+```yaml
+Type: String[]
+Required: False
+Position: Named
+```
+
+### -ImageDetail
+Controls how the model processes the image and generates its textual understanding. You can select from `Low` or `High`.  
+See more details : https://platform.openai.com/docs/guides/vision/low-or-high-fidelity-image-understanding
+
+```yaml
+Type: String
+Required: False
+Position: Named
+Default value: Auto
+```
+
+### -Tools
+A list of tools the model may call. Use this to provide a list of functions the model may generate JSON inputs for.  
 https://github.com/mkht/PSOpenAI/blob/main/Examples/How_to_call_functions_with_ChatGPT.ipynb
 
 ```yaml
@@ -149,19 +177,20 @@ Required: False
 Position: Named
 ```
 
-### -FunctionCall
+### -ToolChoice
 Controls how the model responds to function calls.  
-`none` means the model does not call a function, and responds to the end-user. `auto` means the model can pick between an end-user or calling a function.  
-Specifying a particular function via `@{name = "my_function"}` forces the model to call that function.
+- `none` means the model does not call a function, and responds to the end-user.  
+- `auto` means the model can pick between an end-user or calling a function.  
+Specifying a particular function via `@{type = "function"; function = @{name = "my_function"}}` forces the model to call that function.
 
 ```yaml
 Type: Object
-Aliases: function_call
+Aliases: tool_choice
 Required: False
 Position: Named
 ```
 
-### -InvokeFunctionOnCallMode
+### -InvokeTools
 Selects the action to be taken when the GPT model requests a function call.  
 - `None`: The requested function is not executed. This is the default.  
 - `Auto`: Automatically executes the requested function.  
@@ -171,16 +200,6 @@ Selects the action to be taken when the GPT model requests a function call.
 Type: String
 Required: False
 Position: Named
-```
-
-### -MaxFunctionCallCount
-Limit the maximum number of function calls a model can request within a chat session. The default value is `4`.
-
-```yaml
-Type: Int32
-Required: False
-Position: Named
-Default value: 4
 ```
 
 ### -Temperature
@@ -278,6 +297,28 @@ ID 23182 maps to "apple" and ID 88847 maps to "banana". Thus, this example incre
 ```yaml
 Type: IDictionary
 Aliases: logit_bias
+Required: False
+Position: Named
+```
+
+### -Format
+Specifies the format that the model must output.  
+- `text` is default.  
+- `json_object` enables JSON mode, which guarantees the message the model generates is valid JSON.  
+- `raw_response` returns raw response content from API.
+
+```yaml
+Type: String
+Aliases: response_format
+Required: False
+Position: Named
+```
+
+### -Seed
+If specified, the system will make a best effort to sample deterministically, such that repeated requests with the same seed and parameters should return the same result.
+
+```yaml
+Type: Int64
 Required: False
 Position: Named
 ```
