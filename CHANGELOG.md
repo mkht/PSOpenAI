@@ -1,4 +1,10 @@
 # Changelog
+### 2.2.0 (Not released yet)
+- Add [Request-AudioSpeech](/Docs/Request-AudioSpeech.md) function. It generates audio from the input text.
+  ```PowerShell
+  PS C:\> Request-AudioSpeech -text 'Do something fun to play.' -OutFile 'C:\Output\text2speech.mp3' -Voice Alloy
+  ```
+
 ### 2.1.0
 Implements some updates that announced in OpenAI Dev Day 2023.  
   (New features such as Threads or Assistants does not implemented yet. We are working in progress.)

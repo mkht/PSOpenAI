@@ -45,6 +45,7 @@ Install-Module -Name PSOpenAI
 + [Enter-ChatGPT](/Docs/Enter-ChatGPT.md)
 + [Get-OpenAIModels](/Docs/Get-OpenAIModels.md)
 + [New-ChatCompletionFunction](/Docs/New-ChatCompletionFunction.md)
++ [Request-AudioSpeech](/Docs/Request-AudioSpeech.md)
 + [Request-AudioTranscription](/Docs/Request-AudioTranscription.md)
 + [Request-AudioTranslation](/Docs/Request-AudioTranslation.md)
 + [Request-ChatCompletion](/Docs/Request-ChatCompletion.md)
@@ -106,7 +107,23 @@ I am an AI language model created by OpenAI, designed to assist with ...
 > ```PowerShell
 > Request-ChatGPT -Message "Who are you?" -Model "gpt-4"
 > ```
-> 
+
+
+### Audio Speech (Text-to-Speech)
+
+Generates audio from the input text.
+
+```PowerShell
+$global:OPENAI_API_KEY = '<Put your API key here.>'
+Request-AudioSpeech -text 'Do something fun to play.' -OutFile 'C:\Output\text2speech.mp3' -Voice Onyx
+```
+
+You can combine with ChatGPT.
+
+```PowerShell
+Request-ChatGPT -Message "Who are you?" | Request-AudioSpeech -OutFile 'C:\Output\ChatAnswer.mp3' -Voice Nova
+```
+
 
 ### Audio transcription (Speech-to-Text)
 
@@ -171,17 +188,6 @@ Request-ChatGPT 'Describe ChatGPT in 100 charactors.' -Stream | Write-Host -NoNe
 
 ![Stream](/Docs/images/StreamOutput.gif)
 
-### Function calling
-
-`Function calling` is an optional capabilities in the Chat Completions API which can be used to provide function specifications. The purpose of this is to enable models to generate function arguments which adhere to the provided specifications.
-
-See detailed usage guide [here](/Examples/How_to_call_functions_with_ChatGPT.ipynb).
-
-```PowerShell
-$Message = 'Ping the Google Public DNS address three times and briefly report the results.'
-$PingFunction = New-ChatCompletionFunction -Command 'Test-Connection' -IncludeParameters ('TargetName', 'Count')
-$Answer = Request-ChatCompletion -Message $Message -Model gpt-3.5-turbo-0613 -Functions $PingFunction -InvokeFunctionOnCallMode Auto
-```
 
 ### Restore masked images
 
