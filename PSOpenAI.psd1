@@ -44,6 +44,7 @@
         'Enter-ChatGPT',
         'Get-CosineSimilarity',
         'Get-OpenAIModels',
+        'Request-AudioSpeech',
         'Request-AudioTranscription',
         'Request-AudioTranslation',
         'Request-ChatCompletion',

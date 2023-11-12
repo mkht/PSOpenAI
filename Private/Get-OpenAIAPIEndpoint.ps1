@@ -76,6 +76,16 @@ function Get-OpenAIAPIEndpoint {
             }
             continue
         }
+        'Audio.Speech' {
+            $UriBuilder.Path += '/audio/speech'
+            @{
+                Name        = 'audio.speech'
+                Method      = 'Post'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+            continue
+        }
         'Audio.Transcription' {
             $UriBuilder.Path += '/audio/transcriptions'
             @{
