@@ -31,7 +31,7 @@ function Initialize-OrganizationID {
     }
 
     if ([string]::IsNullOrEmpty($OrgId)) {
-        Write-Verbose -Message ('Organization-ID was not found. Not to be used.')
+        # Write-Verbose -Message ('Organization-ID was not found. Not to be used.')
     }
     else {
         if ($OrgId.StartsWith('org-')) { $first = 6 }else { $first = 3 }
