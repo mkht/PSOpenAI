@@ -41,6 +41,10 @@ function Receive-ThreadRun {
     )
 
     begin {
+        if ($AutoRemoveThread -and (-not $Wait)) {
+            Write-Error -Exception ([System.InvalidOperationException]::new('The -AutoRemoveThread parameter cannot be used without the -Wait parameter.'))
+        }
+
         $ThreadIds = [string[]]@()
         # Parse Common params
         $CommonParams = ParseCommonParams $PSBoundParameters
@@ -58,12 +62,10 @@ function Receive-ThreadRun {
     end {
         if ($AutoRemoveThread) {
             if (-not $Wait) {
-                Write-Error -Exception ([System.InvalidOperationException]::new('The -AutoRemoveThread parameter cannot be used without the -Wait parameter.'))
             }
             elseif ($ThreadIds.Count -gt 0) {
                 $ThreadIds | PSOpenAI\Remove-Thread @CommonParams
             }
         }
-
     }
 }

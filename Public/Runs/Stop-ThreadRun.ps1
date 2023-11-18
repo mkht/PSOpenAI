@@ -118,7 +118,10 @@ function Stop-ThreadRun {
         # Wait for cancel
         if ($Wait) {
             Write-Verbose 'Waiting for cancelled...'
-            $Response | PSOpenAI\Wait-ThreadRun -StatusForExit ('cancelled', 'completed', 'failed', 'expired') @CommonParams
+            $Result = $Response | PSOpenAI\Wait-ThreadRun -StatusForExit ('cancelled', 'completed', 'failed', 'expired') @CommonParams
+            if ($null -ne $Result -and $PassThru) {
+                Write-Output $Result
+            }
         }
         else {
             #region Output

@@ -86,9 +86,11 @@ function Wait-ThreadRun {
     }
 
     process {
+        $innerRunObject = $InputObject
+
         $GetThreadRunparams = $CommonParams
-        $GetThreadRunparams.RunId = $InputObject.id
-        $GetThreadRunparams.InputObject = $InputObject.thread_id
+        $GetThreadRunparams.RunId = $innerRunObject.id
+        $GetThreadRunparams.InputObject = $innerRunObject.thread_id
         $GetThreadRunparams.Primitive = $true
 
         # Create cancellation token for timeout
@@ -100,14 +102,13 @@ function Wait-ThreadRun {
         try {
             $PollCounter = 1
             $ProgressTitle = 'Waiting for completes...'
-            while ($InputObject.status -and $InputObject.status -in $innerStatusForWait) {
+            while ($innerRunObject.status -and $innerRunObject.status -in $innerStatusForWait) {
                 #Wait
-                Write-Progress -Activity $ProgressTitle -Status ('The status of run with id "{0}" is "{1}"' -f $InputObject.id, $InputObject.status) -PercentComplete -1
-                $InputObject = $null
+                Write-Progress -Activity $ProgressTitle -Status ('The status of run with id "{0}" is "{1}"' -f $innerRunObject.id, $innerRunObject.status) -PercentComplete -1
+                $innerRunObject = $null
                 Start-CancelableWait -Milliseconds ([System.Math]::Min((200 * ($PollCounter++)), 1000)) -CancellationToken $Cancellation.Token -ea Stop
-                $InputObject = PSOpenAI\Get-ThreadRun @GetThreadRunparams
+                $innerRunObject = PSOpenAI\Get-ThreadRun @GetThreadRunparams
             }
-            Write-Progress -Activity $ProgressTitle -Completed
         }
         catch [OperationCanceledException] {
             Write-Error -ErrorRecord $_
@@ -118,17 +119,18 @@ function Wait-ThreadRun {
             return
         }
         finally {
+            Write-Progress -Activity $ProgressTitle -Completed
             if ($null -ne $Cancellation) {
                 $Cancellation.Dispose()
             }
         }
 
-        if (-not $InputObject.status) {
+        if (-not $innerRunObject.status) {
             Write-Error 'Could not retrieve the status of run.'
         }
 
         #Finished
-        Write-Verbose ('The status of run with id "{0}" is "{1}"' -f $InputObject.id, $InputObject.status)
+        Write-Verbose ('The status of run with id "{0}" is "{1}"' -f $innerRunObject.id, $innerRunObject.status)
         $GetThreadRunparams.Primitive = $false
         PSOpenAI\Get-ThreadRun @GetThreadRunparams
         return

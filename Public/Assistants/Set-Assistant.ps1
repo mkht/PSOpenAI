@@ -91,7 +91,7 @@ function Set-Assistant {
 
         # Invoke base function
         $steppablePipeline = {
-            PSOpenAI\New-Assistants @Parameters
+            PSOpenAI\New-Assistant @Parameters
         }.GetSteppablePipeline($myInvocation.CommandOrigin)
         $steppablePipeline.Begin($PSCmdlet)
     }

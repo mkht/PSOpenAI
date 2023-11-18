@@ -73,6 +73,6 @@ function ParseThreadRunStepObject {
         }
     }
 
-    $InputObject | Add-Member -MemberType NoteProperty -Name 'SimpleContent' -Value  $simplecontent -Force
+    $InputObject | Add-Member -MemberType NoteProperty -Name 'SimpleContent' -Value $simplecontent -Force
     Write-Output $InputObject
 }
