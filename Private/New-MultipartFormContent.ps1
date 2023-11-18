@@ -66,17 +66,9 @@ function GetMultipartFileContent {
         [FileInfo]$file
     )
 
-    $headerFilename = $file.Name
-    # If the filename contains non-ASCII characters,
-    # the OpenAI API cannot recognize the file format correctly and returns an error.
-    # As a workaround, disguise header filename.
-    if ($headerFilename -match '[^\u0000-\u007F]') {
-        $headerFilename = [Path]::GetRandomFileName() + $file.Extension
-    }
-
     $contentType = 'application/octet-stream'
     $header = @(
-        ('Content-Disposition: form-data; name="{0}"; filename="{1}"' -f $fieldName, $headerFilename),
+        ('Content-Disposition: form-data; name="{0}"; filename="{1}"' -f $fieldName, $file.Name),
         ('Content-Type: {0}' -f $contentType),
         '',
         ''

@@ -136,5 +136,45 @@ function Get-OpenAIAPIEndpoint {
             }
             continue
         }
+        'Files' {
+            $UriBuilder.Path += '/files'
+            @{
+                Name        = 'files'
+                Method      = 'Post'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'multipart/form-data'
+            }
+            continue
+        }
+        'Assistants' {
+            $UriBuilder.Path += '/assistants'
+            @{
+                Name        = 'assistants'
+                Method      = 'Post'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+            continue
+        }
+        'Threads' {
+            $UriBuilder.Path += '/threads'
+            @{
+                Name        = 'threads'
+                Method      = 'Post'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+            continue
+        }
+        'Runs' {
+            $UriBuilder.Path += '/threads/{0}/runs'
+            @{
+                Name        = 'runs'
+                Method      = 'Post'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+            continue
+        }
     }
 }

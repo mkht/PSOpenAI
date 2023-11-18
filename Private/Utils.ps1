@@ -113,3 +113,30 @@ function DecryptSecureString {
         $bstr = $PlainToken = $null
     }
 }
+
+function ParseCommonParams {
+    param (
+        [Parameter(Position = 0)]
+        [hashtable]$Arguments,
+
+        [Parameter()]
+        [string[]]$ParamNames = @(
+            'TimeoutSec'
+            'MaxRetryCount'
+            'ApiBase'
+            'ApiVersion'
+            'ApiType'
+            'AuthType'
+            'ApiKey'
+            'Organization'
+        )
+    )
+    $OutParam = @{}
+    # CommonParams
+    $ParamNames.Where({
+            $Arguments.ContainsKey($_)
+        }).ForEach({
+            $OutParam.Add($_, $Arguments."$_")
+        })
+    $OutParam
+}
