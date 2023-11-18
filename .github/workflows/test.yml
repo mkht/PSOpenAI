@@ -35,7 +35,7 @@ jobs:
     steps:
       - run: git config --global core.autocrlf false
 
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Install Pester
         run: Install-Module Pester -Force -AllowClobber -Scope CurrentUser -SkipPublisherCheck
@@ -62,7 +62,7 @@ jobs:
     steps:
       - run: git config --global core.autocrlf false
 
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Install Pester
         run: Install-Module Pester -Force -AllowClobber -Scope CurrentUser -SkipPublisherCheck
