@@ -88,11 +88,14 @@ function New-Thread {
         }
 
         if ($Messages.Count -gt 0) {
-            $innerMessages = [hashtable[]]::new($Messages.Count)
+            $innerMessages = [System.Collections.Generic.List[hashtable]]::new($Messages.Count)
             foreach ($msg in $Messages) {
                 $t = @{
                     'role'    = 'user'
                     'content' = $null
+                }
+                if ($msg -is [string]) {
+                    $t.content = $msg
                 }
                 if ($msg.role -is [string] -and -not [string]::IsNullOrEmpty($msg.role)) {
                     $t.user = $msg.role
@@ -116,10 +119,10 @@ function New-Thread {
                     $t.metadata = $msg.metadata
                 }
                 if ($null -ne $t.content) {
-                    $innerMessages += $t
+                    $innerMessages.Add($t)
                 }
             }
-            $PostBody.messages = $innerMessages
+            $PostBody.messages = $innerMessages.ToArray()
         }
         #endregion
 
