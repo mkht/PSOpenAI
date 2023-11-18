@@ -28,7 +28,7 @@ Describe 'Set-Assistant' {
 
         It 'Set assistant with ID' {
             { $script:Result = Set-Assistant -InputObject 'asst_abc123' -ea Stop } | Should -Not -Throw
-            Should -Invoke New-Thread -ModuleName $script:ModuleName
+            Should -Invoke New-Assistant -ModuleName $script:ModuleName
             $script:Result.id | Should -Be 'asst_abc123'
         }
 
@@ -39,14 +39,14 @@ Describe 'Set-Assistant' {
                 created_at = [datetime]::Today
             }
             { $script:Result = Set-Assistant -InputObject $InObject -ea Stop } | Should -Not -Throw
-            Should -Invoke New-Thread -ModuleName $script:ModuleName
+            Should -Invoke New-Assistant -ModuleName $script:ModuleName
             $script:Result.id | Should -Be 'asst_abc123'
         }
 
         It 'Pipeline input with ID' {
             $InObject = 'asst_abc123'
             { $script:Result = $InObject | Set-Assistant -ea Stop } | Should -Not -Throw
-            Should -Invoke New-Thread -ModuleName $script:ModuleName
+            Should -Invoke New-Assistant -ModuleName $script:ModuleName
             $script:Result.id | Should -Be 'asst_abc123'
         }
 
@@ -57,14 +57,14 @@ Describe 'Set-Assistant' {
                 created_at = [datetime]::Today
             }
             { $script:Result = $InObject | Set-Assistant -ea Stop } | Should -Not -Throw
-            Should -Invoke New-Thread -ModuleName $script:ModuleName
+            Should -Invoke New-Assistant -ModuleName $script:ModuleName
             $script:Result.id | Should -Be 'asst_abc123'
         }
 
         It 'Error on invalid input' {
             $InObject = [datetime]::Today
             { $InObject | Set-Assistant -ea Stop } | Should -Throw
-            Should -Invoke New-Thread -ModuleName $script:ModuleName -Times 0
+            Should -Invoke New-Assistant -ModuleName $script:ModuleName -Times 0
         }
     }
 }
