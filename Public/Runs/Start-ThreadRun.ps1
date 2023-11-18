@@ -192,6 +192,7 @@ function Start-ThreadRun {
         #endregion
 
         #region Output
+        Write-Verbose ('Start thread run with id "{0}". The current status is "{1}"' -f $Response.id, $Response.status)
         ParseThreadRunObject $Response -CommonParams $CommonParams -Primitive
         #endregion
     }

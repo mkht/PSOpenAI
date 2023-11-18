@@ -193,6 +193,7 @@ function New-Assistant {
             # convert unixtime to [DateTime] for read suitable
             $Response | Add-Member -MemberType NoteProperty -Name 'created_at' -Value ([System.DateTimeOffset]::FromUnixTimeSeconds($unixtime).LocalDateTime) -Force
         }
+        Write-Verbose ('The assistant with id "{0}" has been created.' -f $Response.id)
         Write-Output $Response
         #endregion
     }

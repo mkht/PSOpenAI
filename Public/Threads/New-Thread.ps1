@@ -152,6 +152,7 @@ function New-Thread {
         #endregion
 
         #region Output
+        Write-Verbose ('The thread with id "{0}" has been created.' -f $Response.id)
         Write-Output (ParseThreadObject $Response -CommonParams $CommonParams -Primitive)
         #endregion
     }
