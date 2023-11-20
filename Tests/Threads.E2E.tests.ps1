@@ -71,9 +71,10 @@ Password should be between 8 and 12 random alphanumeric characters.
         }
 
         It 'STEP6: Download file that has been generated.' {
-            { $script:Thread.Messages.file_ids | Get-OpenAIFileContent -OutFile (Join-Path $TestDrive 'test.csv') -ea Stop } | Should -Not -Throw
-            (Join-Path $TestDrive 'test.csv') | Should -Exist
-            $Csv = Get-Content (Join-Path $TestDrive 'test.csv') -Raw | ConvertFrom-Csv
+            $OutFilePath = (Join-Path $TestDrive 'test.csv')
+            { $script:Thread.Messages.file_ids | Get-OpenAIFileContent -OutFile $OutFilePath -ea Stop } | Should -Not -Throw
+            $OutFilePath | Should -Exist
+            $Csv = Get-Content $OutFilePath -Raw | ConvertFrom-Csv
             $csv.Count | Should -BeGreaterThan 1
             $csv[0].ID | Should -Not -BeNullOrEmpty
             $csv[0].Name | Should -Not -BeNullOrEmpty
