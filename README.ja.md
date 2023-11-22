@@ -66,7 +66,7 @@ Install-Module -Name PSOpenAI
 ----
 ## 使い方
 
-より詳細で複雑なシナリオの説明は [Docs](/Docs) および [Examples](/Examples) も参照してください。
+より詳細で複雑なシナリオの説明は [Docs](/Docs) および [Guides](/Guides) も参照してください。
 
 ### ChatGPT (インタラクティブ)
 
@@ -171,7 +171,7 @@ Request-ChatGPT 'Describe ChatGPT in 100 charactors.' -Stream | Write-Host -NoNe
 関数呼び出し は Chat Completion API のオプション機能です。  
 関数の定義をパラメータとしてGPTモデルに与えると、モデルが呼び出すべき関数の名前と引数を生成します。
 
-詳しい使い方は[ガイド](/Examples/How_to_call_functions_with_ChatGPT.ipynb)を参照してください。
+詳しい使い方は[ガイド](/Guides/How_to_call_functions_with_ChatGPT.ipynb)を参照してください。
 
 ```PowerShell
 $Message = 'Ping the Google Public DNS address three times and briefly report the results.'
@@ -248,9 +248,9 @@ PS C:> Request-ChatGPT -Message "Who are you?" -ApiKey '<Put your API key here.>
 ```
 
 ## Azure OpenAI Service
-OpenAI ではなく Azure OpenAI Service を使用する場合は、AzureテナントにOpenAIリソースを作成し、APIキーとエンドポイントURLを取得する必要があります。詳細な手順はExampleを参照してください。
+OpenAI ではなく Azure OpenAI Service を使用する場合は、AzureテナントにOpenAIリソースを作成し、APIキーとエンドポイントURLを取得する必要があります。詳細な手順はGuidesを参照してください。
 
-+ [How to use with Azure OpenAI Service](Examples/How_to_use_with_Azure_OpenAI_Service.ipynb)
++ [How to use with Azure OpenAI Service](Guides/How_to_use_with_Azure_OpenAI_Service.ipynb)
 
 ### Azure のサンプルコード
 ```powershell

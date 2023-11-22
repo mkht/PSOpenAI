@@ -71,7 +71,7 @@ Install-Module -Name PSOpenAI
 ----
 ## Usages
 
-See [Docs](/Docs) and [Examples](/Examples) for more detailed and complex scenario descriptions.
+See [Docs](/Docs) and [Guides](/Guides) for more detailed and complex scenario descriptions.
 
 ### ChatGPT (Interactive)
 
@@ -256,9 +256,9 @@ PS C:> Request-ChatGPT -Message "Who are you?" -ApiKey '<Put your API key here.>
 ```
 
 ## Azure OpenAI Service
-If you want to use Azure OpenAI Service instead of OpenAI. You should create Azure OpenAI resource to your Azure tenant, and get API key and endpoint url. See examples for more details.
+If you want to use Azure OpenAI Service instead of OpenAI. You should create Azure OpenAI resource to your Azure tenant, and get API key and endpoint url. See guides for more details.
 
-+ [How to use with Azure OpenAI Service](Examples/How_to_use_with_Azure_OpenAI_Service.ipynb)
++ [How to use with Azure OpenAI Service](Guides/How_to_use_with_Azure_OpenAI_Service.ipynb)
 
 ### Sample code for Azure
 ```powershell

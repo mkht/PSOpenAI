@@ -169,7 +169,7 @@ Default value: Auto
 
 ### -Tools
 A list of tools the model may call. Use this to provide a list of functions the model may generate JSON inputs for.  
-https://github.com/mkht/PSOpenAI/blob/main/Examples/How_to_call_functions_with_ChatGPT.ipynb
+https://github.com/mkht/PSOpenAI/blob/main/Guides/How_to_call_functions_with_ChatGPT.ipynb
 
 ```yaml
 Type: System.Collections.IDictionary[]
