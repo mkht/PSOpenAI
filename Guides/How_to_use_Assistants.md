@@ -8,7 +8,7 @@ The Assistants API allows you to build AI assistants within your own application
 OpenAI's official documents is here.  
 https://platform.openai.com/docs/assistants/overview
 
-PSOpenAI PowerShell module provides various cmdlets for using the Assistants API throw PowerShell friendly style especially pipeline input / output.
+PSOpenAI PowerShell module provides various cmdlets for using the Assistants API through PowerShell friendly style especially pipeline input / output.
 
 This guide describes how to use Assistants step-by-step.
 
