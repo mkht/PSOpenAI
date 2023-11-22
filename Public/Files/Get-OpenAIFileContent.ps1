@@ -1,6 +1,6 @@
 function Get-OpenAIFileContent {
     [CmdletBinding()]
-    [OutputType([pscustomobject])]
+    [OutputType([byte[]])]
     param (
         [Parameter(Mandatory = $true, Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
         [Alias('file_id')]

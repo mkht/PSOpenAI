@@ -2,12 +2,12 @@ function Get-ThreadRunStep {
     [CmdletBinding(DefaultParameterSetName = 'List')]
     [OutputType([pscustomobject])]
     param (
-        [Parameter(ParameterSetName = 'Get', Mandatory = $true, Position = 0)]
+        [Parameter(ParameterSetName = 'Get', Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
         [Alias('step_id')]
         [ValidateNotNullOrEmpty()]
         [string][UrlEncodeTransformation()]$StepId,
 
-        [Parameter(Mandatory = $true, ValueFromPipeline = $true)]
+        [Parameter(Mandatory = $true, Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
         [ValidateScript({ ([string]$_.id).StartsWith('run_') -and ([string]$_.thread_id).StartsWith('thread_') })]
         [Alias('Run')]
         [Object]$InputObject,

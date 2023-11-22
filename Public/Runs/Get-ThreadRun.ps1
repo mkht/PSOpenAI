@@ -61,7 +61,7 @@ function Get-ThreadRun {
         [Alias('OrgId')]
         [string]$Organization,
 
-        [Parameter()]
+        [Parameter(DontShow = $true)]
         [switch]$Primitive
     )
 
