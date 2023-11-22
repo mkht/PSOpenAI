@@ -51,7 +51,7 @@ $Thread = $Thread | Add-ThreadMessage `
     -PassThru
 ```
 
-## Step 3 : Run the Assiatnt with Thread.
+## Step 3 : Run the Assistant with Thread.
 
 For the AI model to respond to user messages, create a Run by associating an Assistant with a Thread. The Assistants reads Thread's messages and runs tools such as Code Interpreter if necessary to create an response.
 
@@ -132,7 +132,7 @@ Get-OpenAIFileContent -Id "file-rApGDzYB4Kop2piAhFfzbrxT" -OutFile "C:\data\grap
 
 ## Step 7 : Check step details.
 
-If you want to see more details about what Assiatnt did internally to create the message, use `Get-ThreadRunStep` to get the Step object.
+If you want to see more details about what Assistant did internally to create the message, use `Get-ThreadRunStep` to get the Step object.
 
 ```PowerShell
 # Get Steps
