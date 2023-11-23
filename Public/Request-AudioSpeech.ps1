@@ -142,6 +142,9 @@ function Request-AudioSpeech {
         #region Output
         # create parent directory if it does not exist
         $ParentDirectory = Split-Path $OutFile -Parent
+        if (-not $ParentDirectory) {
+            $ParentDirectory = [string]$PWD
+        }
         if (-not (Test-Path -LiteralPath $ParentDirectory -PathType Container)) {
             $null = New-Item -Path $ParentDirectory -ItemType Directory -Force
         }
