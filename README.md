@@ -2,7 +2,7 @@
 
 [![Test](https://github.com/mkht/PSOpenAI/actions/workflows/test.yml/badge.svg)](https://github.com/mkht/PSOpenAI/actions/workflows/test.yml)
 
-PowerShell module for OpenAI and Azure OpenAI Service.
+PowerShell module for OpenAI and Azure OpenAI Service.  
 You can use OpenAI functions such as ChatGPT, Speech-to-Text, Text-to-Image from PowerShell.
 
 **This is a community-based project and is not an official offering of OpenAI.**
@@ -42,18 +42,50 @@ Install-Module -Name PSOpenAI
 + [Get-CosineSimilarity](/Docs/Get-CosineSimilarity.md)
 
 ### OpenAI
+#### Chat
 + [Enter-ChatGPT](/Docs/Enter-ChatGPT.md)
-+ [Get-OpenAIModels](/Docs/Get-OpenAIModels.md)
-+ [New-ChatCompletionFunction](/Docs/New-ChatCompletionFunction.md)
-+ [Request-AudioSpeech](/Docs/Request-AudioSpeech.md)
-+ [Request-AudioTranscription](/Docs/Request-AudioTranscription.md)
-+ [Request-AudioTranslation](/Docs/Request-AudioTranslation.md)
 + [Request-ChatCompletion](/Docs/Request-ChatCompletion.md)
-+ [Request-ChatGPT](/Docs/Request-ChatCompletion.md)
-+ [Request-Embeddings](/Docs/Request-Embeddings.md)
++ [New-ChatCompletionFunction](/Docs/New-ChatCompletionFunction.md)
+
+#### Assistants
+[Guide: How to use Assistants](/Guides/How_to_use_Assistants.md)
+
++ [Get-Assistant](/Docs/Get-Assistant.md)
++ [New-Assistant](/Docs/New-Assistant.md)
++ [Set-Assistant](/Docs/Set-Assistant.md)
++ [Remove-Assistant](/Docs/Remove-Assistant.md)
++ [Get-Thread](/Docs/Get-Thread.md)
++ [New-Thread](/Docs/New-Thread.md)
++ [Set-Thread](/Docs/Set-Thread.md)
++ [Remove-Thread](/Docs/Remove-Thread.md)
++ [Get-ThreadMessage](/Docs/Get-ThreadMessage.md)
++ [Add-ThreadMessage](/Docs/Add-ThreadMessage.md)
++ [Get-ThreadRun](/Docs/Get-ThreadRun.md)
++ [Start-ThreadRun](/Docs/Start-ThreadRun.md)
++ [Stop-ThreadRun](/Docs/Stop-ThreadRun.md)
++ [Wait-ThreadRun](/Docs/Wait-ThreadRun.md)
++ [Receive-ThreadRun](/Docs/Receive-ThreadRun.md)
++ [Get-ThreadRunStep](/Docs/Get-ThreadRunStep.md)
+
+#### Images
 + [Request-ImageEdit](/Docs/Request-ImageEdit.md)
 + [Request-ImageGeneration](/Docs/Request-ImageGeneration.md)
 + [Request-ImageVariation](/Docs/Request-ImageVariation.md)
+
+#### Audio
++ [Request-AudioSpeech](/Docs/Request-AudioSpeech.md)
++ [Request-AudioTranscription](/Docs/Request-AudioTranscription.md)
++ [Request-AudioTranslation](/Docs/Request-AudioTranslation.md)
+
+#### Files
++ [Get-OpenAIFile](/Docs/Get-OpenAIFile.md)
++ [Register-OpenAIFile](/Docs/Register-OpenAIFile.md)
++ [Remove-OpenAIFile](/Docs/Remove-OpenAIFile.md)
++ [Get-OpenAIFileContent](/Docs/Get-OpenAIFileContent.md)
+
+#### Others
++ [Get-OpenAIModels](/Docs/Get-OpenAIModels.md)
++ [Request-Embeddings](/Docs/Request-Embeddings.md)
 + [Request-Moderation](/Docs/Request-Moderation.md)
 + [Request-TextCompletion](/Docs/Request-TextCompletion.md)
 + [Request-TextEdit](/Docs/Request-TextEdit.md)
@@ -91,21 +123,21 @@ You can ask questions to ChatGPT.
 
 ```PowerShell
 $global:OPENAI_API_KEY = '<Put your API key here.>'
-$Result = Request-ChatGPT -Message "Who are you?"
+$Result = Request-ChatCompletion -Message "Who are you?"
 Write-Output $Result.Answer
 ```
 
-This code ouputs answer from ChatGPT
+This code outputs answer from ChatGPT
 
 ```
 I am an AI language model created by OpenAI, designed to assist with ...
 ```
 
-> Tips:  
+> [!TIP]  
 > The default model used is GPT-3.5.  
 > If you can and want to use GPT-4, you can specifies model explicitly like this.  
 > ```PowerShell
-> Request-ChatGPT -Message "Who are you?" -Model "gpt-4"
+> Request-ChatCompletion -Message "Who are you?" -Model "gpt-4"
 > ```
 
 
@@ -121,7 +153,7 @@ Request-AudioSpeech -text 'Do something fun to play.' -OutFile 'C:\Output\text2s
 You can combine with ChatGPT.
 
 ```PowerShell
-Request-ChatGPT -Message "Who are you?" | Request-AudioSpeech -OutFile 'C:\Output\ChatAnswer.mp3' -Voice Nova
+Request-ChatCompletion -Message "Who are you?" | Request-AudioSpeech -OutFile 'C:\Output\ChatAnswer.mp3' -Voice Nova
 ```
 
 
@@ -157,20 +189,20 @@ The saved image like this.
 
 ### Multiple conversations with ChatGPT while keeping context.
 
-`Request-ChatGPT` accepts past dialogs from pipeline. Additional questions can be asked while maintaining context.
+`Request-ChatCompletion` accepts past dialogs from pipeline. Additional questions can be asked while maintaining context.
 
 ```PowerShell
-PS C:\> $FirstQA = Request-ChatGPT -Message "What is the population of the United States?"
+PS C:\> $FirstQA = Request-ChatCompletion -Message "What is the population of the United States?"
 PS C:\> Write-Output $FirstQA.Answer
 
 As of September 2021, the estimated population of the United States is around 331.4 million people.
 
-PS C:\> $SecondQA = $FirstQA | Request-ChatGPT -Message "Translate the previous answer into French."
+PS C:\> $SecondQA = $FirstQA | Request-ChatCompletion -Message "Translate the previous answer into French."
 PS C:\> Write-Output $SecondQA.Answer
 
 En septembre 2021, la population estimée des États-Unis est d'environ 331,4 millions de personnes.
 
-PS C:\> $ThirdQA = $SecondQA | Request-ChatGPT -Message 'Please make it shorter.'
+PS C:\> $ThirdQA = $SecondQA | Request-ChatCompletion -Message 'Please make it shorter.'
 PS C:\> Write-Output $ThirdQA.Answer
 
 La population des États-Unis est estimée à environ 331,4 millions de personnes.
@@ -180,10 +212,10 @@ La population des États-Unis est estimée à environ 331,4 millions de personne
 
 By default, results are output all at once after all OpenAI responses are complete, so it may take some time before results are available.
 
-To get responses sooner, you can use the `-Stream` option for `Request-ChatGPT` and `Request-TextCompletion`. The results will be returned as a "stream". (similar to how ChatGPT WebUI displays)
+To get responses sooner, you can use the `-Stream` option for `Request-ChatCompletion` and `Request-TextCompletion`. The results will be returned as a "stream". (similar to how ChatGPT WebUI displays)
 
 ```PowerShell
-Request-ChatGPT 'Describe ChatGPT in 100 charactors.' -Stream | Write-Host -NoNewline
+Request-ChatCompletion 'Describe ChatGPT in 100 charactors.' -Stream | Write-Host -NoNewline
 ```
 
 ![Stream](/Docs/images/StreamOutput.gif)
@@ -236,7 +268,7 @@ This method is best suited when running on a trusted host or CI/CD pipeline.
 
 ```PowerShell
 PS C:> $env:OPENAI_API_KEY = '<Put your API key here.>'
-PS C:> Request-ChatGPT -Message "Who are you?"
+PS C:> Request-ChatCompletion -Message "Who are you?"
 ```
 
 ### Method 2: Set a global variable named `OPENAI_API_KEY`.
@@ -244,7 +276,7 @@ Set the API key to the `$global:OPENAI_API_KEY` variable. The variable is implic
 
 ```PowerShell
 PS C:> $global:OPENAI_API_KEY = '<Put your API key here.>'
-PS C:> Request-ChatGPT -Message "Who are you?"
+PS C:> Request-ChatCompletion -Message "Who are you?"
 ```
 
 ### Method 3: Supply as named parameter.
@@ -252,13 +284,13 @@ Specify the API key explicitly in the `ApiKey` parameter. It must be specified e
 This is best used when the function is called only once or with few calls, such as when executing manually from the console.
 
 ```PowerShell
-PS C:> Request-ChatGPT -Message "Who are you?" -ApiKey '<Put your API key here.>'
+PS C:> Request-ChatCompletion -Message "Who are you?" -ApiKey '<Put your API key here.>'
 ```
 
 ## Azure OpenAI Service
 If you want to use Azure OpenAI Service instead of OpenAI. You should create Azure OpenAI resource to your Azure tenant, and get API key and endpoint url. See guides for more details.
 
-+ [How to use with Azure OpenAI Service](Guides/How_to_use_with_Azure_OpenAI_Service.ipynb)
++ [Guide: How to use with Azure OpenAI Service](Guides/How_to_use_with_Azure_OpenAI_Service.ipynb)
 
 ### Sample code for Azure
 ```powershell

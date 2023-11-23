@@ -5,6 +5,25 @@
   PS C:\> Request-AudioSpeech -text 'Do something fun to play.' -OutFile 'C:\Output\text2speech.mp3' -Voice Alloy
   ```
 
+- Add new functions for using the OpenAI Assistants API.
+ 
+  To use Assistants with the new PSOpenAI cmdlets, please refer to this guide.  
+  [Guide: How to use Assistants](/Guides/How_to_use_Assistants.md)
+
+  > [!WARNING]  
+  > The Assistants API is still in Beta. Specifications, usage, and parameters are subject to change without announcement.
+
+  + Assistants: `Get-Assistant`, `New-Assistant`, `Remove-Assistant`, `Set-Assistant`
+  + Threads: `Get-Thread`, `New-Thread`, `Remove-Thread`, `Set-Thread`
+  + Messages: `Get-ThreadMessage`, `Add-ThreadMessage`
+  + Runs: `Get-ThreadRun`, `Start-ThreadRun`, `Stop-ThreadRun`, `Wait-ThreadRun`, `Receive-ThreadRun`
+  + Steps: `Get-ThreadRunStep`
+  + Files: `Get-OpenAIFile`, `Register-OpenAIFile`, `Remove-OpenAIFile`, `Get-OpenAIFileContent`
+
+- Change directory name from "Examples" to ["Guides"](/Guides).
+- Suppress verbose message about the organization-Id not found.
+- Fix minor bugs.
+
 ### 2.1.0
 Implements some updates that announced in OpenAI Dev Day 2023.  
   (New features such as Threads or Assistants does not implemented yet. We are working in progress.)

@@ -1,4 +1,28 @@
 # 変更履歴
+### 2.2.0 (未リリース)
+- 新しい関数 [Request-AudioSpeech](/Docs/Request-AudioSpeech.md) を追加しました。入力したテキストから読み上げ音声を生成します。
+  ```PowerShell
+  PS C:\> Request-AudioSpeech -text 'Do something fun to play.' -OutFile 'C:\Output\text2speech.mp3' -Voice Alloy
+  ```
+- Assistants APIを使用するための新しい関数を多数追加しました。
+ 
+  Assistantsの使用方法はこちらのガイドを参照してください。
+  [Guide: How to use Assistants](/Guides/How_to_use_Assistants.md)
+
+  > [!WARNING]  
+  > Assistants API はまだベータ版です. 動作、パラメータ、使い方は予告なく変更されることがあります
+
+  + Assistants: `Get-Assistant`, `New-Assistant`, `Remove-Assistant`, `Set-Assistant`
+  + Threads: `Get-Thread`, `New-Thread`, `Remove-Thread`, `Set-Thread`
+  + Messages: `Get-ThreadMessage`, `Add-ThreadMessage`
+  + Runs: `Get-ThreadRun`, `Start-ThreadRun`, `Stop-ThreadRun`, `Wait-ThreadRun`, `Receive-ThreadRun`
+  + Steps: `Get-ThreadRunStep`
+  + Files: `Get-OpenAIFile`, `Register-OpenAIFile`, `Remove-OpenAIFile`, `Get-OpenAIFileContent`
+
+- "Examples" ディレクトリの名前を ["Guides"](/Guides) に変更します。
+- 組織IDが環境変数から取得できなかった場合に出力される煩わしい詳細メッセージを削除しました。
+- いくつかの軽微な不具合を修正しました。
+
 ### 2.1.0
 OpenAI Dev Day 2023で発表された新しい機能への対応を進めています。  
 ThreadsやAssistantsなどの機能へはまだ対応していませんが、今後のリリースで対応予定です。  

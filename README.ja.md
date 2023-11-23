@@ -38,17 +38,50 @@ Install-Module -Name PSOpenAI
 + [Get-CosineSimilarity](/Docs/Get-CosineSimilarity.md)
 
 ### OpenAI
+#### Chat
 + [Enter-ChatGPT](/Docs/Enter-ChatGPT.md)
-+ [Get-OpenAIModels](/Docs/Get-OpenAIModels.md)
-+ [New-ChatCompletionFunction](/Docs/New-ChatCompletionFunction.md)
-+ [Request-AudioTranscription](/Docs/Request-AudioTranscription.md)
-+ [Request-AudioTranslation](/Docs/Request-AudioTranslation.md)
 + [Request-ChatCompletion](/Docs/Request-ChatCompletion.md)
-+ [Request-ChatGPT](/Docs/Request-ChatCompletion.md)
-+ [Request-Embeddings](/Docs/Request-Embeddings.md)
++ [New-ChatCompletionFunction](/Docs/New-ChatCompletionFunction.md)
+
+#### Assistants
+[Guide: How to use Assistants](/Guides/How_to_use_Assistants.md)
+
++ [Get-Assistant](/Docs/Get-Assistant.md)
++ [New-Assistant](/Docs/New-Assistant.md)
++ [Set-Assistant](/Docs/Set-Assistant.md)
++ [Remove-Assistant](/Docs/Remove-Assistant.md)
++ [Get-Thread](/Docs/Get-Thread.md)
++ [New-Thread](/Docs/New-Thread.md)
++ [Set-Thread](/Docs/Set-Thread.md)
++ [Remove-Thread](/Docs/Remove-Thread.md)
++ [Get-ThreadMessage](/Docs/Get-ThreadMessage.md)
++ [Add-ThreadMessage](/Docs/Add-ThreadMessage.md)
++ [Get-ThreadRun](/Docs/Get-ThreadRun.md)
++ [Start-ThreadRun](/Docs/Start-ThreadRun.md)
++ [Stop-ThreadRun](/Docs/Stop-ThreadRun.md)
++ [Wait-ThreadRun](/Docs/Wait-ThreadRun.md)
++ [Receive-ThreadRun](/Docs/Receive-ThreadRun.md)
++ [Get-ThreadRunStep](/Docs/Get-ThreadRunStep.md)
+
+#### Images
 + [Request-ImageEdit](/Docs/Request-ImageEdit.md)
 + [Request-ImageGeneration](/Docs/Request-ImageGeneration.md)
 + [Request-ImageVariation](/Docs/Request-ImageVariation.md)
+
+#### Audio
++ [Request-AudioSpeech](/Docs/Request-AudioSpeech.md)
++ [Request-AudioTranscription](/Docs/Request-AudioTranscription.md)
++ [Request-AudioTranslation](/Docs/Request-AudioTranslation.md)
+
+#### Files
++ [Get-OpenAIFile](/Docs/Get-OpenAIFile.md)
++ [Register-OpenAIFile](/Docs/Register-OpenAIFile.md)
++ [Remove-OpenAIFile](/Docs/Remove-OpenAIFile.md)
++ [Get-OpenAIFileContent](/Docs/Get-OpenAIFileContent.md)
+
+#### Others
++ [Get-OpenAIModels](/Docs/Get-OpenAIModels.md)
++ [Request-Embeddings](/Docs/Request-Embeddings.md)
 + [Request-Moderation](/Docs/Request-Moderation.md)
 + [Request-TextCompletion](/Docs/Request-TextCompletion.md)
 + [Request-TextEdit](/Docs/Request-TextEdit.md)
@@ -86,7 +119,7 @@ ChatGPTに質問をして回答を得ます。
 
 ```PowerShell
 $global:OPENAI_API_KEY = '<APIキーをここに貼り付ける>'
-$Result = Request-ChatGPT -Message "自己紹介をしてください"
+$Result = Request-ChatCompletion -Message "自己紹介をしてください"
 Write-Output $Result.Answer
 ```
 
@@ -96,11 +129,11 @@ Write-Output $Result.Answer
 はじめまして、私はAIアシスタントのGPT-3です。人工知能のプログラムであり、自然言語処理を使って... (以下省略)
 ```
 
-> Tips:  
+> [!TIP]  
 > デフォルトで使用するモデルはGPT-3.5です。  
-> GPT-4を使用したい場合はモデル名を明示的に指定してください。    
+> GPT-4を使用したい場合はモデル名を明示的に指定してください。  
 > ```PowerShell
-> Request-ChatGPT -Message "Who are you?" -Model "gpt-4"
+> Request-ChatCompletion -Message "Who are you?" -Model "gpt-4"
 > ```
 > 
 
@@ -135,20 +168,20 @@ Request-ImageGeneration -Prompt 'かわいいライオンの子供' -Size 256x25
 
 ### 文脈を保ったままChatGPTと対話する
 
-パイプライン経由で `Request-ChatGPT` に対話の履歴を与えることで、文脈を維持したまま複数の質問を行うことができます。
+パイプライン経由で `Request-ChatCompletion` に対話の履歴を与えることで、文脈を維持したまま複数の質問を行うことができます。
 
 ```PowerShell
-PS C:\> $FirstQA = Request-ChatGPT -Message "アメリカの人口は？"
+PS C:\> $FirstQA = Request-ChatCompletion -Message "アメリカの人口は？"
 PS C:\> Write-Output $FirstQA.Answer
 
 2021年現在、アメリカ合衆国の人口は約3億3300万人です。
 
-PS C:\> $SecondQA = $FirstQA | Request-ChatGPT -Message "では日本は？"
+PS C:\> $SecondQA = $FirstQA | Request-ChatCompletion -Message "では日本は？"
 PS C:\> Write-Output $SecondQA.Answer
 
 2021年現在、日本の人口は約1億2600万人です。
 
-PS C:\> $ThirdQA = $SecondQA | Request-ChatGPT -Message 'アメリカと日本を比較すると？'
+PS C:\> $ThirdQA = $SecondQA | Request-ChatCompletion -Message 'アメリカと日本を比較すると？'
 PS C:\> Write-Output $ThirdQA.Answer
 
 アメリカと日本の人口は、約3倍以上の開きがあります。
@@ -158,10 +191,10 @@ PS C:\> Write-Output $ThirdQA.Answer
 
 デフォルトではサーバからのレスポンスがすべて完了してから結果がまとめて出力されるため、特に長い出力がある場合は、処理結果が得られるまでに時間がかかります。
 
-`-Stream`オプションを使用するとChatGPTのWebUIのように結果はストリームとして逐次的に出力されるため、UXが改善する場合があります。現在`-Stream`オプションは`Request-ChatGPT`と`Request-TextCompletion`で使用可能です。
+`-Stream`オプションを使用するとChatGPTのWebUIのように結果はストリームとして逐次的に出力されるため、UXが改善する場合があります。現在`-Stream`オプションは`Request-ChatCompletion`と`Request-TextCompletion`で使用可能です。
 
 ```PowerShell
-Request-ChatGPT 'Describe ChatGPT in 100 charactors.' -Stream | Write-Host -NoNewline
+Request-ChatCompletion 'Describe ChatGPT in 100 charactors.' -Stream | Write-Host -NoNewline
 ```
 
 ![Stream](/Docs/images/StreamOutput.gif)
@@ -229,7 +262,7 @@ API キーを環境変数 `OPENAI_API_KEY`に設定します。関数呼び出�
 
 ```PowerShell
 PS C:> $env:OPENAI_API_KEY = '<Put your API key here.>'
-PS C:> Request-ChatGPT -Message "Who are you?"
+PS C:> Request-ChatCompletion -Message "Who are you?"
 ```
 
 ### 方法 2: Global 変数 `OPENAI_API_KEY`
@@ -237,14 +270,14 @@ API キーを`$global:OPENAI_API_KEY`変数に設定します。関数呼び出�
 
 ```PowerShell
 PS C:> $global:OPENAI_API_KEY = '<Put your API key here.>'
-PS C:> Request-ChatGPT -Message "Who are you?"
+PS C:> Request-ChatCompletion -Message "Who are you?"
 ```
 
 ### 方法 3: 名前付きパラメータ
 各関数の `ApiKey` パラメータに API キーを指定します。すべての関数呼び出しに都度指定する必要があります。  
 
 ```PowerShell
-PS C:> Request-ChatGPT -Message "Who are you?" -ApiKey '<Put your API key here.>'
+PS C:> Request-ChatCompletion -Message "Who are you?" -ApiKey '<Put your API key here.>'
 ```
 
 ## Azure OpenAI Service
