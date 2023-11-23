@@ -1,5 +1,5 @@
 # Changelog
-### 2.2.0 (Not released yet)
+### 2.2.0
 - Add [Request-AudioSpeech](/Docs/Request-AudioSpeech.md) function. It generates audio from the input text.
   ```PowerShell
   PS C:\> Request-AudioSpeech -text 'Do something fun to play.' -OutFile 'C:\Output\text2speech.mp3' -Voice Alloy

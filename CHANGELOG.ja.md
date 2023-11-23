@@ -1,5 +1,5 @@
 # 変更履歴
-### 2.2.0 (未リリース)
+### 2.2.0
 - 新しい関数 [Request-AudioSpeech](/Docs/Request-AudioSpeech.md) を追加しました。入力したテキストから読み上げ音声を生成します。
   ```PowerShell
   PS C:\> Request-AudioSpeech -text 'Do something fun to play.' -OutFile 'C:\Output\text2speech.mp3' -Voice Alloy
