@@ -18,6 +18,7 @@ function Request-AzureChatCompletion {
         [string]$Name,
 
         [Parameter(Mandatory = $true)]
+        [Alias('Model')]
         [Alias('Engine')]
         [string]$Deployment,
 
@@ -30,20 +31,32 @@ function Request-AzureChatCompletion {
         #region Function call params
         [Parameter()]
         [ValidateNotNullOrEmpty()]
+        [System.Collections.IDictionary[]]$Tools,
+
+        # deprecated
+        [Parameter(DontShow = $true)]
+        [ValidateNotNullOrEmpty()]
         [System.Collections.IDictionary[]]$Functions,
 
         [Parameter()]
+        [Alias('tool_choice')]
+        [Completions('none', 'auto')]
+        [object]$ToolChoice,
+
+        # deprecated
+        [Parameter(DontShow = $true)]
         [Alias('function_call')]
         [Completions('none', 'auto')]
         [object]$FunctionCall,
 
         [Parameter()]
+        [Alias('InvokeFunctionOnCallMode')] # For backward compatibilty
         [ValidateSet('None', 'Auto', 'Confirm')]
-        [string]$InvokeFunctionOnCallMode = 'None',
+        [string]$InvokeTools = 'None',
 
-        [Parameter()]
-        [ValidateRange(0, 65535)]
-        [uint16]$MaxFunctionCallCount = 4,
+        # deprecated
+        [Parameter(DontShow = $true)]
+        [uint16]$MaxFunctionCallCount,
         #endregion Function call params
 
         [Parameter()]
@@ -85,6 +98,14 @@ function Request-AzureChatCompletion {
         [Parameter()]
         [Alias('logit_bias')]
         [System.Collections.IDictionary]$LogitBias,
+
+        [Parameter()]
+        [Alias('response_format')]
+        [ValidateSet('text', 'json_object', 'raw_response')]
+        [string][LowerCaseTransformation()]$Format = 'text',
+
+        [Parameter()]
+        [int64]$Seed,
 
         [Parameter()]
         [string]$User,

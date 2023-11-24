@@ -19,6 +19,9 @@ Request-AzureChatGPT
     [-Name <String>]
     -Deployment <String>
     [-SystemMessage <String[]>]
+    [-Tools <IDictionary[]>]
+    [-ToolChoice <Object>]
+    [-InvokeTools <String>]
     [-Temperature <Double>]
     [-TopP <Double>]
     [-NumberOfAnswers <UInt16>]
@@ -28,6 +31,8 @@ Request-AzureChatGPT
     [-PresencePenalty <Double>]
     [-FrequencyPenalty <Double>]
     [-LogitBias <IDictionary>]
+    [-Format <String>]
+    [-Seed <Int64>]
     [-User <String>]
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
@@ -95,7 +100,7 @@ Deployments must be created in Azure Portal in advance.
 
 ```yaml
 Type: String
-Aliases: Engine
+Aliases: Engine, Model
 Required: True
 Position: Named
 ```
@@ -106,6 +111,41 @@ An optional text to set the behavior of the assistant.
 ```yaml
 Type: String[]
 Aliases: system, RolePrompt
+Required: False
+Position: Named
+```
+
+### -Tools
+A list of tools the model may call. Use this to provide a list of functions the model may generate JSON inputs for.  
+https://github.com/mkht/PSOpenAI/blob/main/Guides/How_to_call_functions_with_ChatGPT.ipynb
+
+```yaml
+Type: System.Collections.IDictionary[]
+Required: False
+Position: Named
+```
+
+### -ToolChoice
+Controls how the model responds to function calls.  
+- `none` means the model does not call a function, and responds to the end-user.  
+- `auto` means the model can pick between an end-user or calling a function.  
+Specifying a particular function via `@{type = "function"; function = @{name = "my_function"}}` forces the model to call that function.
+
+```yaml
+Type: Object
+Aliases: tool_choice
+Required: False
+Position: Named
+```
+
+### -InvokeTools
+Selects the action to be taken when the GPT model requests a function call.  
+- `None`: The requested function is not executed. This is the default.  
+- `Auto`: Automatically executes the requested function.  
+- `Confirm`: Displays a confirmation to the user before executing the requested function.
+
+```yaml
+Type: String
 Required: False
 Position: Named
 ```
@@ -205,6 +245,28 @@ ID 23182 maps to "apple" and ID 88847 maps to "banana". Thus, this example incre
 ```yaml
 Type: IDictionary
 Aliases: logit_bias
+Required: False
+Position: Named
+```
+
+### -Format
+Specifies the format that the model must output.  
+- `text` is default.  
+- `json_object` enables JSON mode, which guarantees the message the model generates is valid JSON.  
+- `raw_response` returns raw response content from API.
+
+```yaml
+Type: String
+Aliases: response_format
+Required: False
+Position: Named
+```
+
+### -Seed
+If specified, the system will make a best effort to sample deterministically, such that repeated requests with the same seed and parameters should return the same result.
+
+```yaml
+Type: Int64
 Required: False
 Position: Named
 ```
