@@ -44,17 +44,17 @@ function Request-ImageGeneration {
         [Parameter()]
         [int]$TimeoutSec = 0,
 
-        # [Parameter(DontShow = $true)]
-        # [OpenAIApiType]$ApiType = [OpenAIApiType]::OpenAI,
+        [Parameter(DontShow = $true)]
+        [OpenAIApiType]$ApiType = [OpenAIApiType]::OpenAI,
 
         [Parameter()]
         [System.Uri]$ApiBase,
 
-        # [Parameter(DontShow = $true)]
-        # [string]$ApiVersion,
+        [Parameter(DontShow = $true)]
+        [string]$ApiVersion,
 
-        # [Parameter(DontShow = $true)]
-        # [string]$AuthType = 'openai',
+        [Parameter(DontShow = $true)]
+        [string]$AuthType = 'openai',
 
         [Parameter()]
         [ValidateRange(0, 100)]
@@ -79,7 +79,12 @@ function Request-ImageGeneration {
         $Organization = Initialize-OrganizationID -OrgId $Organization
 
         # Get API endpoint
-        $OpenAIParameter = Get-OpenAIAPIEndpoint -EndpointName 'Image.Generation' -ApiBase $ApiBase
+        if ($ApiType -eq [OpenAIApiType]::Azure) {
+            $OpenAIParameter = Get-AzureOpenAIAPIEndpoint -EndpointName 'Image.Generation' -Engine $Model -ApiBase $ApiBase -ApiVersion $ApiVersion
+        }
+        else {
+            $OpenAIParameter = Get-OpenAIAPIEndpoint -EndpointName 'Image.Generation' -ApiBase $ApiBase
+        }
     }
 
     process {
@@ -125,8 +130,10 @@ function Request-ImageGeneration {
                 break
             }
         }
-        if ($PSBoundParameters.ContainsKey('Model')) {
-            $PostBody.model = $Model
+        if ($ApiType -eq [OpenAIApiType]::OpenAI) {
+            if ($PSBoundParameters.ContainsKey('Model')) {
+                $PostBody.model = $Model
+            }
         }
         if ($PSBoundParameters.ContainsKey('Quality')) {
             $PostBody.quality = $Quality
@@ -144,6 +151,7 @@ function Request-ImageGeneration {
             -TimeoutSec $TimeoutSec `
             -MaxRetryCount $MaxRetryCount `
             -ApiKey $SecureToken `
+            -AuthType $AuthType `
             -Organization $Organization `
             -Body $PostBody
 

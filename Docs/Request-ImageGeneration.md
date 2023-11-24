@@ -75,7 +75,6 @@ https://oaidalleapiprodscus.blob.core.windows.net/private/org-BXLtGIt0xglP9if8FV
 ### -Prompt
 (Required)
 A text description of the desired image(s).  
-The maximum length is 1000 characters.
 
 ```yaml
 Type: String
@@ -238,6 +237,7 @@ Position: Named
 ### Format = byte            : Byte array of generated image.
 ### Format = raw_response    : string
 ### OutFile                  : Nothing.
+
 ## NOTES
 
 ## RELATED LINKS

@@ -15,8 +15,11 @@ Creates an image given a prompt.
 ```
 Request-AzureImageGeneration
     [-Prompt] <String>
+    [-Deployment <String>]
     [-NumberOfImages <UInt16>]
     [-Size <String>]
+    [-Quality <String>]
+    [-Style <String>]
     [-Format <String>]
     [-User <String>]
     [-TimeoutSec <Int32>]
@@ -33,6 +36,8 @@ Request-AzureImageGeneration
     [-Prompt] <String>
     [-NumberOfImages <UInt16>]
     [-Size <String>]
+    [-Quality <String>]
+    [-Style <String>]
     -OutFile <String>
     [-User <String>]
     [-TimeoutSec <Int32>]
@@ -50,7 +55,7 @@ https://learn.microsoft.com/en-us/azure/cognitive-services/openai/reference#imag
 
 ## EXAMPLES
 
-### Example 1: Creates and save an image from prompt. 
+### Example 1: Creates and save an image from prompt. (DALL-E 2)
 ```PowerShell
 Request-AzureImageGeneration -Prompt 'A cute baby lion' -Size 256x256 -OutFile C:\babylion.png
 ```
@@ -58,7 +63,7 @@ Request-AzureImageGeneration -Prompt 'A cute baby lion' -Size 256x256 -OutFile C
 ![lion](/Docs/images/babylion.png)
 
 
-### Example 2: Creates multiple images at once, and retrieve results by URL.
+### Example 2: Creates multiple images at once, and retrieve results by URL.  (DALL-E 2)
 ```PowerShell
 Request-AzureImageGeneration -Prompt 'Delicious ramen with gyoza' -Format "url" -NumberOfImages 3
 ```
@@ -68,12 +73,16 @@ https://oaidalleapiprodscus.blob.core.windows.net/private/org-BXLtGIt0xglP9if8FV
 https://oaidalleapiprodscus.blob.core.windows.net/private/org-BXLtGIt0xglP9if8FVhkD...
 ```
 
+### Example 3: Creates and save an image from prompt. (DALL-E 3)
+```PowerShell
+Request-AzureImageGeneration -Prompt 'Dwarf fighting a bear in the forest' -Deployment 'dall-e-3' -Format "url"
+```
+
 ## PARAMETERS
 
 ### -Prompt
 (Required)
 A text description of the desired image(s).  
-The maximum length is 1000 characters.
 
 ```yaml
 Type: String
@@ -82,9 +91,20 @@ Position: 1
 Accept pipeline input: True (ByValue)
 ```
 
+### -Deployment
+The deployment name you chose when you deployed the model.  
+Deployments must be created in Azure Portal in advance.
+
+```yaml
+Type: String
+Aliases: Model
+Required: True
+Position: Named
+```
+
 ### -NumberOfImages
 The number of images to generate.  
-Must be between `1` and `5`.
+Must be between `1` and `5`. For `dall-e-3`, only `1` is supported.  
 The default value is `1`.
 
 ```yaml
@@ -96,8 +116,7 @@ Default value: 1
 ```
 
 ### -Size
-The size of the generated images.  
-Must be one of `256x256`, `512x512`, or `1024x1024`.
+The size of the generated images. Must be one of `256x256`, `512x512`, or `1024x1024` for `dall-e-2`. Must be one of `1024x1024`, `1792x1024`, or `1024x1792` for `dall-e-3` models.  
 The default value is `1024x1024`.
 
 ```yaml
@@ -107,9 +126,31 @@ Position: Named
 Default value: 1024x1024
 ```
 
+
+### -Quality
+The quality of the image that will be generated. `hd` creates images with finer details and greater consistency across the image. This param is only supported for `dall-e-3`.
+
+```yaml
+Type: String
+Required: False
+Position: Named
+Default value: standard
+```
+
+### -Style
+The style of the generated images. Must be one of `vivid` or `natural`. Vivid causes the model to lean towards generating hyper-real and dramatic images. Natural causes the model to produce more natural, less hyper-real looking images. This param is only supported for `dall-e-3`.
+
+```yaml
+Type: String
+Required: False
+Position: Named
+Default value: vivid
+```
+
 ### -Format
 The format in which the generated images are returned.  
-Currently, only supports as `url`.
+Must be one of `url`, `base64`, `byte` or `raw_response`.  
+DALL-E 2 only supports as `url`.
 
 ```yaml
 Type: String
@@ -201,8 +242,12 @@ Position: Named
 
 ## OUTPUTS
 
-### Format = url    : string or array of string
-### OutFile         : Nothing.
+### Format = url             : string or array of string
+### Format = base64          : Generated image data represented in base64 string.
+### Format = byte            : Byte array of generated image.
+### Format = raw_response    : string
+### OutFile                  : Nothing.
+
 ## NOTES
 
 ## RELATED LINKS

@@ -16,7 +16,6 @@ function Get-AzureOpenAIAPIEndpoint {
     )
 
     $UriBuilder = [System.UriBuilder]::new($ApiBase)
-    $UriBuilder.Path = $UriBuilder.Path.TrimEnd('/')
     $ApiVersion = $ApiVersion.Trim()
     $DefaultApiVersion = '2023-12-01-preview'
 
@@ -24,6 +23,7 @@ function Get-AzureOpenAIAPIEndpoint {
         'Chat.Completion' {
             $InnerApiVersion = if ($ApiVersion) { $ApiVersion }else { $DefaultApiVersion }
             $UriBuilder.Path += ('/openai/deployments/{0}/chat/completions' -f $Engine.Replace('/', '').Trim())
+            if ($UriBuilder.Path.StartsWith('//')) { $UriBuilder.Path = $UriBuilder.Path.TrimStart('/') }
             $UriBuilder.Query = ('api-version={0}' -f $InnerApiVersion)
             @{
                 Name        = 'chat.completion'
@@ -36,6 +36,7 @@ function Get-AzureOpenAIAPIEndpoint {
         'Chat.Completion.Extensions' {
             $InnerApiVersion = if ($ApiVersion) { $ApiVersion }else { $DefaultApiVersion }
             $UriBuilder.Path += ('/openai/deployments/{0}/extensions/chat/completions' -f $Engine.Replace('/', '').Trim())
+            if ($UriBuilder.Path.StartsWith('//')) { $UriBuilder.Path = $UriBuilder.Path.TrimStart('/') }
             $UriBuilder.Query = ('api-version={0}' -f $InnerApiVersion)
             @{
                 Name        = 'chat.completion.extensions'
@@ -48,6 +49,7 @@ function Get-AzureOpenAIAPIEndpoint {
         'Text.Completion' {
             $InnerApiVersion = if ($ApiVersion) { $ApiVersion }else { $DefaultApiVersion }
             $UriBuilder.Path += ('/openai/deployments/{0}/completions' -f $Engine.Replace('/', '').Trim())
+            if ($UriBuilder.Path.StartsWith('//')) { $UriBuilder.Path = $UriBuilder.Path.TrimStart('/') }
             $UriBuilder.Query = ('api-version={0}' -f $InnerApiVersion)
             @{
                 Name        = 'text.completion'
@@ -59,7 +61,22 @@ function Get-AzureOpenAIAPIEndpoint {
         }
         'Image.Generation' {
             $InnerApiVersion = if ($ApiVersion) { $ApiVersion }else { $DefaultApiVersion }
+            $UriBuilder.Path += ('/openai/deployments/{0}/images/generations' -f $Engine.Replace('/', '').Trim())
+            if ($UriBuilder.Path.StartsWith('//')) { $UriBuilder.Path = $UriBuilder.Path.TrimStart('/') }
+            $UriBuilder.Query = ('api-version={0}' -f $InnerApiVersion)
+            @{
+                Name        = 'image.generation'
+                Method      = 'Post'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+            continue
+        }
+        # Legacy version of image generations endpoint
+        'Image.Generation.Legacy' {
+            $InnerApiVersion = '2023-08-01-preview'
             $UriBuilder.Path += '/openai/images/generations:submit'
+            if ($UriBuilder.Path.StartsWith('//')) { $UriBuilder.Path = $UriBuilder.Path.TrimStart('/') }
             $UriBuilder.Query = ('api-version={0}' -f $InnerApiVersion)
             @{
                 Name        = 'image.generation'
@@ -72,6 +89,7 @@ function Get-AzureOpenAIAPIEndpoint {
         'Audio.Transcription' {
             $InnerApiVersion = if ($ApiVersion) { $ApiVersion }else { $DefaultApiVersion }
             $UriBuilder.Path += ('/openai/deployments/{0}/audio/transcriptions' -f $Engine.Replace('/', '').Trim())
+            if ($UriBuilder.Path.StartsWith('//')) { $UriBuilder.Path = $UriBuilder.Path.TrimStart('/') }
             $UriBuilder.Query = ('api-version={0}' -f $InnerApiVersion)
             @{
                 Name        = 'audio.transcription'
@@ -84,6 +102,7 @@ function Get-AzureOpenAIAPIEndpoint {
         'Audio.Translation' {
             $InnerApiVersion = if ($ApiVersion) { $ApiVersion }else { $DefaultApiVersion }
             $UriBuilder.Path += ('/openai/deployments/{0}/audio/translations' -f $Engine.Replace('/', '').Trim())
+            if ($UriBuilder.Path.StartsWith('//')) { $UriBuilder.Path = $UriBuilder.Path.TrimStart('/') }
             $UriBuilder.Query = ('api-version={0}' -f $InnerApiVersion)
             @{
                 Name        = 'audio.transcription'
@@ -96,6 +115,7 @@ function Get-AzureOpenAIAPIEndpoint {
         'Embeddings' {
             $InnerApiVersion = if ($ApiVersion) { $ApiVersion }else { $DefaultApiVersion }
             $UriBuilder.Path += ('/openai/deployments/{0}/embeddings' -f $Engine.Replace('/', '').Trim())
+            if ($UriBuilder.Path.StartsWith('//')) { $UriBuilder.Path = $UriBuilder.Path.TrimStart('/') }
             $UriBuilder.Query = ('api-version={0}' -f $InnerApiVersion)
             @{
                 Name        = 'embeddings'
@@ -109,6 +129,7 @@ function Get-AzureOpenAIAPIEndpoint {
             # https://learn.microsoft.com/en-us/rest/api/cognitiveservices/azureopenaistable/models/list
             $InnerApiVersion = if ($ApiVersion) { $ApiVersion }else { $DefaultApiVersion }
             $UriBuilder.Path += '/openai/models'
+            if ($UriBuilder.Path.StartsWith('//')) { $UriBuilder.Path = $UriBuilder.Path.TrimStart('/') }
             $UriBuilder.Query = ('api-version={0}' -f $InnerApiVersion)
             @{
                 Name        = 'models'
