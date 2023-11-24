@@ -1,4 +1,9 @@
 # Changelog
+### In Progress
+- `Request-AzureImageGeneration` now supports DALL-E 3 model.
+- Change default api version of Azure OpenAI Service to `2023-12-01-preview`
+- Fix minor issues.
+
 ### 2.2.0
 - Add [Request-AudioSpeech](/Docs/Request-AudioSpeech.md) function. It generates audio from the input text.
   ```PowerShell
