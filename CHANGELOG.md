@@ -1,5 +1,5 @@
 # Changelog
-### In Progress
+### 2.3.0
 - `Request-AzureImageGeneration` now supports DALL-E 3 model.
 - Change default api version of Azure OpenAI Service to `2023-12-01-preview`
 - Fix minor issues.
