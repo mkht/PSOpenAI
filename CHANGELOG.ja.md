@@ -7,7 +7,7 @@
 ### 2.3.0
 - `Request-AzureImageGeneration` が DALL-E 3 モデルを使用した画像生成に対応しました。
 - Azure OpenAI Service 使用時のAPIバージョンを `2023-12-01-preview` に更新します。
-- 軽微な不具合ｗ修正しました。
+- 軽微な不具合を修正しました。
 
 ### 2.2.0
 - 新しい関数 [Request-AudioSpeech](/Docs/Request-AudioSpeech.md) を追加しました。入力したテキストから読み上げ音声を生成します。
