@@ -39,6 +39,7 @@ function Request-ChatCompletion {
         [Alias('RolePrompt')]
         [string[]]$SystemMessage,
 
+        # For GPT-4 Turbo with Vision
         [Parameter()]
         [string[]]$Images,
 
@@ -116,6 +117,14 @@ function Request-ChatCompletion {
         [Parameter()]
         [Alias('logit_bias')]
         [System.Collections.IDictionary]$LogitBias,
+
+        [Parameter()]
+        [bool]$LogProbs,
+
+        [Parameter()]
+        [ValidateRange(0, 5)]
+        [Alias('top_logprobs')]
+        [uint16]$TopLogProbs,
 
         [Parameter()]
         [Alias('response_format')]
@@ -272,6 +281,12 @@ function Request-ChatCompletion {
         }
         if ($PSBoundParameters.ContainsKey('LogitBias')) {
             $PostBody.logit_bias = Convert-LogitBiasDictionary -InputObject $LogitBias -Model $Engine
+        }
+        if ($PSBoundParameters.ContainsKey('LogProbs')) {
+            $PostBody.logprobs = $LogProbs
+            if ($LogProbs -and $PSBoundParameters.ContainsKey('TopLogProbs')) {
+                $PostBody.top_logprobs = $TopLogProbs
+            }
         }
         if ($PSBoundParameters.ContainsKey('Format') -and $Format -ne 'raw_response') {
             $PostBody.response_format = @{'type' = $Format }

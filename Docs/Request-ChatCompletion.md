@@ -13,7 +13,7 @@ Creates a completion for the chat message.
 ## SYNTAX
 
 ```
-Request-ChatGPT
+Request-ChatCompletion
     [-Message] <String>
     [-Role <String>]
     [-Name <String>]
@@ -33,6 +33,8 @@ Request-ChatGPT
     [-PresencePenalty <Double>]
     [-FrequencyPenalty <Double>]
     [-LogitBias <IDictionary>]
+    [-LogProbs <Boolean>]
+    [-TopLogProbs <UInt16>]
     [-Format <String>]
     [-Seed <Int64>]
     [-User <String>]
@@ -53,7 +55,7 @@ https://platform.openai.com/docs/guides/chat/chat-completions
 
 ### Example 1: Ask one question to ChatGPT, and get answer.
 ```PowerShell
-PS C:\> Request-ChatGPT -Message "Who are you?" | select Answer
+PS C:\> Request-ChatCompletion -Message "Who are you?" | select Answer
 ```
 ```
 I am an AI language model created by OpenAI, designed to assist with ...
@@ -61,12 +63,12 @@ I am an AI language model created by OpenAI, designed to assist with ...
 
 ### Example 2: Multiple questions with context preserved. (chats)
 ```PowerShell
-PS> $FirstQA = Request-ChatGPT -Message "What is the population of the United States?"
+PS> $FirstQA = Request-ChatCompletion -Message "What is the population of the United States?"
 PS> $FirstQA.Answer
 
 As of September 2021, the estimated population of the United States is around 331.4 million people.
 
-PS\> $SecondQA = $FirstQA | Request-ChatGPT -Message "Translate the previous answer into French."
+PS\> $SecondQA = $FirstQA | Request-ChatCompletion -Message "Translate the previous answer into French."
 PS\> $SecondQA.Answer
 
 En septembre 2021, la population estimée des États-Unis est d'environ 331,4 millions de personnes.
@@ -74,7 +76,7 @@ En septembre 2021, la population estimée des États-Unis est d'environ 331,4 mi
 
 ### Example 3: Stream completions.
 ```PowerShell
-PS C:\> Request-ChatGPT 'Please describe ChatGPT in 100 charactors.' -Stream | Write-Host -NoNewline
+PS C:\> Request-ChatCompletion 'Please describe ChatGPT in 100 charactors.' -Stream | Write-Host -NoNewline
 ```
 
 ![stream](/Docs/images/StreamOutput.gif)
@@ -297,6 +299,25 @@ ID 23182 maps to "apple" and ID 88847 maps to "banana". Thus, this example incre
 ```yaml
 Type: IDictionary
 Aliases: logit_bias
+Required: False
+Position: Named
+```
+
+### -LogProbs
+Whether to return log probabilities of the output tokens or not. If true, returns the log probabilities of each output token returned in the `content` of `message`.
+
+```yaml
+Type: Boolean
+Required: False
+Position: Named
+```
+
+### -TopLogProbs
+An integer between 0 and 5 specifying the number of most likely tokens to return at each token position, each with an associated log probability. `logprobs` must be set to `true` if this parameter is used.
+
+```yaml
+Type: UInt16
+Aliases: top_logprobs
 Required: False
 Position: Named
 ```
