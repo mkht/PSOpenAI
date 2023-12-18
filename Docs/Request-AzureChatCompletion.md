@@ -13,12 +13,14 @@ Creates a completion for the chat message.
 ## SYNTAX
 
 ```
-Request-AzureChatGPT
+Request-AzureChatCompletion
     [-Message] <String>
     [-Role <String>]
     [-Name <String>]
     -Deployment <String>
     [-SystemMessage <String[]>]
+    [-Images <String[]>]
+    [-ImageDetail <String>]
     [-Tools <IDictionary[]>]
     [-ToolChoice <Object>]
     [-InvokeTools <String>]
@@ -55,7 +57,7 @@ https://learn.microsoft.com/en-us/azure/cognitive-services/openai/reference?sour
 ```PowerShell
 PS C:\> $global:OPENAI_API_KEY = '<Put your api key here>'
 PS C:\> $global:OPENAI_API_BASE  = 'https://<resource-name>.openai.azure.com/'
-PS C:\> Request-AzureChatGPT -Message "Who are you?" -Deployment 'YourDeploymentName' | select Answer
+PS C:\> Request-AzureChatCompletion -Message "Who are you?" -Deployment 'YourDeploymentName' | select Answer
 ```
 ```
 I am an AI language model created by OpenAI, designed to assist with ...
@@ -113,6 +115,26 @@ Type: String[]
 Aliases: system, RolePrompt
 Required: False
 Position: Named
+```
+
+### -Images
+An array of images to passing the model. You can specifies local image file or remote url.  
+Image input is only supported when using the `gpt-4-visual-preview` model.
+
+```yaml
+Type: String[]
+Required: False
+Position: Named
+```
+
+### -ImageDetail
+Controls how the model processes the image and generates its textual understanding. You can select from `Low` or `High`.  
+
+```yaml
+Type: String
+Required: False
+Position: Named
+Default value: Auto
 ```
 
 ### -Tools

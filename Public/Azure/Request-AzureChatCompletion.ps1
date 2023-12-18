@@ -28,6 +28,14 @@ function Request-AzureChatCompletion {
         [Alias('RolePrompt')]
         [string[]]$SystemMessage,
 
+        # For GPT-4 Turbo with Vision
+        [Parameter()]
+        [string[]]$Images,
+
+        [Parameter()]
+        [ValidateSet('auto', 'low', 'high')]
+        [string][LowerCaseTransformation()]$ImageDetail = 'auto',
+
         #region Function call params
         [Parameter()]
         [ValidateNotNullOrEmpty()]
