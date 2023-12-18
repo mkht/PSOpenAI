@@ -1,4 +1,9 @@
 # Changelog
+### 2.4.0
+- Add `-LogProbs` and `-TopLogProbs` parameter to `Request-ChatCompletion`.
+- Add `-Images` and `-ImageDetail` parameter to `Request-AzureChatCompletion`.  
+  These parameters are currently acceptable only on the `gpt-4-vision-preview` model.
+
 ### 2.3.0
 - `Request-AzureImageGeneration` now supports DALL-E 3 model.
 - Change default api version of Azure OpenAI Service to `2023-12-01-preview`

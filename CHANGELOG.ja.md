@@ -1,4 +1,9 @@
 # 変更履歴
+### 2.4.0
+- `Request-ChatCompletion`に新しいパラメータ`-LogProbs`と`-TopLogProbs`を追加しました
+- `Request-AzureChatCompletion`に新しいパラメータ`-Images`と`-ImageDetail`を追加しました  
+  現時点ではこのパラメータは`gpt-4-vision-preview`モデルでのみ使用可能です
+
 ### 2.3.0
 - `Request-AzureImageGeneration` が DALL-E 3 モデルを使用した画像生成に対応しました。
 - Azure OpenAI Service 使用時のAPIバージョンを `2023-12-01-preview` に更新します。
