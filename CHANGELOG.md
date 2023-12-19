@@ -20,8 +20,8 @@
   To use Assistants with the new PSOpenAI cmdlets, please refer to this guide.  
   [Guide: How to use Assistants](/Guides/How_to_use_Assistants.md)
 
-  > [!WARNING]  
-  > The Assistants API is still in Beta. Specifications, usage, and parameters are subject to change without announcement.
+> [!WARNING]  
+> The Assistants API is still in Beta. Specifications, usage, and parameters are subject to change without announcement.
 
   + Assistants: `Get-Assistant`, `New-Assistant`, `Remove-Assistant`, `Set-Assistant`
   + Threads: `Get-Thread`, `New-Thread`, `Remove-Thread`, `Set-Thread`

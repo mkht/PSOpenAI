@@ -19,8 +19,8 @@
   Assistantsの使用方法はこちらのガイドを参照してください。
   [Guide: How to use Assistants](/Guides/How_to_use_Assistants.md)
 
-  > [!WARNING]  
-  > Assistants API はまだベータ版です. 動作、パラメータ、使い方は予告なく変更されることがあります
+> [!WARNING]  
+> Assistants API はまだベータ版です. 動作、パラメータ、使い方は予告なく変更されることがあります
 
   + Assistants: `Get-Assistant`, `New-Assistant`, `Remove-Assistant`, `Set-Assistant`
   + Threads: `Get-Thread`, `New-Thread`, `Remove-Thread`, `Set-Thread`
