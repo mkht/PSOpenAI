@@ -1,4 +1,7 @@
 # Changelog
+### Not released yet
+- Add `-AdditonalInstructions` parameter to `Start-ThreadRun`.
+
 ### 2.4.0
 - Add `-LogProbs` and `-TopLogProbs` parameter to `Request-ChatCompletion`.
 - Add `-Images` and `-ImageDetail` parameter to `Request-AzureChatCompletion`.  

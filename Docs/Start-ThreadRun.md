@@ -18,6 +18,7 @@ Start-ThreadRun
     -Assistant <Object>
     [-Model <String>]
     [-Instructions <String>]
+    [-AdditionalInstructions <String>]
     [-Tools <IDictionary[]>]
     [-UseCodeInterpreter <Boolean>]
     [-UseRetrieval <Boolean>]
@@ -77,10 +78,20 @@ Position: Named
 ```
 
 ### -Instructions
-Override the default system message of the assistant.
+Overrides the instructions of the assistant. This is useful for modifying the behavior on a per-run basis.
 
 ```yaml
 Type: String
+Required: False
+Position: Named
+```
+
+### -AdditonalInstructions
+Appends additional instructions at the end of the instructions for the run. This is useful for modifying the behavior on a per-run basis without overriding other instructions.
+
+```yaml
+Type: String
+Aliases: additional_instructions
 Required: False
 Position: Named
 ```

@@ -42,6 +42,10 @@ function Start-ThreadRun {
         [string]$Instructions,
 
         [Parameter()]
+        [Alias('additional_instructions')]
+        [string]$AdditionalInstructions,
+
+        [Parameter()]
         [AllowEmptyCollection()]
         [System.Collections.IDictionary[]]$Tools,
 
@@ -154,6 +158,9 @@ function Start-ThreadRun {
         }
         if ($PSBoundParameters.ContainsKey('Instructions')) {
             $PostBody.instructions = $Instructions
+        }
+        if ($PSBoundParameters.ContainsKey('AdditionalInstructions')) {
+            $PostBody.additional_instructions = $AdditionalInstructions
         }
         if ($PSBoundParameters.ContainsKey('Metadata')) {
             $PostBody.metadata = $Metadata
