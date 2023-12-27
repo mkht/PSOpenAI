@@ -15460,7 +15460,19 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>Instructions</maml:name>
           <maml:description>
-            <maml:para>Override the default system message of the assistant.</maml:para>
+            <maml:para>Overrides the instructions of the assistant. This is useful for modifying the behavior on a per-run basis.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="additional_instructions">
+          <maml:name>AdditonalInstructions</maml:name>
+          <maml:description>
+            <maml:para>Appends additional instructions at the end of the instructions for the run. This is useful for modifying the behavior on a per-run basis without overriding other instructions.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -15628,7 +15640,19 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>Instructions</maml:name>
         <maml:description>
-          <maml:para>Override the default system message of the assistant.</maml:para>
+          <maml:para>Overrides the instructions of the assistant. This is useful for modifying the behavior on a per-run basis.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="additional_instructions">
+        <maml:name>AdditonalInstructions</maml:name>
+        <maml:description>
+          <maml:para>Appends additional instructions at the end of the instructions for the run. This is useful for modifying the behavior on a per-run basis without overriding other instructions.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>

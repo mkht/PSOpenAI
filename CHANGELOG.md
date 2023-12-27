@@ -1,5 +1,5 @@
 # Changelog
-### Not released yet
+### 2.5.0
 - Add `-AdditonalInstructions` parameter to `Start-ThreadRun`.
 
 ### 2.4.0

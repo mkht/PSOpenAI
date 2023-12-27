@@ -1,4 +1,7 @@
 # 変更履歴
+### 2.5.0
+- `Start-ThreadRun`に新しいパラメータ`-AdditonalInstructions`を追加しました
+
 ### 2.4.0
 - `Request-ChatCompletion`に新しいパラメータ`-LogProbs`と`-TopLogProbs`を追加しました
 - `Request-AzureChatCompletion`に新しいパラメータ`-Images`と`-ImageDetail`を追加しました  
