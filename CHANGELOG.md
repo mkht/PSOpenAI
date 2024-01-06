@@ -4,7 +4,7 @@
 - Rebuild libraries using .NET 8
 
 ### 2.5.0
-- Add `-AdditonalInstructions` parameter to `Start-ThreadRun`.
+- Add `-AdditionalInstructions` parameter to `Start-ThreadRun`.
 
 ### 2.4.0
 - Add `-LogProbs` and `-TopLogProbs` parameter to `Request-ChatCompletion`.

@@ -86,7 +86,7 @@ Required: False
 Position: Named
 ```
 
-### -AdditonalInstructions
+### -AdditionalInstructions
 Appends additional instructions at the end of the instructions for the run. This is useful for modifying the behavior on a per-run basis without overriding other instructions.
 
 ```yaml

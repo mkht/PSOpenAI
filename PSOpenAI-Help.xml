@@ -15470,7 +15470,7 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="additional_instructions">
-          <maml:name>AdditonalInstructions</maml:name>
+          <maml:name>AdditionalInstructions</maml:name>
           <maml:description>
             <maml:para>Appends additional instructions at the end of the instructions for the run. This is useful for modifying the behavior on a per-run basis without overriding other instructions.</maml:para>
           </maml:description>
@@ -15650,7 +15650,7 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="additional_instructions">
-        <maml:name>AdditonalInstructions</maml:name>
+        <maml:name>AdditionalInstructions</maml:name>
         <maml:description>
           <maml:para>Appends additional instructions at the end of the instructions for the run. This is useful for modifying the behavior on a per-run basis without overriding other instructions.</maml:para>
         </maml:description>

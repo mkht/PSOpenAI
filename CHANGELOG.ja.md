@@ -1,6 +1,6 @@
 # 変更履歴
 ### 2.5.0
-- `Start-ThreadRun`に新しいパラメータ`-AdditonalInstructions`を追加しました
+- `Start-ThreadRun`に新しいパラメータ`-AdditionalInstructions`を追加しました
 
 ### 2.4.0
 - `Request-ChatCompletion`に新しいパラメータ`-LogProbs`と`-TopLogProbs`を追加しました
