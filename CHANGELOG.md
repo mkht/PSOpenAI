@@ -1,4 +1,8 @@
 # Changelog
+### Unreleased yet
+- Updates the list of deprecation models.
+- Rebuild libraries using .NET 8
+
 ### 2.5.0
 - Add `-AdditonalInstructions` parameter to `Start-ThreadRun`.
 
