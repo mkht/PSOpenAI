@@ -140,17 +140,15 @@ function Invoke-OpenAIAPIRequestSSE {
             $ErrorResponse = $HttpResponse.Content.ReadAsStringAsync().GetAwaiter().GetResult()
             $ErrorMessage = try { ($ErrorResponse | ConvertFrom-Json -ErrorAction Ignore).error.message }catch {}
 
-            # Retry on [429] or [5xx]
-            if (($ErrorCode -ge 500 -and $ErrorCode -le 599) -or ($ErrorCode -eq 429 -and ($ErrorMessage -notmatch 'quota'))) {
-                if ($RetryCount -lt $MaxRetryCount) {
-                    $Delay = Get-RetryDelay -RetryCount $RetryCount
-                    Write-Warning ('{3} API returned an {0} ({1}) Error: {2}' -f $ErrorCode, $ErrorReason, $ErrorMessage, $ServiceName)
-                    Write-Warning ('Retry the request after waiting {0} ms (retry count: {1})' -f $Delay, $RetryCount)
-                    Start-Sleep -Milliseconds $Delay
-                    $PSBoundParameters.RetryCount = (++$RetryCount)
-                    Invoke-OpenAIAPIRequestSSE @PSBoundParameters
-                    return
-                }
+            # Retry
+            if (Should-Retry -ErrorCode $ErrorCode -ErrorMessage $ErrorMessage -Headers $HttpResponse.Headers -RetryCount $RetryCount -MaxRetryCount $MaxRetryCount) {
+                $Delay = Get-RetryDelay -RetryCount $RetryCount
+                Write-Warning ('{3} API returned an {0} ({1}) Error: {2}' -f $ErrorCode, $ErrorReason, $ErrorMessage, $ServiceName)
+                Write-Warning ('Retry the request after waiting {0} ms (retry count: {1})' -f $Delay, $RetryCount)
+                Start-Sleep -Milliseconds $Delay
+                $PSBoundParameters.RetryCount = (++$RetryCount)
+                Invoke-OpenAIAPIRequestSSE @PSBoundParameters
+                return
             }
 
             # Throw exception

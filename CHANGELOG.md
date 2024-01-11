@@ -1,5 +1,6 @@
 # Changelog
 ### Unreleased yet
+- The retry decision respects the value of the `x-should-retry` response header.
 - Updates the list of deprecation models.
 - Rebuild libraries using .NET 8
 

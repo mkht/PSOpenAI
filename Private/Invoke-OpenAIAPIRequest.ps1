@@ -178,19 +178,16 @@ function Invoke-OpenAIAPIRequest {
                 $ErrorMessage = $_.Exception.Message
             }
 
-            # Retry on [429] or [5xx]
-            if (($ErrorCode -ge 500 -and $ErrorCode -le 599) -or ($ErrorCode -eq 429 -and ($ErrorMessage -notmatch 'quota'))) {
-                if ($RetryCount -lt $MaxRetryCount) {
-                    $Delay = Get-RetryDelay -RetryCount $RetryCount
-                    Write-Warning ('{3} API returned an {0} ({1}) Error: {2}' -f $ErrorCode, $ErrorReason, $ErrorMessage, $ServiceName)
-                    Write-Warning ('Retry the request after waiting {0} ms (retry count: {1})' -f $Delay, $RetryCount)
-                    Start-Sleep -Milliseconds $Delay
-                    $PSBoundParameters.RetryCount = (++$RetryCount)
-                    Invoke-OpenAIAPIRequest @PSBoundParameters
-                    return
-                }
+            # Retry
+            if (Should-Retry -ErrorCode $ErrorCode -ErrorMessage $ErrorMessage -Headers $_.Exception.Response.Headers -RetryCount $RetryCount -MaxRetryCount $MaxRetryCount) {
+                $Delay = Get-RetryDelay -RetryCount $RetryCount
+                Write-Warning ('{3} API returned an {0} ({1}) Error: {2}' -f $ErrorCode, $ErrorReason, $ErrorMessage, $ServiceName)
+                Write-Warning ('Retry the request after waiting {0} ms (retry count: {1})' -f $Delay, $RetryCount)
+                Start-Sleep -Milliseconds $Delay
+                $PSBoundParameters.RetryCount = (++$RetryCount)
+                Invoke-OpenAIAPIRequest @PSBoundParameters
+                return
             }
-
 
             $detailMessage = ('{3} API returned an {0} ({1}) Error: {2}' -f $ErrorCode, $ErrorReason, $ErrorMessage, $ServiceName)
             $er = [ErrorRecord]::new(
@@ -319,18 +316,17 @@ function Invoke-OpenAIAPIRequest {
                 $ErrorMessage = $_.Exception.Message
             }
 
-            # Retry on [429] or [5xx]
-            if (($ErrorCode -ge 500 -and $ErrorCode -le 599) -or ($ErrorCode -eq 429 -and ($ErrorMessage -notmatch 'quota'))) {
-                if ($RetryCount -lt $MaxRetryCount) {
-                    $Delay = Get-RetryDelay -RetryCount $RetryCount
-                    Write-Warning ('{3} API returned an {0} ({1}) Error: {2}' -f $ErrorCode, $ErrorReason, $ErrorMessage, $ServiceName)
-                    Write-Warning ('Retry the request after waiting {0} ms (retry count: {1})' -f $Delay, $RetryCount)
-                    Start-Sleep -Milliseconds $Delay
-                    $PSBoundParameters.RetryCount = (++$RetryCount)
-                    Invoke-OpenAIAPIRequest @PSBoundParameters
-                    return
-                }
+            # Retry
+            if (Should-Retry -ErrorCode $ErrorCode -ErrorMessage $ErrorMessage -Headers $_.Exception.Response.Headers -RetryCount $RetryCount -MaxRetryCount $MaxRetryCount) {
+                $Delay = Get-RetryDelay -RetryCount $RetryCount
+                Write-Warning ('{3} API returned an {0} ({1}) Error: {2}' -f $ErrorCode, $ErrorReason, $ErrorMessage, $ServiceName)
+                Write-Warning ('Retry the request after waiting {0} ms (retry count: {1})' -f $Delay, $RetryCount)
+                Start-Sleep -Milliseconds $Delay
+                $PSBoundParameters.RetryCount = (++$RetryCount)
+                Invoke-OpenAIAPIRequest @PSBoundParameters
+                return
             }
+
             $detailMessage = ('{3} API returned an {0} ({1}) Error: {2}' -f $ErrorCode, $ErrorReason, $ErrorMessage, $ServiceName)
             $er = [ErrorRecord]::new(
                 ([WebException]::new($detailMessage, $_.Exception, $_.Exception.Status, $_.Exception.Response)),
