@@ -37,17 +37,6 @@ function Get-OpenAIAPIEndpoint {
             }
             continue
         }
-        'Text.Edit' {
-            $UriBuilder.Path += '/edits'
-            if ($UriBuilder.Path.StartsWith('//')) { $UriBuilder.Path = $UriBuilder.Path.TrimStart('/') }
-            @{
-                Name        = 'text.edit'
-                Method      = 'Post'
-                Uri         = $UriBuilder.Uri
-                ContentType = 'application/json'
-            }
-            continue
-        }
         'Image.Generation' {
             $UriBuilder.Path += '/images/generations'
             if ($UriBuilder.Path.StartsWith('//')) { $UriBuilder.Path = $UriBuilder.Path.TrimStart('/') }

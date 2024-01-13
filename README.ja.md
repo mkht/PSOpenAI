@@ -84,7 +84,6 @@ Install-Module -Name PSOpenAI
 + [Request-Embeddings](/Docs/Request-Embeddings.md)
 + [Request-Moderation](/Docs/Request-Moderation.md)
 + [Request-TextCompletion](/Docs/Request-TextCompletion.md)
-+ [Request-TextEdit](/Docs/Request-TextEdit.md)
 
 ### Azure OpenAI Service
 + [Get-AzureOpenAIModels](/Docs/Get-AzureOpenAIModels.md)

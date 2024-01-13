@@ -71,7 +71,6 @@
         'Request-ImageVariation',
         'Request-Moderation',
         'Request-TextCompletion',
-        'Request-TextEdit',
         'Register-OpenAIFile',
         'Remove-OpenAIFile',
         'Get-OpenAIFile',
