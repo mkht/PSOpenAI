@@ -109,7 +109,7 @@ Describe 'Wait-ThreadRun' {
                 thread_id = 'thread_abc123'
                 status    = 'in_progress'
             }
-            { $script:Result = Wait-ThreadRun -InputObject $InObject -TimeoutSec 2 -ea Stop } | Should -Throw '*canceled*'
+            { $script:Result = Wait-ThreadRun -InputObject $InObject -TimeoutSec 2 -ea Stop } | Should -Throw -ExceptionType ([OperationCanceledException])
             Should -Invoke Get-ThreadRun -ModuleName $script:ModuleName -Times 3 -Exactly
             $Result | Should -BeNullOrEmpty
         }
