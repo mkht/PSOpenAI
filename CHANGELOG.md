@@ -1,5 +1,6 @@
 # Changelog
-### Unreleased yet
+### 2.6.0
+- Remove `Request-TextEdit` function due to the API endpoint being shut down by OpenAI.
 - The retry decision respects the value of the `x-should-retry` response header.
 - Updates the list of deprecation models.
 - Rebuild libraries using .NET 8

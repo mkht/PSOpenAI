@@ -1,4 +1,10 @@
 # 変更履歴
+### 2.6.0
+- `Request-TextEdit`関数は削除されました。これはOpenAIのAPIエンドポイントが廃止されたためです。
+- APIリクエストのリトライ判定は `x-should-retry` 応答ヘッダの値に従うようになりました。
+- 廃止予定のモデルリストを更新しました。
+- 内部ライブラリは.NET 8でリビルドされています。
+
 ### 2.5.0
 - `Start-ThreadRun`に新しいパラメータ`-AdditionalInstructions`を追加しました
 
