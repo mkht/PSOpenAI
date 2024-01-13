@@ -202,7 +202,7 @@ function Invoke-OpenAIAPIRequest {
             return
         }
 
-        if ($_ -is [HttpRequestException]) {
+        if ($_.Exception -is [HttpRequestException]) {
             $ex = ([Microsoft.PowerShell.Commands.HttpResponseException]::new($detailMessage, $_.Exception.Response))
         }
         else {
