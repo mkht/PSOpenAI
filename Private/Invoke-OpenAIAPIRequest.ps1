@@ -90,6 +90,7 @@ function Invoke-OpenAIAPIRequest {
             -Headers $RequestHeaders `
             -TimeoutSec $TimeoutSec `
             -MaxRetryCount $MaxRetryCount
+        return
     }
     #endregion
 
