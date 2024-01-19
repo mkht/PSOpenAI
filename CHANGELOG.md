@@ -1,4 +1,7 @@
 # Changelog
+### 2.6.1
+- Fixed an issue where a double request was incorrectly executed when a `-Stream` was specified.
+
 ### 2.6.0
 - Remove `Request-TextEdit` function due to the API endpoint being shut down by OpenAI.
 - The retry decision respects the value of the `x-should-retry` response header.
