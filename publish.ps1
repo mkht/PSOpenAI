@@ -1,3 +1,5 @@
+#Requires -Modules Microsoft.PowerShell.PSResourceGet
+
 Param (
     [Parameter(Mandatory = $true)]
     [ValidateNotNullOrEmpty()]
@@ -35,7 +37,7 @@ try {
     robocopy $ModuleDir $Destination /MIR /XD $ExcludeDirs /XF $ExcludeFiles /NP > $null
 
     Set-Location $Destination
-    Publish-Module -Path ./ -NuGetApiKey $NugetApiKey -Verbose -WhatIf:$WhatIf
+    Publish-PSResource -Path ./ -Repository PSGallery -ApiKey $NugetApiKey -Verbose -WhatIf:$WhatIf
 }
 finally {
     Set-Location $ModuleDir
