@@ -1,4 +1,7 @@
 # Changelog
+### 2.6.2
+- Improved performance when executing a large number of requests in a short period of time.
+
 ### 2.6.1
 - Fixed an issue where a double request was incorrectly executed when a `-Stream` was specified.
 
