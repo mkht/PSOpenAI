@@ -6,6 +6,11 @@ using namespace System.Runtime.InteropServices
 using namespace System.Management.Automation
 using namespace Microsoft.PowerShell.Commands
 
+$script:HttpClientHandler = @{
+    WebSession = $null
+    Expires    = $null
+}
+
 function Invoke-OpenAIAPIRequest {
     [CmdletBinding()]
     param (
@@ -108,6 +113,21 @@ function Invoke-OpenAIAPIRequest {
     # Use HTTP/2 (if possible)
     if ($null -ne (Get-Command 'Microsoft.PowerShell.Utility\Invoke-WebRequest').Parameters.HttpVersion) {
         $IwrParam.HttpVersion = [version]::new(2, 0)
+    }
+
+    # Reuse WebSession (HttpClient)
+    # Note: This method is only available on PS7.4+
+    if ($PSVersionTable.PSVersion -ge 7.4) {
+        if ($null -eq $script:HttpClientHandler.WebSession -or $script:HttpClientHandler.Expires -lt [datetime]::Now) {
+            # Reset Session
+            $script:HttpClientHandler.WebSession = $null
+            $script:HttpClientHandler.Expires = $null
+            $IwrParam.SessionVariable = 'WebSession'
+        }
+        else {
+            # Reuse Session
+            $IwrParam.WebSession = $script:HttpClientHandler.WebSession
+        }
     }
 
     switch ($AuthType) {
@@ -251,6 +271,12 @@ function Invoke-OpenAIAPIRequest {
         Write-Debug -Message (Get-MaskedString `
             ('API response body: ' + ($Response.Content | Out-String)).TrimEnd() `
                 -Target ($ApiKey, $Organization) -First $startIdx -Last $lastIdx -MaxNumberOfAsterisks 45)
+    }
+
+    # Save WebSession
+    if ($WebSession) {
+        $script:HttpClientHandler.WebSession = $WebSession
+        $script:HttpClientHandler.Expires = [datetime]::Now.AddMinutes(5)
     }
 
     # Output

@@ -9,6 +9,11 @@ if ($PSVersionTable.PSVersion.Major -le 5) {
     Add-Type -AssemblyName System.Net.Http
 }
 
+$script:HttpStreamClientHandler = @{
+    HttpClient = $null
+    Expires    = $null
+}
+
 function Invoke-OpenAIAPIRequestSSE {
     [CmdletBinding()]
     param (
@@ -58,9 +63,16 @@ function Invoke-OpenAIAPIRequestSSE {
 
     # Decrypt securestring
     $PlainToken = DecryptSecureString $ApiKey
-    # Create HttpClient and messages
-    $HttpClient = [System.Net.Http.HttpClient]::new()
+
+    # Create HttpClient that has 5 min lifetime to reuse
+    if ($null -eq $script:HttpClientHandler.HttpClient -or $script:HttpClientHandler.Expires -lt [datetime]::Now) {
+        $script:HttpClientHandler.HttpClient = [System.Net.Http.HttpClient]::new()
+        $script:HttpClientHandler.Expires = [datetime]::Now.AddMinutes(5)
+    }
+
+    # Create HttpRequestMessage
     $RequestMessage = [System.Net.Http.HttpRequestMessage]::new($Method, $Uri)
+
     # Use HTTP/2
     if ($null -ne [System.Net.HttpVersion]::Version20) {
         $RequestMessage.Version = [System.Net.HttpVersion]::Version20
@@ -131,7 +143,7 @@ function Invoke-OpenAIAPIRequestSSE {
 
     # Send API Request
     try {
-        $HttpResponse = $HttpClient.SendAsync($RequestMessage, [System.Net.Http.HttpCompletionOption]::ResponseHeadersRead, $CancelToken).GetAwaiter().GetResult()
+        $HttpResponse = $script:HttpClientHandler.HttpClient.SendAsync($RequestMessage, [System.Net.Http.HttpCompletionOption]::ResponseHeadersRead, $CancelToken).GetAwaiter().GetResult()
 
         #region On HTTP error
         if (-not $HttpResponse.IsSuccessStatusCode) {
@@ -231,7 +243,6 @@ function Invoke-OpenAIAPIRequestSSE {
         $PlainToken = $null
         try {
             if ($null -ne $cts) { $cts.Dispose() }
-            if ($null -ne $HttpClient) { $HttpClient.Dispose() }
             if ($null -ne $HttpResponse) { $HttpResponse.Dispose() }
             if ($null -ne $ResponseStream) { $ResponseStream.Dispose() }
             if ($null -ne $RequestMessage) { $RequestMessage.Dispose() }
