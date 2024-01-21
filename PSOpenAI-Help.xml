@@ -107,8 +107,8 @@ The default value is `0` (infinite).</maml:para>
             <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -253,8 +253,8 @@ The default value is `0` (infinite).</maml:para>
           <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
@@ -853,8 +853,8 @@ The default value is `0` (infinite).</maml:para>
             <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -1037,8 +1037,8 @@ The default value is `0` (infinite).</maml:para>
           <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
@@ -1178,8 +1178,8 @@ The default value is `0` (infinite).</maml:para>
             <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -1278,8 +1278,8 @@ The default value is `0` (infinite).</maml:para>
             <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -1377,8 +1377,8 @@ The default value is `0` (infinite).</maml:para>
             <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -1497,8 +1497,8 @@ The default value is `0` (infinite).</maml:para>
           <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
@@ -1650,8 +1650,8 @@ The default value is `0` (infinite).</maml:para>
             <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -1735,8 +1735,8 @@ The default value is `0` (infinite).</maml:para>
           <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
@@ -1994,8 +1994,8 @@ The default value is `0` (infinite).</maml:para>
             <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -2078,8 +2078,8 @@ The default value is `0` (infinite).</maml:para>
             <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -2174,8 +2174,8 @@ The default value is `0` (infinite).</maml:para>
           <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
@@ -2324,8 +2324,8 @@ The default value is `0` (infinite).</maml:para>
             <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -2420,8 +2420,8 @@ The default value is `0` (infinite).</maml:para>
           <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
@@ -2556,8 +2556,8 @@ The default value is `0` (infinite).</maml:para>
             <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -2641,8 +2641,8 @@ The default value is `0` (infinite).</maml:para>
           <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
@@ -2795,8 +2795,8 @@ The default value is `0` (infinite).</maml:para>
             <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -2879,8 +2879,8 @@ The default value is `0` (infinite).</maml:para>
           <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
@@ -3024,8 +3024,8 @@ The default value is `0` (infinite).</maml:para>
             <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -3136,8 +3136,8 @@ The default value is `0` (infinite).</maml:para>
             <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -3247,8 +3247,8 @@ The default value is `0` (infinite).</maml:para>
             <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -3379,8 +3379,8 @@ The default value is `0` (infinite).</maml:para>
           <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
@@ -3535,8 +3535,8 @@ The default value is `0` (infinite).</maml:para>
             <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -3647,8 +3647,8 @@ The default value is `0` (infinite).</maml:para>
             <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -3758,8 +3758,8 @@ The default value is `0` (infinite).</maml:para>
             <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -3890,8 +3890,8 @@ The default value is `0` (infinite).</maml:para>
           <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
@@ -4046,8 +4046,8 @@ The default value is `0` (infinite).</maml:para>
             <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -4158,8 +4158,8 @@ The default value is `0` (infinite).</maml:para>
             <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -4269,8 +4269,8 @@ The default value is `0` (infinite).</maml:para>
             <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -4401,8 +4401,8 @@ The default value is `0` (infinite).</maml:para>
           <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
@@ -4634,8 +4634,8 @@ The default value is `0` (infinite).</maml:para>
             <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -4814,8 +4814,8 @@ The default value is `0` (infinite).</maml:para>
           <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
@@ -5153,8 +5153,8 @@ The default value is `0` (infinite).</maml:para>
             <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -5237,8 +5237,8 @@ The default value is `0` (infinite).</maml:para>
           <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
@@ -5392,8 +5392,8 @@ The default value is `0` (infinite).</maml:para>
             <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -5500,8 +5500,8 @@ The default value is `0` (infinite).</maml:para>
           <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
@@ -5649,8 +5649,8 @@ The default value is `0` (infinite).</maml:para>
             <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -5746,8 +5746,8 @@ The default value is `0` (infinite).</maml:para>
           <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
@@ -5879,8 +5879,8 @@ The default value is `0` (infinite).</maml:para>
             <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -5963,8 +5963,8 @@ The default value is `0` (infinite).</maml:para>
           <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
@@ -6107,8 +6107,8 @@ The default value is `0` (infinite).</maml:para>
             <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -6204,8 +6204,8 @@ The default value is `0` (infinite).</maml:para>
           <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
@@ -6328,8 +6328,8 @@ The default value is `0` (infinite).</maml:para>
             <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -6412,8 +6412,8 @@ The default value is `0` (infinite).</maml:para>
           <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
@@ -6600,8 +6600,8 @@ The default value is `0` (infinite).</maml:para>
           <maml:description>
             <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails. The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -6747,8 +6747,8 @@ The default value is `0` (infinite).</maml:para>
         <maml:description>
           <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails. The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
@@ -6962,8 +6962,8 @@ The default value is `0` (infinite).</maml:para>
             <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -7111,8 +7111,8 @@ The default value is `0` (infinite).</maml:para>
           <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
@@ -7303,8 +7303,8 @@ The default value is `0` (infinite).</maml:para>
             <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -7439,8 +7439,8 @@ The default value is `0` (infinite).</maml:para>
           <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
@@ -7645,8 +7645,8 @@ The default value is `0` (infinite).</maml:para>
             <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -7809,8 +7809,8 @@ The default value is `0` (infinite).</maml:para>
           <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
@@ -8014,8 +8014,8 @@ The default value is `0` (infinite).</maml:para>
             <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -8165,8 +8165,8 @@ The default value is `0` (infinite).</maml:para>
           <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
@@ -8592,8 +8592,8 @@ The default value is `0` (infinite).</maml:para>
             <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -8978,8 +8978,8 @@ The default value is `0` (infinite).</maml:para>
           <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
@@ -9173,8 +9173,8 @@ Deployments must be created in Azure Portal in advance.</maml:para>
             <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -9295,8 +9295,8 @@ Deployments must be created in Azure Portal in advance.</maml:para>
           <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
@@ -9546,8 +9546,8 @@ DALL-E 2 only supports as `url`.</maml:para>
             <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -9719,8 +9719,8 @@ This cannot be specified with the `Format` parameter. Also, `NumberOfImages` mus
             <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -9906,8 +9906,8 @@ This cannot be specified with the `Format` parameter. Also, `NumberOfImages` mus
           <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
@@ -10265,8 +10265,8 @@ ID 23182 maps to "apple" and ID 88847 maps to "banana". Thus, this example incre
             <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -10539,8 +10539,8 @@ ID 23182 maps to "apple" and ID 88847 maps to "banana". Thus, this example incre
           <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
@@ -10991,8 +10991,8 @@ The default value is `0` (infinite).</maml:para>
             <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -11386,8 +11386,8 @@ The default value is `0` (infinite).</maml:para>
           <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
@@ -11612,8 +11612,8 @@ https://platform.openai.com/docs/guides/embeddings</maml:para>
             <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -11731,8 +11731,8 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
           <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
@@ -11957,8 +11957,8 @@ Must be one of `url`, `base64` or `byte`.</maml:para>
             <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -12118,8 +12118,8 @@ This cannot be specified with the `Format` parameter. Also, `NumberOfImages` mus
             <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -12292,8 +12292,8 @@ This cannot be specified with the `Format` parameter. Also, `NumberOfImages` mus
           <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
@@ -12553,8 +12553,8 @@ Must be one of `url`, `base64`, `byte` or `raw_response`.</maml:para>
             <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -12723,8 +12723,8 @@ This cannot be specified with the `Format` parameter. Also, `NumberOfImages` mus
             <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -12906,8 +12906,8 @@ This cannot be specified with the `Format` parameter. Also, `NumberOfImages` mus
           <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
@@ -13144,8 +13144,8 @@ Must be one of `url`, `base64` or `byte`.</maml:para>
             <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -13279,8 +13279,8 @@ This cannot be specified with the `Format` parameter. Also, `NumberOfImages` mus
             <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -13427,8 +13427,8 @@ This cannot be specified with the `Format` parameter. Also, `NumberOfImages` mus
           <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
@@ -13612,8 +13612,8 @@ The default value is `text-moderation-latest`.</maml:para>
             <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -13709,8 +13709,8 @@ The default value is `text-moderation-latest`.</maml:para>
           <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
@@ -14030,8 +14030,8 @@ ID 23182 maps to "apple" and ID 88847 maps to "banana". Thus, this example incre
             <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -14289,8 +14289,8 @@ ID 23182 maps to "apple" and ID 88847 maps to "banana". Thus, this example incre
           <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
@@ -14538,8 +14538,8 @@ The default value is `0` (infinite).</maml:para>
             <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -14730,8 +14730,8 @@ The default value is `0` (infinite).</maml:para>
           <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
@@ -14879,8 +14879,8 @@ The default value is `0` (infinite).</maml:para>
             <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -14975,8 +14975,8 @@ The default value is `0` (infinite).</maml:para>
           <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
@@ -15204,8 +15204,8 @@ The default value is `0` (infinite).</maml:para>
             <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -15384,8 +15384,8 @@ The default value is `0` (infinite).</maml:para>
           <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
@@ -15552,8 +15552,8 @@ The default value is `0` (infinite).</maml:para>
             <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -15674,8 +15674,8 @@ The default value is `0` (infinite).</maml:para>
           <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
@@ -15822,8 +15822,8 @@ The default value is `0` (infinite).</maml:para>
             <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -15930,8 +15930,8 @@ The default value is `0` (infinite).</maml:para>
             <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -16042,8 +16042,8 @@ The default value is `0` (infinite).</maml:para>
           <maml:para>Number between `0` and `100`.
 Specifies the maximum number of retries if the request fails.
 The default value is `0` (No retry).
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-Note 2: Retry intervals increase exponentially with jitters, such as `1s &gt; 2s &gt; 4s &gt; 8s &gt; 16s`</maml:para>
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
