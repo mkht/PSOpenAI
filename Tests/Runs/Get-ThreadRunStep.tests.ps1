@@ -153,7 +153,7 @@ Describe 'Get-ThreadRunStep' {
             It 'Error on invalid input' {
                 $InObject = [datetime]::Today
                 { $InObject | Get-ThreadRunStep -ea Stop } | Should -Throw
-                Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 0
+                Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 0 -Exactly
             }
         }
     }

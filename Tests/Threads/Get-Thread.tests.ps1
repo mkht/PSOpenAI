@@ -64,7 +64,7 @@ Describe 'Get-Thread' {
         It 'Error on invalid input' {
             $InObject = [datetime]::Today
             { $InObject | Get-Thread -ea Stop } | Should -Throw
-            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 0
+            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 0 -Exactly
         }
     }
 

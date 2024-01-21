@@ -64,7 +64,7 @@ Describe 'Set-Assistant' {
         It 'Error on invalid input' {
             $InObject = [datetime]::Today
             { $InObject | Set-Assistant -ea Stop } | Should -Throw
-            Should -Invoke New-Assistant -ModuleName $script:ModuleName -Times 0
+            Should -Invoke New-Assistant -ModuleName $script:ModuleName -Times 0 -Exactly
         }
     }
 }

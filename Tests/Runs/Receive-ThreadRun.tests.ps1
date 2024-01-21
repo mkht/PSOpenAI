@@ -48,9 +48,9 @@ Describe 'Receive-ThreadRun' {
                 started_at = [datetime]::Today
             }
             { $script:Result = Receive-ThreadRun -InputObject $InObject -ea Stop } | Should -Not -Throw
-            Should -Invoke Wait-ThreadRun -ModuleName $script:ModuleName -Times 0
-            Should -Invoke Get-Thread -ModuleName $script:ModuleName -Times 1
-            Should -Invoke Remove-Thread -ModuleName $script:ModuleName -Times 0
+            Should -Invoke Wait-ThreadRun -ModuleName $script:ModuleName -Times 0 -Exactly
+            Should -Invoke Get-Thread -ModuleName $script:ModuleName -Times 1 -Exactly
+            Should -Invoke Remove-Thread -ModuleName $script:ModuleName -Times 0 -Exactly
             $Result.id | Should -Be 'thread_abc123'
             $Result.object | Should -Be 'thread'
         }
@@ -64,9 +64,9 @@ Describe 'Receive-ThreadRun' {
                 started_at = [datetime]::Today
             }
             { $script:Result = Receive-ThreadRun -InputObject $InObject -Wait -ea Stop } | Should -Not -Throw
-            Should -Invoke Wait-ThreadRun -ModuleName $script:ModuleName -Times 1
-            Should -Invoke Get-Thread -ModuleName $script:ModuleName -Times 1
-            Should -Invoke Remove-Thread -ModuleName $script:ModuleName -Times 0
+            Should -Invoke Wait-ThreadRun -ModuleName $script:ModuleName -Times 1 -Exactly
+            Should -Invoke Get-Thread -ModuleName $script:ModuleName -Times 1 -Exactly
+            Should -Invoke Remove-Thread -ModuleName $script:ModuleName -Times 0 -Exactly
             $Result.id | Should -Be 'thread_abc123'
             $Result.object | Should -Be 'thread'
         }
@@ -80,9 +80,9 @@ Describe 'Receive-ThreadRun' {
                 started_at = [datetime]::Today
             }
             { $script:Result = Receive-ThreadRun -InputObject $InObject -Wait -AutoRemoveThread -ea Stop } | Should -Not -Throw
-            Should -Invoke Wait-ThreadRun -ModuleName $script:ModuleName -Times 1
-            Should -Invoke Get-Thread -ModuleName $script:ModuleName -Times 1
-            Should -Invoke Remove-Thread -ModuleName $script:ModuleName -Times 1
+            Should -Invoke Wait-ThreadRun -ModuleName $script:ModuleName -Times 1 -Exactly
+            Should -Invoke Get-Thread -ModuleName $script:ModuleName -Times 1 -Exactly
+            Should -Invoke Remove-Thread -ModuleName $script:ModuleName -Times 1 -Exactly
             $Result.id | Should -Be 'thread_abc123'
             $Result.object | Should -Be 'thread'
         }
@@ -96,18 +96,18 @@ Describe 'Receive-ThreadRun' {
                 started_at = [datetime]::Today
             }
             { $script:Result = Receive-ThreadRun -InputObject $InObject -AutoRemoveThread -ea Stop } | Should -Throw
-            Should -Invoke Wait-ThreadRun -ModuleName $script:ModuleName -Times 0
-            Should -Invoke Get-Thread -ModuleName $script:ModuleName -Times 0
-            Should -Invoke Remove-Thread -ModuleName $script:ModuleName -Times 0
+            Should -Invoke Wait-ThreadRun -ModuleName $script:ModuleName -Times 0 -Exactly
+            Should -Invoke Get-Thread -ModuleName $script:ModuleName -Times 0 -Exactly
+            Should -Invoke Remove-Thread -ModuleName $script:ModuleName -Times 0 -Exactly
             $Result | Should -BeNullOrEmpty
         }
 
         It 'Error on invalid input' {
             $InObject = [datetime]::Today
             { $InObject | Receive-ThreadRun -ea Stop } | Should -Throw
-            Should -Invoke Wait-ThreadRun -ModuleName $script:ModuleName -Times 0
-            Should -Invoke Get-Thread -ModuleName $script:ModuleName -Times 0
-            Should -Invoke Remove-Thread -ModuleName $script:ModuleName -Times 0
+            Should -Invoke Wait-ThreadRun -ModuleName $script:ModuleName -Times 0 -Exactly
+            Should -Invoke Get-Thread -ModuleName $script:ModuleName -Times 0 -Exactly
+            Should -Invoke Remove-Thread -ModuleName $script:ModuleName -Times 0 -Exactly
             $Result | Should -BeNullOrEmpty
         }
     }

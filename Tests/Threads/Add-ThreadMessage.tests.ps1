@@ -55,7 +55,7 @@ Describe 'Set-Thread' {
                     -Message 'How does AI work? Explain it in simple terms.' `
                     -ea Stop } | Should -Not -Throw
             Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName
-            Should -Invoke Get-Thread -ModuleName $script:ModuleName -Times 0
+            Should -Invoke Get-Thread -ModuleName $script:ModuleName -Times 0 -Exactly
             $script:Result | Should -BeNullOrEmpty
         }
 
@@ -71,7 +71,7 @@ Describe 'Set-Thread' {
                     -PassThru `
                     -ea Stop } | Should -Not -Throw
             Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName
-            Should -Invoke Get-Thread -ModuleName $script:ModuleName -Times 1
+            Should -Invoke Get-Thread -ModuleName $script:ModuleName -Times 1 -Exactly
             $script:Result.id | Should -Be 'thread_abc123'
         }
 
@@ -82,8 +82,8 @@ Describe 'Set-Thread' {
                     -InputObject $InObject `
                     -Message 'How does AI work? Explain it in simple terms.' `
                     -ea Stop } | Should -Throw
-            Should -Invoke Get-Thread -ModuleName $script:ModuleName -Times 0
-            Should -Invoke Get-Thread -ModuleName $script:ModuleName -Times 0
+            Should -Invoke Get-Thread -ModuleName $script:ModuleName -Times 0 -Exactly
+            Should -Invoke Get-Thread -ModuleName $script:ModuleName -Times 0 -Exactly
         }
     }
 

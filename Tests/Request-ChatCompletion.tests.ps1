@@ -114,7 +114,7 @@ Describe 'Request-ChatCompletion' {
             }
 
             { $script:Result = Request-ChatCompletion -Message 'test' -Functions $FunctionSpec -InvokeFunctionOnCallMode None -ea Stop } | Should -Not -Throw
-            Should -Invoke -CommandName 'Test-Path' -Times 0
+            Should -Invoke -CommandName 'Test-Path' -Times 0 -Exactly
             Should -InvokeVerifiable
             $Result.Answer | Should -BeNullOrEmpty
             $Result.Message | Should -Be 'test'
@@ -178,7 +178,7 @@ Describe 'Request-ChatCompletion' {
                 })
 
             { $script:Result = Request-ChatCompletion -Message 'test' -Tools $ToolsSpec -InvokeTools None -ea Stop } | Should -Not -Throw
-            Should -Invoke -CommandName 'Test-Path' -Times 0
+            Should -Invoke -CommandName 'Test-Path' -Times 0 -Exactly
             Should -InvokeVerifiable
             $Result.Answer | Should -BeNullOrEmpty
             $Result.Message | Should -Be 'test'
@@ -203,6 +203,181 @@ Describe 'Request-ChatCompletion' {
         It 'Request-ChatGPT as alias' {
             $Alias = Get-Alias 'Request-ChatGPT' -ea Ignore
             $Alias.ResolvedCommandName | Should -Be 'Request-ChatCompletion'
+        }
+    }
+
+    Context 'Retry Strategies' -Tag 'Offline' {
+
+        BeforeAll {
+            Mock -ModuleName $script:ModuleName Initialize-APIKey { [securestring]::new() }
+
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-WebRequest {
+                if ($PSVersionTable.PSVersion.Major -le 5) { $e = [System.Net.WebException]::new('error') }
+                else { $e = [System.Net.Http.HttpRequestException]::new() }
+                throw $e
+            }
+        }
+
+        It 'Should NOT Retry except 429 and 5xx error.' {
+            Mock -ModuleName $script:ModuleName Parse-WebExceptionResponse {
+                [pscustomobject]@{
+                    ErrorCode    = 404
+                    ErrorReason  = 'NotFound'
+                    Headers      = $null
+                    ErrorMessage = 'NotFound'
+                }
+            }
+            $StopWatch = [System.Diagnostics.Stopwatch]::new()
+            $StopWatch.Start()
+            { Request-ChatCompletion -Message 'test' -MaxRetryCount 3 -MaxTokens 16 -ea Stop } | Should -Throw
+            $StopWatch.Stop()
+            Should -Invoke -CommandName 'Invoke-WebRequest' -ModuleName $script:ModuleName -Times 1 -Exactly
+        }
+
+        It 'Should NOT Retry on Quota-Limit exceeds error.' {
+            Mock -ModuleName $script:ModuleName Parse-WebExceptionResponse {
+                [pscustomobject]@{
+                    ErrorCode    = 429
+                    ErrorReason  = 'TooManyRequests'
+                    Headers      = $null
+                    ErrorMessage = 'Quota Limit Error'
+                }
+            }
+            $StopWatch = [System.Diagnostics.Stopwatch]::new()
+            $StopWatch.Start()
+            { Request-ChatCompletion -Message 'test' -MaxRetryCount 3 -MaxTokens 16 -ea Stop } | Should -Throw
+            $StopWatch.Stop()
+            Should -Invoke -CommandName 'Invoke-WebRequest' -ModuleName $script:ModuleName -Times 1 -Exactly
+        }
+
+        It 'Should retry if the response contains x-should-retry header and the value is "true"' {
+            Mock -ModuleName $script:ModuleName Parse-WebExceptionResponse {
+                class MockHeaders : System.Net.Http.Headers.HttpHeaders {
+                    [hashtable]$Headers = @{'x-should-retry' = 'true'; 'retry-after-ms' = '20' }
+                    [bool] Contains([string]$header) { return ($this.Headers.Contains($header)) }
+                    [string[]] GetValues([string]$header) { return [string[]]@($this.Headers[$header]) }
+                }
+                [pscustomobject]@{
+                    ErrorCode    = 404
+                    ErrorReason  = 'NotFound'
+                    Headers      = ([MockHeaders]::new())
+                    ErrorMessage = 'NotFound'
+                }
+            }
+            $StopWatch = [System.Diagnostics.Stopwatch]::new()
+            $StopWatch.Start()
+            { Request-ChatCompletion -Message 'test' -MaxRetryCount 1 -MaxTokens 16 -ea Stop } | Should -Throw
+            $StopWatch.Stop()
+            Should -Invoke -CommandName 'Invoke-WebRequest' -ModuleName $script:ModuleName -Times 2 -Exactly
+        }
+
+        It 'Should NOT retry if the response contains x-should-retry header and the value is "false"' {
+            Mock -ModuleName $script:ModuleName Parse-WebExceptionResponse {
+                class MockHeaders : System.Net.Http.Headers.HttpHeaders {
+                    [hashtable]$Headers = @{'x-should-retry' = 'false'; 'retry-after-ms' = '20' }
+                    [bool] Contains([string]$header) { return ($this.Headers.Contains($header)) }
+                    [string[]] GetValues([string]$header) { return [string[]]@($this.Headers[$header]) }
+                }
+                [pscustomobject]@{
+                    ErrorCode    = 429
+                    ErrorReason  = 'TooManyRequests'
+                    Headers      = ([MockHeaders]::new())
+                    ErrorMessage = 'Rate-Limit'
+                }
+            }
+            $StopWatch = [System.Diagnostics.Stopwatch]::new()
+            $StopWatch.Start()
+            { Request-ChatCompletion -Message 'test' -MaxRetryCount 1 -MaxTokens 16 -ea Stop } | Should -Throw
+            $StopWatch.Stop()
+            Should -Invoke -CommandName 'Invoke-WebRequest' -ModuleName $script:ModuleName -Times 1 -Exactly
+        }
+
+        It 'Retry on Rate-Limit exceeds error and the interval follows retry-after-ms header value.' {
+            Mock -ModuleName $script:ModuleName Parse-WebExceptionResponse {
+                class MockHeaders : System.Net.Http.Headers.HttpHeaders {
+                    [hashtable]$Headers = @{'retry-after-ms' = '200'; 'retry-after' = '3' }
+                    [bool] Contains([string]$header) { return ($this.Headers.Contains($header)) }
+                    [string[]] GetValues([string]$header) { return [string[]]@($this.Headers[$header]) }
+                }
+                [pscustomobject]@{
+                    ErrorCode    = 429
+                    ErrorReason  = 'TooManyRequests'
+                    Headers      = ([MockHeaders]::new())
+                    ErrorMessage = 'Rate-Limit'
+                }
+            }
+            $StopWatch = [System.Diagnostics.Stopwatch]::new()
+            $StopWatch.Start()
+            { Request-ChatCompletion -Message 'test' -MaxRetryCount 1 -MaxTokens 16 -ea Stop } | Should -Throw
+            $StopWatch.Stop()
+            Should -Invoke -CommandName 'Invoke-WebRequest' -ModuleName $script:ModuleName -Times 2 -Exactly
+            # The retry interval should around 200ms
+            $StopWatch.ElapsedMilliseconds | Should -BeGreaterOrEqual 200
+            $StopWatch.ElapsedMilliseconds | Should -BeLessThan 400
+        }
+
+        It 'Retry on Rate-Limit exceeds error and the interval follows retry-after header value.' {
+            Mock -ModuleName $script:ModuleName Parse-WebExceptionResponse {
+                class MockHeaders : System.Net.Http.Headers.HttpHeaders {
+                    [hashtable]$Headers = @{'retry-after' = '1' }
+                    [bool] Contains([string]$header) { return ($this.Headers.Contains($header)) }
+                    [string[]] GetValues([string]$header) { return [string[]]@($this.Headers[$header]) }
+                }
+                [pscustomobject]@{
+                    ErrorCode    = 429
+                    ErrorReason  = 'TooManyRequests'
+                    Headers      = ([MockHeaders]::new())
+                    ErrorMessage = 'Rate-Limit'
+                }
+            }
+            $StopWatch = [System.Diagnostics.Stopwatch]::new()
+            $StopWatch.Start()
+            { Request-ChatCompletion -Message 'test' -MaxRetryCount 1 -MaxTokens 16 -ea Stop } | Should -Throw
+            $StopWatch.Stop()
+            Should -Invoke -CommandName 'Invoke-WebRequest' -ModuleName $script:ModuleName -Times 2 -Exactly
+            # The retry interval should around 1s
+            $StopWatch.ElapsedMilliseconds | Should -BeGreaterOrEqual 1000
+            $StopWatch.ElapsedMilliseconds | Should -BeLessThan 1500
+        }
+
+        It 'Retrying with exponential backoff on Rate-Limit exceeds error' {
+            Mock -ModuleName $script:ModuleName Parse-WebExceptionResponse {
+                [pscustomobject]@{
+                    ErrorCode    = 429
+                    ErrorReason  = 'TooManyRequests'
+                    Headers      = $null
+                    ErrorMessage = 'Rate-Limit'
+                }
+            }
+            $StopWatch = [System.Diagnostics.Stopwatch]::new()
+            $StopWatch.Start()
+            { Request-ChatCompletion -Message 'test' -MaxRetryCount 3 -MaxTokens 16 -ea Stop } | Should -Throw
+            $StopWatch.Stop()
+            Should -Invoke -CommandName 'Invoke-WebRequest' -ModuleName $script:ModuleName -Times 4 -Exactly
+            # The retry interval is given a jitter of 0.8 to 1.2 times, so the minimum is 5.6s ((1+2+4)*0.8) and the maximum is 8.4s
+            $StopWatch.ElapsedMilliseconds | Should -BeGreaterOrEqual 5600
+            $StopWatch.ElapsedMilliseconds | Should -BeLessThan 8400
+        }
+
+        It 'Retrying with exponential backoff on server error' {
+            Mock -ModuleName $script:ModuleName Parse-WebExceptionResponse {
+                class MockHeaders : System.Net.Http.Headers.HttpHeaders {
+                    [hashtable]$Headers = @{'retry-after-ms' = '20' }
+                    [bool] Contains([string]$header) { return ($this.Headers.Contains($header)) }
+                    [string[]] GetValues([string]$header) { return [string[]]@($this.Headers[$header]) }
+                }
+                [pscustomobject]@{
+                    ErrorCode    = 500
+                    ErrorReason  = 'InternalServerError'
+                    Headers      = ([MockHeaders]::new())
+                    ErrorMessage = 'Internal Server Error'
+                }
+            }
+            $StopWatch = [System.Diagnostics.Stopwatch]::new()
+            $StopWatch.Start()
+            { Request-ChatCompletion -Message 'test' -MaxRetryCount 1 -MaxTokens 16 -ea Stop } | Should -Throw
+            $StopWatch.Stop()
+            Should -Invoke -CommandName 'Invoke-WebRequest' -ModuleName $script:ModuleName -Times 2 -Exactly
         }
     }
 
@@ -440,19 +615,6 @@ Describe 'Request-ChatCompletion' {
             ([string[]]$Info) | Should -Be ([string[]]$Result)
         }
 
-        It 'Retrying with exponential backoff on Rate-Limit exceeds error' {
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-WebRequest {
-                iwr https://httpstat.us/429 -UseBasicParsing
-            }
-            $StopWatch = [System.Diagnostics.Stopwatch]::new()
-            $StopWatch.Start()
-            { Request-ChatCompletion -Message 'test' -MaxRetryCount 3 -MaxTokens 16 -ea Stop } | Should -Throw
-            $StopWatch.Stop()
-            Should -Invoke -CommandName 'Invoke-WebRequest' -ModuleName $script:ModuleName -Times 3
-            # The retry interval is given a jitter of 0.8 to 1.2 times, so the minimum is 5.6 seconds. ((1+2+4)*0.8)
-            $StopWatch.ElapsedMilliseconds | Should -BeGreaterOrEqual 5600
-        }
-
         It 'Retrying with exponential backoff on server error' {
             Mock -Verifiable -ModuleName $script:ModuleName Invoke-WebRequest {
                 iwr https://httpstat.us/500 -UseBasicParsing
@@ -461,7 +623,7 @@ Describe 'Request-ChatCompletion' {
             $StopWatch.Start()
             { Request-ChatCompletion -Message 'test' -MaxRetryCount 1 -MaxTokens 16 -ea Stop } | Should -Throw
             $StopWatch.Stop()
-            Should -Invoke -CommandName 'Invoke-WebRequest' -ModuleName $script:ModuleName -Times 1
+            Should -Invoke -CommandName 'Invoke-WebRequest' -ModuleName $script:ModuleName -Times 2 -Exactly
             # The retry interval is given a jitter of 0.8 to 1.2 times, so the minimum is 0.8 seconds.
             $StopWatch.ElapsedMilliseconds | Should -BeGreaterOrEqual 800
         }

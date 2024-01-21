@@ -65,7 +65,7 @@ Describe 'Set-Thread' {
         It 'Error on invalid input' {
             $InObject = [datetime]::Today
             { $InObject | Set-Thread -ea Stop } | Should -Throw
-            Should -Invoke New-Thread -ModuleName $script:ModuleName -Times 0
+            Should -Invoke New-Thread -ModuleName $script:ModuleName -Times 0 -Exactly
         }
     }
 }

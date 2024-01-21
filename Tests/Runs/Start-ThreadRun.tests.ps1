@@ -86,7 +86,7 @@ Describe 'Start-ThreadRun' {
         It 'Error on invalid input' {
             $InObject = [datetime]::Today
             { $InObject | Start-ThreadRun -Assistant 'asst_abc123' -ea Stop } | Should -Throw
-            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 0
+            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 0 -Exactly
         }
     }
 

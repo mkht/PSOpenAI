@@ -67,8 +67,8 @@ Describe 'Stop-ThreadRun' {
                 started_at = [datetime]::Today
             }
             { $script:Result = Stop-ThreadRun -InputObject $InObject -ea Stop } | Should -Not -Throw
-            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1
-            Should -Invoke Wait-ThreadRun -ModuleName $script:ModuleName -Times 0
+            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
+            Should -Invoke Wait-ThreadRun -ModuleName $script:ModuleName -Times 0 -Exactly
             $Result | Should -BeNullOrEmpty
         }
 
@@ -81,8 +81,8 @@ Describe 'Stop-ThreadRun' {
                 started_at = [datetime]::Today
             }
             { $script:Result = Stop-ThreadRun -InputObject $InObject -PassThru -ea Stop } | Should -Not -Throw
-            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1
-            Should -Invoke Wait-ThreadRun -ModuleName $script:ModuleName -Times 0
+            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
+            Should -Invoke Wait-ThreadRun -ModuleName $script:ModuleName -Times 0 -Exactly
             $Result.id | Should -Be 'run_abc123'
             $Result.thread_id | Should -Be 'thread_abc123'
             $Result.object | Should -Be 'thread.run'
@@ -98,8 +98,8 @@ Describe 'Stop-ThreadRun' {
                 started_at = [datetime]::Today
             }
             { $script:Result = Stop-ThreadRun -InputObject $InObject -Wait -ea Stop } | Should -Not -Throw
-            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1
-            Should -Invoke Wait-ThreadRun -ModuleName $script:ModuleName -Times 1
+            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
+            Should -Invoke Wait-ThreadRun -ModuleName $script:ModuleName -Times 1 -Exactly
             $Result | Should -BeNullOrEmpty
         }
 
@@ -112,8 +112,8 @@ Describe 'Stop-ThreadRun' {
                 started_at = [datetime]::Today
             }
             { $script:Result = Stop-ThreadRun -InputObject $InObject -Wait -PassThru -ea Stop } | Should -Not -Throw
-            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1
-            Should -Invoke Wait-ThreadRun -ModuleName $script:ModuleName -Times 1
+            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
+            Should -Invoke Wait-ThreadRun -ModuleName $script:ModuleName -Times 1 -Exactly
             $Result.id | Should -Be 'run_abc123'
             $Result.thread_id | Should -Be 'thread_abc123'
             $Result.object | Should -Be 'thread.run'
@@ -129,8 +129,8 @@ Describe 'Stop-ThreadRun' {
                 started_at = [datetime]::Today
             }
             { $script:Result = Stop-ThreadRun -InputObject $InObject -ea Stop } | Should -Throw
-            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 0
-            Should -Invoke Wait-ThreadRun -ModuleName $script:ModuleName -Times 0
+            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 0 -Exactly
+            Should -Invoke Wait-ThreadRun -ModuleName $script:ModuleName -Times 0 -Exactly
             $Result | Should -BeNullOrEmpty
         }
 
@@ -143,16 +143,16 @@ Describe 'Stop-ThreadRun' {
                 started_at = [datetime]::Today
             }
             { $script:Result = Stop-ThreadRun -InputObject $InObject -Force -PassThru -ea Stop } | Should -Not -Throw
-            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1
-            Should -Invoke Wait-ThreadRun -ModuleName $script:ModuleName -Times 0
+            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
+            Should -Invoke Wait-ThreadRun -ModuleName $script:ModuleName -Times 0 -Exactly
             $Result.id | Should -Be 'run_abc123'
         }
 
         It 'Error on invalid input' {
             $InObject = [datetime]::Today
             { $InObject | Stop-ThreadRun -ea Stop } | Should -Throw
-            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 0
-            Should -Invoke Wait-ThreadRun -ModuleName $script:ModuleName -Times 0
+            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 0 -Exactly
+            Should -Invoke Wait-ThreadRun -ModuleName $script:ModuleName -Times 0 -Exactly
         }
     }
 

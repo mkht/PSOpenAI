@@ -111,7 +111,7 @@ Describe 'Get-ThreadMessage' {
             It 'Error on invalid input' {
                 $InObject = [datetime]::Today
                 { $InObject | Get-ThreadMessage -ea Stop } | Should -Throw
-                Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 0
+                Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 0 -Exactly
             }
         }
     }

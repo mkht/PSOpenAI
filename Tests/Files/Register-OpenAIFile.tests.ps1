@@ -44,7 +44,7 @@ Describe 'Register-OpenAIFile' {
 
         It 'Error if the file does not exist' {
             { Register-OpenAIFile -File ($script:TestData + '/notexist.txt') -Purpose assistants -ea Stop } | Should -Throw
-            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 0
+            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 0 -Exactly
         }
     }
 

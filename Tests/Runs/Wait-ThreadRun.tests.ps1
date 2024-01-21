@@ -125,7 +125,7 @@ Describe 'Wait-ThreadRun' {
             }
             $InObject = [datetime]::Today
             { $InObject | Wait-ThreadRun -ea Stop } | Should -Throw
-            Should -Invoke Get-ThreadRun -ModuleName $script:ModuleName -Times 0
+            Should -Invoke Get-ThreadRun -ModuleName $script:ModuleName -Times 0 -Exactly
         }
     }
 }

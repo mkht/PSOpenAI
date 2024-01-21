@@ -99,7 +99,7 @@ Describe 'Get-Assistant' {
             It 'Error on invalid input' {
                 $InObject = [datetime]::Today
                 { $InObject | Get-Assistant -ea Stop } | Should -Throw
-                Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 0
+                Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 0 -Exactly
             }
         }
     }

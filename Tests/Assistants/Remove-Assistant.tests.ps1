@@ -60,7 +60,7 @@ Describe 'Remove-Assistant' {
         It 'Error on invalid input' {
             $InObject = [datetime]::Today
             { $InObject | Remove-Assistant -ea Stop } | Should -Throw
-            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 0
+            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 0 -Exactly
         }
     }
 
@@ -71,7 +71,7 @@ Describe 'Remove-Assistant' {
         }
 
         It 'Remove assistant' {
-            $assistant = New-assistant
+            $assistant = New-Assistant
             { $assistant | Remove-Assistant -ea Stop } | Should -Not -Throw
             $assistant = try { $assistant | Get-Assistant -ea Ignore }catch {}
             $assistant | Should -BeNullOrEmpty
