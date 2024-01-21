@@ -1,4 +1,7 @@
 # Changelog
+### Unreleased
+- The retry logic supports with `retry-after-ms` and `retry-after` response headers.
+
 ### 2.6.2
 - Improved performance when executing a large number of requests in a short period of time.
 

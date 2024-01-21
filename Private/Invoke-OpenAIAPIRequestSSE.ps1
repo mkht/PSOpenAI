@@ -154,7 +154,7 @@ function Invoke-OpenAIAPIRequestSSE {
 
             # Retry
             if (Should-Retry -ErrorCode $ErrorCode -ErrorMessage $ErrorMessage -Headers $HttpResponse.Headers -RetryCount $RetryCount -MaxRetryCount $MaxRetryCount) {
-                $Delay = Get-RetryDelay -RetryCount $RetryCount
+                $Delay = Get-RetryDelay -RetryCount $RetryCount -ResponseHeaders $ErrorResponse.Headers
                 Write-Warning ('{3} API returned an {0} ({1}) Error: {2}' -f $ErrorCode, $ErrorReason, $ErrorMessage, $ServiceName)
                 Write-Warning ('Retry the request after waiting {0} ms (retry count: {1})' -f $Delay, $RetryCount)
                 Start-Sleep -Milliseconds $Delay

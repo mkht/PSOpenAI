@@ -131,8 +131,7 @@ Default value: 0
 ### -MaxRetryCount
 Number between `0` and `100`.  
 Specifies the maximum number of retries if the request fails. The default value is `0` (No retry).  
-Note 1: Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.  
-Note 2: Retry intervals increase exponentially with jitters, such as `1s > 2s > 4s > 8s > 16s`
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.  
 
 ```yaml
 Type: Int32

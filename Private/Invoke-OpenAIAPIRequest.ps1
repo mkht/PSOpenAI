@@ -214,7 +214,7 @@ function Invoke-OpenAIAPIRequest {
 
         # Retry
         if (Should-Retry -ErrorCode $ErrorResponse.ErrorCode -ErrorMessage $ErrorResponse.ErrorMessage -Headers $ErrorResponse.Headers -RetryCount $RetryCount -MaxRetryCount $MaxRetryCount) {
-            $Delay = Get-RetryDelay -RetryCount $RetryCount
+            $Delay = Get-RetryDelay -RetryCount $RetryCount -ResponseHeaders $ErrorResponse.Headers
             Write-Warning $detailMessage
             Write-Warning ('Retry the request after waiting {0} ms (retry count: {1})' -f $Delay, $RetryCount)
             Start-Sleep -Milliseconds $Delay
