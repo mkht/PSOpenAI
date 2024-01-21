@@ -196,7 +196,7 @@ $Assistant = New-Assistant -Model "gpt-3.5-turbo"
 $Result = New-Thread |`
            Add-ThreadMessage "Hello, what can you do for me?" -PassThru | `
             Start-ThreadRun -Assistant $Assistant |`
-             Receive-ThreadRun -Wait -AutoRemoveThread
+             Receive-ThreadRun -Wait
 
 # Dislpays only Assistant response message
 $Result.Messages.SimpleContent[-1].Content
