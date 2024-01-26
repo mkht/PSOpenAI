@@ -13,13 +13,17 @@ function Request-Embeddings {
         [string[]]$Text,
 
         [Parameter()]
-        [Completions('text-embedding-ada-002', 'text-search-ada-doc-001')]
+        [Completions('text-embedding-ada-002', 'text-embedding-3-small', 'text-embedding-3-large')]
         [string][LowerCaseTransformation()]$Model = 'text-embedding-ada-002',
 
         [Parameter()]
         [Alias('encoding_format')]
         [ValidateSet('float', 'base64')]
         [string]$Format = 'float',
+
+        [Parameter()]
+        [ValidateRange(1, 2147483647)]
+        [int]$Dimensions,
 
         [Parameter()]
         [string]$User,
@@ -93,6 +97,9 @@ function Request-Embeddings {
         }
         if ($PSBoundParameters.ContainsKey('Format')) {
             $PostBody.encoding_format = $Format
+        }
+        if ($PSBoundParameters.ContainsKey('Dimensions')) {
+            $PostBody.dimensions = $Dimensions
         }
         #endregion
 

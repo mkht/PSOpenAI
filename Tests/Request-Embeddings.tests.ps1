@@ -55,7 +55,7 @@ Describe 'Request-Embeddings' {
         }
 
         It 'Get vector representation of text' {
-            { $script:Result = Request-Embeddings -Text 'Banana' -TimeoutSec 30 -ea Stop } | Should -Not -Throw
+            { $script:Result = Request-Embeddings -Text 'Banana' -Model 'text-embedding-ada-002' -TimeoutSec 30 -ea Stop } | Should -Not -Throw
             $Result | Should -BeOfType [pscustomobject]
             $Result.data | Should -HaveCount 1
             , $Result.data[0].embedding | Should -BeOfType [float[]]
@@ -63,7 +63,7 @@ Describe 'Request-Embeddings' {
         }
 
         It 'Embeddings, multiple inputs' {
-            { $script:Result = Request-Embeddings -Text ('Banana', 'Apple') -TimeoutSec 30 -ea Stop } | Should -Not -Throw
+            { $script:Result = Request-Embeddings -Text ('Banana', 'Apple') -Model 'text-embedding-ada-002' -TimeoutSec 30 -ea Stop } | Should -Not -Throw
             $Result | Should -BeOfType [pscustomobject]
             $Result.data | Should -HaveCount 2
             , $Result.data[0].embedding | Should -BeOfType [float[]]
@@ -72,8 +72,16 @@ Describe 'Request-Embeddings' {
             $Result.data[1].embedding | Should -HaveCount 1536
         }
 
+        It 'Specify the number of dimensions' {
+            { $script:Result = Request-Embeddings -Text 'Peach' -Model 'text-embedding-3-small' -Dimensions 256 -TimeoutSec 30 -ea Stop } | Should -Not -Throw
+            $Result | Should -BeOfType [pscustomobject]
+            $Result.data | Should -HaveCount 1
+            , $Result.data[0].embedding | Should -BeOfType [float[]]
+            $Result.data[0].embedding | Should -HaveCount 256
+        }
+
         It 'As base64 format' {
-            { $script:Result = Request-Embeddings -Text 'Banana' -Format base64 -TimeoutSec 30 -ea Stop } | Should -Not -Throw
+            { $script:Result = Request-Embeddings -Text 'Banana' -Model 'text-embedding-ada-002' -Format base64 -TimeoutSec 30 -ea Stop } | Should -Not -Throw
             $Result | Should -BeOfType [pscustomobject]
             $Result.data | Should -HaveCount 1
             $Result.data[0].embedding | Should -BeOfType [string]
