@@ -57,7 +57,7 @@ function Invoke-OpenAIAPIRequestSSE {
     $IsDebug = Test-Debug
     $ServiceName = switch -Wildcard ($AuthType) {
         'openai*' { 'OpenAI' }
-        'azure*' { 'Azure' }
+        'azure*' { 'Azure OpenAI' }
     }
     #endregion
 
@@ -149,13 +149,14 @@ function Invoke-OpenAIAPIRequestSSE {
         if (-not $HttpResponse.IsSuccessStatusCode) {
             $ErrorCode = $HttpResponse.StatusCode.value__
             $ErrorReason = $HttpResponse.ReasonPhrase
-            $ErrorResponse = $HttpResponse.Content.ReadAsStringAsync().GetAwaiter().GetResult()
-            $ErrorMessage = try { ($ErrorResponse | ConvertFrom-Json -ErrorAction Ignore).error.message }catch {}
+            $Body = $HttpResponse.Content.ReadAsStringAsync().GetAwaiter().GetResult()
+            $ErrorContent = try { ($Body | ConvertFrom-Json -ErrorAction Ignore) }catch {}
+            $ErrorObject = Parse-WebExceptionResponse -ErrorCode $ErrorCode -ErrorReason $ErrorReason -ErrorResponse $HttpResponse -ErrorContent $ErrorContent
 
             # Retry
-            if (Should-Retry -ErrorCode $ErrorCode -ErrorMessage $ErrorMessage -Headers $HttpResponse.Headers -RetryCount $RetryCount -MaxRetryCount $MaxRetryCount) {
-                $Delay = Get-RetryDelay -RetryCount $RetryCount -ResponseHeaders $ErrorResponse.Headers
-                Write-Warning ('{3} API returned an {0} ({1}) Error: {2}' -f $ErrorCode, $ErrorReason, $ErrorMessage, $ServiceName)
+            if (Should-Retry -ErrorCode $ErrorObject.StatusCode -ErrorMessage $ErrorObject.Message -Headers $ErrorObject.Response.Headers -RetryCount $RetryCount -MaxRetryCount $MaxRetryCount) {
+                $Delay = Get-RetryDelay -RetryCount $RetryCount -ResponseHeaders $ErrorObject.Response.Headers
+                Write-Warning $ErrorObject.Message
                 Write-Warning ('Retry the request after waiting {0} ms (retry count: {1})' -f $Delay, $RetryCount)
                 Start-Sleep -Milliseconds $Delay
                 $PSBoundParameters.RetryCount = (++$RetryCount)
@@ -164,24 +165,13 @@ function Invoke-OpenAIAPIRequestSSE {
             }
 
             # Throw exception
-            if ($PSVersionTable.PSVersion.Major -ge 6) {
-                $detailMessage = ('{3} API returned an {0} ({1}) Error: {2}' -f $ErrorCode, $ErrorReason, $ErrorMessage, $ServiceName)
-                $ex = ([Microsoft.PowerShell.Commands.HttpResponseException]::new($detailMessage, $HttpResponse))
-            }
-            else {
-                # Throws Webexception (Not HttpRequestException) for consistency with
-                # exceptions thrown by Invoke-WebRequest on Windows PowerShell 5.1
-                # (this may change in the future)
-                $detailMessage = ('{3} API returned an {0} ({1}) Error: {2}' -f $ErrorCode, $ErrorReason, $ErrorMessage, $ServiceName)
-                $ex = ([WebException]::new($detailMessage))
-            }
             $er = [ErrorRecord]::new(
-                $ex,
-                'PSOpenAI.APIRequest.HttpResponseException',
+                $ErrorObject,
+                ('PSOpenAI.APIRequest.{0}' -f $ErrorObject.GetType().Name),
                 [ErrorCategory]::InvalidOperation,
-                $RequestMessage
+                $null
             )
-            $er.ErrorDetails = $detailMessage
+            $er.ErrorDetails = $ErrorObject.Message
             $PSCmdlet.ThrowTerminatingError($er)
             return
         }
@@ -231,7 +221,7 @@ function Invoke-OpenAIAPIRequestSSE {
             ([TimeoutException]::new('The operation was canceled due to timeout.', $_.Exception)),
             'PSOpenAI.APIRequest.TimeoutException',
             [ErrorCategory]::OperationTimeout,
-            $RequestMessage
+            $null
         )
         $er.ErrorDetails = $_.Exception.Message
         $PSCmdlet.ThrowTerminatingError($er)

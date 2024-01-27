@@ -61,7 +61,7 @@ function Invoke-OpenAIAPIRequest {
     $IsDebug = Test-Debug
     $ServiceName = switch -Wildcard ($AuthType) {
         'openai*' { 'OpenAI' }
-        'azure*' { 'Azure' }
+        'azure*' { 'Azure OpenAI' }
     }
     #endregion
 
@@ -209,13 +209,15 @@ function Invoke-OpenAIAPIRequest {
         if ($global:Error[0].FullyQualifiedErrorId.StartsWith('WebCmdletWebResponseException')) { $global:Error.RemoveAt(0) }
 
         # Parse error details
-        $ErrorResponse = Parse-WebExceptionResponse -ErrorRecord $_
-        $detailMessage = ('{3} API returned an {0} ({1}) Error: {2}' -f $ErrorResponse.ErrorCode, $ErrorResponse.ErrorReason, $ErrorResponse.ErrorMessage, $ServiceName)
+        $ErrorObject = Parse-WebExceptionResponse -ErrorRecord $_ -ServiceName $ServiceName
+        if (-not $ErrorObject) {
+            $PSCmdlet.ThrowTerminatingError($_)
+        }
 
         # Retry
-        if (Should-Retry -ErrorCode $ErrorResponse.ErrorCode -ErrorMessage $ErrorResponse.ErrorMessage -Headers $ErrorResponse.Headers -RetryCount $RetryCount -MaxRetryCount $MaxRetryCount) {
-            $Delay = Get-RetryDelay -RetryCount $RetryCount -ResponseHeaders $ErrorResponse.Headers
-            Write-Warning $detailMessage
+        if (Should-Retry -ErrorCode $ErrorObject.StatusCode -ErrorMessage $ErrorObject.Message -Headers $ErrorObject.Response.Headers -RetryCount $RetryCount -MaxRetryCount $MaxRetryCount) {
+            $Delay = Get-RetryDelay -RetryCount $RetryCount -ResponseHeaders $ErrorObject.Response.Headers
+            Write-Warning $ErrorObject.Message
             Write-Warning ('Retry the request after waiting {0} ms (retry count: {1})' -f $Delay, $RetryCount)
             Start-Sleep -Milliseconds $Delay
             $PSBoundParameters.RetryCount = (++$RetryCount)
@@ -223,19 +225,13 @@ function Invoke-OpenAIAPIRequest {
             return
         }
 
-        if ($_.Exception -is [HttpRequestException]) {
-            $ex = ([Microsoft.PowerShell.Commands.HttpResponseException]::new($detailMessage, $_.Exception.Response))
-        }
-        else {
-            $ex = ([WebException]::new($detailMessage, $_.Exception, $_.Exception.Status, $_.Exception.Response))
-        }
         $er = [ErrorRecord]::new(
-            $ex,
-            'PSOpenAI.APIRequest.HttpResponseException',
+            $ErrorObject,
+            ('PSOpenAI.APIRequest.{0}' -f $ErrorObject.GetType().Name),
             [ErrorCategory]::InvalidOperation,
-            $IwrParam
+            $null
         )
-        $er.ErrorDetails = $detailMessage
+        $er.ErrorDetails = $ErrorObject.Message
         $PSCmdlet.ThrowTerminatingError($er)
     }
     catch {

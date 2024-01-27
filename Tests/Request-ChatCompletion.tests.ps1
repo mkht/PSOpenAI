@@ -220,12 +220,13 @@ Describe 'Request-ChatCompletion' {
 
         It 'Should NOT Retry except 429 and 5xx error.' {
             Mock -ModuleName $script:ModuleName Parse-WebExceptionResponse {
-                [pscustomobject]@{
-                    ErrorCode    = 404
-                    ErrorReason  = 'NotFound'
-                    Headers      = $null
-                    ErrorMessage = 'NotFound'
+                class MockException : System.Exception {
+                    [int]$StatusCode = 404
+                    [string]$ErrorReason = 'NotFound'
+                    [hashtable]$Response = $null
+                    MockException() : base ('NotFound') {}
                 }
+                return ([MockException]::new())
             }
             $StopWatch = [System.Diagnostics.Stopwatch]::new()
             $StopWatch.Start()
@@ -236,12 +237,13 @@ Describe 'Request-ChatCompletion' {
 
         It 'Should NOT Retry on Quota-Limit exceeds error.' {
             Mock -ModuleName $script:ModuleName Parse-WebExceptionResponse {
-                [pscustomobject]@{
-                    ErrorCode    = 429
-                    ErrorReason  = 'TooManyRequests'
-                    Headers      = $null
-                    ErrorMessage = 'Quota Limit Error'
+                class MockException : System.Exception {
+                    [int]$StatusCode = 429
+                    [string]$ErrorReason = 'TooManyRequests'
+                    [hashtable]$Response = $null
+                    MockException() : base ('Quota Limit Error') {}
                 }
+                return ([MockException]::new())
             }
             $StopWatch = [System.Diagnostics.Stopwatch]::new()
             $StopWatch.Start()
@@ -257,12 +259,13 @@ Describe 'Request-ChatCompletion' {
                     [bool] Contains([string]$header) { return ($this.Headers.Contains($header)) }
                     [string[]] GetValues([string]$header) { return [string[]]@($this.Headers[$header]) }
                 }
-                [pscustomobject]@{
-                    ErrorCode    = 404
-                    ErrorReason  = 'NotFound'
-                    Headers      = ([MockHeaders]::new())
-                    ErrorMessage = 'NotFound'
+                class MockException : System.Exception {
+                    [int]$StatusCode = 404
+                    [string]$ErrorReason = 'NotFound'
+                    [hashtable]$Response = @{ Headers = ([MockHeaders]::new()) }
+                    MockException() : base ('NotFound') {}
                 }
+                return ([MockException]::new())
             }
             $StopWatch = [System.Diagnostics.Stopwatch]::new()
             $StopWatch.Start()
@@ -278,12 +281,13 @@ Describe 'Request-ChatCompletion' {
                     [bool] Contains([string]$header) { return ($this.Headers.Contains($header)) }
                     [string[]] GetValues([string]$header) { return [string[]]@($this.Headers[$header]) }
                 }
-                [pscustomobject]@{
-                    ErrorCode    = 429
-                    ErrorReason  = 'TooManyRequests'
-                    Headers      = ([MockHeaders]::new())
-                    ErrorMessage = 'Rate-Limit'
+                class MockException : System.Exception {
+                    [int]$StatusCode = 429
+                    [string]$ErrorReason = 'TooManyRequests'
+                    [hashtable]$Response = @{ Headers = ([MockHeaders]::new()) }
+                    MockException() : base ('Rate-Limit') {}
                 }
+                return ([MockException]::new())
             }
             $StopWatch = [System.Diagnostics.Stopwatch]::new()
             $StopWatch.Start()
@@ -299,12 +303,13 @@ Describe 'Request-ChatCompletion' {
                     [bool] Contains([string]$header) { return ($this.Headers.Contains($header)) }
                     [string[]] GetValues([string]$header) { return [string[]]@($this.Headers[$header]) }
                 }
-                [pscustomobject]@{
-                    ErrorCode    = 429
-                    ErrorReason  = 'TooManyRequests'
-                    Headers      = ([MockHeaders]::new())
-                    ErrorMessage = 'Rate-Limit'
+                class MockException : System.Exception {
+                    [int]$StatusCode = 429
+                    [string]$ErrorReason = 'TooManyRequests'
+                    [hashtable]$Response = @{ Headers = ([MockHeaders]::new()) }
+                    MockException() : base ('Rate-Limit') {}
                 }
+                return ([MockException]::new())
             }
             $StopWatch = [System.Diagnostics.Stopwatch]::new()
             $StopWatch.Start()
@@ -323,12 +328,13 @@ Describe 'Request-ChatCompletion' {
                     [bool] Contains([string]$header) { return ($this.Headers.Contains($header)) }
                     [string[]] GetValues([string]$header) { return [string[]]@($this.Headers[$header]) }
                 }
-                [pscustomobject]@{
-                    ErrorCode    = 429
-                    ErrorReason  = 'TooManyRequests'
-                    Headers      = ([MockHeaders]::new())
-                    ErrorMessage = 'Rate-Limit'
+                class MockException : System.Exception {
+                    [int]$StatusCode = 429
+                    [string]$ErrorReason = 'TooManyRequests'
+                    [hashtable]$Response = @{ Headers = ([MockHeaders]::new()) }
+                    MockException() : base ('Rate-Limit') {}
                 }
+                return ([MockException]::new())
             }
             $StopWatch = [System.Diagnostics.Stopwatch]::new()
             $StopWatch.Start()
@@ -342,12 +348,13 @@ Describe 'Request-ChatCompletion' {
 
         It 'Retrying with exponential backoff on Rate-Limit exceeds error' {
             Mock -ModuleName $script:ModuleName Parse-WebExceptionResponse {
-                [pscustomobject]@{
-                    ErrorCode    = 429
-                    ErrorReason  = 'TooManyRequests'
-                    Headers      = $null
-                    ErrorMessage = 'Rate-Limit'
+                class MockException : System.Exception {
+                    [int]$StatusCode = 429
+                    [string]$ErrorReason = 'TooManyRequests'
+                    [hashtable]$Response = $null
+                    MockException() : base ('Rate-Limit') {}
                 }
+                return ([MockException]::new())
             }
             $StopWatch = [System.Diagnostics.Stopwatch]::new()
             $StopWatch.Start()
@@ -366,12 +373,13 @@ Describe 'Request-ChatCompletion' {
                     [bool] Contains([string]$header) { return ($this.Headers.Contains($header)) }
                     [string[]] GetValues([string]$header) { return [string[]]@($this.Headers[$header]) }
                 }
-                [pscustomobject]@{
-                    ErrorCode    = 500
-                    ErrorReason  = 'InternalServerError'
-                    Headers      = ([MockHeaders]::new())
-                    ErrorMessage = 'Internal Server Error'
+                class MockException : System.Exception {
+                    [int]$StatusCode = 500
+                    [string]$ErrorReason = 'InternalServerError'
+                    [hashtable]$Response = @{ Headers = ([MockHeaders]::new()) }
+                    MockException() : base ('Internal Server Error') {}
                 }
+                return ([MockException]::new())
             }
             $StopWatch = [System.Diagnostics.Stopwatch]::new()
             $StopWatch.Start()
