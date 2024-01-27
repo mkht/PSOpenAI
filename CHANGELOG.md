@@ -1,6 +1,18 @@
 # Changelog
-### Unreleased
+### 2.7.0
 - The retry logic supports with `retry-after-ms` and `retry-after` response headers.
+- Add new model names to tab completions.
+- Add `-Dimensions` param for `Request-Embeddings`.
+- The exceptions thrown from API requests now have unique type information that differs depending on the error.  
+  Also, the exception contains the complete response header and contents, not just the message. This allows for more detailed information about the error.  
+  Currently, PSOpenAI has these type of exceptions.
+    + `APIRequestException`
+    + `BadRequestException`
+    + `ContentFilteredException`
+    + `UnauthorizedException`
+    + `NotFoundException`
+    + `RateLimitExceededException`
+    + `QuotaLimitExceededException`
 
 ### 2.6.2
 - Improved performance when executing a large number of requests in a short period of time.

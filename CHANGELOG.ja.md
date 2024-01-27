@@ -1,4 +1,19 @@
 # 変更履歴
+### 2.7.0
+- APIリクエストのリトライ待機時間が`retry-after-ms` および `retry-after` 応答ヘッダの値に従うようになりました
+- モデル名のタブ補完に`gpt-4-turbo-preview`などの新しい候補を追加しました
+- `Request-Embeddings`に新しいパラメータ`-Dimensions`を追加しました
+- APIエラーが出力する例外はエラーの種類ごとに固有の型情報を持つようになりました  
+  また、エラーオブジェクトに完全な応答ヘッダとコンテンツが含まれるようになりました  
+  現在PSOpenAIは以下の例外型を実装しています
+    + `APIRequestException`
+    + `BadRequestException`
+    + `ContentFilteredException`
+    + `UnauthorizedException`
+    + `NotFoundException`
+    + `RateLimitExceededException`
+    + `QuotaLimitExceededException`
+
 ### 2.6.2
 - 短時間に多数のリクエストを実行する際のパフォーマンスを改善
 
