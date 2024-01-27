@@ -16,6 +16,8 @@ Creates an embedding vector representing the input text.
 Request-AzureEmbeddings
     [-Text] <String[]>
     -Deployment <String>
+    [-Format <String>]
+    [-Dimensions <Int32>]
     [-User <String>]
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
@@ -67,6 +69,26 @@ Deployments must be created in Azure Portal in advance.
 ```yaml
 Type: String
 Required: True
+Position: Named
+```
+
+### -Format
+The format to return the embeddings in. Can be either `float` or `base64`
+The default value is `float`.
+
+```yaml
+Type: String
+Required: False
+Position: Named
+Default value: float
+```
+
+### -Dimensions
+The number of dimensions the resulting output embeddings should have. Only supported in `text-embedding-3` and later models.
+
+```yaml
+Type: Int32
+Required: False
 Position: Named
 ```
 

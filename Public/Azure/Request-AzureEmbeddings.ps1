@@ -17,6 +17,15 @@ function Request-AzureEmbeddings {
         [string]$Deployment,
 
         [Parameter()]
+        [Alias('encoding_format')]
+        [ValidateSet('float', 'base64')]
+        [string]$Format = 'float',
+
+        [Parameter()]
+        [ValidateRange(1, 2147483647)]
+        [int]$Dimensions,
+
+        [Parameter()]
         [string]$User,
 
         [Parameter()]
