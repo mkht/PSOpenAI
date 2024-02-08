@@ -34,7 +34,7 @@ function Get-AzureOpenAIAPIEndpoint {
             continue
         }
         'Chat.Completion.Extensions' {
-            $InnerApiVersion = if ($ApiVersion) { $ApiVersion }else { $DefaultApiVersion }
+            $InnerApiVersion = if ($ApiVersion) { $ApiVersion }else { '2023-12-01-preview' }
             $UriBuilder.Path += ('/openai/deployments/{0}/extensions/chat/completions' -f $Engine.Replace('/', '').Trim())
             if ($UriBuilder.Path.StartsWith('//')) { $UriBuilder.Path = $UriBuilder.Path.TrimStart('/') }
             $UriBuilder.Query = ('api-version={0}' -f $InnerApiVersion)
