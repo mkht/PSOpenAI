@@ -76,6 +76,7 @@
         'Get-OpenAIFile',
         'Get-OpenAIFileContent',
         'Get-AzureOpenAIModels',
+        'Request-AzureAudioSpeech',
         'Request-AzureAudioTranscription',
         'Request-AzureAudioTranslation',
         'Request-AzureChatCompletion',

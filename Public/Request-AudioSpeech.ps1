@@ -47,17 +47,17 @@ function Request-AudioSpeech {
         [ValidateRange(0, 100)]
         [int]$MaxRetryCount = 0,
 
-        # [Parameter(DontShow = $true)]
-        # [OpenAIApiType]$ApiType = [OpenAIApiType]::OpenAI,
+        [Parameter(DontShow = $true)]
+        [OpenAIApiType]$ApiType = [OpenAIApiType]::OpenAI,
 
         [Parameter()]
         [System.Uri]$ApiBase,
 
-        # [Parameter(DontShow = $true)]
-        # [string]$ApiVersion,
+        [Parameter(DontShow = $true)]
+        [string]$ApiVersion,
 
-        # [Parameter(DontShow = $true)]
-        # [string]$AuthType = 'openai',
+        [Parameter(DontShow = $true)]
+        [string]$AuthType = 'openai',
 
         [Parameter()]
         [securestring][SecureStringTransformation()]$ApiKey,
@@ -78,7 +78,12 @@ function Request-AudioSpeech {
         $Organization = Initialize-OrganizationID -OrgId $Organization
 
         # Get API endpoint
-        $OpenAIParameter = Get-OpenAIAPIEndpoint -EndpointName 'Audio.Speech' -ApiBase $ApiBase
+        if ($ApiType -eq [OpenAIApiType]::Azure) {
+            $OpenAIParameter = Get-AzureOpenAIAPIEndpoint -EndpointName 'Audio.Speech' -Engine $Model -ApiBase $ApiBase -ApiVersion $ApiVersion
+        }
+        else {
+            $OpenAIParameter = Get-OpenAIAPIEndpoint -EndpointName 'Audio.Speech' -ApiBase $ApiBase
+        }
     }
 
     process {
@@ -126,6 +131,7 @@ function Request-AudioSpeech {
                 -TimeoutSec $TimeoutSec `
                 -MaxRetryCount $MaxRetryCount `
                 -ApiKey $SecureToken `
+                -AuthType $AuthType `
                 -Organization $Organization `
                 -Body $PostBody
         }

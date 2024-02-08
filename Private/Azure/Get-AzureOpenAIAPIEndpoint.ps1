@@ -17,7 +17,7 @@ function Get-AzureOpenAIAPIEndpoint {
 
     $UriBuilder = [System.UriBuilder]::new($ApiBase)
     $ApiVersion = $ApiVersion.Trim()
-    $DefaultApiVersion = '2023-12-01-preview'
+    $DefaultApiVersion = '2024-02-15-preview'
 
     switch ($EndpointName) {
         'Chat.Completion' {
@@ -80,6 +80,19 @@ function Get-AzureOpenAIAPIEndpoint {
             $UriBuilder.Query = ('api-version={0}' -f $InnerApiVersion)
             @{
                 Name        = 'image.generation'
+                Method      = 'Post'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+            continue
+        }
+        'Audio.Speech' {
+            $InnerApiVersion = if ($ApiVersion) { $ApiVersion }else { $DefaultApiVersion }
+            $UriBuilder.Path += ('/openai/deployments/{0}/audio/speech' -f $Engine.Replace('/', '').Trim())
+            if ($UriBuilder.Path.StartsWith('//')) { $UriBuilder.Path = $UriBuilder.Path.TrimStart('/') }
+            $UriBuilder.Query = ('api-version={0}' -f $InnerApiVersion)
+            @{
+                Name        = 'audio.speech'
                 Method      = 'Post'
                 Uri         = $UriBuilder.Uri
                 ContentType = 'application/json'

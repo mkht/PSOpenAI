@@ -91,6 +91,7 @@ Install-Module -Name PSOpenAI
 
 ### Azure OpenAI Service
 + [Get-AzureOpenAIModels](/Docs/Get-AzureOpenAIModels.md)
++ [Request-AudioSpeech](/Docs/Request-AzureAudioSpeech.md)
 + [Request-AzureAudioTranscription](/Docs/Request-AzureAudioTranscription.md)
 + [Request-AzureAudioTranslation](/Docs/Request-AzureAudioTranslation.md)
 + [Request-AzureChatCompletion](/Docs/Request-AzureChatCompletion.md)
