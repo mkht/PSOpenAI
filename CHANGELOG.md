@@ -1,4 +1,9 @@
 # Changelog
+### Unreleased
+- Add `-TimestampGranularities` parameter to `Request-AudioTranscription`.
+- Add new [Request-AzureAudioSpeech](/Docs/Request-AzureAudioSpeech.md) function.
+- Change default api version of Azure OpenAI Service to `2024-02-01-preview`
+
 ### 2.7.0
 - The retry logic supports with `retry-after-ms` and `retry-after` response headers.
 - Add new model names to tab completions.
