@@ -22,6 +22,11 @@ function Request-AudioTranscription {
         [ValidateRange(0.0, 1.0)]
         [double]$Temperature,
 
+        [Parameter()]
+        [ValidateSet('word', 'segment')]
+        [Alias('timestamp_granularities')]
+        [string[]]$TimestampGranularities,
+
         [Parameter(ParameterSetName = 'Language')]
         [string]$Language,
 
@@ -115,6 +120,9 @@ function Request-AudioTranscription {
         }
         if ($PSBoundParameters.ContainsKey('Temperature')) {
             $PostBody.temperature = $Temperature
+        }
+        if ($PSBoundParameters.ContainsKey('TimestampGranularities')) {
+            $PostBody.timestamp_granularities = $TimestampGranularities
         }
         if ($Language) {
             $PostBody.language = $Language

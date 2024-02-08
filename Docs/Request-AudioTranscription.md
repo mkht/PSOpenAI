@@ -20,6 +20,7 @@ Request-AudioTranscription
     [-Prompt <String>]
     [-Format <String>]
     [-Temperature <Double>]
+    [-TimestampGranularities <String[]>]
     [-Language <String>]
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
@@ -97,6 +98,16 @@ Higher values like `0.8` will make the output more random, while lower values li
 
 ```yaml
 Type: Double
+Required: False
+Position: Named
+```
+
+### -TimestampGranularities
+The timestamp granularities to populate for this transcription. Any of these options: `word`, or `segment`. The default is `segment`.
+
+```yaml
+Type: String[]
+Aliases: timestamp_granularities
 Required: False
 Position: Named
 ```
