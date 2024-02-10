@@ -1,5 +1,5 @@
 # Changelog
-### Unreleased
+### 2.8.0
 - Add `-TimestampGranularities` parameter to `Request-AudioTranscription`.
 - Add new [Request-AzureAudioSpeech](/Docs/Request-AzureAudioSpeech.md) function.
 - Change default api version of Azure OpenAI Service to `2024-02-15-preview`

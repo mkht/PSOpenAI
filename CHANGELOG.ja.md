@@ -1,4 +1,9 @@
 # 変更履歴
+### 2.8.0
+- `Request-AudioTranscription`に`-TimestampGranularities`パラメータを追加
+- 新しい関数[Request-AzureAudioSpeech](/Docs/Request-AzureAudioSpeech.md)を追加
+- Azure OpenAI Service のデフォルトAPIバージョンを`2024-02-15-preview`に更新
+
 ### 2.7.0
 - APIリクエストのリトライ待機時間が`retry-after-ms` および `retry-after` 応答ヘッダの値に従うようになりました
 - モデル名のタブ補完に`gpt-4-turbo-preview`などの新しい候補を追加しました
