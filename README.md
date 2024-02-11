@@ -11,7 +11,7 @@ You can use OpenAI functions such as ChatGPT, Speech-to-Text, Text-to-Image from
 https://platform.openai.com/docs
 
 + About Azure OpenAI Service  
-https://learn.microsoft.com/en-us/azure/cognitive-services/openai/overview
+https://learn.microsoft.com/en-us/azure/ai-services/openai/overview
 
 日本語版のREADMEは[こちら](/README.ja.md)
 

@@ -9,7 +9,7 @@ ChatGPT, 音声の文字起こし, テキストからの画像生成などの Op
 https://platform.openai.com/docs
 
 + Azure OpenAI Service について  
-https://learn.microsoft.com/en-us/azure/cognitive-services/openai/overview
+https://learn.microsoft.com/en-us/azure/ai-services/openai/overview
 
 ----
 ## 動作環境
