@@ -1,4 +1,7 @@
 # 変更履歴
+### 2.9.0
+- `Request-ChatCompletion`に`-InstanceId`パラメータを追加
+
 ### 2.8.0
 - `Request-AudioTranscription`に`-TimestampGranularities`パラメータを追加
 - 新しい関数[Request-AzureAudioSpeech](/Docs/Request-AzureAudioSpeech.md)を追加

@@ -11354,6 +11354,18 @@ Positive values penalize new tokens based on their existing frequency in the tex
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="instance_id">
+          <maml:name>InstanceId</maml:name>
+          <maml:description>
+            <maml:para>An unique identifier to a custom instance to execute the request.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="logit_bias">
           <maml:name>LogitBias</maml:name>
           <maml:description>
@@ -11745,6 +11757,18 @@ Positive values penalize new tokens based on their existing frequency in the tex
         <command:parameterValue required="true" variableLength="false">Double</command:parameterValue>
         <dev:type>
           <maml:name>Double</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="instance_id">
+        <maml:name>InstanceId</maml:name>
+        <maml:description>
+          <maml:para>An unique identifier to a custom instance to execute the request.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>

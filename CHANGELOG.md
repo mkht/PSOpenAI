@@ -1,4 +1,7 @@
 # Changelog
+### 2.9.0
+- Add `-InstanceId` parameter to `Request-ChatCompletion`.
+
 ### 2.8.0
 - Add `-TimestampGranularities` parameter to `Request-AudioTranscription`.
 - Add new [Request-AzureAudioSpeech](/Docs/Request-AzureAudioSpeech.md) function.
