@@ -1,4 +1,7 @@
 # Changelog
+### Unreleased
+- Add new embedding model's support to `ConvertTo-Token`.
+
 ### 2.9.0
 - Add `-InstanceId` parameter to `Request-ChatCompletion`.
 
