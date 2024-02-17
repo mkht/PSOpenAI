@@ -80,7 +80,6 @@
         'Request-AzureAudioTranscription',
         'Request-AzureAudioTranslation',
         'Request-AzureChatCompletion',
-        'Request-AzureExtensionsChatCompletion',
         'Request-AzureEmbeddings',
         'Request-AzureTextCompletion',
         'Request-AzureImageGeneration'
