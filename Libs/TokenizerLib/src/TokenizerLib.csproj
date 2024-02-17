@@ -21,24 +21,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Update="gpt2.tiktoken">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-	</ItemGroup>
-
-	<ItemGroup>
-		<None Update="r50k_base.tiktoken">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-	</ItemGroup>
-
-	<ItemGroup>
-		<None Update="p50k_base.tiktoken">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-	</ItemGroup>
-
-	<ItemGroup>
 		<None Update="cl100k_base.tiktoken">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>

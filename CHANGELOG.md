@@ -1,6 +1,8 @@
 # Changelog
-### Unreleased
-- Add new embedding model's support to `ConvertTo-Token`.
+### Unreleased (3.0.0)
+**This is a major release that includes breaking changes.**
+- Add new embedding model's support to `ConvertTo-Token` and `ConvertFrom-Token`.
+- Remove old encoding support from `ConvertTo-Token` and `ConvertFrom-Token`. Now these commands only support `cl100k_base` encoding. It because all models currently supported by OpenAI use this encoding.  
 
 ### 2.9.0
 - Add `-InstanceId` parameter to `Request-ChatCompletion`.

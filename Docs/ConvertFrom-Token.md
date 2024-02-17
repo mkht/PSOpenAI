@@ -44,7 +44,7 @@ ConvertFrom-Token -Token $Tokens -Model 'gpt-4'
 
 ### Example 2
 ```powershell
-(8582, 235, 230, 8582, 235, 240, 8582, 235, 239) | ConvertFrom-Token -Encoding 'p50k_base'
+(9468, 235, 230, 9468, 235, 240, 9468, 235, 239) | ConvertFrom-Token
 # Output: 🍈🍒🍑
 ```
 
@@ -61,20 +61,20 @@ Accept pipeline input: True (ByValue)
 ```
 
 ### -Encoding
-Specifies the encoding name. Accepted values are `cl100k_base`, `p50k_base`, `p50k_edit`, `r50k_base`, `gpt2`.  
+Specifies the encoding name. Currently, accepted value is only `cl100k_base`.  
 It cannot be specified with the model name.
 
 ```yaml
 Type: String
 Parameter Sets: encoding
-Accepted values: cl100k_base, p50k_base, p50k_edit, r50k_base, gpt2
+Accepted values: cl100k_base
 Required: False
 Position: 1
 Default value: cl100k_base
 ```
 
 ### -Model
-Specifies the model name. such like `gpt-4` or `text-davinci-003`.  
+Specifies the model name. such like `gpt-4` or `text-embedding-3-small`.  
 It cannot be specified with the encoding name.
 
 ```yaml
