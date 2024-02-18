@@ -97,7 +97,7 @@ function Start-ThreadRun {
 
         # Get API endpoint
         if ($ApiType -eq [OpenAIApiType]::Azure) {
-            $OpenAIParameter = Get-AzureOpenAIAPIEndpoint -EndpointName 'Runs' -Engine $Model -ApiBase $ApiBase -ApiVersion $ApiVersion
+            $OpenAIParameter = Get-AzureOpenAIAPIEndpoint -EndpointName 'Runs' -ApiBase $ApiBase -ApiVersion $ApiVersion
         }
         else {
             $OpenAIParameter = Get-OpenAIAPIEndpoint -EndpointName 'Runs' -ApiBase $ApiBase

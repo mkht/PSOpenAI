@@ -69,7 +69,7 @@ function Get-ThreadRunStep {
 
         # Get API endpoint
         if ($ApiType -eq [OpenAIApiType]::Azure) {
-            $OpenAIParameter = Get-AzureOpenAIAPIEndpoint -EndpointName 'Runs' -Engine $Model -ApiBase $ApiBase -ApiVersion $ApiVersion
+            $OpenAIParameter = Get-AzureOpenAIAPIEndpoint -EndpointName 'Runs' -ApiBase $ApiBase -ApiVersion $ApiVersion
         }
         else {
             $OpenAIParameter = Get-OpenAIAPIEndpoint -EndpointName 'Runs' -ApiBase $ApiBase
@@ -93,12 +93,15 @@ function Get-ThreadRunStep {
         }
 
         #region Construct query url
-        $QueryUri = ($OpenAIParameter.Uri.ToString() -f $ThreadId) + "/$RunId/steps"
+        $QueryUri = ($OpenAIParameter.Uri.ToString() -f $ThreadId)
+        $UriBuilder = [System.UriBuilder]::new($QueryUri)
+        $UriBuilder.Path += "/$RunId/steps"
         if ($StepId.StartsWith('step_')) {
-            $QueryUri = $QueryUri + "/$StepId"
+            $UriBuilder.Path += "/$StepId"
+            $QueryUri = $UriBuilder.Uri
         }
         elseif ($PSCmdlet.ParameterSetName -eq 'ListAll') {
-            $QueryParam = [System.Web.HttpUtility]::ParseQueryString([string]::Empty)
+            $QueryParam = [System.Web.HttpUtility]::ParseQueryString($UriBuilder.Query)
             $QueryParam.Add('limit', '100');
             $QueryParam.Add('order', $Order);
             if ($After) {
@@ -107,10 +110,15 @@ function Get-ThreadRunStep {
             if ($Before) {
                 $QueryParam.Add('before', $Before);
             }
-            $QueryUri = $QueryUri + '?' + $QueryParam.ToString()
+            $UriBuilder.Query = $QueryParam.ToString()
+            $QueryUri = $UriBuilder.Uri
         }
         else {
-            $QueryUri = $QueryUri + "?limit=$Limit&order=$Order"
+            $QueryParam = [System.Web.HttpUtility]::ParseQueryString($UriBuilder.Query)
+            $QueryParam.Add('limit', $Limit);
+            $QueryParam.Add('order', $Order);
+            $UriBuilder.Query = $QueryParam.ToString()
+            $QueryUri = $UriBuilder.Uri
         }
         #endregion
 

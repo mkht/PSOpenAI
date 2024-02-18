@@ -71,7 +71,7 @@ function Add-ThreadMessage {
 
         # Get API endpoint
         if ($ApiType -eq [OpenAIApiType]::Azure) {
-            $OpenAIParameter = Get-AzureOpenAIAPIEndpoint -EndpointName 'Threads' -Engine $Model -ApiBase $ApiBase -ApiVersion $ApiVersion
+            $OpenAIParameter = Get-AzureOpenAIAPIEndpoint -EndpointName 'Threads' -ApiBase $ApiBase -ApiVersion $ApiVersion
         }
         else {
             $OpenAIParameter = Get-OpenAIAPIEndpoint -EndpointName 'Threads' -ApiBase $ApiBase
@@ -98,7 +98,11 @@ function Add-ThreadMessage {
             return
         }
 
-        $QueryUri = $OpenAIParameter.Uri.ToString() + "/$ThreadID/messages"
+        #region Construct Query URI
+        $UriBuilder = [System.UriBuilder]::new($OpenAIParameter.Uri)
+        $UriBuilder.Path += "/$ThreadID/messages"
+        $QueryUri = $UriBuilder.Uri
+        #endregion
 
         #region Construct parameters for API request
         $PostBody = [System.Collections.Specialized.OrderedDictionary]::new()

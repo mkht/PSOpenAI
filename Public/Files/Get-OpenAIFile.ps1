@@ -19,8 +19,17 @@ function Get-OpenAIFile {
         [ValidateRange(0, 100)]
         [int]$MaxRetryCount = 0,
 
+        [Parameter(DontShow = $true)]
+        [OpenAIApiType]$ApiType = [OpenAIApiType]::OpenAI,
+
         [Parameter()]
         [System.Uri]$ApiBase,
+
+        [Parameter(DontShow = $true)]
+        [string]$ApiVersion,
+
+        [Parameter(DontShow = $true)]
+        [string]$AuthType = 'openai',
 
         [Parameter()]
         [securestring][SecureStringTransformation()]$ApiKey,
@@ -40,20 +49,27 @@ function Get-OpenAIFile {
         # Initialize Organization ID
         $Organization = Initialize-OrganizationID -OrgId $Organization
 
-        # Get API endpoint
-        $OpenAIParameter = Get-OpenAIAPIEndpoint -EndpointName 'Files' -ApiBase $ApiBase
+        if ($ApiType -eq [OpenAIApiType]::Azure) {
+            $OpenAIParameter = Get-AzureOpenAIAPIEndpoint -EndpointName 'Files' -ApiBase $ApiBase -ApiVersion $ApiVersion
+        }
+        else {
+            $OpenAIParameter = Get-OpenAIAPIEndpoint -EndpointName 'Files' -ApiBase $ApiBase
+        }
     }
 
     process {
         #region Construct Query URI
+        $UriBuilder = [System.UriBuilder]::new($OpenAIParameter.Uri)
         if ($PSCmdlet.ParameterSetName -eq 'Get') {
-            $QueryUri = $OpenAIParameter.Uri.ToString() + "/$Id"
+            $UriBuilder.Path += "/$Id"
+            $QueryUri = $UriBuilder.Uri
         }
         else {
             if ($PSBoundParameters.ContainsKey('Purpose')) {
-                $QueryParam = [System.Web.HttpUtility]::ParseQueryString([string]::Empty)
+                $QueryParam = [System.Web.HttpUtility]::ParseQueryString($UriBuilder.Query)
                 $QueryParam.Add('purpose', $Purpose);
-                $QueryUri = $OpenAIParameter.Uri.ToString() + '?' + $QueryParam.ToString()
+                $UriBuilder.Query = $QueryParam.ToString()
+                $QueryUri = $UriBuilder.Uri
             }
             else {
                 $QueryUri = $OpenAIParameter.Uri

@@ -63,7 +63,7 @@ function Wait-ThreadRun {
     )
 
     begin {
-        # Parameter contruction
+        # Parameter construction
         if ($PSCmdlet.ParameterSetName -eq 'StatusForExit') {
             $innerStatusForWait = [System.Collections.Generic.HashSet[string]]::new([string[]](
                     'queued',

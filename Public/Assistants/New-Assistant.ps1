@@ -94,7 +94,7 @@ function New-Assistant {
 
         # Get API endpoint
         if ($ApiType -eq [OpenAIApiType]::Azure) {
-            $OpenAIParameter = Get-AzureOpenAIAPIEndpoint -EndpointName 'Assistants' -Engine $Model -ApiBase $ApiBase -ApiVersion $ApiVersion
+            $OpenAIParameter = Get-AzureOpenAIAPIEndpoint -EndpointName 'Assistants' -ApiBase $ApiBase -ApiVersion $ApiVersion
         }
         else {
             $OpenAIParameter = Get-OpenAIAPIEndpoint -EndpointName 'Assistants' -ApiBase $ApiBase
@@ -117,7 +117,9 @@ function New-Assistant {
 
         #region Construct Query URI
         if (-not [string]::IsNullOrEmpty($AssistantId)) {
-            $QueryUri = $OpenAIParameter.Uri.ToString() + "/$AssistantId"
+            $UriBuilder = [System.UriBuilder]::new($OpenAIParameter.Uri)
+            $UriBuilder.Path += "/$AssistantId"
+            $QueryUri = $UriBuilder.Uri
         }
         else {
             $QueryUri = $OpenAIParameter.Uri
@@ -135,7 +137,7 @@ function New-Assistant {
 
         #region Construct parameters for API request
         $PostBody = [System.Collections.Specialized.OrderedDictionary]::new()
-        if ($ApiType -eq [OpenAIApiType]::OpenAI) {
+        if ($PSBoundParameters.ContainsKey('Model')) {
             $PostBody.model = $Model
         }
         if ($PSBoundParameters.ContainsKey('Name')) {

@@ -55,7 +55,7 @@ function Stop-ThreadRun {
 
         # Get API endpoint
         if ($ApiType -eq [OpenAIApiType]::Azure) {
-            $OpenAIParameter = Get-AzureOpenAIAPIEndpoint -EndpointName 'Runs' -Engine $Model -ApiBase $ApiBase -ApiVersion $ApiVersion
+            $OpenAIParameter = Get-AzureOpenAIAPIEndpoint -EndpointName 'Runs' -ApiBase $ApiBase -ApiVersion $ApiVersion
         }
         else {
             $OpenAIParameter = Get-OpenAIAPIEndpoint -EndpointName 'Runs' -ApiBase $ApiBase
@@ -84,7 +84,11 @@ function Stop-ThreadRun {
             }
         }
 
-        $QueryUri = ($OpenAIParameter.Uri.ToString() -f $ThreadId) + "/$RunId/cancel"
+        #region Construct Query URI
+        $UriBuilder = [System.UriBuilder]::new($OpenAIParameter.Uri)
+        $UriBuilder.Path += "/$RunId/cancel"
+        $QueryUri = $UriBuilder.Uri
+        #endregion
 
         #region Send API Request
         $Response = Invoke-OpenAIAPIRequest `

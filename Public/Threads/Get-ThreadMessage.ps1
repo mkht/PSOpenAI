@@ -74,7 +74,7 @@ function Get-ThreadMessage {
 
         # Get API endpoint
         if ($ApiType -eq [OpenAIApiType]::Azure) {
-            $OpenAIParameter = Get-AzureOpenAIAPIEndpoint -EndpointName 'Threads' -Engine $Model -ApiBase $ApiBase -ApiVersion $ApiVersion
+            $OpenAIParameter = Get-AzureOpenAIAPIEndpoint -EndpointName 'Threads' -ApiBase $ApiBase -ApiVersion $ApiVersion
         }
         else {
             $OpenAIParameter = Get-OpenAIAPIEndpoint -EndpointName 'Threads' -ApiBase $ApiBase
@@ -106,15 +106,21 @@ function Get-ThreadMessage {
             $MessageId = $InputObject.step_details.message_creation.message_id
         }
 
+        $UriBuilder = [System.UriBuilder]::new($OpenAIParameter.Uri)
+        $UriBuilder.Path += "/$ThreadID/messages"
         if ($MessageId) {
-            $QueryUri = $OpenAIParameter.Uri.ToString() + "/$ThreadID/messages/$MessageId"
+            $UriBuilder.Path += "/$MessageId"
+            $QueryUri = $UriBuilder.Uri
         }
         elseif ($PSCmdlet.ParameterSetName -eq 'List') {
-            $QueryUri = $OpenAIParameter.Uri.ToString() + "/$ThreadID/messages?limit=$Limit&order=$Order"
+            $QueryParam = [System.Web.HttpUtility]::ParseQueryString($UriBuilder.Query)
+            $QueryParam.Add('limit', $Limit);
+            $QueryParam.Add('order', $Order);
+            $UriBuilder.Query = $QueryParam.ToString()
+            $QueryUri = $UriBuilder.Uri
         }
         else {
-            $QueryUri = $OpenAIParameter.Uri.ToString() + "/$ThreadID/messages"
-            $QueryParam = [System.Web.HttpUtility]::ParseQueryString([string]::Empty)
+            $QueryParam = [System.Web.HttpUtility]::ParseQueryString($UriBuilder.Query)
             $QueryParam.Add('limit', '100');
             $QueryParam.Add('order', $Order);
             if ($After) {
@@ -123,7 +129,8 @@ function Get-ThreadMessage {
             if ($Before) {
                 $QueryParam.Add('before', $Before);
             }
-            $QueryUri = $QueryUri + '?' + $QueryParam.ToString()
+            $UriBuilder.Query = $QueryParam.ToString()
+            $QueryUri = $UriBuilder.Uri
         }
 
         #region Send API Request

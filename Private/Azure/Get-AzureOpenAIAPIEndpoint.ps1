@@ -139,5 +139,57 @@ function Get-AzureOpenAIAPIEndpoint {
             }
             continue
         }
+        'Files' {
+            $InnerApiVersion = if ($ApiVersion) { $ApiVersion }else { $DefaultApiVersion }
+            $UriBuilder.Path += '/openai/files'
+            if ($UriBuilder.Path.StartsWith('//')) { $UriBuilder.Path = $UriBuilder.Path.TrimStart('/') }
+            $UriBuilder.Query = ('api-version={0}' -f $InnerApiVersion)
+            @{
+                Name        = 'files'
+                Method      = 'Post'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'multipart/form-data'
+            }
+            continue
+        }
+        'Assistants' {
+            $InnerApiVersion = if ($ApiVersion) { $ApiVersion }else { $DefaultApiVersion }
+            $UriBuilder.Path += '/openai/assistants'
+            if ($UriBuilder.Path.StartsWith('//')) { $UriBuilder.Path = $UriBuilder.Path.TrimStart('/') }
+            $UriBuilder.Query = ('api-version={0}' -f $InnerApiVersion)
+            @{
+                Name        = 'assistants'
+                Method      = 'Post'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+            continue
+        }
+        'Threads' {
+            $InnerApiVersion = if ($ApiVersion) { $ApiVersion }else { $DefaultApiVersion }
+            $UriBuilder.Path += '/openai/threads'
+            if ($UriBuilder.Path.StartsWith('//')) { $UriBuilder.Path = $UriBuilder.Path.TrimStart('/') }
+            $UriBuilder.Query = ('api-version={0}' -f $InnerApiVersion)
+            @{
+                Name        = 'threads'
+                Method      = 'Post'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+            continue
+        }
+        'Runs' {
+            $InnerApiVersion = if ($ApiVersion) { $ApiVersion }else { $DefaultApiVersion }
+            $UriBuilder.Path += '/openai/threads/{0}/runs'
+            if ($UriBuilder.Path.StartsWith('//')) { $UriBuilder.Path = $UriBuilder.Path.TrimStart('/') }
+            $UriBuilder.Query = ('api-version={0}' -f $InnerApiVersion)
+            @{
+                Name        = 'runs'
+                Method      = 'Post'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+            continue
+        }
     }
 }

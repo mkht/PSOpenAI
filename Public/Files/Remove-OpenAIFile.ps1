@@ -14,8 +14,17 @@ function Remove-OpenAIFile {
         [ValidateRange(0, 100)]
         [int]$MaxRetryCount = 0,
 
+        [Parameter(DontShow = $true)]
+        [OpenAIApiType]$ApiType = [OpenAIApiType]::OpenAI,
+
         [Parameter()]
         [System.Uri]$ApiBase,
+
+        [Parameter(DontShow = $true)]
+        [string]$ApiVersion,
+
+        [Parameter(DontShow = $true)]
+        [string]$AuthType = 'openai',
 
         [Parameter()]
         [securestring][SecureStringTransformation()]$ApiKey,
@@ -36,11 +45,20 @@ function Remove-OpenAIFile {
         $Organization = Initialize-OrganizationID -OrgId $Organization
 
         # Get API endpoint
-        $OpenAIParameter = Get-OpenAIAPIEndpoint -EndpointName 'Files' -ApiBase $ApiBase
+        if ($ApiType -eq [OpenAIApiType]::Azure) {
+            $OpenAIParameter = Get-AzureOpenAIAPIEndpoint -EndpointName 'Files' -ApiBase $ApiBase -ApiVersion $ApiVersion
+        }
+        else {
+            $OpenAIParameter = Get-OpenAIAPIEndpoint -EndpointName 'Files' -ApiBase $ApiBase
+        }
     }
 
     process {
-        $QueryUri = $OpenAIParameter.Uri.ToString() + "/$Id"
+        #region Construct Query URI
+        $UriBuilder = [System.UriBuilder]::new($OpenAIParameter.Uri)
+        $UriBuilder.Path += "/$Id"
+        $QueryUri = $UriBuilder.Uri
+        #endregion
 
         #region Send API Request
         $Response = Invoke-OpenAIAPIRequest `
