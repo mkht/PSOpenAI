@@ -14,7 +14,6 @@ function Request-AzureAudioSpeech {
 
         [Parameter(Mandatory = $true)]
         [Alias('Model')]
-        [Alias('Engine')]
         [string]$Deployment,
 
         [Parameter()]

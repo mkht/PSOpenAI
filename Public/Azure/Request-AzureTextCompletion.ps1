@@ -11,7 +11,7 @@ function Request-AzureTextCompletion {
         [string]$Suffix,
 
         [Parameter(Mandatory = $true)]
-        [Alias('Engine')]
+        [Alias('Model')]
         [string]$Deployment,
 
         [Parameter()]

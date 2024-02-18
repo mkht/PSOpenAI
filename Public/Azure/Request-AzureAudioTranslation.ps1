@@ -7,7 +7,7 @@ function Request-AzureAudioTranslation {
         [string]$File,
 
         [Parameter(Mandatory = $true)]
-        [Alias('Engine')]
+        [Alias('Model')]
         [string]$Deployment,
 
         [Parameter()]

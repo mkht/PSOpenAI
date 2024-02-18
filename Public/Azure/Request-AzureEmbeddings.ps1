@@ -13,7 +13,7 @@ function Request-AzureEmbeddings {
         [string[]]$Text,
 
         [Parameter(Mandatory = $true)]
-        [Alias('Engine')]
+        [Alias('Model')]
         [string]$Deployment,
 
         [Parameter()]
