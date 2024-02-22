@@ -1,6 +1,7 @@
 # Changelog
-### Unreleased
+### 2.10.0
 - Add new embedding model's support to `ConvertTo-Token`.
+- Remove `-InstanceId` parameter to `Request-ChatCompletion`, it because the param does not GA.
 
 ### 2.9.0
 - Add `-InstanceId` parameter to `Request-ChatCompletion`.
