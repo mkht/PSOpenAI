@@ -118,10 +118,6 @@ function Request-ChatCompletion {
         [double]$FrequencyPenalty,
 
         [Parameter()]
-        [Alias('instance_id')]
-        [string]$InstanceId,
-
-        [Parameter()]
         [Alias('logit_bias')]
         [System.Collections.IDictionary]$LogitBias,
 
@@ -285,9 +281,6 @@ function Request-ChatCompletion {
         }
         if ($PSBoundParameters.ContainsKey('FrequencyPenalty')) {
             $PostBody.frequency_penalty = $FrequencyPenalty
-        }
-        if ($PSBoundParameters.ContainsKey('InstanceId')) {
-            $PostBody.instance_id = $InstanceId
         }
         if ($PSBoundParameters.ContainsKey('LogitBias')) {
             $PostBody.logit_bias = Convert-LogitBiasDictionary -InputObject $LogitBias -Model $Engine
