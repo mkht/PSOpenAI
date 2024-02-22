@@ -1,4 +1,8 @@
 # 変更履歴
+### 2.10.0
+- `ConvertTo-Token`に新しい埋め込みモデル名のサポートを追加
+- `Request-ChatCompletion`の`-InstanceId`パラメータを削除 (OpenAI側で取り下げられたため)
+
 ### 2.9.0
 - `Request-ChatCompletion`に`-InstanceId`パラメータを追加
 
