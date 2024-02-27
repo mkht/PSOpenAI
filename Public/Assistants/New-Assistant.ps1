@@ -18,10 +18,13 @@ function New-Assistant {
             'gpt-3.5-turbo-0613',
             'gpt-3.5-turbo-16k-0613',
             'gpt-3.5-turbo-1106',
+            'gpt-3.5-turbo-0125',
             'gpt-4-0613',
             'gpt-4-32k',
             'gpt-4-32k-0613',
+            'gpt-4-turbo-preview',
             'gpt-4-1106-preview',
+            'gpt-4-0125-preview',
             'gpt-4-vision-preview'
         )]
         [string][LowerCaseTransformation()]$Model = 'gpt-3.5-turbo',
@@ -94,7 +97,7 @@ function New-Assistant {
 
         # Get API endpoint
         if ($ApiType -eq [OpenAIApiType]::Azure) {
-            $OpenAIParameter = Get-AzureOpenAIAPIEndpoint -EndpointName 'Assistants' -Engine $Model -ApiBase $ApiBase -ApiVersion $ApiVersion
+            $OpenAIParameter = Get-AzureOpenAIAPIEndpoint -EndpointName 'Assistants' -ApiBase $ApiBase -ApiVersion $ApiVersion
         }
         else {
             $OpenAIParameter = Get-OpenAIAPIEndpoint -EndpointName 'Assistants' -ApiBase $ApiBase
@@ -117,7 +120,9 @@ function New-Assistant {
 
         #region Construct Query URI
         if (-not [string]::IsNullOrEmpty($AssistantId)) {
-            $QueryUri = $OpenAIParameter.Uri.ToString() + "/$AssistantId"
+            $UriBuilder = [System.UriBuilder]::new($OpenAIParameter.Uri)
+            $UriBuilder.Path += "/$AssistantId"
+            $QueryUri = $UriBuilder.Uri
         }
         else {
             $QueryUri = $OpenAIParameter.Uri
@@ -135,7 +140,7 @@ function New-Assistant {
 
         #region Construct parameters for API request
         $PostBody = [System.Collections.Specialized.OrderedDictionary]::new()
-        if ($ApiType -eq [OpenAIApiType]::OpenAI) {
+        if ($PSBoundParameters.ContainsKey('Model')) {
             $PostBody.model = $Model
         }
         if ($PSBoundParameters.ContainsKey('Name')) {

@@ -1,4 +1,13 @@
 # 変更履歴
+### 3.0.0
+**これは破壊的変更を含むメジャーリリースです。**
+- すべての関数からパラメータエイリアス `Engine` を**削除**しました。
+- `ConvertTo-Token` と `ConvertFrom-Token` から古いエンコーディングサポートを**削除**しました。これらのコマンドは現在 `cl100k_base` エンコーディングのみをサポートします。これは、OpenAIが現在サポートしているすべてのモデルがこのエンコーディングを使用しているためです。
+- `Request-AzureExtensionsChatCompletion` を削除しました。これは文書化されていませんでした。
+- `-OutFile` パラメータでファイル名のみが指定された場合に、ファイルが予期しない場所に保存されるバグを修正しました。
+- Azure OpenAIサービスのAssistants APIを使用するための新しい関数を追加しました。
+- `Request-AudioSpeech` のレスポンスフォーマットに `wav` と `pcm` を追加しました。
+
 ### 2.10.0
 - `ConvertTo-Token`に新しい埋め込みモデル名のサポートを追加
 - `Request-ChatCompletion`の`-InstanceId`パラメータを削除 (OpenAI側で取り下げられたため)

@@ -1,6 +1,6 @@
 @{
     # Version number of this module.
-    ModuleVersion        = '2.10.0'
+    ModuleVersion        = '3.0.0'
 
     # Supported PSEditions
     CompatiblePSEditions = 'Core', 'Desktop'
@@ -38,6 +38,11 @@
 
     # Functions to export from this module
     FunctionsToExport    = @(
+        ### Common ###
+        'ConvertFrom-Token',
+        'ConvertTo-Token',
+        'Get-CosineSimilarity',
+        ### OpenAI ###
         'Get-Assistant',
         'New-Assistant',
         'Remove-Assistant',
@@ -56,10 +61,7 @@
         'Submit-ToolOutput',
         'Get-ThreadRunStep',
         'New-ChatCompletionFunction',
-        'ConvertFrom-Token',
-        'ConvertTo-Token',
         'Enter-ChatGPT',
-        'Get-CosineSimilarity',
         'Get-OpenAIModels',
         'Request-AudioSpeech',
         'Request-AudioTranscription',
@@ -75,15 +77,36 @@
         'Remove-OpenAIFile',
         'Get-OpenAIFile',
         'Get-OpenAIFileContent',
+        ### Azure OpenAI Service ###
         'Get-AzureOpenAIModels',
         'Request-AzureAudioSpeech',
         'Request-AzureAudioTranscription',
         'Request-AzureAudioTranslation',
         'Request-AzureChatCompletion',
-        'Request-AzureExtensionsChatCompletion',
         'Request-AzureEmbeddings',
         'Request-AzureTextCompletion',
-        'Request-AzureImageGeneration'
+        'Request-AzureImageGeneration',
+        'Get-AzureAssistant',
+        'New-AzureAssistant',
+        'Remove-AzureAssistant',
+        'Set-AzureAssistant',
+        'Get-AzureThread',
+        'New-AzureThread',
+        'Remove-AzureThread',
+        'Set-AzureThread',
+        'Add-AzureThreadMessage',
+        'Get-AzureThreadMessage',
+        'Start-AzureThreadRun',
+        'Stop-AzureThreadRun',
+        'Get-AzureThreadRun',
+        'Wait-AzureThreadRun',
+        'Receive-AzureThreadRun',
+        'Submit-AzureToolOutput',
+        'Get-AzureThreadRunStep',
+        'Register-AzureOpenAIFile',
+        'Remove-AzureOpenAIFile',
+        'Get-AzureOpenAIFile',
+        'Get-AzureOpenAIFileContent'
     )
 
     # Aliases to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no aliases to export.

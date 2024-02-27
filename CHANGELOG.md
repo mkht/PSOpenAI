@@ -1,4 +1,13 @@
 # Changelog
+### 3.0.0
+**This is a major release that includes breaking changes.**
+- **REMOVE** parameter alias `Engine` from all functions.
+- **REMOVE** old encoding support from `ConvertTo-Token` and `ConvertFrom-Token`. Now these commands only support `cl100k_base` encoding. It because all models currently supported by OpenAI use this encoding.  
+- Remove `Request-AzureExtensionsChatCompletion`. It was undocumented.
+- Fix a bug that a file to be saved in an unexpected location when only a file name is specified in the `-OutFile` parameter.
+- Add new functions for using the Assistants API on the Azure OpenAI Service.
+- Add `wav` and `pcm` to response format of `Request-AudioSpeech`.
+
 ### 2.10.0
 - Add new embedding model's support to `ConvertTo-Token`.
 - Remove `-InstanceId` parameter to `Request-ChatCompletion`, it because the param does not GA.

@@ -19,7 +19,6 @@ function Request-AzureChatCompletion {
 
         [Parameter(Mandatory = $true)]
         [Alias('Model')]
-        [Alias('Engine')]
         [string]$Deployment,
 
         [Parameter()]

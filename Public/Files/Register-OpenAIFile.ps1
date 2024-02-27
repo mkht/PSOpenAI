@@ -18,8 +18,17 @@ function Register-OpenAIFile {
         [ValidateRange(0, 100)]
         [int]$MaxRetryCount = 0,
 
+        [Parameter(DontShow = $true)]
+        [OpenAIApiType]$ApiType = [OpenAIApiType]::OpenAI,
+
         [Parameter()]
         [System.Uri]$ApiBase,
+
+        [Parameter(DontShow = $true)]
+        [string]$ApiVersion,
+
+        [Parameter(DontShow = $true)]
+        [string]$AuthType = 'openai',
 
         [Parameter()]
         [securestring][SecureStringTransformation()]$ApiKey,
@@ -40,7 +49,12 @@ function Register-OpenAIFile {
         $Organization = Initialize-OrganizationID -OrgId $Organization
 
         # Get API endpoint
-        $OpenAIParameter = Get-OpenAIAPIEndpoint -EndpointName 'Files' -ApiBase $ApiBase
+        if ($ApiType -eq [OpenAIApiType]::Azure) {
+            $OpenAIParameter = Get-AzureOpenAIAPIEndpoint -EndpointName 'Files' -ApiBase $ApiBase -ApiVersion $ApiVersion
+        }
+        else {
+            $OpenAIParameter = Get-OpenAIAPIEndpoint -EndpointName 'Files' -ApiBase $ApiBase
+        }
     }
 
     process {

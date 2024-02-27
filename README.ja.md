@@ -96,6 +96,28 @@ Install-Module -Name PSOpenAI
 + [Request-AzureImageGeneration](/Docs/Request-AzureImageGeneration.md)
 + [Request-AzureTextCompletion](/Docs/Request-AzureTextCompletion.md)
 
+<details>
+<summary>Assistants for Azure OpenAI Service</summary>
+
++ Get-AzureAssistant
++ New-AzureAssistant
++ Set-AzureAssistant
++ Remove-AzureAssistant
++ Get-AzureThread
++ New-AzureThread
++ Set-AzureThread
++ Remove-AzureThread
++ Get-AzureThreadMessage
++ Add-AzureThreadMessage
++ Get-AzureThreadRun
++ Start-AzureThreadRun
++ Stop-AzureThreadRun
++ Wait-AzureThreadRun
++ Receive-AzureThreadRun
++ Get-AzureThreadRunStep
+
+</details>
+
 ----
 ## 使い方
 

@@ -50,7 +50,7 @@ function Submit-ToolOutput {
 
         # Get API endpoint
         if ($ApiType -eq [OpenAIApiType]::Azure) {
-            $OpenAIParameter = Get-AzureOpenAIAPIEndpoint -EndpointName 'Runs' -Engine $Model -ApiBase $ApiBase -ApiVersion $ApiVersion
+            $OpenAIParameter = Get-AzureOpenAIAPIEndpoint -EndpointName 'Runs' -ApiBase $ApiBase -ApiVersion $ApiVersion
         }
         else {
             $OpenAIParameter = Get-OpenAIAPIEndpoint -EndpointName 'Runs' -ApiBase $ApiBase
@@ -79,7 +79,11 @@ function Submit-ToolOutput {
             Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve Run ID.'))
             return
         }
-        $QueryUri = ($OpenAIParameter.Uri.ToString() -f $ThreadId) + "/$RunId/submit_tool_outputs"
+
+        $QueryUri = ($OpenAIParameter.Uri.ToString() -f $ThreadId)
+        $UriBuilder = [System.UriBuilder]::new($QueryUri)
+        $UriBuilder.Path += "/$RunId/submit_tool_outputs"
+        $QueryUri = $UriBuilder.Uri
         #endregion
 
         #region Construct Post Body

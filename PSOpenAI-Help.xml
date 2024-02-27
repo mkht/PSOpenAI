@@ -368,15 +368,11 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="1" aliases="none">
           <maml:name>Encoding</maml:name>
           <maml:description>
-            <maml:para>Specifies the encoding name. Accepted values are `cl100k_base`, `p50k_base`, `p50k_edit`, `r50k_base`, `gpt2`.
+            <maml:para>Specifies the encoding name. Currently, accepted value is only `cl100k_base`.
 It cannot be specified with the model name.</maml:para>
           </maml:description>
           <command:parameterValueGroup>
             <command:parameterValue required="false" command:variableLength="false">cl100k_base</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">p50k_base</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">p50k_edit</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">r50k_base</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">gpt2</command:parameterValue>
           </command:parameterValueGroup>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -414,7 +410,7 @@ It cannot be specified with the model name.</maml:para>
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="1" aliases="none">
           <maml:name>Model</maml:name>
           <maml:description>
-            <maml:para>Specifies the model name. such like `gpt-4` or `text-davinci-003`.
+            <maml:para>Specifies the model name. such like `gpt-4` or `text-embedding-3-small`.
 It cannot be specified with the encoding name.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -453,7 +449,7 @@ It cannot be specified with the encoding name.</maml:para>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="1" aliases="none">
         <maml:name>Encoding</maml:name>
         <maml:description>
-          <maml:para>Specifies the encoding name. Accepted values are `cl100k_base`, `p50k_base`, `p50k_edit`, `r50k_base`, `gpt2`.
+          <maml:para>Specifies the encoding name. Currently, accepted value is only `cl100k_base`.
 It cannot be specified with the model name.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -466,7 +462,7 @@ It cannot be specified with the model name.</maml:para>
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="1" aliases="none">
         <maml:name>Model</maml:name>
         <maml:description>
-          <maml:para>Specifies the model name. such like `gpt-4` or `text-davinci-003`.
+          <maml:para>Specifies the model name. such like `gpt-4` or `text-embedding-3-small`.
 It cannot be specified with the encoding name.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -526,7 +522,7 @@ ConvertFrom-Token -Token $Tokens -Model 'gpt-4'
       </command:example>
       <command:example>
         <maml:title>-------------------------- Example 2 --------------------------</maml:title>
-        <dev:code>(8582, 235, 230, 8582, 235, 240, 8582, 235, 239) | ConvertFrom-Token -Encoding 'p50k_base'
+        <dev:code>(9468, 235, 230, 9468, 235, 240, 9468, 235, 239) | ConvertFrom-Token
 # Output: 🍈🍒🍑</dev:code>
         <dev:remarks>
           <maml:para></maml:para>
@@ -575,15 +571,11 @@ The output values are compatible with OpenAI tiktoken.</maml:para>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="1" aliases="none">
           <maml:name>Encoding</maml:name>
           <maml:description>
-            <maml:para>Specifies the encoding name. Accepted values are `cl100k_base`, `p50k_base`, `p50k_edit`, `r50k_base`, `gpt2`.
+            <maml:para>Specifies the encoding name. Currently, accepted value is only `cl100k_base`.
 It cannot be specified with the model name.</maml:para>
           </maml:description>
           <command:parameterValueGroup>
             <command:parameterValue required="false" command:variableLength="false">cl100k_base</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">p50k_base</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">p50k_edit</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">r50k_base</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">gpt2</command:parameterValue>
           </command:parameterValueGroup>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -610,7 +602,7 @@ It cannot be specified with the model name.</maml:para>
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="1" aliases="none">
           <maml:name>Model</maml:name>
           <maml:description>
-            <maml:para>Specifies the model name. such like `gpt-4` or `text-davinci-003`.
+            <maml:para>Specifies the model name. such like `gpt-4` or `text-embedding-3-small`.
 It cannot be specified with the encoding name.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -638,7 +630,7 @@ It cannot be specified with the encoding name.</maml:para>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="1" aliases="none">
         <maml:name>Encoding</maml:name>
         <maml:description>
-          <maml:para>Specifies the encoding name. Accepted values are `cl100k_base`, `p50k_base`, `p50k_edit`, `r50k_base`, `gpt2`.
+          <maml:para>Specifies the encoding name. Currently, accepted value is only `cl100k_base`.
 It cannot be specified with the model name.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -651,7 +643,7 @@ It cannot be specified with the model name.</maml:para>
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="1" aliases="none">
         <maml:name>Model</maml:name>
         <maml:description>
-          <maml:para>Specifies the model name. such like `gpt-4` or `text-davinci-003`.
+          <maml:para>Specifies the model name. such like `gpt-4` or `text-embedding-3-small`.
 It cannot be specified with the encoding name.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -699,8 +691,8 @@ ConvertTo-Token -Text $Text -Model 'gpt-4'
       </command:example>
       <command:example>
         <maml:title>-------------------------- Example 2 --------------------------</maml:title>
-        <dev:code>'🍈🍒🍑' | ConvertTo-Token -Encoding 'p50k_base'
-# Output: (8582, 235, 230, 8582, 235, 240, 8582, 235, 239)</dev:code>
+        <dev:code>'🍈🍒🍑' | ConvertTo-Token
+# Output: (9468, 235, 230, 9468, 235, 240, 9468, 235, 239)</dev:code>
         <dev:remarks>
           <maml:para></maml:para>
         </dev:remarks>
@@ -6548,7 +6540,7 @@ The default value is `alloy`.</maml:para>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="response_format">
           <maml:name>Format</maml:name>
           <maml:description>
-            <maml:para>The format of audio. Supported formats are `mp3`, `opus`, `aac`, and `flac`.</maml:para>
+            <maml:para>The format of audio. Supported formats are `mp3`, `opus`, `aac`, `flac`, `wav`, and `pcm`</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -6695,7 +6687,7 @@ The default value is `alloy`.</maml:para>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="response_format">
         <maml:name>Format</maml:name>
         <maml:description>
-          <maml:para>The format of audio. Supported formats are `mp3`, `opus`, `aac`, and `flac`.</maml:para>
+          <maml:para>The format of audio. Supported formats are `mp3`, `opus`, `aac`, `flac`, `wav`, and `pcm`</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>

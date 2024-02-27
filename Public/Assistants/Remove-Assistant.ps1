@@ -51,7 +51,7 @@ function Remove-Assistant {
 
         # Get API endpoint
         if ($ApiType -eq [OpenAIApiType]::Azure) {
-            $OpenAIParameter = Get-AzureOpenAIAPIEndpoint -EndpointName 'Assistants' -Engine $Model -ApiBase $ApiBase -ApiVersion $ApiVersion
+            $OpenAIParameter = Get-AzureOpenAIAPIEndpoint -EndpointName 'Assistants' -ApiBase $ApiBase -ApiVersion $ApiVersion
         }
         else {
             $OpenAIParameter = Get-OpenAIAPIEndpoint -EndpointName 'Assistants' -ApiBase $ApiBase
@@ -75,7 +75,11 @@ function Remove-Assistant {
             return
         }
 
-        $QueryUri = $OpenAIParameter.Uri.ToString() + "/$AssistantId"
+        #region Construct Query URI
+        $UriBuilder = [System.UriBuilder]::new($OpenAIParameter.Uri)
+        $UriBuilder.Path += "/$AssistantId"
+        $QueryUri = $UriBuilder.Uri
+        #endregion
 
         #region Send API Request
         $Response = Invoke-OpenAIAPIRequest `

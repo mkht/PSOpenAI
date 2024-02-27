@@ -14,7 +14,10 @@ function ParseThreadRunStepObject {
     $simplecontent = `
         if ($InputObject.type -eq 'message_creation') {
         if ($msgid = $InputObject.step_details.message_creation.message_id) {
-            $msg = PSOpenAI\Get-ThreadMessage -InputObject $InputObject -MessageId $msgid
+            $GetThreadMessageParams = $CommonParams
+            $GetThreadMessageParams.InputObject = $InputObject
+            $GetThreadMessageParams.MessageId = $msgid
+            $msg = PSOpenAI\Get-ThreadMessage @GetThreadMessageParams
             [PSCustomObject]@{
                 Role    = $msg.role
                 Type    = $msg.content.type

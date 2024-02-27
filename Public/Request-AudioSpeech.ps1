@@ -29,7 +29,14 @@ function Request-AudioSpeech {
 
         [Parameter()]
         [Alias('response_format')]
-        [ValidateSet('mp3', 'opus', 'aac', 'flac')]
+        [Completions(
+            'mp3',
+            'opus',
+            'aac',
+            'flac',
+            'wav',
+            'pcm'
+        )]
         [string][LowerCaseTransformation()]$Format,
 
         [Parameter(Mandatory = $true)]
@@ -146,23 +153,21 @@ function Request-AudioSpeech {
         #endregion
 
         #region Output
-        # create parent directory if it does not exist
-        $ParentDirectory = Split-Path $OutFile -Parent
-        if (-not $ParentDirectory) {
-            $ParentDirectory = [string]$PWD
-        }
-        if (-not (Test-Path -LiteralPath $ParentDirectory -PathType Container)) {
-            $null = New-Item -Path $ParentDirectory -ItemType Directory -Force
-        }
-        # error check
-        if (-not (Test-Path -LiteralPath $ParentDirectory -PathType Container)) {
-            Write-Error -Message ('Destination folder "{0}" does not exist.' -f $ParentDirectory)
-            return
-        }
-
-        # Output file
         try {
-            [System.IO.File]::WriteAllBytes($OutFile, ([byte[]]$Response))
+            # Convert to absolute path
+            $AbsoluteOutFile = $PSCmdlet.GetUnresolvedProviderPathFromPSPath($OutFile)
+            # create parent directory if it does not exist
+            $ParentDirectory = Split-Path $AbsoluteOutFile -Parent
+            if (-not $ParentDirectory) {
+                $ParentDirectory = [string](Get-Location -PSProvider FileSystem).ProviderPath
+                $AbsoluteOutFile = Join-Path $ParentDirectory $AbsoluteOutFile
+            }
+            if (-not (Test-Path -LiteralPath $ParentDirectory -PathType Container)) {
+                $null = New-Item -Path $ParentDirectory -ItemType Directory -Force
+            }
+
+            # Output file
+            [System.IO.File]::WriteAllBytes($AbsoluteOutFile, ([byte[]]$Response))
         }
         catch {
             Write-Error -Exception $_.Exception

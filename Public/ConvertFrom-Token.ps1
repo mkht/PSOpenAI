@@ -10,7 +10,7 @@ function ConvertFrom-Token {
         [string][LowerCaseTransformation()]$Model,
 
         [Parameter(Mandatory = $false, Position = 1, ParameterSetName = 'encoding')]
-        [ValidateSet('cl100k_base', 'p50k_base', 'p50k_edit', 'r50k_base', 'gpt2')]
+        [ValidateSet('cl100k_base')]
         [string]$Encoding = 'cl100k_base',
 
         [Parameter()]
@@ -31,14 +31,7 @@ function ConvertFrom-Token {
             }
         }
 
-        $Decoder = switch ($Encoding) {
-            'cl100k_base' { [PSOpenAI.TokenizerLib.Cl100kBaseTokenizer]::Decode }
-            'p50k_base' { [PSOpenAI.TokenizerLib.P50kBaseTokenizer]::Decode }
-            'p50k_edit' { [PSOpenAI.TokenizerLib.P50kEditTokenizer]::Decode }
-            'r50k_base' { [PSOpenAI.TokenizerLib.R50kBaseTokenizer]::Decode }
-            'gpt2' { [PSOpenAI.TokenizerLib.Gpt2Tokenizer]::Decode }
-        }
-
+        $Decoder = [PSOpenAI.TokenizerLib.Cl100kBaseTokenizer]::Decode
         $TokenList = [System.Collections.Generic.List[int]]::new()
     }
 

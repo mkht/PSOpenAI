@@ -54,7 +54,7 @@ function Get-Thread {
 
         # Get API endpoint
         if ($ApiType -eq [OpenAIApiType]::Azure) {
-            $OpenAIParameter = Get-AzureOpenAIAPIEndpoint -EndpointName 'Threads' -Engine $Model -ApiBase $ApiBase -ApiVersion $ApiVersion
+            $OpenAIParameter = Get-AzureOpenAIAPIEndpoint -EndpointName 'Threads' -ApiBase $ApiBase -ApiVersion $ApiVersion
         }
         else {
             $OpenAIParameter = Get-OpenAIAPIEndpoint -EndpointName 'Threads' -ApiBase $ApiBase
@@ -81,7 +81,11 @@ function Get-Thread {
             return
         }
 
-        $QueryUri = $OpenAIParameter.Uri.ToString() + "/$ThreadID"
+        #region Construct Query URI
+        $UriBuilder = [System.UriBuilder]::new($OpenAIParameter.Uri)
+        $UriBuilder.Path += "/$ThreadID"
+        $QueryUri = $UriBuilder.Uri
+        #endregion
 
         #region Send API Request
         $Response = Invoke-OpenAIAPIRequest `

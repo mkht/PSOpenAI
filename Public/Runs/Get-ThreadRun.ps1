@@ -77,7 +77,7 @@ function Get-ThreadRun {
 
         # Get API endpoint
         if ($ApiType -eq [OpenAIApiType]::Azure) {
-            $OpenAIParameter = Get-AzureOpenAIAPIEndpoint -EndpointName 'Runs' -Engine $Model -ApiBase $ApiBase -ApiVersion $ApiVersion
+            $OpenAIParameter = Get-AzureOpenAIAPIEndpoint -EndpointName 'Runs' -ApiBase $ApiBase -ApiVersion $ApiVersion
         }
         else {
             $OpenAIParameter = Get-OpenAIAPIEndpoint -EndpointName 'Runs' -ApiBase $ApiBase
@@ -116,11 +116,13 @@ function Get-ThreadRun {
 
         #region Construct Query URI
         $QueryUri = ($OpenAIParameter.Uri.ToString() -f $ThreadID)
+        $UriBuilder = [System.UriBuilder]::new($QueryUri)
         if ($RunId.StartsWith('run_')) {
-            $QueryUri = $QueryUri + "/$RunId"
+            $UriBuilder.Path += "/$RunId"
+            $QueryUri = $UriBuilder.Uri
         }
         elseif ($PSCmdlet.ParameterSetName -eq 'ListAll') {
-            $QueryParam = [System.Web.HttpUtility]::ParseQueryString([string]::Empty)
+            $QueryParam = [System.Web.HttpUtility]::ParseQueryString($UriBuilder.Query)
             $QueryParam.Add('limit', '100');
             $QueryParam.Add('order', $Order);
             if ($After) {
@@ -129,10 +131,15 @@ function Get-ThreadRun {
             if ($Before) {
                 $QueryParam.Add('before', $Before);
             }
-            $QueryUri = $QueryUri + '?' + $QueryParam.ToString()
+            $UriBuilder.Query = $QueryParam.ToString()
+            $QueryUri = $UriBuilder.Uri
         }
         else {
-            $QueryUri = $QueryUri + "?limit=$Limit&order=$Order"
+            $QueryParam = [System.Web.HttpUtility]::ParseQueryString($UriBuilder.Query)
+            $QueryParam.Add('limit', $Limit);
+            $QueryParam.Add('order', $Order);
+            $UriBuilder.Query = $QueryParam.ToString()
+            $QueryUri = $UriBuilder.Uri
         }
         #enregion
 

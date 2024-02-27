@@ -18,8 +18,17 @@ function Get-OpenAIFileContent {
         [ValidateRange(0, 100)]
         [int]$MaxRetryCount = 0,
 
+        [Parameter(DontShow = $true)]
+        [OpenAIApiType]$ApiType = [OpenAIApiType]::OpenAI,
+
         [Parameter()]
         [System.Uri]$ApiBase,
+
+        [Parameter(DontShow = $true)]
+        [string]$ApiVersion,
+
+        [Parameter(DontShow = $true)]
+        [string]$AuthType = 'openai',
 
         [Parameter()]
         [securestring][SecureStringTransformation()]$ApiKey,
@@ -40,11 +49,20 @@ function Get-OpenAIFileContent {
         $Organization = Initialize-OrganizationID -OrgId $Organization
 
         # Get API endpoint
-        $OpenAIParameter = Get-OpenAIAPIEndpoint -EndpointName 'Files' -ApiBase $ApiBase
+        if ($ApiType -eq [OpenAIApiType]::Azure) {
+            $OpenAIParameter = Get-AzureOpenAIAPIEndpoint -EndpointName 'Files' -ApiBase $ApiBase -ApiVersion $ApiVersion
+        }
+        else {
+            $OpenAIParameter = Get-OpenAIAPIEndpoint -EndpointName 'Files' -ApiBase $ApiBase
+        }
     }
 
     process {
-        $QueryUri = $OpenAIParameter.Uri.ToString() + "/$Id/content"
+        #region Construct Query URI
+        $UriBuilder = [System.UriBuilder]::new($OpenAIParameter.Uri)
+        $UriBuilder.Path += "/$Id/content"
+        $QueryUri = $UriBuilder.Uri
+        #endregion
 
         #region Send API Request
         $Response = Invoke-OpenAIAPIRequest `
@@ -64,23 +82,21 @@ function Get-OpenAIFileContent {
 
         #region Output
         if ($PSCmdlet.ParameterSetName -eq 'OutFile') {
-            # create parent directory if it does not exist
-            $ParentDirectory = Split-Path $OutFile -Parent
-            if (-not $ParentDirectory) {
-                $ParentDirectory = [string]$PWD
-            }
-            if (-not (Test-Path -LiteralPath $ParentDirectory -PathType Container)) {
-                $null = New-Item -Path $ParentDirectory -ItemType Directory -Force
-            }
-            # error check
-            if (-not (Test-Path -LiteralPath $ParentDirectory -PathType Container)) {
-                Write-Error -Message ('Destination folder "{0}" does not exist.' -f $ParentDirectory)
-                return
-            }
-
-            # Output file
             try {
-                [System.IO.File]::WriteAllBytes($OutFile, ([byte[]]$Response))
+                # Convert to absolute path
+                $AbsoluteOutFile = $PSCmdlet.GetUnresolvedProviderPathFromPSPath($OutFile)
+                # create parent directory if it does not exist
+                $ParentDirectory = Split-Path $AbsoluteOutFile -Parent
+                if (-not $ParentDirectory) {
+                    $ParentDirectory = [string](Get-Location -PSProvider FileSystem).ProviderPath
+                    $AbsoluteOutFile = Join-Path $ParentDirectory $AbsoluteOutFile
+                }
+                if (-not (Test-Path -LiteralPath $ParentDirectory -PathType Container)) {
+                    $null = New-Item -Path $ParentDirectory -ItemType Directory -Force
+                }
+
+                # Output file
+                [System.IO.File]::WriteAllBytes($AbsoluteOutFile, ([byte[]]$Response))
             }
             catch {
                 Write-Error -Exception $_.Exception
