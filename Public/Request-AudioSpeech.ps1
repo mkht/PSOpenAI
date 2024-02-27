@@ -29,7 +29,14 @@ function Request-AudioSpeech {
 
         [Parameter()]
         [Alias('response_format')]
-        [ValidateSet('mp3', 'opus', 'aac', 'flac')]
+        [Completions(
+            'mp3',
+            'opus',
+            'aac',
+            'flac',
+            'wav',
+            'pcm'
+        )]
         [string][LowerCaseTransformation()]$Format,
 
         [Parameter(Mandatory = $true)]
