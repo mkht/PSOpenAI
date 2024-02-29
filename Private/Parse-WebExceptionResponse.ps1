@@ -30,6 +30,9 @@ function Parse-WebExceptionResponse {
         # For PS 5.1
         if ($InnerException -is [System.Net.WebException]) {
             $ErrorResponse = $InnerException.Response
+            if ($null -eq $ErrorResponse.StatusCode) {
+                return $InnerException
+            }
             $ErrorCode = $ErrorResponse.StatusCode.value__
             $ErrorReason = $ErrorResponse.StatusCode.ToString()
             $ResponseStream = $ErrorResponse.GetResponseStream()
@@ -41,6 +44,9 @@ function Parse-WebExceptionResponse {
         # For PS 6+ or SSE
         elseif ($InnerException -is [System.Net.Http.HttpRequestException]) {
             $ErrorResponse = $InnerException.Response
+            if ($null -eq $ErrorResponse.StatusCode) {
+                return $InnerException
+            }
             $ErrorCode = $ErrorResponse.StatusCode.value__
             $ErrorReason = $ErrorResponse.ReasonPhrase
             $ErrorContent = try { ($ErrorRecord.ErrorDetails.Message | ConvertFrom-Json -ErrorAction Ignore) }catch {}
