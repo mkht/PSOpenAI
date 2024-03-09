@@ -1,4 +1,7 @@
 # Changelog
+### Unreleased
+- Change max value of the `-TopLogProbs` parameter to 20.
+
 ### 3.0.0
 **This is a major release that includes breaking changes.**
 - **REMOVE** parameter alias `Engine` from all functions.

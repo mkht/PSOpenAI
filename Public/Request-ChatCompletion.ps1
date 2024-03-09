@@ -125,7 +125,7 @@ function Request-ChatCompletion {
         [bool]$LogProbs,
 
         [Parameter()]
-        [ValidateRange(0, 5)]
+        [ValidateRange(0, 20)]
         [Alias('top_logprobs')]
         [uint16]$TopLogProbs,
 
