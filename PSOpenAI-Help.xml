@@ -7606,7 +7606,7 @@ The default value is `alloy`.</maml:para>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="response_format">
           <maml:name>Format</maml:name>
           <maml:description>
-            <maml:para>The format of audio. Supported formats are `mp3`, `opus`, `aac`, and `flac`.</maml:para>
+            <maml:para>The format of audio. Supported formats are `mp3`, `opus`, `aac`, `flac`, `wav`, and `pcm`</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -7767,7 +7767,7 @@ The default value is `alloy`.</maml:para>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="response_format">
         <maml:name>Format</maml:name>
         <maml:description>
-          <maml:para>The format of audio. Supported formats are `mp3`, `opus`, `aac`, and `flac`.</maml:para>
+          <maml:para>The format of audio. Supported formats are `mp3`, `opus`, `aac`, `flac`, `wav`, and `pcm`</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -11376,7 +11376,7 @@ ID 23182 maps to "apple" and ID 88847 maps to "banana". Thus, this example incre
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="top_logprobs">
           <maml:name>TopLogProbs</maml:name>
           <maml:description>
-            <maml:para>An integer between 0 and 5 specifying the number of most likely tokens to return at each token position, each with an associated log probability. `logprobs` must be set to `true` if this parameter is used.</maml:para>
+            <maml:para>An integer between 0 and 20 specifying the number of most likely tokens to return at each token position, each with an associated log probability. `logprobs` must be set to `true` if this parameter is used.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">UInt16</command:parameterValue>
           <dev:type>
@@ -11771,7 +11771,7 @@ ID 23182 maps to "apple" and ID 88847 maps to "banana". Thus, this example incre
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="top_logprobs">
         <maml:name>TopLogProbs</maml:name>
         <maml:description>
-          <maml:para>An integer between 0 and 5 specifying the number of most likely tokens to return at each token position, each with an associated log probability. `logprobs` must be set to `true` if this parameter is used.</maml:para>
+          <maml:para>An integer between 0 and 20 specifying the number of most likely tokens to return at each token position, each with an associated log probability. `logprobs` must be set to `true` if this parameter is used.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">UInt16</command:parameterValue>
         <dev:type>

@@ -89,7 +89,7 @@ Default value: alloy
 ```
 
 ### -Format
-The format of audio. Supported formats are `mp3`, `opus`, `aac`, and `flac`.
+The format of audio. Supported formats are `mp3`, `opus`, `aac`, `flac`, `wav`, and `pcm`
 
 ```yaml
 Type: String

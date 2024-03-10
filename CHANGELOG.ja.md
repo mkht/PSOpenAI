@@ -1,4 +1,13 @@
 # 変更履歴
+### 3.1.0
+- `-TopLogProbs`パラメータの最大値を`20`に変更しました
+- Azure OpenAI ServiceのデフォルトAPIバージョンを`2024-03-01-preview`に変更しました
+- ほとんどの関数に新しい共通パラメータを追加しました
+  + `-AdditionalQuery`
+  + `-AdditionalHeaders`
+  + `-AdditionalBody`
+- 軽微な不具合修正
+
 ### 3.0.0
 **これは破壊的変更を含むメジャーリリースです。**
 - すべての関数からパラメータエイリアス `Engine` を**削除**しました。
