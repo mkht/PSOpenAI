@@ -131,6 +131,7 @@ function Request-AudioSpeech {
                 '*.opus' { 'opus'; break }
                 '*.aac' { 'aac'; break }
                 '*.flac' { 'flac'; break }
+                '*.wav' { 'wav'; break }
                 Default { 'mp3' }
             }
         }

@@ -33,7 +33,9 @@ function Request-AzureAudioSpeech {
             'mp3',
             'opus',
             'aac',
-            'flac'
+            'flac',
+            'wav',
+            'pcm'
         )]
         [string][LowerCaseTransformation()]$Format,
 
