@@ -35,7 +35,16 @@ function Get-OpenAIFileContent {
 
         [Parameter()]
         [Alias('OrgId')]
-        [string]$Organization
+        [string]$Organization,
+
+        [Parameter()]
+        [System.Collections.IDictionary]$AdditionalQuery,
+
+        [Parameter()]
+        [System.Collections.IDictionary]$AdditionalHeaders,
+
+        [Parameter()]
+        [object]$AdditionalBody
     )
 
     begin {
@@ -72,7 +81,8 @@ function Get-OpenAIFileContent {
             -TimeoutSec $TimeoutSec `
             -MaxRetryCount $MaxRetryCount `
             -ApiKey $SecureToken `
-            -Organization $Organization
+            -Organization $Organization `
+            -AdditionalQuery $AdditionalQuery -AdditionalHeaders $AdditionalHeaders -AdditionalBody $AdditionalBody
 
         # error check
         if ($null -eq $Response) {

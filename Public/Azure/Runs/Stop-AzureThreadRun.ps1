@@ -34,7 +34,16 @@ function Stop-AzureThreadRun {
         [switch]$Wait,
 
         [Parameter()]
-        [switch]$PassThru
+        [switch]$PassThru,
+
+        [Parameter()]
+        [System.Collections.IDictionary]$AdditionalQuery,
+
+        [Parameter()]
+        [System.Collections.IDictionary]$AdditionalHeaders,
+
+        [Parameter()]
+        [object]$AdditionalBody
     )
 
     begin {

@@ -28,6 +28,9 @@ function Invoke-OpenAIAPIRequest {
         [securestring]$ApiKey,
 
         [Parameter()]
+        [IDictionary]$AdditionalQuery,
+
+        [Parameter()]
         [AllowEmptyString()]
         [string]$Organization,
 
@@ -35,7 +38,13 @@ function Invoke-OpenAIAPIRequest {
         [object]$Body,
 
         [Parameter()]
+        [object]$AdditionalBody,
+
+        [Parameter()]
         [IDictionary]$Headers,
+
+        [Parameter()]
+        [IDictionary]$AdditionalHeaders,
 
         [Parameter()]
         [int]$TimeoutSec = 0,
@@ -71,15 +80,57 @@ function Invoke-OpenAIAPIRequest {
     }
     #endregion
 
+    # Query string
+    if ($PSBoundParameters.ContainsKey('AdditionalQuery') -and $null -ne $AdditionalQuery) {
+        $UriBuilder = [System.UriBuilder]::new($Uri)
+        $QueryParam = [System.Web.HttpUtility]::ParseQueryString($UriBuilder.Query)
+        foreach ($s in $AdditionalQuery.GetEnumerator()) {
+            $QueryParam.Add($s.Key, $s.Value)
+        }
+        $UriBuilder.Query = $QueryParam.ToString()
+        $Uri = $UriBuilder.Uri
+    }
+
     # Headers dictionary
     $RequestHeaders = @{}
     if ($PSBoundParameters.ContainsKey('Headers') -and $null -ne $Headers) {
         $RequestHeaders = Merge-Dictionary $Headers $RequestHeaders
     }
+    if ($PSBoundParameters.ContainsKey('AdditionalHeaders') -and $null -ne $AdditionalHeaders) {
+        $RequestHeaders = Merge-Dictionary $RequestHeaders $AdditionalHeaders
+    }
 
     # Set debug header
     if ($IsDebug) {
         $RequestHeaders['OpenAI-Debug'] = 'true'
+    }
+
+    # Body object
+    if ($null -ne $Body) {
+        if ($ContentType -match 'multipart/form-data') {
+            $Boundary = New-MultipartFormBoundary
+            $Body = New-MultipartFormContent -FormData $Body -Boundary $Boundary
+            $ContentType = ('multipart/form-data; boundary="{0}"' -f $Boundary)
+        }
+        elseif ($ContentType -match 'application/json') {
+            if ($Body -is [pscustomobject]) {
+                $Body = ObjectToHashTable $Body
+            }
+            if ($PSBoundParameters.ContainsKey('AdditionalBody') -and $null -ne $AdditionalBody) {
+                if ($AdditionalBody -is [string]) {
+                    try {
+                        $AdditionalBody = ConvertFrom-Json $AdditionalBody -Depth 100
+                    }
+                    catch {
+                        Write-Error -Exception ([System.InvalidOperationException]::new('Failed to parse AdditionalBody as JSON.'))
+                    }
+                }
+                if ($AdditionalBody -is [pscustomobject]) {
+                    $AdditionalBody = ObjectToHashTable $AdditionalBody
+                }
+                $Body = Merge-Dictionary $Body $AdditionalBody
+            }
+        }
     }
 
     #region Server-Sent-Events
@@ -165,16 +216,9 @@ function Invoke-OpenAIAPIRequest {
     }
 
     if ($null -ne $Body) {
-        $RawBody = $Body
-        if ($ContentType -match 'multipart/form-data') {
-            $Boundary = New-MultipartFormBoundary
-            $RawBody = New-MultipartFormContent -FormData $Body -Boundary $Boundary
-            $IwrParam.Body = $RawBody
-            $IwrParam.ContentType = ('multipart/form-data; boundary="{0}"' -f $Boundary)
-        }
-        elseif ($ContentType -match 'application/json') {
-            try { $RawBody = ($Body | ConvertTo-Json -Compress -Depth 100) }catch { Write-Error -Exception $_.Exception }
-            $IwrParam.Body = ([System.Text.Encoding]::UTF8.GetBytes($RawBody))
+        if ($ContentType -match 'application/json') {
+            try { $Body = ($Body | ConvertTo-Json -Compress -Depth 100) }catch { Write-Error -Exception $_.Exception }
+            $IwrParam.Body = ([System.Text.Encoding]::UTF8.GetBytes($Body))
         }
         else {
             $IwrParam.Body = $Body
@@ -196,7 +240,7 @@ function Invoke-OpenAIAPIRequest {
             ('Request parameters: ' + (([pscustomobject]$IwrParam) | fl Method, Uri, ContentType, Headers, Authentication | Out-String)).TrimEnd() `
                 -Target ($ApiKey, $Organization) -First $startIdx -Last $lastIdx -MaxNumberOfAsterisks 45)
         Write-Debug -Message (Get-MaskedString `
-            ('Post body: ' + $RawBody) `
+            ('Post body: ' + $Body) `
                 -Target ($ApiKey, $Organization) -First $startIdx -Last $lastIdx -MaxNumberOfAsterisks 45)
     }
 

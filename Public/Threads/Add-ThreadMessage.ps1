@@ -56,7 +56,16 @@ function Add-ThreadMessage {
         [string]$Organization,
 
         [Parameter()]
-        [switch]$PassThru
+        [switch]$PassThru,
+
+        [Parameter()]
+        [System.Collections.IDictionary]$AdditionalQuery,
+
+        [Parameter()]
+        [System.Collections.IDictionary]$AdditionalHeaders,
+
+        [Parameter()]
+        [object]$AdditionalBody
     )
 
     begin {
@@ -127,7 +136,8 @@ function Add-ThreadMessage {
             -AuthType $AuthType `
             -Organization $Organization `
             -Headers (@{'OpenAI-Beta' = 'assistants=v1' }) `
-            -Body $PostBody
+            -Body $PostBody `
+            -AdditionalQuery $AdditionalQuery -AdditionalHeaders $AdditionalHeaders -AdditionalBody $AdditionalBody
 
         # error check
         if ($null -eq $Response) {

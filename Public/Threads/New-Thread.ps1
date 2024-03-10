@@ -36,7 +36,16 @@ function New-Thread {
 
         [Parameter()]
         [Alias('OrgId')]
-        [string]$Organization
+        [string]$Organization,
+
+        [Parameter()]
+        [System.Collections.IDictionary]$AdditionalQuery,
+
+        [Parameter()]
+        [System.Collections.IDictionary]$AdditionalHeaders,
+
+        [Parameter()]
+        [object]$AdditionalBody
     )
 
     begin {
@@ -137,7 +146,8 @@ function New-Thread {
             -AuthType $AuthType `
             -Organization $Organization `
             -Headers (@{'OpenAI-Beta' = 'assistants=v1' }) `
-            -Body $PostBody
+            -Body $PostBody `
+            -AdditionalQuery $AdditionalQuery -AdditionalHeaders $AdditionalHeaders -AdditionalBody $AdditionalBody
 
         # error check
         if ($null -eq $Response) {

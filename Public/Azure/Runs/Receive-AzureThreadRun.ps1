@@ -31,7 +31,16 @@ function Receive-AzureThreadRun {
         [switch]$Wait,
 
         [Parameter()]
-        [switch]$AutoRemoveThread
+        [switch]$AutoRemoveThread,
+
+        [Parameter()]
+        [System.Collections.IDictionary]$AdditionalQuery,
+
+        [Parameter()]
+        [System.Collections.IDictionary]$AdditionalHeaders,
+
+        [Parameter()]
+        [object]$AdditionalBody
     )
 
     begin {

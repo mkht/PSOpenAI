@@ -167,7 +167,16 @@ function Request-ChatCompletion {
         [string]$Organization,
 
         [Parameter(ValueFromPipelineByPropertyName = $true)]
-        [object[]]$History
+        [object[]]$History,
+
+        [Parameter()]
+        [System.Collections.IDictionary]$AdditionalQuery,
+
+        [Parameter()]
+        [System.Collections.IDictionary]$AdditionalHeaders,
+
+        [Parameter()]
+        [object]$AdditionalBody
     )
 
     begin {
@@ -399,7 +408,8 @@ function Request-ChatCompletion {
                 -AuthType $AuthType `
                 -Organization $Organization `
                 -Body $PostBody `
-                -Stream $Stream |`
+                -Stream $Stream `
+                -AdditionalQuery $AdditionalQuery -AdditionalHeaders $AdditionalHeaders -AdditionalBody $AdditionalBody |`
                 Where-Object {
                 -not [string]::IsNullOrEmpty($_)
             } | ForEach-Object {
@@ -445,7 +455,8 @@ function Request-ChatCompletion {
                 -ApiKey $SecureToken `
                 -AuthType $AuthType `
                 -Organization $Organization `
-                -Body $PostBody
+                -Body $PostBody `
+                -AdditionalQuery $AdditionalQuery -AdditionalHeaders $AdditionalHeaders -AdditionalBody $AdditionalBody
 
             # error check
             if ($null -eq $Response) {

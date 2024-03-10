@@ -129,6 +129,9 @@ function ParseCommonParams {
             'AuthType'
             'ApiKey'
             'Organization'
+            'AdditionalQuery'
+            'AdditionalHeaders'
+            'AdditionalBody'
         )
     )
     $OutParam = @{}

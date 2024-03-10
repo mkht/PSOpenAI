@@ -52,7 +52,16 @@ function Request-Embeddings {
 
         [Parameter()]
         [Alias('OrgId')]
-        [string]$Organization
+        [string]$Organization,
+
+        [Parameter()]
+        [System.Collections.IDictionary]$AdditionalQuery,
+
+        [Parameter()]
+        [System.Collections.IDictionary]$AdditionalHeaders,
+
+        [Parameter()]
+        [object]$AdditionalBody
     )
 
     begin {
@@ -113,7 +122,8 @@ function Request-Embeddings {
             -ApiKey $SecureToken `
             -AuthType $AuthType `
             -Organization $Organization `
-            -Body $PostBody
+            -Body $PostBody `
+            -AdditionalQuery $AdditionalQuery -AdditionalHeaders $AdditionalHeaders -AdditionalBody $AdditionalBody
 
         # error check
         if ($null -eq $Response) {

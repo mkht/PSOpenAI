@@ -53,7 +53,16 @@ function Wait-AzureThreadRun {
             'cancelled',
             'failed'
         )]
-        [string[]]$StatusForExit
+        [string[]]$StatusForExit,
+
+        [Parameter()]
+        [System.Collections.IDictionary]$AdditionalQuery,
+
+        [Parameter()]
+        [System.Collections.IDictionary]$AdditionalHeaders,
+
+        [Parameter()]
+        [object]$AdditionalBody
     )
 
     begin {

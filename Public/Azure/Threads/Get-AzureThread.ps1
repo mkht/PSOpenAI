@@ -33,7 +33,16 @@ function Get-AzureThread {
         [securestring][SecureStringTransformation()]$ApiKey,
 
         [Parameter(DontShow = $true)]
-        [switch]$Primitive
+        [switch]$Primitive,
+
+        [Parameter()]
+        [System.Collections.IDictionary]$AdditionalQuery,
+
+        [Parameter()]
+        [System.Collections.IDictionary]$AdditionalHeaders,
+
+        [Parameter()]
+        [object]$AdditionalBody
     )
 
     begin {

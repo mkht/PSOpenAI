@@ -85,7 +85,16 @@ function Set-Assistant {
 
         [Parameter()]
         [Alias('OrgId')]
-        [string]$Organization
+        [string]$Organization,
+
+        [Parameter()]
+        [System.Collections.IDictionary]$AdditionalQuery,
+
+        [Parameter()]
+        [System.Collections.IDictionary]$AdditionalHeaders,
+
+        [Parameter()]
+        [object]$AdditionalBody
     )
 
     begin {

@@ -138,7 +138,16 @@ function Request-AzureChatCompletion {
         [string]$AuthType = 'azure',
 
         [Parameter(ValueFromPipelineByPropertyName = $true)]
-        [object[]]$History
+        [object[]]$History,
+
+        [Parameter()]
+        [System.Collections.IDictionary]$AdditionalQuery,
+
+        [Parameter()]
+        [System.Collections.IDictionary]$AdditionalHeaders,
+
+        [Parameter()]
+        [object]$AdditionalBody
     )
 
     begin {

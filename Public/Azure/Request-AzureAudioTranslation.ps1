@@ -40,7 +40,16 @@ function Request-AzureAudioTranslation {
 
         [Parameter()]
         [ValidateSet('azure', 'azure_ad')]
-        [string]$AuthType = 'azure'
+        [string]$AuthType = 'azure',
+
+        [Parameter()]
+        [System.Collections.IDictionary]$AdditionalQuery,
+
+        [Parameter()]
+        [System.Collections.IDictionary]$AdditionalHeaders,
+
+        [Parameter()]
+        [object]$AdditionalBody
     )
 
     begin {
@@ -53,7 +62,7 @@ function Request-AzureAudioTranslation {
 
         # Invoke base function
         $steppablePipeline = {
-            Request-AzureAudioTranslation @Parameters
+            Request-AudioTranslation @Parameters
         }.GetSteppablePipeline($myInvocation.CommandOrigin)
         $steppablePipeline.Begin($PSCmdlet)
     }

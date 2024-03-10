@@ -59,7 +59,16 @@ function Get-ThreadMessage {
 
         [Parameter()]
         [Alias('OrgId')]
-        [string]$Organization
+        [string]$Organization,
+
+        [Parameter()]
+        [System.Collections.IDictionary]$AdditionalQuery,
+
+        [Parameter()]
+        [System.Collections.IDictionary]$AdditionalHeaders,
+
+        [Parameter()]
+        [object]$AdditionalBody
     )
 
     begin {
@@ -143,7 +152,8 @@ function Get-ThreadMessage {
             -ApiKey $SecureToken `
             -AuthType $AuthType `
             -Organization $Organization `
-            -Headers (@{'OpenAI-Beta' = 'assistants=v1' })
+            -Headers (@{'OpenAI-Beta' = 'assistants=v1' }) `
+            -AdditionalQuery $AdditionalQuery -AdditionalHeaders $AdditionalHeaders -AdditionalBody $AdditionalBody
 
         # error check
         if ($null -eq $Response) {

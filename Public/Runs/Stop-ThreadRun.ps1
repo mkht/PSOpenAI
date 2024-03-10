@@ -40,7 +40,16 @@ function Stop-ThreadRun {
         [switch]$Wait,
 
         [Parameter()]
-        [switch]$PassThru
+        [switch]$PassThru,
+
+        [Parameter()]
+        [System.Collections.IDictionary]$AdditionalQuery,
+
+        [Parameter()]
+        [System.Collections.IDictionary]$AdditionalHeaders,
+
+        [Parameter()]
+        [object]$AdditionalBody
     )
 
     begin {
@@ -100,7 +109,8 @@ function Stop-ThreadRun {
             -ApiKey $SecureToken `
             -AuthType $AuthType `
             -Organization $Organization `
-            -Headers (@{'OpenAI-Beta' = 'assistants=v1' })
+            -Headers (@{'OpenAI-Beta' = 'assistants=v1' }) `
+            -AdditionalQuery $AdditionalQuery -AdditionalHeaders $AdditionalHeaders -AdditionalBody $AdditionalBody
 
         # error check
         if ($null -eq $Response) {

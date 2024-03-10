@@ -35,7 +35,16 @@ function Register-OpenAIFile {
 
         [Parameter()]
         [Alias('OrgId')]
-        [string]$Organization
+        [string]$Organization,
+
+        [Parameter()]
+        [System.Collections.IDictionary]$AdditionalQuery,
+
+        [Parameter()]
+        [System.Collections.IDictionary]$AdditionalHeaders,
+
+        [Parameter()]
+        [object]$AdditionalBody
     )
 
     begin {
@@ -75,7 +84,8 @@ function Register-OpenAIFile {
             -MaxRetryCount $MaxRetryCount `
             -ApiKey $SecureToken `
             -Organization $Organization `
-            -Body $PostBody
+            -Body $PostBody `
+            -AdditionalQuery $AdditionalQuery -AdditionalHeaders $AdditionalHeaders -AdditionalBody $AdditionalBody
 
         # error check
         if ($null -eq $Response) {

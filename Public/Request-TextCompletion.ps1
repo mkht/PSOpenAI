@@ -88,7 +88,16 @@ function Request-TextCompletion {
 
         [Parameter()]
         [Alias('OrgId')]
-        [string]$Organization
+        [string]$Organization,
+
+        [Parameter()]
+        [System.Collections.IDictionary]$AdditionalQuery,
+
+        [Parameter()]
+        [System.Collections.IDictionary]$AdditionalHeaders,
+
+        [Parameter()]
+        [object]$AdditionalBody
     )
 
     begin {
@@ -199,7 +208,8 @@ function Request-TextCompletion {
                 -AuthType $AuthType `
                 -Organization $Organization `
                 -Body $PostBody `
-                -Stream $Stream |`
+                -Stream $Stream `
+                -AdditionalQuery $AdditionalQuery -AdditionalHeaders $AdditionalHeaders -AdditionalBody $AdditionalBody |`
                 Where-Object {
                 -not [string]::IsNullOrEmpty($_)
             } | ForEach-Object {
@@ -234,7 +244,8 @@ function Request-TextCompletion {
                 -ApiKey $SecureToken `
                 -AuthType $AuthType `
                 -Organization $Organization `
-                -Body $PostBody
+                -Body $PostBody `
+                -AdditionalQuery $AdditionalQuery -AdditionalHeaders $AdditionalHeaders -AdditionalBody $AdditionalBody
 
             # error check
             if ($null -eq $Response) {

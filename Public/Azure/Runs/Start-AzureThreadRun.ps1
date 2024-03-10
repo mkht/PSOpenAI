@@ -64,7 +64,16 @@ function Start-AzureThreadRun {
         [string]$AuthType = 'azure',
 
         [Parameter()]
-        [securestring][SecureStringTransformation()]$ApiKey
+        [securestring][SecureStringTransformation()]$ApiKey,
+
+        [Parameter()]
+        [System.Collections.IDictionary]$AdditionalQuery,
+
+        [Parameter()]
+        [System.Collections.IDictionary]$AdditionalHeaders,
+
+        [Parameter()]
+        [object]$AdditionalBody
     )
 
     begin {

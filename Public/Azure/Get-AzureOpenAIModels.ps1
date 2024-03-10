@@ -25,7 +25,16 @@ function Get-AzureOpenAIModels {
 
         [Parameter()]
         [ValidateRange(0, 100)]
-        [int]$MaxRetryCount = 0
+        [int]$MaxRetryCount = 0,
+
+        [Parameter()]
+        [System.Collections.IDictionary]$AdditionalQuery,
+
+        [Parameter()]
+        [System.Collections.IDictionary]$AdditionalHeaders,
+
+        [Parameter()]
+        [object]$AdditionalBody
     )
 
     begin {

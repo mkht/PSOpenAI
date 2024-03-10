@@ -57,7 +57,16 @@ function Request-AzureImageGeneration {
 
         [Parameter()]
         [ValidateSet('azure', 'azure_ad')]
-        [string]$AuthType = 'azure'
+        [string]$AuthType = 'azure',
+
+        [Parameter()]
+        [System.Collections.IDictionary]$AdditionalQuery,
+
+        [Parameter()]
+        [System.Collections.IDictionary]$AdditionalHeaders,
+
+        [Parameter()]
+        [object]$AdditionalBody
     )
 
     begin {
@@ -142,7 +151,8 @@ function Request-AzureImageGeneration {
                 -ApiKey $SecureToken `
                 -AuthType $AuthType `
                 -Body $PostBody `
-                -ReturnRawResponse $true
+                -ReturnRawResponse $true `
+                -AdditionalQuery $AdditionalQuery -AdditionalHeaders $AdditionalHeaders -AdditionalBody $AdditionalBody
 
             # error check
             if ($null -eq $Response -or $Response.StatusDescription -ne 'Accepted') {
@@ -186,6 +196,7 @@ function Request-AzureImageGeneration {
                         -TimeoutSec $TimeoutSec `
                         -ApiKey $SecureToken `
                         -AuthType $AuthType `
+                        -AdditionalQuery $AdditionalQuery -AdditionalHeaders $AdditionalHeaders -AdditionalBody $AdditionalBody `
                         -Verbose:$false
                     if ($null -ne $SubResponse) {
                         $ResponseContent = $SubResponse | ConvertFrom-Json -ea Stop
