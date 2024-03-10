@@ -1,6 +1,7 @@
 # Changelog
 ### Unreleased
 - Change max value of the `-TopLogProbs` parameter to 20.
+- Change default api version of Azure OpenAI Service to `2024-03-01-preview`
 
 ### 3.0.0
 **This is a major release that includes breaking changes.**

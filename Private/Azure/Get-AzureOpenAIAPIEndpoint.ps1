@@ -17,7 +17,7 @@ function Get-AzureOpenAIAPIEndpoint {
 
     $UriBuilder = [System.UriBuilder]::new($ApiBase)
     $ApiVersion = $ApiVersion.Trim()
-    $DefaultApiVersion = '2024-02-15-preview'
+    $DefaultApiVersion = '2024-03-01-preview'
 
     switch ($EndpointName) {
         'Chat.Completion' {
