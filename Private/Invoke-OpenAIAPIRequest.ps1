@@ -59,7 +59,7 @@ function Invoke-OpenAIAPIRequest {
         [bool]$Stream = $false,
 
         [Parameter()]
-        [ValidateSet('openai', 'azure', 'azure_ad')]
+        # [ValidateSet('openai', 'azure', 'azure_ad')]
         [string]$AuthType = 'openai',
 
         [Parameter()]

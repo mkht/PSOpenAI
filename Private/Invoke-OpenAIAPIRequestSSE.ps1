@@ -49,7 +49,7 @@ function Invoke-OpenAIAPIRequestSSE {
         [int]$RetryCount = 0,
 
         [Parameter()]
-        [ValidateSet('openai', 'azure', 'azure_ad')]
+        # [ValidateSet('openai', 'azure', 'azure_ad')]
         [string]$AuthType = 'openai'
     )
 
