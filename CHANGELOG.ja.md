@@ -1,4 +1,14 @@
 # 変更履歴
+### 3.2.0
+- 事前にThreadオブジェクトを用意せずアドホックに`Start-ThreadRun`を実行できるようになりました
+
+  使用例 :
+  ```PowerShell
+  $Assistant = New-Assistant -Model "gpt-3.5-turbo"
+  $Run = Start-ThreadRun -Assistant $Assistant -Message "Hello, what can you do for me?"
+  $Result = $Run | Receive-ThreadRun -Wait
+  ```
+
 ### 3.1.0
 - `-TopLogProbs`パラメータの最大値を`20`に変更しました
 - Azure OpenAI ServiceのデフォルトAPIバージョンを`2024-03-01-preview`に変更しました
