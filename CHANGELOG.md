@@ -1,4 +1,14 @@
 # Changelog
+### 3.2.0
+- `Start-ThreadRun` now can be use without preparing threads in advance.
+
+  example :
+  ```PowerShell
+  $Assistant = New-Assistant -Model "gpt-3.5-turbo"
+  $Run = Start-ThreadRun -Assistant $Assistant -Message "Hello, what can you do for me?"
+  $Result = $Run | Receive-ThreadRun -Wait
+  ```
+
 ### 3.1.0
 - Change max value of the `-TopLogProbs` parameter to `20`.
 - Change default api version of Azure OpenAI Service to `2024-03-01-preview`
