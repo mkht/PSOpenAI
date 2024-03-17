@@ -180,5 +180,16 @@ function Get-OpenAIAPIEndpoint {
             }
             continue
         }
+        'ThreadAndRun' {
+            $UriBuilder.Path += '/threads/runs'
+            if ($UriBuilder.Path.StartsWith('//')) { $UriBuilder.Path = $UriBuilder.Path.TrimStart('/') }
+            @{
+                Name        = 'thread_and_run'
+                Method      = 'Post'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+            continue
+        }
     }
 }

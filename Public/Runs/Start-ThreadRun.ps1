@@ -1,8 +1,8 @@
 function Start-ThreadRun {
-    [CmdletBinding()]
+    [CmdletBinding(DefaultParameterSetName = 'ThreadAndRun')]
     [OutputType([pscustomobject])]
     param (
-        [Parameter(Mandatory = $true, Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
+        [Parameter(Mandatory = $true, Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true, ParameterSetName = 'Run')]
         [Alias('thread_id')]
         [Alias('Thread')]
         [ValidateScript({
@@ -44,9 +44,25 @@ function Start-ThreadRun {
         [ValidateLength(0, 32768)]
         [string]$Instructions,
 
-        [Parameter()]
+        [Parameter(ParameterSetName = 'Run')]
         [Alias('additional_instructions')]
         [string]$AdditionalInstructions,
+
+        #region Parameters for Thread and Run
+        [Parameter(Mandatory = $true, Position = 0, ParameterSetName = 'ThreadAndRun')]
+        [Alias('Text')]
+        [Alias('Content')]
+        [ValidateNotNullOrEmpty()]
+        [string]$Message,
+
+        [Parameter(ParameterSetName = 'ThreadAndRun')]
+        [string][LowerCaseTransformation()]$Role = 'user',
+
+        [Parameter(ParameterSetName = 'ThreadAndRun')]
+        [Alias('file_ids')]
+        [ValidateRange(0, 10)]
+        [string[]]$FileId,
+        #endregion
 
         [Parameter()]
         [AllowEmptyCollection()]
@@ -108,11 +124,18 @@ function Start-ThreadRun {
         $Organization = Initialize-OrganizationID -OrgId $Organization
 
         # Get API endpoint
-        if ($ApiType -eq [OpenAIApiType]::Azure) {
-            $OpenAIParameter = Get-AzureOpenAIAPIEndpoint -EndpointName 'Runs' -ApiBase $ApiBase -ApiVersion $ApiVersion
+        if ($PSCmdlet.ParameterSetName -eq 'ThreadAndRun') {
+            $EndpointName = 'ThreadAndRun'
         }
         else {
-            $OpenAIParameter = Get-OpenAIAPIEndpoint -EndpointName 'Runs' -ApiBase $ApiBase
+            $EndpointName = 'Runs'
+        }
+
+        if ($ApiType -eq [OpenAIApiType]::Azure) {
+            $OpenAIParameter = Get-AzureOpenAIAPIEndpoint -EndpointName $EndpointName -ApiBase $ApiBase -ApiVersion $ApiVersion
+        }
+        else {
+            $OpenAIParameter = Get-OpenAIAPIEndpoint -EndpointName $EndpointName -ApiBase $ApiBase
         }
 
         # Parse Common params
@@ -121,21 +144,26 @@ function Start-ThreadRun {
 
     process {
         # Get thread_id
-        [string][UrlEncodeTransformation()]$ThreadID = ''
-        if ($InputObject -is [string]) {
-            $ThreadID = $InputObject
+        if ($PSCmdlet.ParameterSetName -eq 'Run') {
+            [string][UrlEncodeTransformation()]$ThreadID = ''
+            if ($InputObject -is [string]) {
+                $ThreadID = $InputObject
+            }
+            elseif ($InputObject.id -is [string] -and $InputObject.id.StartsWith('thread_')) {
+                $ThreadID = $InputObject.id
+            }
+            elseif ($InputObject.thread_id -is [string] -and $InputObject.thread_id.StartsWith('thread_')) {
+                $ThreadID = $InputObject.thread_id
+            }
+            if (-not $ThreadID) {
+                Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve Thread ID.'))
+                return
+            }
+            $QueryUri = ($OpenAIParameter.Uri.ToString() -f $ThreadID)
         }
-        elseif ($InputObject.id -is [string] -and $InputObject.id.StartsWith('thread_')) {
-            $ThreadID = $InputObject.id
+        else {
+            $QueryUri = $OpenAIParameter.Uri
         }
-        elseif ($InputObject.thread_id -is [string] -and $InputObject.thread_id.StartsWith('thread_')) {
-            $ThreadID = $InputObject.thread_id
-        }
-        if (-not $ThreadID) {
-            Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve Thread ID.'))
-            return
-        }
-        $QueryUri = ($OpenAIParameter.Uri.ToString() -f $ThreadID)
 
         #region Construct parameters for API request
         $PostBody = [System.Collections.Specialized.OrderedDictionary]::new()
@@ -179,6 +207,17 @@ function Start-ThreadRun {
         }
         if (($Tools.Count -gt 0) -or $PSBoundParameters.ContainsKey('Tools')) {
             $PostBody.tools = $Tools
+        }
+
+        if ($PSCmdlet.ParameterSetName -eq 'ThreadAndRun') {
+            $PostBody.thread = @{}
+            $PostBody.thread.messages = @(@{
+                    role    = $Role
+                    content = $Message
+                })
+            if ($PSBoundParameters.ContainsKey('FileId')) {
+                $PostBody.thread.messages[0].file_ids = $FileId
+            }
         }
         #endregion
 
