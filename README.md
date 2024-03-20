@@ -336,7 +336,9 @@ If you have a feature request or bug report, please tell us in Issue.
 
 + More docs, samples.
 + Performance improvements.
-+ Add an option for change output types / formats.
++ Event-driven assistant.
++ Fully typed return objects.
++ Limited support for Anthropic's Claude API.
 
 ----
 ## Licenses
