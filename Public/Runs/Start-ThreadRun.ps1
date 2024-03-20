@@ -6,18 +6,18 @@ function Start-ThreadRun {
         [Alias('thread_id')]
         [Alias('Thread')]
         [ValidateScript({
-            ($_ -is [string] -and $_.StartsWith('thread_')) -or `
-                ($_.id -is [string] -and $_.id.StartsWith('thread_')) -or `
-                ($_.thread_id -is [string] -and $_.thread_id.StartsWith('thread_'))
+            ($_ -is [string] -and $_.StartsWith('thread_', [StringComparison]::Ordinal)) -or `
+                ($_.id -is [string] -and $_.id.StartsWith('thread_', [StringComparison]::Ordinal)) -or `
+                ($_.thread_id -is [string] -and $_.thread_id.StartsWith('thread_', [StringComparison]::Ordinal))
             })]
         [Object]$InputObject,
 
         [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
         [Alias('assistant_id')]
         [ValidateScript({
-            ($_ -is [string] -and $_.StartsWith('asst_')) -or `
-                ($_.id -is [string] -and $_.id.StartsWith('asst_')) -or `
-                ($_.assistant_id -is [string] -and $_.assistant_id.StartsWith('asst_'))
+            ($_ -is [string] -and $_.StartsWith('asst_', [StringComparison]::Ordinal)) -or `
+                ($_.id -is [string] -and $_.id.StartsWith('asst_', [StringComparison]::Ordinal)) -or `
+                ($_.assistant_id -is [string] -and $_.assistant_id.StartsWith('asst_', [StringComparison]::Ordinal))
             })]
         [Object]$Assistant,
 
@@ -149,10 +149,10 @@ function Start-ThreadRun {
             if ($InputObject -is [string]) {
                 $ThreadID = $InputObject
             }
-            elseif ($InputObject.id -is [string] -and $InputObject.id.StartsWith('thread_')) {
+            elseif ($InputObject.id -is [string] -and $InputObject.id.StartsWith('thread_', [StringComparison]::Ordinal)) {
                 $ThreadID = $InputObject.id
             }
-            elseif ($InputObject.thread_id -is [string] -and $InputObject.thread_id.StartsWith('thread_')) {
+            elseif ($InputObject.thread_id -is [string] -and $InputObject.thread_id.StartsWith('thread_', [StringComparison]::Ordinal)) {
                 $ThreadID = $InputObject.thread_id
             }
             if (-not $ThreadID) {
@@ -173,10 +173,10 @@ function Start-ThreadRun {
         if ($Assistant -is [string]) {
             $AssistantId = $Assistant
         }
-        elseif ($Assistant.id -is [string] -and $Assistant.id.StartsWith('asst_')) {
+        elseif ($Assistant.id -is [string] -and $Assistant.id.StartsWith('asst_', [StringComparison]::Ordinal)) {
             $AssistantId = $Assistant.id
         }
-        elseif ($Assistant.assistant_id -is [string] -and $Assistant.assistant_id.StartsWith('asst_')) {
+        elseif ($Assistant.assistant_id -is [string] -and $Assistant.assistant_id.StartsWith('asst_', [StringComparison]::Ordinal)) {
             $AssistantId = $Assistant.assistant_id
         }
 

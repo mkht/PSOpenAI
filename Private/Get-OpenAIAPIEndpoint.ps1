@@ -13,11 +13,13 @@ function Get-OpenAIAPIEndpoint {
         $ApiBase = [System.Uri]::new('https://api.openai.com/v1')
     }
     $UriBuilder = [System.UriBuilder]::new($ApiBase)
+    if ($UriBuilder.Path.StartsWith('//', [StringComparison]::Ordinal)) {
+        $UriBuilder.Path = $UriBuilder.Path.TrimStart('/')
+    }
 
     switch ($EndpointName) {
         'Chat.Completion' {
             $UriBuilder.Path += '/chat/completions'
-            if ($UriBuilder.Path.StartsWith('//')) { $UriBuilder.Path = $UriBuilder.Path.TrimStart('/') }
             @{
                 Name        = 'chat.completion'
                 Method      = 'Post'
@@ -28,7 +30,6 @@ function Get-OpenAIAPIEndpoint {
         }
         'Text.Completion' {
             $UriBuilder.Path += '/completions'
-            if ($UriBuilder.Path.StartsWith('//')) { $UriBuilder.Path = $UriBuilder.Path.TrimStart('/') }
             @{
                 Name        = 'text.completion'
                 Method      = 'Post'
@@ -39,7 +40,6 @@ function Get-OpenAIAPIEndpoint {
         }
         'Image.Generation' {
             $UriBuilder.Path += '/images/generations'
-            if ($UriBuilder.Path.StartsWith('//')) { $UriBuilder.Path = $UriBuilder.Path.TrimStart('/') }
             @{
                 Name        = 'image.generation'
                 Method      = 'Post'
@@ -50,7 +50,6 @@ function Get-OpenAIAPIEndpoint {
         }
         'Image.Edit' {
             $UriBuilder.Path += '/images/edits'
-            if ($UriBuilder.Path.StartsWith('//')) { $UriBuilder.Path = $UriBuilder.Path.TrimStart('/') }
             @{
                 Name        = 'image.edit'
                 Method      = 'Post'
@@ -61,7 +60,6 @@ function Get-OpenAIAPIEndpoint {
         }
         'Image.Variation' {
             $UriBuilder.Path += '/images/variations'
-            if ($UriBuilder.Path.StartsWith('//')) { $UriBuilder.Path = $UriBuilder.Path.TrimStart('/') }
             @{
                 Name        = 'image.variation'
                 Method      = 'Post'
@@ -72,7 +70,6 @@ function Get-OpenAIAPIEndpoint {
         }
         'Audio.Speech' {
             $UriBuilder.Path += '/audio/speech'
-            if ($UriBuilder.Path.StartsWith('//')) { $UriBuilder.Path = $UriBuilder.Path.TrimStart('/') }
             @{
                 Name        = 'audio.speech'
                 Method      = 'Post'
@@ -83,7 +80,6 @@ function Get-OpenAIAPIEndpoint {
         }
         'Audio.Transcription' {
             $UriBuilder.Path += '/audio/transcriptions'
-            if ($UriBuilder.Path.StartsWith('//')) { $UriBuilder.Path = $UriBuilder.Path.TrimStart('/') }
             @{
                 Name        = 'audio.transcription'
                 Method      = 'Post'
@@ -94,7 +90,6 @@ function Get-OpenAIAPIEndpoint {
         }
         'Audio.Translation' {
             $UriBuilder.Path += '/audio/translations'
-            if ($UriBuilder.Path.StartsWith('//')) { $UriBuilder.Path = $UriBuilder.Path.TrimStart('/') }
             @{
                 Name        = 'audio.translation'
                 Method      = 'Post'
@@ -105,7 +100,6 @@ function Get-OpenAIAPIEndpoint {
         }
         'Moderation' {
             $UriBuilder.Path += '/moderations'
-            if ($UriBuilder.Path.StartsWith('//')) { $UriBuilder.Path = $UriBuilder.Path.TrimStart('/') }
             @{
                 Name        = 'moderation'
                 Method      = 'Post'
@@ -116,7 +110,6 @@ function Get-OpenAIAPIEndpoint {
         }
         'Models' {
             $UriBuilder.Path += '/models'
-            if ($UriBuilder.Path.StartsWith('//')) { $UriBuilder.Path = $UriBuilder.Path.TrimStart('/') }
             @{
                 Name        = 'models'
                 Method      = 'Get'
@@ -127,7 +120,6 @@ function Get-OpenAIAPIEndpoint {
         }
         'Embeddings' {
             $UriBuilder.Path += '/embeddings'
-            if ($UriBuilder.Path.StartsWith('//')) { $UriBuilder.Path = $UriBuilder.Path.TrimStart('/') }
             @{
                 Name        = 'embeddings'
                 Method      = 'Post'
@@ -138,7 +130,6 @@ function Get-OpenAIAPIEndpoint {
         }
         'Files' {
             $UriBuilder.Path += '/files'
-            if ($UriBuilder.Path.StartsWith('//')) { $UriBuilder.Path = $UriBuilder.Path.TrimStart('/') }
             @{
                 Name        = 'files'
                 Method      = 'Post'
@@ -149,7 +140,6 @@ function Get-OpenAIAPIEndpoint {
         }
         'Assistants' {
             $UriBuilder.Path += '/assistants'
-            if ($UriBuilder.Path.StartsWith('//')) { $UriBuilder.Path = $UriBuilder.Path.TrimStart('/') }
             @{
                 Name        = 'assistants'
                 Method      = 'Post'
@@ -160,7 +150,6 @@ function Get-OpenAIAPIEndpoint {
         }
         'Threads' {
             $UriBuilder.Path += '/threads'
-            if ($UriBuilder.Path.StartsWith('//')) { $UriBuilder.Path = $UriBuilder.Path.TrimStart('/') }
             @{
                 Name        = 'threads'
                 Method      = 'Post'
@@ -171,7 +160,6 @@ function Get-OpenAIAPIEndpoint {
         }
         'Runs' {
             $UriBuilder.Path += '/threads/{0}/runs'
-            if ($UriBuilder.Path.StartsWith('//')) { $UriBuilder.Path = $UriBuilder.Path.TrimStart('/') }
             @{
                 Name        = 'runs'
                 Method      = 'Post'
@@ -182,7 +170,6 @@ function Get-OpenAIAPIEndpoint {
         }
         'ThreadAndRun' {
             $UriBuilder.Path += '/threads/runs'
-            if ($UriBuilder.Path.StartsWith('//')) { $UriBuilder.Path = $UriBuilder.Path.TrimStart('/') }
             @{
                 Name        = 'thread_and_run'
                 Method      = 'Post'

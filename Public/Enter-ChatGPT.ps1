@@ -166,7 +166,7 @@ function Get-UserPrompt {
         $Ready4Break = [string]::IsNullOrEmpty($ret)
 
         #Special commands. (Starts with "#")
-        if ($ret.StartsWith('#')) {
+        if ($ret.StartsWith('#', [StringComparison]::Ordinal)) {
             switch -Wildcard ($ret.Substring(1).Trim()) {
                 'end' {
                     $script:Status = 'exit'

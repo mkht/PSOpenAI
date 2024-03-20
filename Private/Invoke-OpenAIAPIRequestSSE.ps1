@@ -203,7 +203,7 @@ function Invoke-OpenAIAPIRequestSSE {
             #Retrive response content
             $data = [string]$StreamReader.ReadLine()
             # Skip on empty
-            if (-not $data.StartsWith('data: ')) { continue }
+            if (-not $data.StartsWith('data: ', [StringComparison]::Ordinal)) { continue }
             # Debug output
             if ($IsDebug) {
                 Write-Debug -Message ('API response body: ' + ($data | Out-String)).TrimEnd()

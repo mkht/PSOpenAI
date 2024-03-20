@@ -250,7 +250,7 @@ function Invoke-OpenAIAPIRequest {
     }
     catch [HttpRequestException], [WebException] {
         # Trash last error from cmdlet
-        if ($global:Error[0].FullyQualifiedErrorId.StartsWith('WebCmdletWebResponseException')) { $global:Error.RemoveAt(0) }
+        if ($global:Error[0].FullyQualifiedErrorId.StartsWith('WebCmdletWebResponseException', [StringComparison]::Ordinal)) { $global:Error.RemoveAt(0) }
 
         # Parse error details
         $ErrorObject = Parse-WebExceptionResponse -ErrorRecord $_ -ServiceName $ServiceName

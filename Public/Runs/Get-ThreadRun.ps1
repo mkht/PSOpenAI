@@ -11,9 +11,9 @@ function Get-ThreadRun {
         [Alias('thread_id')]
         [Alias('Thread')]
         [ValidateScript({
-            ($_ -is [string] -and $_.StartsWith('thread_')) -or `
+            ($_ -is [string] -and $_.StartsWith('thread_', [StringComparison]::Ordinal)) -or `
                 ($_.id -is [string]) -or `
-                ($_.thread_id -is [string] -and $_.thread_id.StartsWith('thread_'))
+                ($_.thread_id -is [string] -and $_.thread_id.StartsWith('thread_', [StringComparison]::Ordinal))
             })]
         [Object]$InputObject,
 
@@ -102,10 +102,10 @@ function Get-ThreadRun {
         if ($InputObject -is [string]) {
             $ThreadID = $InputObject
         }
-        elseif ($InputObject.id -is [string] -and $InputObject.id.StartsWith('thread_')) {
+        elseif ($InputObject.id -is [string] -and $InputObject.id.StartsWith('thread_', [StringComparison]::Ordinal)) {
             $ThreadID = $InputObject.id
         }
-        elseif ($InputObject.thread_id -is [string] -and $InputObject.thread_id.StartsWith('thread_')) {
+        elseif ($InputObject.thread_id -is [string] -and $InputObject.thread_id.StartsWith('thread_', [StringComparison]::Ordinal)) {
             $ThreadID = $InputObject.thread_id
         }
         if (-not $ThreadID) {
@@ -115,10 +115,10 @@ function Get-ThreadRun {
 
         # Get run_id (otional)
         if (-not $RunId) {
-            if ($InputObject.id -is [string] -and $InputObject.id.StartsWith('run_')) {
+            if ($InputObject.id -is [string] -and $InputObject.id.StartsWith('run_', [StringComparison]::Ordinal)) {
                 $RunId = $InputObject.id
             }
-            elseif ($InputObject.run_id -is [string] -and $InputObject.run_id.StartsWith('run_')) {
+            elseif ($InputObject.run_id -is [string] -and $InputObject.run_id.StartsWith('run_', [StringComparison]::Ordinal)) {
                 $RunId = $InputObject.run_id
             }
         }
@@ -126,7 +126,7 @@ function Get-ThreadRun {
         #region Construct Query URI
         $QueryUri = ($OpenAIParameter.Uri.ToString() -f $ThreadID)
         $UriBuilder = [System.UriBuilder]::new($QueryUri)
-        if ($RunId.StartsWith('run_')) {
+        if ($RunId.StartsWith('run_', [StringComparison]::Ordinal)) {
             $UriBuilder.Path += "/$RunId"
             $QueryUri = $UriBuilder.Uri
         }

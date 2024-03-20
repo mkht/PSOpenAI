@@ -8,7 +8,7 @@ function Get-ThreadRunStep {
         [string][UrlEncodeTransformation()]$StepId,
 
         [Parameter(Mandatory = $true, Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
-        [ValidateScript({ ([string]$_.id).StartsWith('run_') -and ([string]$_.thread_id).StartsWith('thread_') })]
+        [ValidateScript({ ([string]$_.id).StartsWith('run_', [StringComparison]::Ordinal) -and ([string]$_.thread_id).StartsWith('thread_', [StringComparison]::Ordinal) })]
         [Alias('Run')]
         [Object]$InputObject,
 
@@ -105,7 +105,7 @@ function Get-ThreadRunStep {
         $QueryUri = ($OpenAIParameter.Uri.ToString() -f $ThreadId)
         $UriBuilder = [System.UriBuilder]::new($QueryUri)
         $UriBuilder.Path += "/$RunId/steps"
-        if ($StepId.StartsWith('step_')) {
+        if ($StepId.StartsWith('step_', [StringComparison]::Ordinal)) {
             $UriBuilder.Path += "/$StepId"
             $QueryUri = $UriBuilder.Uri
         }

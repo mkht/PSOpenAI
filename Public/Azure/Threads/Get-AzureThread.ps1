@@ -6,9 +6,9 @@ function Get-AzureThread {
         [Alias('thread_id')]
         [Alias('Thread')]
         [ValidateScript({
-            ($_ -is [string] -and $_.StartsWith('thread_')) -or `
-                ($_.id -is [string] -and $_.id.StartsWith('thread_')) -or `
-                ($_.thread_id -is [string] -and $_.thread_id.StartsWith('thread_'))
+            ($_ -is [string] -and $_.StartsWith('thread_', [StringComparison]::Ordinal)) -or `
+                ($_.id -is [string] -and $_.id.StartsWith('thread_', [StringComparison]::Ordinal)) -or `
+                ($_.thread_id -is [string] -and $_.thread_id.StartsWith('thread_', [StringComparison]::Ordinal))
             })]
         [Object]$InputObject,
 

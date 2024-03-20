@@ -76,10 +76,10 @@ function New-Thread {
         if ($InputObject -is [string]) {
             $ThreadID = $InputObject
         }
-        elseif ($InputObject.id -is [string] -and $InputObject.id.StartsWith('thread_')) {
+        elseif ($InputObject.id -is [string] -and $InputObject.id.StartsWith('thread_', [StringComparison]::Ordinal)) {
             $ThreadID = $InputObject.id
         }
-        elseif ($InputObject.thread_id -is [string] -and $InputObject.thread_id.StartsWith('thread_')) {
+        elseif ($InputObject.thread_id -is [string] -and $InputObject.thread_id.StartsWith('thread_', [StringComparison]::Ordinal)) {
             $ThreadID = $InputObject.thread_id
         }
 

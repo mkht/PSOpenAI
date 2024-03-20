@@ -8,7 +8,7 @@ function Get-AzureThreadMessage {
         [ValidateScript({
             ($_ -is [string]) -or `
                 ($_.id -is [string]) -or `
-                ($_.thread_id -is [string] -and $_.thread_id.StartsWith('thread_'))
+                ($_.thread_id -is [string] -and $_.thread_id.StartsWith('thread_', [StringComparison]::Ordinal))
             })]
         [Object]$InputObject,
 

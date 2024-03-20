@@ -6,9 +6,9 @@ function Remove-Assistant {
         [Alias('assistant_id')]
         [Alias('Assistant')]
         [ValidateScript({
-            ($_ -is [string] -and $_.StartsWith('asst_')) -or `
-                ($_.id -is [string] -and $_.id.StartsWith('asst_')) -or `
-                ($_.assistant_id -is [string] -and $_.assistant_id.StartsWith('asst_'))
+            ($_ -is [string] -and $_.StartsWith('asst_', [StringComparison]::Ordinal)) -or `
+                ($_.id -is [string] -and $_.id.StartsWith('asst_', [StringComparison]::Ordinal)) -or `
+                ($_.assistant_id -is [string] -and $_.assistant_id.StartsWith('asst_', [StringComparison]::Ordinal))
             })]
         [Object]$InputObject,
 
@@ -73,10 +73,10 @@ function Remove-Assistant {
         if ($InputObject -is [string]) {
             $AssistantId = $InputObject
         }
-        elseif ($InputObject.id -is [string] -and $InputObject.id.StartsWith('asst_')) {
+        elseif ($InputObject.id -is [string] -and $InputObject.id.StartsWith('asst_', [StringComparison]::Ordinal)) {
             $AssistantId = $InputObject.id
         }
-        elseif ($InputObject.assistant_id -is [string] -and $InputObject.assistant_id.StartsWith('asst_')) {
+        elseif ($InputObject.assistant_id -is [string] -and $InputObject.assistant_id.StartsWith('asst_', [StringComparison]::Ordinal)) {
             $AssistantId = $InputObject.assistant_id
         }
         if (-not $AssistantId) {

@@ -6,9 +6,9 @@ function Get-AzureAssistant {
         [Alias('assistant_id')]
         [Alias('Assistant')]
         [ValidateScript({
-            ($_ -is [string] -and $_.StartsWith('asst_')) -or `
-                ($_.id -is [string] -and $_.id.StartsWith('asst_')) -or `
-                ($_.assistant_id -is [string] -and $_.assistant_id.StartsWith('asst_'))
+            ($_ -is [string] -and $_.StartsWith('asst_', [StringComparison]::Ordinal)) -or `
+                ($_.id -is [string] -and $_.id.StartsWith('asst_', [StringComparison]::Ordinal)) -or `
+                ($_.assistant_id -is [string] -and $_.assistant_id.StartsWith('asst_', [StringComparison]::Ordinal))
             })]
         [Object]$InputObject,
 

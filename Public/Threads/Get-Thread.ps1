@@ -6,9 +6,9 @@ function Get-Thread {
         [Alias('thread_id')]
         [Alias('Thread')]
         [ValidateScript({
-            ($_ -is [string] -and $_.StartsWith('thread_')) -or `
-                ($_.id -is [string] -and $_.id.StartsWith('thread_')) -or `
-                ($_.thread_id -is [string] -and $_.thread_id.StartsWith('thread_'))
+            ($_ -is [string] -and $_.StartsWith('thread_', [StringComparison]::Ordinal)) -or `
+                ($_.id -is [string] -and $_.id.StartsWith('thread_', [StringComparison]::Ordinal)) -or `
+                ($_.thread_id -is [string] -and $_.thread_id.StartsWith('thread_', [StringComparison]::Ordinal))
             })]
         [Object]$InputObject,
 
@@ -79,10 +79,10 @@ function Get-Thread {
         if ($InputObject -is [string]) {
             $ThreadID = $InputObject
         }
-        elseif ($InputObject.id -is [string] -and $InputObject.id.StartsWith('thread_')) {
+        elseif ($InputObject.id -is [string] -and $InputObject.id.StartsWith('thread_', [StringComparison]::Ordinal)) {
             $ThreadID = $InputObject.id
         }
-        elseif ($InputObject.thread_id -is [string] -and $InputObject.thread_id.StartsWith('thread_')) {
+        elseif ($InputObject.thread_id -is [string] -and $InputObject.thread_id.StartsWith('thread_', [StringComparison]::Ordinal)) {
             $ThreadID = $InputObject.thread_id
         }
         if (-not $ThreadID) {
