@@ -70,6 +70,26 @@ Describe 'Start-ThreadRun' {
             Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName
         }
 
+        It 'Start thread run without thread' {
+            $assistant = [PSCustomObject]@{
+                id     = 'asst_abc123'
+                object = 'assistant'
+            }
+            { $script:Result = Start-ThreadRun -Assistant $assistant -Message 'TEST' -ea Stop } | Should -Not -Throw
+            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName
+            $Result.id | Should -BeExactly 'run_abc123'
+            $Result.object | Should -BeExactly 'thread.run'
+            $Result.created_at | Should -BeOfType [datetime]
+            $Result.started_at | Should -BeOfType [datetime]
+            $Result.completed_at | Should -BeOfType [datetime]
+        }
+
+        It 'raw_response format' {
+            { $script:Result = Start-ThreadRun -Thread 'thread_abc123' -Assistant 'asst_abc123' -Format 'raw_response' -ea Stop } | Should -Not -Throw
+            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName
+            $Result | Should -BeOfType [string]
+        }
+
         It 'Pipeline input' {
             $thread = [PSCustomObject]@{
                 id     = 'thread_abc123'

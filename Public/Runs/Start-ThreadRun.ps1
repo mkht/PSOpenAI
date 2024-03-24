@@ -82,8 +82,8 @@ function Start-ThreadRun {
         [Parameter()]
         [System.Collections.IDictionary]$MetaData,
 
-        [Parameter(ParameterSetName = 'Run_Stream')]
-        [Parameter(ParameterSetName = 'ThreadAndRun_Stream')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'Run_Stream')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'ThreadAndRun_Stream')]
         [switch]$Stream,
 
         [Parameter()]
