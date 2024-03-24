@@ -1,4 +1,9 @@
 # 変更履歴
+### 3.3.0
+- `-UseCodeInterpreter` と `-UseRetrieval` のパラメータタイプを`[bool]`から`[switch]`に変更
+- `Start-ThreadRun`に`-Stream`パラメータを追加
+- `Start-ThreadRun`に`-Format`パラメータを追加
+
 ### 3.2.0
 - 事前にThreadオブジェクトを用意せずアドホックに`Start-ThreadRun`を実行できるようになりました
 

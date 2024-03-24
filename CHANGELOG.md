@@ -1,4 +1,9 @@
 # Changelog
+### 3.3.0
+- Change the parameter type to `[switch]` for `-UseCodeInterpreter` & `-UseRetrieval`
+- Add `-Stream` parameter to `Start-ThreadRun`
+- Add `-Format` parameter to `Start-ThreadRun`
+
 ### 3.2.0
 - `Start-ThreadRun` now can be use without preparing threads in advance.
 
