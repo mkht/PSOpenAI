@@ -132,7 +132,7 @@ Describe 'Request-ChatCompletion' {
     "id": "chatcmpl-8Iv2FuLeNiC4TLvU0q1fYBUt4WFop",
     "object": "chat.completion",
     "created": 1699458335,
-    "model": "gpt-3.5-turbo-1106",
+    "model": "gpt-3.5-turbo-0125",
     "choices": [
         {
         "index": 0,
@@ -499,7 +499,7 @@ Describe 'Request-ChatCompletion' {
             $Message = 'Ping the Google Public DNS address three times and briefly report the results.'
             { $script:Result = Request-ChatCompletion `
                     -Message $Message `
-                    -Model gpt-3.5-turbo-1106 `
+                    -Model gpt-3.5-turbo-0125 `
                     -Temperature 0.1 `
                     -Tools $ToolsSpec `
                     -InvokeTools None `
@@ -530,7 +530,7 @@ Describe 'Request-ChatCompletion' {
             $Message = 'Ping the Google Public DNS address three times and briefly report the results.'
             { $script:Result = Request-ChatCompletion `
                     -Message $Message `
-                    -Model gpt-3.5-turbo-1106 `
+                    -Model gpt-3.5-turbo-0125 `
                     -Temperature 0.1 `
                     -Tools $ToolsSpec `
                     -InvokeTools Auto `

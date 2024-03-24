@@ -29,7 +29,7 @@ $env:OPENAI_API_KEY = '<Put your API key here>'
 $Assistant = New-Assistant `
     -Name "Math Teacher" `
     -Model "gpt-3.5-turbo-0613" `
-    -UseCodeInterpreter $true `
+    -UseCodeInterpreter `
     -Instructions "You are a personal math tutor. Write and run code to answer math questions."
 ```
 

@@ -20,9 +20,11 @@ Start-ThreadRun
     [-Instructions <String>]
     [-AdditionalInstructions <String>]
     [-Tools <IDictionary[]>]
-    [-UseCodeInterpreter <Boolean>]
-    [-UseRetrieval <Boolean>]
+    [-UseCodeInterpreter]
+    [-UseRetrieval]
     [-MetaData <IDictionary>]
+    [-Stream]
+    [-Format <String>]
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
     [-ApiBase <Uri>]
@@ -118,7 +120,7 @@ Position: Named
 Override whether the code interpreter tool enable or not.
 
 ```yaml
-Type: Boolean
+Type: SwitchParameter
 Required: False
 Position: Named
 ```
@@ -127,9 +129,32 @@ Position: Named
 Override whether the retrieval tool enable or not.
 
 ```yaml
-Type: Boolean
+Type: SwitchParameter
 Required: False
 Position: Named
+```
+
+### -Stream
+If set, partial message deltas will be sent, like in ChatGPT.
+
+```yaml
+Type: SwitchParameter
+Required: False
+Position: Named
+Default value: False
+```
+
+### -Format
+Specifies the output format of this function.  
+- `default` will only outputs text message.  
+- `raw_response` returns raw response content from API.
+
+```yaml
+Type: String
+Aliases: response_format
+Required: False
+Position: Named
+Default value: default
 ```
 
 ### -TimeoutSec

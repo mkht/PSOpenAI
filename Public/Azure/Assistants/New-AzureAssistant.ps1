@@ -27,13 +27,13 @@ function New-AzureAssistant {
         [System.Collections.IDictionary[]]$Tools,
 
         [Parameter()]
-        [bool]$UseCodeInterpreter = $false,
+        [switch]$UseCodeInterpreter,
 
         [Parameter()]
-        [bool]$UseRetrieval = $false,
+        [switch]$UseRetrieval,
 
         # [Parameter()]
-        # [bool]$UseFunction = $false,
+        # [switch]$UseFunction,
 
         [Parameter()]
         [Alias('file_ids')]

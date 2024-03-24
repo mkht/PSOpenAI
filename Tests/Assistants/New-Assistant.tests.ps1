@@ -46,8 +46,8 @@ Describe 'New-Assistant' {
                     -Model gpt-4 `
                     -Description 'Test assistant' `
                     -Instructions 'Do it' `
-                    -UseCodeInterpreter $true `
-                    -UseRetrieval $true `
+                    -UseCodeInterpreter `
+                    -UseRetrieval `
                     -ea Stop } | Should -Not -Throw
             Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName
             $Result.id | Should -BeExactly 'asst_abc123'
@@ -69,18 +69,18 @@ Describe 'New-Assistant' {
             $RandomName = ('TEST' + (Get-Random -Maximum 1000))
             { $script:Result = New-Assistant `
                     -Name $RandomName `
-                    -Model gpt-3.5-turbo-1106 `
+                    -Model gpt-3.5-turbo-0125 `
                     -Description 'Test assistant' `
                     -Instructions 'Do it' `
-                    -UseCodeInterpreter $true `
-                    -UseRetrieval $true `
+                    -UseCodeInterpreter `
+                    -UseRetrieval `
                     -ea Stop } | Should -Not -Throw
             $Result.id | Should -BeLike 'asst_*'
             $Result.object | Should -BeExactly 'assistant'
             $Result.created_at | Should -BeOfType [datetime]
             $Result.name | Should -Be $RandomName
             $Result.description | Should -Be 'Test assistant'
-            $Result.model | Should -Be 'gpt-3.5-turbo-1106'
+            $Result.model | Should -Be 'gpt-3.5-turbo-0125'
             $Result.instructions | Should -Be 'Do it'
             $Result.tools | Should -HaveCount 2
         }

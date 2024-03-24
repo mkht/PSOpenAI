@@ -20,8 +20,8 @@ Set-Assistant
     [-Description <String>]
     [-Instructions <String>]
     [-Tools <IDictionary[]>]
-    [-UseCodeInterpreter <Boolean>]
-    [-UseRetrieval <Boolean>]
+    [-UseCodeInterpreter]
+    [-UseRetrieval]
     [-FileId <String[]>]
     [-MetaData <IDictionary>]
     [-TimeoutSec <Int32>]
@@ -107,7 +107,7 @@ Position: Named
 Specifies Whether the code interpreter tool enable or not. The default is `$false`.
 
 ```yaml
-Type: Boolean
+Type: SwitchParameter
 Required: False
 Position: Named
 Default value: $false
@@ -117,7 +117,7 @@ Default value: $false
 Specifies Whether the retrieval tool enable or not. The default is `$false`.
 
 ```yaml
-Type: Boolean
+Type: SwitchParameter
 Required: False
 Position: Named
 Default value: $false

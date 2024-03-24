@@ -48,10 +48,10 @@ function Set-Assistant {
         [System.Collections.IDictionary[]]$Tools,
 
         [Parameter()]
-        [bool]$UseCodeInterpreter = $false,
+        [switch]$UseCodeInterpreter,
 
         [Parameter()]
-        [bool]$UseRetrieval = $false,
+        [switch]$UseRetrieval,
 
         [Parameter()]
         [Alias('file_ids')]

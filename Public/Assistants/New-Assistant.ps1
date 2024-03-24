@@ -42,10 +42,10 @@ function New-Assistant {
         [System.Collections.IDictionary[]]$Tools,
 
         [Parameter()]
-        [bool]$UseCodeInterpreter = $false,
+        [switch]$UseCodeInterpreter,
 
         [Parameter()]
-        [bool]$UseRetrieval = $false,
+        [switch]$UseRetrieval,
 
         # [Parameter()]
         # [bool]$UseFunction = $false,

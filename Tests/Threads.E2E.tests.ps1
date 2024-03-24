@@ -24,11 +24,11 @@ Password should be between 8 and 12 random alphanumeric characters.
             $RandomName = ('TEST' + (Get-Random -Maximum 1000))
             { $script:Assistant = New-Assistant `
                     -Name $RandomName `
-                    -Model gpt-3.5-turbo-1106 `
+                    -Model gpt-3.5-turbo-0125 `
                     -Description 'Test assistant' `
                     -Instructions "You are an helpful assistant who is there to fulfill the user's wishes to the fullest." `
-                    -UseCodeInterpreter $true `
-                    -UseRetrieval $false `
+                    -UseCodeInterpreter `
+                    -UseRetrieval `
                     -TimeoutSec 30 -MaxRetryCount 5 -ea Stop } | Should -Not -Throw
             $Assistant.id | Should -BeLike 'asst_*'
             $Assistant.object | Should -BeExactly 'assistant'
