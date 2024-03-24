@@ -203,15 +203,31 @@ function Invoke-OpenAIAPIRequestSSE {
             #Retrive response content
             $data = [string]$StreamReader.ReadLine()
             # Skip on empty
-            if (-not $data.StartsWith('data: ', [StringComparison]::Ordinal)) { continue }
-            # Debug output
-            if ($IsDebug) {
-                Write-Debug -Message ('API response body: ' + ($data | Out-String)).TrimEnd()
+            if ([string]::IsNullOrWhiteSpace($data)) { continue }
+            else {
+                # Debug output
+                if ($IsDebug) {
+                    Write-Debug -Message ('API response body: ' + ($data | Out-String)).TrimEnd()
+                }
+
+                # Event
+                if ($data.StartsWith('event: ', [StringComparison]::Ordinal)) {
+                    #Verbose output
+                    Write-Verbose -Message $data
+                }
+                # Data
+                elseif ($data.StartsWith('data: ', [StringComparison]::Ordinal)) {
+                    # End of stream
+                    if ($data -eq 'data: [DONE]') {
+                        Write-Verbose -Message ('Received the signal of the end of stream')
+                        break
+                    }
+                    else {
+                        #Output
+                        Write-Output $data.Substring(6)    # ("data: ").Length -> 6
+                    }
+                }
             }
-            # End of stream
-            if ($data -eq 'data: [DONE]') { break }
-            #Output
-            Write-Output $data.Substring(6)    # ("data: ").Length -> 6
         }
 
     }

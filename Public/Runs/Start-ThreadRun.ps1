@@ -3,6 +3,7 @@ function Start-ThreadRun {
     [OutputType([pscustomobject])]
     param (
         [Parameter(Mandatory = $true, Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true, ParameterSetName = 'Run')]
+        [Parameter(Mandatory = $true, Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true, ParameterSetName = 'Run_Stream')]
         [Alias('thread_id')]
         [Alias('Thread')]
         [ValidateScript({
@@ -45,20 +46,24 @@ function Start-ThreadRun {
         [string]$Instructions,
 
         [Parameter(ParameterSetName = 'Run')]
+        [Parameter(ParameterSetName = 'Run_Stream')]
         [Alias('additional_instructions')]
         [string]$AdditionalInstructions,
 
         #region Parameters for Thread and Run
         [Parameter(Mandatory = $true, Position = 0, ParameterSetName = 'ThreadAndRun')]
+        [Parameter(Mandatory = $true, Position = 0, ParameterSetName = 'ThreadAndRun_Stream')]
         [Alias('Text')]
         [Alias('Content')]
         [ValidateNotNullOrEmpty()]
         [string]$Message,
 
         [Parameter(ParameterSetName = 'ThreadAndRun')]
+        [Parameter(ParameterSetName = 'ThreadAndRun_Stream')]
         [string][LowerCaseTransformation()]$Role = 'user',
 
         [Parameter(ParameterSetName = 'ThreadAndRun')]
+        [Parameter(ParameterSetName = 'ThreadAndRun_Stream')]
         [Alias('file_ids')]
         [ValidateRange(0, 10)]
         [string[]]$FileId,
@@ -76,6 +81,14 @@ function Start-ThreadRun {
 
         [Parameter()]
         [System.Collections.IDictionary]$MetaData,
+
+        [Parameter(ParameterSetName = 'Run_Stream')]
+        [Parameter(ParameterSetName = 'ThreadAndRun_Stream')]
+        [switch]$Stream,
+
+        [Parameter()]
+        [ValidateSet('default', 'raw_response')]
+        [string]$Format = 'default',
 
         [Parameter()]
         [int]$TimeoutSec = 0,
@@ -124,7 +137,7 @@ function Start-ThreadRun {
         $Organization = Initialize-OrganizationID -OrgId $Organization
 
         # Get API endpoint
-        if ($PSCmdlet.ParameterSetName -eq 'ThreadAndRun') {
+        if ($PSCmdlet.ParameterSetName.StartsWith('ThreadAndRun', [System.StringComparison]::Ordinal)) {
             $EndpointName = 'ThreadAndRun'
         }
         else {
@@ -144,7 +157,7 @@ function Start-ThreadRun {
 
     process {
         # Get thread_id
-        if ($PSCmdlet.ParameterSetName -eq 'Run') {
+        if ($PSCmdlet.ParameterSetName.StartsWith('Run', [System.StringComparison]::Ordinal)) {
             [string][UrlEncodeTransformation()]$ThreadID = ''
             if ($InputObject -is [string]) {
                 $ThreadID = $InputObject
@@ -209,7 +222,7 @@ function Start-ThreadRun {
             $PostBody.tools = $Tools
         }
 
-        if ($PSCmdlet.ParameterSetName -eq 'ThreadAndRun') {
+        if ($PSCmdlet.ParameterSetName.StartsWith('ThreadAndRun', [System.StringComparison]::Ordinal)) {
             $PostBody.thread = @{}
             $PostBody.thread.messages = @(@{
                     role    = $Role
@@ -218,6 +231,60 @@ function Start-ThreadRun {
             if ($PSBoundParameters.ContainsKey('FileId')) {
                 $PostBody.thread.messages[0].file_ids = $FileId
             }
+        }
+        if ($Stream) {
+            $PostBody.stream = $true
+        }
+        #endregion
+
+        #region Send API Request (Streaming)
+        if ($Stream) {
+            # Stream output
+            Invoke-OpenAIAPIRequest `
+                -Method $OpenAIParameter.Method `
+                -Uri $QueryUri `
+                -ContentType $OpenAIParameter.ContentType `
+                -TimeoutSec $TimeoutSec `
+                -MaxRetryCount $MaxRetryCount `
+                -ApiKey $SecureToken `
+                -AuthType $AuthType `
+                -Organization $Organization `
+                -Headers (@{'OpenAI-Beta' = 'assistants=v1' }) `
+                -Body $PostBody `
+                -Stream $Stream `
+                -AdditionalQuery $AdditionalQuery -AdditionalHeaders $AdditionalHeaders -AdditionalBody $AdditionalBody |`
+                Where-Object {
+                -not [string]::IsNullOrEmpty($_)
+            } | ForEach-Object {
+                if ($Format -eq 'raw_response') {
+                    $_
+                }
+                elseif ($_.Contains('"object":"thread.message.delta"', [StringComparison]::OrdinalIgnoreCase)) {
+                    try {
+                        $deltaObj = $_ | ConvertFrom-Json -ErrorAction Stop
+                    }
+                    catch {
+                        Write-Error -Exception $_.Exception
+                    }
+                    @($deltaObj.delta.content.Where({ $_.type -eq 'text' }))[0]
+                }
+            } | Where-Object {
+                $Format -eq 'raw_response' -or ($null -ne $_.text)
+            } | ForEach-Object -Process {
+                if ($Format -eq 'raw_response') {
+                    Write-Output $_
+                }
+                else {
+                    # Writes content to both the Information stream(6>) and the Standard output stream(1>).
+                    $InfoMsg = [System.Management.Automation.HostInformationMessage]::new()
+                    $InfoMsg.Message = $_.text.value
+                    $InfoMsg.NoNewLine = $true
+                    Write-Information $InfoMsg
+                    Write-Output $InfoMsg.Message
+                }
+            }
+
+            return
         }
         #endregion
 
@@ -240,6 +307,11 @@ function Start-ThreadRun {
             return
         }
         #endregion
+
+        if ($Format -eq 'raw_response') {
+            Write-Output $Response
+            return
+        }
 
         #region Parse response object
         try {
