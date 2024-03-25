@@ -1,4 +1,7 @@
 # 変更履歴
+### 3.3.1
+- 前回のリリース内に意図しないファイルが混入していた問題を修正
+
 ### 3.3.0
 - `-UseCodeInterpreter` と `-UseRetrieval` のパラメータタイプを`[bool]`から`[switch]`に変更
 - `Start-ThreadRun`に`-Stream`パラメータを追加

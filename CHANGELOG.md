@@ -1,4 +1,8 @@
 # Changelog
+
+### 3.3.1
+- Remove unintended files in the previous release.
+
 ### 3.3.0
 - Change the parameter type to `[switch]` for `-UseCodeInterpreter` & `-UseRetrieval`
 - Add `-Stream` parameter to `Start-ThreadRun`
