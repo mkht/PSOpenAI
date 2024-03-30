@@ -19,6 +19,7 @@ function Add-ThreadMessage {
         [string]$Message,
 
         [Parameter()]
+        [Completions('user', 'assistant')]
         [string][LowerCaseTransformation()]$Role = 'user',
 
         [Parameter()]

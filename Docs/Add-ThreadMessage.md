@@ -71,7 +71,7 @@ Position: 0
 ```
 
 ### -Role
-The role of the entity that is creating the message. Currently only `user` is supported.
+The role of the entity that is creating the message. One of `user` or `assistant`
 
 ```yaml
 Type: String

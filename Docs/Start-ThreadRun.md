@@ -23,6 +23,7 @@ Start-ThreadRun
     [-UseCodeInterpreter]
     [-UseRetrieval]
     [-MetaData <IDictionary>]
+    [-Temperature <Double>]
     [-Stream]
     [-Format <String>]
     [-TimeoutSec <Int32>]
@@ -103,6 +104,16 @@ Set of 16 key-value pairs that can be attached to an object. This can be useful 
 
 ```yaml
 Type: IDictionary
+Required: False
+Position: Named
+```
+
+### -Temperature
+What sampling temperature to use, between `0` and `2`.  
+Higher values like `0.8` will make the output more random, while lower values like `0.2` will make it more focused and deterministic.
+
+```yaml
+Type: Double
 Required: False
 Position: Named
 ```

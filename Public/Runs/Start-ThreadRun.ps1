@@ -60,6 +60,7 @@ function Start-ThreadRun {
 
         [Parameter(ParameterSetName = 'ThreadAndRun')]
         [Parameter(ParameterSetName = 'ThreadAndRun_Stream')]
+        [Completions('user', 'assistant')]
         [string][LowerCaseTransformation()]$Role = 'user',
 
         [Parameter(ParameterSetName = 'ThreadAndRun')]
@@ -81,6 +82,10 @@ function Start-ThreadRun {
 
         [Parameter()]
         [System.Collections.IDictionary]$MetaData,
+
+        [Parameter()]
+        [ValidateRange(0.0, 2.0)]
+        [double]$Temperature,
 
         [Parameter(Mandatory = $true, ParameterSetName = 'Run_Stream')]
         [Parameter(Mandatory = $true, ParameterSetName = 'ThreadAndRun_Stream')]
@@ -217,6 +222,9 @@ function Start-ThreadRun {
         }
         if ($PSBoundParameters.ContainsKey('Metadata')) {
             $PostBody.metadata = $Metadata
+        }
+        if ($PSBoundParameters.ContainsKey('Temperature')) {
+            $PostBody.temperature = $Temperature
         }
         if (($Tools.Count -gt 0) -or $PSBoundParameters.ContainsKey('Tools')) {
             $PostBody.tools = $Tools
