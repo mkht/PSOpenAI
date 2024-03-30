@@ -1,5 +1,8 @@
 # Changelog
 
+### 3.4.0
+- Add `-Temperature` parameter to `Start-ThreadRun`
+
 ### 3.3.1
 - Remove unintended files in the previous release.
 
