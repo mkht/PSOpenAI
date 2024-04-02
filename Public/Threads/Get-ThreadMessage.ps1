@@ -35,6 +35,10 @@ function Get-ThreadMessage {
         [ValidateSet('asc', 'desc')]
         [string][LowerCaseTransformation()]$Order = 'asc',
 
+        [Parameter(ParameterSetName = 'List')]
+        [Alias('run_id')]
+        [string]$RunId,
+
         [Parameter()]
         [int]$TimeoutSec = 0,
 
@@ -125,6 +129,9 @@ function Get-ThreadMessage {
             $QueryParam = [System.Web.HttpUtility]::ParseQueryString($UriBuilder.Query)
             $QueryParam.Add('limit', $Limit);
             $QueryParam.Add('order', $Order);
+            if ($RunId) {
+                $QueryParam.Add('run_id', $RunId);
+            }
             $UriBuilder.Query = $QueryParam.ToString()
             $QueryUri = $UriBuilder.Uri
         }

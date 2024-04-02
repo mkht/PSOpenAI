@@ -1,4 +1,6 @@
 # Changelog
+### Unreleased
+- Add `-RunId` parameter to `Get-ThreadMessage`
 
 ### 3.4.0
 - Add `-Temperature` parameter to `Start-ThreadRun`

@@ -31,6 +31,7 @@ Get-ThreadMessage
     [-InputObject] <Object>
     [-Limit <Int32>]
     [-Order <String>]
+    [-RunId <String>]
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
     [-ApiBase <Uri>]
@@ -107,6 +108,17 @@ Parameter Sets: List
 Required: False
 Position: Named
 Default value: 20
+```
+
+### -RunId
+Filter messages by the run ID that generated them.
+
+```yaml
+Type: String
+Parameter Sets: List
+Aliases: run_id
+Required: False
+Position: Named
 ```
 
 ### -All
