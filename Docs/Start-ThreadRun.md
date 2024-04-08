@@ -19,6 +19,7 @@ Start-ThreadRun
     [-Model <String>]
     [-Instructions <String>]
     [-AdditionalInstructions <String>]
+    [-AdditionalMessages <Object[]>]
     [-Tools <IDictionary[]>]
     [-UseCodeInterpreter]
     [-UseRetrieval]
@@ -95,6 +96,16 @@ Appends additional instructions at the end of the instructions for the run. This
 ```yaml
 Type: String
 Aliases: additional_instructions
+Required: False
+Position: Named
+```
+
+### -AdditionalMessages
+Adds additional messages to the thread before creating the run.
+
+```yaml
+Type: Object[]
+Aliases: additional_messages
 Required: False
 Position: Named
 ```

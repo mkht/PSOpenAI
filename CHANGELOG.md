@@ -1,5 +1,6 @@
 # Changelog
 ### Unreleased
+- Add `-AdditionalMessages` parameter to `Start-ThreadRun`
 - Add `-RunId` parameter to `Get-ThreadMessage`
 
 ### 3.4.0

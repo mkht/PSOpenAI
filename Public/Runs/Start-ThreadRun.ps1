@@ -50,6 +50,11 @@ function Start-ThreadRun {
         [Alias('additional_instructions')]
         [string]$AdditionalInstructions,
 
+        [Parameter(ParameterSetName = 'Run')]
+        [Parameter(ParameterSetName = 'Run_Stream')]
+        [Alias('additional_messages')]
+        [object[]]$AdditionalMessages,
+
         #region Parameters for Thread and Run
         [Parameter(Mandatory = $true, Position = 0, ParameterSetName = 'ThreadAndRun')]
         [Parameter(Mandatory = $true, Position = 0, ParameterSetName = 'ThreadAndRun_Stream')]
@@ -228,6 +233,35 @@ function Start-ThreadRun {
         }
         if (($Tools.Count -gt 0) -or $PSBoundParameters.ContainsKey('Tools')) {
             $PostBody.tools = $Tools
+        }
+
+        # Additional messages
+        $Messages = [System.Collections.Generic.List[object]]::new()
+        foreach ($msg in $AdditionalMessages) {
+            if ($msg.role) {
+                $tm = [ordered]@{
+                    role    = [string]$msg.role
+                    content = $msg.content
+                }
+                # file_ids is optional
+                if ($msg.file_ids.Count -gt 0) {
+                    $tm.file_ids = @($msg.file_ids)
+                }
+                # metadata is optional
+                if ($msg.metadata -is [System.Collections.IDictionary]) {
+                    $tm.metadata = $msg.metadata
+                }
+            }
+            else {
+                $tm = [ordered]@{
+                    role    = 'user'
+                    content = [string]$msg
+                }
+            }
+            $Messages.Add($tm)
+        }
+        if ($Messages.Count -gt 0) {
+            $PostBody.additional_messages = $Messages
         }
 
         if ($PSCmdlet.ParameterSetName.StartsWith('ThreadAndRun', [System.StringComparison]::Ordinal)) {
