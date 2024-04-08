@@ -1,4 +1,8 @@
 # 変更履歴
+### 3.5.0
+- `Start-ThreadRun`に`-AdditionalMessages`パラメータを追加
+- `Get-ThreadMessage`に`-RunId`パラメータを追加
+
 ### 3.4.0
 - `Start-ThreadRun`に`-Temperature`パラメータを追加
 

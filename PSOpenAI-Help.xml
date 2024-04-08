@@ -44,7 +44,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>Role</maml:name>
           <maml:description>
-            <maml:para>The role of the entity that is creating the message. Currently only `user` is supported.</maml:para>
+            <maml:para>The role of the entity that is creating the message. One of `user` or `assistant`</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -189,7 +189,7 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>Role</maml:name>
         <maml:description>
-          <maml:para>The role of the entity that is creating the message. Currently only `user` is supported.</maml:para>
+          <maml:para>The role of the entity that is creating the message. One of `user` or `assistant`</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -3093,6 +3093,18 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
           </dev:type>
           <dev:defaultValue>20</dev:defaultValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="run_id">
+          <maml:name>RunId</maml:name>
+          <maml:description>
+            <maml:para>Filter messages by the run ID that generated them.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>Order</maml:name>
           <maml:description>
@@ -3327,6 +3339,18 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
           <maml:uri />
         </dev:type>
         <dev:defaultValue>20</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="run_id">
+        <maml:name>RunId</maml:name>
+        <maml:description>
+          <maml:para>Filter messages by the run ID that generated them.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>All</maml:name>
@@ -15609,6 +15633,18 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="additional_messages">
+          <maml:name>AdditionalMessages</maml:name>
+          <maml:description>
+            <maml:para>Adds additional messages to the thread before creating the run.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Object[]</command:parameterValue>
+          <dev:type>
+            <maml:name>Object[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>MetaData</maml:name>
           <maml:description>
@@ -15617,6 +15653,19 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
           <command:parameterValue required="true" variableLength="false">IDictionary</command:parameterValue>
           <dev:type>
             <maml:name>IDictionary</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Temperature</maml:name>
+          <maml:description>
+            <maml:para>What sampling temperature to use, between `0` and `2`.
+Higher values like `0.8` will make the output more random, while lower values like `0.2` will make it more focused and deterministic.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Double</command:parameterValue>
+          <dev:type>
+            <maml:name>Double</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -15812,6 +15861,18 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="additional_messages">
+        <maml:name>AdditionalMessages</maml:name>
+        <maml:description>
+          <maml:para>Adds additional messages to the thread before creating the run.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Object[]</command:parameterValue>
+        <dev:type>
+          <maml:name>Object[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>MetaData</maml:name>
         <maml:description>
@@ -15820,6 +15881,19 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <command:parameterValue required="true" variableLength="false">IDictionary</command:parameterValue>
         <dev:type>
           <maml:name>IDictionary</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Temperature</maml:name>
+        <maml:description>
+          <maml:para>What sampling temperature to use, between `0` and `2`.
+Higher values like `0.8` will make the output more random, while lower values like `0.2` will make it more focused and deterministic.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Double</command:parameterValue>
+        <dev:type>
+          <maml:name>Double</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
