@@ -119,7 +119,6 @@ Position: Named
 
 ### -Images
 An array of images to passing the model. You can specifies local image file or remote url.  
-Image input is only supported when using the `gpt-4-visual-preview` model.
 
 ```yaml
 Type: String[]

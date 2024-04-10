@@ -1,4 +1,7 @@
 # Changelog
+### Unreleased
+- Updates the list of model names for tab completions.
+
 ### 3.5.0
 - Add `-AdditionalMessages` parameter to `Start-ThreadRun`
 - Add `-RunId` parameter to `Get-ThreadMessage`
