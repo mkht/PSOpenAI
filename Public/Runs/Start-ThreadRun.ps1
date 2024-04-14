@@ -83,10 +83,10 @@ function Start-ThreadRun {
         [Alias('max_completion_tokens')]
         [int]$MaxCompletionTokens,
 
-        # [Parameter(DontShow = $true)]
-        # [Alias('truncation_strategy')]
-        # [ValidateSet('auto', 'last_messages')]
-        # [string][LowerCaseTransformation()]$TruncationStrategyType = 'auto',
+        [Parameter()]
+        [Alias('truncation_strategy')]
+        [ValidateSet('auto', 'last_messages')]
+        [string][LowerCaseTransformation()]$TruncationStrategyType = 'auto',
 
         [Parameter()]
         [Alias('last_messages')]
@@ -256,11 +256,11 @@ function Start-ThreadRun {
         if ($PSBoundParameters.ContainsKey('MaxCompletionTokens')) {
             $PostBody.max_completion_tokens = $MaxCompletionTokens
         }
+        if ($PSBoundParameters.ContainsKey('TruncationStrategyType')) {
+            $PostBody.truncation_strategy = @{ type = $TruncationStrategyType; last_messages = $null }
+        }
         if ($PSBoundParameters.ContainsKey('TruncationStrategyLastMessages')) {
-            $PostBody.truncation_strategy = @{
-                'type'          = 'last_messages'
-                'last_messages' = $TruncationStrategyLastMessages
-            }
+            $PostBody.truncation_strategy = @{ type = $TruncationStrategyType; last_messages = $TruncationStrategyLastMessages }
         }
         if (($Tools.Count -gt 0) -or $PSBoundParameters.ContainsKey('Tools')) {
             $PostBody.tools = $Tools
