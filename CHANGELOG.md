@@ -1,5 +1,11 @@
 # Changelog
 ### Unreleased
+- Add new params to `Start-ThreadRun`
+  + `-MaxPromptTokens`
+  + `-MaxCompletionTokens`
+  + `-TruncationStrategyLastMessages`
+  + `-ToolChoice`
+  + `-ToolChoiceFunctionName`
 - Updates the list of model names for tab completions.
 
 ### 3.5.0
