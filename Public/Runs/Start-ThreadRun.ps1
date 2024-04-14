@@ -74,8 +74,37 @@ function Start-ThreadRun {
         #endregion
 
         [Parameter()]
+        [ValidateRange(256, 2147483647)]
+        [Alias('max_prompt_tokens')]
+        [int]$MaxPromptTokens,
+
+        [Parameter()]
+        [ValidateRange(256, 2147483647)]
+        [Alias('max_completion_tokens')]
+        [int]$MaxCompletionTokens,
+
+        # [Parameter(DontShow = $true)]
+        # [Alias('truncation_strategy')]
+        # [ValidateSet('auto', 'last_messages')]
+        # [string][LowerCaseTransformation()]$TruncationStrategyType = 'auto',
+
+        [Parameter()]
+        [Alias('last_messages')]
+        [ValidateRange(1, 2147483647)]
+        [int]$TruncationStrategyLastMessages = 1,
+
+        [Parameter()]
         [AllowEmptyCollection()]
         [System.Collections.IDictionary[]]$Tools,
+
+        [Parameter()]
+        [Alias('tool_choice')]
+        [Completions('none', 'auto', 'code_interpreter', 'retrieval', 'function')]
+        [string][LowerCaseTransformation()]$ToolChoice,
+
+        [Parameter()]
+        [ValidateNotNullOrEmpty()]
+        [string]$ToolChoiceFunctionName,
 
         [Parameter()]
         [switch]$UseCodeInterpreter,
@@ -95,8 +124,9 @@ function Start-ThreadRun {
         [switch]$Stream,
 
         [Parameter()]
-        [ValidateSet('default', 'raw_response')]
-        [string]$Format = 'default',
+        [Alias('response_format')]
+        [ValidateSet('default', 'auto', 'text', 'json_object', 'raw_response')]
+        [string][LowerCaseTransformation()]$Format = 'default',
 
         [Parameter()]
         [int]$TimeoutSec = 0,
@@ -229,8 +259,45 @@ function Start-ThreadRun {
         if ($PSBoundParameters.ContainsKey('Temperature')) {
             $PostBody.temperature = $Temperature
         }
+        if ($PSBoundParameters.ContainsKey('MaxPromptTokens')) {
+            $PostBody.max_prompt_tokens = $MaxPromptTokens
+        }
+        if ($PSBoundParameters.ContainsKey('MaxCompletionTokens')) {
+            $PostBody.max_completion_tokens = $MaxCompletionTokens
+        }
+        if ($PSBoundParameters.ContainsKey('TruncationStrategyLastMessages')) {
+            $PostBody.truncation_strategy = @{
+                'type'          = 'last_messages'
+                'last_messages' = $TruncationStrategyLastMessages
+            }
+        }
         if (($Tools.Count -gt 0) -or $PSBoundParameters.ContainsKey('Tools')) {
             $PostBody.tools = $Tools
+        }
+        if ($PSBoundParameters.ContainsKey('ToolChoice')) {
+            if ($ToolChoice -in ('none', 'auto')) {
+                $PostBody.tool_choice = $ToolChoice
+            }
+            elseif ($ToolChoice -eq 'function') {
+                if ([string]::IsNullOrWhiteSpace($ToolChoiceFunctionName)) {
+                    Write-Error -Exception ([System.ArgumentException]::new('When you set to TooChoice as "function", the ToolChoiceFunctionName must be specified.'))
+                    return
+                }
+                else {
+                    $PostBody.tool_choice = @{type = $ToolChoice; function = @{name = $ToolChoiceFunctionName } }
+                }
+            }
+            else {
+                $PostBody.tool_choice = @{type = $ToolChoice }
+            }
+        }
+        if ($PSBoundParameters.ContainsKey('Format') -and $Format -notin ('default', 'raw_response')) {
+            if ($Format -eq 'auto') {
+                $PostBody.response_format = 'auto'
+            }
+            else {
+                $PostBody.response_format = @{'type' = $Format }
+            }
         }
 
         # Additional messages
