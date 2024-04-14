@@ -5,11 +5,7 @@ function Set-Assistant {
         [Parameter(Mandatory = $true, Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
         [Alias('assistant_id')]
         [Alias('Assistant')]
-        [ValidateScript({
-            ($_ -is [string] -and $_.StartsWith('asst_', [StringComparison]::Ordinal)) -or `
-                ($_.id -is [string] -and $_.id.StartsWith('asst_', [StringComparison]::Ordinal)) -or `
-                ($_.assistant_id -is [string] -and $_.assistant_id.StartsWith('asst_', [StringComparison]::Ordinal))
-            })]
+        [ValidateScript({ [bool](Get-AssistantIdFromInputObject $_) })]
         [Object]$InputObject,
 
         [Parameter()]

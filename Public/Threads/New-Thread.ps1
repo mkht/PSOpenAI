@@ -72,7 +72,9 @@ function New-Thread {
 
     process {
         # Get thread_id
-        [string][UrlEncodeTransformation()]$ThreadID = Get-ThreadIdFromInputObject $InputObject
+        if ($null -ne $InputObject) {
+            [string][UrlEncodeTransformation()]$ThreadID = Get-ThreadIdFromInputObject $InputObject
+        }
 
         #region Construct parameters for API request
         if (-not [string]::IsNullOrEmpty($ThreadID)) {

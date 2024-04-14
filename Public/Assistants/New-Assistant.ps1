@@ -113,7 +113,9 @@ function New-Assistant {
 
     process {
         #region Get assistant_id
-        $AssistantId = Get-AssistantIdFromInputObject $InputObject
+        if ($null -ne $InputObject) {
+            $AssistantId = Get-AssistantIdFromInputObject $InputObject
+        }
         #endregion
 
         #region Construct Query URI

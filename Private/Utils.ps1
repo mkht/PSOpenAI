@@ -148,6 +148,7 @@ function Get-IdFromInputObject {
     [OutputType([string])]
     param (
         [Parameter(Mandatory = $true, Position = 0)]
+        [AllowNull()]
         [object]$InputObject,
 
         [Parameter(Mandatory = $true, Position = 1)]
@@ -171,6 +172,7 @@ function Get-IdFromInputObject {
 function Get-AssistantIdFromInputObject {
     param (
         [Parameter(Mandatory = $true, Position = 0)]
+        [AllowNull()]
         [object]$InputObject
     )
     Get-IdFromInputObject $InputObject 'asst_' 'assistant_id'
@@ -179,6 +181,7 @@ function Get-AssistantIdFromInputObject {
 function Get-ThreadIdFromInputObject {
     param (
         [Parameter(Mandatory = $true, Position = 0)]
+        [AllowNull()]
         [object]$InputObject
     )
     Get-IdFromInputObject $InputObject 'thread_' 'thread_id'
@@ -187,6 +190,7 @@ function Get-ThreadIdFromInputObject {
 function Get-RunIdFromInputObject {
     param (
         [Parameter(Mandatory = $true, Position = 0)]
+        [AllowNull()]
         [object]$InputObject
     )
     Get-IdFromInputObject $InputObject 'run_' 'run_id'

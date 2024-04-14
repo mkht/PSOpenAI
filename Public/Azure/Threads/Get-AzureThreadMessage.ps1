@@ -5,11 +5,7 @@ function Get-AzureThreadMessage {
         [Parameter(Mandatory = $true, Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
         [Alias('thread_id')]
         [Alias('Thread')]
-        [ValidateScript({
-            ($_ -is [string]) -or `
-                ($_.id -is [string]) -or `
-                ($_.thread_id -is [string] -and $_.thread_id.StartsWith('thread_', [StringComparison]::Ordinal))
-            })]
+        [ValidateScript({ [bool](Get-ThreadIdFromInputObject $_) })]
         [Object]$InputObject,
 
         [Parameter(ParameterSetName = 'Get', Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
