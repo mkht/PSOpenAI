@@ -113,16 +113,7 @@ function New-Assistant {
 
     process {
         #region Get assistant_id
-        $AssistantId = ''
-        if ($InputObject -is [string]) {
-            $AssistantId = $InputObject
-        }
-        elseif ($InputObject.id -is [string] -and $InputObject.id.StartsWith('asst_', [StringComparison]::Ordinal)) {
-            $AssistantId = $InputObject.id
-        }
-        elseif ($InputObject.assistant_id -is [string] -and $InputObject.assistant_id.StartsWith('asst_', [StringComparison]::Ordinal)) {
-            $AssistantId = $InputObject.assistant_id
-        }
+        $AssistantId = Get-AssistantIdFromInputObject $InputObject
         #endregion
 
         #region Construct Query URI

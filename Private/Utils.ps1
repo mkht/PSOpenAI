@@ -143,3 +143,51 @@ function ParseCommonParams {
         })
     $OutParam
 }
+
+function Get-IdFromInputObject {
+    [OutputType([string])]
+    param (
+        [Parameter(Mandatory = $true, Position = 0)]
+        [object]$InputObject,
+
+        [Parameter(Mandatory = $true, Position = 1)]
+        [string]$Prefix,
+
+        [Parameter(Mandatory = $true, Position = 2)]
+        [string]$KeyName
+    )
+
+    if ($InputObject -is [string]) {
+        return $InputObject
+    }
+    elseif ($InputObject.id -is [string] -and $InputObject.id.StartsWith($Prefix, [StringComparison]::Ordinal)) {
+        return $InputObject.id
+    }
+    elseif ($InputObject.$KeyName -is [string] -and $InputObject.$KeyName.StartsWith($Prefix, [StringComparison]::Ordinal)) {
+        return $InputObject.thread_id
+    }
+}
+
+function Get-AssistantIdFromInputObject {
+    param (
+        [Parameter(Mandatory = $true, Position = 0)]
+        [object]$InputObject
+    )
+    Get-IdFromInputObject $InputObject 'asst_' 'assistant_id'
+}
+
+function Get-ThreadIdFromInputObject {
+    param (
+        [Parameter(Mandatory = $true, Position = 0)]
+        [object]$InputObject
+    )
+    Get-IdFromInputObject $InputObject 'thread_' 'thread_id'
+}
+
+function Get-RunIdFromInputObject {
+    param (
+        [Parameter(Mandatory = $true, Position = 0)]
+        [object]$InputObject
+    )
+    Get-IdFromInputObject $InputObject 'run_' 'run_id'
+}

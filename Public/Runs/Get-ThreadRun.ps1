@@ -98,16 +98,7 @@ function Get-ThreadRun {
 
     process {
         # Get thread_id
-        [string][UrlEncodeTransformation()]$ThreadID = ''
-        if ($InputObject -is [string]) {
-            $ThreadID = $InputObject
-        }
-        elseif ($InputObject.id -is [string] -and $InputObject.id.StartsWith('thread_', [StringComparison]::Ordinal)) {
-            $ThreadID = $InputObject.id
-        }
-        elseif ($InputObject.thread_id -is [string] -and $InputObject.thread_id.StartsWith('thread_', [StringComparison]::Ordinal)) {
-            $ThreadID = $InputObject.thread_id
-        }
+        [string][UrlEncodeTransformation()]$ThreadID = Get-ThreadIdFromInputObject $InputObject
         if (-not $ThreadID) {
             Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve Thread ID.'))
             return
@@ -115,11 +106,8 @@ function Get-ThreadRun {
 
         # Get run_id (otional)
         if (-not $RunId) {
-            if ($InputObject.id -is [string] -and $InputObject.id.StartsWith('run_', [StringComparison]::Ordinal)) {
-                $RunId = $InputObject.id
-            }
-            elseif ($InputObject.run_id -is [string] -and $InputObject.run_id.StartsWith('run_', [StringComparison]::Ordinal)) {
-                $RunId = $InputObject.run_id
+            if ($InputObject -isnot [string]) {
+                $RunId = Get-RunIdFromInputObject $InputObject
             }
         }
 

@@ -93,16 +93,7 @@ function Add-ThreadMessage {
 
     process {
         # Get thread_id
-        [string][UrlEncodeTransformation()]$ThreadID = ''
-        if ($InputObject -is [string]) {
-            $ThreadID = $InputObject
-        }
-        elseif ($InputObject.id -is [string] -and $InputObject.id.StartsWith('thread_', [StringComparison]::Ordinal)) {
-            $ThreadID = $InputObject.id
-        }
-        elseif ($InputObject.thread_id -is [string] -and $InputObject.thread_id.StartsWith('thread_', [StringComparison]::Ordinal)) {
-            $ThreadID = $InputObject.thread_id
-        }
+        [string][UrlEncodeTransformation()]$ThreadID = Get-ThreadIdFromInputObject $InputObject
         if (-not $ThreadID) {
             Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve Thread ID.'))
             return
