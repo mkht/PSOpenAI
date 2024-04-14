@@ -3,6 +3,7 @@
 - Add new params to `Start-ThreadRun`
   + `-MaxPromptTokens`
   + `-MaxCompletionTokens`
+  + `-TruncationStrategyType`
   + `-TruncationStrategyLastMessages`
   + `-ToolChoice`
   + `-ToolChoiceFunctionName`

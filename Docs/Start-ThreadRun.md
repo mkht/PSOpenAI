@@ -12,15 +12,21 @@ Starts a run.
 
 ## SYNTAX
 
+### ThreadAndRun (Default)
 ```
 Start-ThreadRun
-    [-InputObject] <Object>
     -Assistant <Object>
+    -Message <String>
     [-Model <String>]
     [-Instructions <String>]
-    [-AdditionalInstructions <String>]
-    [-AdditionalMessages <Object[]>]
+    [-Role <String>]
+    [-FileId <String[]>]
+    [-MaxPromptTokens <Int32>]
+    [-MaxCompletionTokens <Int32>]
+    [-TruncationStrategyLastMessages <Int32>]
     [-Tools <IDictionary[]>]
+    [-ToolChoice <String>]
+    [-ToolChoiceFunctionName <String>]
     [-UseCodeInterpreter]
     [-UseRetrieval]
     [-MetaData <IDictionary>]
@@ -32,6 +38,41 @@ Start-ThreadRun
     [-ApiBase <Uri>]
     [-ApiKey <SecureString>]
     [-Organization <String>]
+    [-AdditionalQuery <IDictionary>]
+    [-AdditionalHeaders <IDictionary>]
+    [-AdditionalBody <Object>]
+    [<CommonParameters>]
+```
+
+### Run
+```
+Start-ThreadRun
+    [-InputObject] <Object>
+    -Assistant <Object>
+    [-Model <String>]
+    [-Instructions <String>]
+    [-AdditionalInstructions <String>]
+    [-AdditionalMessages <Object[]>]
+    [-MaxPromptTokens <Int32>]
+    [-MaxCompletionTokens <Int32>]
+    [-TruncationStrategyLastMessages <Int32>]
+    [-Tools <IDictionary[]>]
+    [-ToolChoice <String>]
+    [-ToolChoiceFunctionName <String>]
+    [-UseCodeInterpreter]
+    [-UseRetrieval]
+    [-MetaData <IDictionary>]
+    [-Temperature <Double>]
+    [-Stream]
+    [-Format <String>]
+    [-TimeoutSec <Int32>]
+    [-MaxRetryCount <Int32>]
+    [-ApiBase <Uri>]
+    [-ApiKey <SecureString>]
+    [-Organization <String>]
+    [-AdditionalQuery <IDictionary>]
+    [-AdditionalHeaders <IDictionary>]
+    [-AdditionalBody <Object>]
     [<CommonParameters>]
 ```
 
@@ -41,12 +82,11 @@ Starts a run.
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Start-ThreadRun -Thread 'thread_abc123' -Assistant 'asst_abc123'
 ```
 
 Starts a run of the thread with spcified assiatnt.
-
 
 ## PARAMETERS
 
@@ -120,8 +160,7 @@ Position: Named
 ```
 
 ### -Temperature
-What sampling temperature to use, between `0` and `2`.  
-Higher values like `0.8` will make the output more random, while lower values like `0.2` will make it more focused and deterministic.
+What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic.
 
 ```yaml
 Type: Double
@@ -168,8 +207,9 @@ Default value: False
 
 ### -Format
 Specifies the output format of this function.  
-- `default` will only outputs text message.  
-- `raw_response` returns raw response content from API.
+  - default will only outputs text message.
+  - json_object enables JSON mode, which guarantees the message the model generates is valid JSON.
+  - raw_response returns raw response content from API.
 
 ```yaml
 Type: String
@@ -180,8 +220,7 @@ Default value: default
 ```
 
 ### -TimeoutSec
-Specifies how long the request can be pending before it times out.  
-The default value is `0` (infinite).
+Specifies how long the request can be pending before it times out. The default value is 0 (infinite).
 
 ```yaml
 Type: Int32
@@ -191,10 +230,8 @@ Default value: 0
 ```
 
 ### -MaxRetryCount
-Number between `0` and `100`.  
-Specifies the maximum number of retries if the request fails.  
-The default value is `0` (No retry).  
-Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.  
+Number between 0 and 100. Specifies the maximum number of retries if the request fails. The default value is 0 (No retry).  
+Note : Retries will only be performed if the request fails with a 429 (Rate limit reached) or 5xx (Server side errors) error. Other errors (e.g., authentication failure) will not be performed.
 
 ```yaml
 Type: Int32
@@ -204,11 +241,10 @@ Default value: 0
 ```
 
 ### -ApiBase
-Specifies an API endpoint URL such like: `https://your-api-endpoint.test/v1`  
-If not specified, it will use `https://api.openai.com/v1`
+Specifies an API endpoint URL such like: https://your-api-endpoint.test/v1 If not specified, it will use https://api.openai.com/v1
 
 ```yaml
-Type: System.Uri
+Type: Uri
 Required: False
 Position: Named
 Default value: https://api.openai.com/v1
@@ -221,14 +257,8 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
 
 ```yaml
 Type: Object
-Parameter Sets: (All)
-Aliases:
-
 Required: False
 Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
 ```
 
 ### -Organization
@@ -242,12 +272,130 @@ Required: False
 Position: Named
 ```
 
+### -FileId
+A list of File IDs that the message should use. There can be a maximum of 10 files attached to a message. Useful for tools like retrieval and code_interpreter that can access and use files.
+
+```yaml
+Type: String[]
+Aliases: file_ids
+Required: False
+Position: Named
+```
+
+### -MaxPromptTokens
+The maximum number of prompt tokens that may be used over the course of the run.
+
+```yaml
+Type: Int32
+Aliases: max_prompt_tokens
+Required: False
+Position: Named
+```
+
+### -MaxCompletionTokens
+The maximum number of completion tokens that may be used over the course of the run.
+
+```yaml
+Type: Int32
+Aliases: max_completion_tokens
+Required: False
+Position: Named
+```
+
+### -Message
+The content of the message.
+
+```yaml
+Type: String
+Aliases: Content, Text
+Required: True
+Position: Named
+```
+
+### -Role
+The role of the entity that is creating the message. Allowed value is `user` or `assistant`.
+
+```yaml
+Type: String
+Required: False
+Position: Named
+```
+
+### -ToolChoice
+Controls which (if any) tool is called by the model. You can choose from `auto`, `none`, `code_interpreter`, `retrieve` or `function`.
+
+```yaml
+Type: String
+Aliases: tool_choice
+Required: False
+Position: Named
+```
+
+### -ToolChoiceFunctionName
+The name of the function to call. You must specify this param when the ToolChoice is specified to `function`.
+
+```yaml
+Type: String
+Required: False
+Position: Named
+```
+
+### -TruncationStrategyType
+The truncation strategy to use for the thread. The default is `auto`. You can choose from `auto` or `last_messages`
+
+```yaml
+Type: String
+Aliases: last_messages
+Required: False
+Position: Named
+Default value: auto
+```
+
+### -TruncationStrategyLastMessages
+The number of most recent messages from the thread when constructing the context for the run.
+
+```yaml
+Type: Int32
+Aliases: last_messages
+Required: False
+Position: Named
+```
+
+### -AdditionalQuery
+If you want to explicitly send an extra query params, you can do so.
+
+```yaml
+Type: IDictionary
+Required: False
+Position: Named
+```
+
+### -AdditionalHeaders
+If you want to explicitly send an extra headers, you can do so.
+
+```yaml
+Type: IDictionary
+Required: False
+Position: Named
+```
+
+### -AdditionalBody
+If you want to explicitly send an extra body, you can do so.
+
+```yaml
+Type: Object
+Required: False
+Position: Named
+```
+
+### CommonParameters
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+
 ## INPUTS
 
 ## OUTPUTS
 
 ### PSCustomObject
-
 ## NOTES
 
 ## RELATED LINKS
