@@ -1,5 +1,5 @@
 # Changelog
-### Unreleased
+### 3.6.0
 - Add new params to `Start-ThreadRun`
   + `-MaxPromptTokens`
   + `-MaxCompletionTokens`

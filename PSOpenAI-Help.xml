@@ -868,7 +868,7 @@ If not specified, it will use `https://api.openai.com/v1`</maml:para>
           </dev:type>
           <dev:defaultValue>https://api.openai.com/v1</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>ApiKey</maml:name>
           <maml:description>
             <maml:para>Specifies API key for authentication.
@@ -1052,7 +1052,7 @@ If not specified, it will use `https://api.openai.com/v1`</maml:para>
         </dev:type>
         <dev:defaultValue>https://api.openai.com/v1</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>ApiKey</maml:name>
         <maml:description>
           <maml:para>Specifies API key for authentication.
@@ -6637,7 +6637,7 @@ If not specified, it will use `https://api.openai.com/v1`</maml:para>
           </dev:type>
           <dev:defaultValue>https://api.openai.com/v1</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>ApiKey</maml:name>
           <maml:description>
             <maml:para>Specifies API key for authentication.
@@ -6784,7 +6784,7 @@ If not specified, it will use `https://api.openai.com/v1`</maml:para>
         </dev:type>
         <dev:defaultValue>https://api.openai.com/v1</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>ApiKey</maml:name>
         <maml:description>
           <maml:para>Specifies API key for authentication.
@@ -7011,7 +7011,7 @@ If not specified, it will use `https://api.openai.com/v1`</maml:para>
           </dev:type>
           <dev:defaultValue>https://api.openai.com/v1</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>ApiKey</maml:name>
           <maml:description>
             <maml:para>Specifies API key for authentication.
@@ -7172,7 +7172,7 @@ If not specified, it will use `https://api.openai.com/v1`</maml:para>
         </dev:type>
         <dev:defaultValue>https://api.openai.com/v1</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>ApiKey</maml:name>
         <maml:description>
           <maml:para>Specifies API key for authentication.
@@ -7364,7 +7364,7 @@ If not specified, it will use `https://api.openai.com/v1`</maml:para>
           </dev:type>
           <dev:defaultValue>https://api.openai.com/v1</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>ApiKey</maml:name>
           <maml:description>
             <maml:para>Specifies API key for authentication.
@@ -7500,7 +7500,7 @@ If not specified, it will use `https://api.openai.com/v1`</maml:para>
         </dev:type>
         <dev:defaultValue>https://api.openai.com/v1</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>ApiKey</maml:name>
         <maml:description>
           <maml:para>Specifies API key for authentication.
@@ -7716,7 +7716,7 @@ If not specified, it will try to use `$global:OPENAI_API_BASE` or `$env:OPENAI_A
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>ApiKey</maml:name>
           <maml:description>
             <maml:para>Specifies API key for authentication.
@@ -7877,7 +7877,7 @@ If not specified, it will try to use `$global:OPENAI_API_BASE` or `$env:OPENAI_A
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>ApiKey</maml:name>
         <maml:description>
           <maml:para>Specifies API key for authentication.
@@ -8779,7 +8779,7 @@ Deployments must be created in Azure Portal in advance.</maml:para>
           <maml:name>Images</maml:name>
           <maml:description>
             <maml:para>An array of images to passing the model. You can specifies local image file or remote url.
-Image input is only supported when using the `gpt-4-visual-preview` model.</maml:para>
+</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
           <dev:type>
@@ -9164,7 +9164,7 @@ Deployments must be created in Azure Portal in advance.</maml:para>
         <maml:name>Images</maml:name>
         <maml:description>
           <maml:para>An array of images to passing the model. You can specifies local image file or remote url.
-Image input is only supported when using the `gpt-4-visual-preview` model.</maml:para>
+</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
         <dev:type>
@@ -11488,7 +11488,7 @@ If not specified, it will use `https://api.openai.com/v1`</maml:para>
           </dev:type>
           <dev:defaultValue>https://api.openai.com/v1</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>ApiKey</maml:name>
           <maml:description>
             <maml:para>Specifies API key for authentication.
@@ -11883,7 +11883,7 @@ If not specified, it will use `https://api.openai.com/v1`</maml:para>
         </dev:type>
         <dev:defaultValue>https://api.openai.com/v1</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>ApiKey</maml:name>
         <maml:description>
           <maml:para>Specifies API key for authentication.
@@ -12121,7 +12121,7 @@ If not specified, it will use `https://api.openai.com/v1`</maml:para>
           </dev:type>
           <dev:defaultValue>https://api.openai.com/v1</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>ApiKey</maml:name>
           <maml:description>
             <maml:para>Specifies API key for authentication.
@@ -12252,7 +12252,7 @@ If not specified, it will use `https://api.openai.com/v1`</maml:para>
         </dev:type>
         <dev:defaultValue>https://api.openai.com/v1</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>ApiKey</maml:name>
         <maml:description>
           <maml:para>Specifies API key for authentication.
@@ -12478,7 +12478,7 @@ If not specified, it will use `https://api.openai.com/v1`</maml:para>
           </dev:type>
           <dev:defaultValue>https://api.openai.com/v1</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>ApiKey</maml:name>
           <maml:description>
             <maml:para>Specifies API key for authentication.
@@ -12639,7 +12639,7 @@ If not specified, it will use `https://api.openai.com/v1`</maml:para>
           </dev:type>
           <dev:defaultValue>https://api.openai.com/v1</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>ApiKey</maml:name>
           <maml:description>
             <maml:para>Specifies API key for authentication.
@@ -12813,7 +12813,7 @@ If not specified, it will use `https://api.openai.com/v1`</maml:para>
         </dev:type>
         <dev:defaultValue>https://api.openai.com/v1</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>ApiKey</maml:name>
         <maml:description>
           <maml:para>Specifies API key for authentication.
@@ -13074,7 +13074,7 @@ If not specified, it will use `https://api.openai.com/v1`</maml:para>
           </dev:type>
           <dev:defaultValue>https://api.openai.com/v1</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>ApiKey</maml:name>
           <maml:description>
             <maml:para>Specifies API key for authentication.
@@ -13244,7 +13244,7 @@ If not specified, it will use `https://api.openai.com/v1`</maml:para>
           </dev:type>
           <dev:defaultValue>https://api.openai.com/v1</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>ApiKey</maml:name>
           <maml:description>
             <maml:para>Specifies API key for authentication.
@@ -13427,7 +13427,7 @@ If not specified, it will use `https://api.openai.com/v1`</maml:para>
         </dev:type>
         <dev:defaultValue>https://api.openai.com/v1</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>ApiKey</maml:name>
         <maml:description>
           <maml:para>Specifies API key for authentication.
@@ -13665,7 +13665,7 @@ If not specified, it will use `https://api.openai.com/v1`</maml:para>
           </dev:type>
           <dev:defaultValue>https://api.openai.com/v1</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>ApiKey</maml:name>
           <maml:description>
             <maml:para>Specifies API key for authentication.
@@ -13800,7 +13800,7 @@ If not specified, it will use `https://api.openai.com/v1`</maml:para>
           </dev:type>
           <dev:defaultValue>https://api.openai.com/v1</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>ApiKey</maml:name>
           <maml:description>
             <maml:para>Specifies API key for authentication.
@@ -13948,7 +13948,7 @@ If not specified, it will use `https://api.openai.com/v1`</maml:para>
         </dev:type>
         <dev:defaultValue>https://api.openai.com/v1</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>ApiKey</maml:name>
         <maml:description>
           <maml:para>Specifies API key for authentication.
@@ -14133,7 +14133,7 @@ If not specified, it will use `https://api.openai.com/v1`</maml:para>
           </dev:type>
           <dev:defaultValue>https://api.openai.com/v1</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>ApiKey</maml:name>
           <maml:description>
             <maml:para>Specifies API key for authentication.
@@ -14230,7 +14230,7 @@ If not specified, it will use `https://api.openai.com/v1`</maml:para>
         </dev:type>
         <dev:defaultValue>https://api.openai.com/v1</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>ApiKey</maml:name>
         <maml:description>
           <maml:para>Specifies API key for authentication.
@@ -14551,7 +14551,7 @@ If not specified, it will use `https://api.openai.com/v1`</maml:para>
           </dev:type>
           <dev:defaultValue>https://api.openai.com/v1</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>ApiKey</maml:name>
           <maml:description>
             <maml:para>Specifies API key for authentication.
@@ -14810,7 +14810,7 @@ If not specified, it will use `https://api.openai.com/v1`</maml:para>
         </dev:type>
         <dev:defaultValue>https://api.openai.com/v1</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Token">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>ApiKey</maml:name>
         <maml:description>
           <maml:para>Specifies API key for authentication.
@@ -15660,8 +15660,7 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>Temperature</maml:name>
           <maml:description>
-            <maml:para>What sampling temperature to use, between `0` and `2`.
-Higher values like `0.8` will make the output more random, while lower values like `0.2` will make it more focused and deterministic.</maml:para>
+            <maml:para>What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Double</command:parameterValue>
           <dev:type>
@@ -15719,8 +15718,7 @@ Higher values like `0.8` will make the output more random, while lower values li
           <maml:name>Format</maml:name>
           <maml:description>
             <maml:para>Specifies the output format of this function.
-- `default` will only outputs text message.
-- `raw_response` returns raw response content from API.</maml:para>
+- default will only outputs text message.   - json_object enables JSON mode, which guarantees the message the model generates is valid JSON.   - raw_response returns raw response content from API.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -15732,8 +15730,7 @@ Higher values like `0.8` will make the output more random, while lower values li
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>TimeoutSec</maml:name>
           <maml:description>
-            <maml:para>Specifies how long the request can be pending before it times out.
-The default value is `0` (infinite).</maml:para>
+            <maml:para>Specifies how long the request can be pending before it times out. The default value is 0 (infinite).</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -15745,11 +15742,8 @@ The default value is `0` (infinite).</maml:para>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>MaxRetryCount</maml:name>
           <maml:description>
-            <maml:para>Number between `0` and `100`.
-Specifies the maximum number of retries if the request fails.
-The default value is `0` (No retry).
-Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-</maml:para>
+            <maml:para>Number between 0 and 100. Specifies the maximum number of retries if the request fails. The default value is 0 (No retry).
+Note : Retries will only be performed if the request fails with a 429 (Rate limit reached) or 5xx (Server side errors) error. Other errors (e.g., authentication failure) will not be performed.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -15761,17 +15755,16 @@ Note : Retries will only be performed if the request fails with a `429 (Rate lim
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>ApiBase</maml:name>
           <maml:description>
-            <maml:para>Specifies an API endpoint URL such like: `https://your-api-endpoint.test/v1`
-If not specified, it will use `https://api.openai.com/v1`</maml:para>
+            <maml:para>Specifies an API endpoint URL such like: https://your-api-endpoint.test/v1 If not specified, it will use https://api.openai.com/v1</maml:para>
           </maml:description>
-          <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Uri</command:parameterValue>
           <dev:type>
-            <maml:name>System.Uri</maml:name>
+            <maml:name>Uri</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>https://api.openai.com/v1</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>ApiKey</maml:name>
           <maml:description>
             <maml:para>Specifies API key for authentication.
@@ -15794,6 +15787,150 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
           <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
           <dev:type>
             <maml:name>string</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="file_ids">
+          <maml:name>FileId</maml:name>
+          <maml:description>
+            <maml:para>A list of File IDs that the message should use. There can be a maximum of 10 files attached to a message. Useful for tools like retrieval and code_interpreter that can access and use files.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="max_prompt_tokens">
+          <maml:name>MaxPromptTokens</maml:name>
+          <maml:description>
+            <maml:para>The maximum number of prompt tokens that may be used over the course of the run.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="max_completion_tokens">
+          <maml:name>MaxCompletionTokens</maml:name>
+          <maml:description>
+            <maml:para>The maximum number of completion tokens that may be used over the course of the run.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Content, Text">
+          <maml:name>Message</maml:name>
+          <maml:description>
+            <maml:para>The content of the message.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Role</maml:name>
+          <maml:description>
+            <maml:para>The role of the entity that is creating the message. Allowed value is `user` or `assistant`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="tool_choice">
+          <maml:name>ToolChoice</maml:name>
+          <maml:description>
+            <maml:para>Controls which (if any) tool is called by the model. You can choose from `auto`, `none`, `code_interpreter`, `retrieve` or `function`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>ToolChoiceFunctionName</maml:name>
+          <maml:description>
+            <maml:para>The name of the function to call. You must specify this param when the ToolChoice is specified to `function`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="last_messages">
+          <maml:name>TruncationStrategyType</maml:name>
+          <maml:description>
+            <maml:para>The truncation strategy to use for the thread. The default is `auto`. You can choose from `auto` or `last_messages`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>auto</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="last_messages">
+          <maml:name>TruncationStrategyLastMessages</maml:name>
+          <maml:description>
+            <maml:para>The number of most recent messages from the thread when constructing the context for the run.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>AdditionalQuery</maml:name>
+          <maml:description>
+            <maml:para>If you want to explicitly send an extra query params, you can do so.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">IDictionary</command:parameterValue>
+          <dev:type>
+            <maml:name>IDictionary</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>AdditionalHeaders</maml:name>
+          <maml:description>
+            <maml:para>If you want to explicitly send an extra headers, you can do so.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">IDictionary</command:parameterValue>
+          <dev:type>
+            <maml:name>IDictionary</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>AdditionalBody</maml:name>
+          <maml:description>
+            <maml:para>If you want to explicitly send an extra body, you can do so.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
+          <dev:type>
+            <maml:name>Object</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -15888,8 +16025,7 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>Temperature</maml:name>
         <maml:description>
-          <maml:para>What sampling temperature to use, between `0` and `2`.
-Higher values like `0.8` will make the output more random, while lower values like `0.2` will make it more focused and deterministic.</maml:para>
+          <maml:para>What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Double</command:parameterValue>
         <dev:type>
@@ -15950,8 +16086,7 @@ Higher values like `0.8` will make the output more random, while lower values li
         <maml:name>Format</maml:name>
         <maml:description>
           <maml:para>Specifies the output format of this function.
-- `default` will only outputs text message.
-- `raw_response` returns raw response content from API.</maml:para>
+- default will only outputs text message.   - json_object enables JSON mode, which guarantees the message the model generates is valid JSON.   - raw_response returns raw response content from API.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -15963,8 +16098,7 @@ Higher values like `0.8` will make the output more random, while lower values li
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>TimeoutSec</maml:name>
         <maml:description>
-          <maml:para>Specifies how long the request can be pending before it times out.
-The default value is `0` (infinite).</maml:para>
+          <maml:para>Specifies how long the request can be pending before it times out. The default value is 0 (infinite).</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
@@ -15976,11 +16110,8 @@ The default value is `0` (infinite).</maml:para>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>MaxRetryCount</maml:name>
         <maml:description>
-          <maml:para>Number between `0` and `100`.
-Specifies the maximum number of retries if the request fails.
-The default value is `0` (No retry).
-Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-</maml:para>
+          <maml:para>Number between 0 and 100. Specifies the maximum number of retries if the request fails. The default value is 0 (No retry).
+Note : Retries will only be performed if the request fails with a 429 (Rate limit reached) or 5xx (Server side errors) error. Other errors (e.g., authentication failure) will not be performed.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
@@ -15992,17 +16123,16 @@ Note : Retries will only be performed if the request fails with a `429 (Rate lim
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>ApiBase</maml:name>
         <maml:description>
-          <maml:para>Specifies an API endpoint URL such like: `https://your-api-endpoint.test/v1`
-If not specified, it will use `https://api.openai.com/v1`</maml:para>
+          <maml:para>Specifies an API endpoint URL such like: https://your-api-endpoint.test/v1 If not specified, it will use https://api.openai.com/v1</maml:para>
         </maml:description>
-        <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">Uri</command:parameterValue>
         <dev:type>
-          <maml:name>System.Uri</maml:name>
+          <maml:name>Uri</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>https://api.openai.com/v1</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>ApiKey</maml:name>
         <maml:description>
           <maml:para>Specifies API key for authentication.
@@ -16025,6 +16155,150 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
         <dev:type>
           <maml:name>string</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="file_ids">
+        <maml:name>FileId</maml:name>
+        <maml:description>
+          <maml:para>A list of File IDs that the message should use. There can be a maximum of 10 files attached to a message. Useful for tools like retrieval and code_interpreter that can access and use files.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+        <dev:type>
+          <maml:name>String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="max_prompt_tokens">
+        <maml:name>MaxPromptTokens</maml:name>
+        <maml:description>
+          <maml:para>The maximum number of prompt tokens that may be used over the course of the run.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="max_completion_tokens">
+        <maml:name>MaxCompletionTokens</maml:name>
+        <maml:description>
+          <maml:para>The maximum number of completion tokens that may be used over the course of the run.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="Content, Text">
+        <maml:name>Message</maml:name>
+        <maml:description>
+          <maml:para>The content of the message.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Role</maml:name>
+        <maml:description>
+          <maml:para>The role of the entity that is creating the message. Allowed value is `user` or `assistant`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="tool_choice">
+        <maml:name>ToolChoice</maml:name>
+        <maml:description>
+          <maml:para>Controls which (if any) tool is called by the model. You can choose from `auto`, `none`, `code_interpreter`, `retrieve` or `function`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>ToolChoiceFunctionName</maml:name>
+        <maml:description>
+          <maml:para>The name of the function to call. You must specify this param when the ToolChoice is specified to `function`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="last_messages">
+        <maml:name>TruncationStrategyType</maml:name>
+        <maml:description>
+          <maml:para>The truncation strategy to use for the thread. The default is `auto`. You can choose from `auto` or `last_messages`</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>auto</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="last_messages">
+        <maml:name>TruncationStrategyLastMessages</maml:name>
+        <maml:description>
+          <maml:para>The number of most recent messages from the thread when constructing the context for the run.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>AdditionalQuery</maml:name>
+        <maml:description>
+          <maml:para>If you want to explicitly send an extra query params, you can do so.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">IDictionary</command:parameterValue>
+        <dev:type>
+          <maml:name>IDictionary</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>AdditionalHeaders</maml:name>
+        <maml:description>
+          <maml:para>If you want to explicitly send an extra headers, you can do so.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">IDictionary</command:parameterValue>
+        <dev:type>
+          <maml:name>IDictionary</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>AdditionalBody</maml:name>
+        <maml:description>
+          <maml:para>If you want to explicitly send an extra body, you can do so.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
+        <dev:type>
+          <maml:name>Object</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>

@@ -1,4 +1,14 @@
 # 変更履歴
+### 3.6.0
+- `Start-ThreadRun`に新しいパラメータを追加
+  + `-MaxPromptTokens`
+  + `-MaxCompletionTokens`
+  + `-TruncationStrategyType`
+  + `-TruncationStrategyLastMessages`
+  + `-ToolChoice`
+  + `-ToolChoiceFunctionName`
+- タブ補完のモデル名リストを更新
+
 ### 3.5.0
 - `Start-ThreadRun`に`-AdditionalMessages`パラメータを追加
 - `Get-ThreadMessage`に`-RunId`パラメータを追加
