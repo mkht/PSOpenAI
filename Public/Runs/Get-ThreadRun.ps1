@@ -103,7 +103,10 @@ function Get-ThreadRun {
         # Get run_id (otional)
         if (-not $RunId) {
             if ($InputObject -isnot [string]) {
-                $RunId = Get-RunIdFromInputObject $InputObject
+                [string]$TempRunId = Get-RunIdFromInputObject $InputObject
+                if (-not [string]::IsNullOrEmpty($TempRunId)) {
+                    $RunId = $TempRunId
+                }
             }
         }
 
