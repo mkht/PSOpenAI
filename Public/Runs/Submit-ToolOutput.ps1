@@ -122,7 +122,7 @@ function Submit-ToolOutput {
         #region Send API Request (Streaming)
         if ($Stream) {
             # Stream output
-            $param = @{
+            $params = @{
                 Method            = 'Post'
                 Uri               = $QueryUri
                 ContentType       = $OpenAIParameter.ContentType
@@ -175,7 +175,7 @@ function Submit-ToolOutput {
         #endregion
 
         #region Send API Request
-        $param = @{
+        $params = @{
             Method            = 'Post'
             Uri               = $QueryUri
             ContentType       = $OpenAIParameter.ContentType

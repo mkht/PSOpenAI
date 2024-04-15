@@ -78,7 +78,7 @@ function Remove-Assistant {
         #endregion
 
         #region Send API Request
-        $param = @{
+        $params = @{
             Method            = 'Delete'
             Uri               = $QueryUri
             ContentType       = $OpenAIParameter.ContentType

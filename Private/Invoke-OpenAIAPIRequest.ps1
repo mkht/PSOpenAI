@@ -135,7 +135,7 @@ function Invoke-OpenAIAPIRequest {
 
     #region Server-Sent-Events
     if ($Stream) {
-        $param = @{
+        $params = @{
             Method        = $Method
             Uri           = $Uri
             ContentType   = $ContentType
@@ -238,7 +238,7 @@ function Invoke-OpenAIAPIRequest {
     if ($IsDebug) {
         $startIdx = $lastIdx = 2
         if ($AuthType -eq 'openai') { $startIdx += 4 } # 'org-'
-        $param = @{
+        $params = @{
             Message              = 'Request parameters: ' + (([pscustomobject]$IwrParam) | Format-List Method, Uri, ContentType, Headers, Authentication | Out-String).TrimEnd()
             Target               = ($ApiKey, $Organization)
             First                = $startIdx
@@ -247,7 +247,7 @@ function Invoke-OpenAIAPIRequest {
         }
         Write-Debug @param
 
-        $param = @{
+        $params = @{
             Message              = 'Post body: ' + $Body
             Target               = ($ApiKey, $Organization)
             First                = $startIdx
@@ -256,7 +256,7 @@ function Invoke-OpenAIAPIRequest {
         }
         Write-Debug @param
 
-        $param = @{
+        $params = @{
             Message              = 'Request parameters: ' + (([pscustomobject]$IwrParam) |
                 Format-List Method, Uri, ContentType, Headers, Authentication | Out-String).TrimEnd()
             Target               = ($ApiKey, $Organization)
@@ -266,7 +266,7 @@ function Invoke-OpenAIAPIRequest {
         }
         Write-Debug @param
 
-        $param = @{
+        $params = @{
             Message              = 'Post body: ' + $Body
             Target               = ($ApiKey, $Organization)
             First                = $startIdx

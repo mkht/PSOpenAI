@@ -132,7 +132,7 @@ function Get-ThreadRunStep {
         #endregion
 
         #region Send API Request
-        $param = @{
+        $params = @{
             Method            = 'Get'
             Uri               = $QueryUri
             ContentType       = $OpenAIParameter.ContentType

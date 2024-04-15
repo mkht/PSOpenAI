@@ -74,7 +74,7 @@ function Get-OpenAIFileContent {
         #endregion
 
         #region Send API Request
-        $param = @{
+        $params = @{
             Method            = 'Get'
             Uri               = $QueryUri
             ContentType       = $OpenAIParameter.ContentType

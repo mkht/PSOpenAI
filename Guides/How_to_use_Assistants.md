@@ -26,7 +26,7 @@ Import-Module ..\PSOpenAI.psd1 -Force
 $env:OPENAI_API_KEY = '<Put your API key here>'
 
 # Create an Assistant
-$param = @{
+$params = @{
     Name = "Math Teacher"
     Model = "gpt-3.5-turbo-0613"
     UseCodeInterpreter = $true

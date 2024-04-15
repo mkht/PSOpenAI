@@ -138,7 +138,7 @@ function Invoke-OpenAIAPIRequestSSE {
             expression = { $_.Headers.ToString() }
         } | Out-String)).TrimEnd()
 
-        $param = @{
+        $params = @{
             Message              = $maskedString
             Target               = ($ApiKey, $Organization)
             First                = $startIdx
@@ -189,7 +189,7 @@ function Invoke-OpenAIAPIRequestSSE {
 
         # Verbose / Debug output
         Write-Verbose -Message ('Received HTTP/{0} response of content type {1}' -f $HttpResponse.Version, $HttpResponse.Content.Headers.ContentType.MediaType)
-        $param = @{
+        $params = @{
             Message = "$ServiceName API response: " + ($HttpResponse | Format-List StatusCode,
             @{
                 name = 'processing_ms'
@@ -207,7 +207,7 @@ function Invoke-OpenAIAPIRequestSSE {
         if ($IsDebug) {
             $startIdx = $lastIdx = 2
             if ($AuthType -eq 'openai') { $startIdx += 4 } # 'org-'
-            $param = @{
+            $params = @{
                 Message              = 'API response header: ' + ($HttpResponse.Headers | Format-Table -HideTableHeaders | Out-String).TrimEnd()
                 Target               = ($ApiKey, $Organization)
                 First                = $startIdx

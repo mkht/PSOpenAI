@@ -114,7 +114,7 @@ function Add-ThreadMessage {
         #endregion
 
         #region Send API Request
-        $param = @{
+        $params = @{
             Method            = $OpenAIParameter.Method
             Uri               = $QueryUri
             ContentType       = $OpenAIParameter.ContentType

@@ -142,7 +142,7 @@ function Request-AzureImageGeneration {
             }
 
             #region Send API Request
-            $param = @{
+            $params = @{
                 Method            = $OpenAIParameter.Method
                 Uri               = $OpenAIParameter.Uri
                 ContentType       = $OpenAIParameter.ContentType
@@ -194,7 +194,7 @@ function Request-AzureImageGeneration {
                 while ($Status -ne 'succeeded') {
                     Start-CancelableWait -Milliseconds $Interval -CancellationToken $Cancellation.Token -ea Stop
                     $ResponseContent = $null
-                    $param = @{
+                    $params = @{
                         Method            = 'Get'
                         Uri               = $NextLocation
                         TimeoutSec        = $TimeoutSec
@@ -253,7 +253,7 @@ function Request-AzureImageGeneration {
                 # Download image
                 $ResponseContent.result.data | Select-Object -ExpandProperty 'url' | Select-Object -First 1 | ForEach-Object {
                     Write-Verbose ('Downloading image to {0}' -f $OutFile)
-                    $param = @{
+                    $params = @{
                         Uri             = $_
                         Method          = 'Get'
                         OutFile         = $OutFile

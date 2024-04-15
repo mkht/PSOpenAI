@@ -76,7 +76,7 @@ function Register-OpenAIFile {
         #endregion
 
         #region Send API Request
-        $param = @{
+        $params = @{
             Method            = $OpenAIParameter.Method
             Uri               = $OpenAIParameter.Uri
             ContentType       = $OpenAIParameter.ContentType

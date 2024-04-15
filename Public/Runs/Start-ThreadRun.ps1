@@ -320,7 +320,7 @@ function Start-ThreadRun {
         #region Send API Request (Streaming)
         if ($Stream) {
             # Stream output
-            $param = @{
+            $params = @{
                 Method            = $OpenAIParameter.Method
                 Uri               = $QueryUri
                 ContentType       = $OpenAIParameter.ContentType
@@ -373,7 +373,7 @@ function Start-ThreadRun {
         #endregion
 
         #region Send API Request
-        $param = @{
+        $params = @{
             Method            = $OpenAIParameter.Method
             Uri               = $QueryUri
             ContentType       = $OpenAIParameter.ContentType

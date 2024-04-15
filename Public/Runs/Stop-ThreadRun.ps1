@@ -100,7 +100,7 @@ function Stop-ThreadRun {
         #endregion
 
         #region Send API Request
-        $param = @{
+        $params = @{
             Method            = 'Post'
             Uri               = $QueryUri
             ContentType       = $OpenAIParameter.ContentType

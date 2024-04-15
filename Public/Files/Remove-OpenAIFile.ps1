@@ -70,7 +70,7 @@ function Remove-OpenAIFile {
         #endregion
 
         #region Send API Request
-        $param = @{
+        $params = @{
             Method            = 'Delete'
             Uri               = $QueryUri
             ContentType       = $OpenAIParameter.ContentType
