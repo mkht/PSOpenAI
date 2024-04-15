@@ -26,11 +26,13 @@ Import-Module ..\PSOpenAI.psd1 -Force
 $env:OPENAI_API_KEY = '<Put your API key here>'
 
 # Create an Assistant
-$Assistant = New-Assistant `
-    -Name "Math Teacher" `
-    -Model "gpt-3.5-turbo-0613" `
-    -UseCodeInterpreter `
-    -Instructions "You are a personal math tutor. Write and run code to answer math questions."
+$param = @{
+    Name = "Math Teacher"
+    Model = "gpt-3.5-turbo-0613"
+    UseCodeInterpreter = $true
+    Instructions = "You are a personal math tutor. Write and run code to answer math questions."
+}
+$Assistant = New-Assistant @param
 ```
 
 ## Step 2: Create a Thread and Add a Message.
@@ -46,9 +48,8 @@ For this step, use `New-Thread` and `Add-ThreadMessage` cmdlets.
 $Thread = New-Thread
 
 # Add a first Message to the Thread
-$Thread = $Thread | Add-ThreadMessage `
-    -Message "Please make a graph of y=3x+14 and output it as a PNG image." `
-    -PassThru
+$msg = "Please make a graph of y=3x+14 and output it as a PNG image."
+$Thread = $Thread | Add-ThreadMessage -Message $msg -PassThru
 ```
 
 ## Step 3: Run the Assistant with Thread.
@@ -193,9 +194,9 @@ The process described in this guide can be simplified using pipelines.
 $Assistant = New-Assistant -Model "gpt-3.5-turbo"
 
 # Create a Thread and add a Message, then starts Run and receive the result when completes the Run.
-$Result = New-Thread |`
-           Add-ThreadMessage "Hello, what can you do for me?" -PassThru | `
-            Start-ThreadRun -Assistant $Assistant |`
+$Result = New-Thread |
+           Add-ThreadMessage "Hello, what can you do for me?" -PassThru |
+            Start-ThreadRun -Assistant $Assistant |
              Receive-ThreadRun -Wait
 
 # Dislpays only Assistant response message
