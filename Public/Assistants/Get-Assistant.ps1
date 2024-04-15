@@ -114,17 +114,21 @@ function Get-Assistant {
         }
 
         #region Send API Request
-        $Response = Invoke-OpenAIAPIRequest `
-            -Method 'Get' `
-            -Uri $QueryUri `
-            -ContentType $OpenAIParameter.ContentType `
-            -TimeoutSec $TimeoutSec `
-            -MaxRetryCount $MaxRetryCount `
-            -ApiKey $SecureToken `
-            -AuthType $AuthType `
-            -Organization $Organization `
-            -Headers (@{'OpenAI-Beta' = 'assistants=v1' }) `
-            -AdditionalQuery $AdditionalQuery -AdditionalHeaders $AdditionalHeaders -AdditionalBody $AdditionalBody
+        $param = @{
+            Method            = 'Get'
+            Uri               = $QueryUri
+            ContentType       = $OpenAIParameter.ContentType
+            TimeoutSec        = $TimeoutSec
+            MaxRetryCount     = $MaxRetryCount
+            ApiKey            = $SecureToken
+            AuthType          = $AuthType
+            Organization      = $Organization
+            Headers           = @{'OpenAI-Beta' = 'assistants=v1' }
+            AdditionalQuery   = $AdditionalQuery
+            AdditionalHeaders = $AdditionalHeaders
+            AdditionalBody    = $AdditionalBody
+        }
+        $Response = Invoke-OpenAIAPIRequest @param
 
         # error check
         if ($null -eq $Response) {

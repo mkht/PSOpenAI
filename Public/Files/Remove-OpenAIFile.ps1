@@ -70,15 +70,19 @@ function Remove-OpenAIFile {
         #endregion
 
         #region Send API Request
-        $Response = Invoke-OpenAIAPIRequest `
-            -Method 'Delete' `
-            -Uri $QueryUri `
-            -ContentType $OpenAIParameter.ContentType `
-            -TimeoutSec $TimeoutSec `
-            -MaxRetryCount $MaxRetryCount `
-            -ApiKey $SecureToken `
-            -Organization $Organization `
-            -AdditionalQuery $AdditionalQuery -AdditionalHeaders $AdditionalHeaders -AdditionalBody $AdditionalBody
+        $param = @{
+            Method            = 'Delete'
+            Uri               = $QueryUri
+            ContentType       = $OpenAIParameter.ContentType
+            TimeoutSec        = $TimeoutSec
+            MaxRetryCount     = $MaxRetryCount
+            ApiKey            = $SecureToken
+            Organization      = $Organization
+            AdditionalQuery   = $AdditionalQuery
+            AdditionalHeaders = $AdditionalHeaders
+            AdditionalBody    = $AdditionalBody
+        }
+        $Response = Invoke-OpenAIAPIRequest @param
 
         # error check
         if ($null -eq $Response) {

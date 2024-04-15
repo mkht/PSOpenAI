@@ -153,17 +153,21 @@ function Request-ImageGeneration {
         #endregion
 
         #region Send API Request
-        $Response = Invoke-OpenAIAPIRequest `
-            -Method $OpenAIParameter.Method `
-            -Uri $OpenAIParameter.Uri `
-            -ContentType $OpenAIParameter.ContentType `
-            -TimeoutSec $TimeoutSec `
-            -MaxRetryCount $MaxRetryCount `
-            -ApiKey $SecureToken `
-            -AuthType $AuthType `
-            -Organization $Organization `
-            -Body $PostBody `
-            -AdditionalQuery $AdditionalQuery -AdditionalHeaders $AdditionalHeaders -AdditionalBody $AdditionalBody
+        $splat = @{
+            Method            = $OpenAIParameter.Method
+            Uri               = $OpenAIParameter.Uri
+            ContentType       = $OpenAIParameter.ContentType
+            TimeoutSec        = $TimeoutSec
+            MaxRetryCount     = $MaxRetryCount
+            ApiKey            = $SecureToken
+            AuthType          = $AuthType
+            Organization      = $Organization
+            Body              = $PostBody
+            AdditionalQuery   = $AdditionalQuery
+            AdditionalHeaders = $AdditionalHeaders
+            AdditionalBody    = $AdditionalBody
+        }
+        $Response = Invoke-OpenAIAPIRequest @splat
 
         # error check
         if ($null -eq $Response) {
@@ -204,13 +208,15 @@ function Request-ImageGeneration {
             }
 
             # Download image
-            $ResponseContent | Select-Object -ExpandProperty 'url' | select -First 1 | % {
+            $ResponseContent | Select-Object -ExpandProperty 'url' | Select-Object -First 1 | ForEach-Object {
                 Write-Verbose ('Downloading image to {0}' -f $OutFile)
-                Microsoft.PowerShell.Utility\Invoke-WebRequest `
-                    -Uri $_ `
-                    -Method Get `
-                    -OutFile $OutFile `
-                    -UseBasicParsing
+                $splat = @{
+                    Uri             = $_
+                    Method          = 'Get'
+                    OutFile         = $OutFile
+                    UseBasicParsing = $true
+                }
+                Microsoft.PowerShell.Utility\Invoke-WebRequest @splat
             }
         }
         elseif ($Format -eq 'url') {
@@ -220,7 +226,7 @@ function Request-ImageGeneration {
             Write-Output ($ResponseContent | Select-Object -ExpandProperty 'b64_json')
         }
         elseif ($Format -eq 'byte') {
-            [byte[]]$b = [Convert]::FromBase64String(($ResponseContent | Select-Object -ExpandProperty 'b64_json' | select -First 1))
+            [byte[]]$b = [Convert]::FromBase64String(($ResponseContent | Select-Object -ExpandProperty 'b64_json' | Select-Object -First 1))
             Write-Output (, $b)
         }
         #endregion

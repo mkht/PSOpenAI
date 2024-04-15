@@ -39,14 +39,17 @@ Describe 'Request-AudioSpeech' {
         }
 
         It 'Fully parameterized' {
-            { Request-AudioSpeech `
-                    -Text 'test' `
-                    -Model tts-1-hd `
-                    -Voice onyx `
-                    -Format opus `
-                    -Speed 1.5 `
-                    -OutFile (Join-Path $TestDrive 'テスト.mp3') `
-                    -ea Stop } | Should -Not -Throw
+            { $params = @{
+                    Text    = 'test'
+                    Model   = 'tts-1-hd'
+                    Voice   = 'onyx'
+                    Format  = 'opus'
+                    Speed   = 1.5
+                    OutFile = (Join-Path $TestDrive 'テスト.mp3')
+                    ea      = 'Stop'
+                }
+                Request-AudioSpeech @params
+            } | Should -Not -Throw
             Should -InvokeVerifiable
             (Join-Path $TestDrive 'テスト.mp3') | Should -FileContentMatchExactly 'MOCK'
         }
@@ -59,14 +62,20 @@ Describe 'Request-AudioSpeech' {
         }
 
         It 'Text to Speech' {
-            { Request-AudioSpeech `
-                    -Text 'Hey, I want to play the game with you.' `
-                    -Model tts-1 `
-                    -Voice nova `
-                    -Format aac `
-                    -Speed 1.1 `
-                    -OutFile (Join-Path $TestDrive 'test.aac') `
-                    -TimeoutSec 30 -MaxRetryCount 3 -ea Stop } | Should -Not -Throw
+            { $params = @{
+                    Text          = 'Hey, I want to play the game with you.'
+                    Model         = 'tts-1'
+                    Voice         = 'nova'
+                    Format        = 'aac'
+                    Speed         = 1.1
+                    OutFile       = (Join-Path $TestDrive 'test.aac')
+                    TimeoutSec    = 30
+                    MaxRetryCount = 3
+                    ea            = 'Stop'
+                }
+
+                Request-AudioSpeech @params
+            } | Should -Not -Throw
             (Join-Path $TestDrive 'test.aac') | Should -Exist
         }
     }

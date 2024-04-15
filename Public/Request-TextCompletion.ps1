@@ -198,18 +198,22 @@ function Request-TextCompletion {
         #region Send API Request (Stream)
         if ($Stream) {
             # Stream output
-            Invoke-OpenAIAPIRequest `
-                -Method $OpenAIParameter.Method `
-                -Uri $OpenAIParameter.Uri `
-                -ContentType $OpenAIParameter.ContentType `
-                -TimeoutSec $TimeoutSec `
-                -MaxRetryCount $MaxRetryCount `
-                -ApiKey $SecureToken `
-                -AuthType $AuthType `
-                -Organization $Organization `
-                -Body $PostBody `
-                -Stream $Stream `
-                -AdditionalQuery $AdditionalQuery -AdditionalHeaders $AdditionalHeaders -AdditionalBody $AdditionalBody |`
+            $params = @{
+                Method            = $OpenAIParameter.Method
+                Uri               = $OpenAIParameter.Uri
+                ContentType       = $OpenAIParameter.ContentType
+                TimeoutSec        = $TimeoutSec
+                MaxRetryCount     = $MaxRetryCount
+                ApiKey            = $SecureToken
+                AuthType          = $AuthType
+                Organization      = $Organization
+                Body              = $PostBody
+                Stream            = $Stream
+                AdditionalQuery   = $AdditionalQuery
+                AdditionalHeaders = $AdditionalHeaders
+                AdditionalBody    = $AdditionalBody
+            }
+            Invoke-OpenAIAPIRequest @params |
                 Where-Object {
                 -not [string]::IsNullOrEmpty($_)
             } | ForEach-Object {
@@ -235,17 +239,21 @@ function Request-TextCompletion {
 
         #region Send API Request (No Stream)
         else {
-            $Response = Invoke-OpenAIAPIRequest `
-                -Method $OpenAIParameter.Method `
-                -Uri $OpenAIParameter.Uri `
-                -ContentType $OpenAIParameter.ContentType `
-                -TimeoutSec $TimeoutSec `
-                -MaxRetryCount $MaxRetryCount `
-                -ApiKey $SecureToken `
-                -AuthType $AuthType `
-                -Organization $Organization `
-                -Body $PostBody `
-                -AdditionalQuery $AdditionalQuery -AdditionalHeaders $AdditionalHeaders -AdditionalBody $AdditionalBody
+            $params = @{
+                Method            = $OpenAIParameter.Method
+                Uri               = $OpenAIParameter.Uri
+                ContentType       = $OpenAIParameter.ContentType
+                TimeoutSec        = $TimeoutSec
+                MaxRetryCount     = $MaxRetryCount
+                ApiKey            = $SecureToken
+                AuthType          = $AuthType
+                Organization      = $Organization
+                Body              = $PostBody
+                AdditionalQuery   = $AdditionalQuery
+                AdditionalHeaders = $AdditionalHeaders
+                AdditionalBody    = $AdditionalBody
+            }
+            $Response = Invoke-OpenAIAPIRequest @params
 
             # error check
             if ($null -eq $Response) {

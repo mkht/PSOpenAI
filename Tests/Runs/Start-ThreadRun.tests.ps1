@@ -124,9 +124,12 @@ Describe 'Start-ThreadRun' {
         It 'Create thread' {
             $script:Assistant = New-Assistant -Model gpt-3.5-turbo
             $script:Thread = New-Thread | Add-ThreadMessage -Message 'How many people lives in Canada?' -PassThru
-            { $script:Result = $script:Thread | Start-ThreadRun `
-                    -Assistant $script:Assistant `
-                    -ea Stop } | Should -Not -Throw
+            { $params = @{
+                    Assistant   = $script:Assistant
+                    ErrorAction = 'Stop'
+                }
+                $script:Result = $script:Thread | Start-ThreadRun @params
+            } | Should -Not -Throw
             $Result.id | Should -BeLike 'run_*'
             $Result.thread_id | Should -Be $script:Thread.id
             $Result.assistant_id | Should -BeLike $script:Assistant.id

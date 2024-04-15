@@ -70,15 +70,19 @@ function Get-OpenAIModels {
         }
 
         #region Send API Request
-        $Response = Invoke-OpenAIAPIRequest `
-            -Method $OpenAIParameter.Method `
-            -Uri $OpenAIParameter.Uri `
-            -ApiKey $SecureToken `
-            -AuthType $AuthType `
-            -Organization $Organization `
-            -TimeoutSec $TimeoutSec `
-            -MaxRetryCount $MaxRetryCount `
-            -AdditionalQuery $AdditionalQuery -AdditionalHeaders $AdditionalHeaders -AdditionalBody $AdditionalBody
+        $splat = @{
+            Method            = $OpenAIParameter.Method
+            Uri               = $OpenAIParameter.Uri
+            ApiKey            = $SecureToken
+            AuthType          = $AuthType
+            Organization      = $Organization
+            TimeoutSec        = $TimeoutSec
+            MaxRetryCount     = $MaxRetryCount
+            AdditionalQuery   = $AdditionalQuery
+            AdditionalHeaders = $AdditionalHeaders
+            AdditionalBody    = $AdditionalBody
+        }
+        $Response = Invoke-OpenAIAPIRequest @splat
 
         # error check
         if ($null -eq $Response) {

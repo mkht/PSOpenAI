@@ -52,11 +52,14 @@ Describe 'Request-AudioTranslation' {
         }
 
         It 'Audio translation (format: verbose_json)' {
-            { $script:Text = Request-AudioTranslation `
-                    -File ($script:TestData + '/voice_japanese.mp3') `
-                    -Format 'verbose_json' `
-                    -TimeoutSec 30 `
-                    -ErrorAction Stop } | Should -Not -Throw
+            { $params = @{
+                    File        = $script:TestData + '/voice_japanese.mp3'
+                    Format      = 'verbose_json'
+                    TimeoutSec  = 30
+                    ErrorAction = 'Stop'
+                }
+                $script:Text = Request-AudioTranslation @params
+            } | Should -Not -Throw
             $ret = ($Text | ConvertFrom-Json)
             $ret.text.Length | Should -BeGreaterThan 1
             $ret.task | Should -Be 'translate'

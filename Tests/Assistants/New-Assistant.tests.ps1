@@ -41,14 +41,17 @@ Describe 'New-Assistant' {
         }
 
         It 'Create assistant (full param)' {
-            { $script:Result = New-Assistant `
-                    -Name 'TEST' `
-                    -Model gpt-4 `
-                    -Description 'Test assistant' `
-                    -Instructions 'Do it' `
-                    -UseCodeInterpreter `
-                    -UseRetrieval `
-                    -ea Stop } | Should -Not -Throw
+            { $params = @{
+                    Name               = 'TEST'
+                    Model              = 'gpt-4'
+                    Description        = 'Test assistant'
+                    Instructions       = 'Do it'
+                    UseCodeInterpreter = $true
+                    UseRetrieval       = $true
+                    ErrorAction        = 'Stop'
+                }
+                $script:Result = New-Assistant @params
+            } | Should -Not -Throw
             Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName
             $Result.id | Should -BeExactly 'asst_abc123'
             $Result.object | Should -BeExactly 'assistant'
@@ -67,14 +70,17 @@ Describe 'New-Assistant' {
 
         It 'Create assistant (full param)' {
             $RandomName = ('TEST' + (Get-Random -Maximum 1000))
-            { $script:Result = New-Assistant `
-                    -Name $RandomName `
-                    -Model gpt-3.5-turbo-0125 `
-                    -Description 'Test assistant' `
-                    -Instructions 'Do it' `
-                    -UseCodeInterpreter `
-                    -UseRetrieval `
-                    -ea Stop } | Should -Not -Throw
+            { $params = @{
+                    Name               = $RandomName
+                    Model              = 'gpt-3.5-turbo-0125'
+                    Description        = 'Test assistant'
+                    Instructions       = 'Do it'
+                    UseCodeInterpreter = $true
+                    UseRetrieval       = $true
+                    ErrorAction        = 'Stop'
+                }
+                $script:Result = New-Assistant @params
+            } | Should -Not -Throw
             $Result.id | Should -BeLike 'asst_*'
             $Result.object | Should -BeExactly 'assistant'
             $Result.created_at | Should -BeOfType [datetime]

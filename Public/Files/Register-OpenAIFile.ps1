@@ -76,16 +76,20 @@ function Register-OpenAIFile {
         #endregion
 
         #region Send API Request
-        $Response = Invoke-OpenAIAPIRequest `
-            -Method $OpenAIParameter.Method `
-            -Uri $OpenAIParameter.Uri `
-            -ContentType $OpenAIParameter.ContentType `
-            -TimeoutSec $TimeoutSec `
-            -MaxRetryCount $MaxRetryCount `
-            -ApiKey $SecureToken `
-            -Organization $Organization `
-            -Body $PostBody `
-            -AdditionalQuery $AdditionalQuery -AdditionalHeaders $AdditionalHeaders -AdditionalBody $AdditionalBody
+        $param = @{
+            Method            = $OpenAIParameter.Method
+            Uri               = $OpenAIParameter.Uri
+            ContentType       = $OpenAIParameter.ContentType
+            TimeoutSec        = $TimeoutSec
+            MaxRetryCount     = $MaxRetryCount
+            ApiKey            = $SecureToken
+            Organization      = $Organization
+            Body              = $PostBody
+            AdditionalQuery   = $AdditionalQuery
+            AdditionalHeaders = $AdditionalHeaders
+            AdditionalBody    = $AdditionalBody
+        }
+        $Response = Invoke-OpenAIAPIRequest @param
 
         # error check
         if ($null -eq $Response) {

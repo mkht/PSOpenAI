@@ -66,53 +66,77 @@ Describe 'Request-ImageGeneration' {
         }
 
         It 'Generate image. OutFile' {
-            { $script:Result = Request-ImageGeneration `
-                    -Prompt 'Lion' `
-                    -OutFile (Join-Path $TestDrive 'file1.png') `
-                    -Size 256 `
-                    -TimeoutSec 30 -ea Stop } | Should -Not -Throw
+            { $splat = @{
+                    Prompt      = 'Lion'
+                    OutFile     = Join-Path $TestDrive 'file1.png'
+                    Size        = 256
+                    TimeoutSec  = 30
+                    ErrorAction = 'Stop'
+                }
+                $script:Result = Request-ImageGeneration @splat
+            } | Should -Not -Throw
             $Result | Should -BeNullOrEmpty
             (Join-Path $TestDrive 'file1.png') | Should -Exist
         }
 
         It 'Image generation. Format = url' {
-            { $script:Result = Request-ImageGeneration `
-                    -Prompt 'Pigs' `
-                    -Format url `
-                    -Size 256 `
-                    -TimeoutSec 30 -ea Stop } | Should -Not -Throw
+            { $splat = @{
+                    Prompt      = 'Pigs'
+                    Format      = 'url'
+                    Size        = 256
+                    TimeoutSec  = 30
+                    ErrorAction = 'Stop'
+                }
+                $script:Result = Request-ImageGeneration @splat
+            } | Should -Not -Throw
             $Result | Should -BeOfType [string]
             $Result | Should -Match '^https://'
         }
 
         It 'Image generation. Format = base64' {
-            { $script:Result = Request-ImageGeneration `
-                    -Prompt 'Dog' `
-                    -Format base64 `
-                    -Size 256 `
-                    -TimeoutSec 30 -ea Stop } | Should -Not -Throw
+            { $params = @{
+                    Prompt      = 'Dog'
+                    Format      = 'base64'
+                    Size        = 256
+                    TimeoutSec  = 30
+                    ErrorAction = 'Stop'
+                }
+
+                $script:Result = Request-ImageGeneration @params
+            } | Should -Not -Throw
             $Result | Should -BeOfType [string]
             { [Convert]::FromBase64String($script:Result) } | Should -Not -Throw
         }
 
         It 'Image generation. Format = byte' {
-            { $script:Result = Request-ImageGeneration `
-                    -Prompt 'Fox' `
-                    -Format byte `
-                    -Size 256 `
-                    -TimeoutSec 30 -ea Stop } | Should -Not -Throw
+            { $params = @{
+                    Prompt      = 'Fox'
+                    Format      = 'byte'
+                    Size        = 256
+                    TimeoutSec  = 30
+                    ErrorAction = 'Stop'
+                }
+
+                $script:Result = Request-ImageGeneration @params
+            } | Should -Not -Throw
             $Result.GetType().Name | Should -Be 'Byte[]'
             $Result.Count | Should -BeGreaterThan 1
         }
 
         It 'Image generation. Specifies model name (dall-e-3) and styles.' {
-            { $script:Result = Request-ImageGeneration `
-                    -Prompt 'A cute baby lion' `
-                    -Model 'dall-e-3' `
-                    -Format url `
-                    -Quality HD `
-                    -Style natural `
-                    -TimeoutSec 30 -MaxRetryCount 5 -ea Stop } | Should -Not -Throw
+            { $params = @{
+                    Prompt        = 'A cute baby lion'
+                    Model         = 'dall-e-3'
+                    Format        = 'url'
+                    Quality       = 'HD'
+                    Style         = 'natural'
+                    TimeoutSec    = 30
+                    MaxRetryCount = 5
+                    ErrorAction   = 'Stop'
+                }
+
+                $script:Result = Request-ImageGeneration @params
+            } | Should -Not -Throw
             $Result | Should -BeOfType [string]
             $Result | Should -Match '^https://'
         }

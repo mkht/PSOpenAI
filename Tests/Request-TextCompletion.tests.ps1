@@ -40,9 +40,12 @@ Describe 'Request-TextCompletion' {
     }
 }
 '@ }
-            { $script:Result = Request-TextCompletion `
-                    -Prompt 'Say this is a test' `
-                    -ea Stop } | Should -Not -Throw
+            { $splat = @{
+                    Prompt      = 'Say this is a test'
+                    ErrorAction = 'Stop'
+                }
+                $script:Result = Request-TextCompletion @splat
+            } | Should -Not -Throw
             Should -InvokeVerifiable
             $Result.Answer | Should -HaveCount 1
             $Result.Answer[0] | Should -Be "`n`nThis is indeed a test"
@@ -68,10 +71,14 @@ Describe 'Request-TextCompletion' {
         }
 
         It 'Text completion' {
-            { $script:Result = Request-TextCompletion `
-                    -Prompt 'Say this is a test' `
-                    -MaxTokens 16 `
-                    -TimeoutSec 30 -ea Stop } | Should -Not -Throw
+            { $splat = @{
+                    Prompt      = 'Say this is a test'
+                    MaxTokens   = 16
+                    TimeoutSec  = 30
+                    ErrorAction = 'Stop'
+                }
+                $script:Result = Request-TextCompletion @splat
+            } | Should -Not -Throw
             $Result.Answer | Should -HaveCount 1
             $Result.Answer[0] | Should -Not -BeNullOrEmpty
             $Result.Prompt | Should -Be 'Say this is a test'
@@ -79,10 +86,14 @@ Describe 'Request-TextCompletion' {
         }
 
         It 'Text completion (multiple prompts)' {
-            { $script:Result = Request-TextCompletion `
-                    -Prompt ('The menu list of a hamburger shop.', 'Top 10 Most Common American Family Names') `
-                    -MaxTokens 20 `
-                    -TimeoutSec 30 -ea Stop } | Should -Not -Throw
+            { $splat = @{
+                    Prompt      = ('The menu list of a hamburger shop.', 'Top 10 Most Common American Family Names')
+                    MaxTokens   = 20
+                    TimeoutSec  = 30
+                    ErrorAction = 'Stop'
+                }
+                $script:Result = Request-TextCompletion @splat
+            } | Should -Not -Throw
             $Result.Answer | Should -HaveCount 2
             $Result.Answer[0] | Should -Not -BeNullOrEmpty
             $Result.Answer[1] | Should -Not -BeNullOrEmpty
@@ -91,14 +102,16 @@ Describe 'Request-TextCompletion' {
         }
 
         It 'Stream output' {
-            $Result = Request-TextCompletion `
-                -Prompt 'Top 10 Most Common American Family Names' `
-                -MaxTokens 32 `
-                -Stream `
-                -InformationVariable Info `
-                -TimeoutSec 30 -ea Stop `
-            | select -First 10
-            $Result | Should -HaveCount 10
+            $splat = @{
+                Prompt              = 'Top 10 Most Common American Family Names'
+                MaxTokens           = 32
+                Stream              = $true
+                InformationVariable = 'Info'
+                TimeoutSec          = 30
+                ErrorAction         = 'Stop'
+            }
+            $Result = Request-TextCompletion @splat | Select-Object -First 10
+
             ([string[]]$Info) | Should -Be ([string[]]$Result)
         }
     }

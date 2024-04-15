@@ -135,17 +135,19 @@ function Invoke-OpenAIAPIRequest {
 
     #region Server-Sent-Events
     if ($Stream) {
-        Invoke-OpenAIAPIRequestSSE `
-            -Method $Method `
-            -Uri $Uri `
-            -ContentType $ContentType `
-            -ApiKey $ApiKey `
-            -Organization $Organization `
-            -AuthType $AuthType `
-            -Body $Body `
-            -Headers $RequestHeaders `
-            -TimeoutSec $TimeoutSec `
-            -MaxRetryCount $MaxRetryCount
+        $param = @{
+            Method        = $Method
+            Uri           = $Uri
+            ContentType   = $ContentType
+            ApiKey        = $ApiKey
+            Organization  = $Organization
+            AuthType      = $AuthType
+            Body          = $Body
+            Headers       = $RequestHeaders
+            TimeoutSec    = $TimeoutSec
+            MaxRetryCount = $MaxRetryCount
+        }
+        Invoke-OpenAIAPIRequestSSE @param
         return
     }
     #endregion
@@ -236,12 +238,42 @@ function Invoke-OpenAIAPIRequest {
     if ($IsDebug) {
         $startIdx = $lastIdx = 2
         if ($AuthType -eq 'openai') { $startIdx += 4 } # 'org-'
-        Write-Debug -Message (Get-MaskedString `
-            ('Request parameters: ' + (([pscustomobject]$IwrParam) | fl Method, Uri, ContentType, Headers, Authentication | Out-String)).TrimEnd() `
-                -Target ($ApiKey, $Organization) -First $startIdx -Last $lastIdx -MaxNumberOfAsterisks 45)
-        Write-Debug -Message (Get-MaskedString `
-            ('Post body: ' + $Body) `
-                -Target ($ApiKey, $Organization) -First $startIdx -Last $lastIdx -MaxNumberOfAsterisks 45)
+        $param = @{
+            Message              = 'Request parameters: ' + (([pscustomobject]$IwrParam) | Format-List Method, Uri, ContentType, Headers, Authentication | Out-String).TrimEnd()
+            Target               = ($ApiKey, $Organization)
+            First                = $startIdx
+            Last                 = $lastIdx
+            MaxNumberOfAsterisks = 45
+        }
+        Write-Debug @param
+
+        $param = @{
+            Message              = 'Post body: ' + $Body
+            Target               = ($ApiKey, $Organization)
+            First                = $startIdx
+            Last                 = $lastIdx
+            MaxNumberOfAsterisks = 45
+        }
+        Write-Debug @param
+
+        $param = @{
+            Message              = 'Request parameters: ' + (([pscustomobject]$IwrParam) |
+                Format-List Method, Uri, ContentType, Headers, Authentication | Out-String).TrimEnd()
+            Target               = ($ApiKey, $Organization)
+            First                = $startIdx
+            Last                 = $lastIdx
+            MaxNumberOfAsterisks = 45
+        }
+        Write-Debug @param
+
+        $param = @{
+            Message              = 'Post body: ' + $Body
+            Target               = ($ApiKey, $Organization)
+            First                = $startIdx
+            Last                 = $lastIdx
+            MaxNumberOfAsterisks = 45
+        }
+        Write-Debug @param
     }
 
     #region Send API Request
@@ -287,7 +319,7 @@ function Invoke-OpenAIAPIRequest {
     #endregion
 
     # Fix content charset from ISO-8859-1 to UTF-8 (only JSON with PowerShell 5)
-    if (($PSVersionTable.PSVersion.Major -le 5) -and `
+    if (($PSVersionTable.PSVersion.Major -le 5) -and
         ($Response.Headers.'Content-Type' -match 'application/json')) {
         $Content = [Encoding]::UTF8.GetString([Encoding]::GetEncoding('ISO-8859-1').GetBytes($Response.Content))
     }
@@ -296,21 +328,43 @@ function Invoke-OpenAIAPIRequest {
     }
 
     # Verbose / Debug output
-    Write-Verbose -Message ("$ServiceName API response: " + ($Response | fl `
-                StatusCode, `
-            @{name = 'processing_ms'; expression = { $_.Headers['openai-processing-ms'] } }, `
-            @{name = 'request_id'; expression = { $_.Headers['X-Request-Id'] } } `
-            | Out-String)).TrimEnd()
+    $verboseMessage = "$ServiceName API response: " + ($Response |
+        Format-List StatusCode,
+        @{
+            name = 'processing_ms'
+            expression = { $_.Headers['openai-processing-ms'] }
+        },
+        @{
+            name = 'request_id'
+            expression = { $_.Headers['X-Request-Id'] }
+        } | Out-String).TrimEnd()
+    Write-Verbose -Message $verboseMessage
+
     # Don't read the whole stream for debug logging unless necessary.
     if ($IsDebug) {
         $startIdx = $lastIdx = 2
         if ($AuthType -eq 'openai') { $startIdx += 4 } # 'org-'
-        Write-Debug -Message (Get-MaskedString `
-            ('API response header: ' + ($Response.Headers | ft -Hide | Out-String)).TrimEnd() `
-                -Target ($ApiKey, $Organization) -First $startIdx -Last $lastIdx -MaxNumberOfAsterisks 45)
-        Write-Debug -Message (Get-MaskedString `
-            ('API response body: ' + ($Response.Content | Out-String)).TrimEnd() `
-                -Target ($ApiKey, $Organization) -First $startIdx -Last $lastIdx -MaxNumberOfAsterisks 45)
+        $param1 = @{
+            Message              = 'API response header: ' + ($Response.Headers | Format-Table -HideTableHeaders | Out-String).TrimEnd()
+            Target               = ($ApiKey, $Organization)
+            First                = $startIdx
+            Last                 = $lastIdx
+            MaxNumberOfAsterisks = 45
+        }
+
+        $maskedString1 = Get-MaskedString @param1
+        Write-Debug -Message $maskedString1
+
+        $param2 = @{
+            Message              = 'API response body: ' + ($Response.Content | Out-String).TrimEnd()
+            Target               = ($ApiKey, $Organization)
+            First                = $startIdx
+            Last                 = $lastIdx
+            MaxNumberOfAsterisks = 45
+        }
+
+        $maskedString2 = Get-MaskedString @param2
+        Write-Debug -Message $maskedString2
     }
 
     # Save WebSession

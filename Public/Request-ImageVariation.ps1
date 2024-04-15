@@ -142,16 +142,20 @@ function Request-ImageVariation {
 
         #region Send API Request
         try {
-            $Response = Invoke-OpenAIAPIRequest `
-                -Method $OpenAIParameter.Method `
-                -Uri $OpenAIParameter.Uri `
-                -ContentType $OpenAIParameter.ContentType `
-                -TimeoutSec $TimeoutSec `
-                -MaxRetryCount $MaxRetryCount `
-                -ApiKey $SecureToken `
-                -Organization $Organization `
-                -Body $PostBody `
-                -AdditionalQuery $AdditionalQuery -AdditionalHeaders $AdditionalHeaders -AdditionalBody $AdditionalBody
+            $params = @{
+                Method            = $OpenAIParameter.Method
+                Uri               = $OpenAIParameter.Uri
+                ContentType       = $OpenAIParameter.ContentType
+                TimeoutSec        = $TimeoutSec
+                MaxRetryCount     = $MaxRetryCount
+                ApiKey            = $SecureToken
+                Organization      = $Organization
+                Body              = $PostBody
+                AdditionalQuery   = $AdditionalQuery
+                AdditionalHeaders = $AdditionalHeaders
+                AdditionalBody    = $AdditionalBody
+            }
+            $Response = Invoke-OpenAIAPIRequest @params
         }
         finally {
             if ($IsTempFileCreated -and (Test-Path $FileInfo -PathType Leaf)) {
@@ -193,12 +197,14 @@ function Request-ImageVariation {
             }
 
             # Download image
-            $ResponseContent | Select-Object -ExpandProperty 'url' | select -First 1 | % {
-                Microsoft.PowerShell.Utility\Invoke-WebRequest `
-                    -Uri $_ `
-                    -Method Get `
-                    -OutFile $OutFile `
-                    -UseBasicParsing
+            $ResponseContent | Select-Object -ExpandProperty 'url' | Select-Object -First 1 | ForEach-Object {
+                $splat = @{
+                    Uri             = $_
+                    Method          = 'Get'
+                    OutFile         = $OutFile
+                    UseBasicParsing = $true
+                }
+                Microsoft.PowerShell.Utility\Invoke-WebRequest @splat
             }
         }
         elseif ($Format -eq 'url') {
@@ -208,7 +214,7 @@ function Request-ImageVariation {
             Write-Output ($ResponseContent | Select-Object -ExpandProperty 'b64_json')
         }
         elseif ($Format -eq 'byte') {
-            [byte[]]$b = [Convert]::FromBase64String(($ResponseContent | Select-Object -ExpandProperty 'b64_json' | select -First 1))
+            [byte[]]$b = [Convert]::FromBase64String(($ResponseContent | Select-Object -ExpandProperty 'b64_json' | Select-Object -First 1))
             Write-Output (, $b)
         }
         #endregion
