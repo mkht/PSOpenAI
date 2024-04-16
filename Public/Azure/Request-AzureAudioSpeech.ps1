@@ -2,17 +2,17 @@ function Request-AzureAudioSpeech {
     [CmdletBinding(DefaultParameterSetName = 'Default')]
     [OutputType([void])]
     param (
-        [Parameter(ParameterSetName = 'Default', Mandatory = $true, Position = 0)]
+        [Parameter(ParameterSetName = 'Default', Mandatory, Position = 0)]
         [Alias('Input')]
         [ValidateNotNullOrEmpty()]
         [string]$Text,
 
         # For pipeline input from chat completion
-        [Parameter(ParameterSetName = 'Pipeline', DontShow = $true, Mandatory = $true, ValueFromPipeline = $true)]
+        [Parameter(ParameterSetName = 'Pipeline', DontShow, Mandatory, ValueFromPipeline)]
         [ValidateNotNull()]
         [Object]$InputObject,
 
-        [Parameter(Mandatory = $true)]
+        [Parameter(Mandatory)]
         [Alias('Model')]
         [string]$Deployment,
 
@@ -39,7 +39,7 @@ function Request-AzureAudioSpeech {
         )]
         [string][LowerCaseTransformation()]$Format,
 
-        [Parameter(Mandatory = $true)]
+        [Parameter(Mandatory)]
         [ValidateNotNullOrEmpty()]
         [string]$OutFile,
 

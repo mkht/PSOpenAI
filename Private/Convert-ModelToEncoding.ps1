@@ -2,7 +2,7 @@ function Convert-ModelToEncoding {
     [CmdletBinding()]
     [OutputType([string])]
     param (
-        [Parameter(Mandatory = $true, Position = 0)]
+        [Parameter(Mandatory, Position = 0)]
         [string]$Model
     )
 

@@ -147,14 +147,14 @@ function ParseCommonParams {
 function Get-IdFromInputObject {
     [OutputType([string])]
     param (
-        [Parameter(Mandatory = $true, Position = 0)]
+        [Parameter(Mandatory, Position = 0)]
         [AllowNull()]
         [object]$InputObject,
 
-        [Parameter(Mandatory = $true, Position = 1)]
+        [Parameter(Mandatory, Position = 1)]
         [string]$Prefix,
 
-        [Parameter(Mandatory = $true, Position = 2)]
+        [Parameter(Mandatory, Position = 2)]
         [string]$KeyName
     )
 
@@ -171,7 +171,7 @@ function Get-IdFromInputObject {
 
 function Get-AssistantIdFromInputObject {
     param (
-        [Parameter(Mandatory = $true, Position = 0)]
+        [Parameter(Mandatory, Position = 0)]
         [AllowNull()]
         [object]$InputObject
     )
@@ -180,7 +180,7 @@ function Get-AssistantIdFromInputObject {
 
 function Get-ThreadIdFromInputObject {
     param (
-        [Parameter(Mandatory = $true, Position = 0)]
+        [Parameter(Mandatory, Position = 0)]
         [AllowNull()]
         [object]$InputObject
     )
@@ -189,7 +189,7 @@ function Get-ThreadIdFromInputObject {
 
 function Get-RunIdFromInputObject {
     param (
-        [Parameter(Mandatory = $true, Position = 0)]
+        [Parameter(Mandatory, Position = 0)]
         [AllowNull()]
         [object]$InputObject
     )

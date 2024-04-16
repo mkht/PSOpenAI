@@ -1,7 +1,7 @@
 function Request-ImageEdit {
     [CmdletBinding(DefaultParameterSetName = 'Format')]
     param (
-        [Parameter(Mandatory = $true)]
+        [Parameter(Mandatory)]
         [Alias('File')]
         [ValidateScript({ Test-Path -LiteralPath $_ -PathType Leaf })]
         [string]$Image,
@@ -10,7 +10,7 @@ function Request-ImageEdit {
         [ValidateScript({ Test-Path -LiteralPath $_ -PathType Leaf })]
         [string]$Mask,
 
-        [Parameter(Mandatory = $true)]
+        [Parameter(Mandatory)]
         [ValidateLength(1, 1000)]
         [string]$Prompt,
 
@@ -28,7 +28,7 @@ function Request-ImageEdit {
         [ValidateSet('url', 'base64', 'byte')]
         [string]$Format = 'url',
 
-        [Parameter(ParameterSetName = 'OutFile', Mandatory = $true)]
+        [Parameter(ParameterSetName = 'OutFile', Mandatory)]
         [ValidateNotNullOrEmpty()]
         [string]$OutFile,
 
@@ -38,16 +38,16 @@ function Request-ImageEdit {
         [Parameter()]
         [int]$TimeoutSec = 0,
 
-        # [Parameter(DontShow = $true)]
+        # [Parameter(DontShow)]
         # [OpenAIApiType]$ApiType = [OpenAIApiType]::OpenAI,
 
         [Parameter()]
         [System.Uri]$ApiBase,
 
-        # [Parameter(DontShow = $true)]
+        # [Parameter(DontShow)]
         # [string]$ApiVersion,
 
-        # [Parameter(DontShow = $true)]
+        # [Parameter(DontShow)]
         # [string]$AuthType = 'openai',
 
 

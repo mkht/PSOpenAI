@@ -2,7 +2,7 @@ function Remove-AzureThread {
     [CmdletBinding()]
     [OutputType([void])]
     param (
-        [Parameter(Mandatory = $true, Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
+        [Parameter(Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [Alias('thread_id')]
         [Alias('Thread')]
         [ValidateScript({ [bool](Get-ThreadIdFromInputObject $_) })]

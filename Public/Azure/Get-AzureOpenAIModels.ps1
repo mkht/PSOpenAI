@@ -2,7 +2,7 @@ function Get-AzureOpenAIModels {
     [CmdletBinding()]
     [OutputType([pscustomobject])]
     param (
-        [Parameter(Position = 0, ValueFromPipeline = $true)]
+        [Parameter(Position = 0, ValueFromPipeline)]
         [Alias('ID')]
         [Alias('Model')]
         [string][LowerCaseTransformation()]$Name,

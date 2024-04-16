@@ -2,14 +2,14 @@ function Start-ThreadRun {
     [CmdletBinding(DefaultParameterSetName = 'ThreadAndRun')]
     [OutputType([pscustomobject])]
     param (
-        [Parameter(Mandatory = $true, Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true, ParameterSetName = 'Run')]
-        [Parameter(Mandatory = $true, Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true, ParameterSetName = 'Run_Stream')]
+        [Parameter(Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName, ParameterSetName = 'Run')]
+        [Parameter(Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName, ParameterSetName = 'Run_Stream')]
         [Alias('thread_id')]
         [Alias('Thread')]
         [ValidateScript({ [bool](Get-ThreadIdFromInputObject $_) })]
         [Object]$InputObject,
 
-        [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
+        [Parameter(Mandatory, ValueFromPipelineByPropertyName)]
         [Alias('assistant_id')]
         [ValidateScript({ [bool](Get-AssistantIdFromInputObject $_) })]
         [Object]$Assistant,
@@ -46,8 +46,8 @@ function Start-ThreadRun {
         [object[]]$AdditionalMessages,
 
         #region Parameters for Thread and Run
-        [Parameter(Mandatory = $true, Position = 0, ParameterSetName = 'ThreadAndRun')]
-        [Parameter(Mandatory = $true, Position = 0, ParameterSetName = 'ThreadAndRun_Stream')]
+        [Parameter(Mandatory, Position = 0, ParameterSetName = 'ThreadAndRun')]
+        [Parameter(Mandatory, Position = 0, ParameterSetName = 'ThreadAndRun_Stream')]
         [Alias('Text')]
         [Alias('Content')]
         [ValidateNotNullOrEmpty()]
@@ -111,8 +111,8 @@ function Start-ThreadRun {
         [ValidateRange(0.0, 2.0)]
         [double]$Temperature,
 
-        [Parameter(Mandatory = $true, ParameterSetName = 'Run_Stream')]
-        [Parameter(Mandatory = $true, ParameterSetName = 'ThreadAndRun_Stream')]
+        [Parameter(Mandatory, ParameterSetName = 'Run_Stream')]
+        [Parameter(Mandatory, ParameterSetName = 'ThreadAndRun_Stream')]
         [switch]$Stream,
 
         [Parameter()]
@@ -127,16 +127,16 @@ function Start-ThreadRun {
         [ValidateRange(0, 100)]
         [int]$MaxRetryCount = 0,
 
-        [Parameter(DontShow = $true)]
+        [Parameter(DontShow)]
         [OpenAIApiType]$ApiType = [OpenAIApiType]::OpenAI,
 
         [Parameter()]
         [System.Uri]$ApiBase,
 
-        [Parameter(DontShow = $true)]
+        [Parameter(DontShow)]
         [string]$ApiVersion,
 
-        [Parameter(DontShow = $true)]
+        [Parameter(DontShow)]
         [string]$AuthType = 'openai',
 
         [Parameter()]

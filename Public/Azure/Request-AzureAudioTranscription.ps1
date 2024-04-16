@@ -2,11 +2,11 @@ function Request-AzureAudioTranscription {
     [CmdletBinding(DefaultParameterSetName = 'Language')]
     [OutputType([string])]
     param (
-        [Parameter(Mandatory = $true, Position = 0, ValueFromPipeline = $true)]
+        [Parameter(Mandatory, Position = 0, ValueFromPipeline)]
         [ValidateScript({ Test-Path -LiteralPath $_ -PathType Leaf })]
         [string]$File,
 
-        [Parameter(Mandatory = $true)]
+        [Parameter(Mandatory)]
         [Alias('Model')]
         [string]$Deployment,
 
@@ -25,7 +25,7 @@ function Request-AzureAudioTranscription {
         [Parameter(ParameterSetName = 'Language')]
         [string]$Language,
 
-        [Parameter(DontShow = $true, ParameterSetName = 'LiteralLanguage')]
+        [Parameter(DontShow, ParameterSetName = 'LiteralLanguage')]
         [string]$LiteralLanguage,
 
         [Parameter()]

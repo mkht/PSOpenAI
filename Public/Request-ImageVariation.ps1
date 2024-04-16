@@ -1,7 +1,7 @@
 function Request-ImageVariation {
     [CmdletBinding(DefaultParameterSetName = 'Format')]
     param (
-        [Parameter(Mandatory = $true, Position = 0, ValueFromPipeline = $true)]
+        [Parameter(Mandatory, Position = 0, ValueFromPipeline)]
         [Alias('File')]
         [ValidateScript({ Test-Path -LiteralPath $_ -PathType Leaf })]
         [string]$Image,
@@ -20,7 +20,7 @@ function Request-ImageVariation {
         [ValidateSet('url', 'base64', 'byte')]
         [string]$Format = 'url',
 
-        [Parameter(ParameterSetName = 'OutFile', Mandatory = $true)]
+        [Parameter(ParameterSetName = 'OutFile', Mandatory)]
         [ValidateNotNullOrEmpty()]
         [string]$OutFile,
 
@@ -30,16 +30,16 @@ function Request-ImageVariation {
         [Parameter()]
         [int]$TimeoutSec = 0,
 
-        # [Parameter(DontShow = $true)]
+        # [Parameter(DontShow)]
         # [OpenAIApiType]$ApiType = [OpenAIApiType]::OpenAI,
 
         [Parameter()]
         [System.Uri]$ApiBase,
 
-        # [Parameter(DontShow = $true)]
+        # [Parameter(DontShow)]
         # [string]$ApiVersion,
 
-        # [Parameter(DontShow = $true)]
+        # [Parameter(DontShow)]
         # [string]$AuthType = 'openai',
 
         [Parameter()]

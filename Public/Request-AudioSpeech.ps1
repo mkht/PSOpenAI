@@ -2,13 +2,13 @@ function Request-AudioSpeech {
     [CmdletBinding(DefaultParameterSetName = 'Default')]
     [OutputType([void])]
     param (
-        [Parameter(ParameterSetName = 'Default', Mandatory = $true, Position = 0)]
+        [Parameter(ParameterSetName = 'Default', Mandatory, Position = 0)]
         [Alias('Input')]
         [ValidateNotNullOrEmpty()]
         [string]$Text,
 
         # For pipeline input from chat completion
-        [Parameter(ParameterSetName = 'Pipeline', DontShow = $true, Mandatory = $true, ValueFromPipeline = $true)]
+        [Parameter(ParameterSetName = 'Pipeline', DontShow, Mandatory, ValueFromPipeline)]
         [ValidateNotNull()]
         [Object]$InputObject,
 
@@ -39,7 +39,7 @@ function Request-AudioSpeech {
         )]
         [string][LowerCaseTransformation()]$Format,
 
-        [Parameter(Mandatory = $true)]
+        [Parameter(Mandatory)]
         [ValidateNotNullOrEmpty()]
         [string]$OutFile,
 
@@ -54,16 +54,16 @@ function Request-AudioSpeech {
         [ValidateRange(0, 100)]
         [int]$MaxRetryCount = 0,
 
-        [Parameter(DontShow = $true)]
+        [Parameter(DontShow)]
         [OpenAIApiType]$ApiType = [OpenAIApiType]::OpenAI,
 
         [Parameter()]
         [System.Uri]$ApiBase,
 
-        [Parameter(DontShow = $true)]
+        [Parameter(DontShow)]
         [string]$ApiVersion,
 
-        [Parameter(DontShow = $true)]
+        [Parameter(DontShow)]
         [string]$AuthType = 'openai',
 
         [Parameter()]

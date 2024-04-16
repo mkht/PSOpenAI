@@ -2,7 +2,7 @@ function Request-AzureTextCompletion {
     [CmdletBinding()]
     [OutputType([pscustomobject])]
     param (
-        [Parameter(Position = 0, ValueFromPipeline = $true)]
+        [Parameter(Position = 0, ValueFromPipeline)]
         [ValidateNotNullOrEmpty()]
         [Alias('Message')]
         [string[]]$Prompt,
@@ -10,7 +10,7 @@ function Request-AzureTextCompletion {
         [Parameter()]
         [string]$Suffix,
 
-        [Parameter(Mandatory = $true)]
+        [Parameter(Mandatory)]
         [Alias('Model')]
         [string]$Deployment,
 

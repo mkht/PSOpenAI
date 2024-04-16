@@ -1,7 +1,7 @@
 function Request-AzureImageGeneration {
     [CmdletBinding(DefaultParameterSetName = 'Format')]
     param (
-        [Parameter(Mandatory = $true, Position = 0, ValueFromPipeline = $true)]
+        [Parameter(Mandatory, Position = 0, ValueFromPipeline)]
         [ValidateNotNullOrEmpty()]
         [string]$Prompt,
 
@@ -32,7 +32,7 @@ function Request-AzureImageGeneration {
         [ValidateSet('url', 'base64', 'byte', 'raw_response')]
         [string]$Format = 'url',
 
-        [Parameter(ParameterSetName = 'OutFile', Mandatory = $true)]
+        [Parameter(ParameterSetName = 'OutFile', Mandatory)]
         [ValidateNotNullOrEmpty()]
         [string]$OutFile,
 

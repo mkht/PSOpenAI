@@ -4,7 +4,7 @@ function Get-MaskedString {
     [CmdletBinding()]
     [OutputType([string])]
     param (
-        [Parameter(Mandatory, Position = 0, ValueFromPipeline = $true)]
+        [Parameter(Mandatory, Position = 0, ValueFromPipeline)]
         [AllowEmptyString()]
         [string]$Source,
 

@@ -2,7 +2,7 @@ function Wait-AzureThreadRun {
     [CmdletBinding(DefaultParameterSetName = 'StatusForWait')]
     [OutputType([pscustomobject])]
     param (
-        [Parameter(Mandatory = $true, Position = 0, ValueFromPipeline = $true)]
+        [Parameter(Mandatory, Position = 0, ValueFromPipeline)]
         [ValidateScript({ ([string]$_.id).StartsWith('run_', [StringComparison]::Ordinal) -and ([string]$_.thread_id).StartsWith('thread_', [StringComparison]::Ordinal) })]
         [Alias('Run')]
         [Object]$InputObject,
