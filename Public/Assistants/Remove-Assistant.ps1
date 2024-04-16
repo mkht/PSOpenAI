@@ -2,7 +2,7 @@ function Remove-Assistant {
     [CmdletBinding()]
     [OutputType([void])]
     param (
-        [Parameter(Mandatory = $true, Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
+        [Parameter(Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [Alias('assistant_id')]
         [Alias('Assistant')]
         [ValidateScript({ [bool](Get-AssistantIdFromInputObject $_) })]
@@ -15,16 +15,16 @@ function Remove-Assistant {
         [ValidateRange(0, 100)]
         [int]$MaxRetryCount = 0,
 
-        [Parameter(DontShow = $true)]
+        [Parameter(DontShow)]
         [OpenAIApiType]$ApiType = [OpenAIApiType]::OpenAI,
 
         [Parameter()]
         [System.Uri]$ApiBase,
 
-        [Parameter(DontShow = $true)]
+        [Parameter(DontShow)]
         [string]$ApiVersion,
 
-        [Parameter(DontShow = $true)]
+        [Parameter(DontShow)]
         [string]$AuthType = 'openai',
 
         [Parameter()]

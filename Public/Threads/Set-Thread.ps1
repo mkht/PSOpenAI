@@ -2,7 +2,7 @@ function Set-Thread {
     [CmdletBinding()]
     [OutputType([pscustomobject])]
     param (
-        [Parameter(Mandatory = $true, Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
+        [Parameter(Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [Alias('thread_id')]
         [Alias('Thread')]
         [ValidateScript({ [bool](Get-ThreadIdFromInputObject $_) })]
@@ -18,16 +18,16 @@ function Set-Thread {
         [ValidateRange(0, 100)]
         [int]$MaxRetryCount = 0,
 
-        [Parameter(DontShow = $true)]
+        [Parameter(DontShow)]
         [OpenAIApiType]$ApiType = [OpenAIApiType]::OpenAI,
 
         [Parameter()]
         [System.Uri]$ApiBase,
 
-        [Parameter(DontShow = $true)]
+        [Parameter(DontShow)]
         [string]$ApiVersion,
 
-        [Parameter(DontShow = $true)]
+        [Parameter(DontShow)]
         [string]$AuthType = 'openai',
 
         [Parameter()]

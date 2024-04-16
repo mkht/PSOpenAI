@@ -3,14 +3,14 @@ function New-AzureAssistant {
     [OutputType([pscustomobject])]
     param (
         # Hidden param, for Set-Assistants cmdlet
-        [Parameter(DontShow = $true, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
+        [Parameter(DontShow, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [Object]$InputObject,
 
         [Parameter()]
         [ValidateLength(0, 256)]
         [string]$Name,
 
-        [Parameter(Mandatory = $true)]
+        [Parameter(Mandatory)]
         [Alias('Model')]
         [string]$Deployment,
 

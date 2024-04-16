@@ -2,7 +2,7 @@ function Request-AudioTranscription {
     [CmdletBinding(DefaultParameterSetName = 'Language')]
     [OutputType([string])]
     param (
-        [Parameter(Mandatory = $true, Position = 0, ValueFromPipeline = $true)]
+        [Parameter(Mandatory, Position = 0, ValueFromPipeline)]
         [ValidateScript({ Test-Path -LiteralPath $_ -PathType Leaf })]
         [string]$File,
 
@@ -30,7 +30,7 @@ function Request-AudioTranscription {
         [Parameter(ParameterSetName = 'Language')]
         [string]$Language,
 
-        [Parameter(DontShow = $true, ParameterSetName = 'LiteralLanguage')]
+        [Parameter(DontShow, ParameterSetName = 'LiteralLanguage')]
         [string]$LiteralLanguage,
 
         [Parameter()]
@@ -40,16 +40,16 @@ function Request-AudioTranscription {
         [ValidateRange(0, 100)]
         [int]$MaxRetryCount = 0,
 
-        [Parameter(DontShow = $true)]
+        [Parameter(DontShow)]
         [OpenAIApiType]$ApiType = [OpenAIApiType]::OpenAI,
 
         [Parameter()]
         [System.Uri]$ApiBase,
 
-        [Parameter(DontShow = $true)]
+        [Parameter(DontShow)]
         [string]$ApiVersion,
 
-        [Parameter(DontShow = $true)]
+        [Parameter(DontShow)]
         [string]$AuthType = 'openai',
 
         [Parameter()]

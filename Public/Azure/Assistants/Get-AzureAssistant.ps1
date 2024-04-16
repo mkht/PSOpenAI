@@ -2,7 +2,7 @@ function Get-AzureAssistant {
     [CmdletBinding(DefaultParameterSetName = 'List')]
     [OutputType([pscustomobject])]
     param (
-        [Parameter(ParameterSetName = 'Get', Mandatory = $true, Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
+        [Parameter(ParameterSetName = 'Get', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [Alias('assistant_id')]
         [Alias('Assistant')]
         [ValidateScript({ [bool](Get-AssistantIdFromInputObject $_) })]
@@ -15,10 +15,10 @@ function Get-AzureAssistant {
         [Parameter(ParameterSetName = 'ListAll')]
         [switch]$All,
 
-        [Parameter(ParameterSetName = 'ListAll', DontShow = $true)]
+        [Parameter(ParameterSetName = 'ListAll', DontShow)]
         [string]$After,
 
-        [Parameter(ParameterSetName = 'ListAll', DontShow = $true)]
+        [Parameter(ParameterSetName = 'ListAll', DontShow)]
         [string]$Before,
 
         [Parameter(ParameterSetName = 'List')]

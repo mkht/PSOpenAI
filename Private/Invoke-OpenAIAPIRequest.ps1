@@ -17,13 +17,13 @@ function Invoke-OpenAIAPIRequest {
         [Parameter()]
         [string]$Method = 'Post',
 
-        [Parameter(Mandatory = $true)]
+        [Parameter(Mandatory)]
         [System.Uri]$Uri,
 
         [Parameter()]
         [string]$ContentType = 'application/json',
 
-        [Parameter(Mandatory = $true)]
+        [Parameter(Mandatory)]
         [ValidateNotNull()]
         [securestring]$ApiKey,
 

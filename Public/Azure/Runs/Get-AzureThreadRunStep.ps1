@@ -2,12 +2,12 @@ function Get-AzureThreadRunStep {
     [CmdletBinding(DefaultParameterSetName = 'List')]
     [OutputType([pscustomobject])]
     param (
-        [Parameter(ParameterSetName = 'Get', Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
+        [Parameter(ParameterSetName = 'Get', Mandatory, ValueFromPipelineByPropertyName)]
         [Alias('step_id')]
         [ValidateNotNullOrEmpty()]
         [string][UrlEncodeTransformation()]$StepId,
 
-        [Parameter(Mandatory = $true, Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
+        [Parameter(Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [ValidateScript({ ([string]$_.id).StartsWith('run_', [StringComparison]::Ordinal) -and ([string]$_.thread_id).StartsWith('thread_', [StringComparison]::Ordinal) })]
         [Alias('Run')]
         [Object]$InputObject,
@@ -19,10 +19,10 @@ function Get-AzureThreadRunStep {
         [Parameter(ParameterSetName = 'ListAll')]
         [switch]$All,
 
-        [Parameter(ParameterSetName = 'ListAll', DontShow = $true)]
+        [Parameter(ParameterSetName = 'ListAll', DontShow)]
         [string]$After,
 
-        [Parameter(ParameterSetName = 'ListAll', DontShow = $true)]
+        [Parameter(ParameterSetName = 'ListAll', DontShow)]
         [string]$Before,
 
         [Parameter(ParameterSetName = 'List')]

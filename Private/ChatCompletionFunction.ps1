@@ -3,7 +3,7 @@ using namespace System.Management.Automation
 function New-ChatCompletionFunctionFromHashTable {
     [CmdletBinding()]
     param (
-        [Parameter(Mandatory = $true, Position = 0)]
+        [Parameter(Mandatory, Position = 0)]
         [ValidatePattern('^[a-zA-Z0-9_-]{1,64}$')]
         [string]$Name,
 
@@ -13,7 +13,7 @@ function New-ChatCompletionFunctionFromHashTable {
         [Parameter()]
         [System.Collections.IDictionary]$ParametersHashTable,
 
-        [Parameter(DontShow = $true)]
+        [Parameter(DontShow)]
         [string]$ParametersType = 'object'
     )
 

@@ -3,10 +3,10 @@ function New-Thread {
     [OutputType([pscustomobject])]
     param (
         # Hidden param, for Set-Thread cmdlet
-        [Parameter(DontShow = $true, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
+        [Parameter(DontShow, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [Object]$InputObject,
 
-        [Parameter(DontShow = $true)]
+        [Parameter(DontShow)]
         [object[]]$Messages,
 
         [Parameter()]
@@ -19,16 +19,16 @@ function New-Thread {
         [ValidateRange(0, 100)]
         [int]$MaxRetryCount = 0,
 
-        [Parameter(DontShow = $true)]
+        [Parameter(DontShow)]
         [OpenAIApiType]$ApiType = [OpenAIApiType]::OpenAI,
 
         [Parameter()]
         [System.Uri]$ApiBase,
 
-        [Parameter(DontShow = $true)]
+        [Parameter(DontShow)]
         [string]$ApiVersion,
 
-        [Parameter(DontShow = $true)]
+        [Parameter(DontShow)]
         [string]$AuthType = 'openai',
 
         [Parameter()]

@@ -3,7 +3,7 @@ function Request-ChatCompletion {
     [OutputType([pscustomobject])]
     [Alias('Request-ChatGPT')]
     param (
-        [Parameter(Mandatory = $false, Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
+        [Parameter(Mandatory = $false, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [Alias('Text')]
         [ValidateNotNullOrEmpty()]
         [string]$Message,
@@ -54,7 +54,7 @@ function Request-ChatCompletion {
         [System.Collections.IDictionary[]]$Tools,
 
         # deprecated
-        [Parameter(DontShow = $true)]
+        [Parameter(DontShow)]
         [ValidateNotNullOrEmpty()]
         [System.Collections.IDictionary[]]$Functions,
 
@@ -64,7 +64,7 @@ function Request-ChatCompletion {
         [object]$ToolChoice,
 
         # deprecated
-        [Parameter(DontShow = $true)]
+        [Parameter(DontShow)]
         [Alias('function_call')]
         [Completions('none', 'auto')]
         [object]$FunctionCall,
@@ -75,7 +75,7 @@ function Request-ChatCompletion {
         [string]$InvokeTools = 'None',
 
         # deprecated
-        [Parameter(DontShow = $true)]
+        [Parameter(DontShow)]
         [uint16]$MaxFunctionCallCount,
         #endregion Function call params
 
@@ -145,16 +145,16 @@ function Request-ChatCompletion {
         [ValidateRange(0, 100)]
         [int]$MaxRetryCount = 0,
 
-        [Parameter(DontShow = $true)]
+        [Parameter(DontShow)]
         [OpenAIApiType]$ApiType = [OpenAIApiType]::OpenAI,
 
         [Parameter()]
         [System.Uri]$ApiBase,
 
-        [Parameter(DontShow = $true)]
+        [Parameter(DontShow)]
         [string]$ApiVersion,
 
-        [Parameter(DontShow = $true)]
+        [Parameter(DontShow)]
         [string]$AuthType = 'openai',
 
         [Parameter()]
@@ -164,7 +164,7 @@ function Request-ChatCompletion {
         [Alias('OrgId')]
         [string]$Organization,
 
-        [Parameter(ValueFromPipelineByPropertyName = $true)]
+        [Parameter(ValueFromPipelineByPropertyName)]
         [object[]]$History,
 
         [Parameter()]

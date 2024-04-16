@@ -2,11 +2,11 @@ function Register-OpenAIFile {
     [CmdletBinding()]
     [OutputType([pscustomobject])]
     param (
-        [Parameter(Mandatory = $true, Position = 0, ValueFromPipeline = $true)]
+        [Parameter(Mandatory, Position = 0, ValueFromPipeline)]
         [ValidateScript({ Test-Path -LiteralPath $_ -PathType Leaf })]
         [string]$File,
 
-        [Parameter(Mandatory = $true)]
+        [Parameter(Mandatory)]
         [Completions('assistants', 'fine-tune')]
         [ValidateNotNullOrEmpty()]
         [string][LowerCaseTransformation()]$Purpose,
@@ -18,16 +18,16 @@ function Register-OpenAIFile {
         [ValidateRange(0, 100)]
         [int]$MaxRetryCount = 0,
 
-        [Parameter(DontShow = $true)]
+        [Parameter(DontShow)]
         [OpenAIApiType]$ApiType = [OpenAIApiType]::OpenAI,
 
         [Parameter()]
         [System.Uri]$ApiBase,
 
-        [Parameter(DontShow = $true)]
+        [Parameter(DontShow)]
         [string]$ApiVersion,
 
-        [Parameter(DontShow = $true)]
+        [Parameter(DontShow)]
         [string]$AuthType = 'openai',
 
         [Parameter()]

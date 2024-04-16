@@ -1,7 +1,7 @@
 function Request-ImageGeneration {
     [CmdletBinding(DefaultParameterSetName = 'Format')]
     param (
-        [Parameter(Mandatory = $true, Position = 0, ValueFromPipeline = $true)]
+        [Parameter(Mandatory, Position = 0, ValueFromPipeline)]
         [ValidateNotNullOrEmpty()]
         [string]$Prompt,
 
@@ -34,7 +34,7 @@ function Request-ImageGeneration {
         [ValidateSet('url', 'base64', 'byte', 'raw_response')]
         [string]$Format = 'url',
 
-        [Parameter(ParameterSetName = 'OutFile', Mandatory = $true)]
+        [Parameter(ParameterSetName = 'OutFile', Mandatory)]
         [ValidateNotNullOrEmpty()]
         [string]$OutFile,
 
@@ -44,16 +44,16 @@ function Request-ImageGeneration {
         [Parameter()]
         [int]$TimeoutSec = 0,
 
-        [Parameter(DontShow = $true)]
+        [Parameter(DontShow)]
         [OpenAIApiType]$ApiType = [OpenAIApiType]::OpenAI,
 
         [Parameter()]
         [System.Uri]$ApiBase,
 
-        [Parameter(DontShow = $true)]
+        [Parameter(DontShow)]
         [string]$ApiVersion,
 
-        [Parameter(DontShow = $true)]
+        [Parameter(DontShow)]
         [string]$AuthType = 'openai',
 
         [Parameter()]

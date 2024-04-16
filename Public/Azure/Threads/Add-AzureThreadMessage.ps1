@@ -2,13 +2,13 @@ function Add-AzureThreadMessage {
     [CmdletBinding()]
     [OutputType([pscustomobject])]
     param (
-        [Parameter(Mandatory = $true, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
+        [Parameter(Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [Alias('thread_id')]
         [Alias('Thread')]
         [ValidateScript({ [bool](Get-ThreadIdFromInputObject $_) })]
         [Object]$InputObject,
 
-        [Parameter(Mandatory = $true, Position = 0)]
+        [Parameter(Mandatory, Position = 0)]
         [Alias('Text')]
         [Alias('Content')]
         [ValidateNotNullOrEmpty()]

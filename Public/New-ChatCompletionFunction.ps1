@@ -2,11 +2,11 @@ function New-ChatCompletionFunction {
     [OutputType([System.Collections.Specialized.OrderedDictionary])]
     [CmdletBinding(DefaultParameterSetName = 'PSCommand')]
     param (
-        # [Parameter(ParameterSetName = 'Manual' , Mandatory = $true, Position = 0)]
+        # [Parameter(ParameterSetName = 'Manual' , Mandatory, Position = 0)]
         # [ValidatePattern('^[a-zA-Z0-9_-]{1,64}$')]
         # [string]$Name,
 
-        [Parameter(ParameterSetName = 'PSCommand' , Mandatory = $true, Position = 0)]
+        [Parameter(ParameterSetName = 'PSCommand' , Mandatory, Position = 0)]
         [ValidatePattern('^[a-zA-Z0-9_-]{1,64}$')]
         [ValidateScript({ (Get-Command $_ -ea Ignore) -is [CommandInfo] })]
         [string]$Command,
@@ -18,7 +18,7 @@ function New-ChatCompletionFunction {
         # [Parameter(ParameterSetName = 'Manual')]
         # [System.Collections.IDictionary]$ParametersHashTable,
 
-        # [Parameter(ParameterSetName = 'Manual', DontShow = $true)]
+        # [Parameter(ParameterSetName = 'Manual', DontShow)]
         # [string]$ParametersType = 'object',
 
         [Parameter(ParameterSetName = 'PSCommand')]

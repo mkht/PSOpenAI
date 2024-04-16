@@ -3,10 +3,10 @@ function New-AzureThread {
     [OutputType([pscustomobject])]
     param (
         # Hidden param, for Set-Thread cmdlet
-        [Parameter(DontShow = $true, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
+        [Parameter(DontShow, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [Object]$InputObject,
 
-        [Parameter(DontShow = $true)]
+        [Parameter(DontShow)]
         [object[]]$Messages,
 
         [Parameter()]

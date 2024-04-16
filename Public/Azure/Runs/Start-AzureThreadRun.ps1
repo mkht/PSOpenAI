@@ -2,13 +2,13 @@ function Start-AzureThreadRun {
     [CmdletBinding()]
     [OutputType([pscustomobject])]
     param (
-        [Parameter(Mandatory = $true, Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
+        [Parameter(Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [Alias('thread_id')]
         [Alias('Thread')]
         [ValidateScript({ [bool](Get-ThreadIdFromInputObject $_) })]
         [Object]$InputObject,
 
-        [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
+        [Parameter(Mandatory, ValueFromPipelineByPropertyName)]
         [Alias('assistant_id')]
         [ValidateScript({ [bool](Get-AssistantIdFromInputObject $_) })]
         [Object]$Assistant,
