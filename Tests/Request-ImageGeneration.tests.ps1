@@ -101,7 +101,6 @@ Describe 'Request-ImageGeneration' {
                     TimeoutSec  = 30
                     ErrorAction = 'Stop'
                 }
-
                 $script:Result = Request-ImageGeneration @params
             } | Should -Not -Throw
             $Result | Should -BeOfType [string]
@@ -116,7 +115,6 @@ Describe 'Request-ImageGeneration' {
                     TimeoutSec  = 30
                     ErrorAction = 'Stop'
                 }
-
                 $script:Result = Request-ImageGeneration @params
             } | Should -Not -Throw
             $Result.GetType().Name | Should -Be 'Byte[]'
@@ -134,7 +132,6 @@ Describe 'Request-ImageGeneration' {
                     MaxRetryCount = 5
                     ErrorAction   = 'Stop'
                 }
-
                 $script:Result = Request-ImageGeneration @params
             } | Should -Not -Throw
             $Result | Should -BeOfType [string]
