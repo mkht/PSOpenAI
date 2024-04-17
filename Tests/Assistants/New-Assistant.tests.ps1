@@ -50,7 +50,7 @@ Describe 'New-Assistant' {
                     UseRetrieval       = $true
                     ErrorAction        = 'Stop'
                 }
-                $script:Result = New-Assistant @params
+                $script:Result = New-Assistant @paramss
             } | Should -Not -Throw
             Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName
             $Result.id | Should -BeExactly 'asst_abc123'
@@ -79,7 +79,7 @@ Describe 'New-Assistant' {
                     UseRetrieval       = $true
                     ErrorAction        = 'Stop'
                 }
-                $script:Result = New-Assistant @params
+                $script:Result = New-Assistant @paramss
             } | Should -Not -Throw
             $Result.id | Should -BeLike 'asst_*'
             $Result.object | Should -BeExactly 'assistant'

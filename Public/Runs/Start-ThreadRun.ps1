@@ -336,7 +336,7 @@ function Start-ThreadRun {
                 AdditionalHeaders = $AdditionalHeaders
                 AdditionalBody    = $AdditionalBody
             }
-            Invoke-OpenAIAPIRequest @param |
+            Invoke-OpenAIAPIRequest @params |
                 Where-Object {
                 -not [string]::IsNullOrEmpty($_)
             } | ForEach-Object {
@@ -388,7 +388,7 @@ function Start-ThreadRun {
             AdditionalHeaders = $AdditionalHeaders
             AdditionalBody    = $AdditionalBody
         }
-        $Response = Invoke-OpenAIAPIRequest @param
+        $Response = Invoke-OpenAIAPIRequest @params
 
         # error check
         if ($null -eq $Response) {

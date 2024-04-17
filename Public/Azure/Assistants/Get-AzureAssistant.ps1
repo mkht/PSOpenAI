@@ -64,7 +64,7 @@ function Get-AzureAssistant {
 
         # Invoke
         $steppablePipeline = {
-            PSOpenAI\Get-Assistant @Parameters
+            PSOpenAI\Get-Assistant @paramseters
         }.GetSteppablePipeline($myInvocation.CommandOrigin)
         $steppablePipeline.Begin($PSCmdlet)
     }

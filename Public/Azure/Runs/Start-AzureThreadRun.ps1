@@ -80,7 +80,7 @@ function Start-AzureThreadRun {
 
         # Invoke
         $steppablePipeline = {
-            PSOpenAI\Start-ThreadRun @Parameters
+            PSOpenAI\Start-ThreadRun @paramseters
         }.GetSteppablePipeline($myInvocation.CommandOrigin)
         $steppablePipeline.Begin($PSCmdlet)
     }

@@ -147,7 +147,7 @@ function Invoke-OpenAIAPIRequest {
             TimeoutSec    = $TimeoutSec
             MaxRetryCount = $MaxRetryCount
         }
-        Invoke-OpenAIAPIRequestSSE @param
+        Invoke-OpenAIAPIRequestSSE @params
         return
     }
     #endregion
@@ -245,7 +245,7 @@ function Invoke-OpenAIAPIRequest {
             Last                 = $lastIdx
             MaxNumberOfAsterisks = 45
         }
-        Write-Debug @param
+        Write-Debug @params
 
         $params = @{
             Message              = 'Post body: ' + $Body
@@ -254,7 +254,7 @@ function Invoke-OpenAIAPIRequest {
             Last                 = $lastIdx
             MaxNumberOfAsterisks = 45
         }
-        Write-Debug @param
+        Write-Debug @params
     }
 
     #region Send API Request
@@ -333,7 +333,7 @@ function Invoke-OpenAIAPIRequest {
             MaxNumberOfAsterisks = 45
         }
 
-        $maskedString1 = Get-MaskedString @param1
+        $maskedString1 = Get-MaskedString @params1
         Write-Debug -Message $maskedString1
 
         $param2 = @{
@@ -344,7 +344,7 @@ function Invoke-OpenAIAPIRequest {
             MaxNumberOfAsterisks = 45
         }
 
-        $maskedString2 = Get-MaskedString @param2
+        $maskedString2 = Get-MaskedString @params2
         Write-Debug -Message $maskedString2
     }
 

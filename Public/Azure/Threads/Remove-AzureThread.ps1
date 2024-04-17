@@ -46,7 +46,7 @@ function Remove-AzureThread {
 
         # Invoke
         $steppablePipeline = {
-            PSOpenAI\Remove-Thread @Parameters
+            PSOpenAI\Remove-Thread @paramseters
         }.GetSteppablePipeline($myInvocation.CommandOrigin)
         $steppablePipeline.Begin($PSCmdlet)
     }

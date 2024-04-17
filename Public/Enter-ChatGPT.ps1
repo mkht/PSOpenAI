@@ -131,7 +131,7 @@ function Enter-ChatGPT {
 
             #Request to ChatGPT
             Write-Host "$($PSStyle.Background.Green)$($PSStyle.Bold)Assistant:$($PSStyle.Reset)>>>"
-            Request-ChatGPT -Message $UserPrompt -History @($ConvasationList.ToArray()) -Stream -InformationVariable answer @Parametershash | Write-Host -NoNewline
+            Request-ChatGPT -Message $UserPrompt -History @($ConvasationList.ToArray()) -Stream -InformationVariable answer @paramsetershash | Write-Host -NoNewline
             Write-Host "`r`n"
 
             #Save dialogs for next chat

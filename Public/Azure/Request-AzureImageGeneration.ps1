@@ -96,7 +96,7 @@ function Request-AzureImageGeneration {
 
             # Invoke Request-ImageGeneration
             $steppablePipeline = {
-                Request-ImageGeneration @Parameters
+                Request-ImageGeneration @paramseters
             }.GetSteppablePipeline($myInvocation.CommandOrigin)
             $steppablePipeline.Begin($PSCmdlet)
         }
@@ -156,7 +156,7 @@ function Request-AzureImageGeneration {
                 AdditionalHeaders = $AdditionalHeaders
                 AdditionalBody    = $AdditionalBody
             }
-            $Response = Invoke-OpenAIAPIRequest @param
+            $Response = Invoke-OpenAIAPIRequest @params
 
             # error check
             if ($null -eq $Response -or $Response.StatusDescription -ne 'Accepted') {
@@ -205,7 +205,7 @@ function Request-AzureImageGeneration {
                         AdditionalBody    = $AdditionalBody
                         Verbose           = $false
                     }
-                    $SubResponse = Invoke-OpenAIAPIRequest @param
+                    $SubResponse = Invoke-OpenAIAPIRequest @params
                     if ($null -ne $SubResponse) {
                         $ResponseContent = $SubResponse | ConvertFrom-Json -ea Stop
                     }
@@ -259,7 +259,7 @@ function Request-AzureImageGeneration {
                         OutFile         = $OutFile
                         UseBasicParsing = $true
                     }
-                    Invoke-WebRequest @param
+                    Invoke-WebRequest @params
                 }
             }
             elseif ($Format -eq 'url') {

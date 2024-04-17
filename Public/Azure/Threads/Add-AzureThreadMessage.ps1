@@ -66,7 +66,7 @@ function Add-AzureThreadMessage {
 
         # Invoke
         $steppablePipeline = {
-            PSOpenAI\Add-ThreadMessage @Parameters
+            PSOpenAI\Add-ThreadMessage @paramseters
         }.GetSteppablePipeline($myInvocation.CommandOrigin)
         $steppablePipeline.Begin($PSCmdlet)
     }

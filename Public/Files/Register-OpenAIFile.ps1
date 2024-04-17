@@ -89,7 +89,7 @@ function Register-OpenAIFile {
             AdditionalHeaders = $AdditionalHeaders
             AdditionalBody    = $AdditionalBody
         }
-        $Response = Invoke-OpenAIAPIRequest @param
+        $Response = Invoke-OpenAIAPIRequest @params
 
         # error check
         if ($null -eq $Response) {

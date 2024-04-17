@@ -54,7 +54,7 @@ function Stop-AzureThreadRun {
 
         # Invoke
         $steppablePipeline = {
-            PSOpenAI\Stop-ThreadRun @Parameters
+            PSOpenAI\Stop-ThreadRun @paramseters
         }.GetSteppablePipeline($myInvocation.CommandOrigin)
         $steppablePipeline.Begin($PSCmdlet)
     }

@@ -160,7 +160,7 @@ function Request-AzureChatCompletion {
 
         # Invoke Request-ChatCompletion
         $steppablePipeline = {
-            Request-ChatCompletion @Parameters
+            Request-ChatCompletion @paramseters
         }.GetSteppablePipeline($myInvocation.CommandOrigin)
         $steppablePipeline.Begin($PSCmdlet)
     }

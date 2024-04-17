@@ -505,7 +505,7 @@ Describe 'Request-ChatCompletion' {
                     InvokeTools = 'None'
                     ErrorAction = 'Stop'
                 }
-                $script:Result = Request-ChatCompletion @params
+                $script:Result = Request-ChatCompletion @paramss
             } | Should -Not -Throw
             $Result.Answer | Should -BeNullOrEmpty
             $Result.Message | Should -Be $Message
@@ -538,7 +538,7 @@ Describe 'Request-ChatCompletion' {
                     InvokeTools = 'Auto'
                     ErrorAction = 'Stop'
                 }
-                $script:Result = Request-ChatCompletion @params
+                $script:Result = Request-ChatCompletion @paramss
             } | Should -Not -Throw
             $Result.Answer | Should -Not -BeNullOrEmpty
             $Result.Message | Should -Be $Message
@@ -575,7 +575,7 @@ Describe 'Request-ChatCompletion' {
                     InvokeFunctionOnCallMode = 'None'
                     ErrorAction              = 'Stop'
                 }
-                $script:Result = Request-ChatCompletion @params
+                $script:Result = Request-ChatCompletion @paramss
             } | Should -Not -Throw
             $Result.Answer | Should -BeNullOrEmpty
             $Result.Message | Should -Be $Message
@@ -605,7 +605,7 @@ Describe 'Request-ChatCompletion' {
                     InvokeFunctionOnCallMode = 'Auto'
                     ErrorAction              = 'Stop'
                 }
-                $script:Result = Request-ChatCompletion @params
+                $script:Result = Request-ChatCompletion @paramss
             } | Should -Not -Throw
             $Result.Answer | Should -Not -BeNullOrEmpty
             $Result.Message | Should -Be $Message
@@ -628,7 +628,7 @@ Describe 'Request-ChatCompletion' {
                 TimeoutSec          = 30
                 ErrorAction         = 'Stop'
             }
-            $Result = Request-ChatCompletion @params | Select-Object -First 10
+            $Result = Request-ChatCompletion @paramss | Select-Object -First 10
             $Result | Should -HaveCount 10
             ([string[]]$Info) | Should -Be ([string[]]$Result)
         }

@@ -98,7 +98,7 @@ function Get-Thread {
             AdditionalHeaders = $AdditionalHeaders
             AdditionalBody    = $AdditionalBody
         }
-        $Response = Invoke-OpenAIAPIRequest @params
+        $Response = Invoke-OpenAIAPIRequest @paramss
 
         # error check
         if ($null -eq $Response) {

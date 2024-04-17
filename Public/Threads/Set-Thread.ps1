@@ -53,7 +53,7 @@ function Set-Thread {
 
         # Invoke base function
         $steppablePipeline = {
-            PSOpenAI\New-Thread @Parameters
+            PSOpenAI\New-Thread @paramseters
         }.GetSteppablePipeline($myInvocation.CommandOrigin)
         $steppablePipeline.Begin($PSCmdlet)
     }

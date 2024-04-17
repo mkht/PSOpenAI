@@ -61,7 +61,7 @@ Describe 'Request-ImageEdit' {
                     TimeoutSec  = 30
                     ErrorAction = 'Stop'
                 }
-                $script:Result = Request-ImageEdit @params
+                $script:Result = Request-ImageEdit @paramss
             } | Should -Not -Throw
             $Result | Should -BeNullOrEmpty
             (Join-Path $TestDrive 'file1.png') | Should -Exist
@@ -77,7 +77,7 @@ Describe 'Request-ImageEdit' {
                     ErrorAction = 'Stop'
                 }
 
-                $script:Result = Request-ImageEdit @params
+                $script:Result = Request-ImageEdit @paramss
             } | Should -Not -Throw
             $Result | Should -BeOfType [string]
             $Result | Should -Match '^https://'
@@ -92,7 +92,7 @@ Describe 'Request-ImageEdit' {
                     TimeoutSec  = 30
                     ErrorAction = 'Stop'
                 }
-                $script:Result = Request-ImageEdit @params
+                $script:Result = Request-ImageEdit @paramss
             } | Should -Not -Throw
             $Result | Should -BeOfType [string]
             { [Convert]::FromBase64String($script:Result) } | Should -Not -Throw
@@ -107,7 +107,7 @@ Describe 'Request-ImageEdit' {
                     TimeoutSec  = 30
                     ErrorAction = 'Stop'
                 }
-                $script:Result = Request-ImageEdit @params
+                $script:Result = Request-ImageEdit @paramss
             } | Should -Not -Throw
             $Result.GetType().Name | Should -Be 'Byte[]'
             $Result.Count | Should -BeGreaterThan 1
@@ -122,7 +122,7 @@ Describe 'Request-ImageEdit' {
                     TimeoutSec  = 30
                     ErrorAction = 'Stop'
                 }
-                Request-ImageEdit @params
+                Request-ImageEdit @paramss
             } | Should -Not -Throw
         }
     }

@@ -213,7 +213,7 @@ function Request-TextCompletion {
                 AdditionalHeaders = $AdditionalHeaders
                 AdditionalBody    = $AdditionalBody
             }
-            Invoke-OpenAIAPIRequest @params |
+            Invoke-OpenAIAPIRequest @paramss |
                 Where-Object {
                 -not [string]::IsNullOrEmpty($_)
             } | ForEach-Object {
@@ -253,7 +253,7 @@ function Request-TextCompletion {
                 AdditionalHeaders = $AdditionalHeaders
                 AdditionalBody    = $AdditionalBody
             }
-            $Response = Invoke-OpenAIAPIRequest @params
+            $Response = Invoke-OpenAIAPIRequest @paramss
 
             # error check
             if ($null -eq $Response) {

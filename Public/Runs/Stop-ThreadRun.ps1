@@ -115,7 +115,7 @@ function Stop-ThreadRun {
             AdditionalHeaders = $AdditionalHeaders
             AdditionalBody    = $AdditionalBody
         }
-        Invoke-OpenAIAPIRequest @param
+        Invoke-OpenAIAPIRequest @params
 
         # error check
         if ($null -eq $Response) {

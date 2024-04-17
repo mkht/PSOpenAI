@@ -43,7 +43,7 @@ Describe 'Request-AudioTranscription' {
                 File     = $script:TestData + '/voice_japanese.mp3'
                 Language = 'English'
             }
-            $Result = Request-AudioTranscription @params
+            $Result = Request-AudioTranscription @paramss
             $Result.Body.language | Should -BeExactly 'en'
         }
 
@@ -52,7 +52,7 @@ Describe 'Request-AudioTranscription' {
                 File     = $script:TestData + '/voice_japanese.mp3'
                 Language = 'Unknown'
             }
-            $Result = Request-AudioTranscription @params
+            $Result = Request-AudioTranscription @paramss
             $Result.Body.language | Should -BeExactly 'Unknown'
         }
 
@@ -61,7 +61,7 @@ Describe 'Request-AudioTranscription' {
                 File            = $script:TestData + '/voice_japanese.mp3'
                 LiteralLanguage = 'English'
             }
-            $Result = Request-AudioTranscription @params
+            $Result = Request-AudioTranscription @paramss
             $Result.Body.language | Should -BeExactly 'English'
         }
     }
@@ -86,7 +86,7 @@ Describe 'Request-AudioTranscription' {
                     ErrorAction = 'Stop'
                 }
 
-                $script:Text = Request-AudioTranscription @params
+                $script:Text = Request-AudioTranscription @paramss
             } | Should -Not -Throw
             $ret = ($Text | ConvertFrom-Json)
             $ret.text.Length | Should -BeGreaterThan 1

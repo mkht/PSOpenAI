@@ -58,7 +58,7 @@ Describe 'Request-AudioTranslation' {
                     TimeoutSec  = 30
                     ErrorAction = 'Stop'
                 }
-                $script:Text = Request-AudioTranslation @params
+                $script:Text = Request-AudioTranslation @paramss
             } | Should -Not -Throw
             $ret = ($Text | ConvertFrom-Json)
             $ret.text.Length | Should -BeGreaterThan 1

@@ -47,7 +47,7 @@ function Remove-AzureAssistant {
 
         # Invoke
         $steppablePipeline = {
-            PSOpenAI\Remove-Assistant @Parameters
+            PSOpenAI\Remove-Assistant @paramseters
         }.GetSteppablePipeline($myInvocation.CommandOrigin)
         $steppablePipeline.Begin($PSCmdlet)
     }

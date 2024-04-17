@@ -128,7 +128,7 @@ Describe 'Start-ThreadRun' {
                     Assistant   = $script:Assistant
                     ErrorAction = 'Stop'
                 }
-                $script:Result = $script:Thread | Start-ThreadRun @params
+                $script:Result = $script:Thread | Start-ThreadRun @paramss
             } | Should -Not -Throw
             $Result.id | Should -BeLike 'run_*'
             $Result.thread_id | Should -Be $script:Thread.id

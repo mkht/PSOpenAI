@@ -49,7 +49,7 @@ function Get-AzureOpenAIFileContent {
 
         # Invoke
         $steppablePipeline = {
-            PSOpenAI\Get-OpenAIFileContent @Parameters
+            PSOpenAI\Get-OpenAIFileContent @paramseters
         }.GetSteppablePipeline($myInvocation.CommandOrigin)
         $steppablePipeline.Begin($PSCmdlet)
     }

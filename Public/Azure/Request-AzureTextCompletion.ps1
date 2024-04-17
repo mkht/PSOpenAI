@@ -104,7 +104,7 @@ function Request-AzureTextCompletion {
 
         # Invoke base function
         $steppablePipeline = {
-            Request-TextCompletion @Parameters
+            Request-TextCompletion @paramseters
         }.GetSteppablePipeline($myInvocation.CommandOrigin)
         $steppablePipeline.Begin($PSCmdlet)
     }

@@ -73,7 +73,7 @@ function Wait-AzureThreadRun {
 
         # Invoke
         $steppablePipeline = {
-            PSOpenAI\Wait-ThreadRun @Parameters
+            PSOpenAI\Wait-ThreadRun @paramseters
         }.GetSteppablePipeline($myInvocation.CommandOrigin)
         $steppablePipeline.Begin($PSCmdlet)
     }

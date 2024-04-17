@@ -87,7 +87,7 @@ function Request-AzureAudioSpeech {
 
         # Invoke base function
         $steppablePipeline = {
-            Request-AudioSpeech @Parameters
+            Request-AudioSpeech @paramseters
         }.GetSteppablePipeline($myInvocation.CommandOrigin)
         $steppablePipeline.Begin($PSCmdlet)
     }

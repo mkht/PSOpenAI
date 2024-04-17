@@ -49,7 +49,7 @@ function Submit-AzureToolOutput {
 
         # Invoke
         $steppablePipeline = {
-            PSOpenAI\Submit-ToolOutput @Parameters
+            PSOpenAI\Submit-ToolOutput @paramseters
         }.GetSteppablePipeline($myInvocation.CommandOrigin)
         $steppablePipeline.Begin($PSCmdlet)
     }
