@@ -300,7 +300,7 @@ function Invoke-OpenAIAPIRequest {
     #endregion
 
     # Fix content charset from ISO-8859-1 to UTF-8 (only JSON with PowerShell 5)
-    if (($PSVersionTable.PSVersion.Major -le 5) -and
+    if (($PSVersionTable.PSVersion.Major -le 5) -and `
         ($Response.Headers.'Content-Type' -match 'application/json')) {
         $Content = [Encoding]::UTF8.GetString([Encoding]::GetEncoding('ISO-8859-1').GetBytes($Response.Content))
     }
