@@ -124,9 +124,9 @@ Describe 'Set-Thread' {
 
         It 'Add 3 thread messages' {
             $thread = New-Thread
-            { $script:Result = $thread |
-                    Add-ThreadMessage -Message 'Hello.' -PassThru -ea Stop |
-                    Add-ThreadMessage -Message ' How' -PassThru -ea Stop |
+            { $script:Result = $thread |`
+                    Add-ThreadMessage -Message 'Hello.' -PassThru -ea Stop | `
+                    Add-ThreadMessage -Message ' How' -PassThru -ea Stop | `
                     Add-ThreadMessage -Message ' are you?' -PassThru -ea Stop
             } | Should -Not -Throw
             $Result.id | Should -BeLike 'thread_*'
