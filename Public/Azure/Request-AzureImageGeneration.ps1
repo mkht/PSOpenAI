@@ -259,7 +259,7 @@ function Request-AzureImageGeneration {
                         OutFile         = $OutFile
                         UseBasicParsing = $true
                     }
-                    Invoke-WebRequest @params
+                    Microsoft.PowerShell.Utility\Invoke-WebRequest @params
                 }
             }
             elseif ($Format -eq 'url') {
