@@ -40,13 +40,13 @@ Describe 'Request-AudioSpeech' {
 
         It 'Fully parameterized' {
             { $params = @{
-                    Text    = 'test'
-                    Model   = 'tts-1-hd'
-                    Voice   = 'onyx'
-                    Format  = 'opus'
-                    Speed   = 1.5
-                    OutFile = (Join-Path $TestDrive 'テスト.mp3')
-                    ea      = 'Stop'
+                    Text        = 'test'
+                    Model       = 'tts-1-hd'
+                    Voice       = 'onyx'
+                    Format      = 'opus'
+                    Speed       = 1.5
+                    OutFile     = (Join-Path $TestDrive 'テスト.mp3')
+                    ErrorAction = 'Stop'
                 }
                 Request-AudioSpeech @params
             } | Should -Not -Throw
@@ -71,7 +71,7 @@ Describe 'Request-AudioSpeech' {
                     OutFile       = (Join-Path $TestDrive 'test.aac')
                     TimeoutSec    = 30
                     MaxRetryCount = 3
-                    ea            = 'Stop'
+                    ErrorAction   = 'Stop'
                 }
 
                 Request-AudioSpeech @params

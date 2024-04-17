@@ -94,7 +94,7 @@ function Stop-ThreadRun {
         }
 
         #region Construct Query URI
-        $UriBuilder = [System.UriBuilder]::new($OpenAIParameter.Uri)
+        $UriBuilder = [System.UriBuilder]::new(($OpenAIParameter.Uri -f $ThreadId))
         $UriBuilder.Path += "/$RunId/cancel"
         $QueryUri = $UriBuilder.Uri
         #endregion
@@ -110,12 +110,11 @@ function Stop-ThreadRun {
             AuthType          = $AuthType
             Organization      = $Organization
             Headers           = @{'OpenAI-Beta' = 'assistants=v1' }
-            Body              = $PostBody
             AdditionalQuery   = $AdditionalQuery
             AdditionalHeaders = $AdditionalHeaders
             AdditionalBody    = $AdditionalBody
         }
-        Invoke-OpenAIAPIRequest @params
+        $Response = Invoke-OpenAIAPIRequest @params
 
         # error check
         if ($null -eq $Response) {

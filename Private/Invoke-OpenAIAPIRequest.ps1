@@ -312,11 +312,11 @@ function Invoke-OpenAIAPIRequest {
     $verboseMessage = "$ServiceName API response: " + ($Response |
         Format-List StatusCode,
         @{
-            name = 'processing_ms'
+            name       = 'processing_ms'
             expression = { $_.Headers['openai-processing-ms'] }
         },
         @{
-            name = 'request_id'
+            name       = 'request_id'
             expression = { $_.Headers['X-Request-Id'] }
         } | Out-String).TrimEnd()
     Write-Verbose -Message $verboseMessage
@@ -325,25 +325,23 @@ function Invoke-OpenAIAPIRequest {
     if ($IsDebug) {
         $startIdx = $lastIdx = 2
         if ($AuthType -eq 'openai') { $startIdx += 4 } # 'org-'
-        $param1 = @{
+        $params1 = @{
             Message              = 'API response header: ' + ($Response.Headers | Format-Table -HideTableHeaders | Out-String).TrimEnd()
             Target               = ($ApiKey, $Organization)
             First                = $startIdx
             Last                 = $lastIdx
             MaxNumberOfAsterisks = 45
         }
-
         $maskedString1 = Get-MaskedString @params1
         Write-Debug -Message $maskedString1
 
-        $param2 = @{
+        $params2 = @{
             Message              = 'API response body: ' + ($Response.Content | Out-String).TrimEnd()
             Target               = ($ApiKey, $Organization)
             First                = $startIdx
             Last                 = $lastIdx
             MaxNumberOfAsterisks = 45
         }
-
         $maskedString2 = Get-MaskedString @params2
         Write-Debug -Message $maskedString2
     }
