@@ -126,8 +126,8 @@ function Invoke-OpenAIAPIRequestSSE {
     # Verbose / Debug output
     Write-Verbose -Message "Request to $ServiceName API"
     Write-Verbose -Message "Method = $Method, Path = $Uri"
-    Write-Verbose -Message ('Request HTTP/{0} {1} with {2}-byte payload' -f
-            $RequestMessage.Version, $RequestMessage.Method,
+    Write-Verbose -Message ('Request HTTP/{0} {1} with {2}-byte payload' -f `
+            $RequestMessage.Version, $RequestMessage.Method, `
         $($RequestMessage.Content.Headers.ContentLength -as [Int64]))
     if ($IsDebug) {
         $startIdx = $lastIdx = 2
