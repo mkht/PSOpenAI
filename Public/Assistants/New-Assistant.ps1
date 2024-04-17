@@ -140,9 +140,7 @@ function New-Assistant {
 
         #region Construct parameters for API request
         $PostBody = [System.Collections.Specialized.OrderedDictionary]::new()
-        if ($PSBoundParameters.ContainsKey('Model')) {
-            $PostBody.model = $Model
-        }
+        $PostBody.model = $Model
         if ($PSBoundParameters.ContainsKey('Name')) {
             $PostBody.name = $Name
         }
