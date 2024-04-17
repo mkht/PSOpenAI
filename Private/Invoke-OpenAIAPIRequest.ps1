@@ -255,25 +255,6 @@ function Invoke-OpenAIAPIRequest {
             MaxNumberOfAsterisks = 45
         }
         Write-Debug @param
-
-        $params = @{
-            Message              = 'Request parameters: ' + (([pscustomobject]$IwrParam) |
-                Format-List Method, Uri, ContentType, Headers, Authentication | Out-String).TrimEnd()
-            Target               = ($ApiKey, $Organization)
-            First                = $startIdx
-            Last                 = $lastIdx
-            MaxNumberOfAsterisks = 45
-        }
-        Write-Debug @param
-
-        $params = @{
-            Message              = 'Post body: ' + $Body
-            Target               = ($ApiKey, $Organization)
-            First                = $startIdx
-            Last                 = $lastIdx
-            MaxNumberOfAsterisks = 45
-        }
-        Write-Debug @param
     }
 
     #region Send API Request
