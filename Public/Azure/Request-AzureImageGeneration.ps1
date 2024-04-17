@@ -142,17 +142,21 @@ function Request-AzureImageGeneration {
             }
 
             #region Send API Request
-            $Response = Invoke-OpenAIAPIRequest `
-                -Method $OpenAIParameter.Method `
-                -Uri $OpenAIParameter.Uri `
-                -ContentType $OpenAIParameter.ContentType `
-                -TimeoutSec $TimeoutSec `
-                -MaxRetryCount $MaxRetryCount `
-                -ApiKey $SecureToken `
-                -AuthType $AuthType `
-                -Body $PostBody `
-                -ReturnRawResponse $true `
-                -AdditionalQuery $AdditionalQuery -AdditionalHeaders $AdditionalHeaders -AdditionalBody $AdditionalBody
+            $params = @{
+                Method            = $OpenAIParameter.Method
+                Uri               = $OpenAIParameter.Uri
+                ContentType       = $OpenAIParameter.ContentType
+                TimeoutSec        = $TimeoutSec
+                MaxRetryCount     = $MaxRetryCount
+                ApiKey            = $SecureToken
+                AuthType          = $AuthType
+                Body              = $PostBody
+                ReturnRawResponse = $true
+                AdditionalQuery   = $AdditionalQuery
+                AdditionalHeaders = $AdditionalHeaders
+                AdditionalBody    = $AdditionalBody
+            }
+            $Response = Invoke-OpenAIAPIRequest @params
 
             # error check
             if ($null -eq $Response -or $Response.StatusDescription -ne 'Accepted') {
@@ -190,14 +194,18 @@ function Request-AzureImageGeneration {
                 while ($Status -ne 'succeeded') {
                     Start-CancelableWait -Milliseconds $Interval -CancellationToken $Cancellation.Token -ea Stop
                     $ResponseContent = $null
-                    $SubResponse = Invoke-OpenAIAPIRequest `
-                        -Method 'Get' `
-                        -Uri $NextLocation `
-                        -TimeoutSec $TimeoutSec `
-                        -ApiKey $SecureToken `
-                        -AuthType $AuthType `
-                        -AdditionalQuery $AdditionalQuery -AdditionalHeaders $AdditionalHeaders -AdditionalBody $AdditionalBody `
-                        -Verbose:$false
+                    $params = @{
+                        Method            = 'Get'
+                        Uri               = $NextLocation
+                        TimeoutSec        = $TimeoutSec
+                        ApiKey            = $SecureToken
+                        AuthType          = $AuthType
+                        AdditionalQuery   = $AdditionalQuery
+                        AdditionalHeaders = $AdditionalHeaders
+                        AdditionalBody    = $AdditionalBody
+                        Verbose           = $false
+                    }
+                    $SubResponse = Invoke-OpenAIAPIRequest @params
                     if ($null -ne $SubResponse) {
                         $ResponseContent = $SubResponse | ConvertFrom-Json -ea Stop
                     }
@@ -243,13 +251,15 @@ function Request-AzureImageGeneration {
                 }
 
                 # Download image
-                $ResponseContent.result.data | Select-Object -ExpandProperty 'url' | select -First 1 | % {
+                $ResponseContent.result.data | Select-Object -ExpandProperty 'url' | Select-Object -First 1 | ForEach-Object {
                     Write-Verbose ('Downloading image to {0}' -f $OutFile)
-                    Microsoft.PowerShell.Utility\Invoke-WebRequest `
-                        -Uri $_ `
-                        -Method Get `
-                        -OutFile $OutFile `
-                        -UseBasicParsing
+                    $params = @{
+                        Uri             = $_
+                        Method          = 'Get'
+                        OutFile         = $OutFile
+                        UseBasicParsing = $true
+                    }
+                    Microsoft.PowerShell.Utility\Invoke-WebRequest @params
                 }
             }
             elseif ($Format -eq 'url') {

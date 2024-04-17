@@ -50,10 +50,13 @@ Describe 'Set-Thread' {
         }
 
         It 'Add thread messages' {
-            { $script:Result = Add-ThreadMessage `
-                    -InputObject 'thread_abc123' `
-                    -Message 'How does AI work? Explain it in simple terms.' `
-                    -ea Stop } | Should -Not -Throw
+            { $splat = @{
+                    InputObject = 'thread_abc123'
+                    Message     = 'How does AI work? Explain it in simple terms.'
+                    ErrorAction = 'Stop'
+                }
+                $script:Result = Add-ThreadMessage @splat
+            } | Should -Not -Throw
             Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName
             Should -Invoke Get-Thread -ModuleName $script:ModuleName -Times 0 -Exactly
             $script:Result | Should -BeNullOrEmpty
@@ -66,10 +69,13 @@ Describe 'Set-Thread' {
                 created_at = [datetime]::Today
                 Messages   = @()
             }
-            { $script:Result = $thread | Add-ThreadMessage `
-                    -Message 'How does AI work? Explain it in simple terms.' `
-                    -PassThru `
-                    -ea Stop } | Should -Not -Throw
+            { $splat = @{
+                    Message     = 'How does AI work? Explain it in simple terms.'
+                    PassThru    = $true
+                    ErrorAction = 'Stop'
+                }
+                $script:Result = $thread | Add-ThreadMessage @splat
+            } | Should -Not -Throw
             Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName
             Should -Invoke Get-Thread -ModuleName $script:ModuleName -Times 1 -Exactly
             $script:Result.id | Should -Be 'thread_abc123'
@@ -78,10 +84,13 @@ Describe 'Set-Thread' {
 
         It 'Error on invalid input' {
             $InObject = [datetime]::Today
-            { $script:Result = Add-ThreadMessage `
-                    -InputObject $InObject `
-                    -Message 'How does AI work? Explain it in simple terms.' `
-                    -ea Stop } | Should -Throw
+            { $splat = @{
+                    InputObject = $InObject
+                    Message     = 'How does AI work? Explain it in simple terms.'
+                    ErrorAction = 'Stop'
+                }
+                $script:Result = Add-ThreadMessage @splat
+            } | Should -Throw
             Should -Invoke Get-Thread -ModuleName $script:ModuleName -Times 0 -Exactly
             Should -Invoke Get-Thread -ModuleName $script:ModuleName -Times 0 -Exactly
         }
@@ -99,10 +108,13 @@ Describe 'Set-Thread' {
 
         It 'Add thread message' {
             $thread = New-Thread
-            { $script:Result = $thread | Add-ThreadMessage `
-                    -Message 'How does AI work? Explain it in simple terms.' `
-                    -PassThru `
-                    -ea Stop } | Should -Not -Throw
+            { $splat = @{
+                    Message     = 'How does AI work? Explain it in simple terms.'
+                    PassThru    = $true
+                    ErrorAction = 'Stop'
+                }
+                $script:Result = $thread | Add-ThreadMessage @splat
+            } | Should -Not -Throw
             $Result.id | Should -BeLike 'thread_*'
             $Result.created_at | Should -BeOfType [datetime]
             $Result.Messages.GetType().Fullname | Should -Be 'System.Object[]'

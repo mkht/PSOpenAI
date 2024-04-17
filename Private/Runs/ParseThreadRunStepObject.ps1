@@ -11,7 +11,7 @@ function ParseThreadRunStepObject {
         [switch]$Primitive
     )
 
-    $simplecontent = `
+    $simplecontent =
         if ($InputObject.type -eq 'message_creation') {
         if ($msgid = $InputObject.step_details.message_creation.message_id) {
             $GetThreadMessageParams = $CommonParams

@@ -172,16 +172,20 @@ function Request-ImageEdit {
 
         #region Send API Request
         try {
-            $Response = Invoke-OpenAIAPIRequest `
-                -Method $OpenAIParameter.Method `
-                -Uri $OpenAIParameter.Uri `
-                -ContentType $OpenAIParameter.ContentType `
-                -TimeoutSec $TimeoutSec `
-                -MaxRetryCount $MaxRetryCount `
-                -ApiKey $SecureToken `
-                -Organization $Organization `
-                -Body $PostBody `
-                -AdditionalQuery $AdditionalQuery -AdditionalHeaders $AdditionalHeaders -AdditionalBody $AdditionalBody
+            $splat = @{
+                Method            = $OpenAIParameter.Method
+                Uri               = $OpenAIParameter.Uri
+                ContentType       = $OpenAIParameter.ContentType
+                TimeoutSec        = $TimeoutSec
+                MaxRetryCount     = $MaxRetryCount
+                ApiKey            = $SecureToken
+                Organization      = $Organization
+                Body              = $PostBody
+                AdditionalQuery   = $AdditionalQuery
+                AdditionalHeaders = $AdditionalHeaders
+                AdditionalBody    = $AdditionalBody
+            }
+            $Response = Invoke-OpenAIAPIRequest @splat
         }
         finally {
             if ($IsTempImageFileCreated -and (Test-Path $ImageFileInfo -PathType Leaf)) {
@@ -226,12 +230,14 @@ function Request-ImageEdit {
             }
 
             # Download image
-            $ResponseContent | Select-Object -ExpandProperty 'url' | select -First 1 | % {
-                Microsoft.PowerShell.Utility\Invoke-WebRequest `
-                    -Uri $_ `
-                    -Method Get `
-                    -OutFile $OutFile `
-                    -UseBasicParsing
+            $ResponseContent | Select-Object -ExpandProperty 'url' | Select-Object -First 1 | ForEach-Object {
+                $splat = @{
+                    Uri             = $_
+                    Method          = 'Get'
+                    OutFile         = $OutFile
+                    UseBasicParsing = $true
+                }
+                Microsoft.PowerShell.Utility\Invoke-WebRequest @splat
             }
         }
         elseif ($Format -eq 'url') {

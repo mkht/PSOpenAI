@@ -22,21 +22,26 @@ Password should be between 8 and 12 random alphanumeric characters.
 
         It 'STEP1: Create an Assistant' {
             $RandomName = ('TEST' + (Get-Random -Maximum 1000))
-            { $script:Assistant = New-Assistant `
-                    -Name $RandomName `
-                    -Model gpt-3.5-turbo-0125 `
-                    -Description 'Test assistant' `
-                    -Instructions "You are an helpful assistant who is there to fulfill the user's wishes to the fullest." `
-                    -UseCodeInterpreter `
-                    -UseRetrieval `
-                    -TimeoutSec 30 -MaxRetryCount 5 -ea Stop } | Should -Not -Throw
+            { $splat = @{
+                    Name               = $RandomName
+                    Model              = 'gpt-3.5-turbo-0125'
+                    Description        = 'Test assistant'
+                    Instructions       = "You are an helpful assistant who is there to fulfill the user's wishes to the fullest."
+                    UseCodeInterpreter = $true
+                    UseRetrieval       = $true
+                    TimeoutSec         = 30
+                    MaxRetryCount      = 5
+                    ErrorAction        = 'Stop'
+                }
+                $script:Assistant = New-Assistant @splat
+            } | Should -Not -Throw
             $Assistant.id | Should -BeLike 'asst_*'
             $Assistant.object | Should -BeExactly 'assistant'
             $Assistant.name | Should -Be $RandomName
         }
 
         It 'STEP2: Create a Thread and Add a message' {
-            { $script:Thread = New-Thread -TimeoutSec 30 -MaxRetryCount 5 -ea Stop |`
+            { $script:Thread = New-Thread -TimeoutSec 30 -MaxRetryCount 5 -ea Stop |
                     Add-ThreadMessage -Message $script:PromptMessage -PassThru -TimeoutSec 30 -MaxRetryCount 5 -ea Stop
             } | Should -Not -Throw
             $Thread.id | Should -BeLike 'thread_*'
@@ -45,7 +50,7 @@ Password should be between 8 and 12 random alphanumeric characters.
         }
 
         It 'STEP3: Start Thread Run, then wait for run completion and get result.' {
-            { $script:Thread = $script:Thread | Start-ThreadRun -Assistant $script:Assistant -ea Stop |`
+            { $script:Thread = $script:Thread | Start-ThreadRun -Assistant $script:Assistant -ea Stop |
                     Receive-ThreadRun -Wait -TimeoutSec 100 -ea Stop } | Should -Not -Throw
             $Thread.id | Should -BeLike 'thread_*'
             $Thread.Messages.Count | Should -BeGreaterOrEqual 2

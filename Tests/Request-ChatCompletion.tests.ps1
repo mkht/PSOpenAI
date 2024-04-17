@@ -497,13 +497,15 @@ Describe 'Request-ChatCompletion' {
                 })
 
             $Message = 'Ping the Google Public DNS address three times and briefly report the results.'
-            { $script:Result = Request-ChatCompletion `
-                    -Message $Message `
-                    -Model gpt-3.5-turbo-0125 `
-                    -Temperature 0.1 `
-                    -Tools $ToolsSpec `
-                    -InvokeTools None `
-                    -ea Stop `
+            { $params = @{
+                    Message     = $Message
+                    Model       = 'gpt-3.5-turbo-0125'
+                    Temperature = 0.1
+                    Tools       = $ToolsSpec
+                    InvokeTools = 'None'
+                    ErrorAction = 'Stop'
+                }
+                $script:Result = Request-ChatCompletion @params
             } | Should -Not -Throw
             $Result.Answer | Should -BeNullOrEmpty
             $Result.Message | Should -Be $Message
@@ -528,13 +530,15 @@ Describe 'Request-ChatCompletion' {
                 })
 
             $Message = 'Ping the Google Public DNS address three times and briefly report the results.'
-            { $script:Result = Request-ChatCompletion `
-                    -Message $Message `
-                    -Model gpt-3.5-turbo-0125 `
-                    -Temperature 0.1 `
-                    -Tools $ToolsSpec `
-                    -InvokeTools Auto `
-                    -ea Stop `
+            { $params = @{
+                    Message     = $Message
+                    Model       = 'gpt-3.5-turbo-0125'
+                    Temperature = 0.1
+                    Tools       = $ToolsSpec
+                    InvokeTools = 'Auto'
+                    ErrorAction = 'Stop'
+                }
+                $script:Result = Request-ChatCompletion @params
             } | Should -Not -Throw
             $Result.Answer | Should -Not -BeNullOrEmpty
             $Result.Message | Should -Be $Message
@@ -563,13 +567,15 @@ Describe 'Request-ChatCompletion' {
             }
 
             $Message = 'Ping the Google Public DNS address three times and briefly report the results.'
-            { $script:Result = Request-ChatCompletion `
-                    -Message $Message `
-                    -Model gpt-3.5-turbo-0613 `
-                    -Temperature 0.1 `
-                    -Functions $FunctionSpec `
-                    -InvokeFunctionOnCallMode None `
-                    -ea Stop `
+            { $params = @{
+                    Message                  = $Message
+                    Model                    = 'gpt-3.5-turbo-0613'
+                    Temperature              = 0.1
+                    Functions                = $FunctionSpec
+                    InvokeFunctionOnCallMode = 'None'
+                    ErrorAction              = 'Stop'
+                }
+                $script:Result = Request-ChatCompletion @params
             } | Should -Not -Throw
             $Result.Answer | Should -BeNullOrEmpty
             $Result.Message | Should -Be $Message
@@ -591,13 +597,15 @@ Describe 'Request-ChatCompletion' {
             }
 
             $Message = 'Ping the Google Public DNS address three times and briefly report the results.'
-            { $script:Result = Request-ChatCompletion `
-                    -Message $Message `
-                    -Model gpt-3.5-turbo-0613 `
-                    -Temperature 0.1 `
-                    -Functions $FunctionSpec `
-                    -InvokeFunctionOnCallMode Auto `
-                    -ea Stop `
+            { $params = @{
+                    Message                  = $Message
+                    Model                    = 'gpt-3.5-turbo-0613'
+                    Temperature              = 0.1
+                    Functions                = $FunctionSpec
+                    InvokeFunctionOnCallMode = 'Auto'
+                    ErrorAction              = 'Stop'
+                }
+                $script:Result = Request-ChatCompletion @params
             } | Should -Not -Throw
             $Result.Answer | Should -Not -BeNullOrEmpty
             $Result.Message | Should -Be $Message
@@ -612,13 +620,15 @@ Describe 'Request-ChatCompletion' {
         }
 
         It 'Stream output' {
-            $Result = Request-ChatCompletion `
-                -Message 'Please describe about ChatGPT' `
-                -MaxTokens 32 `
-                -Stream `
-                -InformationVariable Info `
-                -TimeoutSec 30 -ea Stop `
-            | select -First 10
+            $params = @{
+                Message             = 'Please describe about ChatGPT'
+                MaxTokens           = 32
+                Stream              = $true
+                InformationVariable = 'Info'
+                TimeoutSec          = 30
+                ErrorAction         = 'Stop'
+            }
+            $Result = Request-ChatCompletion @params | Select-Object -First 10
             $Result | Should -HaveCount 10
             ([string[]]$Info) | Should -Be ([string[]]$Result)
         }

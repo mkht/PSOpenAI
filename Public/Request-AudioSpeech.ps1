@@ -125,7 +125,7 @@ function Request-AudioSpeech {
             $PostBody.response_format = $Format
         }
         else {
-            $PostBody.response_format = `
+            $PostBody.response_format =
                 switch -Wildcard ($OutFile) {
                 '*.mp3' { 'mp3'; break }
                 '*.opus' { 'opus'; break }
@@ -141,17 +141,21 @@ function Request-AudioSpeech {
 
         #region Send API Request
         try {
-            $Response = Invoke-OpenAIAPIRequest `
-                -Method $OpenAIParameter.Method `
-                -Uri $OpenAIParameter.Uri `
-                -ContentType $OpenAIParameter.ContentType `
-                -TimeoutSec $TimeoutSec `
-                -MaxRetryCount $MaxRetryCount `
-                -ApiKey $SecureToken `
-                -AuthType $AuthType `
-                -Organization $Organization `
-                -Body $PostBody `
-                -AdditionalQuery $AdditionalQuery -AdditionalHeaders $AdditionalHeaders -AdditionalBody $AdditionalBody
+            $splat = @{
+                Method            = $OpenAIParameter.Method
+                Uri               = $OpenAIParameter.Uri
+                ContentType       = $OpenAIParameter.ContentType
+                TimeoutSec        = $TimeoutSec
+                MaxRetryCount     = $MaxRetryCount
+                ApiKey            = $SecureToken
+                AuthType          = $AuthType
+                Organization      = $Organization
+                Body              = $PostBody
+                AdditionalQuery   = $AdditionalQuery
+                AdditionalHeaders = $AdditionalHeaders
+                AdditionalBody    = $AdditionalBody
+            }
+            $Response = Invoke-OpenAIAPIRequest @splat
         }
         catch {
             Write-Error -Exception $_.Exception

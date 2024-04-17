@@ -39,23 +39,29 @@ Describe 'Request-AudioTranscription' {
         }
 
         It 'Convert language name to ISO-639-1 code' {
-            $Result = Request-AudioTranscription `
-                -File ($script:TestData + '/voice_japanese.mp3') `
-                -Language 'English'
+            $params = @{
+                File     = $script:TestData + '/voice_japanese.mp3'
+                Language = 'English'
+            }
+            $Result = Request-AudioTranscription @params
             $Result.Body.language | Should -BeExactly 'en'
         }
 
         It 'Not convert language name to ISO-639-1 code when it cannot be.' {
-            $Result = Request-AudioTranscription `
-                -File ($script:TestData + '/voice_japanese.mp3') `
-                -Language 'Unknown'
+            $params = @{
+                File     = $script:TestData + '/voice_japanese.mp3'
+                Language = 'Unknown'
+            }
+            $Result = Request-AudioTranscription @params
             $Result.Body.language | Should -BeExactly 'Unknown'
         }
 
         It 'Not convert LiteralLanguage to anything else' {
-            $Result = Request-AudioTranscription `
-                -File ($script:TestData + '/voice_japanese.mp3') `
-                -LiteralLanguage 'English'
+            $params = @{
+                File            = $script:TestData + '/voice_japanese.mp3'
+                LiteralLanguage = 'English'
+            }
+            $Result = Request-AudioTranscription @params
             $Result.Body.language | Should -BeExactly 'English'
         }
     }
@@ -73,11 +79,15 @@ Describe 'Request-AudioTranscription' {
         }
 
         It 'Audio transcription (format: verbose_json)' {
-            { $script:Text = Request-AudioTranscription `
-                    -File ($script:TestData + '/voice_japanese.mp3') `
-                    -Format 'verbose_json' `
-                    -TimeoutSec 30 `
-                    -ErrorAction Stop } | Should -Not -Throw
+            { $params = @{
+                    File        = ($script:TestData + '/voice_japanese.mp3')
+                    Format      = 'verbose_json'
+                    TimeoutSec  = 30
+                    ErrorAction = 'Stop'
+                }
+
+                $script:Text = Request-AudioTranscription @params
+            } | Should -Not -Throw
             $ret = ($Text | ConvertFrom-Json)
             $ret.text.Length | Should -BeGreaterThan 1
             $ret.task | Should -Be 'transcribe'

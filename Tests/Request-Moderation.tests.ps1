@@ -44,9 +44,13 @@ Describe 'Request-Moderation' {
         }
 
         It 'Text moderation' {
-            { $script:Result = Request-Moderation `
-                    -Text 'I want to kill them.' `
-                    -TimeoutSec 30 -ea Stop } | Should -Not -Throw
+            { $splat = @{
+                    Text        = 'I want to kill them.'
+                    TimeoutSec  = 30
+                    ErrorAction = 'Stop'
+                }
+                $script:Result = Request-Moderation @splat
+            } | Should -Not -Throw
             $Result | Should -BeOfType [PSCustomObject]
             $Result.id | Should -Not -BeNullOrEmpty
             $Result.results.GetType().Name | Should -Be 'Object[]'
@@ -55,9 +59,13 @@ Describe 'Request-Moderation' {
         }
 
         It 'Text moderation (multiple texts)' {
-            { $script:Result = Request-Moderation `
-                    -Text ('I want to kill them.', 'I want to eat cake.') `
-                    -TimeoutSec 30 -ea Stop } | Should -Not -Throw
+            { $splat = @{
+                    Text        = ('I want to kill them.', 'I want to eat cake.')
+                    TimeoutSec  = 30
+                    ErrorAction = 'Stop'
+                }
+                $script:Result = Request-Moderation @splat
+            } | Should -Not -Throw
             $Result | Should -BeOfType [PSCustomObject]
             $Result.id | Should -Not -BeNullOrEmpty
             $Result.results.GetType().Name | Should -Be 'Object[]'

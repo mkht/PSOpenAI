@@ -122,19 +122,23 @@ function Submit-ToolOutput {
         #region Send API Request (Streaming)
         if ($Stream) {
             # Stream output
-            Invoke-OpenAIAPIRequest `
-                -Method 'Post' `
-                -Uri $QueryUri `
-                -ContentType $OpenAIParameter.ContentType `
-                -TimeoutSec $TimeoutSec `
-                -MaxRetryCount $MaxRetryCount `
-                -ApiKey $SecureToken `
-                -AuthType $AuthType `
-                -Organization $Organization `
-                -Headers (@{'OpenAI-Beta' = 'assistants=v1' }) `
-                -Body $PostBody `
-                -Stream $Stream `
-                -AdditionalQuery $AdditionalQuery -AdditionalHeaders $AdditionalHeaders -AdditionalBody $AdditionalBody |`
+            $params = @{
+                Method            = 'Post'
+                Uri               = $QueryUri
+                ContentType       = $OpenAIParameter.ContentType
+                TimeoutSec        = $TimeoutSec
+                MaxRetryCount     = $MaxRetryCount
+                ApiKey            = $SecureToken
+                AuthType          = $AuthType
+                Organization      = $Organization
+                Headers           = @{'OpenAI-Beta' = 'assistants=v1' }
+                Body              = $PostBody
+                Stream            = $Stream
+                AdditionalQuery   = $AdditionalQuery
+                AdditionalHeaders = $AdditionalHeaders
+                AdditionalBody    = $AdditionalBody
+            }
+            Invoke-OpenAIAPIRequest @params |
                 Where-Object {
                 -not [string]::IsNullOrEmpty($_)
             } | ForEach-Object {
@@ -171,18 +175,22 @@ function Submit-ToolOutput {
         #endregion
 
         #region Send API Request
-        $Response = Invoke-OpenAIAPIRequest `
-            -Method 'Post' `
-            -Uri $QueryUri `
-            -ContentType $OpenAIParameter.ContentType `
-            -TimeoutSec $TimeoutSec `
-            -MaxRetryCount $MaxRetryCount `
-            -ApiKey $SecureToken `
-            -AuthType $AuthType `
-            -Organization $Organization `
-            -Headers (@{'OpenAI-Beta' = 'assistants=v1' }) `
-            -Body $PostBody `
-            -AdditionalQuery $AdditionalQuery -AdditionalHeaders $AdditionalHeaders -AdditionalBody $AdditionalBody
+        $params = @{
+            Method            = 'Post'
+            Uri               = $QueryUri
+            ContentType       = $OpenAIParameter.ContentType
+            TimeoutSec        = $TimeoutSec
+            MaxRetryCount     = $MaxRetryCount
+            ApiKey            = $SecureToken
+            AuthType          = $AuthType
+            Organization      = $Organization
+            Headers           = @{'OpenAI-Beta' = 'assistants=v1' }
+            Body              = $PostBody
+            AdditionalQuery   = $AdditionalQuery
+            AdditionalHeaders = $AdditionalHeaders
+            AdditionalBody    = $AdditionalBody
+        }
+        $Response = Invoke-OpenAIAPIRequest @params
 
         # error check
         if ($null -eq $Response) {

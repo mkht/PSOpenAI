@@ -53,56 +53,77 @@ Describe 'Request-ImageEdit' {
         }
 
         It 'Image edit. OutFile' {
-            { $script:Result = Request-ImageEdit `
-                    -Image ($script:TestImageData + '/sunflower_masked.png') `
-                    -Prompt 'sunflower' `
-                    -OutFile (Join-Path $TestDrive 'file1.png') `
-                    -Size 256 `
-                    -TimeoutSec 30 -ea Stop } | Should -Not -Throw
+            { $params = @{
+                    Image       = $script:TestImageData + '/sunflower_masked.png'
+                    Prompt      = 'sunflower'
+                    OutFile     = Join-Path $TestDrive 'file1.png'
+                    Size        = 256
+                    TimeoutSec  = 30
+                    ErrorAction = 'Stop'
+                }
+                $script:Result = Request-ImageEdit @params
+            } | Should -Not -Throw
             $Result | Should -BeNullOrEmpty
             (Join-Path $TestDrive 'file1.png') | Should -Exist
         }
 
         It 'Image edit. Format = url' {
-            { $script:Result = Request-ImageEdit `
-                    -Image ($script:TestImageData + '/sunflower_masked.png') `
-                    -Prompt 'sunflower' `
-                    -Format url `
-                    -Size 256 `
-                    -TimeoutSec 30 -ea Stop } | Should -Not -Throw
+            { $params = @{
+                    Image       = $script:TestImageData + '/sunflower_masked.png'
+                    Prompt      = 'sunflower'
+                    Format      = 'url'
+                    Size        = 256
+                    TimeoutSec  = 30
+                    ErrorAction = 'Stop'
+                }
+
+                $script:Result = Request-ImageEdit @params
+            } | Should -Not -Throw
             $Result | Should -BeOfType [string]
             $Result | Should -Match '^https://'
         }
 
         It 'Image edit. Format = base64' {
-            { $script:Result = Request-ImageEdit `
-                    -Image ($script:TestImageData + '/sunflower_masked.png') `
-                    -Prompt 'sunflower' `
-                    -Format base64 `
-                    -Size 256 `
-                    -TimeoutSec 30 -ea Stop } | Should -Not -Throw
+            { $params = @{
+                    Image       = $script:TestImageData + '/sunflower_masked.png'
+                    Prompt      = 'sunflower'
+                    Format      = 'base64'
+                    Size        = 256
+                    TimeoutSec  = 30
+                    ErrorAction = 'Stop'
+                }
+                $script:Result = Request-ImageEdit @params
+            } | Should -Not -Throw
             $Result | Should -BeOfType [string]
             { [Convert]::FromBase64String($script:Result) } | Should -Not -Throw
         }
 
         It 'Image edit. Format = byte' {
-            { $script:Result = Request-ImageEdit `
-                    -Image ($script:TestImageData + '/sunflower_masked.png') `
-                    -Prompt 'sunflower' `
-                    -Format byte `
-                    -Size 256 `
-                    -TimeoutSec 30 -ea Stop } | Should -Not -Throw
+            { $params = @{
+                    Image       = $script:TestImageData + '/sunflower_masked.png'
+                    Prompt      = 'sunflower'
+                    Format      = 'byte'
+                    Size        = 256
+                    TimeoutSec  = 30
+                    ErrorAction = 'Stop'
+                }
+                $script:Result = Request-ImageEdit @params
+            } | Should -Not -Throw
             $Result.GetType().Name | Should -Be 'Byte[]'
             $Result.Count | Should -BeGreaterThan 1
         }
 
         It 'Image, Mask, Propmpt' {
-            { Request-ImageEdit `
-                    -Image ($script:TestImageData + '/sand_with_feather.png') `
-                    -Mask ($script:TestImageData + '/fether_mask.png') `
-                    -Prompt 'A bird on the desert' `
-                    -Size 256 `
-                    -TimeoutSec 30 -ea Stop } | Should -Not -Throw
+            { $params = @{
+                    Image       = $script:TestImageData + '/sand_with_feather.png'
+                    Mask        = $script:TestImageData + '/fether_mask.png'
+                    Prompt      = 'A bird on the desert'
+                    Size        = 256
+                    TimeoutSec  = 30
+                    ErrorAction = 'Stop'
+                }
+                Request-ImageEdit @params
+            } | Should -Not -Throw
         }
     }
 }
