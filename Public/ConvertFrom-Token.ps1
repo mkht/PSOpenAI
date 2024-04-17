@@ -2,11 +2,11 @@ function ConvertFrom-Token {
     [CmdletBinding(DefaultParameterSetName = 'encoding')]
     [OutputType([string])]
     param (
-        [Parameter(Mandatory = $true, Position = 0, ValueFromPipeline = $true)]
+        [Parameter(Mandatory, Position = 0, ValueFromPipeline)]
         [AllowEmptyCollection()]
         [int[]]$Token,
 
-        [Parameter(Mandatory = $true, Position = 1, ParameterSetName = 'model')]
+        [Parameter(Mandatory, Position = 1, ParameterSetName = 'model')]
         [string][LowerCaseTransformation()]$Model,
 
         [Parameter(Mandatory = $false, Position = 1, ParameterSetName = 'encoding')]

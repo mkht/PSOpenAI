@@ -2,7 +2,7 @@ function Request-TextCompletion {
     [CmdletBinding()]
     [OutputType([pscustomobject])]
     param (
-        [Parameter(Position = 0, ValueFromPipeline = $true)]
+        [Parameter(Position = 0, ValueFromPipeline)]
         [ValidateNotNullOrEmpty()]
         [Alias('Message')]
         [string[]]$Prompt,
@@ -67,16 +67,16 @@ function Request-TextCompletion {
         [Parameter()]
         [int]$TimeoutSec = 0,
 
-        [Parameter(DontShow = $true)]
+        [Parameter(DontShow)]
         [OpenAIApiType]$ApiType = [OpenAIApiType]::OpenAI,
 
         [Parameter()]
         [System.Uri]$ApiBase,
 
-        [Parameter(DontShow = $true)]
+        [Parameter(DontShow)]
         [string]$ApiVersion,
 
-        [Parameter(DontShow = $true)]
+        [Parameter(DontShow)]
         [string]$AuthType = 'openai',
 
         [Parameter()]

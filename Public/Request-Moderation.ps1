@@ -7,7 +7,7 @@ function Request-Moderation {
           But avoid using the variable name $Input for variable name,
           because it is used as an automatic variable in PowerShell.
         #>
-        [Parameter(Mandatory = $true, Position = 0, ValueFromPipeline = $true)]
+        [Parameter(Mandatory, Position = 0, ValueFromPipeline)]
         [ValidateNotNullOrEmpty()]
         [Alias('Input')]
         [string[]]$Text,

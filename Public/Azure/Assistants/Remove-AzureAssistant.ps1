@@ -2,7 +2,7 @@ function Remove-AzureAssistant {
     [CmdletBinding()]
     [OutputType([void])]
     param (
-        [Parameter(Mandatory = $true, Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
+        [Parameter(Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [Alias('assistant_id')]
         [Alias('Assistant')]
         [ValidateScript({ [bool](Get-AssistantIdFromInputObject $_) })]

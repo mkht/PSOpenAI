@@ -3,7 +3,7 @@ function Request-AzureChatCompletion {
     [OutputType([pscustomobject])]
     [Alias('Request-AzureChatGPT')]
     param (
-        [Parameter(Mandatory = $false, Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
+        [Parameter(Mandatory = $false, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [Alias('Text')]
         [ValidateNotNullOrEmpty()]
         [string]$Message,
@@ -17,7 +17,7 @@ function Request-AzureChatCompletion {
         [ValidatePattern('^[a-zA-Z0-9_-]{1,64}$')]   # May contain a-z, A-Z, 0-9, hyphens, and underscores, with a maximum length of 64 characters.
         [string]$Name,
 
-        [Parameter(Mandatory = $true)]
+        [Parameter(Mandatory)]
         [Alias('Model')]
         [string]$Deployment,
 
@@ -41,7 +41,7 @@ function Request-AzureChatCompletion {
         [System.Collections.IDictionary[]]$Tools,
 
         # deprecated
-        [Parameter(DontShow = $true)]
+        [Parameter(DontShow)]
         [ValidateNotNullOrEmpty()]
         [System.Collections.IDictionary[]]$Functions,
 
@@ -51,7 +51,7 @@ function Request-AzureChatCompletion {
         [object]$ToolChoice,
 
         # deprecated
-        [Parameter(DontShow = $true)]
+        [Parameter(DontShow)]
         [Alias('function_call')]
         [Completions('none', 'auto')]
         [object]$FunctionCall,
@@ -62,7 +62,7 @@ function Request-AzureChatCompletion {
         [string]$InvokeTools = 'None',
 
         # deprecated
-        [Parameter(DontShow = $true)]
+        [Parameter(DontShow)]
         [uint16]$MaxFunctionCallCount,
         #endregion Function call params
 
@@ -137,7 +137,7 @@ function Request-AzureChatCompletion {
         [ValidateSet('azure', 'azure_ad')]
         [string]$AuthType = 'azure',
 
-        [Parameter(ValueFromPipelineByPropertyName = $true)]
+        [Parameter(ValueFromPipelineByPropertyName)]
         [object[]]$History,
 
         [Parameter()]

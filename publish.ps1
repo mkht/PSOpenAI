@@ -1,7 +1,7 @@
 #Requires -Modules Microsoft.PowerShell.PSResourceGet
 
 Param (
-    [Parameter(Mandatory = $true)]
+    [Parameter(Mandatory)]
     [ValidateNotNullOrEmpty()]
     [string]$NugetApiKey,
 

@@ -2,7 +2,7 @@ function Get-AzureThread {
     [CmdletBinding()]
     [OutputType([pscustomobject])]
     param (
-        [Parameter(Mandatory = $true, Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
+        [Parameter(Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [Alias('thread_id')]
         [Alias('Thread')]
         [ValidateScript({ [bool](Get-ThreadIdFromInputObject $_) })]
@@ -28,7 +28,7 @@ function Get-AzureThread {
         [Parameter()]
         [securestring][SecureStringTransformation()]$ApiKey,
 
-        [Parameter(DontShow = $true)]
+        [Parameter(DontShow)]
         [switch]$Primitive,
 
         [Parameter()]

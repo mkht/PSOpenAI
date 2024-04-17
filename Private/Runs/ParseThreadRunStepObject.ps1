@@ -1,7 +1,7 @@
 function ParseThreadRunStepObject {
     [CmdletBinding()]
     param (
-        [Parameter(Mandatory = $true, Position = 0, ValueFromPipeline = $true)]
+        [Parameter(Mandatory, Position = 0, ValueFromPipeline)]
         [PSCustomObject]$InputObject,
 
         [Parameter()]

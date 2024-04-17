@@ -3,7 +3,7 @@ function New-Assistant {
     [OutputType([pscustomobject])]
     param (
         # Hidden param, for Set-Assistants cmdlet
-        [Parameter(DontShow = $true, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
+        [Parameter(DontShow, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [Object]$InputObject,
 
         [Parameter()]
@@ -63,16 +63,16 @@ function New-Assistant {
         [ValidateRange(0, 100)]
         [int]$MaxRetryCount = 0,
 
-        [Parameter(DontShow = $true)]
+        [Parameter(DontShow)]
         [OpenAIApiType]$ApiType = [OpenAIApiType]::OpenAI,
 
         [Parameter()]
         [System.Uri]$ApiBase,
 
-        [Parameter(DontShow = $true)]
+        [Parameter(DontShow)]
         [string]$ApiVersion,
 
-        [Parameter(DontShow = $true)]
+        [Parameter(DontShow)]
         [string]$AuthType = 'openai',
 
         [Parameter()]
