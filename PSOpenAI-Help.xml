@@ -11202,7 +11202,7 @@ This is an optional field, and may contain a-z, A-Z, 0-9, hyphens, and underscor
           <maml:name>Images</maml:name>
           <maml:description>
             <maml:para>An array of images to passing the model. You can specifies local image file or remote url.
-Image input is only supported when using the `gpt-4-visual-preview` model.</maml:para>
+</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
           <dev:type>
@@ -11596,7 +11596,7 @@ This is an optional field, and may contain a-z, A-Z, 0-9, hyphens, and underscor
         <maml:name>Images</maml:name>
         <maml:description>
           <maml:para>An array of images to passing the model. You can specifies local image file or remote url.
-Image input is only supported when using the `gpt-4-visual-preview` model.</maml:para>
+</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
         <dev:type>

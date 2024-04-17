@@ -1,4 +1,9 @@
 # Changelog
+### 3.6.1
+- Fix a bug that caused `New-Assistant` to fail without explicitly passing the model name.
+- Fix an issue that `Stop-ThreadRun` does not working.
+- Improved code readability using splatting (#6) (Thanks @potatoqualitee!)
+
 ### 3.6.0
 - Add new params to `Start-ThreadRun`
   + `-MaxPromptTokens`

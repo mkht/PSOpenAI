@@ -1,4 +1,9 @@
 # 変更履歴
+### 3.6.1
+- `New-Assistant`の`-Model`パラメータを明示的に指定しない場合に発生する問題を修正
+- `Stop-ThreadRun`が機能していない問題を修正
+- スプラッティングを使用してコードの可読性を向上します (#6) (Thanks @potatoqualitee!)
+
 ### 3.6.0
 - `Start-ThreadRun`に新しいパラメータを追加
   + `-MaxPromptTokens`
