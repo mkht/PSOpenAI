@@ -104,6 +104,7 @@ Describe 'Request-TextCompletion' {
         It 'Stream output' {
             $splat = @{
                 Prompt              = 'Top 10 Most Common American Family Names'
+                Temperature         = 0
                 MaxTokens           = 32
                 Stream              = $true
                 InformationVariable = 'Info'

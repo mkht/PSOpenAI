@@ -533,7 +533,7 @@ Describe 'Request-ChatCompletion' {
             { $params = @{
                     Message     = $Message
                     Model       = 'gpt-3.5-turbo-0125'
-                    Temperature = 0.1
+                    Temperature = 0
                     Tools       = $ToolsSpec
                     InvokeTools = 'Auto'
                     ErrorAction = 'Stop'
@@ -548,8 +548,8 @@ Describe 'Request-ChatCompletion' {
             $Result.History[1].tool_calls | Should -Not -BeNullOrEmpty
             $Result.History[2].Role | Should -Be 'tool'
             $Result.History[2].tool_call_id | Should -BeExactly ($Result.History[1].tool_calls[0].id)
-            $Result.History[3].Role | Should -Be 'assistant'
-            $Result.History[3].Content | Should -Not -BeNullOrEmpty
+            $Result.History[-1].Role | Should -Be 'assistant'
+            $Result.History[-1].Content | Should -Not -BeNullOrEmpty
         }
 
         It 'Function call (non execution) - Legacy' {
