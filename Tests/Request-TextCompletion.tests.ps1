@@ -111,7 +111,7 @@ Describe 'Request-TextCompletion' {
                 ErrorAction         = 'Stop'
             }
             $Result = Request-TextCompletion @splat | Select-Object -First 10
-
+            $Result | Should -HaveCount 10
             ([string[]]$Info) | Should -Be ([string[]]$Result)
         }
     }
