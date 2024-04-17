@@ -101,7 +101,7 @@ Describe 'Request-ImageGeneration' {
                     TimeoutSec  = 30
                     ErrorAction = 'Stop'
                 }
-                $script:Result = Request-ImageGeneration @paramss
+                $script:Result = Request-ImageGeneration @params
             } | Should -Not -Throw
             $Result | Should -BeOfType [string]
             { [Convert]::FromBase64String($script:Result) } | Should -Not -Throw
@@ -115,7 +115,7 @@ Describe 'Request-ImageGeneration' {
                     TimeoutSec  = 30
                     ErrorAction = 'Stop'
                 }
-                $script:Result = Request-ImageGeneration @paramss
+                $script:Result = Request-ImageGeneration @params
             } | Should -Not -Throw
             $Result.GetType().Name | Should -Be 'Byte[]'
             $Result.Count | Should -BeGreaterThan 1
@@ -132,7 +132,7 @@ Describe 'Request-ImageGeneration' {
                     MaxRetryCount = 5
                     ErrorAction   = 'Stop'
                 }
-                $script:Result = Request-ImageGeneration @paramss
+                $script:Result = Request-ImageGeneration @params
             } | Should -Not -Throw
             $Result | Should -BeOfType [string]
             $Result | Should -Match '^https://'

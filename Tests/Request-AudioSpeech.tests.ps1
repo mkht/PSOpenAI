@@ -48,7 +48,7 @@ Describe 'Request-AudioSpeech' {
                     OutFile = (Join-Path $TestDrive 'テスト.mp3')
                     ea      = 'Stop'
                 }
-                Request-AudioSpeech @paramss
+                Request-AudioSpeech @params
             } | Should -Not -Throw
             Should -InvokeVerifiable
             (Join-Path $TestDrive 'テスト.mp3') | Should -FileContentMatchExactly 'MOCK'
@@ -74,7 +74,7 @@ Describe 'Request-AudioSpeech' {
                     ea            = 'Stop'
                 }
 
-                Request-AudioSpeech @paramss
+                Request-AudioSpeech @params
             } | Should -Not -Throw
             (Join-Path $TestDrive 'test.aac') | Should -Exist
         }

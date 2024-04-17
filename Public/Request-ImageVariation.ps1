@@ -155,7 +155,7 @@ function Request-ImageVariation {
                 AdditionalHeaders = $AdditionalHeaders
                 AdditionalBody    = $AdditionalBody
             }
-            $Response = Invoke-OpenAIAPIRequest @paramss
+            $Response = Invoke-OpenAIAPIRequest @params
         }
         finally {
             if ($IsTempFileCreated -and (Test-Path $FileInfo -PathType Leaf)) {
