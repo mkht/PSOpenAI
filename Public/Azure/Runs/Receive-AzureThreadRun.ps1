@@ -51,7 +51,7 @@ function Receive-AzureThreadRun {
 
         # Invoke
         $steppablePipeline = {
-            PSOpenAI\Receive-ThreadRun @paramseters
+            PSOpenAI\Receive-ThreadRun @Parameters
         }.GetSteppablePipeline($myInvocation.CommandOrigin)
         $steppablePipeline.Begin($PSCmdlet)
     }

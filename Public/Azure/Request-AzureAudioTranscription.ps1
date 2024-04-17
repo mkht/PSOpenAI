@@ -68,7 +68,7 @@ function Request-AzureAudioTranscription {
 
         # Invoke base function
         $steppablePipeline = {
-            Request-AudioTranscription @paramseters
+            Request-AudioTranscription @Parameters
         }.GetSteppablePipeline($myInvocation.CommandOrigin)
         $steppablePipeline.Begin($PSCmdlet)
     }

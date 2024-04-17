@@ -68,7 +68,7 @@ function Request-AzureEmbeddings {
 
         # Invoke base function
         $steppablePipeline = {
-            Request-Embeddings @paramseters
+            Request-Embeddings @Parameters
         }.GetSteppablePipeline($myInvocation.CommandOrigin)
         $steppablePipeline.Begin($PSCmdlet)
     }

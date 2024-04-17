@@ -62,7 +62,7 @@ function Request-AzureAudioTranslation {
 
         # Invoke base function
         $steppablePipeline = {
-            Request-AudioTranslation @paramseters
+            Request-AudioTranslation @Parameters
         }.GetSteppablePipeline($myInvocation.CommandOrigin)
         $steppablePipeline.Begin($PSCmdlet)
     }

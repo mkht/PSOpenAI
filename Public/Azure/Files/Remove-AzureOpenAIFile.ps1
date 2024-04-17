@@ -45,7 +45,7 @@ function Remove-AzureOpenAIFile {
 
         # Invoke
         $steppablePipeline = {
-            PSOpenAI\Remove-OpenAIFile @paramseters
+            PSOpenAI\Remove-OpenAIFile @Parameters
         }.GetSteppablePipeline($myInvocation.CommandOrigin)
         $steppablePipeline.Begin($PSCmdlet)
     }

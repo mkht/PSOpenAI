@@ -50,7 +50,7 @@ function Get-AzureOpenAIFile {
 
         # Invoke
         $steppablePipeline = {
-            PSOpenAI\Get-OpenAIFile @paramseters
+            PSOpenAI\Get-OpenAIFile @Parameters
         }.GetSteppablePipeline($myInvocation.CommandOrigin)
         $steppablePipeline.Begin($PSCmdlet)
     }

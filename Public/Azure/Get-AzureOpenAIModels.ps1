@@ -45,7 +45,7 @@ function Get-AzureOpenAIModels {
 
         # Invoke base function
         $steppablePipeline = {
-            Get-OpenAIModels @paramseters
+            Get-OpenAIModels @Parameters
         }.GetSteppablePipeline($myInvocation.CommandOrigin)
         $steppablePipeline.Begin($PSCmdlet)
     }

@@ -96,7 +96,7 @@ function Request-AzureImageGeneration {
 
             # Invoke Request-ImageGeneration
             $steppablePipeline = {
-                Request-ImageGeneration @paramseters
+                Request-ImageGeneration @Parameters
             }.GetSteppablePipeline($myInvocation.CommandOrigin)
             $steppablePipeline.Begin($PSCmdlet)
         }

@@ -68,7 +68,7 @@ function Get-AzureThreadRunStep {
 
         # Invoke
         $steppablePipeline = {
-            PSOpenAI\Get-ThreadRunStep @paramseters
+            PSOpenAI\Get-ThreadRunStep @Parameters
         }.GetSteppablePipeline($myInvocation.CommandOrigin)
         $steppablePipeline.Begin($PSCmdlet)
     }

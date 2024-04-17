@@ -49,7 +49,7 @@ function Set-AzureThread {
 
         # Invoke
         $steppablePipeline = {
-            PSOpenAI\Set-Thread @paramseters
+            PSOpenAI\Set-Thread @Parameters
         }.GetSteppablePipeline($myInvocation.CommandOrigin)
         $steppablePipeline.Begin($PSCmdlet)
     }
