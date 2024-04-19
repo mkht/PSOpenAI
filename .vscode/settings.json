@@ -1,21 +1,23 @@
 {
+    // formatting style this project adheres to: https://en.wikipedia.org/wiki/Indentation_style#Allman
+    "powershell.codeFormatting.preset": "Allman",
+    "powershell.codeFormatting.openBraceOnSameLine": false,
     "powershell.codeFormatting.useConstantStrings": true,
     "powershell.codeFormatting.useCorrectCasing": true,
+    "powershell.codeFormatting.newLineAfterOpenBrace": true,
+    "powershell.codeFormatting.addWhitespaceAroundPipe": true,
+    // editor settings for formatting standards on this project
     "files.trimTrailingWhitespace": true,
     "editor.formatOnSave": true,
-    // formatting style this project adheres to: https://en.wikipedia.org/wiki/Indentation_style?useskin=vector#Allman_style
-    "powershell.codeFormatting.preset": "Allman",
-    // editor settings for formatting standards on this project
     "editor.tabSize": 4,
     "editor.detectIndentation": false,
     "editor.insertSpaces": true,
     // now your double clicks on a variable names include the dollar sign '$'
     // https://twitter.com/TylerLeonhardt/status/1102749805233737729
     "[powershell]": {
-        "editor.wordSeparators": "`~!@#%^&*()-=+[{]}\\|;:'\",.<>/?"
+       "editor.wordSeparators": "`~!@#%^&*()-=+[{]}\\|;:'\",.<>/?"
     },
     "powershell.scriptAnalysis.settingsPath": "PSScriptAnalyzerRules.psd1",
-    "powershell.codeFormatting.addWhitespaceAroundPipe": true,
     "[markdown]": {
         "files.trimTrailingWhitespace": false
     },
