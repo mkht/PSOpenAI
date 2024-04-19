@@ -3,8 +3,8 @@
     "powershell.codeFormatting.useCorrectCasing": true,
     "files.trimTrailingWhitespace": true,
     "editor.formatOnSave": true,
-    // formatting style this project adheres to: https://en.wikipedia.org/wiki/Indentation_style#Variant:_1TBS_(OTBS)
-    "powershell.codeFormatting.preset": "OTBS",
+    // formatting style this project adheres to: https://en.wikipedia.org/wiki/Indentation_style?useskin=vector#Allman_style
+    "powershell.codeFormatting.preset": "Allman",
     // editor settings for formatting standards on this project
     "editor.tabSize": 4,
     "editor.detectIndentation": false,
