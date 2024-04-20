@@ -3,8 +3,8 @@
     "powershell.codeFormatting.preset": "Stroustrup",
     "powershell.codeFormatting.useConstantStrings": true,
     "powershell.codeFormatting.useCorrectCasing": true,
-    "powershell.codeFormatting.newLineAfterOpenBrace": true,
     "powershell.codeFormatting.addWhitespaceAroundPipe": true,
+    "powershell.codeFormatting.pipelineIndentationStyle": "IncreaseIndentationForFirstPipeline",
     // editor settings for formatting standards on this project
     "files.trimTrailingWhitespace": true,
     "editor.formatOnSave": true,
