@@ -1,7 +1,6 @@
 {
-    // formatting style this project adheres to: https://en.wikipedia.org/wiki/Indentation_style#Allman
-    "powershell.codeFormatting.preset": "Allman",
-    "powershell.codeFormatting.openBraceOnSameLine": false,
+    // formatting style this project adheres to: https://en.wikipedia.org/wiki/Indentation_style#Stroustrup
+    "powershell.codeFormatting.preset": "Stroustrup",
     "powershell.codeFormatting.useConstantStrings": true,
     "powershell.codeFormatting.useCorrectCasing": true,
     "powershell.codeFormatting.newLineAfterOpenBrace": true,
