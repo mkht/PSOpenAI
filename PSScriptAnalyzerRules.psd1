@@ -18,7 +18,6 @@
         'PSUserToExportFieldsInManifest',
         'PSUseSingularNouns',
         'PSAvoidUsingInvokeExpression',
-        'PSUseShouldProcessForStateChangingFunctions',
         'PSUseDeclaredVarsMoreThanAssignments',
         'PSUseCore',
         'PSPlaceOpenBrace',
