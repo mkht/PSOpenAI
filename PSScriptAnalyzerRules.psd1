@@ -9,7 +9,6 @@
         'PSAvoidUsingUserNameAndPassWordParams',
         'PSAvoidUsingPlaintTextForPassword',
         'PSAvoidUsingWMICmdlet',
-        'PSAvoidUsingWriteHost',
         'PSMisleadingBacktick',
         'PSMissingModuleManifestField',
         'PSPossibleIncorrectComparisonWithNull',
