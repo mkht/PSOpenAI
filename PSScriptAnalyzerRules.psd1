@@ -15,7 +15,6 @@
         'PSUseApprovedVerbs',
         'PSUseOutputTypeCorrectly',
         'PSShouldProcess',
-        'PSUserToExportFieldsInManifest',
         'PSUseSingularNouns',
         'PSAvoidUsingInvokeExpression',
         'PSUseDeclaredVarsMoreThanAssignments',
