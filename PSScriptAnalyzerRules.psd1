@@ -18,7 +18,6 @@
         'PSUseSingularNouns',
         'PSAvoidUsingInvokeExpression',
         'PSUseDeclaredVarsMoreThanAssignments',
-        'PSUseCore',
         'PSPlaceOpenBrace',
         'PSPlaceCloseBrace',
         'PSUseConsistentWhitespace',
