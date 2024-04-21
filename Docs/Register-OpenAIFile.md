@@ -12,9 +12,24 @@ Upload a file that can be used across various endpoints.
 
 ## SYNTAX
 
+### File
 ```
 Register-OpenAIFile
     [-File] <String>
+    -Purpose <String>
+    [-TimeoutSec <Int32>]
+    [-MaxRetryCount <Int32>]
+    [-ApiBase <Uri>]
+    [-ApiKey <SecureString>]
+    [-Organization <String>]
+    [<CommonParameters>]
+```
+
+### Content
+```
+Register-OpenAIFile
+    [-Content] <byte[]>
+    -Name <String>
     -Purpose <String>
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
@@ -36,6 +51,14 @@ PS C:\> Register-OpenAIFile -File "C:\sample.csv" -Purpose assistants
 
 Upload `sample.csv` file to OpenAI.
 
+### Example 2
+```powershell
+PS C:\> $ByteArray = [System.Text.Encoding]::UTF8.GetBytes('some text data')
+PS C:\> Register-OpenAIFile -Content $ByteArray -Name 'filename.txt' -Purpose assistants
+```
+
+Upload a content of bytes to OpenAI
+
 ## PARAMETERS
 
 ### -File
@@ -43,14 +66,35 @@ The File path to be uploaded.
 
 ```yaml
 Type: String
+Parameter Sets: File
 Required: True
 Position: 0
 Accept pipeline input: True (ByValue)
 ```
 
+### -Content
+Byte array to be uploaded.
+
+```yaml
+Type: byte[]
+Parameter Sets: Content
+Required: True
+Position: 0
+```
+
+### -Name
+The File name to be uploaded.
+
+```yaml
+Type: String
+Parameter Sets: Content
+Required: True
+Position: Named
+```
+
 ### -Purpose
 The intended purpose of the uploaded file.  
-Use `fine-tune` for Fine-tuning and `assistants`` for Assistants and Messages.
+You can specify `fine-tune`, `assistants` or `batch`.
 
 ```yaml
 Type: String

@@ -1,13 +1,21 @@
 function Register-OpenAIFile {
-    [CmdletBinding()]
+    [CmdletBinding(DefaultParameterSetName = 'File')]
     [OutputType([pscustomobject])]
     param (
-        [Parameter(Mandatory, Position = 0, ValueFromPipeline)]
+        [Parameter(ParameterSetName = 'File', Mandatory, Position = 0, ValueFromPipeline)]
         [ValidateScript({ Test-Path -LiteralPath $_ -PathType Leaf })]
         [string]$File,
 
+        [Parameter(ParameterSetName = 'Content', Mandatory, Position = 0)]
+        [ValidateNotNullOrEmpty()]
+        [byte[]]$Content,
+
+        [Parameter(ParameterSetName = 'Content', Mandatory)]
+        [ValidateNotNullOrEmpty()]
+        [string]$Name,
+
         [Parameter(Mandatory)]
-        [Completions('assistants', 'fine-tune')]
+        [Completions('assistants', 'fine-tune', 'batch')]
         [ValidateNotNullOrEmpty()]
         [string][LowerCaseTransformation()]$Purpose,
 
@@ -63,11 +71,18 @@ function Register-OpenAIFile {
     }
 
     process {
-        $FileInfo = (Get-Item -LiteralPath $File)
-
         #region Construct parameters for API request
         $PostBody = [System.Collections.Specialized.OrderedDictionary]::new()
-        $PostBody.file = $FileInfo
+        if ($PSCmdlet.ParameterSetName -eq 'File') {
+            $PostBody.file = (Get-Item -LiteralPath $File)
+        }
+        elseif ($PSCmdlet.ParameterSetName -eq 'Content') {
+            $PostBody.file = @{
+                Type     = 'bytes'
+                FileName = $Name
+                Content  = $Content
+            }
+        }
         $PostBody.purpose = $Purpose
         #endregion
 

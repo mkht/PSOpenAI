@@ -52,6 +52,9 @@ function AddMultipartContent {
         $script:FormContent.AddRange((GetMultipartStringContent -fieldName $fieldName -fieldValue $fieldValue))
         return
     }
+    elseif ($fieldValue -is [IDictionary] -and $fieldValue.Type -eq 'bytes') {
+        $script:FormContent.AddRange((GetMultipartBytesContent -fieldName $fieldName -content $fieldValue.Content -fileName $fieldValue.FileName))
+    }
     elseif ($enumerate -and $fieldValue -is [IEnumerable]) {
         foreach ($item in $fieldValue) {
             AddMultipartContent -fieldName $fieldName -fieldValue $item -enumerate $false
@@ -66,20 +69,8 @@ function GetMultipartFileContent {
         [FileInfo]$file
     )
 
-    $contentType = 'application/octet-stream'
-    $header = @(
-        ('Content-Disposition: form-data; name="{0}"; filename="{1}"' -f $fieldName, $file.Name),
-        ('Content-Type: {0}' -f $contentType),
-        '',
-        ''
-    ) -join "`r`n"
-
-    $Utf8Enc = [UTF8Encoding]::new($false)
-    [List[byte]]$result = [List[byte]]::new()
-    $result.AddRange($Utf8Enc.GetBytes($header))
-    $result.AddRange([File]::ReadAllBytes($file))
-    $result.AddRange($Utf8Enc.GetBytes("`r`n"))
-    return , $result
+    [byte[]]$content
+    GetMultipartBytesContent -fieldName $fieldName -content ([File]::ReadAllBytes($file)) -fileName $file.Name
 }
 
 function GetMultipartStringContent {
@@ -100,6 +91,29 @@ function GetMultipartStringContent {
     [List[byte]]$result = [List[byte]]::new()
     $result.AddRange($Utf8Enc.GetBytes($header))
     $result.AddRange($Utf8Enc.GetBytes($fieldValue))
+    $result.AddRange($Utf8Enc.GetBytes("`r`n"))
+    return , $result
+}
+
+function GetMultipartBytesContent {
+    [OutputType([List[byte]])]
+    param(
+        [string]$fieldName,
+        [byte[]]$content,
+        [string]$fileName
+    )
+    $contentType = 'application/octet-stream'
+    $header = @(
+        ('Content-Disposition: form-data; name="{0}"; filename="{1}"' -f $fieldName, $fileName),
+        ('Content-Type: {0}' -f $contentType),
+        '',
+        ''
+    ) -join "`r`n"
+
+    $Utf8Enc = [UTF8Encoding]::new($false)
+    [List[byte]]$result = [List[byte]]::new()
+    $result.AddRange($Utf8Enc.GetBytes($header))
+    $result.AddRange($content)
     $result.AddRange($Utf8Enc.GetBytes("`r`n"))
     return , $result
 }

@@ -42,6 +42,14 @@ Describe 'Register-OpenAIFile' {
             Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName
         }
 
+        It 'Upload from raw bytes' {
+            { $script:Result = Register-OpenAIFile -Content ([byte[]](97..99)) -Name 'test.txt' -Purpose assistants -ea Stop } | Should -Not -Throw
+            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName
+            $Result.id | Should -BeExactly 'file-abc123'
+            $Result.object | Should -BeExactly 'file'
+            $Result.created_at | Should -BeOfType [datetime]
+        }
+
         It 'Error if the file does not exist' {
             { Register-OpenAIFile -File ($script:TestData + '/notexist.txt') -Purpose assistants -ea Stop } | Should -Throw
             Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 0 -Exactly
@@ -64,6 +72,16 @@ Describe 'Register-OpenAIFile' {
             $Result.id | Should -BeLike 'file*'
             $Result.object | Should -BeExactly 'file'
             $Result.filename | Should -Be 'my-data.jsonl'
+        }
+
+        It 'Upload test content' {
+            {
+                $rawcontent = [System.IO.File]::ReadAllBytes(($script:TestData + '/my-data.jsonl'))
+                $script:Result = Register-OpenAIFile -Content $rawcontent -Name 'raw-data.jsonl' -Purpose batch -ea Stop
+            } | Should -Not -Throw
+            $Result.id | Should -BeLike 'file*'
+            $Result.object | Should -BeExactly 'file'
+            $Result.filename | Should -Be 'raw-data.jsonl'
         }
 
         It 'Upload test file (non-latin file name)' {

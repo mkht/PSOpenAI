@@ -1,5 +1,11 @@
 # Changelog
 ### Unreleased
+- `Register-OpenAIFile` is used to make byte arrays uploadable without saving them to a file.
+  ```PowerShell
+  $ByteArray = [System.Text.Encoding]::UTF8.GetBytes('some text data')
+  Register-OpenAIFile -Content $ByteArray -Name 'filename.txt' -Purpose assistants
+  ```
+
 - All Azure versions of the function is deprecated.  
   Instead, the `-ApiType` parameter added to the normal functions.  
   You can call the Azure OpenAI Service by specifying `-ApiType` as `Azure`.
