@@ -1,4 +1,18 @@
 # Changelog
+### Unreleased
+- All Azure versions of the function is deprecated.  
+  Instead, the `-ApiType` parameter added to the normal functions.  
+  You can call the Azure OpenAI Service by specifying `-ApiType` as `Azure`.
+
+  ```PowerShell
+  $env:OPENAI_API_KEY = '<Put your api key here>'
+  $env:OPENAI_API_BASE  = 'https://<your-resource-name>.openai.azure.com/'
+  Request-ChatCompletion `
+    -Message 'Hello.' `
+    -Deployment 'gpt-4' `
+    -ApiType Azure
+  ```
+
 ### 3.6.1
 - Fix a bug that caused `New-Assistant` to fail without explicitly passing the model name.
 - Fix an issue that `Stop-ThreadRun` does not working.

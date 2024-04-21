@@ -29,7 +29,7 @@ function Request-AudioTranslation {
         [ValidateRange(0, 100)]
         [int]$MaxRetryCount = 0,
 
-        [Parameter(DontShow)]
+        [Parameter()]
         [OpenAIApiType]$ApiType = [OpenAIApiType]::OpenAI,
 
         [Parameter()]
@@ -38,7 +38,8 @@ function Request-AudioTranslation {
         [Parameter(DontShow)]
         [string]$ApiVersion,
 
-        [Parameter(DontShow)]
+        [Parameter()]
+        [ValidateSet('openai', 'azure', 'azure_ad')]
         [string]$AuthType = 'openai',
 
         [Parameter()]
@@ -68,13 +69,8 @@ function Request-AudioTranslation {
         # Initialize Organization ID
         $Organization = Initialize-OrganizationID -OrgId $Organization
 
-        # Get API endpoint
-        if ($ApiType -eq [OpenAIApiType]::Azure) {
-            $OpenAIParameter = Get-AzureOpenAIAPIEndpoint -EndpointName 'Audio.Translation' -Engine $Model -ApiBase $ApiBase -ApiVersion $ApiVersion
-        }
-        else {
-            $OpenAIParameter = Get-OpenAIAPIEndpoint -EndpointName 'Audio.Translation' -ApiBase $ApiBase
-        }
+        # Get API context
+        $OpenAIParameter = Get-OpenAIContext -EndpointName 'Audio.Translation' -ApiType $ApiType -AuthType $AuthType -ApiBase $ApiBase -ApiVersion $ApiVersion -Engine $Model
     }
 
     process {
@@ -116,7 +112,7 @@ function Request-AudioTranslation {
                 TimeoutSec        = $TimeoutSec
                 MaxRetryCount     = $MaxRetryCount
                 ApiKey            = $SecureToken
-                AuthType          = $AuthType
+                AuthType          = $OpenAIParameter.AuthType
                 Organization      = $Organization
                 Body              = $PostBody
                 AdditionalQuery   = $AdditionalQuery

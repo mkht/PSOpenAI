@@ -35,7 +35,7 @@ function Request-Embeddings {
         [ValidateRange(0, 100)]
         [int]$MaxRetryCount = 0,
 
-        [Parameter(DontShow)]
+        [Parameter()]
         [OpenAIApiType]$ApiType = [OpenAIApiType]::OpenAI,
 
         [Parameter()]
@@ -44,7 +44,8 @@ function Request-Embeddings {
         [Parameter(DontShow)]
         [string]$ApiVersion,
 
-        [Parameter(DontShow)]
+        [Parameter()]
+        [ValidateSet('openai', 'azure', 'azure_ad')]
         [string]$AuthType = 'openai',
 
         [Parameter()]
@@ -74,13 +75,8 @@ function Request-Embeddings {
         # Initialize Organization ID
         $Organization = Initialize-OrganizationID -OrgId $Organization
 
-        # Get API endpoint
-        if ($ApiType -eq [OpenAIApiType]::Azure) {
-            $OpenAIParameter = Get-AzureOpenAIAPIEndpoint -EndpointName 'Embeddings' -Engine $Model -ApiBase $ApiBase -ApiVersion $ApiVersion
-        }
-        else {
-            $OpenAIParameter = Get-OpenAIAPIEndpoint -EndpointName 'Embeddings' -ApiBase $ApiBase
-        }
+        # Get API context
+        $OpenAIParameter = Get-OpenAIContext -EndpointName 'Embeddings' -ApiType $ApiType -AuthType $AuthType -ApiBase $ApiBase -ApiVersion $ApiVersion -Engine $Model
     }
 
     process {
@@ -120,7 +116,7 @@ function Request-Embeddings {
             TimeoutSec        = $TimeoutSec
             MaxRetryCount     = $MaxRetryCount
             ApiKey            = $SecureToken
-            AuthType          = $AuthType
+            AuthType          = $OpenAIParameter.AuthType
             Organization      = $Organization
             Body              = $PostBody
             AdditionalQuery   = $AdditionalQuery

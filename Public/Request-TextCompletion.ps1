@@ -67,7 +67,7 @@ function Request-TextCompletion {
         [Parameter()]
         [int]$TimeoutSec = 0,
 
-        [Parameter(DontShow)]
+        [Parameter()]
         [OpenAIApiType]$ApiType = [OpenAIApiType]::OpenAI,
 
         [Parameter()]
@@ -76,7 +76,8 @@ function Request-TextCompletion {
         [Parameter(DontShow)]
         [string]$ApiVersion,
 
-        [Parameter(DontShow)]
+        [Parameter()]
+        [ValidateSet('openai', 'azure', 'azure_ad')]
         [string]$AuthType = 'openai',
 
         [Parameter()]
@@ -110,13 +111,8 @@ function Request-TextCompletion {
         # Initialize Organization ID
         $Organization = Initialize-OrganizationID -OrgId $Organization
 
-        # Get API endpoint
-        if ($ApiType -eq [OpenAIApiType]::Azure) {
-            $OpenAIParameter = Get-AzureOpenAIAPIEndpoint -EndpointName 'Text.Completion' -Engine $Model -ApiBase $ApiBase -ApiVersion $ApiVersion
-        }
-        else {
-            $OpenAIParameter = Get-OpenAIAPIEndpoint -EndpointName 'Text.Completion' -ApiBase $ApiBase
-        }
+        # Get API context
+        $OpenAIParameter = Get-OpenAIContext -EndpointName 'Text.Completion' -ApiType $ApiType -AuthType $AuthType -ApiBase $ApiBase -ApiVersion $ApiVersion -Engine $Model
 
         if ($ApiType -eq [OpenAIApiType]::Azure) {
             # Temporal engine name for Azure
@@ -205,7 +201,7 @@ function Request-TextCompletion {
                 TimeoutSec        = $TimeoutSec
                 MaxRetryCount     = $MaxRetryCount
                 ApiKey            = $SecureToken
-                AuthType          = $AuthType
+                AuthType          = $OpenAIParameter.AuthType
                 Organization      = $Organization
                 Body              = $PostBody
                 Stream            = $Stream
@@ -246,7 +242,7 @@ function Request-TextCompletion {
                 TimeoutSec        = $TimeoutSec
                 MaxRetryCount     = $MaxRetryCount
                 ApiKey            = $SecureToken
-                AuthType          = $AuthType
+                AuthType          = $OpenAIParameter.AuthType
                 Organization      = $Organization
                 Body              = $PostBody
                 AdditionalQuery   = $AdditionalQuery

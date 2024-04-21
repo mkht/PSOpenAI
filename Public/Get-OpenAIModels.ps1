@@ -14,7 +14,7 @@ function Get-OpenAIModels {
         [ValidateRange(0, 100)]
         [int]$MaxRetryCount = 0,
 
-        [Parameter(DontShow)]
+        [Parameter()]
         [OpenAIApiType]$ApiType = [OpenAIApiType]::OpenAI,
 
         [Parameter()]
@@ -23,7 +23,8 @@ function Get-OpenAIModels {
         [Parameter(DontShow)]
         [string]$ApiVersion,
 
-        [Parameter(DontShow)]
+        [Parameter()]
+        [ValidateSet('openai', 'azure', 'azure_ad')]
         [string]$AuthType = 'openai',
 
         [Parameter()]
@@ -53,13 +54,8 @@ function Get-OpenAIModels {
         # Initialize Organization ID
         $Organization = Initialize-OrganizationID -OrgId $Organization
 
-        # Get API endpoint
-        if ($ApiType -eq [OpenAIApiType]::Azure) {
-            $OpenAIParameter = Get-AzureOpenAIAPIEndpoint -EndpointName 'Models' -ApiBase $ApiBase -ApiVersion $ApiVersion
-        }
-        else {
-            $OpenAIParameter = Get-OpenAIAPIEndpoint -EndpointName 'Models' -ApiBase $ApiBase
-        }
+        # Get API context
+        $OpenAIParameter = Get-OpenAIContext -EndpointName 'Models' -ApiType $ApiType -AuthType $AuthType -ApiBase $ApiBase -ApiVersion $ApiVersion
     }
 
     process {
@@ -74,7 +70,7 @@ function Get-OpenAIModels {
             Method            = $OpenAIParameter.Method
             Uri               = $OpenAIParameter.Uri
             ApiKey            = $SecureToken
-            AuthType          = $AuthType
+            AuthType          = $OpenAIParameter.AuthType
             Organization      = $Organization
             TimeoutSec        = $TimeoutSec
             MaxRetryCount     = $MaxRetryCount

@@ -127,7 +127,7 @@ function Start-ThreadRun {
         [ValidateRange(0, 100)]
         [int]$MaxRetryCount = 0,
 
-        [Parameter(DontShow)]
+        [Parameter()]
         [OpenAIApiType]$ApiType = [OpenAIApiType]::OpenAI,
 
         [Parameter()]
@@ -136,7 +136,8 @@ function Start-ThreadRun {
         [Parameter(DontShow)]
         [string]$ApiVersion,
 
-        [Parameter(DontShow)]
+        [Parameter()]
+        [ValidateSet('openai', 'azure', 'azure_ad')]
         [string]$AuthType = 'openai',
 
         [Parameter()]
@@ -327,7 +328,7 @@ function Start-ThreadRun {
                 TimeoutSec        = $TimeoutSec
                 MaxRetryCount     = $MaxRetryCount
                 ApiKey            = $SecureToken
-                AuthType          = $AuthType
+                AuthType          = $OpenAIParameter.AuthType
                 Organization      = $Organization
                 Headers           = @{'OpenAI-Beta' = 'assistants=v1' }
                 Body              = $PostBody
@@ -380,7 +381,7 @@ function Start-ThreadRun {
             TimeoutSec        = $TimeoutSec
             MaxRetryCount     = $MaxRetryCount
             ApiKey            = $SecureToken
-            AuthType          = $AuthType
+            AuthType          = $OpenAIParameter.AuthType
             Organization      = $Organization
             Headers           = @{'OpenAI-Beta' = 'assistants=v1' }
             Body              = $PostBody

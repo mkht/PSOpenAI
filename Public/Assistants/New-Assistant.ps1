@@ -63,7 +63,7 @@ function New-Assistant {
         [ValidateRange(0, 100)]
         [int]$MaxRetryCount = 0,
 
-        [Parameter(DontShow)]
+        [Parameter()]
         [OpenAIApiType]$ApiType = [OpenAIApiType]::OpenAI,
 
         [Parameter()]
@@ -72,7 +72,8 @@ function New-Assistant {
         [Parameter(DontShow)]
         [string]$ApiVersion,
 
-        [Parameter(DontShow)]
+        [Parameter()]
+        [ValidateSet('openai', 'azure', 'azure_ad')]
         [string]$AuthType = 'openai',
 
         [Parameter()]
@@ -102,13 +103,8 @@ function New-Assistant {
         # Initialize Organization ID
         $Organization = Initialize-OrganizationID -OrgId $Organization
 
-        # Get API endpoint
-        if ($ApiType -eq [OpenAIApiType]::Azure) {
-            $OpenAIParameter = Get-AzureOpenAIAPIEndpoint -EndpointName 'Assistants' -ApiBase $ApiBase -ApiVersion $ApiVersion
-        }
-        else {
-            $OpenAIParameter = Get-OpenAIAPIEndpoint -EndpointName 'Assistants' -ApiBase $ApiBase
-        }
+        # Get API context
+        $OpenAIParameter = Get-OpenAIContext -EndpointName 'Assistants' -ApiType $ApiType -AuthType $AuthType -ApiBase $ApiBase -ApiVersion $ApiVersion
     }
 
     process {
@@ -169,7 +165,7 @@ function New-Assistant {
             TimeoutSec        = $TimeoutSec
             MaxRetryCount     = $MaxRetryCount
             ApiKey            = $SecureToken
-            AuthType          = $AuthType
+            AuthType          = $OpenAIParameter.AuthType
             Organization      = $Organization
             Headers           = @{'OpenAI-Beta' = 'assistants=v1' }
             Body              = $PostBody

@@ -44,7 +44,7 @@ function Request-ImageGeneration {
         [Parameter()]
         [int]$TimeoutSec = 0,
 
-        [Parameter(DontShow)]
+        [Parameter()]
         [OpenAIApiType]$ApiType = [OpenAIApiType]::OpenAI,
 
         [Parameter()]
@@ -53,7 +53,8 @@ function Request-ImageGeneration {
         [Parameter(DontShow)]
         [string]$ApiVersion,
 
-        [Parameter(DontShow)]
+        [Parameter()]
+        [ValidateSet('openai', 'azure', 'azure_ad')]
         [string]$AuthType = 'openai',
 
         [Parameter()]
@@ -87,13 +88,8 @@ function Request-ImageGeneration {
         # Initialize Organization ID
         $Organization = Initialize-OrganizationID -OrgId $Organization
 
-        # Get API endpoint
-        if ($ApiType -eq [OpenAIApiType]::Azure) {
-            $OpenAIParameter = Get-AzureOpenAIAPIEndpoint -EndpointName 'Image.Generation' -Engine $Model -ApiBase $ApiBase -ApiVersion $ApiVersion
-        }
-        else {
-            $OpenAIParameter = Get-OpenAIAPIEndpoint -EndpointName 'Image.Generation' -ApiBase $ApiBase
-        }
+        # Get API context
+        $OpenAIParameter = Get-OpenAIContext -EndpointName 'Image.Generation' -ApiType $ApiType -AuthType $AuthType -ApiBase $ApiBase -ApiVersion $ApiVersion -Engine $Model
     }
 
     process {
@@ -160,7 +156,7 @@ function Request-ImageGeneration {
             TimeoutSec        = $TimeoutSec
             MaxRetryCount     = $MaxRetryCount
             ApiKey            = $SecureToken
-            AuthType          = $AuthType
+            AuthType          = $OpenAIParameter.AuthType
             Organization      = $Organization
             Body              = $PostBody
             AdditionalQuery   = $AdditionalQuery

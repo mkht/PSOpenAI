@@ -90,6 +90,15 @@ Install-Module -Name PSOpenAI
 + [Request-TextCompletion](/Docs/Request-TextCompletion.md)
 
 ### Azure OpenAI Service
++ [Guide: How to use with Azure OpenAI Service](Guides/How_to_use_with_Azure_OpenAI_Service.ipynb)
+
+> [!IMPORTANT]
+> The method of calling Azure OpenAI Service has changed. See the [guide](Guides/How_to_use_with_Azure_OpenAI_Service.ipynb) for details.  
+> The folded functions below are deprecated. These functions will be removed in the next major release.
+
+<details>
+<summary>For Azure OpenAI Service functions (deprecated)</summary>
+
 + [Get-AzureOpenAIModels](/Docs/Get-AzureOpenAIModels.md)
 + [Request-AudioSpeech](/Docs/Request-AzureAudioSpeech.md)
 + [Request-AzureAudioTranscription](/Docs/Request-AzureAudioTranscription.md)
@@ -99,10 +108,6 @@ Install-Module -Name PSOpenAI
 + [Request-AzureEmbeddings](/Docs/Request-AzureEmbeddings.md)
 + [Request-AzureImageGeneration](/Docs/Request-AzureImageGeneration.md)
 + [Request-AzureTextCompletion](/Docs/Request-AzureTextCompletion.md)
-
-<details>
-<summary>Assistants for Azure OpenAI Service</summary>
-
 + Get-AzureAssistant
 + New-AzureAssistant
 + Set-AzureAssistant
@@ -319,9 +324,10 @@ If you want to use Azure OpenAI Service instead of OpenAI. You should create Azu
 $global:OPENAI_API_KEY = '<Put your api key here>'
 $global:OPENAI_API_BASE  = 'https://<resource-name>.openai.azure.com/'
 
-Request-AzureChatCompletion `
+Request-ChatCompletion `
   -Message 'Hello Azure OpenAI Service.' `
   -Deployment 'gpt-35-turbo' `
+  -ApiType Azure
 ```
 
 ----
