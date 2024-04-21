@@ -413,34 +413,34 @@ function Request-ChatCompletion {
             }
             Invoke-OpenAIAPIRequest @splat |
                 Where-Object {
-                -not [string]::IsNullOrEmpty($_)
-            } | ForEach-Object {
-                if ($Format -eq 'raw_response') {
-                    $_
-                }
-                else {
-                    try {
-                        $_ | ConvertFrom-Json -ErrorAction Stop
+                    -not [string]::IsNullOrEmpty($_)
+                } | ForEach-Object {
+                    if ($Format -eq 'raw_response') {
+                        $_
                     }
-                    catch {
-                        Write-Error -Exception $_.Exception
+                    else {
+                        try {
+                            $_ | ConvertFrom-Json -ErrorAction Stop
+                        }
+                        catch {
+                            Write-Error -Exception $_.Exception
+                        }
+                    }
+                } | Where-Object {
+                    $Format -eq 'raw_response' -or ($null -ne $_.choices -and ($_.choices[0].delta.content -is [string]))
+                } | ForEach-Object -Process {
+                    if ($Format -eq 'raw_response') {
+                        Write-Output $_
+                    }
+                    else {
+                        # Writes content to both the Information stream(6>) and the Standard output stream(1>).
+                        $InfoMsg = [System.Management.Automation.HostInformationMessage]::new()
+                        $InfoMsg.Message = $_.choices[0].delta.content
+                        $InfoMsg.NoNewLine = $true
+                        Write-Information $InfoMsg
+                        Write-Output $InfoMsg.Message
                     }
                 }
-            } | Where-Object {
-                $Format -eq 'raw_response' -or ($null -ne $_.choices -and ($_.choices[0].delta.content -is [string]))
-            } | ForEach-Object -Process {
-                if ($Format -eq 'raw_response') {
-                    Write-Output $_
-                }
-                else {
-                    # Writes content to both the Information stream(6>) and the Standard output stream(1>).
-                    $InfoMsg = [System.Management.Automation.HostInformationMessage]::new()
-                    $InfoMsg.Message = $_.choices[0].delta.content
-                    $InfoMsg.NoNewLine = $true
-                    Write-Information $InfoMsg
-                    Write-Output $InfoMsg.Message
-                }
-            }
 
             return
         }
@@ -580,7 +580,7 @@ function Request-ChatCompletion {
         }
         $LastUserMessage = ($Messages.Where({ $_.role -eq 'user' })[-1].content)
         if ($LastUserMessage -isnot [string]) {
-            $LastUserMessage = [string]($LastUserMessage | ? { $_.type -eq 'text' } | select -Last 1).text
+            $LastUserMessage = [string]($LastUserMessage | Where-Object { $_.type -eq 'text' } | Select-Object -Last 1).text
         }
         $Response | Add-Member -MemberType NoteProperty -Name 'Message' -Value $LastUserMessage
         $Response | Add-Member -MemberType NoteProperty -Name 'Answer' -Value ([string[]]$Response.choices.message.content)

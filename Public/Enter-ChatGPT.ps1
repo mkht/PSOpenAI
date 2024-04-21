@@ -98,7 +98,7 @@ function Enter-ChatGPT {
         #region Display header
         $ConsoleWidth = [Math]::Min(46, ($Host.UI.RawUI.WindowSize.Width - 4))
         if (-not $NoHeader) {
-    (1..$ConsoleWidth) | % { Write-Host '/' -NoNewline }
+    (1..$ConsoleWidth) | ForEach-Object { Write-Host '/' -NoNewline }
             Write-Host ''
             Write-Host @'
    ________          __  __________ ______
@@ -108,7 +108,7 @@ function Enter-ChatGPT {
 \____/_/ /_/\__,_/\__/\____/_/    /_/
 
 '@
-    (1..$ConsoleWidth) | % { Write-Host '/' -NoNewline }
+    (1..$ConsoleWidth) | ForEach-Object { Write-Host '/' -NoNewline }
             Write-Host ''
             Write-Host ''
         }

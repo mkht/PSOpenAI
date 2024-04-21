@@ -1,5 +1,6 @@
 function Get-AzureOpenAIAPIEndpoint {
     [CmdletBinding()]
+    [OutputType([hashtable])]
     param (
         [Parameter(Mandatory, Position = 0)]
         [string]$EndpointName,

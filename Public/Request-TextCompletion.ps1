@@ -215,24 +215,24 @@ function Request-TextCompletion {
             }
             Invoke-OpenAIAPIRequest @params |
                 Where-Object {
-                -not [string]::IsNullOrEmpty($_)
-            } | ForEach-Object {
-                try {
-                    $_ | ConvertFrom-Json -ErrorAction Stop
+                    -not [string]::IsNullOrEmpty($_)
+                } | ForEach-Object {
+                    try {
+                        $_ | ConvertFrom-Json -ErrorAction Stop
+                    }
+                    catch {
+                        Write-Error -Exception $_.Exception
+                    }
+                } | Where-Object {
+                    $null -ne $_.choices -and $_.choices[0].text -is [string]
+                } | ForEach-Object {
+                    # Writes content to both the Information stream(6>) and the Standard output stream(1>).
+                    $InfoMsg = [System.Management.Automation.HostInformationMessage]::new()
+                    $InfoMsg.Message = $_.choices[0].text
+                    $InfoMsg.NoNewLine = $true
+                    Write-Information $InfoMsg
+                    Write-Output $InfoMsg.Message
                 }
-                catch {
-                    Write-Error -Exception $_.Exception
-                }
-            } | Where-Object {
-                $null -ne $_.choices -and $_.choices[0].text -is [string]
-            } | ForEach-Object {
-                # Writes content to both the Information stream(6>) and the Standard output stream(1>).
-                $InfoMsg = [System.Management.Automation.HostInformationMessage]::new()
-                $InfoMsg.Message = $_.choices[0].text
-                $InfoMsg.NoNewLine = $true
-                Write-Information $InfoMsg
-                Write-Output $InfoMsg.Message
-            }
             return
         }
         #endregion

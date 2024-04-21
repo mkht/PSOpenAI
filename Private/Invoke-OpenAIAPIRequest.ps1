@@ -310,15 +310,15 @@ function Invoke-OpenAIAPIRequest {
 
     # Verbose / Debug output
     $verboseMessage = "$ServiceName API response: " + ($Response |
-        Format-List StatusCode,
-        @{
-            name       = 'processing_ms'
-            expression = { $_.Headers['openai-processing-ms'] }
-        },
-        @{
-            name       = 'request_id'
-            expression = { $_.Headers['X-Request-Id'] }
-        } | Out-String).TrimEnd()
+            Format-List StatusCode,
+            @{
+                name       = 'processing_ms'
+                expression = { $_.Headers['openai-processing-ms'] }
+            },
+            @{
+                name       = 'request_id'
+                expression = { $_.Headers['X-Request-Id'] }
+            } | Out-String).TrimEnd()
     Write-Verbose -Message $verboseMessage
 
     # Don't read the whole stream for debug logging unless necessary.

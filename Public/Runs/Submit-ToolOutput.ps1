@@ -140,35 +140,35 @@ function Submit-ToolOutput {
             }
             Invoke-OpenAIAPIRequest @params |
                 Where-Object {
-                -not [string]::IsNullOrEmpty($_)
-            } | ForEach-Object {
-                if ($Format -eq 'raw_response') {
-                    $_
-                }
-                elseif ($_.Contains('"object":"thread.message.delta"', [StringComparison]::OrdinalIgnoreCase)) {
-                    try {
-                        $deltaObj = $_ | ConvertFrom-Json -ErrorAction Stop
+                    -not [string]::IsNullOrEmpty($_)
+                } | ForEach-Object {
+                    if ($Format -eq 'raw_response') {
+                        $_
                     }
-                    catch {
-                        Write-Error -Exception $_.Exception
+                    elseif ($_.Contains('"object":"thread.message.delta"', [StringComparison]::OrdinalIgnoreCase)) {
+                        try {
+                            $deltaObj = $_ | ConvertFrom-Json -ErrorAction Stop
+                        }
+                        catch {
+                            Write-Error -Exception $_.Exception
+                        }
+                        @($deltaObj.delta.content.Where({ $_.type -eq 'text' }))[0]
                     }
-                    @($deltaObj.delta.content.Where({ $_.type -eq 'text' }))[0]
+                } | Where-Object {
+                    $Format -eq 'raw_response' -or ($null -ne $_.text)
+                } | ForEach-Object -Process {
+                    if ($Format -eq 'raw_response') {
+                        Write-Output $_
+                    }
+                    else {
+                        # Writes content to both the Information stream(6>) and the Standard output stream(1>).
+                        $InfoMsg = [System.Management.Automation.HostInformationMessage]::new()
+                        $InfoMsg.Message = $_.text.value
+                        $InfoMsg.NoNewLine = $true
+                        Write-Information $InfoMsg
+                        Write-Output $InfoMsg.Message
+                    }
                 }
-            } | Where-Object {
-                $Format -eq 'raw_response' -or ($null -ne $_.text)
-            } | ForEach-Object -Process {
-                if ($Format -eq 'raw_response') {
-                    Write-Output $_
-                }
-                else {
-                    # Writes content to both the Information stream(6>) and the Standard output stream(1>).
-                    $InfoMsg = [System.Management.Automation.HostInformationMessage]::new()
-                    $InfoMsg.Message = $_.text.value
-                    $InfoMsg.NoNewLine = $true
-                    Write-Information $InfoMsg
-                    Write-Output $InfoMsg.Message
-                }
-            }
 
             return
         }

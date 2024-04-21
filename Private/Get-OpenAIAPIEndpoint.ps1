@@ -1,5 +1,6 @@
 function Get-OpenAIAPIEndpoint {
     [CmdletBinding()]
+    [OutputType([hashtable])]
     param (
         [Parameter(Mandatory, Position = 0)]
         [string]$EndpointName,

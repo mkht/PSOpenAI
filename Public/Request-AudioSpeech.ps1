@@ -126,7 +126,7 @@ function Request-AudioSpeech {
         }
         else {
             $PostBody.response_format =
-                switch -Wildcard ($OutFile) {
+            switch -Wildcard ($OutFile) {
                 '*.mp3' { 'mp3'; break }
                 '*.opus' { 'opus'; break }
                 '*.aac' { 'aac'; break }

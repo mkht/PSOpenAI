@@ -27,34 +27,34 @@ function ObjectToContent {
 
     if (
         $null -eq $InputObject -or
-            $InputObject -eq [System.Management.Automation.Internal.AutomationNull]::Value -or
-            $InputObject -eq [System.DBNull]::Value -or
-            $InputObject -eq [NullString]::Value
+        $InputObject -eq [System.Management.Automation.Internal.AutomationNull]::Value -or
+        $InputObject -eq [System.DBNull]::Value -or
+        $InputObject -eq [NullString]::Value
 
     ) {
         $null
     }
     elseif (
         $InputObject -is [string] -or
-            $InputObject -is [System.Collections.IDictionary] -or
-            $InputObject -is [char] -or
-            $InputObject -is [bool] -or
-            $InputObject -is [datetime] -or
-            $InputObject -is [System.DateTimeOffset] -or
-            $InputObject -is [uri] -or
-            $InputObject -is [double] -or
-            $InputObject -is [float] -or
-            $InputObject -is [decimal] -or
-            $InputObject -is [double]
+        $InputObject -is [System.Collections.IDictionary] -or
+        $InputObject -is [char] -or
+        $InputObject -is [bool] -or
+        $InputObject -is [datetime] -or
+        $InputObject -is [System.DateTimeOffset] -or
+        $InputObject -is [uri] -or
+        $InputObject -is [double] -or
+        $InputObject -is [float] -or
+        $InputObject -is [decimal] -or
+        $InputObject -is [double]
     ) {
         $InputObject
     }
     elseif (
         $InputObject -is [timespan] -or
-            $InputObject -is [guid] -or
-            $InputObject -is [regex] -or
-            $InputObject -is [ipaddress] -or
-            $InputObject -is [mailaddress]
+        $InputObject -is [guid] -or
+        $InputObject -is [regex] -or
+        $InputObject -is [ipaddress] -or
+        $InputObject -is [mailaddress]
     ) {
         $InputObject.ToString()
     }

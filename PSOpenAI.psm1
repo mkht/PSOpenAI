@@ -6,18 +6,18 @@ $PrivateFunctions = Get-ChildItem -LiteralPath $PrivateDirectory -Recurse -Filte
 $PublicFunctions = Get-ChildItem -LiteralPath $PublicDirectory -Recurse -Filter '*.ps1' -File
 
 # Include Private functions
-$PrivateFunctions | % {
+$PrivateFunctions | ForEach-Object {
     . $_.FullName
 }
 
 # Include Public functions
-$PublicFunctions | % {
+$PublicFunctions | ForEach-Object {
     . $_.FullName
 }
 
 # Export public functions
 $ExportFunctions = [string[]]@()
-$PublicFunctions | % {
+$PublicFunctions | ForEach-Object {
     if (Test-Path -LiteralPath "Function:/$($_.BaseName)") {
         $ExportFunctions += $_.BaseName
     }

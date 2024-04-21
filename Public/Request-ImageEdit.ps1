@@ -247,7 +247,7 @@ function Request-ImageEdit {
             Write-Output ($ResponseContent | Select-Object -ExpandProperty 'b64_json')
         }
         elseif ($Format -eq 'byte') {
-            [byte[]]$b = [Convert]::FromBase64String(($ResponseContent | Select-Object -ExpandProperty 'b64_json' | select -First 1))
+            [byte[]]$b = [Convert]::FromBase64String(($ResponseContent | Select-Object -ExpandProperty 'b64_json' | Select-Object -First 1))
             Write-Output (, $b)
         }
         #endregion
