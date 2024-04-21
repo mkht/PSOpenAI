@@ -2,7 +2,7 @@ using namespace System.Management.Automation
 
 function New-ChatCompletionFunctionFromHashTable {
     [CmdletBinding()]
-    [OutputType([ordered])]
+    [OutputType([System.Collections.Specialized.OrderedDictionary])]
     param (
         [Parameter(Mandatory, Position = 0)]
         [ValidatePattern('^[a-zA-Z0-9_-]{1,64}$')]
@@ -38,7 +38,7 @@ function New-ChatCompletionFunctionFromHashTable {
 
 function New-ChatCompletionFunctionFromPSCommand {
     [CmdletBinding()]
-    [OutputType([ordered])]
+    [OutputType([System.Collections.Specialized.OrderedDictionary])]
     param (
         [Parameter(Mandatory, Position = 0)]
         [ValidateScript({ (Get-Command $_ -ea Ignore) -is [CommandInfo] })]
