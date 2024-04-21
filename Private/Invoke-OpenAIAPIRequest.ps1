@@ -238,23 +238,25 @@ function Invoke-OpenAIAPIRequest {
     if ($IsDebug) {
         $startIdx = $lastIdx = 2
         if ($AuthType -eq 'openai') { $startIdx += 4 } # 'org-'
-        $params = @{
-            Message              = 'Request parameters: ' + (([pscustomobject]$IwrParam) | Format-List Method, Uri, ContentType, Headers, Authentication | Out-String).TrimEnd()
+        $params1 = @{
+            Source               = 'Request parameters: ' + (([pscustomobject]$IwrParam) | Format-List Method, Uri, ContentType, Headers, Authentication | Out-String).TrimEnd()
             Target               = ($ApiKey, $Organization)
             First                = $startIdx
             Last                 = $lastIdx
             MaxNumberOfAsterisks = 45
         }
-        Write-Debug @params
+        $maskedString1 = Get-MaskedString @params1
+        Write-Debug -Message $maskedString1
 
-        $params = @{
-            Message              = 'Post body: ' + $Body
+        $params2 = @{
+            Source               = 'Post body: ' + $Body
             Target               = ($ApiKey, $Organization)
             First                = $startIdx
             Last                 = $lastIdx
             MaxNumberOfAsterisks = 45
         }
-        Write-Debug @params
+        $maskedString2 = Get-MaskedString @params2
+        Write-Debug -Message $maskedString2
     }
 
     #region Send API Request
@@ -326,7 +328,7 @@ function Invoke-OpenAIAPIRequest {
         $startIdx = $lastIdx = 2
         if ($AuthType -eq 'openai') { $startIdx += 4 } # 'org-'
         $params1 = @{
-            Message              = 'API response header: ' + ($Response.Headers | Format-Table -HideTableHeaders | Out-String).TrimEnd()
+            Source               = 'API response header: ' + ($Response.Headers | Format-Table -HideTableHeaders | Out-String).TrimEnd()
             Target               = ($ApiKey, $Organization)
             First                = $startIdx
             Last                 = $lastIdx
@@ -336,7 +338,7 @@ function Invoke-OpenAIAPIRequest {
         Write-Debug -Message $maskedString1
 
         $params2 = @{
-            Message              = 'API response body: ' + ($Response.Content | Out-String).TrimEnd()
+            Source               = 'API response body: ' + ($Response.Content | Out-String).TrimEnd()
             Target               = ($ApiKey, $Organization)
             First                = $startIdx
             Last                 = $lastIdx
