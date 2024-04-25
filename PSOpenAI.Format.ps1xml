@@ -25,7 +25,7 @@
           </TableColumnHeader>
           <TableColumnHeader>
             <Label>Status</Label>
-            <Width>10</Width>
+            <Width>12</Width>
             <Alignment>Left</Alignment>
           </TableColumnHeader>
           <TableColumnHeader>

@@ -84,6 +84,8 @@ Install-Module -Name PSOpenAI
 + [Get-OpenAIFileContent](/Docs/Get-OpenAIFileContent.md)
 
 #### Batch
+[Guide: How to use Batch](/Guides/How_to_use_Batch.md)
+
 + [Start-Batch](/Docs/Start-Batch.md)
 + [Get-Batch](/Docs/Get-Batch.md)
 + [Wait-Batch](/Docs/Wait-Batch.md)
