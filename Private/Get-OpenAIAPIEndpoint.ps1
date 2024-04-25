@@ -190,5 +190,8 @@ function Get-OpenAIAPIEndpoint {
             }
             continue
         }
+        Default {
+            Write-Error -Message ('{0} API endpoint is not provided by OpenAI' -f $_)
+        }
     }
 }

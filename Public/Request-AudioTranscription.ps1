@@ -72,16 +72,16 @@ function Request-AudioTranscription {
 
     begin {
         # Initialize API Key
-        [securestring]$SecureToken = Initialize-APIKey -ApiKey $ApiKey
+        [securestring]$SecureToken = Initialize-APIKey -ApiKey $ApiKey -ErrorAction Stop
 
         # Initialize API Base
-        $ApiBase = Initialize-APIBase -ApiBase $ApiBase -ApiType $ApiType
+        $ApiBase = Initialize-APIBase -ApiBase $ApiBase -ApiType $ApiType -ErrorAction Stop
 
         # Initialize Organization ID
         $Organization = Initialize-OrganizationID -OrgId $Organization
 
         # Get API context
-        $OpenAIParameter = Get-OpenAIContext -EndpointName 'Audio.Transcription' -ApiType $ApiType -AuthType $AuthType -ApiBase $ApiBase -ApiVersion $ApiVersion -Engine $Model
+        $OpenAIParameter = Get-OpenAIContext -EndpointName 'Audio.Transcription' -ApiType $ApiType -AuthType $AuthType -ApiBase $ApiBase -ApiVersion $ApiVersion -ErrorAction Stop -Engine $Model
 
         # Convert language name to ISO-639-1 format (if we can)
         if ($PSCmdlet.ParameterSetName -eq 'Language' -and $PSBoundParameters.ContainsKey('Language')) {

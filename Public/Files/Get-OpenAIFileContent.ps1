@@ -50,16 +50,16 @@ function Get-OpenAIFileContent {
 
     begin {
         # Initialize API Key
-        [securestring]$SecureToken = Initialize-APIKey -ApiKey $ApiKey
+        [securestring]$SecureToken = Initialize-APIKey -ApiKey $ApiKey -ErrorAction Stop
 
         # Initialize API Base
-        $ApiBase = Initialize-APIBase -ApiBase $ApiBase -ApiType ([OpenAIApiType]::OpenAI)
+        $ApiBase = Initialize-APIBase -ApiBase $ApiBase -ApiType ([OpenAIApiType]::OpenAI) -ErrorAction Stop
 
         # Initialize Organization ID
         $Organization = Initialize-OrganizationID -OrgId $Organization
 
         # Get API context
-        $OpenAIParameter = Get-OpenAIContext -EndpointName 'Files' -ApiType $ApiType -AuthType $AuthType -ApiBase $ApiBase -ApiVersion $ApiVersion
+        $OpenAIParameter = Get-OpenAIContext -EndpointName 'Files' -ApiType $ApiType -AuthType $AuthType -ApiBase $ApiBase -ApiVersion $ApiVersion -ErrorAction Stop
     }
 
     process {

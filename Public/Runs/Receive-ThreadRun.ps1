@@ -62,7 +62,7 @@ function Receive-ThreadRun {
 
     process {
         if ($Wait -and $InputObject.status -ne 'completed') {
-            $InputObject = $InputObject | Wait-ThreadRun @CommonParams
+            $InputObject = $InputObject | PSOpenAI\Wait-ThreadRun @CommonParams
         }
         $ThreadIds += $InputObject.thread_id
         PSOpenAI\Get-Thread -InputObject $InputObject.thread_id @CommonParams

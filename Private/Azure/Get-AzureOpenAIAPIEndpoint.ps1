@@ -183,5 +183,8 @@ function Get-AzureOpenAIAPIEndpoint {
             }
             continue
         }
+        Default {
+            Write-Error -Message ('{0} API endpoint is not provided by Azure OpenAI Service' -f $_)
+        }
     }
 }

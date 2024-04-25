@@ -75,13 +75,13 @@ function Request-AzureImageGeneration {
         if (-not $PSBoundParameters.ContainsKey('Deployment')) {
             $EndpointMode = 'Legacy'
             # Initialize API Key
-            [securestring]$SecureToken = Initialize-APIKey -ApiKey $ApiKey
+            [securestring]$SecureToken = Initialize-APIKey -ApiKey $ApiKey -ErrorAction Stop
 
             # Initialize API Base
-            $ApiBase = Initialize-APIBase -ApiBase $ApiBase -ApiType ([OpenAIApiType]::Azure)
+            $ApiBase = Initialize-APIBase -ApiBase $ApiBase -ApiType ([OpenAIApiType]::Azure) -ErrorAction Stop
 
             # Get API endpoint
-            $OpenAIParameter = Get-AzureOpenAIAPIEndpoint -EndpointName 'Image.Generation.Legacy' -ApiBase $ApiBase -ApiVersion $ApiVersion
+            $OpenAIParameter = Get-AzureOpenAIAPIEndpoint -EndpointName 'Image.Generation.Legacy' -ApiBase $ApiBase -ApiVersion $ApiVersion -ErrorAction Stop
         }
 
         # Modern (DALL-E 3 and above)

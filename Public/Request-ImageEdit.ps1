@@ -74,16 +74,16 @@ function Request-ImageEdit {
 
     begin {
         # Initialize API Key
-        [securestring]$SecureToken = Initialize-APIKey -ApiKey $ApiKey
+        [securestring]$SecureToken = Initialize-APIKey -ApiKey $ApiKey -ErrorAction Stop
 
         # Initialize API Base
-        $ApiBase = Initialize-APIBase -ApiBase $ApiBase -ApiType ([OpenAIApiType]::OpenAI)
+        $ApiBase = Initialize-APIBase -ApiBase $ApiBase -ApiType ([OpenAIApiType]::OpenAI) -ErrorAction Stop
 
         # Initialize Organization ID
         $Organization = Initialize-OrganizationID -OrgId $Organization
 
         # Get API endpoint
-        $OpenAIParameter = Get-OpenAIAPIEndpoint -EndpointName 'Image.Edit' -ApiBase $ApiBase
+        $OpenAIParameter = Get-OpenAIAPIEndpoint -EndpointName 'Image.Edit' -ApiBase $ApiBase -ErrorAction Stop
     }
 
     process {

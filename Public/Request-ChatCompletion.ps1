@@ -186,16 +186,16 @@ function Request-ChatCompletion {
 
     begin {
         # Initialize API Key
-        [securestring]$SecureToken = Initialize-APIKey -ApiKey $ApiKey
+        [securestring]$SecureToken = Initialize-APIKey -ApiKey $ApiKey -ErrorAction Stop
 
         # Initialize API Base
-        $ApiBase = Initialize-APIBase -ApiBase $ApiBase -ApiType $ApiType
+        $ApiBase = Initialize-APIBase -ApiBase $ApiBase -ApiType $ApiType -ErrorAction Stop
 
         # Initialize Organization ID
         $Organization = Initialize-OrganizationID -OrgId $Organization
 
         # Get API context
-        $OpenAIParameter = Get-OpenAIContext -EndpointName 'Chat.Completion' -ApiType $ApiType -AuthType $AuthType -Engine $Model -ApiBase $ApiBase -ApiVersion $ApiVersion
+        $OpenAIParameter = Get-OpenAIContext -EndpointName 'Chat.Completion' -ApiType $ApiType -AuthType $AuthType -Engine $Model -ApiBase $ApiBase -ApiVersion $ApiVersion -ErrorAction Stop
 
         if ($ApiType -eq [OpenAIApiType]::Azure) {
             # Temporal engine name for Azure
