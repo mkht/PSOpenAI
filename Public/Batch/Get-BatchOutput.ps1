@@ -81,7 +81,7 @@ function Get-BatchOutput {
 
         # Parse and output
         [System.Text.Encoding]::UTF8.GetString($ByteContent) -split "`n" | Where-Object { $_ } | ForEach-Object {
-            $ret = ConvertFrom-Json -InputObject $_ -Depth 100
+            $ret = ConvertFrom-Json -InputObject $_
             $ret.PSObject.TypeNames.Insert(0, 'PSOpenAI.Batch.Output')
             if ($ret.response.body.object -eq 'chat.completion') {
                 $ret.response.body = ParseChatCompletionObject $ret.response.body
