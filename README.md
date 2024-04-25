@@ -83,6 +83,13 @@ Install-Module -Name PSOpenAI
 + [Remove-OpenAIFile](/Docs/Remove-OpenAIFile.md)
 + [Get-OpenAIFileContent](/Docs/Get-OpenAIFileContent.md)
 
+#### Batch
++ [Start-Batch](/Docs/Start-Batch.md)
++ [Get-Batch](/Docs/Get-Batch.md)
++ [Wait-Batch](/Docs/Wait-Batch.md)
++ [Stop-Batch](/Docs/Stop-Batch.md)
++ [Get-BatchOutput](/Docs/Get-BatchOutput.md)
+
 #### Others
 + [Get-OpenAIModels](/Docs/Get-OpenAIModels.md)
 + [Request-Embeddings](/Docs/Request-Embeddings.md)
