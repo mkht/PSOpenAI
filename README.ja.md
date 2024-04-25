@@ -44,7 +44,7 @@ Install-Module -Name PSOpenAI
 + [New-ChatCompletionFunction](/Docs/New-ChatCompletionFunction.md)
 
 #### Assistants
-[Guide: How to use Assistants](/Guides/How_to_use_Assistants.md)
+[ガイド: Assistants の使用方法](/Guides/How_to_use_Assistants.md)
 
 + [Get-Assistant](/Docs/Get-Assistant.md)
 + [New-Assistant](/Docs/New-Assistant.md)
@@ -85,9 +85,27 @@ Install-Module -Name PSOpenAI
 + [Request-Moderation](/Docs/Request-Moderation.md)
 + [Request-TextCompletion](/Docs/Request-TextCompletion.md)
 
+#### Batch
+[ガイド: Batch の使用方法](/Guides/How_to_use_Batch.md)
+
++ [Start-Batch](/Docs/Start-Batch.md)
++ [Get-Batch](/Docs/Get-Batch.md)
++ [Wait-Batch](/Docs/Wait-Batch.md)
++ [Stop-Batch](/Docs/Stop-Batch.md)
++ [Get-BatchOutput](/Docs/Get-BatchOutput.md)
+
 ### Azure OpenAI Service
++ [ガイド: Azure OpenAI Service の使用方法](Guides/How_to_use_with_Azure_OpenAI_Service.ipynb)
+
+> [!IMPORTANT]
+> Azure OpenAI Service を使用する方法は変更されました。 詳細は新しい[ガイド](Guides/How_to_use_with_Azure_OpenAI_Service.ipynb)を参照してください。  
+> この下に折りたたまれている関数は非推奨になりました 次のメジャーバージョンでは完全に削除されます。
+
+<details>
+<summary>Azure OpenAI Service 用の関数(非推奨)</summary>
+
 + [Get-AzureOpenAIModels](/Docs/Get-AzureOpenAIModels.md)
-+ [Request-AzureAudioSpeech](/Docs/Request-AzureAudioSpeech.md)
++ [Request-AudioSpeech](/Docs/Request-AzureAudioSpeech.md)
 + [Request-AzureAudioTranscription](/Docs/Request-AzureAudioTranscription.md)
 + [Request-AzureAudioTranslation](/Docs/Request-AzureAudioTranslation.md)
 + [Request-AzureChatCompletion](/Docs/Request-AzureChatCompletion.md)
@@ -95,10 +113,6 @@ Install-Module -Name PSOpenAI
 + [Request-AzureEmbeddings](/Docs/Request-AzureEmbeddings.md)
 + [Request-AzureImageGeneration](/Docs/Request-AzureImageGeneration.md)
 + [Request-AzureTextCompletion](/Docs/Request-AzureTextCompletion.md)
-
-<details>
-<summary>Assistants for Azure OpenAI Service</summary>
-
 + Get-AzureAssistant
 + New-AzureAssistant
 + Set-AzureAssistant

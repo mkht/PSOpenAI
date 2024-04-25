@@ -1,4 +1,32 @@
 # 変更履歴
+### 3.7.0
+- Batch APIを使用するための新しい関数を追加. 
+  Batchの使い方はガイドを参照してください [Guide: How to use Batch](/Guides/How_to_use_Batch.md)
+
+  + `Start-Batch`
+  + `Get-Batch`
+  + `Wait-Batch`
+  + `Stop-Batch`
+  + `Get-BatchOutput`
+
+- `Register-OpenAIFile`を使用してファイルではなくバイト列をアップロードできるようになりました
+  ```PowerShell
+  $ByteArray = [System.Text.Encoding]::UTF8.GetBytes('some text data')
+  Register-OpenAIFile -Content $ByteArray -Name 'filename.txt' -Purpose assistants
+  ```
+
+- Azure OpenAI Service 用の関数は全て非推奨になりました  
+  代わりに通常のOpenAI用関数の`-ApiType`パラメータに`Azure`を設定することでAzure OpenAI Serviceを使用できます
+
+  ```PowerShell
+  $env:OPENAI_API_KEY = '<Put your api key here>'
+  $env:OPENAI_API_BASE  = 'https://<your-resource-name>.openai.azure.com/'
+  Request-ChatCompletion `
+    -Message 'こんにちは！' `
+    -Deployment 'gpt-4' `
+    -ApiType Azure
+  ```
+
 ### 3.6.1
 - `New-Assistant`の`-Model`パラメータを明示的に指定しない場合に発生する問題を修正
 - `Stop-ThreadRun`が機能していない問題を修正

@@ -1,5 +1,16 @@
 # Changelog
-### Unreleased
+### 3.7.0
+- Add new functions for Batch API.  
+  
+  To use Batch with the new PSOpenAI cmdlets, please refer to this guide.  
+  [Guide: How to use Batch](/Guides/How_to_use_Batch.md)
+
+  + `Start-Batch`
+  + `Get-Batch`
+  + `Wait-Batch`
+  + `Stop-Batch`
+  + `Get-BatchOutput`
+
 - `Register-OpenAIFile` is used to make byte arrays uploadable without saving them to a file.
   ```PowerShell
   $ByteArray = [System.Text.Encoding]::UTF8.GetBytes('some text data')
