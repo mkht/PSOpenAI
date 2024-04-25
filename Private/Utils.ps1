@@ -165,7 +165,7 @@ function Get-IdFromInputObject {
         return $InputObject.id
     }
     elseif ($InputObject.$KeyName -is [string] -and $InputObject.$KeyName.StartsWith($Prefix, [StringComparison]::Ordinal)) {
-        return $InputObject.thread_id
+        return $InputObject.$KeyName
     }
 }
 
@@ -194,4 +194,13 @@ function Get-RunIdFromInputObject {
         [object]$InputObject
     )
     Get-IdFromInputObject $InputObject 'run_' 'run_id'
+}
+
+function Get-BatchIdFromInputObject {
+    param (
+        [Parameter(Mandatory, Position = 0)]
+        [AllowNull()]
+        [object]$InputObject
+    )
+    Get-IdFromInputObject $InputObject 'batch_' 'id'
 }

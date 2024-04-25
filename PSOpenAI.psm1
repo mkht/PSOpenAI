@@ -36,6 +36,7 @@ $ExportableTypes = @(
     [RateLimitExceededException]
     [QuotaLimitExceededException]
 )
+
 # Get the internal TypeAccelerators class to use its static methods.
 $TypeAcceleratorsClass = [psobject].Assembly.GetType('System.Management.Automation.TypeAccelerators')
 

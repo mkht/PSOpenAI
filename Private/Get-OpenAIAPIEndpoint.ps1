@@ -22,10 +22,11 @@ function Get-OpenAIAPIEndpoint {
         'Chat.Completion' {
             $UriBuilder.Path += '/chat/completions'
             @{
-                Name        = 'chat.completion'
-                Method      = 'Post'
-                Uri         = $UriBuilder.Uri
-                ContentType = 'application/json'
+                Name          = 'chat.completion'
+                Method        = 'Post'
+                Uri           = $UriBuilder.Uri
+                ContentType   = 'application/json'
+                BatchEndpoint = '/v1/chat/completions'
             }
             continue
         }
@@ -173,6 +174,16 @@ function Get-OpenAIAPIEndpoint {
             $UriBuilder.Path += '/threads/runs'
             @{
                 Name        = 'thread_and_run'
+                Method      = 'Post'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+            continue
+        }
+        'Batch' {
+            $UriBuilder.Path += '/batches'
+            @{
+                Name        = 'batches'
                 Method      = 'Post'
                 Uri         = $UriBuilder.Uri
                 ContentType = 'application/json'

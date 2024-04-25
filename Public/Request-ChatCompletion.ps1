@@ -139,6 +139,12 @@ function Request-ChatCompletion {
         [string]$User,
 
         [Parameter()]
+        [switch]$AsBatch,
+
+        [Parameter()]
+        [string]$CustomBatchId,
+
+        [Parameter()]
         [int]$TimeoutSec = 0,
 
         [Parameter()]
@@ -389,6 +395,21 @@ function Request-ChatCompletion {
         $PostBody.messages = $Messages.ToArray()
         #endregion
 
+        # As Batchs
+        if ($AsBatch) {
+            if ([string]::IsNullOrEmpty($CustomBatchId)) {
+                $CustomBatchId = 'request-{0:x4}' -f (Get-Random -Maximum 65535)
+            }
+            $batchInputObject = [pscustomobject]@{
+                'custom_id' = $CustomBatchId
+                'method'    = 'POST'
+                'url'       = $OpenAIParameter.BatchEndpoint
+                'body'      = [pscustomobject]$PostBody
+            }
+            $batchInputObject.PSObject.TypeNames.Insert(0, 'PSOpenAI.Batch.Input')
+            return $batchInputObject
+        }
+
         #region Send API Request (Stream)
         if ($Stream) {
             # Stream output
@@ -568,20 +589,7 @@ function Request-ChatCompletion {
         #endregion
 
         #region Output
-        # Add custom type name and properties to output object.
-        $Response.PSObject.TypeNames.Insert(0, 'PSOpenAI.Chat.Completion')
-        if ($null -ne $Response.created -and ($unixtime = $Response.created -as [long])) {
-            # convert unixtime to [DateTime] for read suitable
-            $Response | Add-Member -MemberType NoteProperty -Name 'created' -Value ([System.DateTimeOffset]::FromUnixTimeSeconds($unixtime).LocalDateTime) -Force
-        }
-        $LastUserMessage = ($Messages.Where({ $_.role -eq 'user' })[-1].content)
-        if ($LastUserMessage -isnot [string]) {
-            $LastUserMessage = [string]($LastUserMessage | Where-Object { $_.type -eq 'text' } | Select-Object -Last 1).text
-        }
-        $Response | Add-Member -MemberType NoteProperty -Name 'Message' -Value $LastUserMessage
-        $Response | Add-Member -MemberType NoteProperty -Name 'Answer' -Value ([string[]]$Response.choices.message.content)
-        $Response | Add-Member -MemberType NoteProperty -Name 'History' -Value $Messages.ToArray()
-        Write-Output $Response
+        ParseChatCompletionObject $Response
         #endregion
     }
 

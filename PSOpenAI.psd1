@@ -77,6 +77,11 @@
         'Remove-OpenAIFile',
         'Get-OpenAIFile',
         'Get-OpenAIFileContent',
+        'Start-Batch',
+        'Get-Batch',
+        'Wait-Batch',
+        'Stop-Batch',
+        'Get-BatchOutput',
         ### Azure OpenAI Service ###
         'Get-AzureOpenAIModels',
         'Request-AzureAudioSpeech',
@@ -117,9 +122,9 @@
     )
 
     # Format files (.ps1xml) to be loaded when importing this module.
-    # FormatsToProcess     = @(
-    #     'PSOpenAI.Format.ps1xml'
-    # )
+    FormatsToProcess     = @(
+        'PSOpenAI.Format.ps1xml'
+    )
 
     # Private data to pass to the module specified in RootModule/ModuleToProcess. This may also contain a PSData hashtable with additional module metadata used by PowerShell.
     PrivateData          = @{
