@@ -326,9 +326,10 @@ OpenAI ではなく Azure OpenAI Service を使用する場合は、Azureテナ�
 $global:OPENAI_API_KEY = '<Put your api key here>'
 $global:OPENAI_API_BASE  = 'https://<resource-name>.openai.azure.com/'
 
-Request-AzureChatCompletion `
+Request-ChatCompletion `
   -Message 'Hello Azure OpenAI Service.' `
-  -Deployment 'gpt-35-turbo `
+  -Deployment 'gpt-35-turbo' `
+  -ApiType Azure
 ```
 
 ----
