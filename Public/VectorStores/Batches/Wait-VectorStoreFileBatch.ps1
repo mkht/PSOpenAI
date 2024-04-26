@@ -1,11 +1,17 @@
-function Wait-Batch {
+function Wait-VectorStoreFileBatch {
     [CmdletBinding(DefaultParameterSetName = 'StatusForWait')]
     [OutputType([pscustomobject])]
     param (
-        [Parameter(Mandatory, Position = 0, ValueFromPipeline)]
-        [ValidateScript({ [bool](Get-BatchIdFromInputObject $_) })]
-        [Alias('Id')]
+        [Parameter(Mandatory, Position = 0, ValueFromPipelineByPropertyName)]
+        [Alias('vector_store_id')]
+        [Alias('VectorStore')]
+        [ValidateScript({ [bool](Get-VectorStoreIdFromInputObject $_) })]
         [Object]$InputObject,
+
+        [Parameter(Mandatory, Position = 1, ValueFromPipelineByPropertyName)]
+        [Alias('batch_id')]
+        [Alias('Id')]
+        [string][UrlEncodeTransformation()]$BatchId,
 
         [Parameter()]
         [int]$TimeoutSec = 0,
@@ -37,26 +43,20 @@ function Wait-Batch {
         [Parameter(ParameterSetName = 'StatusForWait')]
         [ValidateNotNullOrEmpty()]
         [ValidateSet(
-            'validating',
-            'failed',
             'in_progress',
-            'finalizing',
             'completed',
-            'expired',
+            'failed',
             'cancelling',
             'cancelled'
         )]
-        [string[]]$StatusForWait = @('validating', 'in_progress', 'finalizing'),
+        [string[]]$StatusForWait = @('in_progress'),
 
         [Parameter(ParameterSetName = 'StatusForExit')]
         [ValidateNotNullOrEmpty()]
         [ValidateSet(
-            'validating',
-            'failed',
             'in_progress',
-            'finalizing',
             'completed',
-            'expired',
+            'failed',
             'cancelling',
             'cancelled'
         )]
@@ -76,12 +76,9 @@ function Wait-Batch {
         # Parameter construction
         if ($PSCmdlet.ParameterSetName -eq 'StatusForExit') {
             $innerStatusForWait = [System.Collections.Generic.HashSet[string]]::new([string[]](
-                    'validating',
-                    'failed',
                     'in_progress',
-                    'finalizing',
                     'completed',
-                    'expired',
+                    'failed',
                     'cancelling',
                     'cancelled'
                 ))
@@ -96,8 +93,6 @@ function Wait-Batch {
     }
 
     process {
-        $batchId = Get-BatchIdFromInputObject $InputObject
-
         # Create cancellation token for timeout
         $Cancellation = [System.Threading.CancellationTokenSource]::new()
         if ($TimeoutSec -gt 0) {
@@ -111,7 +106,7 @@ function Wait-Batch {
                 #Wait
                 $innerBatchObject = $null
                 Start-CancelableWait -Milliseconds ([System.Math]::Min((200 * ($PollCounter++)), 1000)) -CancellationToken $Cancellation.Token -ea Stop
-                $innerBatchObject = PSOpenAI\Get-Batch -BatchId $batchId @CommonParams
+                $innerBatchObject = PSOpenAI\Get-VectorStoreFileBatch @CommonParams
                 Write-Progress -Activity $ProgressTitle -Status ('The status of batch with id "{0}" is "{1}"' -f $innerBatchObject.id, $innerBatchObject.status) -PercentComplete -1
             } while ($innerBatchObject.status -and $innerBatchObject.status -in $innerStatusForWait)
         }

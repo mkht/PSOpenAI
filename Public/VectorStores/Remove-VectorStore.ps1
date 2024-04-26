@@ -1,11 +1,12 @@
-function Stop-Batch {
+function Remove-VectorStore {
     [CmdletBinding()]
-    [OutputType([pscustomobject])]
+    [OutputType([void])]
     param (
         [Parameter(Mandatory, Position = 0, ValueFromPipeline)]
-        [ValidateScript({ [bool](Get-BatchIdFromInputObject $_) })]
-        [Alias('Id')]
-        [object]$InputObject,
+        [Alias('vector_store_id')]
+        [Alias('VectorStore')]
+        [ValidateScript({ [bool](Get-VectorStoreIdFromInputObject $_) })]
+        [Object]$InputObject,
 
         [Parameter()]
         [int]$TimeoutSec = 0,
@@ -35,15 +36,6 @@ function Stop-Batch {
         [string]$Organization,
 
         [Parameter()]
-        [switch]$Force,
-
-        [Parameter()]
-        [switch]$Wait,
-
-        [Parameter()]
-        [switch]$PassThru,
-
-        [Parameter()]
         [System.Collections.IDictionary]$AdditionalQuery,
 
         [Parameter()]
@@ -64,35 +56,26 @@ function Stop-Batch {
         $Organization = Initialize-OrganizationID -OrgId $Organization
 
         # Get API context
-        $OpenAIParameter = Get-OpenAIContext -EndpointName 'Batch' -ApiType $ApiType -AuthType $AuthType -ApiBase $ApiBase -ApiVersion $ApiVersion -ErrorAction Stop
-
-        # Parse Common params
-        $CommonParams = ParseCommonParams $PSBoundParameters
+        $OpenAIParameter = Get-OpenAIContext -EndpointName 'VectorStores' -ApiType $ApiType -AuthType $AuthType -ApiBase $ApiBase -ApiVersion $ApiVersion -ErrorAction Stop
     }
 
     process {
-        $BatchId = Get-BatchIdFromInputObject $InputObject
-        if (-not $BatchId) {
-            Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve batch id.'))
+        # Get id
+        [string][UrlEncodeTransformation()]$VsId = Get-VectorStoreIdFromInputObject $InputObject
+        if (-not $VsId) {
+            Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve Vector Store ID.'))
             return
-        }
-
-        if (-not $Force) {
-            if ((-not $InputObject.status) -or ($InputObject.status -notin @('validating', 'in_progress', 'finalizing'))) {
-                Write-Error -Exception ([System.InvalidOperationException]::new(('Cannot cancel batch with status "{0}".' -f $InputObject.status)))
-                return
-            }
         }
 
         #region Construct Query URI
         $UriBuilder = [System.UriBuilder]::new($OpenAIParameter.Uri)
-        $UriBuilder.Path += "/$BatchId/cancel"
+        $UriBuilder.Path += "/$VsId"
         $QueryUri = $UriBuilder.Uri
         #endregion
 
         #region Send API Request
         $params = @{
-            Method            = 'Post'
+            Method            = 'Delete'
             Uri               = $QueryUri
             ContentType       = $OpenAIParameter.ContentType
             TimeoutSec        = $TimeoutSec
@@ -100,6 +83,7 @@ function Stop-Batch {
             ApiKey            = $SecureToken
             AuthType          = $OpenAIParameter.AuthType
             Organization      = $Organization
+            Headers           = @{'OpenAI-Beta' = 'assistants=v2' }
             AdditionalQuery   = $AdditionalQuery
             AdditionalHeaders = $AdditionalHeaders
             AdditionalBody    = $AdditionalBody
@@ -112,8 +96,6 @@ function Stop-Batch {
         }
         #endregion
 
-        Write-Verbose 'Requested to cancel batch.'
-
         #region Parse response object
         try {
             $Response = $Response | ConvertFrom-Json -ErrorAction Stop
@@ -123,22 +105,11 @@ function Stop-Batch {
         }
         #endregion
 
-        # Wait for cancel
-        if ($Wait) {
-            Write-Verbose 'Waiting for a cancellation...'
-            $Result = $Response | PSOpenAI\Wait-Batch -StatusForExit ('cancelled', 'completed', 'failed', 'expired') @CommonParams
-            if ($null -ne $Result -and $PassThru) {
-                Write-Output $Result
-            }
+        #region Verbose Output
+        if ($Response.deleted) {
+            Write-Verbose ('The vectore store with id "{0}" has been deleted.' -f $Response.id)
         }
-        else {
-            #region Output
-            # No output on default
-            if ($PassThru) {
-                ParseBatchObject $Response
-            }
-            #endregion
-        }
+        #endregion
     }
 
     end {

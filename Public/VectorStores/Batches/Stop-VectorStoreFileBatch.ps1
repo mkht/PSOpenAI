@@ -1,11 +1,17 @@
-function Stop-Batch {
+function Stop-VectorStoreFileBatch {
     [CmdletBinding()]
     [OutputType([pscustomobject])]
     param (
-        [Parameter(Mandatory, Position = 0, ValueFromPipeline)]
-        [ValidateScript({ [bool](Get-BatchIdFromInputObject $_) })]
+        [Parameter(Mandatory, Position = 0, ValueFromPipelineByPropertyName)]
+        [Alias('vector_store_id')]
+        [Alias('VectorStore')]
+        [ValidateScript({ [bool](Get-VectorStoreIdFromInputObject $_) })]
+        [Object]$InputObject,
+
+        [Parameter(Mandatory, Position = 1, ValueFromPipelineByPropertyName)]
+        [Alias('batch_id')]
         [Alias('Id')]
-        [object]$InputObject,
+        [string][UrlEncodeTransformation()]$BatchId,
 
         [Parameter()]
         [int]$TimeoutSec = 0,
@@ -35,9 +41,6 @@ function Stop-Batch {
         [string]$Organization,
 
         [Parameter()]
-        [switch]$Force,
-
-        [Parameter()]
         [switch]$Wait,
 
         [Parameter()]
@@ -64,28 +67,23 @@ function Stop-Batch {
         $Organization = Initialize-OrganizationID -OrgId $Organization
 
         # Get API context
-        $OpenAIParameter = Get-OpenAIContext -EndpointName 'Batch' -ApiType $ApiType -AuthType $AuthType -ApiBase $ApiBase -ApiVersion $ApiVersion -ErrorAction Stop
+        $OpenAIParameter = Get-OpenAIContext -EndpointName 'VectorStore.FileBatches' -ApiType $ApiType -AuthType $AuthType -ApiBase $ApiBase -ApiVersion $ApiVersion -ErrorAction Stop
 
         # Parse Common params
         $CommonParams = ParseCommonParams $PSBoundParameters
     }
 
     process {
-        $BatchId = Get-BatchIdFromInputObject $InputObject
-        if (-not $BatchId) {
-            Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve batch id.'))
+        # Get vector store id
+        [string][UrlEncodeTransformation()]$VsId = Get-VectorStoreIdFromInputObject $InputObject
+        if (-not $VsId) {
+            Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve vectore store id.'))
             return
         }
 
-        if (-not $Force) {
-            if ((-not $InputObject.status) -or ($InputObject.status -notin @('validating', 'in_progress', 'finalizing'))) {
-                Write-Error -Exception ([System.InvalidOperationException]::new(('Cannot cancel batch with status "{0}".' -f $InputObject.status)))
-                return
-            }
-        }
-
         #region Construct Query URI
-        $UriBuilder = [System.UriBuilder]::new($OpenAIParameter.Uri)
+        $QueryUri = $OpenAIParameter.Uri.ToString() -f $VsId
+        $UriBuilder = [System.UriBuilder]::new($QueryUri)
         $UriBuilder.Path += "/$BatchId/cancel"
         $QueryUri = $UriBuilder.Uri
         #endregion
@@ -99,6 +97,7 @@ function Stop-Batch {
             MaxRetryCount     = $MaxRetryCount
             ApiKey            = $SecureToken
             AuthType          = $OpenAIParameter.AuthType
+            Headers           = @{'OpenAI-Beta' = 'assistants=v2' }
             Organization      = $Organization
             AdditionalQuery   = $AdditionalQuery
             AdditionalHeaders = $AdditionalHeaders
@@ -126,7 +125,7 @@ function Stop-Batch {
         # Wait for cancel
         if ($Wait) {
             Write-Verbose 'Waiting for a cancellation...'
-            $Result = $Response | PSOpenAI\Wait-Batch -StatusForExit ('cancelled', 'completed', 'failed', 'expired') @CommonParams
+            $Result = $Response | PSOpenAI\Wait-VectorStoreFileBatch -StatusForExit ('cancelled', 'completed', 'failed', 'expired') @CommonParams
             if ($null -ne $Result -and $PassThru) {
                 Write-Output $Result
             }
@@ -135,7 +134,7 @@ function Stop-Batch {
             #region Output
             # No output on default
             if ($PassThru) {
-                ParseBatchObject $Response
+                ParseVectorStoreFileBatchObject $Response
             }
             #endregion
         }

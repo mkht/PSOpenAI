@@ -204,3 +204,12 @@ function Get-BatchIdFromInputObject {
     )
     Get-IdFromInputObject $InputObject 'batch_' 'id'
 }
+
+function Get-VectorStoreIdFromInputObject {
+    param (
+        [Parameter(Mandatory, Position = 0)]
+        [AllowNull()]
+        [object]$InputObject
+    )
+    Get-IdFromInputObject $InputObject 'vs_' 'id'
+}

@@ -190,6 +190,36 @@ function Get-OpenAIAPIEndpoint {
             }
             continue
         }
+        'VectorStores' {
+            $UriBuilder.Path += '/vector_stores'
+            @{
+                Name        = 'vector_stores'
+                Method      = 'Post'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+            continue
+        }
+        'VectorStore.Files' {
+            $UriBuilder.Path += '/vector_stores/{0}/files'
+            @{
+                Name        = 'vector_store_files'
+                Method      = 'Post'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+            continue
+        }
+        'VectorStore.FileBatches' {
+            $UriBuilder.Path += '/vector_stores/{0}/file_batches'
+            @{
+                Name        = 'vector_store_file_batches'
+                Method      = 'Post'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+            continue
+        }
         Default {
             Write-Error -Message ('{0} API endpoint is not provided by OpenAI' -f $_)
         }
