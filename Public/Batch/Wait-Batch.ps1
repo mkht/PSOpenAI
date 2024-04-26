@@ -105,14 +105,14 @@ function Wait-Batch {
         }
 
         try {
-            $PollCounter = 1
+            $PollCounter = 0
             $ProgressTitle = 'Waiting for completes...'
             do {
                 #Wait
-                Write-Progress -Activity $ProgressTitle -Status ('The status of batch with id "{0}" is "{1}"' -f $innerBatchObject.id, $innerBatchObject.status) -PercentComplete -1
                 $innerBatchObject = $null
                 Start-CancelableWait -Milliseconds ([System.Math]::Min((200 * ($PollCounter++)), 1000)) -CancellationToken $Cancellation.Token -ea Stop
                 $innerBatchObject = PSOpenAI\Get-Batch -BatchId $batchId @CommonParams
+                Write-Progress -Activity $ProgressTitle -Status ('The status of batch with id "{0}" is "{1}"' -f $innerBatchObject.id, $innerBatchObject.status) -PercentComplete -1
             } while ($innerBatchObject.status -and $innerBatchObject.status -in $innerStatusForWait)
         }
         catch [OperationCanceledException] {
