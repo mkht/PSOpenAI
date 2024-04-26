@@ -61,7 +61,7 @@ function Start-ThreadRun {
         [Parameter(ParameterSetName = 'ThreadAndRun')]
         [Parameter(ParameterSetName = 'ThreadAndRun_Stream')]
         [Alias('file_ids')]
-        [ValidateRange(0, 10)]
+        [ValidateCount(0, 10)]
         [string[]]$FileId,
         #endregion
 

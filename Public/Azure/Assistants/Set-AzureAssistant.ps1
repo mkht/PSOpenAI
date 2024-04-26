@@ -36,7 +36,7 @@ function Set-AzureAssistant {
 
         [Parameter()]
         [Alias('file_ids')]
-        [ValidateRange(0, 20)]
+        [ValidateCount(0, 20)]
         [string[]]$FileId,
 
         [Parameter()]

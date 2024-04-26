@@ -19,7 +19,7 @@ function Add-AzureThreadMessage {
 
         [Parameter()]
         [Alias('file_ids')]
-        [ValidateRange(0, 10)]
+        [ValidateCount(0, 10)]
         [string[]]$FileId,
 
         [Parameter()]
