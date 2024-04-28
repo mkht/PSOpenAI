@@ -80,7 +80,7 @@ function Get-Assistant {
     process {
         # Get assistant_id
         if ($null -ne $InputObject) {
-            $AssistantId = Get-AssistantIdFromInputObject $InputObject
+            [string][UrlEncodeTransformation()]$AssistantId = Get-AssistantIdFromInputObject $InputObject
         }
 
         $UriBuilder = [System.UriBuilder]::new($OpenAIParameter.Uri)
@@ -119,7 +119,7 @@ function Get-Assistant {
             ApiKey            = $SecureToken
             AuthType          = $OpenAIParameter.AuthType
             Organization      = $Organization
-            Headers           = @{'OpenAI-Beta' = 'assistants=v1' }
+            Headers           = @{'OpenAI-Beta' = 'assistants=v2' }
             AdditionalQuery   = $AdditionalQuery
             AdditionalHeaders = $AdditionalHeaders
             AdditionalBody    = $AdditionalBody
@@ -152,13 +152,7 @@ function Get-Assistant {
         }
         # parse objects
         foreach ($res in $Responses) {
-            # Add custom type name and properties to output object.
-            $res.PSObject.TypeNames.Insert(0, 'PSOpenAI.Assistant')
-            if ($null -ne $res.created_at -and ($unixtime = $res.created_at -as [long])) {
-                # convert unixtime to [DateTime] for read suitable
-                $res | Add-Member -MemberType NoteProperty -Name 'created_at' -Value ([System.DateTimeOffset]::FromUnixTimeSeconds($unixtime).LocalDateTime) -Force
-            }
-            Write-Output $res
+            ParseAssistantsObject $res
         }
         #endregion
 

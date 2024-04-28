@@ -1,4 +1,4 @@
-function New-VectorStoreFile {
+function Add-VectorStoreFile {
     [CmdletBinding()]
     [OutputType([pscustomobject])]
     param (
@@ -11,6 +11,9 @@ function New-VectorStoreFile {
         [Parameter(Mandatory, Position = 1)]
         [Alias('file_id')]
         [string]$FileId,
+
+        [Parameter()]
+        [switch]$PassThru,
 
         [Parameter()]
         [int]$TimeoutSec = 0,
@@ -61,6 +64,9 @@ function New-VectorStoreFile {
 
         # Get API context
         $OpenAIParameter = Get-OpenAIContext -EndpointName 'VectorStore.Files' -ApiType $ApiType -AuthType $AuthType -ApiBase $ApiBase -ApiVersion $ApiVersion -ErrorAction Stop
+
+        # Parse Common params
+        $CommonParams = ParseCommonParams $PSBoundParameters
     }
 
     process {
@@ -112,7 +118,10 @@ function New-VectorStoreFile {
         #endregion
 
         #region Output
-        ParseVectorStoreFileObject -InputObject $Response
+        # Output vectore store object only when the PassThru switch is specified.
+        if ($PassThru) {
+            PSOpenAI\Get-VectorStore -InputObject $VsId @CommonParams
+        }
         #endregion
     }
 

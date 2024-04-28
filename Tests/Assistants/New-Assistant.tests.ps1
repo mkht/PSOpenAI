@@ -19,12 +19,18 @@ Describe 'New-Assistant' {
     "created_at": 1698984975,
     "name": "Math Tutor",
     "description": null,
-    "model": "gpt-4",
+    "model": "gpt-4-turbo",
     "instructions": "You are a personal math tutor. When asked a question, write and run Python code to answer the question.",
-    "tools": [{"type": "code_interpreter"}],
-    "file_ids": [],
-    "metadata": {}
-    }
+    "tools": [
+        {
+        "type": "code_interpreter"
+        }
+    ],
+    "metadata": {},
+    "top_p": 1.0,
+    "temperature": 1.0,
+    "response_format": "auto"
+}
 '@ }
         }
 
@@ -43,11 +49,11 @@ Describe 'New-Assistant' {
         It 'Create assistant (full param)' {
             { $params = @{
                     Name               = 'TEST'
-                    Model              = 'gpt-4'
-                    Description        = 'Test assistant'
-                    Instructions       = 'Do it'
+                    Model              = 'gpt-4-turbo'
+                    Description        = 'Math Tutor'
+                    Instructions       = 'You are a personal math tutor. When asked a question, write and run Python code to answer the question.'
                     UseCodeInterpreter = $true
-                    UseRetrieval       = $true
+                    UseFileSearch      = $false
                     ErrorAction        = 'Stop'
                 }
                 $script:Result = New-Assistant @params
@@ -76,7 +82,7 @@ Describe 'New-Assistant' {
                     Description        = 'Test assistant'
                     Instructions       = 'Do it'
                     UseCodeInterpreter = $true
-                    UseRetrieval       = $true
+                    UseFileSearch      = $true
                     ErrorAction        = 'Stop'
                 }
                 $script:Result = New-Assistant @params

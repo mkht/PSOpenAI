@@ -61,7 +61,7 @@ function Remove-Assistant {
 
     process {
         # Get assistant_id
-        $AssistantId = Get-AssistantIdFromInputObject $InputObject
+        [string][UrlEncodeTransformation()]$AssistantId = Get-AssistantIdFromInputObject $InputObject
         if (-not $AssistantId) {
             Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve Assistant ID.'))
             return
@@ -83,7 +83,7 @@ function Remove-Assistant {
             ApiKey            = $SecureToken
             AuthType          = $OpenAIParameter.AuthType
             Organization      = $Organization
-            Headers           = @{'OpenAI-Beta' = 'assistants=v1' }
+            Headers           = @{'OpenAI-Beta' = 'assistants=v2' }
             AdditionalQuery   = $AdditionalQuery
             AdditionalHeaders = $AdditionalHeaders
             AdditionalBody    = $AdditionalBody

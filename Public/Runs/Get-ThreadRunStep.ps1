@@ -137,7 +137,7 @@ function Get-ThreadRunStep {
             ApiKey            = $SecureToken
             AuthType          = $OpenAIParameter.AuthType
             Organization      = $Organization
-            Headers           = @{'OpenAI-Beta' = 'assistants=v1' }
+            Headers           = @{'OpenAI-Beta' = 'assistants=v2' }
             AdditionalQuery   = $AdditionalQuery
             AdditionalHeaders = $AdditionalHeaders
             AdditionalBody    = $AdditionalBody

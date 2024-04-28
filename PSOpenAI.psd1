@@ -86,7 +86,7 @@
         'Get-VectorStore',
         'Set-VectorStore',
         'Remove-VectorStore',
-        'New-VectorStoreFile',
+        'Add-VectorStoreFile',
         'Get-VectorStoreFile',
         'Remove-VectorStoreFile',
         'Get-VectorStoreFileBatch',

@@ -84,8 +84,6 @@ function Get-ThreadMessage {
 
         # Get API context
         $OpenAIParameter = Get-OpenAIContext -EndpointName 'Threads' -ApiType $ApiType -AuthType $AuthType -ApiBase $ApiBase -ApiVersion $ApiVersion -ErrorAction Stop
-        # Parse Common params
-        # $CommonParams = ParseCommonParams $PSBoundParameters
     }
 
     process {
@@ -142,7 +140,7 @@ function Get-ThreadMessage {
             ApiKey            = $SecureToken
             AuthType          = $OpenAIParameter.AuthType
             Organization      = $Organization
-            Headers           = @{'OpenAI-Beta' = 'assistants=v1' }
+            Headers           = @{'OpenAI-Beta' = 'assistants=v2' }
             AdditionalQuery   = $AdditionalQuery
             AdditionalHeaders = $AdditionalHeaders
             AdditionalBody    = $AdditionalBody

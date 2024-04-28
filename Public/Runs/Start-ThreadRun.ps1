@@ -32,7 +32,7 @@ function Start-ThreadRun {
         [string][LowerCaseTransformation()]$Model = 'gpt-3.5-turbo',
 
         [Parameter()]
-        [ValidateLength(0, 32768)]
+        [ValidateLength(0, 256000)]
         [string]$Instructions,
 
         [Parameter(ParameterSetName = 'Run')]
@@ -60,9 +60,14 @@ function Start-ThreadRun {
 
         [Parameter(ParameterSetName = 'ThreadAndRun')]
         [Parameter(ParameterSetName = 'ThreadAndRun_Stream')]
-        [Alias('file_ids')]
-        [ValidateCount(0, 10)]
-        [string[]]$FileId,
+        [ValidateCount(0, 20)]
+        [string[]]$FileIdsForCodeInterpreter,
+
+        [Parameter(ParameterSetName = 'ThreadAndRun')]
+        [Parameter(ParameterSetName = 'ThreadAndRun_Stream')]
+        [ValidateScript({ [bool](Get-VectorStoreIdFromInputObject $_) })]
+        [ValidateCount(1, 1)]
+        [object[]]$VectorStoresForFileSearch,
         #endregion
 
         [Parameter()]
@@ -86,10 +91,6 @@ function Start-ThreadRun {
         [int]$TruncationStrategyLastMessages = 1,
 
         [Parameter()]
-        [AllowEmptyCollection()]
-        [System.Collections.IDictionary[]]$Tools,
-
-        [Parameter()]
         [Alias('tool_choice')]
         [Completions('none', 'auto', 'code_interpreter', 'retrieval', 'function')]
         [string][LowerCaseTransformation()]$ToolChoice,
@@ -102,7 +103,11 @@ function Start-ThreadRun {
         [switch]$UseCodeInterpreter,
 
         [Parameter()]
-        [switch]$UseRetrieval,
+        [switch]$UseFileSearch,
+
+        [Parameter()]
+        [AllowEmptyCollection()]
+        [System.Collections.IDictionary[]]$Functions,
 
         [Parameter()]
         [System.Collections.IDictionary]$MetaData,
@@ -110,6 +115,11 @@ function Start-ThreadRun {
         [Parameter()]
         [ValidateRange(0.0, 2.0)]
         [double]$Temperature,
+
+        [Parameter()]
+        [ValidateRange(0.0, 1.0)]
+        [Alias('top_p')]
+        [double]$TopP,
 
         [Parameter(Mandatory, ParameterSetName = 'Run_Stream')]
         [Parameter(Mandatory, ParameterSetName = 'ThreadAndRun_Stream')]
@@ -210,12 +220,50 @@ function Start-ThreadRun {
             return
         }
 
+        #region Construct tools object
+        $Tools = @()
         if ($UseCodeInterpreter) {
             $Tools += @{'type' = 'code_interpreter' }
         }
-        if ($UseRetrieval) {
-            $Tools += @{'type' = 'retrieval' }
+        if ($UseFileSearch) {
+            $Tools += @{'type' = 'file_search' }
         }
+        if ($Functions.Count -gt 0) {
+            foreach ($f in $Functions) {
+                if (-not $Functions.name) {
+                    Write-Error -Exception ([System.ArgumentException]::new('You should specify function name.'))
+                    continue
+                }
+                $Tools += @{
+                    'type'     = 'function'
+                    'function' = @{
+                        'name'        = $f.Name
+                        'description' = $f.description
+                        'parameters'  = $f.parameters
+                    }
+                }
+            }
+        }
+        #endregion
+
+        #region Construct tools resources
+        $ToolResources = @{}
+        if ($FileIdsForCodeInterpreter.Count -gt 0) {
+            $ToolResources.code_interpreter = @{'file_ids' = $FileIdsForCodeInterpreter }
+        }
+        if ($FileIdsForFileSearch.Count -gt 0) {
+            $ToolResources.file_search = @{'vector_stores' = @(@{'file_ids' = $FileIdsForFileSearch }) }
+        }
+        if ($PSBoundParameters.ContainsKey('VectorStoresForFileSearch')) {
+            $vsids = @()
+            foreach ($vs in $VectorStoresForFileSearch) {
+                $vsids += Get-VectorStoreIdFromInputObject $vs
+            }
+            if ($vsids.Count -gt 0) {
+                $ToolResources.file_search = @{'vector_store_ids' = $vsids }
+            }
+        }
+        #endregion
 
         $PostBody.assistant_id = $AssistantId
         if ($PSBoundParameters.ContainsKey('Model')) {
@@ -233,6 +281,9 @@ function Start-ThreadRun {
         if ($PSBoundParameters.ContainsKey('Temperature')) {
             $PostBody.temperature = $Temperature
         }
+        if ($PSBoundParameters.ContainsKey('TopP')) {
+            $PostBody.top_p = $TopP
+        }
         if ($PSBoundParameters.ContainsKey('MaxPromptTokens')) {
             $PostBody.max_prompt_tokens = $MaxPromptTokens
         }
@@ -245,8 +296,11 @@ function Start-ThreadRun {
         if ($PSBoundParameters.ContainsKey('TruncationStrategyLastMessages')) {
             $PostBody.truncation_strategy = @{ type = $TruncationStrategyType; last_messages = $TruncationStrategyLastMessages }
         }
-        if (($Tools.Count -gt 0) -or $PSBoundParameters.ContainsKey('Tools')) {
+        if ($Tools.Count -gt 0) {
             $PostBody.tools = $Tools
+        }
+        if ($ToolResources.Count -gt 0) {
+            $PostBody.tool_resources = $ToolResources
         }
         if ($PSBoundParameters.ContainsKey('ToolChoice')) {
             if ($ToolChoice -in ('none', 'auto')) {
@@ -309,9 +363,6 @@ function Start-ThreadRun {
                     role    = $Role
                     content = $Message
                 })
-            if ($PSBoundParameters.ContainsKey('FileId')) {
-                $PostBody.thread.messages[0].file_ids = $FileId
-            }
         }
         if ($Stream) {
             $PostBody.stream = $true
@@ -330,7 +381,7 @@ function Start-ThreadRun {
                 ApiKey            = $SecureToken
                 AuthType          = $OpenAIParameter.AuthType
                 Organization      = $Organization
-                Headers           = @{'OpenAI-Beta' = 'assistants=v1' }
+                Headers           = @{'OpenAI-Beta' = 'assistants=v2' }
                 Body              = $PostBody
                 Stream            = $Stream
                 AdditionalQuery   = $AdditionalQuery
@@ -383,7 +434,7 @@ function Start-ThreadRun {
             ApiKey            = $SecureToken
             AuthType          = $OpenAIParameter.AuthType
             Organization      = $Organization
-            Headers           = @{'OpenAI-Beta' = 'assistants=v1' }
+            Headers           = @{'OpenAI-Beta' = 'assistants=v2' }
             Body              = $PostBody
             AdditionalQuery   = $AdditionalQuery
             AdditionalHeaders = $AdditionalHeaders

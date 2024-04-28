@@ -13,7 +13,25 @@ function ParseBatchObject {
 
     # Add custom type name and properties to output object.
     $InputObject.PSObject.TypeNames.Insert(0, 'PSOpenAI.Batch')
-  ('created_at', 'in_progress_at', 'expires_at', 'finalizing_at', 'started_at', 'cancelled_at', 'failed_at', 'expired_at', 'cancelling_at', 'cancelled_at', 'completed_at') | ForEach-Object {
+    ('created_at', 'in_progress_at', 'expires_at', 'finalizing_at', 'started_at', 'cancelled_at', 'failed_at', 'expired_at', 'cancelling_at', 'cancelled_at', 'completed_at') | ForEach-Object {
+        if ($null -ne $InputObject.$_ -and ($unixtime = $InputObject.$_ -as [long])) {
+            # convert unixtime to [DateTime] for read suitable
+            $InputObject | Add-Member -MemberType NoteProperty -Name $_ -Value ([System.DateTimeOffset]::FromUnixTimeSeconds($unixtime).LocalDateTime) -Force
+        }
+    }
+    Write-Output $InputObject
+}
+
+function ParseAssistantsObject {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory, Position = 0, ValueFromPipeline)]
+        [PSCustomObject]$InputObject
+    )
+
+    # Add custom type name and properties to output object.
+    $InputObject.PSObject.TypeNames.Insert(0, 'PSOpenAI.Assistant')
+    ('created_at') | ForEach-Object {
         if ($null -ne $InputObject.$_ -and ($unixtime = $InputObject.$_ -as [long])) {
             # convert unixtime to [DateTime] for read suitable
             $InputObject | Add-Member -MemberType NoteProperty -Name $_ -Value ([System.DateTimeOffset]::FromUnixTimeSeconds($unixtime).LocalDateTime) -Force
@@ -98,7 +116,7 @@ function ParseThreadRunStepObject {
                     }
                 }
             }
-            elseif ($call.type -eq 'retrieval') {
+            elseif ($call.type -eq 'file_search') {
                 [PSCustomObject]@{
                     Role    = $InputObject.type
                     Type    = $call.type
@@ -107,9 +125,11 @@ function ParseThreadRunStepObject {
             }
             elseif ($call.type -eq 'function') {
                 [PSCustomObject]@{
-                    Role    = $InputObject.type
-                    Type    = $call.type
-                    Content = $call.function.output
+                    Role      = $InputObject.type
+                    Type      = $call.type
+                    Name      = $call.function.name
+                    Arguments = $call.function.arguments
+                    Content   = $call.function.output
                 }
             }
         }

@@ -34,26 +34,51 @@ function Set-Assistant {
         [string]$Description,
 
         [Parameter()]
-        [ValidateLength(0, 32768)]
+        [ValidateLength(0, 256000)]
         [string]$Instructions,
-
-        [Parameter()]
-        [AllowEmptyCollection()]
-        [System.Collections.IDictionary[]]$Tools,
 
         [Parameter()]
         [switch]$UseCodeInterpreter,
 
         [Parameter()]
-        [switch]$UseRetrieval,
+        [switch]$UseFileSearch,
+
+        # [Parameter()]
+        # [switch]$UseFunction,
 
         [Parameter()]
-        [Alias('file_ids')]
+        [AllowEmptyCollection()]
+        [System.Collections.IDictionary[]]$Functions,
+
+        [Parameter()]
         [ValidateCount(0, 20)]
-        [string[]]$FileId,
+        [string[]]$FileIdsForCodeInterpreter,
+
+        [Parameter()]
+        [ValidateScript({ [bool](Get-VectorStoreIdFromInputObject $_) })]
+        [ValidateCount(1, 1)]   # Currently, allow only 1 vector store
+        [object[]]$VectorStoresForFileSearch,
+
+        [Parameter()]
+        [ValidateCount(0, 10000)]
+        [string[]]$FileIdsForFileSearch,
+
+        [Parameter()]
+        [ValidateRange(0.0, 2.0)]
+        [double]$Temperature,
+
+        [Parameter()]
+        [ValidateRange(0.0, 1.0)]
+        [Alias('top_p')]
+        [double]$TopP,
 
         [Parameter()]
         [System.Collections.IDictionary]$MetaData,
+
+        [Parameter()]
+        [Alias('response_format')]
+        [ValidateSet('default', 'auto', 'text', 'json_object', 'raw_response')]
+        [string][LowerCaseTransformation()]$Format = 'default',
 
         [Parameter()]
         [int]$TimeoutSec = 0,

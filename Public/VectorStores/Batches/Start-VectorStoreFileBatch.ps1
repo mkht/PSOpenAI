@@ -2,13 +2,13 @@ function Start-VectorStoreFileBatch {
     [CmdletBinding()]
     [OutputType([pscustomobject])]
     param (
-        [Parameter(Mandatory, Position = 0)]
+        [Parameter(Mandatory, Position = 0, ValueFromPipeline)]
         [Alias('vector_store_id')]
         [Alias('VectorStore')]
         [ValidateScript({ [bool](Get-VectorStoreIdFromInputObject $_) })]
         [Object]$InputObject,
 
-        [Parameter(Mandatory, Position = 1, ValueFromPipeline)]
+        [Parameter(Mandatory, Position = 1)]
         [ValidateCount(1, 500)]
         [Alias('file_ids')]
         [string[]]$FileId,

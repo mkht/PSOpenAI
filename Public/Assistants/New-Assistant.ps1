@@ -32,29 +32,51 @@ function New-Assistant {
         [string]$Description,
 
         [Parameter()]
-        [ValidateLength(0, 32768)]
+        [ValidateLength(0, 256000)]
         [string]$Instructions,
-
-        [Parameter()]
-        [AllowEmptyCollection()]
-        [System.Collections.IDictionary[]]$Tools,
 
         [Parameter()]
         [switch]$UseCodeInterpreter,
 
         [Parameter()]
-        [switch]$UseRetrieval,
+        [switch]$UseFileSearch,
 
         # [Parameter()]
-        # [bool]$UseFunction = $false,
+        # [switch]$UseFunction,
 
         [Parameter()]
-        [Alias('file_ids')]
+        [AllowEmptyCollection()]
+        [System.Collections.IDictionary[]]$Functions,
+
+        [Parameter()]
         [ValidateCount(0, 20)]
-        [string[]]$FileId,
+        [string[]]$FileIdsForCodeInterpreter,
+
+        [Parameter()]
+        [ValidateScript({ [bool](Get-VectorStoreIdFromInputObject $_) })]
+        [ValidateCount(1, 1)]   # Currently, allow only 1 vector store
+        [object[]]$VectorStoresForFileSearch,
+
+        [Parameter()]
+        [ValidateCount(0, 10000)]
+        [string[]]$FileIdsForFileSearch,
+
+        [Parameter()]
+        [ValidateRange(0.0, 2.0)]
+        [double]$Temperature,
+
+        [Parameter()]
+        [ValidateRange(0.0, 1.0)]
+        [Alias('top_p')]
+        [double]$TopP,
 
         [Parameter()]
         [System.Collections.IDictionary]$MetaData,
+
+        [Parameter()]
+        [Alias('response_format')]
+        [ValidateSet('default', 'auto', 'text', 'json_object', 'raw_response')]
+        [string][LowerCaseTransformation()]$Format = 'default',
 
         [Parameter()]
         [int]$TimeoutSec = 0,
@@ -126,11 +148,47 @@ function New-Assistant {
         #endregion
 
         #region Construct tools object
+        $Tools = @()
         if ($UseCodeInterpreter) {
             $Tools += @{'type' = 'code_interpreter' }
         }
-        if ($UseRetrieval) {
-            $Tools += @{'type' = 'retrieval' }
+        if ($UseFileSearch) {
+            $Tools += @{'type' = 'file_search' }
+        }
+        if ($Functions.Count -gt 0) {
+            foreach ($f in $Functions) {
+                if (-not $Functions.name) {
+                    Write-Error -Exception ([System.ArgumentException]::new('You should specify function name.'))
+                    continue
+                }
+                $Tools += @{
+                    'type'     = 'function'
+                    'function' = @{
+                        'name'        = $f.Name
+                        'description' = $f.description
+                        'parameters'  = $f.parameters
+                    }
+                }
+            }
+        }
+        #endregion
+
+        #region Construct tools resources
+        $ToolResources = @{}
+        if ($FileIdsForCodeInterpreter.Count -gt 0) {
+            $ToolResources.code_interpreter = @{'file_ids' = $FileIdsForCodeInterpreter }
+        }
+        if ($FileIdsForFileSearch.Count -gt 0) {
+            $ToolResources.file_search = @{'vector_stores' = @(@{'file_ids' = $FileIdsForFileSearch }) }
+        }
+        if ($PSBoundParameters.ContainsKey('VectorStoresForFileSearch')) {
+            $vsids = @()
+            foreach ($vs in $VectorStoresForFileSearch) {
+                $vsids += Get-VectorStoreIdFromInputObject $vs
+            }
+            if ($vsids.Count -gt 0) {
+                $ToolResources.file_search = @{'vector_store_ids' = $vsids }
+            }
         }
         #endregion
 
@@ -146,14 +204,28 @@ function New-Assistant {
         if ($PSBoundParameters.ContainsKey('Instructions')) {
             $PostBody.instructions = $Instructions
         }
-        if ($PSBoundParameters.ContainsKey('FileId')) {
-            $PostBody.file_ids = $FileId
+        if ($Tools.Count -gt 0) {
+            $PostBody.tools = $Tools
+        }
+        if ($ToolResources.Count -gt 0) {
+            $PostBody.tool_resources = $ToolResources
         }
         if ($PSBoundParameters.ContainsKey('Metadata')) {
             $PostBody.metadata = $Metadata
         }
-        if (($Tools.Count -gt 0) -or $PSBoundParameters.ContainsKey('Tools')) {
-            $PostBody.tools = $Tools
+        if ($PSBoundParameters.ContainsKey('Temperature')) {
+            $PostBody.temperature = $Temperature
+        }
+        if ($PSBoundParameters.ContainsKey('TopP')) {
+            $PostBody.top_p = $TopP
+        }
+        if ($PSBoundParameters.ContainsKey('Format') -and $Format -notin ('default', 'raw_response')) {
+            if ($Format -eq 'auto') {
+                $PostBody.response_format = 'auto'
+            }
+            else {
+                $PostBody.response_format = @{'type' = $Format }
+            }
         }
         #endregion
 
@@ -167,7 +239,7 @@ function New-Assistant {
             ApiKey            = $SecureToken
             AuthType          = $OpenAIParameter.AuthType
             Organization      = $Organization
-            Headers           = @{'OpenAI-Beta' = 'assistants=v1' }
+            Headers           = @{'OpenAI-Beta' = 'assistants=v2' }
             Body              = $PostBody
             AdditionalQuery   = $AdditionalQuery
             AdditionalHeaders = $AdditionalHeaders
@@ -181,6 +253,11 @@ function New-Assistant {
         }
         #endregion
 
+        if ($Format -eq 'raw_response') {
+            Write-Output $Response
+            return
+        }
+
         #region Parse response object
         try {
             $Response = $Response | ConvertFrom-Json -ErrorAction Stop
@@ -191,14 +268,8 @@ function New-Assistant {
         #endregion
 
         #region Output
-        # Add custom type name and properties to output object.
-        $Response.PSObject.TypeNames.Insert(0, 'PSOpenAI.Assistant')
-        if ($null -ne $Response.created_at -and ($unixtime = $Response.created_at -as [long])) {
-            # convert unixtime to [DateTime] for read suitable
-            $Response | Add-Member -MemberType NoteProperty -Name 'created_at' -Value ([System.DateTimeOffset]::FromUnixTimeSeconds($unixtime).LocalDateTime) -Force
-        }
         Write-Verbose ('The assistant with id "{0}" has been created.' -f $Response.id)
-        Write-Output $Response
+        ParseAssistantsObject $Response
         #endregion
     }
 

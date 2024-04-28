@@ -9,6 +9,19 @@ function Set-Thread {
         [Object]$InputObject,
 
         [Parameter()]
+        [ValidateCount(0, 20)]
+        [string[]]$FileIdsForCodeInterpreter,
+
+        [Parameter()]
+        [ValidateScript({ [bool](Get-VectorStoreIdFromInputObject $_) })]
+        [ValidateCount(1, 1)]
+        [object[]]$VectorStoresForFileSearch,
+
+        [Parameter()]
+        [ValidateCount(0, 10000)]
+        [string[]]$FileIdsForFileSearch,
+
+        [Parameter()]
         [System.Collections.IDictionary]$MetaData,
 
         [Parameter()]

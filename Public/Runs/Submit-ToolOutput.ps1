@@ -127,7 +127,7 @@ function Submit-ToolOutput {
                 ApiKey            = $SecureToken
                 AuthType          = $OpenAIParameter.AuthType
                 Organization      = $Organization
-                Headers           = @{'OpenAI-Beta' = 'assistants=v1' }
+                Headers           = @{'OpenAI-Beta' = 'assistants=v2' }
                 Body              = $PostBody
                 Stream            = $Stream
                 AdditionalQuery   = $AdditionalQuery
@@ -180,7 +180,7 @@ function Submit-ToolOutput {
             ApiKey            = $SecureToken
             AuthType          = $OpenAIParameter.AuthType
             Organization      = $Organization
-            Headers           = @{'OpenAI-Beta' = 'assistants=v1' }
+            Headers           = @{'OpenAI-Beta' = 'assistants=v2' }
             Body              = $PostBody
             AdditionalQuery   = $AdditionalQuery
             AdditionalHeaders = $AdditionalHeaders

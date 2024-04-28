@@ -10,6 +10,19 @@ function New-Thread {
         [object[]]$Messages,
 
         [Parameter()]
+        [ValidateCount(0, 20)]
+        [string[]]$FileIdsForCodeInterpreter,
+
+        [Parameter()]
+        [ValidateScript({ [bool](Get-VectorStoreIdFromInputObject $_) })]
+        [ValidateCount(1, 1)]
+        [object[]]$VectorStoresForFileSearch,
+
+        [Parameter()]
+        [ValidateCount(0, 10000)]
+        [string[]]$FileIdsForFileSearch,
+
+        [Parameter()]
         [System.Collections.IDictionary]$MetaData,
 
         [Parameter()]
@@ -80,7 +93,28 @@ function New-Thread {
             $QueryUri = $OpenAIParameter.Uri
         }
 
+        # Construct tools resources
+        $ToolResources = @{}
+        if ($FileIdsForCodeInterpreter.Count -gt 0) {
+            $ToolResources.code_interpreter = @{'file_ids' = $FileIdsForCodeInterpreter }
+        }
+        if ($FileIdsForFileSearch.Count -gt 0) {
+            $ToolResources.file_search = @{'vector_stores' = @(@{'file_ids' = $FileIdsForFileSearch }) }
+        }
+        if ($PSBoundParameters.ContainsKey('VectorStoresForFileSearch')) {
+            $vsids = @()
+            foreach ($vs in $VectorStoresForFileSearch) {
+                $vsids += Get-VectorStoreIdFromInputObject $vs
+            }
+            if ($vsids.Count -gt 0) {
+                $ToolResources.file_search = @{'vector_store_ids' = $vsids }
+            }
+        }
+
         $PostBody = [System.Collections.Specialized.OrderedDictionary]::new()
+        if ($ToolResources.Count -gt 0) {
+            $PostBody.tool_resources = $ToolResources
+        }
         if ($PSBoundParameters.ContainsKey('Metadata')) {
             $PostBody.metadata = $Metadata
         }
@@ -134,7 +168,7 @@ function New-Thread {
             ApiKey            = $SecureToken
             AuthType          = $OpenAIParameter.AuthType
             Organization      = $Organization
-            Headers           = @{'OpenAI-Beta' = 'assistants=v1' }
+            Headers           = @{'OpenAI-Beta' = 'assistants=v2' }
             Body              = $PostBody
             AdditionalQuery   = $AdditionalQuery
             AdditionalHeaders = $AdditionalHeaders

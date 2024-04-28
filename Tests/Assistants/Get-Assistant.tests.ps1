@@ -17,21 +17,21 @@ Describe 'Get-Assistant' {
 {
     "id": "asst_abc123",
     "object": "assistant",
-    "created_at": 1699009709,
-    "name": "HR Helper",
+    "created_at": 1698984975,
+    "name": "Math Tutor",
     "description": null,
-    "model": "gpt-4",
-    "instructions": "You are an HR bot, and you have access to files to answer employee questions about company policies.",
+    "model": "gpt-4-turbo",
+    "instructions": "You are a personal math tutor. When asked a question, write and run Python code to answer the question.",
     "tools": [
         {
-        "type": "retrieval"
+        "type": "code_interpreter"
         }
     ],
-    "file_ids": [
-        "file-abc123"
-    ],
-    "metadata": {}
-    }
+    "metadata": {},
+    "top_p": 1.0,
+    "temperature": 1.0,
+    "response_format": "auto"
+}
 '@ }
             }
 
@@ -66,13 +66,20 @@ Describe 'Get-Assistant' {
 {
     "id": "asst_abc123",
     "object": "assistant",
-    "created_at": 1699009709,
-    "name": "Helper",
-    "model": "gpt-4",
-    "instructions": "You are a helpful assistant.",
-    "tools": [],
-    "file_ids": [],
-    "metadata": {}
+    "created_at": 1698984975,
+    "name": "Math Tutor",
+    "description": null,
+    "model": "gpt-4-turbo",
+    "instructions": "You are a personal math tutor. When asked a question, write and run Python code to answer the question.",
+    "tools": [
+        {
+        "type": "code_interpreter"
+        }
+    ],
+    "metadata": {},
+    "top_p": 1.0,
+    "temperature": 1.0,
+    "response_format": "auto"
 }
 '@
                     $list = '{{"object": "list", "data": [{0}], "first_id": "asst_abc123", "last_id": "asst_abc456", "has_more": false }}'

@@ -19,9 +19,12 @@ function Add-ThreadMessage {
         [string][LowerCaseTransformation()]$Role = 'user',
 
         [Parameter()]
-        [Alias('file_ids')]
-        [ValidateCount(0, 10)]
-        [string[]]$FileId,
+        [ValidateCount(0, 20)]
+        [string[]]$FileIdsForCodeInterpreter,
+
+        [Parameter()]
+        [ValidateCount(0, 10000)]
+        [string[]]$FileIdsForFileSearch,
 
         [Parameter()]
         [System.Collections.IDictionary]$MetaData,
@@ -79,7 +82,6 @@ function Add-ThreadMessage {
         # Get API context
         $OpenAIParameter = Get-OpenAIContext -EndpointName 'Threads' -ApiType $ApiType -AuthType $AuthType -ApiBase $ApiBase -ApiVersion $ApiVersion -ErrorAction Stop
 
-
         # Parse Common params
         $CommonParams = ParseCommonParams $PSBoundParameters
     }
@@ -99,11 +101,29 @@ function Add-ThreadMessage {
         #endregion
 
         #region Construct parameters for API request
+        $Attachments = @()
+        if ($FileIdsForCodeInterpreter.Count -gt 0) {
+            foreach ($fileid in $FileIdsForCodeInterpreter) {
+                $Attachments += @{
+                    'file_id' = $fileid
+                    'tools'   = @(@{'type' = 'code_interpreter' })
+                }
+            }
+        }
+        if ($FileIdsForFileSearch.Count -gt 0) {
+            foreach ($fileid in $FileIdsForFileSearch) {
+                $Attachments += @{
+                    'file_id' = $fileid
+                    'tools'   = @(@{'type' = 'file_search' })
+                }
+            }
+        }
+
         $PostBody = [System.Collections.Specialized.OrderedDictionary]::new()
         $PostBody.role = $Role
         $PostBody.content = $Message
-        if ($PSBoundParameters.ContainsKey('FileId')) {
-            $PostBody.file_ids = $FileId
+        if ($Attachments.Count -gt 0) {
+            $PostBody.attachments = $Attachments
         }
         if ($PSBoundParameters.ContainsKey('Metadata')) {
             $PostBody.metadata = $Metadata
@@ -120,7 +140,7 @@ function Add-ThreadMessage {
             ApiKey            = $SecureToken
             AuthType          = $OpenAIParameter.AuthType
             Organization      = $Organization
-            Headers           = @{'OpenAI-Beta' = 'assistants=v1' }
+            Headers           = @{'OpenAI-Beta' = 'assistants=v2' }
             Body              = $PostBody
             AdditionalQuery   = $AdditionalQuery
             AdditionalHeaders = $AdditionalHeaders

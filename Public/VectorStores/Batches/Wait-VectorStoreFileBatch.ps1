@@ -106,7 +106,7 @@ function Wait-VectorStoreFileBatch {
                 #Wait
                 $innerBatchObject = $null
                 Start-CancelableWait -Milliseconds ([System.Math]::Min((200 * ($PollCounter++)), 1000)) -CancellationToken $Cancellation.Token -ea Stop
-                $innerBatchObject = PSOpenAI\Get-VectorStoreFileBatch @CommonParams
+                $innerBatchObject = PSOpenAI\Get-VectorStoreFileBatch -InputObject $InputObject -BatchId $BatchId @CommonParams
                 Write-Progress -Activity $ProgressTitle -Status ('The status of batch with id "{0}" is "{1}"' -f $innerBatchObject.id, $innerBatchObject.status) -PercentComplete -1
             } while ($innerBatchObject.status -and $innerBatchObject.status -in $innerStatusForWait)
         }
