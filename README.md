@@ -48,7 +48,8 @@ Install-Module -Name PSOpenAI
 + [New-ChatCompletionFunction](/Docs/New-ChatCompletionFunction.md)
 
 #### Assistants
-[Guide: How to use Assistants](/Guides/How_to_use_Assistants.md)
+[Guide: How to use Assistants](/Guides/How_to_use_Assistants.md)  
+[Guide: How to use File search with Assistants and Vector Store](/Guides/How_to_use_FileSearch_with_VectorStore.md)
 
 + [Get-Assistant](/Docs/Get-Assistant.md)
 + [New-Assistant](/Docs/New-Assistant.md)

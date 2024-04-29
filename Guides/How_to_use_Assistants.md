@@ -3,7 +3,7 @@
 > [!WARNING]  
 > The Assistants API is still in Beta. Specifications, usage, and parameters are subject to change without announcement.
 
-The Assistants API allows you to build AI assistants within your own applications. An Assistant has instructions and can leverage models, tools, and knowledge to respond to user queries. The Assistants API supports three types of tools: Code Interpreter, Retrieval, and Function calling.
+The Assistants API allows you to build AI assistants within your own applications. An Assistant has instructions and can leverage models, tools, and knowledge to respond to user queries. The Assistants API supports three types of tools: Code Interpreter, File Search, and Function calling.
 
 OpenAI's official document is here.  
 https://platform.openai.com/docs/assistants/overview
@@ -28,7 +28,7 @@ $env:OPENAI_API_KEY = '<Put your API key here>'
 # Create an Assistant
 $Assistant = New-Assistant `
     -Name "Math Teacher" `
-    -Model "gpt-3.5-turbo-0613" `
+    -Model "gpt-3.5-turbo" `
     -UseCodeInterpreter `
     -Instructions "You are a personal math tutor. Write and run code to answer math questions."
 ```
