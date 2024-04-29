@@ -1,4 +1,11 @@
 # Changelog
+### 3.8.0
+- Commands for Assistants now uses v2 version of API. (Still in beta)
+- Add new commands for Vector Store.
+- Fix minor issues
+  
+[Guide: How to use File search with Assistants and Vector Store](/Guides/How_to_use_FileSearch_with_VectorStore.md)
+
 ### 3.7.0
 - Add new functions for Batch API.  
   

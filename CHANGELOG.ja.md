@@ -1,4 +1,11 @@
 # 変更履歴
+### 3.8.0
+- Assistants 関連のコマンドはすべて新しい Assistants v2 API を使用するように変更されました
+- Vector Store を使用するための新しい関数を追加
+- 不具合の修正
+
+[Guide: How to use File search with Assistants and Vector Store](/Guides/How_to_use_FileSearch_with_VectorStore.md)
+
 ### 3.7.0
 - Batch APIを使用するための新しい関数を追加. 
   Batchの使い方はガイドを参照してください [Guide: How to use Batch](/Guides/How_to_use_Batch.md)
