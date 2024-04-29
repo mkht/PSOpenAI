@@ -2,14 +2,15 @@ function Get-VectorStoreFile {
     [CmdletBinding(DefaultParameterSetName = 'List')]
     [OutputType([pscustomobject])]
     param (
-        [Parameter(Mandatory, Position = 0, ValueFromPipeline)]
+        [Parameter(Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [Alias('vector_store_id')]
         [Alias('VectorStore')]
         [ValidateScript({ [bool](Get-VectorStoreIdFromInputObject $_) })]
         [Object]$InputObject,
 
-        [Parameter(ParameterSetName = 'Get', Mandatory, Position = 1)]
+        [Parameter(ParameterSetName = 'Get', Mandatory, Position = 1, ValueFromPipelineByPropertyName)]
         [Alias('file_id')]
+        [Alias('Id')]
         [string][UrlEncodeTransformation()]$FileId,
 
         [Parameter(ParameterSetName = 'List')]

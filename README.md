@@ -66,6 +66,18 @@ Install-Module -Name PSOpenAI
 + [Wait-ThreadRun](/Docs/Wait-ThreadRun.md)
 + [Receive-ThreadRun](/Docs/Receive-ThreadRun.md)
 + [Get-ThreadRunStep](/Docs/Get-ThreadRunStep.md)
++ [Get-VectorStore](/Docs/Get-VectorStore.md)
++ [New-VectorStore](/Docs/New-VectorStore.md)
++ [Set-VectorStore](/Docs/Set-VectorStore.md)
++ [Remove-VectorStore](/Docs/Remove-VectorStore.md)
++ [Add-VectorStoreFile](/Docs/Add-VectorStoreFile.md)
++ [Get-VectorStoreFile](/Docs/Get-VectorStoreFile.md)
++ [Remove-VectorStoreFile](/Docs/Remove-VectorStoreFile.md)
++ [Start-VectorStoreFileBatch](/Docs/Start-VectorStoreFileBatch.md)
++ [Get-VectorStoreFileBatch](/Docs/Get-VectorStoreFileBatch.md)
++ [Stop-VectorStoreFileBatch](/Docs/Stop-VectorStoreFileBatch.md)
++ [Wait-VectorStoreFileBatch](/Docs/Wait-VectorStoreFileBatch.md)
++ [Get-VectorStoreFileInBatch](/Docs/Get-VectorStoreFileInBatch.md)
 
 #### Images
 + [Request-ImageEdit](/Docs/Request-ImageEdit.md)

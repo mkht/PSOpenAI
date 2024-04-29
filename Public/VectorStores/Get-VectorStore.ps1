@@ -2,7 +2,7 @@ function Get-VectorStore {
     [CmdletBinding(DefaultParameterSetName = 'List')]
     [OutputType([pscustomobject])]
     param (
-        [Parameter(ParameterSetName = 'Get', Mandatory, Position = 0, ValueFromPipeline)]
+        [Parameter(ParameterSetName = 'Get', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [Alias('vector_store_id')]
         [Alias('VectorStore')]
         [ValidateScript({ [bool](Get-VectorStoreIdFromInputObject $_) })]

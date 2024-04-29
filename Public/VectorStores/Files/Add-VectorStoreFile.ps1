@@ -108,15 +108,6 @@ function Add-VectorStoreFile {
         }
         #endregion
 
-        #region Parse response object
-        try {
-            $Response = $Response | ConvertFrom-Json -ErrorAction Stop
-        }
-        catch {
-            Write-Error -Exception $_.Exception
-        }
-        #endregion
-
         #region Output
         # Output vectore store object only when the PassThru switch is specified.
         if ($PassThru) {

@@ -2,7 +2,7 @@ function Get-VectorStoreFileInBatch {
     [CmdletBinding(DefaultParameterSetName = 'List')]
     [OutputType([pscustomobject])]
     param (
-        [Parameter(Mandatory, Position = 0, ValueFromPipelineByPropertyName)]
+        [Parameter(Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [Alias('vector_store_id')]
         [Alias('VectorStore')]
         [ValidateScript({ [bool](Get-VectorStoreIdFromInputObject $_) })]
