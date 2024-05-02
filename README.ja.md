@@ -57,6 +57,7 @@ Install-Module -Name PSOpenAI
 + [Remove-Thread](/Docs/Remove-Thread.md)
 + [Get-ThreadMessage](/Docs/Get-ThreadMessage.md)
 + [Add-ThreadMessage](/Docs/Add-ThreadMessage.md)
++ [Remove-ThreadMessage](/Docs/Remove-ThreadMessage.md)
 + [Get-ThreadRun](/Docs/Get-ThreadRun.md)
 + [Start-ThreadRun](/Docs/Start-ThreadRun.md)
 + [Stop-ThreadRun](/Docs/Stop-ThreadRun.md)

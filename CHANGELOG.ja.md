@@ -1,4 +1,9 @@
 # 変更履歴
+### 3.9.0
+- 新しい関数 [Remove-ThreadMessage](/Docs/Remove-ThreadMessage.md) を追加
+- `-ToolChoice` パラメータの選択肢に "required" を追加
+- ドキュメントの修正
+
 ### 3.8.0
 - Assistants 関連のコマンドはすべて新しい Assistants v2 API を使用するように変更されました
 - Vector Store を使用するための新しい関数を追加

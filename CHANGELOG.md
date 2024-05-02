@@ -1,4 +1,9 @@
 # Changelog
+### 3.9.0
+- Add new [Remove-ThreadMessage](/Docs/Remove-ThreadMessage.md) function.
+- Add "required" as an option for `-ToolChoice`
+- Improve documents.
+
 ### 3.8.0
 - Commands for Assistants now uses v2 version of API. (Still in beta)
 - Add new commands for Vector Store.
