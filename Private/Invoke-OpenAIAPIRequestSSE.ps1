@@ -111,8 +111,11 @@ function Invoke-OpenAIAPIRequestSSE {
         'azure' {
             $RequestMessage.Headers.Add('api-key', $PlainToken)
         }
+        'azure_ad' {
+            $RequestMessage.Headers.Authorization = [System.Net.Http.Headers.AuthenticationHeaderValue]::new('Bearer', $PlainToken)
+        }
         default {
-            # covers null and azure_ad
+            # covers null
             $RequestMessage.Headers.Authorization = [System.Net.Http.Headers.AuthenticationHeaderValue]::new('Bearer', $PlainToken)
         }
     }

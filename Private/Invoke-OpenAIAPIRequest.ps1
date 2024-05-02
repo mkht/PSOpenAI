@@ -195,8 +195,11 @@ function Invoke-OpenAIAPIRequest {
             $UseBearer = $false
             $RequestHeaders['api-key'] = $PlainToken
         }
+        'azure_ad' {
+            $UseBearer = $true
+        }
         default {
-            # includes azure_ad and null
+            # covers null
             $UseBearer = $true
         }
     }
