@@ -23,7 +23,7 @@ $env:OPENAI_API_KEY = '<Put your API key here>'
 
 # Upload some files for file search
 ## You need to set the purpose as "assistants"
-$UploadedFiles = Get-ChildItem "C:\UploadFiles\*" -File | Add-OpenAIFile -Purpose "assistants"
+$UploadedFiles = Get-ChildItem "C:\UploadFiles\*" -File | Register-OpenAIFile -Purpose "assistants"
 
 # Create new vector store and attach uploaded items to that.
 $VectorStore = New-VectorStore -Name 'VectorStore-1' -FileId $UploadedFiles.Id
