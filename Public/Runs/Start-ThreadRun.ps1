@@ -391,7 +391,7 @@ function Start-ThreadRun {
                     if ($Format -eq 'raw_response') {
                         $_
                     }
-                    elseif ($_.Contains('"object":"thread.message.delta"', [StringComparison]::OrdinalIgnoreCase)) {
+                    elseif ($_.Contains('"object":"thread.message.delta"')) {
                         try {
                             $deltaObj = $_ | ConvertFrom-Json -ErrorAction Stop
                         }

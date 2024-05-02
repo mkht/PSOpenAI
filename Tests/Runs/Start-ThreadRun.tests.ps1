@@ -119,16 +119,15 @@ Describe 'Start-ThreadRun' {
         AfterEach {
             $script:Assistant | Remove-Assistant -ea SilentlyContinue
             $script:Thread | Remove-Thread -ea SilentlyContinue
+            $script:Assistant = $null
+            $script:Thread = $null
         }
 
-        It 'Create thread' {
+        It 'Start thread run' {
             $script:Assistant = New-Assistant -Model gpt-3.5-turbo
             $script:Thread = New-Thread | Add-ThreadMessage -Message 'How many people lives in Canada?' -PassThru
-            { $params = @{
-                    Assistant   = $script:Assistant
-                    ErrorAction = 'Stop'
-                }
-                $script:Result = $script:Thread | Start-ThreadRun @params
+            {
+                $script:Result = $script:Thread | Start-ThreadRun -Assistant $script:Assistant -TimeoutSec 40 -MaxRetryCount 5 -ea Stop
             } | Should -Not -Throw
             $Result.id | Should -BeLike 'run_*'
             $Result.thread_id | Should -Be $script:Thread.id
@@ -136,6 +135,17 @@ Describe 'Start-ThreadRun' {
             $Result.object | Should -Be 'thread.run'
             $Result.created_at | Should -BeOfType [datetime]
             $Result.status | Should -BeIn @('queued', 'in_progress', 'completed')
+        }
+
+        It 'Start thread run (Stream)' {
+            $script:Assistant = New-Assistant -Model gpt-3.5-turbo
+            $script:Thread = New-Thread | Add-ThreadMessage -Message 'How many people lives in Canada?' -PassThru
+            {
+                $script:Result = $script:Thread | Start-ThreadRun -Assistant $script:Assistant -Stream -TimeoutSec 40 -MaxRetryCount 5 -ea Stop
+            } | Should -Not -Throw
+            $Result.GetType().Fullname | Should -Be 'System.Object[]'
+            $Result.Count | Should -BeGreaterOrEqual 1
+            $Result[0] | Should -BeOfType [string]
         }
     }
 }
