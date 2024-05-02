@@ -60,7 +60,7 @@ function Request-ChatCompletion {
 
         [Parameter()]
         [Alias('tool_choice')]
-        [Completions('none', 'auto')]
+        [Completions('none', 'auto', 'required')]
         [object]$ToolChoice,
 
         # deprecated

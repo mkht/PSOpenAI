@@ -92,7 +92,7 @@ function Start-ThreadRun {
 
         [Parameter()]
         [Alias('tool_choice')]
-        [Completions('none', 'auto', 'code_interpreter', 'retrieval', 'function')]
+        [Completions('none', 'auto', 'required', 'code_interpreter', 'file_search', 'function')]
         [string][LowerCaseTransformation()]$ToolChoice,
 
         [Parameter()]
@@ -303,7 +303,7 @@ function Start-ThreadRun {
             $PostBody.tool_resources = $ToolResources
         }
         if ($PSBoundParameters.ContainsKey('ToolChoice')) {
-            if ($ToolChoice -in ('none', 'auto')) {
+            if ($ToolChoice -in ('none', 'auto', 'required')) {
                 $PostBody.tool_choice = $ToolChoice
             }
             elseif ($ToolChoice -eq 'function') {
