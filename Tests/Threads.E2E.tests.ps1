@@ -106,7 +106,7 @@ Password should be between 8 and 12 random alphanumeric characters.
             }
 
             It 'STEP1: Uploads test data' {
-                { $script:UploadItems = $script:dataSet | Register-OpenAIFile -Purpose assistants -TimeoutSec 300 } | Should -Not -Throw
+                { $script:UploadItems = $script:dataSet | Add-OpenAIFile -Purpose assistants -TimeoutSec 300 } | Should -Not -Throw
                 $UploadItems | Should -HaveCount $script:dataSet.Count
                 $UploadItems[0].id | Should -BeLike 'file*'
                 $UploadItems[0].object | Should -Be 'file'

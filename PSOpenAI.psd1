@@ -74,7 +74,7 @@
         'Request-ImageVariation',
         'Request-Moderation',
         'Request-TextCompletion',
-        'Register-OpenAIFile',
+        'Add-OpenAIFile',
         'Remove-OpenAIFile',
         'Get-OpenAIFile',
         'Get-OpenAIFileContent',
@@ -128,7 +128,7 @@
     )
 
     # Aliases to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no aliases to export.
-    AliasesToExport      = @('Request-ChatGPT', 'Request-AzureChatGPT')
+    AliasesToExport      = @('Request-ChatGPT', 'Request-AzureChatGPT', 'Register-OpenAIFile')
 
     TypesToProcess       = @(
         'PSOpenAI.Types.ps1xml'

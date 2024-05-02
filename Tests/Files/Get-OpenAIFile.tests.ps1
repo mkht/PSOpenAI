@@ -92,8 +92,8 @@ Describe 'Get-OpenAIFile' {
     Context 'Integration tests (online)' -Tag 'Online' {
         BeforeAll {
             # Upload test files
-            $script:File1 = Register-OpenAIFile -File ($script:TestData + '/sweets_donut.png') -Purpose assistants
-            $script:File2 = Register-OpenAIFile -File ($script:TestData + '/my-data.jsonl') -Purpose fine-tune
+            $script:File1 = Add-OpenAIFile -File ($script:TestData + '/sweets_donut.png') -Purpose assistants
+            $script:File2 = Add-OpenAIFile -File ($script:TestData + '/my-data.jsonl') -Purpose fine-tune
         }
 
         BeforeEach {

@@ -7,7 +7,7 @@ BeforeAll {
     Import-Module (Join-Path $script:ModuleRoot "$script:ModuleName.psd1") -Force
 }
 
-Describe 'Register-OpenAIFile' {
+Describe 'Add-OpenAIFile' {
     Context 'Unit tests (offline)' -Tag 'Offline' {
         BeforeAll {
             Mock -ModuleName $script:ModuleName Initialize-APIKey { [securestring]::new() }
@@ -29,7 +29,7 @@ Describe 'Register-OpenAIFile' {
         }
 
         It 'Upload single file' {
-            { $script:Result = Register-OpenAIFile -File ($script:TestData + '/sweets_donut.png') -Purpose assistants -ea Stop } | Should -Not -Throw
+            { $script:Result = Add-OpenAIFile -File ($script:TestData + '/sweets_donut.png') -Purpose assistants -ea Stop } | Should -Not -Throw
             Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName
             $Result.id | Should -BeExactly 'file-abc123'
             $Result.object | Should -BeExactly 'file'
@@ -38,12 +38,12 @@ Describe 'Register-OpenAIFile' {
 
         It 'Pipeline input (FileInfo)' {
             $InObject = Get-Item ($script:TestData + '/sweets_donut.png')
-            { $InObject | Register-OpenAIFile -Purpose assistants -ea Stop } | Should -Not -Throw
+            { $InObject | Add-OpenAIFile -Purpose assistants -ea Stop } | Should -Not -Throw
             Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName
         }
 
         It 'Upload from raw bytes' {
-            { $script:Result = Register-OpenAIFile -Content ([byte[]](97..99)) -Name 'test.txt' -Purpose assistants -ea Stop } | Should -Not -Throw
+            { $script:Result = Add-OpenAIFile -Content ([byte[]](97..99)) -Name 'test.txt' -Purpose assistants -ea Stop } | Should -Not -Throw
             Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName
             $Result.id | Should -BeExactly 'file-abc123'
             $Result.object | Should -BeExactly 'file'
@@ -51,7 +51,7 @@ Describe 'Register-OpenAIFile' {
         }
 
         It 'Error if the file does not exist' {
-            { Register-OpenAIFile -File ($script:TestData + '/notexist.txt') -Purpose assistants -ea Stop } | Should -Throw
+            { Add-OpenAIFile -File ($script:TestData + '/notexist.txt') -Purpose assistants -ea Stop } | Should -Throw
             Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 0 -Exactly
         }
     }
@@ -68,7 +68,7 @@ Describe 'Register-OpenAIFile' {
         }
 
         It 'Upload test file' {
-            { $script:Result = Register-OpenAIFile -File ($script:TestData + '/my-data.jsonl') -Purpose fine-tune -ea Stop } | Should -Not -Throw
+            { $script:Result = Add-OpenAIFile -File ($script:TestData + '/my-data.jsonl') -Purpose fine-tune -ea Stop } | Should -Not -Throw
             $Result.id | Should -BeLike 'file*'
             $Result.object | Should -BeExactly 'file'
             $Result.filename | Should -Be 'my-data.jsonl'
@@ -77,7 +77,7 @@ Describe 'Register-OpenAIFile' {
         It 'Upload test content' {
             {
                 $rawcontent = [System.IO.File]::ReadAllBytes(($script:TestData + '/my-data.jsonl'))
-                $script:Result = Register-OpenAIFile -Content $rawcontent -Name 'raw-data.jsonl' -Purpose batch -ea Stop
+                $script:Result = Add-OpenAIFile -Content $rawcontent -Name 'raw-data.jsonl' -Purpose batch -ea Stop
             } | Should -Not -Throw
             $Result.id | Should -BeLike 'file*'
             $Result.object | Should -BeExactly 'file'
@@ -85,7 +85,7 @@ Describe 'Register-OpenAIFile' {
         }
 
         It 'Upload test file (non-latin file name)' {
-            { $script:Result = Register-OpenAIFile -File ($script:TestData + '/日本語テキスト.txt') -Purpose assistants -ea Stop } | Should -Not -Throw
+            { $script:Result = Add-OpenAIFile -File ($script:TestData + '/日本語テキスト.txt') -Purpose assistants -ea Stop } | Should -Not -Throw
             $Result.id | Should -BeLike 'file*'
             $Result.object | Should -BeExactly 'file'
             $Result.filename | Should -Be '日本語テキスト.txt'

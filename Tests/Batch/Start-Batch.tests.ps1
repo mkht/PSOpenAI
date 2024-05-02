@@ -11,7 +11,7 @@ Describe 'Start-Batch' {
     Context 'Unit tests (offline)' -Tag 'Offline' {
         BeforeAll {
             Mock -ModuleName $script:ModuleName Initialize-APIKey { [securestring]::new() }
-            Mock -Verifiable -ModuleName $script:ModuleName Register-OpenAIFile { @{id = 'file-abc123' } }
+            Mock -Verifiable -ModuleName $script:ModuleName Add-OpenAIFile { @{id = 'file-abc123' } }
             Mock -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $PesterBoundParameters }
             Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
 {
@@ -50,7 +50,7 @@ Describe 'Start-Batch' {
         It 'Start batch with file_input_id' {
             { $script:Result = Start-Batch -FileId 'file-abc123' -ea Stop } | Should -Not -Throw
             Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
-            Should -Not -Invoke -CommandName Register-OpenAIFile -ModuleName $script:ModuleName
+            Should -Not -Invoke -CommandName Add-OpenAIFile -ModuleName $script:ModuleName
             $Result | Should -BeOfType [pscustomobject]
             $Result.id | Should -BeExactly 'batch_abc123'
             $Result.created_at | Should -BeOfType [datetime]
@@ -74,7 +74,7 @@ Describe 'Start-Batch' {
             )
             { $script:Result = Start-Batch -InputObject $BatchInputs -ea Stop } | Should -Not -Throw
             Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
-            Should -Invoke -CommandName Register-OpenAIFile -ModuleName $script:ModuleName -Times 1 -Exactly
+            Should -Invoke -CommandName Add-OpenAIFile -ModuleName $script:ModuleName -Times 1 -Exactly
             $Result | Should -BeOfType [pscustomobject]
             $Result.id | Should -BeExactly 'batch_abc123'
             $Result.created_at | Should -BeOfType [datetime]
@@ -98,7 +98,7 @@ Describe 'Start-Batch' {
             )
             { $script:Result = $BatchInputs | Start-Batch -ea Stop } | Should -Not -Throw
             Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
-            Should -Invoke -CommandName Register-OpenAIFile -ModuleName $script:ModuleName -Times 1 -Exactly
+            Should -Invoke -CommandName Add-OpenAIFile -ModuleName $script:ModuleName -Times 1 -Exactly
             $Result | Should -BeOfType [pscustomobject]
             $Result.id | Should -BeExactly 'batch_abc123'
             $Result.created_at | Should -BeOfType [datetime]

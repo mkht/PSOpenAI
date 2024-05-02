@@ -110,7 +110,7 @@ function Start-Batch {
             $bytedata = [System.Text.Encoding]::UTF8.GetBytes($BatchBag -join "`n")
             $filename = ('batch-psopenai_{0}_{1:x4}.jsonl' -f $StartTime.ToString('s'), (Get-Random -Maximum 65535))
             Write-Verbose -Message ('Uploading a batch data to OpenAI. (File name: "{0}")' -f $filename)
-            $fileobject = PSOpenAI\Register-OpenAIFile -Content $bytedata -Name $filename -Purpose batch @CommonParams
+            $fileobject = PSOpenAI\Add-OpenAIFile -Content $bytedata -Name $filename -Purpose batch @CommonParams
             Write-Verbose -Message ('Batch data is successfully uploaded. (File ID: "{0}")' -f $fileobject.id)
             $FileId = $fileobject.id
         }

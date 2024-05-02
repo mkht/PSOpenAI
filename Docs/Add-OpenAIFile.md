@@ -1,11 +1,11 @@
 ---
 external help file: PSOpenAI-help.xml
 Module Name: PSOpenAI
-online version: https://github.com/mkht/PSOpenAI/blob/main/Docs/Register-OpenAIFile.md
+online version: https://github.com/mkht/PSOpenAI/blob/main/Docs/Add-OpenAIFile.md
 schema: 2.0.0
 ---
 
-# Register-OpenAIFile
+# Add-OpenAIFile
 
 ## SYNOPSIS
 Upload a file that can be used across various endpoints.
@@ -14,7 +14,7 @@ Upload a file that can be used across various endpoints.
 
 ### File
 ```
-Register-OpenAIFile
+Add-OpenAIFile
     [-File] <String>
     -Purpose <String>
     [-TimeoutSec <Int32>]
@@ -27,7 +27,7 @@ Register-OpenAIFile
 
 ### Content
 ```
-Register-OpenAIFile
+Add-OpenAIFile
     [-Content] <byte[]>
     -Name <String>
     -Purpose <String>
@@ -46,7 +46,7 @@ Upload a file that can be used across various endpoints.
 
 ### Example 1
 ```powershell
-PS C:\> Register-OpenAIFile -File "C:\sample.csv" -Purpose assistants
+PS C:\> Add-OpenAIFile -File "C:\sample.csv" -Purpose assistants
 ```
 
 Upload `sample.csv` file to OpenAI.
@@ -54,7 +54,7 @@ Upload `sample.csv` file to OpenAI.
 ### Example 2
 ```powershell
 PS C:\> $ByteArray = [System.Text.Encoding]::UTF8.GetBytes('some text data')
-PS C:\> Register-OpenAIFile -Content $ByteArray -Name 'filename.txt' -Purpose assistants
+PS C:\> Add-OpenAIFile -Content $ByteArray -Name 'filename.txt' -Purpose assistants
 ```
 
 Upload a content of bytes to OpenAI

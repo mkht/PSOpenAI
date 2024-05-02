@@ -1,6 +1,7 @@
-function Register-OpenAIFile {
+function Add-OpenAIFile {
     [CmdletBinding(DefaultParameterSetName = 'File')]
     [OutputType([pscustomobject])]
+    [Alias('Register-OpenAIFile')]
     param (
         [Parameter(ParameterSetName = 'File', Mandatory, Position = 0, ValueFromPipeline)]
         [ValidateScript({ Test-Path -LiteralPath $_ -PathType Leaf })]

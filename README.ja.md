@@ -89,7 +89,7 @@ Install-Module -Name PSOpenAI
 
 #### Files
 + [Get-OpenAIFile](/Docs/Get-OpenAIFile.md)
-+ [Register-OpenAIFile](/Docs/Register-OpenAIFile.md)
++ [Add-OpenAIFile](/Docs/Add-OpenAIFile.md)
 + [Remove-OpenAIFile](/Docs/Remove-OpenAIFile.md)
 + [Get-OpenAIFileContent](/Docs/Get-OpenAIFileContent.md)
 

@@ -49,7 +49,7 @@ function Register-AzureOpenAIFile {
 
         # Invoke
         $steppablePipeline = {
-            PSOpenAI\Register-OpenAIFile @Parameters
+            PSOpenAI\Add-OpenAIFile @Parameters
         }.GetSteppablePipeline($myInvocation.CommandOrigin)
         $steppablePipeline.Begin($PSCmdlet)
     }
