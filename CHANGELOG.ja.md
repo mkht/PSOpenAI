@@ -1,4 +1,9 @@
 # 変更履歴
+### 3.9.1
+- `Start-ThreadRun`が特定の条件で認証エラーを発生させる問題を修正 (#11) (Thanks @potatoqualitee!)
+- Windows PowerShell 5.1 で`Start-ThreadRun`に`-Stream`を指定した場合に実行が失敗する問題を修正
+- ドキュメントの修正
+
 ### 3.9.0
 - 新しい関数 [Remove-ThreadMessage](/Docs/Remove-ThreadMessage.md) を追加
 - `-ToolChoice` パラメータの選択肢に "required" を追加

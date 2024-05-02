@@ -1,4 +1,9 @@
 # Changelog
+### 3.9.1
+- Fix issue that the `Start-ThreadRun` would throw an authentication error in some situations. (#11) (Thanks @potatoqualitee!)
+- Fix issue that the `Start-ThreadRun` with `-Stream` doesn't work on Windows PowerShell 5.1
+- Improve documents.
+
 ### 3.9.0
 - Add new [Remove-ThreadMessage](/Docs/Remove-ThreadMessage.md) function.
 - Add "required" as an option for `-ToolChoice`
