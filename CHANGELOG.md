@@ -1,4 +1,8 @@
 # Changelog
+### Unreleased
+- Rename `Register-OpenAIFile` to `Add-OpenAIFile`.  
+  (Note: You can still use `Register-OpenAIFile` as an alias. However, in the future release, the alias will be removed.)
+
 ### 3.9.1
 - Fix issue that the `Start-ThreadRun` would throw an authentication error in some situations. (#11) (Thanks @potatoqualitee!)
 - Fix issue that the `Start-ThreadRun` with `-Stream` doesn't work on Windows PowerShell 5.1
