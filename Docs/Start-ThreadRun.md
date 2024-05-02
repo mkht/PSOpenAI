@@ -28,7 +28,7 @@ Start-ThreadRun
     [-ToolChoice <String>]
     [-ToolChoiceFunctionName <String>]
     [-UseCodeInterpreter]
-    [-UseRetrieval]
+    [-UseFileSearch]
     [-MetaData <IDictionary>]
     [-Temperature <Double>]
     [-Stream]
@@ -60,7 +60,7 @@ Start-ThreadRun
     [-ToolChoice <String>]
     [-ToolChoiceFunctionName <String>]
     [-UseCodeInterpreter]
-    [-UseRetrieval]
+    [-UseFileSearch]
     [-MetaData <IDictionary>]
     [-Temperature <Double>]
     [-Stream]
@@ -186,8 +186,8 @@ Required: False
 Position: Named
 ```
 
-### -UseRetrieval
-Override whether the retrieval tool enable or not.
+### -UseFileSearch
+Override whether the file_search tool enable or not.
 
 ```yaml
 Type: SwitchParameter
@@ -273,7 +273,7 @@ Position: Named
 ```
 
 ### -FileId
-A list of File IDs that the message should use. There can be a maximum of 10 files attached to a message. Useful for tools like retrieval and code_interpreter that can access and use files.
+A list of File IDs that the message should use. There can be a maximum of 10 files attached to a message. Useful for tools like file_search and code_interpreter that can access and use files.
 
 ```yaml
 Type: String[]

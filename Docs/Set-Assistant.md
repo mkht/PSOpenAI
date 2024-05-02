@@ -19,11 +19,16 @@ Set-Assistant
     [-Model <String>]
     [-Description <String>]
     [-Instructions <String>]
-    [-Tools <IDictionary[]>]
     [-UseCodeInterpreter]
-    [-UseRetrieval]
-    [-FileId <String[]>]
+    [-UseFileSearch]
+    [-Functions]
+    [-FileIdsForCodeInterpreter <String[]>]
+    [-VectorStoresForFileSearch <Object[]>]
+    [-FileIdsForFileSearch <String[]>]
+    [-Temperature <Double>]
+    [-TopP <Double>]
     [-MetaData <IDictionary>]
+    [-Format <String>]
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
     [-ApiBase <Uri>]
@@ -86,7 +91,7 @@ Position: Named
 ```
 
 ### -Instructions
-The system instructions that the assistant uses. The maximum length is 32768 characters.
+The system instructions that the assistant uses. The maximum length is 256,000 characters.
 
 ```yaml
 Type: String
@@ -94,14 +99,6 @@ Required: False
 Position: Named
 ```
 
-### -Tools
-A list of tool enabled on the assistant. There can be a maximum of 128 tools per assistant.
-
-```yaml
-Type: IDictionary[]
-Required: False
-Position: Named
-```
 
 ### -UseCodeInterpreter
 Specifies Whether the code interpreter tool enable or not. The default is `$false`.
@@ -113,8 +110,8 @@ Position: Named
 Default value: $false
 ```
 
-### -UseRetrieval
-Specifies Whether the retrieval tool enable or not. The default is `$false`.
+### -UseFileSearch
+Specifies Whether the file_search tool enable or not. The default is `$false`.
 
 ```yaml
 Type: SwitchParameter
@@ -123,12 +120,57 @@ Position: Named
 Default value: $false
 ```
 
-### -FileId
-A list of file IDs attached to this assistant. There can be a maximum of 20 files attached to the assistant.
+### -Functions
+A list of functions the model may call. Use this to provide a list of functions the model may generate JSON inputs for.  
+
+```yaml
+Type: IDictionary[]
+Required: False
+Position: Named
+```
+
+### -FileIdsForCodeInterpreter
+A list of file IDs made available to the code_interpreter tool. There can be a maximum of 20 files associated with the tool.
 
 ```yaml
 Type: String[]
-Aliases: file_ids
+Required: False
+Position: Named
+```
+
+### -VectorStoresForFileSearch
+The vector store attached to this assistant. There can be a maximum of 1 vector store attached to the assistant.
+
+```yaml
+Type: Object[]
+Required: False
+Position: Named
+```
+
+### -FileIdsForFileSearch
+A list of file IDs to add to the vector store. There can be a maximum of 10000 files in a vector store.
+
+```yaml
+Type: String[]
+Required: False
+Position: Named
+```
+
+### -Temperature
+What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic.
+
+```yaml
+Type: double
+Required: False
+Position: Named
+```
+
+### -TopP
+An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top_p probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered.
+
+```yaml
+Type: double
+Aliases: top_p
 Required: False
 Position: Named
 ```
@@ -138,6 +180,19 @@ Set of 16 key-value pairs that can be attached to an object. This can be useful 
 
 ```yaml
 Type: IDictionary
+Required: False
+Position: Named
+```
+
+### -Format
+Specifies the format that the model must output.  
+`auto` is default.  
+`json_object` : Enables JSON mode, which guarantees the message the model generates is valid JSON.  
+`raw_response` : This function will return raw response content from API.
+
+```yaml
+Type: string
+Aliases: response_format
 Required: False
 Position: Named
 ```

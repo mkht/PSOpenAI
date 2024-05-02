@@ -17,7 +17,8 @@ Add-ThreadMessage
     -InputObject <Object>
     [-Message] <String>
     [-Role <String>]
-    [-FileId <String[]>]
+    [-FileIdsForCodeInterpreter <String[]>]
+    [-FileIdsForFileSearch <String[]>]
     [-MetaData <IDictionary>]
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
@@ -80,12 +81,20 @@ Position: Named
 Default value: user
 ```
 
-### -FileId
-A list of File IDs that the message should use. There can be a maximum of 10 files attached to a message. Useful for tools like `retrieval` and `code_interpreter` that can access and use files.
+### -FileIdsForCodeInterpreter
+A list of file IDs made available to the code_interpreter tool. There can be a maximum of 20 files associated with the tool.
 
 ```yaml
 Type: String[]
-Aliases: file_ids
+Required: False
+Position: Named
+```
+
+### -FileIdsForFileSearch
+A list of file IDs to add to the vector store. There can be a maximum of 10000 files in a vector store.
+
+```yaml
+Type: String[]
 Required: False
 Position: Named
 ```
