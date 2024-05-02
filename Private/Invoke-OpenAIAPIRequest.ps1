@@ -198,6 +198,10 @@ function Invoke-OpenAIAPIRequest {
         'azure_ad' {
             $UseBearer = $true
         }
+        default {
+            # covers null
+            $UseBearer = $true
+        }
     }
 
     # Absorb differences in PowerShell version

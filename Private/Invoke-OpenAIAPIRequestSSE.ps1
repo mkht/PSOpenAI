@@ -114,6 +114,10 @@ function Invoke-OpenAIAPIRequestSSE {
         'azure_ad' {
             $RequestMessage.Headers.Authorization = [System.Net.Http.Headers.AuthenticationHeaderValue]::new('Bearer', $PlainToken)
         }
+        default {
+            # covers null
+            $RequestMessage.Headers.Authorization = [System.Net.Http.Headers.AuthenticationHeaderValue]::new('Bearer', $PlainToken)
+        }
     }
 
     # Set timeout
