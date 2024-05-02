@@ -8,7 +8,7 @@ function Get-ThreadMessage {
         [ValidateScript({ [bool](Get-ThreadIdFromInputObject $_) })]
         [Object]$InputObject,
 
-        [Parameter(ParameterSetName = 'Get', Mandatory, ValueFromPipelineByPropertyName)]
+        [Parameter(ParameterSetName = 'Get', Mandatory, Position = 1, ValueFromPipelineByPropertyName)]
         [Alias('message_id')]
         [ValidateNotNullOrEmpty()]
         [string][UrlEncodeTransformation()]$MessageId,

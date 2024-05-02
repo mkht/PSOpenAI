@@ -53,6 +53,7 @@
         'Set-Thread',
         'Add-ThreadMessage',
         'Get-ThreadMessage',
+        'Remove-ThreadMessage',
         'Start-ThreadRun',
         'Stop-ThreadRun',
         'Get-ThreadRun',
