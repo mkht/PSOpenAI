@@ -14,7 +14,7 @@ This guide describes how to use File search with Assistants and Vector Store API
 
 To access your files, upload your files to OpenAI and create a Vector Store to contain them.
 
-Use the `Add-OpenAIFile` and `New-VectorStore` cmdlet.
+Use the `Register-OpenAIFile` and `New-VectorStore` cmdlet.
 
 ```PowerShell
 # Import PSOpenAI module and Set API key.
