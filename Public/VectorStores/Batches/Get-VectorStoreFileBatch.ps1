@@ -68,7 +68,7 @@ function Get-VectorStoreFileBatch {
         # Get vector store id
         [string][UrlEncodeTransformation()]$VsId = Get-VectorStoreIdFromInputObject $InputObject
         if (-not $VsId) {
-            Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve vectore store id.'))
+            Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve vector store id.'))
             return
         }
 

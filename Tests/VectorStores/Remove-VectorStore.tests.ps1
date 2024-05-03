@@ -34,7 +34,7 @@ Describe 'Remove-VectorStore' {
         It 'Remove vector store with object' {
             $InObject = [pscustomobject]@{
                 id     = 'vs_abc123'
-                object = 'vectore_store'
+                object = 'vector_store'
             }
             { $script:Result = Remove-VectorStore -InputObject $InObject -ea Stop } | Should -Not -Throw
             Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
@@ -49,7 +49,7 @@ Describe 'Remove-VectorStore' {
         It 'Pipeline input with Object' {
             $InObject = [pscustomobject]@{
                 id     = 'vs_abc123'
-                object = 'vectore_store'
+                object = 'vector_store'
             }
             { $InObject | Remove-VectorStore -ea Stop } | Should -Not -Throw
             Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly

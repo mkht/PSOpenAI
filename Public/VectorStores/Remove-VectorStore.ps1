@@ -107,7 +107,7 @@ function Remove-VectorStore {
 
         #region Verbose Output
         if ($Response.deleted) {
-            Write-Verbose ('The vectore store with id "{0}" has been deleted.' -f $Response.id)
+            Write-Verbose ('The vector store with id "{0}" has been deleted.' -f $Response.id)
         }
         #endregion
     }

@@ -33,7 +33,7 @@ Delete a vector store file. This will remove the file from the vector store but 
 PS C:\> Remove-VectorStoreFile -InputObject 'vs_abc123' -FileId 'file-abc123'
 ```
 
-Deletes a file with ID `file-abc123` from the vectore store with ID `vs_ab123`
+Deletes a file with ID `file-abc123` from the vector store with ID `vs_ab123`
 
 ## PARAMETERS
 

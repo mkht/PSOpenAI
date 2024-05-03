@@ -73,7 +73,7 @@ function Add-VectorStoreFile {
         # Get vector store id
         [string][UrlEncodeTransformation()]$VsId = Get-VectorStoreIdFromInputObject $InputObject
         if (-not $VsId) {
-            Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve vectore store id.'))
+            Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve vector store id.'))
             return
         }
 
@@ -109,7 +109,7 @@ function Add-VectorStoreFile {
         #endregion
 
         #region Output
-        # Output vectore store object only when the PassThru switch is specified.
+        # Output vector store object only when the PassThru switch is specified.
         if ($PassThru) {
             PSOpenAI\Get-VectorStore -InputObject $VsId @CommonParams
         }

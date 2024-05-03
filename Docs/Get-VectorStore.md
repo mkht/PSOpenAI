@@ -51,7 +51,7 @@ Get-VectorStore
 ```
 
 ## DESCRIPTION
-Get a vectore srore or List multiple vectore srore
+Get a vector srore or List multiple vector srore
 
 ## EXAMPLES
 

@@ -6,7 +6,7 @@ function Wait-VectorStoreFileBatch {
         [Alias('vector_store_id')]
         [Alias('VectorStore')]
         [ValidateScript({ [bool](Get-VectorStoreIdFromInputObject $_) })]
-        [Object]$InputObject,
+        [PSTypeName('PSOpenAI.VectorStore')]$InputObject,
 
         [Parameter(Mandatory, Position = 1, ValueFromPipelineByPropertyName)]
         [Alias('batch_id')]

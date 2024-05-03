@@ -53,7 +53,7 @@ Describe 'Get-VectorStore' {
             $script:Result = ''
         }
 
-        It 'List vectore store objects' {
+        It 'List vector store objects' {
             { $script:Result = Get-VectorStore -ea Stop } | Should -Not -Throw
             Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly -ParameterFilter { $Uri -like 'https://api.openai.com/v1/vector_stores?limit=*' }
             $Result | Should -HaveCount 2
@@ -62,7 +62,7 @@ Describe 'Get-VectorStore' {
             $Result[0].created_at | Should -BeOfType [datetime]
         }
 
-        It 'Get single vectore store object' {
+        It 'Get single vector store object' {
             { $script:Result = Get-VectorStore 'vs_abc123' -ea Stop } | Should -Not -Throw
             Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly -ParameterFilter { 'https://api.openai.com/v1/vector_stores/vs_abc123' -eq $Uri }
             $Result | Should -BeOfType [pscustomobject]
@@ -70,7 +70,7 @@ Describe 'Get-VectorStore' {
             $Result.created_at | Should -BeOfType [datetime]
         }
 
-        It 'Get single vectore store object (pipeline input)' {
+        It 'Get single vector store object (pipeline input)' {
             $vso = @{id = 'vs_abc123'; object = 'vector_store' }
             { $script:Result = $vso | Get-VectorStore -ea Stop } | Should -Not -Throw
             Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly -ParameterFilter { 'https://api.openai.com/v1/vector_stores/vs_abc123' -eq $Uri }

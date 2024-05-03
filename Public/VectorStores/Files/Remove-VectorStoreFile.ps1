@@ -68,7 +68,7 @@ function Remove-VectorStoreFile {
         # Get vector store id
         [string][UrlEncodeTransformation()]$VsId = Get-VectorStoreIdFromInputObject $InputObject
         if (-not $VsId) {
-            Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve vectore store id.'))
+            Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve vector store id.'))
             return
         }
 
@@ -110,7 +110,7 @@ function Remove-VectorStoreFile {
 
         #region Verbose Output
         if ($Response.deleted) {
-            Write-Verbose ('The vectore store file with id "{0}" has been deleted.' -f $Response.id)
+            Write-Verbose ('The vector store file with id "{0}" has been deleted.' -f $Response.id)
         }
         #endregion
     }
