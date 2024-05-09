@@ -15,7 +15,7 @@ Create a vector store.
 ```
 New-VectorStore
     [-Name <String>]
-    [-FileId <String[]>]
+    [-FileId <Object[]>]
     [-ExpiresAfterDays <UInt16>]
     [-ExpiresAfterAnchor <String>]
     [-MetaData <IDictionary>]
@@ -61,7 +61,7 @@ Position: Named
 A list of File IDs that the vector store should use.
 
 ```yaml
-Type: String[]
+Type: Object[]
 Aliases: file_ids
 Required: False
 Position: Named
@@ -137,14 +137,8 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
 
 ```yaml
 Type: Object
-Parameter Sets: (All)
-Aliases:
-
 Required: False
 Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
 ```
 
 ### -Organization

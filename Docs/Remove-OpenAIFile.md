@@ -14,7 +14,7 @@ Delete a file.
 
 ```
 Remove-OpenAIFile
-    [-Id] <String>
+    [-FileId] <String>
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
     [-ApiBase <Uri>]
@@ -30,7 +30,7 @@ Delete a file.
 
 ### Example 1
 ```powershell
-PS C:\> Remove-OpenAIFile -Id 'file-abc123'
+PS C:\> Remove-OpenAIFile -FileId 'file-abc123'
 ```
 
 Remove a file that has the ID `file-abc123`
@@ -38,12 +38,12 @@ Remove a file that has the ID `file-abc123`
 
 ## PARAMETERS
 
-### -Id
+### -FileId
 The ID of the file to use for this request.
 
 ```yaml
 Type: String
-Aliases: file_id
+Aliases: file_id, Id
 Required: True
 Position: 0
 Accept pipeline input: True (ByPropertyName, ByValue)
@@ -102,14 +102,8 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
 
 ```yaml
 Type: Object
-Parameter Sets: (All)
-Aliases:
-
 Required: False
 Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
 ```
 
 ### -Organization

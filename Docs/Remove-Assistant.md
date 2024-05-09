@@ -14,7 +14,7 @@ Delete an assistant.
 
 ```
 Remove-Assistant
-    [-InputObject] <Object>
+    [-AssistantId] <String>
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
     [-ApiBase <Uri>]
@@ -30,7 +30,7 @@ Delete an assistant.
 
 ### Example 1
 ```powershell
-PS C:\> Remove-Assistant -Assistant 'asst_abc123'
+PS C:\> Remove-Assistant -AssistantId 'asst_abc123'
 ```
 
 Remove an assistant that has the ID with `asst_abc123`
@@ -45,12 +45,12 @@ Remove all assistants.
 
 ## PARAMETERS
 
-### -InputObject
-Specifies ID of an assistant or Assistant object.
+### -AssistantId
+Specifies ID of an assistant.
 
 ```yaml
-Type: Object
-Aliases: Assistant, assistant_id
+Type: String
+Aliases: assistant_id
 Required: True
 Position: 0
 Accept pipeline input: True (ByPropertyName, ByValue)
@@ -98,14 +98,8 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
 
 ```yaml
 Type: Object
-Parameter Sets: (All)
-Aliases:
-
 Required: False
 Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
 ```
 
 ### -Organization

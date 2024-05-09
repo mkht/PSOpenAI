@@ -12,25 +12,11 @@ Waits until the vector store file batch is completed.
 
 ## SYNTAX
 
-### StatusForWait
 ```
 Wait-VectorStoreFileBatch
-    [-InputObject] <Object>
+    [-VectorStoreId] <String>
     [-BatchId] <String>
     [-StatusForWait <String[]>]
-    [-TimeoutSec <Int32>]
-    [-MaxRetryCount <Int32>]
-    [-ApiBase <Uri>]
-    [-ApiKey <SecureString>]
-    [-Organization <String>]
-    [<CommonParameters>]
-```
-
-### StatusForExit
-```
-Wait-VectorStoreFileBatch
-    [-InputObject] <Object>
-    [-BatchId] <String>
     [-StatusForExit <String[]>]
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
@@ -47,19 +33,19 @@ Waits until the vector store file batch is completed.
 
 ### Example 1
 ```powershell
-PS C:\> Start-VectorStoreFileBatch -InputObject 'vs_abc123' -FileId ('file-abc123', 'file-def456', 'file-ghi789') | Wait-VectorStoreFileBatch
+PS C:\> Start-VectorStoreFileBatch -VectorStoreId 'vs_abc123' -FileId ('file-abc123', 'file-def456', 'file-ghi789') | Wait-VectorStoreFileBatch
 ```
 
 Start a batch and wait for completes.
 
 ## PARAMETERS
 
-### -InputObject
+### -VectorStoreId
 The ID of the vector store that the file batch belongs to.
 
 ```yaml
-Type: Object
-Aliases: VectorStore, vector_store_id
+Type: String
+Aliases: vector_store_id
 Required: True
 Position: 0
 Accept pipeline input: True (ByValue, ByPropertyName)
@@ -70,7 +56,7 @@ The ID of the batch to wait.
 
 ```yaml
 Type: String
-Aliases: batch_id, Id
+Aliases: batch_id
 Required: True
 Position: 1
 Accept pipeline input: True (ByPropertyName)
@@ -79,7 +65,6 @@ Accept pipeline input: True (ByPropertyName)
 ### -StatusForExit
 By default, this cmdlet exits when the status of batch is anything other than `in_progress`.  
 If specifies one or more statuses for `-StatusForExit`, this cmdlet waits until batch reaches that status.  
-This parameter cannot be used simultaneously with `-StatusForWait`.
 
 ```yaml
 Type: String[]
@@ -92,7 +77,6 @@ Position: Named
 ### -StatusForWait
 If one or more statuses are specified in `-StatusForWait`, this cmdlet will exit when a batch changes to a status other than that.  
 Note: Do not specify `completed` for this parameter. cmdlet may not exit permanently.  
-This parameter cannot be used simultaneously with `-StatusForExit`.
 
 ```yaml
 Type: String[]

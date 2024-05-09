@@ -124,7 +124,7 @@ Depending on your instructions to the Assistant, the AI model will create a file
 
 ```PowerShell
 # Download generated file.
-Get-OpenAIFileContent -Id "file-rApGDzYB4Kop2piAhFfzbrxT" -OutFile "C:\data\graph.png"
+Get-OpenAIFileContent -FileId "file-rApGDzYB4Kop2piAhFfzbrxT" -OutFile "C:\data\graph.png"
 ```
 
 ![graph.png](images/graph.png)

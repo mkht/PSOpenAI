@@ -1,38 +1,43 @@
 function Get-VectorStoreFileInBatch {
-    [CmdletBinding(DefaultParameterSetName = 'List')]
+    [CmdletBinding()]
     [OutputType([pscustomobject])]
     param (
-        [Parameter(Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
-        [Alias('vector_store_id')]
-        [Alias('VectorStore')]
-        [ValidateScript({ [bool](Get-VectorStoreIdFromInputObject $_) })]
-        [Object]$InputObject,
+        [Parameter(ParameterSetName = 'List_VectorStore', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Alias('InputObject')]  # for backword compatibility
+        [PSTypeName('PSOpenAI.VectorStore')]$VectorStore,
 
-        [Parameter(Mandatory, Position = 1, ValueFromPipelineByPropertyName)]
+        [Parameter(ParameterSetName = 'List_Id', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
+        [Alias('vector_store_id')]
+        [string][UrlEncodeTransformation()]$VectorStoreId,
+
+        [Parameter(ParameterSetName = 'List_VectorStore', Mandatory, Position = 1, ValueFromPipelineByPropertyName)]
+        [Parameter(ParameterSetName = 'List_Id', Mandatory, Position = 1, ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
         [Alias('batch_id')]
-        [Alias('Id')]
         [string][UrlEncodeTransformation()]$BatchId,
 
-        [Parameter(ParameterSetName = 'List')]
+        [Parameter(ParameterSetName = 'List_VectorStoreFileBatch', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [PSTypeName('PSOpenAI.VectorStore.FileBatch')]$Batch,
+
+        [Parameter()]
         [ValidateRange(1, 100)]
         [int]$Limit = 20,
 
-        [Parameter(ParameterSetName = 'ListAll')]
+        [Parameter()]
         [switch]$All,
 
-        [Parameter(ParameterSetName = 'ListAll', DontShow)]
+        [Parameter(DontShow)]
         [string]$After,
 
-        [Parameter(ParameterSetName = 'ListAll', DontShow)]
+        [Parameter(DontShow)]
         [string]$Before,
 
-        [Parameter(ParameterSetName = 'List')]
-        [Parameter(ParameterSetName = 'ListAll')]
+        [Parameter()]
         [ValidateSet('asc', 'desc')]
         [string][LowerCaseTransformation()]$Order = 'asc',
 
-        [Parameter(ParameterSetName = 'List')]
-        [Parameter(ParameterSetName = 'ListAll')]
+        [Parameter()]
         [ValidateSet('in_progress', 'completed', 'failed', 'cancelled')]
         [string][LowerCaseTransformation()]$Filter,
 
@@ -88,42 +93,44 @@ function Get-VectorStoreFileInBatch {
     }
 
     process {
-        # Get vector store id
-        [string][UrlEncodeTransformation()]$VsId = Get-VectorStoreIdFromInputObject $InputObject
-        if (-not $VsId) {
+        # Get ids
+        if ($PSCmdlet.ParameterSetName -like '*_VectorStore') {
+            $VectorStoreId = $VectorStore.id
+        }
+        elseif ($PSCmdlet.ParameterSetName -like '*_VectorStoreFileBatch') {
+            $VectorStoreId = $Batch.vector_store_id
+            $BatchId = $Batch.id
+        }
+
+        if (-not $VectorStoreId) {
             Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve vector store id.'))
             return
         }
+        if (-not $BatchId) {
+            Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve batch id.'))
+            return
+        }
 
-        $QueryUri = $OpenAIParameter.Uri.ToString() -f $VsId
+        $QueryUri = $OpenAIParameter.Uri.ToString() -f $VectorStoreId
         $UriBuilder = [System.UriBuilder]::new($QueryUri)
         $UriBuilder.Path += "/$BatchId/files"
-        if ($PSCmdlet.ParameterSetName -eq 'List') {
-            $QueryParam = [System.Web.HttpUtility]::ParseQueryString($UriBuilder.Query)
-            $QueryParam.Add('limit', $Limit);
-            $QueryParam.Add('order', $Order);
-            if ($Filter) {
-                $QueryParam.Add('filter', $Filter);
-            }
-            $UriBuilder.Query = $QueryParam.ToString()
-            $QueryUri = $UriBuilder.Uri
+        $QueryParam = [System.Web.HttpUtility]::ParseQueryString($UriBuilder.Query)
+        if ($All) {
+            $Limit = 100
         }
-        else {
-            $QueryParam = [System.Web.HttpUtility]::ParseQueryString($UriBuilder.Query)
-            $QueryParam.Add('limit', '100');
-            $QueryParam.Add('order', $Order);
-            if ($After) {
-                $QueryParam.Add('after', $After);
-            }
-            if ($Before) {
-                $QueryParam.Add('before', $Before);
-            }
-            if ($Filter) {
-                $QueryParam.Add('filter', $Filter);
-            }
-            $UriBuilder.Query = $QueryParam.ToString()
-            $QueryUri = $UriBuilder.Uri
+        $QueryParam.Add('limit', $Limit);
+        $QueryParam.Add('order', $Order);
+        if ($After) {
+            $QueryParam.Add('after', $After);
         }
+        if ($Before) {
+            $QueryParam.Add('before', $Before);
+        }
+        if ($Filter) {
+            $QueryParam.Add('filter', $Filter);
+        }
+        $UriBuilder.Query = $QueryParam.ToString()
+        $QueryUri = $UriBuilder.Uri
 
         #region Send API Request
         $params = @{
@@ -174,7 +181,7 @@ function Get-VectorStoreFileInBatch {
 
         #region Pagenation
         if ($Response.has_more) {
-            if ($PSCmdlet.ParameterSetName -eq 'ListAll') {
+            if ($All) {
                 # pagenate
                 $PagenationParam = $PSBoundParameters
                 $PagenationParam.After = $Response.last_id

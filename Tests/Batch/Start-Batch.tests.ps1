@@ -11,7 +11,12 @@ Describe 'Start-Batch' {
     Context 'Unit tests (offline)' -Tag 'Offline' {
         BeforeAll {
             Mock -ModuleName $script:ModuleName Initialize-APIKey { [securestring]::new() }
-            Mock -Verifiable -ModuleName $script:ModuleName Add-OpenAIFile { @{id = 'file-abc123' } }
+            Mock -Verifiable -ModuleName $script:ModuleName Add-OpenAIFile {
+                [pscustomobject]@{
+                    PSTypeName = 'PSOpenAI.File'
+                    id         = 'file-abc123'
+                }
+            }
             Mock -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $PesterBoundParameters }
             Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
 {
@@ -60,12 +65,14 @@ Describe 'Start-Batch' {
         It 'Start batch with input objects' {
             $BatchInputs = @(
                 [pscustomobject]@{
+                    PSTypeName  = 'PSOpenAI.Batch.Input'
                     'custom_id' = 'custom-1'
                     'method'    = 'POST'
                     'url'       = '/v1/chat/completions'
                     'body'      = [pscustomobject]@{'model' = 'gpt-3.5-turbo' }
                 },
                 [pscustomobject]@{
+                    PSTypeName  = 'PSOpenAI.Batch.Input'
                     'custom_id' = 'custom-2'
                     'method'    = 'POST'
                     'url'       = '/v1/chat/completions'
@@ -84,12 +91,14 @@ Describe 'Start-Batch' {
         It 'Start batch with input objects (pipeline input)' {
             $BatchInputs = @(
                 [pscustomobject]@{
+                    PSTypeName  = 'PSOpenAI.Batch.Input'
                     'custom_id' = 'custom-1'
                     'method'    = 'POST'
                     'url'       = '/v1/chat/completions'
                     'body'      = [pscustomobject]@{'model' = 'gpt-3.5-turbo' }
                 },
                 [pscustomobject]@{
+                    PSTypeName  = 'PSOpenAI.Batch.Input'
                     'custom_id' = 'custom-2'
                     'method'    = 'POST'
                     'url'       = '/v1/chat/completions'
@@ -103,6 +112,98 @@ Describe 'Start-Batch' {
             $Result.id | Should -BeExactly 'batch_abc123'
             $Result.created_at | Should -BeOfType [datetime]
             $Result.status | Should -BeExactly 'validating'
+        }
+
+        It 'Input file object should not mulitple.' {
+            $InputFiles = @(
+                [pscustomobject]@{
+                    PSTypeName = 'PSOpenAI.File'
+                    id         = 'file-abc123'
+                },
+                [pscustomobject]@{
+                    PSTypeName = 'PSOpenAI.File'
+                    id         = 'file-abc456'
+                }
+            )
+            { Start-Batch -File $InputFiles -ea Stop } | Should -Throw
+        }
+
+        Context 'Parameter Sets' {
+            It 'File' {
+                $InObject = [pscustomobject]@{
+                    PSTypeName = 'PSOpenAI.File'
+                    id         = 'file-abc123'
+                }
+                # Named
+                { Start-Batch -File $InObject -ea Stop } | Should -Not -Throw
+                # Positional
+                { Start-Batch $InObject -ea Stop } | Should -Not -Throw
+                # Pipeline
+                { $InObject | Start-Batch -ea Stop } | Should -Not -Throw
+                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 3 -Exactly
+            }
+
+            It 'Id' {
+                # Named
+                { Start-Batch -FileId 'file-abc123' -ea Stop } | Should -Not -Throw
+                # Positional
+                { Start-Batch 'file-abc123'-ea Stop } | Should -Not -Throw
+                # Pipeline
+                { 'file-abc123' | Start-Batch -ea Stop } | Should -Not -Throw
+                # Pipeline by property name
+                { [pscustomobject]@{input_file_id = 'file-abc123' } | Start-Batch -ea Stop } | Should -Not -Throw
+                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 4 -Exactly
+            }
+
+            It 'BatchObject (Single)' {
+                $InObject = [pscustomobject]@{
+                    PSTypeName  = 'PSOpenAI.Batch.Input'
+                    'custom_id' = 'custom-1'
+                    'method'    = 'POST'
+                    'url'       = '/v1/chat/completions'
+                    'body'      = [pscustomobject]@{'model' = 'gpt-3.5-turbo' }
+                }
+                # Named
+                { Start-Batch -BatchInput $InObject -ea Stop } | Should -Not -Throw
+                # Positional
+                { Start-Batch $InObject -ea Stop } | Should -Not -Throw
+                # Pipeline
+                { $InObject | Start-Batch -ea Stop } | Should -Not -Throw
+                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 3 -Exactly
+            }
+
+            It 'BatchObject (Multiple)' {
+                $InObject = @(
+                    [pscustomobject]@{
+                        PSTypeName  = 'PSOpenAI.Batch.Input'
+                        'custom_id' = 'custom-1'
+                        'method'    = 'POST'
+                        'url'       = '/v1/chat/completions'
+                        'body'      = [pscustomobject]@{'model' = 'gpt-3.5-turbo' }
+                    },
+                    [pscustomobject]@{
+                        PSTypeName  = 'PSOpenAI.Batch.Input'
+                        'custom_id' = 'custom-2'
+                        'method'    = 'POST'
+                        'url'       = '/v1/chat/completions'
+                        'body'      = [pscustomobject]@{'model' = 'gpt-3.5-turbo' }
+                    },
+                    [pscustomobject]@{
+                        PSTypeName  = 'PSOpenAI.Batch.Input'
+                        'custom_id' = 'custom-3'
+                        'method'    = 'POST'
+                        'url'       = '/v1/chat/completions'
+                        'body'      = [pscustomobject]@{'model' = 'gpt-3.5-turbo' }
+                    }
+                )
+                # Named
+                { Start-Batch -BatchInput $InObject -ea Stop } | Should -Not -Throw
+                # Positional
+                { Start-Batch $InObject -ea Stop } | Should -Not -Throw
+                # Pipeline
+                { $InObject | Start-Batch -ea Stop } | Should -Not -Throw
+                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 3 -Exactly
+            }
         }
     }
 }

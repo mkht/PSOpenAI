@@ -1,10 +1,14 @@
 function New-AzureThread {
-    [CmdletBinding()]
+    [CmdletBinding(DefaultParameterSetName = 'Id')]
     [OutputType([pscustomobject])]
     param (
         # Hidden param, for Set-Thread cmdlet
-        [Parameter(DontShow, ValueFromPipeline, ValueFromPipelineByPropertyName)]
-        [Object]$InputObject,
+        [Parameter(DontShow, ParameterSetName = 'Thread', ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [PSTypeName('PSOpenAI.Thread')]$Thread,
+
+        [Parameter(DontShow, ParameterSetName = 'Id', ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
+        [string][UrlEncodeTransformation()]$ThreadId,
 
         [Parameter(DontShow)]
         [object[]]$Messages,

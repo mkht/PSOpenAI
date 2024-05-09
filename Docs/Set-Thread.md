@@ -14,7 +14,10 @@ Modifies a thread.
 
 ```
 Set-Thread
-    [-InputObject] <Object>
+    [-ThreadId] <String>
+    [-FileIdsForCodeInterpreter <Object[]>]
+    [-VectorStoresForFileSearch <Object[]>]
+    [-FileIdsForFileSearch <Object[]>]
     [-MetaData <IDictionary>]
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
@@ -31,22 +34,49 @@ Modifies a thread. Currently only the metadata can be modified.
 
 ### Example 1
 ```powershell
-PS C:\> $Thread = Set-Thread -Thread 'thread_abc123' -MetaData $MetaData
+PS C:\> $Thread = Set-Thread -ThreadId 'thread_abc123' -MetaData $MetaData
 ```
 
 Modifies a thread.
 
 ## PARAMETERS
 
-### -InputObject
+### -ThreadId
 The ID of the thread to modify.
 
 ```yaml
-Type: Object
-Aliases: Thread, thread_id
+Type: String
+Aliases: thread_id
 Required: True
 Position: 0
 Accept pipeline input: True (ByPropertyName, ByValue)
+```
+
+### -FileIdsForCodeInterpreter
+A list of file IDs made available to the code_interpreter tool. There can be a maximum of 20 files associated with the tool.
+
+```yaml
+Type: Object[]
+Required: False
+Position: Named
+```
+
+### -VectorStoresForFileSearch
+The vector store attached to this thread. There can be a maximum of 1 vector store attached to the thread.
+
+```yaml
+Type: Object[]
+Required: False
+Position: Named
+```
+
+### -FileIdsForFileSearch
+A list of file IDs to add to the vector store. There can be a maximum of 10000 files in a vector store.
+
+```yaml
+Type: Object[]
+Required: False
+Position: Named
 ```
 
 ### -MetaData
@@ -100,14 +130,8 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
 
 ```yaml
 Type: Object
-Parameter Sets: (All)
-Aliases:
-
 Required: False
 Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
 ```
 
 ### -Organization

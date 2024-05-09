@@ -15,8 +15,9 @@ Retrieves a run step.
 ### Get
 ```
 Get-ThreadRunStep
-    -StepId <String>
-    [-InputObject] <Object>
+    [-RunId] <String>
+    [-ThreadId] <String>
+    [-StepId] <String>
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
     [-ApiBase <Uri>]
@@ -28,22 +29,10 @@ Get-ThreadRunStep
 ### List
 ```
 Get-ThreadRunStep
-    [-InputObject] <Object>
+    [-RunId] <String>
+    [-ThreadId] <String>]
+    [-All]
     [-Limit <Int32>]
-    [-Order <String>]
-    [-TimeoutSec <Int32>]
-    [-MaxRetryCount <Int32>]
-    [-ApiBase <Uri>]
-    [-ApiKey <SecureString>]
-    [-Organization <String>]
-    [<CommonParameters>]
-```
-
-### ListAll
-```
-Get-ThreadRunStep
-    -All
-    [-InputObject] <Object>
     [-Order <String>]
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
@@ -68,6 +57,29 @@ List all run step objects associated with the Thread whose ID is `thread_abc123`
 
 ## PARAMETERS
 
+### -RunId
+The ID of the run to retrieve.
+
+```yaml
+Type: String
+Aliases: run_id
+Required: True
+Position: 0
+Accept pipeline input: True (ByPropertyName, ByValue)
+```
+
+### -ThreadId
+The ID of the thread to retrieve.
+
+```yaml
+Type: String
+Parameter Sets: Get
+Aliases: thread_id
+Required: True
+Position: 1
+Accept pipeline input: True (ByPropertyName)
+```
+
 ### -StepId
 The ID of the step to retrieve.
 
@@ -76,19 +88,8 @@ Type: String
 Parameter Sets: Get
 Aliases: step_id
 Required: True
-Position: Named
+Position: 2
 Accept pipeline input: True (ByPropertyName)
-```
-
-### -InputObject
-The run object.
-
-```yaml
-Type: Object
-Aliases: Run
-Required: True
-Position: 0
-Accept pipeline input: True (ByPropertyName, ByValue)
 ```
 
 ### -Limit
@@ -166,14 +167,8 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
 
 ```yaml
 Type: Object
-Parameter Sets: (All)
-Aliases:
-
 Required: False
 Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
 ```
 
 ### -Organization

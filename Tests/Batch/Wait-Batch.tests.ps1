@@ -21,13 +21,15 @@ Describe 'Wait-Batch' {
         It 'Wait batch completes' {
             Mock -Verifiable -ModuleName $script:ModuleName Get-Batch {
                 [pscustomobject]@{
-                    'id'     = 'batch_abc123'
-                    'status' = 'completed'
+                    PSTypeName = 'PSOpenAI.Batch'
+                    'id'       = 'batch_abc123'
+                    'status'   = 'completed'
                 }
             }
             $InObject = [PSCustomObject]@{
-                id     = 'batch_abc123'
-                status = 'in_progress'
+                PSTypeName = 'PSOpenAI.Batch'
+                id         = 'batch_abc123'
+                status     = 'in_progress'
             }
             { $script:Result = Wait-Batch -InputObject $InObject -ea Stop } | Should -Not -Throw
             Should -Invoke Get-Batch -ModuleName $script:ModuleName -Times 1 -Exactly
@@ -38,13 +40,15 @@ Describe 'Wait-Batch' {
         It 'Wait batch completes (already completed)' {
             Mock -Verifiable -ModuleName $script:ModuleName Get-Batch {
                 [pscustomobject]@{
-                    'id'     = 'batch_abc123'
-                    'status' = 'completed'
+                    PSTypeName = 'PSOpenAI.Batch'
+                    'id'       = 'batch_abc123'
+                    'status'   = 'completed'
                 }
             }
             $InObject = [PSCustomObject]@{
-                id     = 'batch_abc123'
-                status = 'completed'
+                PSTypeName = 'PSOpenAI.Batch'
+                id         = 'batch_abc123'
+                status     = 'completed'
             }
             { $script:Result = Wait-Batch -InputObject $InObject -ea Stop } | Should -Not -Throw
             Should -Invoke Get-Batch -ModuleName $script:ModuleName -Times 1 -Exactly
@@ -55,14 +59,15 @@ Describe 'Wait-Batch' {
         It 'Custom wait status' {
             Mock -Verifiable -ModuleName $script:ModuleName Get-Batch {
                 [pscustomobject]@{
-                    'id'     = 'batch_abc123'
-                    'status' = 'cancelling'
+                    PSTypeName = 'PSOpenAI.Batch'
+                    'id'       = 'batch_abc123'
+                    'status'   = 'cancelling'
                 }
             }
             $InObject = [PSCustomObject]@{
-                id        = 'batch_abc123'
-                thread_id = 'thread_abc123'
-                status    = 'in_progress'
+                PSTypeName = 'PSOpenAI.Batch'
+                id         = 'batch_abc123'
+                status     = 'in_progress'
             }
             { $script:Result = Wait-Batch -InputObject $InObject -StatusForWait ('cancelling', 'failed') -TimeoutSec 2 -ea Stop } | Should -Throw -ExceptionType ([System.OperationCanceledException])
             Should -Invoke Get-Batch -ModuleName $script:ModuleName -Times 1
@@ -71,13 +76,15 @@ Describe 'Wait-Batch' {
         It 'Custom exit status' {
             Mock -Verifiable -ModuleName $script:ModuleName Get-Batch {
                 [pscustomobject]@{
-                    'id'     = 'batch_abc123'
-                    'status' = 'in_progress'
+                    PSTypeName = 'PSOpenAI.Batch'
+                    'id'       = 'batch_abc123'
+                    'status'   = 'in_progress'
                 }
             }
             $InObject = [PSCustomObject]@{
-                id     = 'batch_abc123'
-                status = 'validating'
+                PSTypeName = 'PSOpenAI.Batch'
+                id         = 'batch_abc123'
+                status     = 'validating'
             }
             { $script:Result = Wait-Batch -InputObject $InObject -StatusForExit ('completed', 'in_progress') -ea Stop } | Should -Not -Throw
             Should -Invoke Get-Batch -ModuleName $script:ModuleName -Times 1 -Exactly
@@ -87,29 +94,58 @@ Describe 'Wait-Batch' {
             Mock -Verifiable -ModuleName $script:ModuleName Get-Batch {
                 Start-Sleep -Seconds 0.1
                 [pscustomobject]@{
-                    'id'     = 'batch_abc123'
-                    'status' = 'in_progress'
+                    PSTypeName = 'PSOpenAI.Batch'
+                    'id'       = 'batch_abc123'
+                    'status'   = 'in_progress'
                 }
             }
             $InObject = [PSCustomObject]@{
-                id     = 'batch_abc123'
-                status = 'in_progress'
+                PSTypeName = 'PSOpenAI.Batch'
+                id         = 'batch_abc123'
+                status     = 'in_progress'
             }
             { $script:Result = Wait-Batch -InputObject $InObject -TimeoutSec 2 -ea Stop } | Should -Throw -ExceptionType ([OperationCanceledException])
             Should -Invoke Get-Batch -ModuleName $script:ModuleName -Times 1
             $Result | Should -BeNullOrEmpty
         }
 
-        It 'Error on invalid input' {
-            Mock -Verifiable -ModuleName $script:ModuleName Get-Batch {
-                [pscustomobject]@{
-                    'id'     = 'batch_abc123'
-                    'status' = 'completed'
+        Context 'Parameter Sets' {
+            BeforeAll {
+                Mock -Verifiable -ModuleName $script:ModuleName Get-Batch {
+                    [pscustomobject]@{
+                        PSTypeName = 'PSOpenAI.Batch'
+                        id         = 'batch_abc123'
+                        status     = 'completed'
+                    }
                 }
             }
-            $InObject = [datetime]::Today
-            { $InObject | Wait-Batch -ea Stop } | Should -Throw
-            Should -Not -Invoke Get-Batch -ModuleName $script:ModuleName
+
+            It 'Batch' {
+                $InObject = [pscustomobject]@{
+                    PSTypeName = 'PSOpenAI.Batch'
+                    id         = 'batch_abc123'
+                    status     = 'in_progress'
+                }
+                # Named
+                { Wait-Batch -Batch $InObject -ea Stop } | Should -Not -Throw
+                # Positional
+                { Wait-Batch $InObject -ea Stop } | Should -Not -Throw
+                # Pipeline
+                { $InObject | Wait-Batch -ea Stop } | Should -Not -Throw
+                Should -Invoke Get-Batch -ModuleName $script:ModuleName -Times 3 -Exactly
+            }
+
+            It 'Id' {
+                # Named
+                { Wait-Batch -BatchId 'batch_abc123' -ea Stop } | Should -Not -Throw
+                # Positional
+                { Wait-Batch 'batch_abc123' -ea Stop } | Should -Not -Throw
+                # Pipeline
+                { 'batch_abc123' | Wait-Batch -ea Stop } | Should -Not -Throw
+                # Pipeline by property name
+                { [pscustomobject]@{batch_id = 'batch_abc123' } | Wait-Batch -ea Stop } | Should -Not -Throw
+                Should -Invoke Get-Batch -ModuleName $script:ModuleName -Times 4 -Exactly
+            }
         }
     }
 }

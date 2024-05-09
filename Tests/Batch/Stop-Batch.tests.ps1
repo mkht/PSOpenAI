@@ -13,8 +13,18 @@ Describe 'Stop-Batch' {
         BeforeAll {
             Mock -ModuleName $script:ModuleName Initialize-APIKey { [securestring]::new() }
             Mock -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $PesterBoundParameters }
+            Mock -Verifiable -ModuleName $script:ModuleName Get-Batch {
+                [pscustomobject]@{
+                    PSTypeName     = 'PSOpenAI.Batch'
+                    'id'           = 'batch_abc123'
+                    'created_at'   = [datetime]::Today
+                    'status'       = 'in_progress'
+                    'cancelled_at' = $null
+                }
+            }
             Mock -Verifiable -ModuleName $script:ModuleName Wait-Batch {
                 [pscustomobject]@{
+                    PSTypeName     = 'PSOpenAI.Batch'
                     'id'           = 'batch_abc123'
                     'created_at'   = [datetime]::Today
                     'status'       = 'cancelled'
@@ -57,10 +67,11 @@ Describe 'Stop-Batch' {
 
         It 'Cancel batch' {
             $InObject = [PSCustomObject]@{
-                id     = 'batch_abc123'
-                status = 'in_progress'
+                PSTypeName = 'PSOpenAI.Batch'
+                id         = 'batch_abc123'
+                status     = 'in_progress'
             }
-            { $script:Result = Stop-Batch -InputObject $InObject -ea Stop } | Should -Not -Throw
+            { $script:Result = Stop-Batch -Batch $InObject -ea Stop } | Should -Not -Throw
             Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
             Should -Not -Invoke Wait-Batch -ModuleName $script:ModuleName
             $Result | Should -BeNullOrEmpty
@@ -68,10 +79,11 @@ Describe 'Stop-Batch' {
 
         It 'Cancel batch (PassThru)' {
             $InObject = [PSCustomObject]@{
-                id     = 'batch_abc123'
-                status = 'in_progress'
+                PSTypeName = 'PSOpenAI.Batch'
+                id         = 'batch_abc123'
+                status     = 'in_progress'
             }
-            { $script:Result = Stop-Batch -InputObject $InObject -PassThru -ea Stop } | Should -Not -Throw
+            { $script:Result = Stop-Batch -Batch $InObject -PassThru -ea Stop } | Should -Not -Throw
             Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
             Should -Not -Invoke Wait-Batch -ModuleName $script:ModuleName
             $Result.id | Should -Be 'batch_abc123'
@@ -80,8 +92,9 @@ Describe 'Stop-Batch' {
 
         It 'Cancel run and wait cancelled' {
             $InObject = [PSCustomObject]@{
-                id     = 'batch_abc123'
-                status = 'in_progress'
+                PSTypeName = 'PSOpenAI.Batch'
+                id         = 'batch_abc123'
+                status     = 'in_progress'
             }
             { $script:Result = Stop-Batch -InputObject $InObject -Wait -ea Stop } | Should -Not -Throw
             Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
@@ -91,8 +104,9 @@ Describe 'Stop-Batch' {
 
         It 'Cancel run and wait cancelled (PassThru)' {
             $InObject = [PSCustomObject]@{
-                id     = 'batch_abc123'
-                status = 'in_progress'
+                PSTypeName = 'PSOpenAI.Batch'
+                id         = 'batch_abc123'
+                status     = 'in_progress'
             }
             { $script:Result = Stop-Batch -InputObject $InObject -Wait -PassThru -ea Stop } | Should -Not -Throw
             Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
@@ -103,8 +117,9 @@ Describe 'Stop-Batch' {
 
         It 'Error when the run status is not valid' {
             $InObject = [PSCustomObject]@{
-                id     = 'batch_abc123'
-                status = 'completed'
+                PSTypeName = 'PSOpenAI.Batch'
+                id         = 'batch_abc123'
+                status     = 'completed'
             }
             { $script:Result = Stop-Batch -InputObject $InObject -ea Stop } | Should -Throw
             Should -Not -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName
@@ -114,8 +129,9 @@ Describe 'Stop-Batch' {
 
         It 'When the Force is specified, No error even if the run status is not valid' {
             $InObject = [PSCustomObject]@{
-                id     = 'batch_abc123'
-                status = 'completed'
+                PSTypeName = 'PSOpenAI.Batch'
+                id         = 'batch_abc123'
+                status     = 'completed'
             }
             { $script:Result = Stop-Batch -InputObject $InObject -Force -PassThru -ea Stop } | Should -Not -Throw
             Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
@@ -123,11 +139,37 @@ Describe 'Stop-Batch' {
             $Result.id | Should -Be 'batch_abc123'
         }
 
-        It 'Error on invalid input' {
-            $InObject = [datetime]::Today
-            { $InObject | Stop-Batch -ea Stop } | Should -Throw
-            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 0 -Exactly
-            Should -Invoke Wait-Batch -ModuleName $script:ModuleName -Times 0 -Exactly
+        Context 'Parameter Sets' {
+            It 'Batch' {
+                $InObject = [PSCustomObject]@{
+                    PSTypeName = 'PSOpenAI.Batch'
+                    id         = 'batch_abc123'
+                    status     = 'in_progress'
+                }
+                # Named
+                { Stop-Batch -Batch $InObject -ea Stop } | Should -Not -Throw
+                # Positional
+                { Stop-Batch $InObject -ea Stop } | Should -Not -Throw
+                # Pipeline
+                { $InObject | Stop-Batch -ea Stop } | Should -Not -Throw
+                Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 3 -Exactly
+                Should -Not -Invoke Get-Batch -ModuleName $script:ModuleName
+                Should -Not -Invoke Wait-Batch -ModuleName $script:ModuleName
+            }
+
+            It 'Id' {
+                # Named
+                { Stop-Batch -BatchId 'batch_abc123' -Wait -ea Stop } | Should -Not -Throw
+                # Positional
+                { Stop-Batch 'batch_abc123' -Wait -ea Stop } | Should -Not -Throw
+                # Pipeline
+                { 'batch_abc123' | Stop-Batch -Wait -ea Stop } | Should -Not -Throw
+                # Pipeline by property name
+                { [pscustomobject]@{batch_id = 'batch_abc123' } | Stop-Batch -Wait -ea Stop } | Should -Not -Throw
+                Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 4 -Exactly
+                Should -Invoke Get-Batch -ModuleName $script:ModuleName -Times 4 -Exactly
+                Should -Invoke Wait-Batch -ModuleName $script:ModuleName -Times 4 -Exactly
+            }
         }
     }
 }

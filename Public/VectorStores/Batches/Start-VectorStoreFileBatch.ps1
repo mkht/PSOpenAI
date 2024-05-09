@@ -1,17 +1,20 @@
 function Start-VectorStoreFileBatch {
-    [CmdletBinding()]
+    [CmdletBinding(DefaultParameterSetName = 'VectorStoreId')]
     [OutputType([pscustomobject])]
     param (
-        [Parameter(Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
-        [Alias('vector_store_id')]
-        [Alias('VectorStore')]
-        [ValidateScript({ [bool](Get-VectorStoreIdFromInputObject $_) })]
-        [Object]$InputObject,
+        [Parameter(ParameterSetName = 'VectorStore', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Alias('InputObject')]  # for backword compatibility
+        [PSTypeName('PSOpenAI.VectorStore')]$VectorStore,
 
-        [Parameter(Mandatory, Position = 1)]
-        [ValidateCount(1, 500)]
+        [Parameter(ParameterSetName = 'VectorStoreId', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
+        [Alias('vector_store_id')]
+        [string][UrlEncodeTransformation()]$VectorStoreId,
+
+        [Parameter(Mandatory, Position = 1, ValueFromPipelineByPropertyName)]
         [Alias('file_ids')]
-        [string[]]$FileId,
+        [ValidateCount(0, 500)]
+        [object[]]$FileId,
 
         [Parameter()]
         [int]$TimeoutSec = 0,
@@ -68,12 +71,14 @@ function Start-VectorStoreFileBatch {
 
     process {
         foreach ($item in $FileId) {
-            # Validate input object
+            # Add an object to queue
             if ($null -eq $item) {
                 continue
             }
+            elseif ($item.psobject.TypeNames -contains 'PSOpenAI.File') {
+                $BatchBag.Add($item.id)
+            }
             else {
-                # Add an object to queue
                 $BatchBag.Add($item)
             }
         }
@@ -81,14 +86,16 @@ function Start-VectorStoreFileBatch {
 
     end {
         # Get vector store id
-        [string][UrlEncodeTransformation()]$VsId = Get-VectorStoreIdFromInputObject $InputObject
-        if (-not $VsId) {
+        if ($PSCmdlet.ParameterSetName -ceq 'VectorStore') {
+            $VectorStoreId = $VectorStore.id
+        }
+        if (-not $VectorStoreId) {
             Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve vector store id.'))
             return
         }
 
         #region Construct parameters for API request
-        $QueryUri = ($OpenAIParameter.Uri.ToString() -f $VsId)
+        $QueryUri = ($OpenAIParameter.Uri.ToString() -f $VectorStoreId)
         #endregion
 
         if ($BatchBag.Count -eq 0) {

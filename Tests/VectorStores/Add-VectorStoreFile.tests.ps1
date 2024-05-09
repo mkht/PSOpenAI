@@ -25,9 +25,10 @@ Describe 'Add-VectorStoreFile' {
 '@ }
             Mock -Verifiable -ModuleName $script:ModuleName Get-VectorStore {
                 [pscustomobject]@{
-                    id     = 'vs_abc123'
-                    object = 'vector_Store'
-                    status = 'completed'
+                    PSTypeName = 'PSOpenAI.VectorStore'
+                    id         = 'vs_abc123'
+                    object     = 'vector_Store'
+                    status     = 'completed'
                 }
             }
         }
@@ -37,34 +38,87 @@ Describe 'Add-VectorStoreFile' {
         }
 
         It 'Add file to vector store' {
-            $vsid = 'vs_abcd'
-            { $script:Result = Add-VectorStoreFile -VectorStore $vsid -FileId 'file-abc123' -ea Stop } | Should -Not -Throw
-            Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
-            Should -Not -Invoke -CommandName Get-VectorStore -ModuleName $script:ModuleName
-            $Result | Should -BeNullOrEmpty
-        }
-
-        It 'Add file to vector store (pipeline input)' {
-            $vsid = 'vs_abcd'
-            { $script:Result = $vsid | Add-VectorStoreFile -FileId 'file-abc123' -ea Stop } | Should -Not -Throw
+            { $script:Result = Add-VectorStoreFile -VectorStoreId 'vs_abc123' -FileId 'file-abc123' -ea Stop } | Should -Not -Throw
             Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
             Should -Not -Invoke -CommandName Get-VectorStore -ModuleName $script:ModuleName
             $Result | Should -BeNullOrEmpty
         }
 
         It 'Add file to vector store (PassThru)' {
-            $vsid = 'vs_abcd'
-            { $script:Result = Add-VectorStoreFile -VectorStore $vsid -FileId 'file-abc123' -PassThru -ea Stop } | Should -Not -Throw
+            { $script:Result = Add-VectorStoreFile -VectorStoreId 'vs_abc123' -FileId 'file-abc123' -PassThru -ea Stop } | Should -Not -Throw
             Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
             Should -Invoke -CommandName Get-VectorStore -ModuleName $script:ModuleName -Times 1 -Exactly
             $Result | Should -BeOfType [pscustomobject]
             $Result.id | Should -Be 'vs_abc123'
+            $Result.psobject.TypeNames | Should -Contain 'PSOpenAI.VectorStore'
         }
 
         It 'Invalid input' {
             $vsid = [datetime]::Today
             { $script:Result = Add-VectorStoreFile -VectorStore $vsid -FileId 'file-abc123' -ea Stop } | Should -Throw
             Should -Not -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName
+        }
+
+        Context 'Parameter Sets' {
+            It 'VectorStore_FileId' {
+                $InObject = [pscustomobject]@{
+                    PSTypeName = 'PSOpenAI.VectorStore'
+                    id         = 'vs_abc123'
+                }
+                # Named
+                { Add-VectorStoreFile -VectorStore $InObject -FileId 'file-abc123' -ea Stop } | Should -Not -Throw
+                # Positional
+                { Get-VectorStoreFile $InObject 'file-abc123' -ea Stop } | Should -Not -Throw
+                # Pipeline
+                { $InObject | Get-VectorStoreFile -FileId 'file-abc123' -ea Stop } | Should -Not -Throw
+                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 3 -Exactly
+            }
+
+            It 'VectorStore_File' {
+                $InObject = [pscustomobject]@{
+                    PSTypeName = 'PSOpenAI.VectorStore'
+                    id         = 'vs_abc123'
+                }
+                $FileObject = [pscustomobject]@{
+                    PSTypeName = 'PSOpenAI.File'
+                    id         = 'file-abc123'
+                }
+                # Named
+                { Add-VectorStoreFile -VectorStore $InObject -File $FileObject -ea Stop } | Should -Not -Throw
+                # Positional
+                { Add-VectorStoreFile $InObject $FileObject -ea Stop } | Should -Not -Throw
+                # Pipeline
+                { $InObject | Add-VectorStoreFile -File $FileObject -ea Stop } | Should -Not -Throw
+                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 3 -Exactly
+            }
+
+            It 'VectorStoreId_FileId' {
+                # Named
+                { Add-VectorStoreFile -VectorStoreId 'vs_abc123' -FileId 'file-abc123' -ea Stop } | Should -Not -Throw
+                # Positional
+                { Add-VectorStoreFile 'vs_abc123' 'file-abc123' -ea Stop } | Should -Not -Throw
+                # Pipeline
+                { 'vs_abc123' | Add-VectorStoreFile -FileId 'file-abc123' -ea Stop } | Should -Not -Throw
+                # Pipeline by property name
+                { [pscustomobject]@{VectorStoreId = 'vs_abc123'; FileId = 'file-abc123' } | Add-VectorStoreFile -ea Stop } | Should -Not -Throw
+                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 4 -Exactly
+            }
+
+            It 'VectorStoreId_File' {
+                $FileObject = [pscustomobject]@{
+                    PSTypeName = 'PSOpenAI.File'
+                    id         = 'file-abc123'
+                }
+                # Named
+                { Add-VectorStoreFile -VectorStoreId 'vs_abc123' -File $FileObject -ea Stop } | Should -Not -Throw
+                # Positional
+                { Add-VectorStoreFile 'vs_abc123' $FileObject -ea Stop } | Should -Not -Throw
+                # Pipeline
+                { 'vs_abc123' | Add-VectorStoreFile -File $FileObject -ea Stop } | Should -Not -Throw
+                # Pipeline by property name
+                { [pscustomobject]@{VectorStoreId = 'vs_abc123'; File = $FileObject } | Add-VectorStoreFile -ea Stop } | Should -Not -Throw
+                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 4 -Exactly
+            }
         }
     }
 }

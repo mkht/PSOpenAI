@@ -15,7 +15,7 @@ Retrieves a vector store.
 ### Get
 ```
 Get-VectorStore
-    [-InputObject] <Object>
+    [-VectorStoreId] <String>
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
     [-ApiBase <Uri>]
@@ -27,20 +27,8 @@ Get-VectorStore
 ### List
 ```
 Get-VectorStore
+    [-All]
     [-Limit <Int32>]
-    [-Order <String>]
-    [-TimeoutSec <Int32>]
-    [-MaxRetryCount <Int32>]
-    [-ApiBase <Uri>]
-    [-ApiKey <SecureString>]
-    [-Organization <String>]
-    [<CommonParameters>]
-```
-
-### ListAll
-```
-Get-VectorStore
-    -All
     [-Order <String>]
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
@@ -78,13 +66,13 @@ Get all vector stores.
 
 ## PARAMETERS
 
-### -InputObject
+### -VectorStoreId
 The ID of the vector store to retrieve.
 
 ```yaml
-Type: Object
+Type: String
 Parameter Sets: Get
-Aliases: VectorStore, vector_store_id
+Aliases: vector_store_id
 Required: True
 Position: 0
 Accept pipeline input: True (ByPropertyName, ByValue)
@@ -165,14 +153,8 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
 
 ```yaml
 Type: Object
-Parameter Sets: (All)
-Aliases:
-
 Required: False
 Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
 ```
 
 ### -Organization

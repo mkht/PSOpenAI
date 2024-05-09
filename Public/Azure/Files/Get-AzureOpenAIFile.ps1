@@ -2,15 +2,19 @@ function Get-AzureOpenAIFile {
     [CmdletBinding(DefaultParameterSetName = 'List')]
     [OutputType([pscustomobject])]
     param (
-        [Parameter(ParameterSetName = 'Get', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
-        [Alias('file_id')]
+        [Parameter(ParameterSetName = 'Get_File', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [PSTypeName('PSOpenAI.File')]$File,
+
+        [Parameter(ParameterSetName = 'Get_Id', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [ValidateNotNullOrEmpty()]
-        [string][UrlEncodeTransformation()]$Id,
+        [Alias('file_id')]
+        [Alias('Id')]   # for backword compatibility
+        [string][UrlEncodeTransformation()]$FileId,
 
         [Parameter(ParameterSetName = 'List', Mandatory = $false)]
         [Completions('assistants', 'fine-tune')]
         [ValidateNotNullOrEmpty()]
-        [string][LowerCaseTransformation()]$Purpose,
+        [string][UrlEncodeTransformation()]$Purpose,
 
         [Parameter()]
         [int]$TimeoutSec = 0,

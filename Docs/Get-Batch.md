@@ -12,34 +12,23 @@ Retrieves a batch.
 
 ## SYNTAX
 
-### List (Default)
-```
-Get-Batch
-    [-Limit <Int32>] 
-    [-TimeoutSec <Int32>]
-    [-MaxRetryCount <Int32>]
-    [-ApiType <OpenAIApiType>]
-    [-ApiBase <Uri>]
-    [-ApiKey <SecureString>]
-    [-Organization <String>]
-```
-
-### ListAll
-```
-Get-Batch
-    [-All]
-    [-TimeoutSec <Int32>]
-    [-MaxRetryCount <Int32>]
-    [-ApiType <OpenAIApiType>]
-    [-ApiBase <Uri>]
-    [-ApiKey <SecureString>]
-    [-Organization <String>]
-```
-
 ### Get
 ```
 Get-Batch 
     [-BatchId] <String>
+    [-TimeoutSec <Int32>]
+    [-MaxRetryCount <Int32>]
+    [-ApiType <OpenAIApiType>]
+    [-ApiBase <Uri>]
+    [-ApiKey <SecureString>]
+    [-Organization <String>]
+```
+
+### List
+```
+Get-Batch
+    [-All]
+    [-Limit <Int32>] 
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
     [-ApiType <OpenAIApiType>]
@@ -104,7 +93,7 @@ When this switch is specified, all batch objects will be retrieved.
 
 ```yaml
 Type: SwitchParameter
-Parameter Sets: ListAll
+Parameter Sets: List
 Required: False
 Position: Named
 ```

@@ -14,7 +14,8 @@ Cancels a run that is in_progress.
 
 ```
 Stop-ThreadRun
-    [-InputObject] <Object>
+    [-RunId] <String>
+    [-ThreadId] <String>
     [-Wait]
     [-Force]
     [-PassThru]
@@ -33,22 +34,33 @@ Cancels a run that is in_progress.
 
 ### Example 1
 ```powershell
-PS C:\> Stop-ThreadRun -Run 'run_abc123'
+PS C:\> Stop-ThreadRun -RunId 'run_abc123' -ThreadId 'thread_abc123'
 ```
 
 Cancels a run.
 
 ## PARAMETERS
 
-### -InputObject
-The run object to cancel.
+### -RunId
+The ID of the run to cancel.
 
 ```yaml
-Type: Object
-Aliases: Run
+Type: String
+Aliases: run_id
 Required: True
 Position: 0
-Accept pipeline input: True (ByValue)
+Accept pipeline input: True (ByValue, ByPropertyName)
+```
+
+### -ThreadId
+The ID of the thread to which this run belongs.
+
+```yaml
+Type: String
+Aliases: thread_id
+Required: True
+Position: 1
+Accept pipeline input: True (ByPropertyName)
 ```
 
 ### -Wait
@@ -123,14 +135,8 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
 
 ```yaml
 Type: Object
-Parameter Sets: (All)
-Aliases:
-
 Required: False
 Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
 ```
 
 ### -Organization

@@ -15,6 +15,7 @@ Describe 'Set-Thread' {
             Mock -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $PesterBoundParameters }
             Mock -Verifiable -ModuleName $script:ModuleName New-Thread {
                 [pscustomobject]@{
+                    PSTypeName = 'PSOpenAI.Thread'
                     id         = 'thread_abc123'
                     metadata   = @{}
                     created_at = [datetime]::Today
@@ -28,44 +29,38 @@ Describe 'Set-Thread' {
         }
 
         It 'Set thread with ID' {
-            { $script:Result = Set-Thread -InputObject 'thread_abc123' -ea Stop } | Should -Not -Throw
-            Should -Invoke New-Thread -ModuleName $script:ModuleName
+            { $script:Result = Set-Thread -ThreadId 'thread_abc123' -ea Stop } | Should -Not -Throw
+            Should -Invoke New-Thread -ModuleName $script:ModuleName -Times 1 -Exactly
+            $Result.psobject.TypeNames | Should -Contain 'PSOpenAI.Thread'
             $script:Result.id | Should -Be 'thread_abc123'
         }
 
-        It 'Remove thread with Thread object' {
-            $InObject = [pscustomobject]@{
-                id         = 'thread_abc123'
-                object     = 'thread'
-                created_at = [datetime]::Today
+        Context 'Parameter Sets' {
+            It 'Thread' {
+                $InObject = [pscustomobject]@{
+                    PSTypeName = 'PSOpenAI.Thread'
+                    id         = 'thread_abc123'
+                }
+                # Named
+                { Set-Thread -Thread $InObject -MetaData @{meta = 'meta-1' } -ea Stop } | Should -Not -Throw
+                # Position
+                { Set-Thread $InObject -MetaData @{meta = 'meta-1' } -ea Stop } | Should -Not -Throw
+                # Pipeline
+                { $InObject | Set-Thread -MetaData @{meta = 'meta-1' } -ea Stop } | Should -Not -Throw
+                Should -Invoke -CommandName New-Thread -ModuleName $script:ModuleName -Times 3 -Exactly
             }
-            { $script:Result = Set-Thread -InputObject $InObject -ea Stop } | Should -Not -Throw
-            Should -Invoke New-Thread -ModuleName $script:ModuleName
-            $script:Result.id | Should -Be 'thread_abc123'
-        }
 
-        It 'Pipeline input with ID' {
-            $InObject = 'thread_abc123'
-            { $script:Result = $InObject | Set-Thread -ea Stop } | Should -Not -Throw
-            Should -Invoke New-Thread -ModuleName $script:ModuleName
-            $script:Result.id | Should -Be 'thread_abc123'
-        }
-
-        It 'Pipeline input with Object' {
-            $InObject = [pscustomobject]@{
-                id         = 'thread_abc123'
-                object     = 'thread'
-                created_at = [datetime]::Today
+            It 'Id' {
+                # Named
+                { Set-Thread -ThreadId 'thread_abc123' -MetaData @{meta = 'meta-1' } -ea Stop } | Should -Not -Throw
+                # Position
+                { Set-Thread 'thread_abc123' -MetaData @{meta = 'meta-1' } -ea Stop } | Should -Not -Throw
+                # Pipeline
+                { 'thread_abc123' | Set-Thread -MetaData @{meta = 'meta-1' } -ea Stop } | Should -Not -Throw
+                # Property name
+                { [pscustomobject]@{thread_id = 'thread_abc123' } | Set-Thread -MetaData @{meta = 'meta-1' } -ea Stop } | Should -Not -Throw
+                Should -Invoke -CommandName New-Thread -ModuleName $script:ModuleName -Times 4 -Exactly
             }
-            { $script:Result = $InObject | Set-Thread -ea Stop } | Should -Not -Throw
-            Should -Invoke New-Thread -ModuleName $script:ModuleName
-            $script:Result.id | Should -Be 'thread_abc123'
-        }
-
-        It 'Error on invalid input' {
-            $InObject = [datetime]::Today
-            { $InObject | Set-Thread -ea Stop } | Should -Throw
-            Should -Invoke New-Thread -ModuleName $script:ModuleName -Times 0 -Exactly
         }
     }
 }

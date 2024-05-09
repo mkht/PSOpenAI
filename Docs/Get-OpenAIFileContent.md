@@ -14,7 +14,7 @@ Retrieves the contents of a file.
 
 ```
 Get-OpenAIFileContent
-    [-Id] <String>
+    [-FileId] <String>
     [-OutFile <String>]
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
@@ -32,19 +32,19 @@ Note: The OpenAI API specification limits the types of files whose contents can 
 
 ### Example 1
 ```powershell
-PS C:\> Get-OpenAIFileContent -Id 'file-abc123' -OutFile C:\file.csv
+PS C:\> Get-OpenAIFileContent -FileId 'file-abc123' -OutFile C:\file.csv
 ```
 
 Retrieve the contents of the file whose ID is file-abc123 and save it to C:\file.csv
 
 ## PARAMETERS
 
-### -Id
+### -FileId
 The ID of the file to use for this request.
 
 ```yaml
 Type: String
-Aliases: file_id
+Aliases: Id, file_id
 Required: True
 Position: 0
 Accept pipeline input: True (ByPropertyName, ByValue)
@@ -101,14 +101,8 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
 
 ```yaml
 Type: Object
-Parameter Sets: (All)
-Aliases:
-
 Required: False
 Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
 ```
 
 ### -Organization

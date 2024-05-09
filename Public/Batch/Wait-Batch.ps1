@@ -1,11 +1,16 @@
 function Wait-Batch {
-    [CmdletBinding(DefaultParameterSetName = 'StatusForWait')]
+    [CmdletBinding()]
     [OutputType([pscustomobject])]
     param (
-        [Parameter(Mandatory, Position = 0, ValueFromPipeline)]
-        [ValidateScript({ [bool](Get-BatchIdFromInputObject $_) })]
-        [Alias('Id')]
-        [Object]$InputObject,
+        [Parameter(ParameterSetName = 'Batch', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Alias('InputObject')]  # for backword compatibility
+        [PSTypeName('PSOpenAI.Batch')]$Batch,
+
+        [Parameter(ParameterSetName = 'Id', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
+        [Alias('batch_id')]
+        [Alias('Id')]   # for backword compatibility
+        [string][UrlEncodeTransformation()]$BatchId,
 
         [Parameter()]
         [int]$TimeoutSec = 0,
@@ -34,7 +39,7 @@ function Wait-Batch {
         [Alias('OrgId')]
         [string]$Organization,
 
-        [Parameter(ParameterSetName = 'StatusForWait')]
+        [Parameter()]
         [ValidateNotNullOrEmpty()]
         [ValidateSet(
             'validating',
@@ -48,7 +53,7 @@ function Wait-Batch {
         )]
         [string[]]$StatusForWait = @('validating', 'in_progress', 'finalizing'),
 
-        [Parameter(ParameterSetName = 'StatusForExit')]
+        [Parameter()]
         [ValidateNotNullOrEmpty()]
         [ValidateSet(
             'validating',
@@ -74,21 +79,9 @@ function Wait-Batch {
 
     begin {
         # Parameter construction
-        if ($PSCmdlet.ParameterSetName -eq 'StatusForExit') {
-            $innerStatusForWait = [System.Collections.Generic.HashSet[string]]::new([string[]](
-                    'validating',
-                    'failed',
-                    'in_progress',
-                    'finalizing',
-                    'completed',
-                    'expired',
-                    'cancelling',
-                    'cancelled'
-                ))
+        $innerStatusForWait = [System.Collections.Generic.HashSet[string]]::new($StatusForWait)
+        if ($PSBoundParameters.ContainsKey('StatusForExit')) {
             $innerStatusForWait.ExceptWith([System.Collections.Generic.List[string]]$StatusForExit)
-        }
-        else {
-            $innerStatusForWait = [System.Collections.Generic.HashSet[string]]::new($StatusForWait)
         }
 
         # Parse Common params
@@ -96,7 +89,14 @@ function Wait-Batch {
     }
 
     process {
-        $batchId = Get-BatchIdFromInputObject $InputObject
+        # Get ids
+        if ($PSCmdlet.ParameterSetName -ceq 'Batch') {
+            $BatchId = $Batch.id
+        }
+        if (-not $BatchId) {
+            Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve batch id.'))
+            return
+        }
 
         # Create cancellation token for timeout
         $Cancellation = [System.Threading.CancellationTokenSource]::new()
@@ -111,7 +111,7 @@ function Wait-Batch {
                 #Wait
                 $innerBatchObject = $null
                 Start-CancelableWait -Milliseconds ([System.Math]::Min((200 * ($PollCounter++)), 1000)) -CancellationToken $Cancellation.Token -ea Stop
-                $innerBatchObject = PSOpenAI\Get-Batch -BatchId $batchId @CommonParams
+                $innerBatchObject = PSOpenAI\Get-Batch -BatchId $BatchId @CommonParams
                 Write-Progress -Activity $ProgressTitle -Status ('The status of batch with id "{0}" is "{1}"' -f $innerBatchObject.id, $innerBatchObject.status) -PercentComplete -1
             } while ($innerBatchObject.status -and $innerBatchObject.status -in $innerStatusForWait)
         }

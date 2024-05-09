@@ -2,19 +2,23 @@ function Get-Batch {
     [CmdletBinding(DefaultParameterSetName = 'List')]
     [OutputType([pscustomobject])]
     param (
-        [Parameter(ParameterSetName = 'Get', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Parameter(ParameterSetName = 'Get_Batch', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [PSTypeName('PSOpenAI.Batch')]$Batch,
+
+        [Parameter(ParameterSetName = 'Get_Id', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
         [Alias('batch_id')]
-        [Alias('Id')]
-        [string]$BatchId,
+        [Alias('Id')]   # for backword compatibility
+        [string][UrlEncodeTransformation()]$BatchId,
 
         [Parameter(ParameterSetName = 'List')]
         [ValidateRange(1, 100)]
         [int]$Limit = 20,
 
-        [Parameter(ParameterSetName = 'ListAll')]
+        [Parameter(ParameterSetName = 'List')]
         [switch]$All,
 
-        [Parameter(ParameterSetName = 'ListAll', DontShow)]
+        [Parameter(ParameterSetName = 'List', DontShow)]
         [string]$After,
 
         # [Parameter(ParameterSetName = 'ListAll', DontShow)]
@@ -77,21 +81,26 @@ function Get-Batch {
     }
 
     process {
-        $UriBuilder = [System.UriBuilder]::new($OpenAIParameter.Uri)
-        if ($BatchId) {
-            $UriBuilder.Path += "/$BatchId"
-            $QueryUri = $UriBuilder.Uri
+        # Get id
+        if ($PSCmdlet.ParameterSetName -like '*_Batch') {
+            $BatchId = $Batch.id
+            if (-not $BatchId) {
+                Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve batch id.'))
+                return
+            }
         }
-        elseif ($PSCmdlet.ParameterSetName -eq 'List') {
-            $QueryParam = [System.Web.HttpUtility]::ParseQueryString($UriBuilder.Query)
-            $QueryParam.Add('limit', $Limit);
-            # $QueryParam.Add('order', $Order);
-            $UriBuilder.Query = $QueryParam.ToString()
+
+        $UriBuilder = [System.UriBuilder]::new($OpenAIParameter.Uri)
+        if ($PSCmdlet.ParameterSetName -like 'Get_*') {
+            $UriBuilder.Path += "/$BatchId"
             $QueryUri = $UriBuilder.Uri
         }
         else {
             $QueryParam = [System.Web.HttpUtility]::ParseQueryString($UriBuilder.Query)
-            $QueryParam.Add('limit', '100');
+            if ($All) {
+                $Limit = 100
+            }
+            $QueryParam.Add('limit', $Limit);
             # $QueryParam.Add('order', $Order);
             if ($After) {
                 $QueryParam.Add('after', $After);
@@ -151,7 +160,7 @@ function Get-Batch {
 
         #region Pagenation
         if ($Response.has_more) {
-            if ($PSCmdlet.ParameterSetName -eq 'ListAll') {
+            if ($All) {
                 # pagenate
                 $PagenationParam = $PSBoundParameters
                 $PagenationParam.After = $Response.last_id

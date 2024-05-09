@@ -12,23 +12,10 @@ Waits until the batch is completed.
 
 ## SYNTAX
 
-### StatusForWait
 ```
 Wait-Batch
-    [-InputObject] <Object>
+    [-BatchId] <String>
     [-StatusForWait <String[]>]
-    [-TimeoutSec <Int32>]
-    [-MaxRetryCount <Int32>]
-    [-ApiBase <Uri>]
-    [-ApiKey <SecureString>]
-    [-Organization <String>]
-    [<CommonParameters>]
-```
-
-### StatusForExit
-```
-Wait-Batch
-    [-InputObject] <Object>
     [-StatusForExit <String[]>]
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
@@ -59,25 +46,23 @@ Requests a batch cancellation and wait for cancelled.
 
 ## PARAMETERS
 
-### -InputObject
-The batch object to cancel.
+### -BatchId
+The batch id to cancel.
 
 ```yaml
 Type: Object
-Aliases: Id
+Aliases: Id, batch_id
 Required: True
 Position: 0
-Accept pipeline input: True (ByValue)
+Accept pipeline input: True (ByValue, ByPropertyName)
 ```
 
 ### -StatusForExit
 By default, this cmdlet exits when the status of batch is anything other than 'validating', 'in_progress' or 'finalizing'.  
 If specifies one or more statuses for `-StatusForExit`, this cmdlet waits until batch reaches that status.  
-This parameter cannot be used simultaneously with `-StatusForWait`.
 
 ```yaml
 Type: String[]
-Parameter Sets: StatusForExit
 Accepted values: validating, failed, in_progress, finalizing, completed, expired, cancelling, cancelled
 Required: False
 Position: Named
@@ -86,11 +71,9 @@ Position: Named
 ### -StatusForWait
 If one or more statuses are specified in `-StatusForWait`, this cmdlet will exit when a batch changes to a status other than that.  
 Note: Do not specify `completed` for this parameter. cmdlet may not exit permanently.  
-This parameter cannot be used simultaneously with `-StatusForExit`.
 
 ```yaml
 Type: String[]
-Parameter Sets: StatusForWait
 Accepted values: validating, failed, in_progress, finalizing, completed, expired, cancelling, cancelled
 Required: False
 Position: Named

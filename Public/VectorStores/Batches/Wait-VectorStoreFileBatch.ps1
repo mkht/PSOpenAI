@@ -1,17 +1,24 @@
 function Wait-VectorStoreFileBatch {
-    [CmdletBinding(DefaultParameterSetName = 'StatusForWait')]
+    [CmdletBinding()]
     [OutputType([pscustomobject])]
     param (
-        [Parameter(Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
-        [Alias('vector_store_id')]
-        [Alias('VectorStore')]
-        [ValidateScript({ [bool](Get-VectorStoreIdFromInputObject $_) })]
-        [PSTypeName('PSOpenAI.VectorStore')]$InputObject,
+        [Parameter(ParameterSetName = 'VectorStore', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Alias('InputObject')]  # for backword compatibility
+        [PSTypeName('PSOpenAI.VectorStore')]$VectorStore,
 
-        [Parameter(Mandatory, Position = 1, ValueFromPipelineByPropertyName)]
+        [Parameter(ParameterSetName = 'VectorStoreId', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
+        [Alias('vector_store_id')]
+        [string][UrlEncodeTransformation()]$VectorStoreId,
+
+        [Parameter(ParameterSetName = 'VectorStore', Mandatory, Position = 1, ValueFromPipelineByPropertyName)]
+        [Parameter(ParameterSetName = 'VectorStoreId', Mandatory, Position = 1, ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
         [Alias('batch_id')]
-        [Alias('Id')]
         [string][UrlEncodeTransformation()]$BatchId,
+
+        [Parameter(ParameterSetName = 'VectorStoreFileBatch', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [PSTypeName('PSOpenAI.VectorStore.FileBatch')]$Batch,
 
         [Parameter()]
         [int]$TimeoutSec = 0,
@@ -40,7 +47,7 @@ function Wait-VectorStoreFileBatch {
         [Alias('OrgId')]
         [string]$Organization,
 
-        [Parameter(ParameterSetName = 'StatusForWait')]
+        [Parameter()]
         [ValidateNotNullOrEmpty()]
         [ValidateSet(
             'in_progress',
@@ -51,7 +58,7 @@ function Wait-VectorStoreFileBatch {
         )]
         [string[]]$StatusForWait = @('in_progress'),
 
-        [Parameter(ParameterSetName = 'StatusForExit')]
+        [Parameter()]
         [ValidateNotNullOrEmpty()]
         [ValidateSet(
             'in_progress',
@@ -74,18 +81,9 @@ function Wait-VectorStoreFileBatch {
 
     begin {
         # Parameter construction
-        if ($PSCmdlet.ParameterSetName -eq 'StatusForExit') {
-            $innerStatusForWait = [System.Collections.Generic.HashSet[string]]::new([string[]](
-                    'in_progress',
-                    'completed',
-                    'failed',
-                    'cancelling',
-                    'cancelled'
-                ))
+        $innerStatusForWait = [System.Collections.Generic.HashSet[string]]::new($StatusForWait)
+        if ($PSBoundParameters.ContainsKey('StatusForExit')) {
             $innerStatusForWait.ExceptWith([System.Collections.Generic.List[string]]$StatusForExit)
-        }
-        else {
-            $innerStatusForWait = [System.Collections.Generic.HashSet[string]]::new($StatusForWait)
         }
 
         # Parse Common params
@@ -93,6 +91,24 @@ function Wait-VectorStoreFileBatch {
     }
 
     process {
+        # Get ids
+        if ($PSCmdlet.ParameterSetName -ceq 'VectorStore') {
+            $VectorStoreId = $VectorStore.id
+        }
+        elseif ($PSCmdlet.ParameterSetName -ceq 'VectorStoreFileBatch') {
+            $VectorStoreId = $Batch.vector_store_id
+            $BatchId = $Batch.id
+        }
+
+        if (-not $VectorStoreId) {
+            Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve vector store id.'))
+            return
+        }
+        if (-not $BatchId) {
+            Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve batch id.'))
+            return
+        }
+
         # Create cancellation token for timeout
         $Cancellation = [System.Threading.CancellationTokenSource]::new()
         if ($TimeoutSec -gt 0) {
@@ -106,7 +122,7 @@ function Wait-VectorStoreFileBatch {
                 #Wait
                 $innerBatchObject = $null
                 Start-CancelableWait -Milliseconds ([System.Math]::Min((200 * ($PollCounter++)), 1000)) -CancellationToken $Cancellation.Token -ea Stop
-                $innerBatchObject = PSOpenAI\Get-VectorStoreFileBatch -InputObject $InputObject -BatchId $BatchId @CommonParams
+                $innerBatchObject = PSOpenAI\Get-VectorStoreFileBatch -VectorStoreId $VectorStoreId -BatchId $BatchId @CommonParams
                 Write-Progress -Activity $ProgressTitle -Status ('The status of batch with id "{0}" is "{1}"' -f $innerBatchObject.id, $innerBatchObject.status) -PercentComplete -1
             } while ($innerBatchObject.status -and $innerBatchObject.status -in $innerStatusForWait)
         }

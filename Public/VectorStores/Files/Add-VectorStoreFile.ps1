@@ -2,15 +2,26 @@ function Add-VectorStoreFile {
     [CmdletBinding()]
     [OutputType([pscustomobject])]
     param (
-        [Parameter(Mandatory, Position = 0, ValueFromPipeline)]
-        [Alias('vector_store_id')]
-        [Alias('VectorStore')]
-        [ValidateScript({ [bool](Get-VectorStoreIdFromInputObject $_) })]
-        [Object]$InputObject,
+        [Parameter(ParameterSetName = 'VectorStore_FileId', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Parameter(ParameterSetName = 'VectorStore_File', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Alias('InputObject')]  # for backword compatibility
+        [PSTypeName('PSOpenAI.VectorStore')]$VectorStore,
 
-        [Parameter(Mandatory, Position = 1)]
+        [Parameter(ParameterSetName = 'VectorStoreId_FileId', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Parameter(ParameterSetName = 'VectorStoreId_File', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
+        [Alias('vector_store_id')]
+        [string][UrlEncodeTransformation()]$VectorStoreId,
+
+        [Parameter(ParameterSetName = 'VectorStore_FileId', Mandatory, Position = 1, ValueFromPipelineByPropertyName)]
+        [Parameter(ParameterSetName = 'VectorStoreId_FileId', Mandatory, Position = 1, ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
         [Alias('file_id')]
-        [string]$FileId,
+        [string][UrlEncodeTransformation()]$FileId,
+
+        [Parameter(ParameterSetName = 'VectorStore_File', Mandatory, Position = 1, ValueFromPipelineByPropertyName)]
+        [Parameter(ParameterSetName = 'VectorStoreId_File', Mandatory, Position = 1, ValueFromPipelineByPropertyName)]
+        [PSTypeName('PSOpenAI.File')]$File,
 
         [Parameter()]
         [switch]$PassThru,
@@ -70,15 +81,25 @@ function Add-VectorStoreFile {
     }
 
     process {
-        # Get vector store id
-        [string][UrlEncodeTransformation()]$VsId = Get-VectorStoreIdFromInputObject $InputObject
-        if (-not $VsId) {
+        # Get ids
+        if ($PSCmdlet.ParameterSetName -like 'VectorStore_*') {
+            $VectorStoreId = $VectorStore.id
+        }
+        if ($PSCmdlet.ParameterSetName -like '*_File') {
+            $FileId = $File.id
+        }
+
+        if (-not $VectorStoreId) {
             Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve vector store id.'))
+            return
+        }
+        if (-not $FileId) {
+            Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve file id.'))
             return
         }
 
         #region Construct parameters for API request
-        $QueryUri = $OpenAIParameter.Uri.ToString() -f $VsId
+        $QueryUri = $OpenAIParameter.Uri.ToString() -f $VectorStoreId
 
         $PostBody = [System.Collections.Specialized.OrderedDictionary]::new()
         $PostBody.file_id = $FileId
@@ -111,7 +132,7 @@ function Add-VectorStoreFile {
         #region Output
         # Output vector store object only when the PassThru switch is specified.
         if ($PassThru) {
-            PSOpenAI\Get-VectorStore -InputObject $VsId @CommonParams
+            PSOpenAI\Get-VectorStore -VectorStoreId $VectorStoreId @CommonParams
         }
         #endregion
     }

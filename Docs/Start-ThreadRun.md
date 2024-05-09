@@ -12,23 +12,26 @@ Starts a run.
 
 ## SYNTAX
 
-### ThreadAndRun (Default)
+### ThreadAndRun
 ```
 Start-ThreadRun
-    -Assistant <Object>
+    [-Assistant] <String>
     -Message <String>
     [-Model <String>]
     [-Instructions <String>]
+    [-AdditionalMessages <Object[]>]
     [-Role <String>]
-    [-FileId <String[]>]
+    [-FileIdsForCodeInterpreter <Object[]>]
+    [-VectorStoresForFileSearch <Object[]>]
     [-MaxPromptTokens <Int32>]
     [-MaxCompletionTokens <Int32>]
+    [-TruncationStrategyType <String>]
     [-TruncationStrategyLastMessages <Int32>]
-    [-Tools <IDictionary[]>]
     [-ToolChoice <String>]
     [-ToolChoiceFunctionName <String>]
     [-UseCodeInterpreter]
     [-UseFileSearch]
+    [-Functions <IDictionary>]
     [-MetaData <IDictionary>]
     [-Temperature <Double>]
     [-Stream]
@@ -47,20 +50,21 @@ Start-ThreadRun
 ### Run
 ```
 Start-ThreadRun
-    [-InputObject] <Object>
-    -Assistant <Object>
+    [-ThreadId] <String>
+    [-Assistant] <Object>
     [-Model <String>]
     [-Instructions <String>]
     [-AdditionalInstructions <String>]
     [-AdditionalMessages <Object[]>]
     [-MaxPromptTokens <Int32>]
     [-MaxCompletionTokens <Int32>]
+    [-TruncationStrategyType <String>]
     [-TruncationStrategyLastMessages <Int32>]
-    [-Tools <IDictionary[]>]
     [-ToolChoice <String>]
     [-ToolChoiceFunctionName <String>]
     [-UseCodeInterpreter]
     [-UseFileSearch]
+    [-Functions <IDictionary>]
     [-MetaData <IDictionary>]
     [-Temperature <Double>]
     [-Stream]
@@ -82,20 +86,20 @@ Starts a run.
 ## EXAMPLES
 
 ### Example 1
-```
-PS C:\> Start-ThreadRun -Thread 'thread_abc123' -Assistant 'asst_abc123'
+```powershell
+PS C:\> Start-ThreadRun -ThreadId 'thread_abc123' -Assistant 'asst_abc123'
 ```
 
 Starts a run of the thread with spcified assiatnt.
 
 ## PARAMETERS
 
-### -InputObject
+### -ThreadId
 The ID of the thread to run.
 
 ```yaml
-Type: Object
-Aliases: Thread, thread_id
+Type: String
+Aliases: thread_id
 Required: True
 Position: 0
 Accept pipeline input: True (ByPropertyName, ByValue)
@@ -106,9 +110,9 @@ The ID of the assistant to use to execute this run.
 
 ```yaml
 Type: Object
-Aliases: assistant_id
+Aliases: assistant_id, AssistantId
 Required: True
-Position: Named
+Position: 1
 Accept pipeline input: True (ByPropertyName)
 ```
 
@@ -150,6 +154,33 @@ Required: False
 Position: Named
 ```
 
+### -FileIdsForCodeInterpreter
+A list of file IDs made available to the code_interpreter tool. There can be a maximum of 20 files associated with the tool.
+
+```yaml
+Type: Object[]
+Required: False
+Position: Named
+```
+
+### -VectorStoresForFileSearch
+The vector store attached to this thread. There can be a maximum of 1 vector store attached to the thread.
+
+```yaml
+Type: Object[]
+Required: False
+Position: Named
+```
+
+### -FileIdsForFileSearch
+A list of file IDs to add to the vector store. There can be a maximum of 10000 files in a vector store.
+
+```yaml
+Type: Object[]
+Required: False
+Position: Named
+```
+
 ### -MetaData
 Set of 16 key-value pairs that can be attached to an object. This can be useful for storing additional information about the object in a structured format.
 
@@ -168,8 +199,8 @@ Required: False
 Position: Named
 ```
 
-### -Tools
-Override the tools the assistant can use for this run.
+### -Functions
+A list of functions the model may call. Use this to provide a list of functions the model may generate JSON inputs for.  
 
 ```yaml
 Type: IDictionary[]

@@ -27,40 +27,36 @@ Describe 'Remove-ThreadMessage' {
         }
 
         It 'Remove thread message with ID' {
-            { $script:Result = Remove-ThreadMessage -InputObject 'thread_abc123' -MessageId 'msg_abc123' -ea Stop } | Should -Not -Throw
+            { $script:Result = Remove-ThreadMessage -ThreadId 'thread_abc123' -MessageId 'msg_abc123' -ea Stop } | Should -Not -Throw
             Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
         }
 
-        It 'Remove message with Thread object and message id' {
-            $InObject = [pscustomobject]@{
-                id         = 'thread_abc123'
-                object     = 'thread'
-                created_at = [datetime]::Today
+        Context 'Parameter Sets' {
+            It 'Thread' {
+                $InObject = [pscustomobject]@{
+                    PSTypeName = 'PSOpenAI.Thread'
+                    id         = 'thread_abc123'
+                }
+                # Named
+                { Remove-ThreadMessage -Thread $InObject -MessageId 'msg_abc123' -ea Stop } | Should -Not -Throw
+                # Positional
+                { Remove-ThreadMessage -Thread $InObject 'msg_abc123' -ea Stop } | Should -Not -Throw
+                # Pipeline
+                { $InObject | Remove-ThreadMessage 'Hi' -ea Stop } | Should -Not -Throw
+                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 3 -Exactly
             }
-            { $script:Result = Remove-ThreadMessage -InputObject $InObject -MessageId 'msg_abc123' -ea Stop } | Should -Not -Throw
-            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
-        }
 
-        It 'Pipeline input with ID' {
-            $InObject = 'thread_abc123'
-            { $InObject | Remove-ThreadMessage -MessageId 'msg_abc123' -ea Stop } | Should -Not -Throw
-            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
-        }
-
-        It 'Pipeline input with Object' {
-            $InObject = [pscustomobject]@{
-                id         = 'thread_abc123'
-                object     = 'thread'
-                created_at = [datetime]::Today
+            It 'Id' {
+                # Named
+                { Remove-ThreadMessage -ThreadId 'thread_abc123' -MessageId 'msg_abc123' -ea Stop } | Should -Not -Throw
+                # Positional
+                { Remove-ThreadMessage -ThreadId 'thread_abc123' 'msg_abc123' -ea Stop } | Should -Not -Throw
+                # Pipeline
+                { 'thread_abc123' | Remove-ThreadMessage 'msg_abc123' -ea Stop } | Should -Not -Throw
+                # Pipeline by property name
+                { [pscustomobject]@{thread_id = 'thread_abc123'; message_id = 'msg_abc123' } | Remove-ThreadMessage -ea Stop } | Should -Not -Throw
+                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 4 -Exactly
             }
-            { $InObject | Remove-ThreadMessage -MessageId 'msg_abc123' -ea Stop } | Should -Not -Throw
-            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
-        }
-
-        It 'Error on invalid input' {
-            $InObject = [datetime]::Today
-            { $InObject | Remove-ThreadMessage -ea Stop } | Should -Throw
-            Should -Not -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName
         }
     }
 

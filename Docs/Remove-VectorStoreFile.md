@@ -13,7 +13,7 @@ Delete a vector store file.
 
 ```
 Remove-VectorStoreFile
-    [-InputObject] <Object>
+    [-VectorStoreId] <String>
     [-FileId] <String>
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
@@ -30,32 +30,30 @@ Delete a vector store file. This will remove the file from the vector store but 
 
 ### Example 1
 ```powershell
-PS C:\> Remove-VectorStoreFile -InputObject 'vs_abc123' -FileId 'file-abc123'
+PS C:\> Remove-VectorStoreFile -VectorStoreId 'vs_abc123' -FileId 'file-abc123'
 ```
 
 Deletes a file with ID `file-abc123` from the vector store with ID `vs_ab123`
 
 ## PARAMETERS
 
-### -InputObject
+### -VectorStoreId
 The ID of the vector store that the file belongs to.
 
 ```yaml
-Type: Object
-Parameter Sets: Get
-Aliases: VectorStore, vector_store_id
+Type: String
+Aliases: vector_store_id
 Required: True
 Position: 0
 Accept pipeline input: True (ByValue, ByPropertyName)
 ```
 
 ### -FileId
-The ID of the file being retrieved.
+The ID of the file being removed.
 
 ```yaml
 Type: String
-Parameter Sets: Get
-Aliases: file_id, Id
+Aliases: file_id
 Required: True
 Position: 1
 Accept pipeline input: True (ByPropertyName)
@@ -103,14 +101,8 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
 
 ```yaml
 Type: Object
-Parameter Sets: (All)
-Aliases:
-
 Required: False
 Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
 ```
 
 ### -Organization

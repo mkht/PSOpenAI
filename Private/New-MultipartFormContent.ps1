@@ -69,7 +69,7 @@ function GetMultipartFileContent {
         [FileInfo]$file
     )
 
-    GetMultipartBytesContent -fieldName $fieldName -content ([File]::ReadAllBytes($file)) -fileName $file.Name
+    GetMultipartBytesContent -fieldName $fieldName -content ([File]::ReadAllBytes($file.FullName)) -fileName $file.Name
 }
 
 function GetMultipartStringContent {

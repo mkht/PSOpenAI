@@ -2,10 +2,19 @@ function Stop-ThreadRun {
     [CmdletBinding()]
     [OutputType([pscustomobject])]
     param (
-        [Parameter(Mandatory, Position = 0, ValueFromPipeline)]
-        [ValidateScript({ ([string]$_.id).StartsWith('run_', [StringComparison]::Ordinal) -and ([string]$_.thread_id).StartsWith('thread_', [StringComparison]::Ordinal) })]
-        [Alias('Run')]
-        [Object]$InputObject,
+        [Parameter(ParameterSetName = 'Run', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Alias('InputObject')]  # for backword compatibility
+        [PSTypeName('PSOpenAI.Thread.Run')]$Run,
+
+        [Parameter(ParameterSetName = 'Id', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
+        [Alias('run_id')]
+        [string][UrlEncodeTransformation()]$RunId,
+
+        [Parameter(ParameterSetName = 'Id', Mandatory, Position = 1, ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
+        [Alias('thread_id')]
+        [string][UrlEncodeTransformation()]$ThreadId,
 
         [Parameter()]
         [int]$TimeoutSec = 0,
@@ -71,20 +80,26 @@ function Stop-ThreadRun {
     }
 
     process {
-        [string][UrlEncodeTransformation()]$ThreadId = $InputObject.thread_id
+        # Get ids
+        if ($PSCmdlet.ParameterSetName -ceq 'Run') {
+            $ThreadId = $Run.thread_id
+            $RunId = $Run.id
+        }
+        else {
+            $Run = PSOpenAI\Get-ThreadRun -RunId $RunId -ThreadId $ThreadId @CommonParams
+        }
         if (-not $ThreadId) {
             Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve Thread ID.'))
             return
         }
-        [string][UrlEncodeTransformation()]$RunId = $InputObject.id
         if (-not $RunId) {
             Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve Run ID.'))
             return
         }
 
         if (-not $Force) {
-            if ((-not $InputObject.status) -or ($InputObject.status -notin @('queued', 'in_progress', 'requires_action'))) {
-                Write-Error -Exception ([System.InvalidOperationException]::new(('Cannot cancel run with status "{0}".' -f $InputObject.status)))
+            if ((-not $Run.status) -or ($Run.status -notin @('queued', 'in_progress', 'requires_action'))) {
+                Write-Error -Exception ([System.InvalidOperationException]::new(('Cannot cancel run with status "{0}".' -f $Run.status)))
                 return
             }
         }
@@ -122,7 +137,7 @@ function Stop-ThreadRun {
 
         #region Parse response object
         try {
-            $Response = $Response | ConvertFrom-Json -ErrorAction Stop
+            $Response = $Response | ConvertFrom-Json -ErrorAction Stop | ParseThreadRunObject
         }
         catch {
             Write-Error -Exception $_.Exception
@@ -141,7 +156,7 @@ function Stop-ThreadRun {
             #region Output
             # No output on default
             if ($PassThru) {
-                ParseThreadRunObject $Response -CommonParams $CommonParams
+                $Response
             }
             #endregion
         }

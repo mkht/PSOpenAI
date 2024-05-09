@@ -2,11 +2,14 @@ function Set-Assistant {
     [CmdletBinding()]
     [OutputType([pscustomobject])]
     param (
-        [Parameter(Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Parameter(ParameterSetName = 'Assistant', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Alias('InputObject')]  # for backword compatibility
+        [PSTypeName('PSOpenAI.Assistant')]$Assistant,
+
+        [Parameter(ParameterSetName = 'AssistantId', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
         [Alias('assistant_id')]
-        [Alias('Assistant')]
-        [ValidateScript({ [bool](Get-AssistantIdFromInputObject $_) })]
-        [Object]$InputObject,
+        [string][UrlEncodeTransformation()]$AssistantId,
 
         [Parameter()]
         [ValidateLength(0, 256)]
@@ -52,16 +55,15 @@ function Set-Assistant {
 
         [Parameter()]
         [ValidateCount(0, 20)]
-        [string[]]$FileIdsForCodeInterpreter,
+        [object[]]$FileIdsForCodeInterpreter,
 
         [Parameter()]
-        [ValidateScript({ [bool](Get-VectorStoreIdFromInputObject $_) })]
         [ValidateCount(1, 1)]   # Currently, allow only 1 vector store
         [object[]]$VectorStoresForFileSearch,
 
         [Parameter()]
         [ValidateCount(0, 10000)]
-        [string[]]$FileIdsForFileSearch,
+        [object[]]$FileIdsForFileSearch,
 
         [Parameter()]
         [ValidateRange(0.0, 2.0)]

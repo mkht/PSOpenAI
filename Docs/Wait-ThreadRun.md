@@ -12,23 +12,11 @@ Waits until the run is completed.
 
 ## SYNTAX
 
-### StatusForWait
 ```
 Wait-ThreadRun
-    [-InputObject] <Object>
+    [-RunId] <String>
+    [-ThreadId] <String>
     [-StatusForWait <String[]>]
-    [-TimeoutSec <Int32>]
-    [-MaxRetryCount <Int32>]
-    [-ApiBase <Uri>]
-    [-ApiKey <SecureString>]
-    [-Organization <String>]
-    [<CommonParameters>]
-```
-
-### StatusForExit
-```
-Wait-ThreadRun
-    [-InputObject] <Object>
     [-StatusForExit <String[]>]
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
@@ -59,25 +47,34 @@ Requests a run cancellation and wait for cancelled.
 
 ## PARAMETERS
 
-### -InputObject
-The run object to cancel.
+### -RunId
+The ID of thre run to wait.
 
 ```yaml
-Type: Object
-Aliases: Run
+Type: String
+Aliases: run_id
 Required: True
 Position: 0
-Accept pipeline input: True (ByValue)
+Accept pipeline input: True (ByValue, ByPropertyName)
+```
+
+### -ThreadId
+The ID of the thread to which this run belongs.
+
+```yaml
+Type: String
+Aliases: thread_id
+Required: True
+Position: 0
+Accept pipeline input: True (ByPropertyName)
 ```
 
 ### -StatusForExit
 By default, this cmdlet exits when the status of Run is anything other than `queued` or `in_progress`.  
 If specifies one or more statuses for `-StatusForExit`, this cmdlet waits until Run reaches that status.  
-This parameter cannot be used simultaneously with `-StatusForWait`.
 
 ```yaml
 Type: String[]
-Parameter Sets: StatusForExit
 Accepted values: queued, in_progress, completed, requires_action, expired, cancelling, cancelled, failed
 Required: False
 Position: Named
@@ -86,11 +83,9 @@ Position: Named
 ### -StatusForWait
 If one or more statuses are specified in `-StatusForWait`, this cmdlet will exit when Run changes to a status other than that.  
 Note: Do not specify `completed` for this parameter. cmdlet may not exit permanently.  
-This parameter cannot be used simultaneously with `-StatusForExit`.
 
 ```yaml
 Type: String[]
-Parameter Sets: StatusForWait
 Accepted values: queued, in_progress, completed, requires_action, expired, cancelling, cancelled, failed
 Required: False
 Position: Named
@@ -139,14 +134,8 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
 
 ```yaml
 Type: Object
-Parameter Sets: (All)
-Aliases:
-
 Required: False
 Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
 ```
 
 ### -Organization

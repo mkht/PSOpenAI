@@ -55,7 +55,7 @@ Describe 'Get-Batch' {
     "has_more": false
 }
 '@
-            } -ParameterFilter { $Uri -like 'https://api.openai.com/v1/batches?limit=*' }
+            } -ParameterFilter { $Uri -like 'https://api.openai.com/v1/batches`?limit=*' }
         }
 
         BeforeEach {
@@ -64,7 +64,7 @@ Describe 'Get-Batch' {
 
         It 'List batch objects' {
             { $script:Result = Get-Batch -ea Stop } | Should -Not -Throw
-            Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly -ParameterFilter { $Uri -like 'https://api.openai.com/v1/batches?limit=*' }
+            Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly -ParameterFilter { $Uri -like 'https://api.openai.com/v1/batches`?limit=*' }
             $Result | Should -HaveCount 3
             $Result[0].id | Should -BeLike 'batch_abc*'
             $Result[1].id | Should -BeLike 'batch_abc*'
@@ -78,6 +78,41 @@ Describe 'Get-Batch' {
             $Result | Should -BeOfType [pscustomobject]
             $Result.id | Should -BeExactly 'batch_abc123'
             $Result.created_at | Should -BeOfType [datetime]
+        }
+
+        Context 'Parameter Sets' {
+            It 'Get_Batch' {
+                $InObject = [pscustomobject]@{
+                    PSTypeName = 'PSOpenAI.Batch'
+                    id         = 'batch_abc123'
+                }
+                # Named
+                { Get-Batch -Batch $InObject -ea Stop } | Should -Not -Throw
+                # Positional
+                { Get-Batch $InObject -ea Stop } | Should -Not -Throw
+                # Pipeline
+                { $InObject | Get-Batch -ea Stop } | Should -Not -Throw
+                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 3 -Exactly -ParameterFilter { 'https://api.openai.com/v1/batches/batch_abc123' -eq $Uri }
+            }
+
+            It 'Get_Id' {
+                # Named
+                { Get-Batch -BatchId 'batch_abc123' -ea Stop } | Should -Not -Throw
+                # Positional
+                { Get-Batch 'batch_abc123' -ea Stop } | Should -Not -Throw
+                # Pipeline
+                { 'batch_abc123' | Get-Batch -ea Stop } | Should -Not -Throw
+                # Pipeline by property name
+                { [pscustomobject]@{batch_id = 'batch_abc123' } | Get-Batch -ea Stop } | Should -Not -Throw
+                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 4 -Exactly -ParameterFilter { 'https://api.openai.com/v1/batches/batch_abc123' -eq $Uri }
+            }
+
+            It 'List' {
+                { Get-Batch -ea Stop } | Should -Not -Throw
+                { Get-Batch -Limit 15 -ea Stop } | Should -Not -Throw
+                { Get-Batch -All -ea Stop } | Should -Not -Throw
+                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 3 -Exactly -ParameterFilter { $Uri -like 'https://api.openai.com/v1/batches`?limit=*' }
+            }
         }
     }
 }

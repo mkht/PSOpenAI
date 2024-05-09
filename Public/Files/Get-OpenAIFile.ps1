@@ -2,15 +2,26 @@ function Get-OpenAIFile {
     [CmdletBinding(DefaultParameterSetName = 'List')]
     [OutputType([pscustomobject])]
     param (
-        [Parameter(ParameterSetName = 'Get', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
-        [Alias('file_id')]
+        [Parameter(ParameterSetName = 'Get_File', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [PSTypeName('PSOpenAI.File')]$File,
+
+        [Parameter(ParameterSetName = 'Get_Id', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [ValidateNotNullOrEmpty()]
-        [string][UrlEncodeTransformation()]$Id,
+        [Alias('file_id')]
+        [Alias('Id')]   # for backword compatibility
+        [string][UrlEncodeTransformation()]$FileId,
 
         [Parameter(ParameterSetName = 'List', Mandatory = $false)]
-        [Completions('assistants', 'fine-tune')]
+        [Completions(
+            'assistants',
+            'assistants_output',
+            'batch',
+            'batch_output',
+            'fine-tune',
+            'fine-tune-results'
+        )]
         [ValidateNotNullOrEmpty()]
-        [string][LowerCaseTransformation()]$Purpose,
+        [string][UrlEncodeTransformation()]$Purpose,
 
         [Parameter()]
         [int]$TimeoutSec = 0,
@@ -64,10 +75,19 @@ function Get-OpenAIFile {
     }
 
     process {
+        # Get id
+        if ($PSCmdlet.ParameterSetName -like '*_File') {
+            $FileId = $File.id
+            if (-not $FileId) {
+                Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve file id.'))
+                return
+            }
+        }
+
         #region Construct Query URI
         $UriBuilder = [System.UriBuilder]::new($OpenAIParameter.Uri)
-        if ($PSCmdlet.ParameterSetName -eq 'Get') {
-            $UriBuilder.Path += "/$Id"
+        if ($PSCmdlet.ParameterSetName -like 'Get_*') {
+            $UriBuilder.Path += "/$FileId"
             $QueryUri = $UriBuilder.Uri
         }
         else {

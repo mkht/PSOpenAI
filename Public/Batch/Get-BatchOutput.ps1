@@ -2,10 +2,15 @@ function Get-BatchOutput {
     [CmdletBinding()]
     [OutputType([pscustomobject])]
     param (
-        [Parameter(Mandatory, Position = 0, ValueFromPipeline)]
-        [ValidateScript({ [bool](Get-BatchIdFromInputObject $_) })]
-        [Alias('Id')]
-        [object]$InputObject,
+        [Parameter(ParameterSetName = 'Batch', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Alias('InputObject')]  # for backword compatibility
+        [PSTypeName('PSOpenAI.Batch')]$Batch,
+
+        [Parameter(ParameterSetName = 'Id', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
+        [Alias('batch_id')]
+        [Alias('Id')]   # for backword compatibility
+        [string][UrlEncodeTransformation()]$BatchId,
 
         [Parameter()]
         [switch]$Wait,
@@ -53,13 +58,20 @@ function Get-BatchOutput {
     }
 
     process {
-        $OutputFileId = $null
-        $BatchId = Get-BatchIdFromInputObject $InputObject
-
-        if ($InputObject.output_file_id) {
-            $OutputFileId = $InputObject.output_file_id
+        # Get batch id
+        if ($PSCmdlet.ParameterSetName -ceq 'Batch') {
+            $BatchId = $Batch.id
         }
-        elseif ($Wait -and $InputObject.status -ne 'completed') {
+        if (-not $BatchId) {
+            Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve batch id.'))
+            return
+        }
+
+        $OutputFileId = $null
+        if ($Batch.output_file_id) {
+            $OutputFileId = $Batch.output_file_id
+        }
+        elseif ($Wait -and $Batch.status -ne 'completed') {
             $innerBatchObject = $BatchId | PSOpenAI\Wait-Batch @CommonParams
             $OutputFileId = $innerBatchObject.output_file_id
         }
@@ -74,7 +86,7 @@ function Get-BatchOutput {
         }
 
         #Download batch output content
-        $ByteContent = PSOpenAI\Get-OpenAIFileContent -Id $OutputFileId @CommonParams
+        $ByteContent = PSOpenAI\Get-OpenAIFileContent -FileId $OutputFileId @CommonParams
         if (-not $ByteContent) {
             return
         }

@@ -14,7 +14,7 @@ Cancel a vector store file batch.
 
 ```
 Stop-VectorStoreFileBatch
-    [-InputObject] <Object>
+    [-VectorStoreId] <String>
     [-BatchId] <String>
     [-Wait]
     [-PassThru]
@@ -33,17 +33,17 @@ Cancel a vector store file batch.
 
 ### Example 1
 ```powershell
-PS C:\> Stop-VectorStoreFileBatch -InputObject 'vs_abc123' -BatchId 'vsfb_abc123' -Wait
+PS C:\> Stop-VectorStoreFileBatch -VectorStoreId 'vs_abc123' -BatchId 'vsfb_abc123' -Wait
 ```
 
 ## PARAMETERS
 
-### -InputObject
+### -VectorStoreId
 The ID of the vector store that the file batch belongs to.
 
 ```yaml
-Type: Object
-Aliases: VectorStore, vector_store_id
+Type: String
+Aliases: vector_store_id
 Required: True
 Position: 0
 Accept pipeline input: True (ByValue, ByPropertyName)
@@ -54,7 +54,7 @@ The ID of the file batch to cancel.
 
 ```yaml
 Type: String
-Aliases: batch_id, Id
+Aliases: batch_id
 Required: True
 Position: 1
 Accept pipeline input: True (ByPropertyName)
@@ -122,14 +122,8 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
 
 ```yaml
 Type: Object
-Parameter Sets: (All)
-Aliases:
-
 Required: False
 Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
 ```
 
 ### -Organization

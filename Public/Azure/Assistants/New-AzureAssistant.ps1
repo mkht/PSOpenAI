@@ -2,9 +2,13 @@ function New-AzureAssistant {
     [CmdletBinding()]
     [OutputType([pscustomobject])]
     param (
-        # Hidden param, for Set-Assistants cmdlet
-        [Parameter(DontShow, ValueFromPipeline, ValueFromPipelineByPropertyName)]
-        [Object]$InputObject,
+        # Hidden param, for Set-Assistant cmdlet
+        [Parameter(DontShow, ParameterSetName = 'Assistant', ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [PSTypeName('PSOpenAI.Assistant')]$Assistant,
+
+        [Parameter(DontShow, ParameterSetName = 'AssistantId', ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
+        [string][UrlEncodeTransformation()]$AssistantId,
 
         [Parameter()]
         [ValidateLength(0, 256)]

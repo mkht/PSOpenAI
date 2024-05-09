@@ -15,12 +15,32 @@ Describe 'Stop-ThreadRun' {
             Mock -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $PesterBoundParameters }
             Mock -Verifiable -ModuleName $script:ModuleName Wait-ThreadRun {
                 [pscustomobject]@{
+                    PSTypeName     = 'PSOpenAI.Thread.Run'
                     'id'           = 'run_abc123'
                     'object'       = 'thread.run'
                     'created_at'   = [datetime]::Today
                     'assistant_id' = 'asst_abc123'
                     'thread_id'    = 'thread_abc123'
                     'status'       = 'cancelled'
+                    'started_at'   = [datetime]::Today
+                    'expires_at'   = $null
+                    'cancelled_at' = [datetime]::Today
+                    'failed_at'    = $null
+                    'completed_at' = $null
+                    'last_error'   = $null
+                    'model'        = 'gpt-4'
+                    'instructions' = $null
+                }
+            }
+            Mock -Verifiable -ModuleName $script:ModuleName Get-ThreadRun {
+                [pscustomobject]@{
+                    PSTypeName     = 'PSOpenAI.Thread.Run'
+                    'id'           = 'run_abc123'
+                    'object'       = 'thread.run'
+                    'created_at'   = [datetime]::Today
+                    'assistant_id' = 'asst_abc123'
+                    'thread_id'    = 'thread_abc123'
+                    'status'       = 'in_progress'
                     'started_at'   = [datetime]::Today
                     'expires_at'   = $null
                     'cancelled_at' = [datetime]::Today
@@ -60,29 +80,33 @@ Describe 'Stop-ThreadRun' {
 
         It 'Cancel run' {
             $InObject = [PSCustomObject]@{
+                PSTypeName = 'PSOpenAI.Thread.Run'
                 id         = 'run_abc123'
                 thread_id  = 'thread_abc123'
                 object     = 'thread.run'
                 status     = 'in_progress'
                 started_at = [datetime]::Today
             }
-            { $script:Result = Stop-ThreadRun -InputObject $InObject -ea Stop } | Should -Not -Throw
+            { $script:Result = Stop-ThreadRun -Run $InObject -ea Stop } | Should -Not -Throw
             Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
-            Should -Invoke Wait-ThreadRun -ModuleName $script:ModuleName -Times 0 -Exactly
+            Should -Not -Invoke Get-ThreadRun -ModuleName $script:ModuleName
+            Should -Not -Invoke Wait-ThreadRun -ModuleName $script:ModuleName
             $Result | Should -BeNullOrEmpty
         }
 
         It 'Cancel run (PassThru)' {
             $InObject = [PSCustomObject]@{
+                PSTypeName = 'PSOpenAI.Thread.Run'
                 id         = 'run_abc123'
                 thread_id  = 'thread_abc123'
                 object     = 'thread.run'
                 status     = 'in_progress'
                 started_at = [datetime]::Today
             }
-            { $script:Result = Stop-ThreadRun -InputObject $InObject -PassThru -ea Stop } | Should -Not -Throw
+            { $script:Result = Stop-ThreadRun -Run $InObject -PassThru -ea Stop } | Should -Not -Throw
             Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
-            Should -Invoke Wait-ThreadRun -ModuleName $script:ModuleName -Times 0 -Exactly
+            Should -Not -Invoke Get-ThreadRun -ModuleName $script:ModuleName
+            Should -Not -Invoke Wait-ThreadRun -ModuleName $script:ModuleName
             $Result.id | Should -Be 'run_abc123'
             $Result.thread_id | Should -Be 'thread_abc123'
             $Result.object | Should -Be 'thread.run'
@@ -91,28 +115,32 @@ Describe 'Stop-ThreadRun' {
 
         It 'Cancel run and wait cancelled' {
             $InObject = [PSCustomObject]@{
+                PSTypeName = 'PSOpenAI.Thread.Run'
                 id         = 'run_abc123'
                 thread_id  = 'thread_abc123'
                 object     = 'thread.run'
                 status     = 'in_progress'
                 started_at = [datetime]::Today
             }
-            { $script:Result = Stop-ThreadRun -InputObject $InObject -Wait -ea Stop } | Should -Not -Throw
+            { $script:Result = Stop-ThreadRun -Run $InObject -Wait -ea Stop } | Should -Not -Throw
             Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
+            Should -Not -Invoke Get-ThreadRun -ModuleName $script:ModuleName
             Should -Invoke Wait-ThreadRun -ModuleName $script:ModuleName -Times 1 -Exactly
             $Result | Should -BeNullOrEmpty
         }
 
         It 'Cancel run and wait cancelled (PassThru)' {
             $InObject = [PSCustomObject]@{
+                PSTypeName = 'PSOpenAI.Thread.Run'
                 id         = 'run_abc123'
                 thread_id  = 'thread_abc123'
                 object     = 'thread.run'
                 status     = 'in_progress'
                 started_at = [datetime]::Today
             }
-            { $script:Result = Stop-ThreadRun -InputObject $InObject -Wait -PassThru -ea Stop } | Should -Not -Throw
+            { $script:Result = Stop-ThreadRun -Run $InObject -Wait -PassThru -ea Stop } | Should -Not -Throw
             Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
+            Should -Not -Invoke Get-ThreadRun -ModuleName $script:ModuleName
             Should -Invoke Wait-ThreadRun -ModuleName $script:ModuleName -Times 1 -Exactly
             $Result.id | Should -Be 'run_abc123'
             $Result.thread_id | Should -Be 'thread_abc123'
@@ -122,20 +150,23 @@ Describe 'Stop-ThreadRun' {
 
         It 'Error when the run status is not valid' {
             $InObject = [PSCustomObject]@{
+                PSTypeName = 'PSOpenAI.Thread.Run'
                 id         = 'run_abc123'
                 thread_id  = 'thread_abc123'
                 object     = 'thread.run'
                 status     = 'completed'
                 started_at = [datetime]::Today
             }
-            { $script:Result = Stop-ThreadRun -InputObject $InObject -ea Stop } | Should -Throw
+            { $script:Result = Stop-ThreadRun -Run $InObject -ea Stop } | Should -Throw
             Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 0 -Exactly
-            Should -Invoke Wait-ThreadRun -ModuleName $script:ModuleName -Times 0 -Exactly
+            Should -Not -Invoke Get-ThreadRun -ModuleName $script:ModuleName
+            Should -Not -Invoke Wait-ThreadRun -ModuleName $script:ModuleName
             $Result | Should -BeNullOrEmpty
         }
 
         It 'When the Force is specified, No error even if the run status is not valid' {
             $InObject = [PSCustomObject]@{
+                PSTypeName = 'PSOpenAI.Thread.Run'
                 id         = 'run_abc123'
                 thread_id  = 'thread_abc123'
                 object     = 'thread.run'
@@ -144,15 +175,43 @@ Describe 'Stop-ThreadRun' {
             }
             { $script:Result = Stop-ThreadRun -InputObject $InObject -Force -PassThru -ea Stop } | Should -Not -Throw
             Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
-            Should -Invoke Wait-ThreadRun -ModuleName $script:ModuleName -Times 0 -Exactly
+            Should -Not -Invoke Get-ThreadRun -ModuleName $script:ModuleName
+            Should -Not -Invoke Wait-ThreadRun -ModuleName $script:ModuleName
             $Result.id | Should -Be 'run_abc123'
         }
 
-        It 'Error on invalid input' {
-            $InObject = [datetime]::Today
-            { $InObject | Stop-ThreadRun -ea Stop } | Should -Throw
-            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 0 -Exactly
-            Should -Invoke Wait-ThreadRun -ModuleName $script:ModuleName -Times 0 -Exactly
+        Context 'Parameter Sets' {
+            It 'Run' {
+                $InObject = [pscustomobject]@{
+                    PSTypeName = 'PSOpenAI.Thread.Run'
+                    id         = 'run_abc123'
+                    thread_id  = 'thread_abc123'
+                    status     = 'in_progress'
+                }
+                # Named
+                { Stop-ThreadRun -Run $InObject -ea Stop } | Should -Not -Throw
+                # Positional
+                { Stop-ThreadRun $InObject -ea Stop } | Should -Not -Throw
+                # Pipeline
+                { $InObject | Stop-ThreadRun -ea Stop } | Should -Not -Throw
+                Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 3 -Exactly
+                Should -Not -Invoke Get-ThreadRun -ModuleName $script:ModuleName
+                Should -Not -Invoke Wait-ThreadRun -ModuleName $script:ModuleName
+            }
+
+            It 'Id' {
+                # Named
+                { Stop-ThreadRun -RunId 'run_abc123' -ThreadId 'thread_abc123' -Wait -ea Stop } | Should -Not -Throw
+                # Positional
+                { Stop-ThreadRun 'run_abc123' 'thread_abc123' -Wait -ea Stop } | Should -Not -Throw
+                # Pipeline
+                { 'run_abc123' | Stop-ThreadRun -ThreadId 'thread_abc123' -Wait -ea Stop } | Should -Not -Throw
+                # Pipeline by property name
+                { [pscustomobject]@{thread_id = 'thread_abc123'; run_id = 'run_abc123' } | Stop-ThreadRun -Wait -ea Stop } | Should -Not -Throw
+                Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 4 -Exactly
+                Should -Invoke Get-ThreadRun -ModuleName $script:ModuleName -Times 4 -Exactly
+                Should -Invoke Wait-ThreadRun -ModuleName $script:ModuleName -Times 4 -Exactly
+            }
         }
     }
 

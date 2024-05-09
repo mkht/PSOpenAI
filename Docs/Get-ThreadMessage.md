@@ -15,7 +15,7 @@ Lists or Retrieves a Message of the Thread.
 ### Get
 ```
 Get-ThreadMessage
-    [-InputObject] <Object>
+    [-ThreadId] <String>
     -MessageId <String>
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
@@ -28,24 +28,11 @@ Get-ThreadMessage
 ### List
 ```
 Get-ThreadMessage
-    [-InputObject] <Object>
+    [-ThreadId] <String>
+    [-All]
     [-Limit <Int32>]
     [-Order <String>]
     [-RunId <String>]
-    [-TimeoutSec <Int32>]
-    [-MaxRetryCount <Int32>]
-    [-ApiBase <Uri>]
-    [-ApiKey <SecureString>]
-    [-Organization <String>]
-    [<CommonParameters>]
-```
-
-### ListAll
-```
-Get-ThreadMessage
-    -All
-    [-InputObject] <Object>
-    [-Order <String>]
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
     [-ApiBase <Uri>]
@@ -61,14 +48,14 @@ Lists or Retrieves a Message of the Thread.
 
 ### Example 1
 ```powershell
-PS C:\> Get-ThreadMessage -Thread 'thread_abc123' -All
+PS C:\> Get-ThreadMessage -ThreadId 'thread_abc123' -All
 ```
 
 List all message objects associated with the Thread whose ID is `thread_abc123`.
 
 ### Example 2
 ```powershell
-PS C:\> Get-ThreadMessage -Thread 'thread_abc123' -MessageId 'msg_abc123'
+PS C:\> Get-ThreadMessage -ThreadId 'thread_abc123' -MessageId 'msg_abc123'
 ```
 
 Retrieve a message with ID `msg_abc123` associated with the Thread whose ID is `thread_abc123`.
@@ -76,12 +63,12 @@ Retrieve a message with ID `msg_abc123` associated with the Thread whose ID is `
 
 ## PARAMETERS
 
-### -InputObject
+### -ThreadId
 The ID of the Thread for retrieve.
 
 ```yaml
-Type: Object
-Aliases: Thread, thread_id
+Type: String
+Aliases: thread_id
 Required: True
 Position: 0
 Accept pipeline input: True (ByPropertyName, ByValue)
@@ -96,7 +83,7 @@ Parameter Sets: Get
 Aliases: message_id
 Required: True
 Position: Named
-Accept pipeline input: True (ByPropertyName)
+Accept pipeline input: True (ByPropertyName, ByValue)
 ```
 
 ### -Limit
@@ -126,7 +113,7 @@ When this switch is specified, all Message objects will be retrieved.
 
 ```yaml
 Type: SwitchParameter
-Parameter Sets: ListAll
+Parameter Sets: List
 Required: False
 Position: Named
 ```
@@ -136,7 +123,7 @@ Sort order by the created timestamp of the objects. `asc` for ascending order an
 
 ```yaml
 Type: String
-Parameter Sets: List, ListAll
+Parameter Sets: List
 Accepted values: asc, desc
 Required: False
 Position: Named
@@ -185,14 +172,8 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
 
 ```yaml
 Type: Object
-Parameter Sets: (All)
-Aliases:
-
 Required: False
 Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
 ```
 
 ### -Organization

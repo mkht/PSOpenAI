@@ -1,32 +1,52 @@
 function Get-ThreadRunStep {
-    [CmdletBinding(DefaultParameterSetName = 'List')]
+    [CmdletBinding()]
     [OutputType([pscustomobject])]
     param (
-        [Parameter(ParameterSetName = 'Get', Mandatory, ValueFromPipelineByPropertyName)]
+        [Parameter(ParameterSetName = 'Get_Run', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Parameter(ParameterSetName = 'List_Run', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Alias('InputObject')]  # for backword compatibility
+        [PSTypeName('PSOpenAI.Thread.Run')]$Run,
+
+        [Parameter(ParameterSetName = 'Get_RunId', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Parameter(ParameterSetName = 'List_RunId', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
+        [Alias('run_id')]
+        [string][UrlEncodeTransformation()]$RunId,
+
+        [Parameter(ParameterSetName = 'Get_RunId', Mandatory, Position = 1, ValueFromPipelineByPropertyName)]
+        [Parameter(ParameterSetName = 'List_RunId', Mandatory, Position = 1, ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
+        [Alias('thread_id')]
+        [string][UrlEncodeTransformation()]$ThreadId,
+
+        [Parameter(ParameterSetName = 'Get_Run', Mandatory, Position = 1, ValueFromPipelineByPropertyName)]
+        [Parameter(ParameterSetName = 'Get_RunId', Mandatory, Position = 2, ValueFromPipelineByPropertyName)]
         [Alias('step_id')]
         [ValidateNotNullOrEmpty()]
         [string][UrlEncodeTransformation()]$StepId,
 
-        [Parameter(Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
-        [ValidateScript({ ([string]$_.id).StartsWith('run_', [StringComparison]::Ordinal) -and ([string]$_.thread_id).StartsWith('thread_', [StringComparison]::Ordinal) })]
-        [Alias('Run')]
-        [Object]$InputObject,
+        [Parameter(ParameterSetName = 'Get_RunStep', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [PSTypeName('PSOpenAI.Thread.Run.Step')]$Step,
 
-        [Parameter(ParameterSetName = 'List')]
+        [Parameter(ParameterSetName = 'List_Run')]
+        [Parameter(ParameterSetName = 'List_RunId')]
         [ValidateRange(1, 100)]
         [int]$Limit = 20,
 
-        [Parameter(ParameterSetName = 'ListAll')]
+        [Parameter(ParameterSetName = 'List_Run')]
+        [Parameter(ParameterSetName = 'List_RunId')]
         [switch]$All,
 
-        [Parameter(ParameterSetName = 'ListAll', DontShow)]
+        [Parameter(ParameterSetName = 'List_Run', DontShow)]
+        [Parameter(ParameterSetName = 'List_RunId', DontShow)]
         [string]$After,
 
-        [Parameter(ParameterSetName = 'ListAll', DontShow)]
+        [Parameter(ParameterSetName = 'List_Run', DontShow)]
+        [Parameter(ParameterSetName = 'List_RunId', DontShow)]
         [string]$Before,
 
-        [Parameter(ParameterSetName = 'List')]
-        [Parameter(ParameterSetName = 'ListAll')]
+        [Parameter(ParameterSetName = 'List_Run')]
+        [Parameter(ParameterSetName = 'List_RunId')]
         [ValidateSet('asc', 'desc')]
         [string][LowerCaseTransformation()]$Order = 'asc',
 
@@ -85,15 +105,24 @@ function Get-ThreadRunStep {
     }
 
     process {
-        # Get Thread ID and Run ID
-        [string][UrlEncodeTransformation()]$ThreadId = $InputObject.thread_id
+        # Get ids
+        if ($PSCmdlet.ParameterSetName -like '*_Run') {
+            $RunId = $Run.id
+            $ThreadId = $Run.thread_id
+        }
+        elseif ($PSCmdlet.ParameterSetName -like '*_RunStep') {
+            $RunId = $Step.run_id
+            $ThreadId = $Step.thread_id
+            $StepId = $Step.id
+        }
+
         if (-not $ThreadId) {
-            Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve Thread ID.'))
+            Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve thread id.'))
             return
         }
-        [string][UrlEncodeTransformation()]$RunId = $InputObject.id
+
         if (-not $RunId) {
-            Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve Run ID.'))
+            Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve run id.'))
             return
         }
 
@@ -101,13 +130,16 @@ function Get-ThreadRunStep {
         $QueryUri = ($OpenAIParameter.Uri.ToString() -f $ThreadId)
         $UriBuilder = [System.UriBuilder]::new($QueryUri)
         $UriBuilder.Path += "/$RunId/steps"
-        if ($StepId.StartsWith('step_', [StringComparison]::Ordinal)) {
+        if ($PSCmdlet.ParameterSetName -like 'Get_*') {
             $UriBuilder.Path += "/$StepId"
             $QueryUri = $UriBuilder.Uri
         }
-        elseif ($PSCmdlet.ParameterSetName -eq 'ListAll') {
+        else {
             $QueryParam = [System.Web.HttpUtility]::ParseQueryString($UriBuilder.Query)
-            $QueryParam.Add('limit', '100');
+            if ($All) {
+                $Limit = 100
+            }
+            $QueryParam.Add('limit', $Limit);
             $QueryParam.Add('order', $Order);
             if ($After) {
                 $QueryParam.Add('after', $After);
@@ -115,13 +147,6 @@ function Get-ThreadRunStep {
             if ($Before) {
                 $QueryParam.Add('before', $Before);
             }
-            $UriBuilder.Query = $QueryParam.ToString()
-            $QueryUri = $UriBuilder.Uri
-        }
-        else {
-            $QueryParam = [System.Web.HttpUtility]::ParseQueryString($UriBuilder.Query)
-            $QueryParam.Add('limit', $Limit);
-            $QueryParam.Add('order', $Order);
             $UriBuilder.Query = $QueryParam.ToString()
             $QueryUri = $UriBuilder.Uri
         }
@@ -176,7 +201,7 @@ function Get-ThreadRunStep {
 
         #region Pagenation
         if ($Response.has_more) {
-            if ($PSCmdlet.ParameterSetName -eq 'ListAll') {
+            if ($All) {
                 # pagenate
                 $PagenationParam = $PSBoundParameters
                 $PagenationParam.After = $Response.last_id

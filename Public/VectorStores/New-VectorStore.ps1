@@ -1,15 +1,19 @@
 function New-VectorStore {
-    [CmdletBinding()]
+    [CmdletBinding(DefaultParameterSetName = 'VectorStoreId')]
     [OutputType([pscustomobject])]
     param (
         # Hidden param, for Set-Thread cmdlet
-        [Parameter(DontShow, ValueFromPipeline, ValueFromPipelineByPropertyName)]
-        [Object]$InputObject,
+        [Parameter(DontShow, ParameterSetName = 'VectorStore', ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [PSTypeName('PSOpenAI.VectorStore')]$VectorStore,
+
+        [Parameter(DontShow, ParameterSetName = 'VectorStoreId', ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
+        [string][UrlEncodeTransformation()]$VectorStoreId,
 
         [Parameter()]
         [Alias('file_ids')]
         [ValidateCount(0, 500)]
-        [string[]]$FileId,
+        [object[]]$FileId,
 
         [Parameter()]
         [string]$Name,
@@ -77,14 +81,12 @@ function New-VectorStore {
     }
 
     process {
-        # Get vector store id
-        if ($null -ne $InputObject) {
-            [string][UrlEncodeTransformation()]$VsId = Get-VectorStoreIdFromInputObject $InputObject
-        }
-
         #region Construct parameters for API request
-        if (-not [string]::IsNullOrEmpty($VsId)) {
-            $QueryUri = $OpenAIParameter.Uri.ToString() + "/$VsId"
+        if ($VectorStore) {
+            $VectorStoreId = $VectorStore.id
+        }
+        if (-not [string]::IsNullOrEmpty($VectorStoreId)) {
+            $QueryUri = $OpenAIParameter.Uri.ToString() + "/$VectorStoreId"
         }
         else {
             $QueryUri = $OpenAIParameter.Uri
@@ -93,7 +95,18 @@ function New-VectorStore {
         #region Construct parameters for API request
         $PostBody = [System.Collections.Specialized.OrderedDictionary]::new()
         if ($FileId.Count -gt 0) {
-            $PostBody.file_ids = $FileId
+            $list = [System.Collections.Generic.List[string]]::new($FileId.Count)
+            foreach ($item in $FileId) {
+                if ($item -is [string]) {
+                    $PostBody.file_ids += $item
+                }
+                elseif ($item.psobject.TypeNames -contains 'PSOpenAI.File') {
+                    $PostBody.file_ids += $item.id
+                }
+            }
+            if ($list.Count -gt 0) {
+                $PostBody.file_ids = $list.ToArray()
+            }
         }
         if ($PSBoundParameters.ContainsKey('Name')) {
             $PostBody.name = $Name

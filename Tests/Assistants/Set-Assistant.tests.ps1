@@ -15,6 +15,7 @@ Describe 'Set-Assistant' {
             Mock -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $PesterBoundParameters }
             Mock -Verifiable -ModuleName $script:ModuleName New-Assistant {
                 [pscustomobject]@{
+                    PSTypeName = 'PSOpenAI.Assistant'
                     id         = 'asst_abc123'
                     object     = 'assistant'
                     created_at = [datetime]::Today
@@ -27,44 +28,38 @@ Describe 'Set-Assistant' {
         }
 
         It 'Set assistant with ID' {
-            { $script:Result = Set-Assistant -InputObject 'asst_abc123' -ea Stop } | Should -Not -Throw
-            Should -Invoke New-Assistant -ModuleName $script:ModuleName
-            $script:Result.id | Should -Be 'asst_abc123'
+            { $script:Result = Set-Assistant -AssistantId 'asst_abc123' -ea Stop } | Should -Not -Throw
+            Should -Invoke New-Assistant -ModuleName $script:ModuleName -Times 1 -Exactly
+            $Result.psobject.TypeNames | Should -Contain 'PSOpenAI.Assistant'
+            $Result.id | Should -Be 'asst_abc123'
         }
 
-        It 'Remove thread with Thread object' {
-            $InObject = [pscustomobject]@{
-                id         = 'asst_abc123'
-                object     = 'thread'
-                created_at = [datetime]::Today
+        Context 'Parameter Sets' {
+            It 'Assistant' {
+                $InObject = [pscustomobject]@{
+                    PSTypeName = 'PSOpenAI.Assistant'
+                    id         = 'asst_abc123'
+                }
+                # Named
+                { Set-Assistant -Assistant $InObject -Name 'NewName' -ea Stop } | Should -Not -Throw
+                # Position
+                { Set-Assistant $InObject -Name 'NewName' -ea Stop } | Should -Not -Throw
+                # Pipeline
+                { $InObject | Set-Assistant -Name 'NewName' -ea Stop } | Should -Not -Throw
+                Should -Invoke -CommandName New-Assistant -ModuleName $script:ModuleName -Times 3 -Exactly
             }
-            { $script:Result = Set-Assistant -InputObject $InObject -ea Stop } | Should -Not -Throw
-            Should -Invoke New-Assistant -ModuleName $script:ModuleName
-            $script:Result.id | Should -Be 'asst_abc123'
-        }
 
-        It 'Pipeline input with ID' {
-            $InObject = 'asst_abc123'
-            { $script:Result = $InObject | Set-Assistant -ea Stop } | Should -Not -Throw
-            Should -Invoke New-Assistant -ModuleName $script:ModuleName
-            $script:Result.id | Should -Be 'asst_abc123'
-        }
-
-        It 'Pipeline input with Object' {
-            $InObject = [pscustomobject]@{
-                id         = 'asst_abc123'
-                object     = 'thread'
-                created_at = [datetime]::Today
+            It 'AssistantId' {
+                # Named
+                { Set-Assistant -AssistantId 'asst_abc123' -Name 'NewName' -ea Stop } | Should -Not -Throw
+                # Position
+                { Set-Assistant 'asst_abc123' -Name 'NewName' -ea Stop } | Should -Not -Throw
+                # Pipeline
+                { 'asst_abc123' | Set-Assistant -Name 'NewName' -ea Stop } | Should -Not -Throw
+                # Property name
+                { [pscustomobject]@{assistant_id = 'asst_abc123' } | Set-Assistant -Name 'NewName' -ea Stop } | Should -Not -Throw
+                Should -Invoke -CommandName New-Assistant -ModuleName $script:ModuleName -Times 4 -Exactly
             }
-            { $script:Result = $InObject | Set-Assistant -ea Stop } | Should -Not -Throw
-            Should -Invoke New-Assistant -ModuleName $script:ModuleName
-            $script:Result.id | Should -Be 'asst_abc123'
-        }
-
-        It 'Error on invalid input' {
-            $InObject = [datetime]::Today
-            { $InObject | Set-Assistant -ea Stop } | Should -Throw
-            Should -Invoke New-Assistant -ModuleName $script:ModuleName -Times 0 -Exactly
         }
     }
 }

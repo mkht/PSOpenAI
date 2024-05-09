@@ -15,25 +15,10 @@ Returns a list of vector store files in a batch.
 ### List
 ```
 Get-VectorStoreFileInBatch
-    [-InputObject] <Object>
+    [-VectorStoreId] <String>
     [-BatchId] <String>
+    [-All]
     [-Limit <Int32>]
-    [-Order <String>]
-    [-Filter <String>]
-    [-TimeoutSec <Int32>]
-    [-MaxRetryCount <Int32>]
-    [-ApiBase <Uri>]
-    [-ApiKey <SecureString>]
-    [-Organization <String>]
-    [<CommonParameters>]
-```
-
-### ListAll
-```
-Get-VectorStoreFileInBatch
-    -All
-    [-InputObject] <Object>
-    [-BatchId] <String>
     [-Order <String>]
     [-Filter <String>]
     [-TimeoutSec <Int32>]
@@ -51,20 +36,20 @@ Returns a list of vector store files in a batch.
 
 ### Example 1
 ```powershell
-PS C:\> Get-VectorStoreFileInBatch -InputObject 'vs_abc123' -BatchId 'vsfb_abc123' -All
+PS C:\> Get-VectorStoreFileInBatch -VectorStoreId 'vs_abc123' -BatchId 'vsfb_abc123' -All
 ```
 
 Get all files in the vector store batch with ID of `vsfb_abc123`.
 
 ## PARAMETERS
 
-### -InputObject
+### -VectorStoreId
 The ID of the vector store that the batch belongs to.
 
 ```yaml
-Type: Object
-Parameter Sets: List, ListAll
-Aliases: VectorStore, vector_store_id
+Type: String
+Parameter Sets: List
+Aliases: vector_store_id
 Required: True
 Position: 0
 Accept pipeline input: True (ByValue, ByPropertyName)
@@ -75,8 +60,8 @@ The ID of the file batch being retrieved.
 
 ```yaml
 Type: String
-Parameter Sets: List, ListAll
-Aliases: batch_id, Id
+Parameter Sets: List
+Aliases: batch_id
 Required: True
 Position: 1
 Accept pipeline input: True (ByPropertyName)
@@ -87,7 +72,7 @@ Filter by file status. One of `in_progress`, `completed`, `failed`, `cancelled`.
 
 ```yaml
 Type: String
-Parameter Sets: List, ListAll
+Parameter Sets: List
 Required: False
 Position: Named
 ```
@@ -108,7 +93,7 @@ When this switch is specified, all files in a batch will be retrieved.
 
 ```yaml
 Type: SwitchParameter
-Parameter Sets: ListAll
+Parameter Sets: List
 Required: False
 Position: Named
 ```
@@ -118,7 +103,7 @@ Sort order by the created timestamp of the objects. `asc` for ascending order an
 
 ```yaml
 Type: String
-Parameter Sets: List, ListAll
+Parameter Sets: List
 Accepted values: asc, desc
 Required: False
 Position: Named
@@ -167,14 +152,8 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
 
 ```yaml
 Type: Object
-Parameter Sets: (All)
-Aliases:
-
 Required: False
 Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
 ```
 
 ### -Organization

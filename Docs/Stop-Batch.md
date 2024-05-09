@@ -14,7 +14,7 @@ Cancels an in-progress batch.
 
 ```
 Stop-Batch
-    [-InputObject] <Object>
+    [-BatchId] <String>
     [-Wait]
     [-Force]
     [-PassThru]
@@ -52,15 +52,15 @@ Cancels an in-progress batch. Then the cmdlet waits until the batch has been can
 
 ## PARAMETERS
 
-### -InputObject
-The batch object or id to cancel.
+### -BatchId
+The batch id to cancel.
 
 ```yaml
-Type: Object
-Aliases: Id
+Type: String
+Aliases: Id, batch_id
 Required: True
 Position: 0
-Accept pipeline input: True (ByValue)
+Accept pipeline input: True (ByValue, ByPropertyName)
 ```
 
 ### -Wait

@@ -2,15 +2,19 @@ function Start-AzureThreadRun {
     [CmdletBinding()]
     [OutputType([pscustomobject])]
     param (
-        [Parameter(Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
-        [Alias('thread_id')]
-        [Alias('Thread')]
-        [ValidateScript({ [bool](Get-ThreadIdFromInputObject $_) })]
-        [Object]$InputObject,
+        [Parameter(ParameterSetName = 'Run_Thread', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Alias('InputObject')]  # for backword compatibility
+        [PSTypeName('PSOpenAI.Thread')]$Thread,
 
-        [Parameter(Mandatory, ValueFromPipelineByPropertyName)]
+        [Parameter(ParameterSetName = 'Run_ThreadId', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
+        [Alias('thread_id')]
+        [string][UrlEncodeTransformation()]$ThreadId,
+
+        [Parameter(Mandatory, Position = 1, ValueFromPipelineByPropertyName)]
         [Alias('assistant_id')]
-        [ValidateScript({ [bool](Get-AssistantIdFromInputObject $_) })]
+        [Alias('AssistantId')]
+        [ValidateNotNullOrEmpty()]
         [Object]$Assistant,
 
         [Parameter()]
@@ -21,7 +25,8 @@ function Start-AzureThreadRun {
         [ValidateLength(0, 32768)]
         [string]$Instructions,
 
-        [Parameter()]
+        [Parameter(ParameterSetName = 'Run_Thread')]
+        [Parameter(ParameterSetName = 'Run_ThreadId')]
         [Alias('additional_instructions')]
         [string]$AdditionalInstructions,
 
