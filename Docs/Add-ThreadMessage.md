@@ -14,7 +14,7 @@ Add a message to the Thread.
 
 ```
 Add-ThreadMessage
-    -InputObject <Object>
+    -ThreadId <String>
     [-Message] <String>
     [-Role <String>]
     [-FileIdsForCodeInterpreter <String[]>]
@@ -36,7 +36,7 @@ Add a message to the Thread. The message is usually a question to ask the Assist
 
 ### Example 1
 ```powershell
-PS C:\> Add-ThreadMessage -Thread "thread_abc1234" -Message "How many people lives in the world?"
+PS C:\> Add-ThreadMessage -ThreadId "thread_abc1234" -Message "How many people lives in the world?"
 ```
 
 Add a message to the Thread whose ID is `thread_abc1234``. This cmdlet outputs nothing by default.
@@ -50,12 +50,12 @@ Creates a new Thread and adds a message. When the `-PassThru` switch is specifie
 
 ## PARAMETERS
 
-### -InputObject
-Specifies Thread ID or Thread object.  
+### -ThreadId
+Specifies an ID of Thread.
 
 ```yaml
-Type: Object
-Aliases: Thread, thread_id
+Type: String
+Aliases: thread_id
 Required: True
 Position: Named
 Accept pipeline input: True (ByPropertyName, ByValue)
@@ -159,14 +159,8 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
 
 ```yaml
 Type: Object
-Parameter Sets: (All)
-Aliases:
-
 Required: False
 Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
 ```
 
 ### -Organization

@@ -2,11 +2,14 @@ function Set-AzureAssistant {
     [CmdletBinding()]
     [OutputType([pscustomobject])]
     param (
-        [Parameter(Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Parameter(ParameterSetName = 'Assistant', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Alias('InputObject')]  # for backword compatibility
+        [PSTypeName('PSOpenAI.Assistant')]$Assistant,
+
+        [Parameter(ParameterSetName = 'AssistantId', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
         [Alias('assistant_id')]
-        [Alias('Assistant')]
-        [ValidateScript({ [bool](Get-AssistantIdFromInputObject $_) })]
-        [Object]$InputObject,
+        [string][UrlEncodeTransformation()]$AssistantId,
 
         [Parameter()]
         [ValidateLength(0, 256)]

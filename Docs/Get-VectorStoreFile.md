@@ -15,7 +15,7 @@ Retrieves vector store files.
 ### Get
 ```
 Get-VectorStoreFile
-    [-InputObject] <Object>
+    [-VectorStoreId] <String>
     [-FileId] <String>
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
@@ -28,23 +28,9 @@ Get-VectorStoreFile
 ### List
 ```
 Get-VectorStoreFile
-    [-InputObject] <Object>
+    [-VectorStoreId] <String>
+    [-All]
     [-Limit <Int32>]
-    [-Order <String>]
-    [-Filter <String>]
-    [-TimeoutSec <Int32>]
-    [-MaxRetryCount <Int32>]
-    [-ApiBase <Uri>]
-    [-ApiKey <SecureString>]
-    [-Organization <String>]
-    [<CommonParameters>]
-```
-
-### ListAll
-```
-Get-VectorStoreFile
-    -All
-    [-InputObject] <Object>
     [-Order <String>]
     [-Filter <String>]
     [-TimeoutSec <Int32>]
@@ -62,27 +48,27 @@ Retrieves vector store files.
 
 ### Example 1
 ```powershell
-PS C:\> Get-VectorStoreFile -InputObject 'vs_abc123' -FileId 'file-abc123'
+PS C:\> Get-VectorStoreFile -VectorStoreId 'vs_abc123' -FileId 'file-abc123'
 ```
 
 Get a file with ID `file-abc123` in the vector store with ID of `vs_abc123`.
 
 ### Example 2
 ```powershell
-PS C:\> Get-VectorStoreFile -InputObject 'vs_abc123' -All
+PS C:\> Get-VectorStoreFile -VectorStoreId 'vs_abc123' -All
 ```
 
 Get all files in the vector store with ID of `vs_abc123`.
 
 ## PARAMETERS
 
-### -InputObject
+### -VectorStoreId
 The ID of the vector store that the file belongs to.
 
 ```yaml
-Type: Object
+Type: String
 Parameter Sets: Get
-Aliases: VectorStore, vector_store_id
+Aliases: vector_store_id
 Required: True
 Position: 0
 Accept pipeline input: True (ByValue, ByPropertyName)
@@ -94,7 +80,7 @@ The ID of the file being retrieved.
 ```yaml
 Type: String
 Parameter Sets: Get
-Aliases: file_id, Id
+Aliases: file_id
 Required: True
 Position: 1
 Accept pipeline input: True (ByPropertyName)
@@ -185,14 +171,8 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
 
 ```yaml
 Type: Object
-Parameter Sets: (All)
-Aliases:
-
 Required: False
 Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
 ```
 
 ### -Organization

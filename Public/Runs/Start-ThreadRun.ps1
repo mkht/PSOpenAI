@@ -2,16 +2,19 @@ function Start-ThreadRun {
     [CmdletBinding(DefaultParameterSetName = 'ThreadAndRun')]
     [OutputType([pscustomobject])]
     param (
-        [Parameter(Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName, ParameterSetName = 'Run')]
-        [Parameter(Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName, ParameterSetName = 'Run_Stream')]
-        [Alias('thread_id')]
-        [Alias('Thread')]
-        [ValidateScript({ [bool](Get-ThreadIdFromInputObject $_) })]
-        [Object]$InputObject,
+        [Parameter(ParameterSetName = 'Run_Thread', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Alias('InputObject')]  # for backword compatibility
+        [PSTypeName('PSOpenAI.Thread')]$Thread,
 
-        [Parameter(Mandatory, ValueFromPipelineByPropertyName)]
+        [Parameter(ParameterSetName = 'Run_ThreadId', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
+        [Alias('thread_id')]
+        [string][UrlEncodeTransformation()]$ThreadId,
+
+        [Parameter(Mandatory, Position = 1, ValueFromPipelineByPropertyName)]
         [Alias('assistant_id')]
-        [ValidateScript({ [bool](Get-AssistantIdFromInputObject $_) })]
+        [Alias('AssistantId')]
+        [ValidateNotNullOrEmpty()]
         [Object]$Assistant,
 
         [Parameter()]
@@ -35,37 +38,33 @@ function Start-ThreadRun {
         [ValidateLength(0, 256000)]
         [string]$Instructions,
 
-        [Parameter(ParameterSetName = 'Run')]
-        [Parameter(ParameterSetName = 'Run_Stream')]
+        [Parameter(ParameterSetName = 'Run_Thread')]
+        [Parameter(ParameterSetName = 'Run_ThreadId')]
         [Alias('additional_instructions')]
         [string]$AdditionalInstructions,
 
-        [Parameter(ParameterSetName = 'Run')]
-        [Parameter(ParameterSetName = 'Run_Stream')]
+        [Parameter(ParameterSetName = 'Run_Thread')]
+        [Parameter(ParameterSetName = 'Run_ThreadId')]
+        [Parameter(ParameterSetName = 'ThreadAndRun')]
         [Alias('additional_messages')]
         [object[]]$AdditionalMessages,
 
         #region Parameters for Thread and Run
-        [Parameter(Mandatory, Position = 0, ParameterSetName = 'ThreadAndRun')]
-        [Parameter(Mandatory, Position = 0, ParameterSetName = 'ThreadAndRun_Stream')]
+        [Parameter(Mandatory, ParameterSetName = 'ThreadAndRun')]
         [Alias('Text')]
         [Alias('Content')]
         [ValidateNotNullOrEmpty()]
         [string]$Message,
 
         [Parameter(ParameterSetName = 'ThreadAndRun')]
-        [Parameter(ParameterSetName = 'ThreadAndRun_Stream')]
         [Completions('user', 'assistant')]
         [string][LowerCaseTransformation()]$Role = 'user',
 
         [Parameter(ParameterSetName = 'ThreadAndRun')]
-        [Parameter(ParameterSetName = 'ThreadAndRun_Stream')]
         [ValidateCount(0, 20)]
-        [string[]]$FileIdsForCodeInterpreter,
+        [object[]]$FileIdsForCodeInterpreter,
 
         [Parameter(ParameterSetName = 'ThreadAndRun')]
-        [Parameter(ParameterSetName = 'ThreadAndRun_Stream')]
-        [ValidateScript({ [bool](Get-VectorStoreIdFromInputObject $_) })]
         [ValidateCount(1, 1)]
         [object[]]$VectorStoresForFileSearch,
         #endregion
@@ -121,8 +120,7 @@ function Start-ThreadRun {
         [Alias('top_p')]
         [double]$TopP,
 
-        [Parameter(Mandatory, ParameterSetName = 'Run_Stream')]
-        [Parameter(Mandatory, ParameterSetName = 'ThreadAndRun_Stream')]
+        [Parameter()]
         [switch]$Stream,
 
         [Parameter()]
@@ -176,30 +174,43 @@ function Start-ThreadRun {
 
         # Initialize Organization ID
         $Organization = Initialize-OrganizationID -OrgId $Organization
+    }
 
+    process {
         # Get API endpoint
-        if ($PSCmdlet.ParameterSetName.StartsWith('ThreadAndRun', [System.StringComparison]::Ordinal)) {
+        if ($PSCmdlet.ParameterSetName -ceq 'ThreadAndRun') {
             $EndpointName = 'ThreadAndRun'
         }
         else {
             $EndpointName = 'Runs'
         }
-
         # Get API context
         $OpenAIParameter = Get-OpenAIContext -EndpointName $EndpointName -ApiType $ApiType -AuthType $AuthType -ApiBase $ApiBase -ApiVersion $ApiVersion -ErrorAction Stop
 
-        # Parse Common params
-        $CommonParams = ParseCommonParams $PSBoundParameters
-    }
-
-    process {
         # Get thread_id
-        if ($PSCmdlet.ParameterSetName.StartsWith('Run', [System.StringComparison]::Ordinal)) {
-            [string][UrlEncodeTransformation()]$ThreadID = Get-ThreadIdFromInputObject $InputObject
+        if ($PSCmdlet.ParameterSetName -like '*_Thread') {
+            $ThreadID = $Thread.id
             if (-not $ThreadID) {
                 Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve Thread ID.'))
                 return
             }
+        }
+
+        # Get assistant_id
+        [string]$AssistantId = ''
+        if ($Assistant -is [string]) {
+            $AssistantId = $Assistant
+        }
+        elseif ($Assistant.psobject.TypeNames -contains 'PSOpenAI.Assistant') {
+            $AssistantId = $Assistant.id
+        }
+
+        if (-not $AssistantId) {
+            Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve Assistant ID.'))
+            return
+        }
+
+        if ($PSCmdlet.ParameterSetName -like 'Run_*') {
             $QueryUri = ($OpenAIParameter.Uri.ToString() -f $ThreadID)
         }
         else {
@@ -208,13 +219,6 @@ function Start-ThreadRun {
 
         #region Construct parameters for API request
         $PostBody = [System.Collections.Specialized.OrderedDictionary]::new()
-
-        # Get assistant_id
-        $AssistantId = Get-AssistantIdFromInputObject $Assistant
-        if (-not $AssistantId) {
-            Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve Assistant ID.'))
-            return
-        }
 
         #region Construct tools object
         $Tools = @()
@@ -245,18 +249,45 @@ function Start-ThreadRun {
         #region Construct tools resources
         $ToolResources = @{}
         if ($FileIdsForCodeInterpreter.Count -gt 0) {
-            $ToolResources.code_interpreter = @{'file_ids' = $FileIdsForCodeInterpreter }
+            $list = [System.Collections.Generic.List[string]]::new($FileIdsForCodeInterpreter.Count)
+            foreach ($item in $FileIdsForCodeInterpreter) {
+                if ($item -is [string]) {
+                    $list.Add($item)
+                }
+                elseif ($item.psobject.TypeNames -contains 'PSOpenAI.File') {
+                    $list.Add($item.id)
+                }
+            }
+            if ($list.Count -gt 0) {
+                $ToolResources.code_interpreter = @{'file_ids' = $list.ToArray() }
+            }
         }
         if ($FileIdsForFileSearch.Count -gt 0) {
-            $ToolResources.file_search = @{'vector_stores' = @(@{'file_ids' = $FileIdsForFileSearch }) }
-        }
-        if ($PSBoundParameters.ContainsKey('VectorStoresForFileSearch')) {
-            $vsids = @()
-            foreach ($vs in $VectorStoresForFileSearch) {
-                $vsids += Get-VectorStoreIdFromInputObject $vs
+            $list = [System.Collections.Generic.List[string]]::new($FileIdsForFileSearch.Count)
+            foreach ($item in $FileIdsForFileSearch) {
+                if ($item -is [string]) {
+                    $list.Add($item)
+                }
+                elseif ($item.psobject.TypeNames -contains 'PSOpenAI.File') {
+                    $list.Add($item.id)
+                }
             }
-            if ($vsids.Count -gt 0) {
-                $ToolResources.file_search = @{'vector_store_ids' = $vsids }
+            if ($list.Count -gt 0) {
+                $ToolResources.file_search = @{'vector_stores' = @(@{'file_ids' = $list.ToArray() }) }
+            }
+        }
+        if ($VectorStoresForFileSearch.Count -gt 0) {
+            $list = [System.Collections.Generic.List[string]]::new($FileIdsForFileSearch.Count)
+            foreach ($item in $VectorStoresForFileSearch) {
+                if ($item -is [string]) {
+                    $list.Add($item)
+                }
+                elseif ($item.psobject.TypeNames -contains 'PSOpenAI.VectorStore') {
+                    $list.Add($item.id)
+                }
+            }
+            if ($list.Count -gt 0) {
+                $ToolResources.file_search = @{'vector_store_ids' = $list.ToArray() }
             }
         }
         #endregion
@@ -332,9 +363,9 @@ function Start-ThreadRun {
                     role    = [string]$msg.role
                     content = $msg.content
                 }
-                # file_ids is optional
-                if ($msg.file_ids.Count -gt 0) {
-                    $tm.file_ids = @($msg.file_ids)
+                # attachments is optional
+                if ($msg.attachments.Count -gt 0) {
+                    $tm.attachments = @($msg.attachments)
                 }
                 # metadata is optional
                 if ($msg.metadata -is [System.Collections.IDictionary]) {
@@ -349,17 +380,22 @@ function Start-ThreadRun {
             }
             $Messages.Add($tm)
         }
-        if ($Messages.Count -gt 0) {
+
+        if ($PSCmdlet.ParameterSetName -ceq 'ThreadAndRun') {
+            if ($Message) {
+                $um = [ordered]@{
+                    role    = $Role
+                    content = $Message
+                }
+                $Messages.Add($um)
+            }
+            $PostBody.thread = @{}
+            $PostBody.thread.messages = $Messages
+        }
+        elseif ($Messages.Count -gt 0) {
             $PostBody.additional_messages = $Messages
         }
 
-        if ($PSCmdlet.ParameterSetName.StartsWith('ThreadAndRun', [System.StringComparison]::Ordinal)) {
-            $PostBody.thread = @{}
-            $PostBody.thread.messages = @(@{
-                    role    = $Role
-                    content = $Message
-                })
-        }
         if ($Stream) {
             $PostBody.stream = $true
         }
@@ -460,7 +496,7 @@ function Start-ThreadRun {
 
         #region Output
         Write-Verbose ('Start thread run with id "{0}". The current status is "{1}"' -f $Response.id, $Response.status)
-        ParseThreadRunObject $Response -CommonParams $CommonParams -Primitive
+        ParseThreadRunObject $Response
         #endregion
     }
 

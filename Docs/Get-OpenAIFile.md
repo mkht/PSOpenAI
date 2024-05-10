@@ -12,10 +12,10 @@ Retrieves information about files stored in OpenAI, allowing for listing and ret
 
 ## SYNTAX
 
-### List
+### Get
 ```
 Get-OpenAIFile
-    [-Purpose <String>]
+    [-FileId] <String>
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
     [-ApiBase <Uri>]
@@ -24,10 +24,10 @@ Get-OpenAIFile
     [<CommonParameters>]
 ```
 
-### Get
+### List
 ```
 Get-OpenAIFile
-    [-Id] <String>
+    [-Purpose <String>]
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
     [-ApiBase <Uri>]
@@ -43,7 +43,7 @@ Retrieves information about files stored in OpenAI, allowing for listing and ret
 
 ### Example 1
 ```powershell
-PS C:\> Get-OpenAIFile -Id "file-abc123"
+PS C:\> Get-OpenAIFile -FileId "file-abc123"
 ```
 
 This command retrieves a file with the specified ID from OpenAI.
@@ -51,20 +51,20 @@ This command retrieves a file with the specified ID from OpenAI.
 
 ## PARAMETERS
 
-### -Id
+### -FileId
 Specifies the ID of the file to be retrieved.
 
 ```yaml
 Type: String
 Parameter Sets: Get
-Aliases: file_id
+Aliases: Id, file_id
 Required: True
 Position: 0
 Accept pipeline input: True (ByPropertyName, ByValue)
 ```
 
 ### -Purpose
-{{ Fill Purpose Description }}
+Only return files with the given purpose.
 
 ```yaml
 Type: String
@@ -115,14 +115,8 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
 
 ```yaml
 Type: Object
-Parameter Sets: (All)
-Aliases:
-
 Required: False
 Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
 ```
 
 ### -Organization

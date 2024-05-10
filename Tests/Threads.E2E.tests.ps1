@@ -98,7 +98,8 @@ Password should be between 8 and 12 random alphanumeric characters.
                 $script:Thread = $null
 
                 # Prepare test datasets
-                $script:dataSet = Expand-Archive ($script:TestData + '/datasets.zip') -DestinationPath (Join-Path $TestDrive 'datasets') -Force -PassThru
+                $null = Expand-Archive ($script:TestData + '/datasets.zip') -DestinationPath (Join-Path $TestDrive 'datasets') -Force
+                $script:dataSet = Get-ChildItem (Join-Path $TestDrive 'datasets') -Recurse -File
                 $script:dataSet = $script:dataSet | ? { -not $_.PSIsContainer }
 
                 $script:Instructions = 'You are a helpful assistant. You have access to the files you need to answer questions. Always answer based on the contents of the file. Do not use any information that is not in the file.'

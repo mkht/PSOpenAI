@@ -20,10 +20,10 @@ New-Assistant
     [-Instructions <String>]
     [-UseCodeInterpreter]
     [-UseFileSearch]
-    [-Functions]
-    [-FileIdsForCodeInterpreter <String[]>]
+    [-Functions <IDictionary[]>]
+    [-FileIdsForCodeInterpreter <Object[]>]
     [-VectorStoresForFileSearch <Object[]>]
-    [-FileIdsForFileSearch <String[]>]
+    [-FileIdsForFileSearch <Object[]>]
     [-Temperature <Double>]
     [-TopP <Double>]
     [-MetaData <IDictionary>]
@@ -120,7 +120,7 @@ Position: Named
 A list of file IDs made available to the code_interpreter tool. There can be a maximum of 20 files associated with the tool.
 
 ```yaml
-Type: String[]
+Type: Object[]
 Required: False
 Position: Named
 ```
@@ -138,7 +138,7 @@ Position: Named
 A list of file IDs to add to the vector store. There can be a maximum of 10000 files in a vector store.
 
 ```yaml
-Type: String[]
+Type: Object[]
 Required: False
 Position: Named
 ```
@@ -226,14 +226,8 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
 
 ```yaml
 Type: Object
-Parameter Sets: (All)
-Aliases:
-
 Required: False
 Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
 ```
 
 ### -Organization

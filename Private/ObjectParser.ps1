@@ -2,13 +2,7 @@ function ParseBatchObject {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory, Position = 0, ValueFromPipeline)]
-        [PSCustomObject]$InputObject,
-
-        [Parameter()]
-        [System.Collections.IDictionary]$CommonParams = @{},
-
-        [Parameter()]
-        [switch]$Primitive
+        [PSCustomObject]$InputObject
     )
 
     # Add custom type name and properties to output object.
@@ -44,13 +38,7 @@ function ParseThreadRunObject {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory, Position = 0, ValueFromPipeline)]
-        [PSCustomObject]$InputObject,
-
-        [Parameter()]
-        [System.Collections.IDictionary]$CommonParams = @{},
-
-        [Parameter()]
-        [switch]$Primitive
+        [PSCustomObject]$InputObject
     )
 
     # Add custom type name and properties to output object.
@@ -81,7 +69,7 @@ function ParseThreadRunStepObject {
     if ($InputObject.type -eq 'message_creation') {
         if ($msgid = $InputObject.step_details.message_creation.message_id) {
             $GetThreadMessageParams = $CommonParams
-            $GetThreadMessageParams.InputObject = $InputObject
+            $GetThreadMessageParams.ThreadId = $InputObject.thread_id
             $GetThreadMessageParams.MessageId = $msgid
             $msg = PSOpenAI\Get-ThreadMessage @GetThreadMessageParams
             [PSCustomObject]@{
@@ -167,7 +155,7 @@ function ParseThreadObject {
         $InputObject | Add-Member -MemberType NoteProperty -Name 'created_at' -Value ([System.DateTimeOffset]::FromUnixTimeSeconds($unixtime).LocalDateTime) -Force
     }
     if (-not $Primitive) {
-        $InputObject | Add-Member -MemberType NoteProperty -Name 'Messages' -Value @(PSOpenAI\Get-ThreadMessage -InputObject $InputObject.id -All @CommonParams) -Force
+        $InputObject | Add-Member -MemberType NoteProperty -Name 'Messages' -Value @(PSOpenAI\Get-ThreadMessage -ThreadId $InputObject.id -All @CommonParams) -Force
     }
     else {
         $InputObject | Add-Member -MemberType NoteProperty -Name 'Messages' -Value ([object[]]::new(0)) -Force

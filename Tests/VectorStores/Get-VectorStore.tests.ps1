@@ -46,7 +46,7 @@ Describe 'Get-VectorStore' {
 "has_more": false
 }
 '@
-            } -ParameterFilter { $Uri -like 'https://api.openai.com/v1/vector_stores?limit=*' }
+            } -ParameterFilter { $Uri -like 'https://api.openai.com/v1/vector_stores`?limit=*' }
         }
 
         BeforeEach {
@@ -55,33 +55,61 @@ Describe 'Get-VectorStore' {
 
         It 'List vector store objects' {
             { $script:Result = Get-VectorStore -ea Stop } | Should -Not -Throw
-            Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly -ParameterFilter { $Uri -like 'https://api.openai.com/v1/vector_stores?limit=*' }
+            Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly -ParameterFilter { $Uri -like 'https://api.openai.com/v1/vector_stores`?limit=*' }
             $Result | Should -HaveCount 2
             $Result[0].id | Should -BeLike 'vs_abc*'
             $Result[1].id | Should -BeLike 'vs_abc*'
             $Result[0].created_at | Should -BeOfType [datetime]
+            $Result[0].psobject.TypeNames | Should -Contain 'PSOpenAI.VectorStore'
         }
 
         It 'Get single vector store object' {
-            { $script:Result = Get-VectorStore 'vs_abc123' -ea Stop } | Should -Not -Throw
+            { $script:Result = Get-VectorStore -VectorStoreId 'vs_abc123' -ea Stop } | Should -Not -Throw
             Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly -ParameterFilter { 'https://api.openai.com/v1/vector_stores/vs_abc123' -eq $Uri }
             $Result | Should -BeOfType [pscustomobject]
             $Result.id | Should -BeExactly 'vs_abc123'
             $Result.created_at | Should -BeOfType [datetime]
-        }
-
-        It 'Get single vector store object (pipeline input)' {
-            $vso = @{id = 'vs_abc123'; object = 'vector_store' }
-            { $script:Result = $vso | Get-VectorStore -ea Stop } | Should -Not -Throw
-            Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly -ParameterFilter { 'https://api.openai.com/v1/vector_stores/vs_abc123' -eq $Uri }
-            $Result | Should -BeOfType [pscustomobject]
-            $Result.id | Should -BeExactly 'vs_abc123'
-            $Result.created_at | Should -BeOfType [datetime]
+            $Result.psobject.TypeNames | Should -Contain 'PSOpenAI.VectorStore'
         }
 
         It 'Invalid input' {
             $vso = @{id = 'hoge_abc123'; object = 'invalid_object' }
             { $script:Result = $vso | Get-VectorStore -ea Stop } | Should -Throw
+        }
+
+        Context 'Parameter Sets' {
+            It 'Get_Id' {
+                # Named
+                { Get-VectorStore -VectorStoreId 'vs_abc123'-ea Stop } | Should -Not -Throw
+                # Positional
+                { Get-VectorStore 'vs_abc123' -ea Stop } | Should -Not -Throw
+                # Pipeline
+                { 'vs_abc123' | Get-VectorStore -ea Stop } | Should -Not -Throw
+                # Pipeline by property name
+                { [pscustomobject]@{VectorStoreId = 'vs_abc123' } | Get-VectorStore -ea Stop } | Should -Not -Throw
+                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 4 -Exactly -ParameterFilter { 'https://api.openai.com/v1/vector_stores/vs_abc123' -eq $Uri }
+            }
+
+            It 'Get_VectorStore' {
+                $InObject = [pscustomobject]@{
+                    PSTypeName = 'PSOpenAI.VectorStore'
+                    id         = 'vs_abc123'
+                }
+                # Named
+                { Get-VectorStore -VectorStore $InObject -ea Stop } | Should -Not -Throw
+                # Positional
+                { Get-VectorStore $InObject -ea Stop } | Should -Not -Throw
+                # Pipeline
+                { $InObject | Get-VectorStore -ea Stop } | Should -Not -Throw
+                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 3 -Exactly -ParameterFilter { 'https://api.openai.com/v1/vector_stores/vs_abc123' -eq $Uri }
+            }
+
+            It 'List' {
+                { Get-VectorStore -ea Stop } | Should -Not -Throw
+                { Get-VectorStore -Limit 30 -ea Stop } | Should -Not -Throw
+                { Get-VectorStore -All -ea Stop } | Should -Not -Throw
+                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 3 -Exactly -ParameterFilter { $Uri -like 'https://api.openai.com/v1/vector_stores`?limit=*' }
+            }
         }
     }
 }

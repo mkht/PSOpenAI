@@ -14,7 +14,7 @@ Retrieves a thread.
 
 ```
 Get-Thread
-    [-InputObject] <Object>
+    [-ThreadId] <String>
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
     [-ApiBase <Uri>]
@@ -30,7 +30,7 @@ Retrieves a thread.
 
 ### Example 1
 ```powershell
-PS C:\> $Thread = Get-Thread -Thread 'thread_abc123'
+PS C:\> $Thread = Get-Thread -ThreadId 'thread_abc123'
 ```
 
 Retrieves a Thread object that has the ID with `thread_abc123`
@@ -38,12 +38,12 @@ Retrieves a Thread object that has the ID with `thread_abc123`
 
 ## PARAMETERS
 
-### -InputObject
+### -ThreadId
 Specifies the ID of thread.
 
 ```yaml
-Type: Object
-Aliases: Thread, thread_id
+Type: String
+Aliases: thread_id
 Required: True
 Position: 0
 Accept pipeline input: True (ByPropertyName, ByValue)
@@ -91,14 +91,8 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
 
 ```yaml
 Type: Object
-Parameter Sets: (All)
-Aliases:
-
 Required: False
 Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
 ```
 
 ### -Organization

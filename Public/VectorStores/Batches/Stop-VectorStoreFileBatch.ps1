@@ -2,16 +2,23 @@ function Stop-VectorStoreFileBatch {
     [CmdletBinding()]
     [OutputType([pscustomobject])]
     param (
-        [Parameter(Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
-        [Alias('vector_store_id')]
-        [Alias('VectorStore')]
-        [ValidateScript({ [bool](Get-VectorStoreIdFromInputObject $_) })]
-        [Object]$InputObject,
+        [Parameter(ParameterSetName = 'VectorStore', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Alias('InputObject')]  # for backword compatibility
+        [PSTypeName('PSOpenAI.VectorStore')]$VectorStore,
 
-        [Parameter(Mandatory, Position = 1, ValueFromPipelineByPropertyName)]
+        [Parameter(ParameterSetName = 'VectorStoreId', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
+        [Alias('vector_store_id')]
+        [string][UrlEncodeTransformation()]$VectorStoreId,
+
+        [Parameter(ParameterSetName = 'VectorStore', Mandatory, Position = 1, ValueFromPipelineByPropertyName)]
+        [Parameter(ParameterSetName = 'VectorStoreId', Mandatory, Position = 1, ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
         [Alias('batch_id')]
-        [Alias('Id')]
         [string][UrlEncodeTransformation()]$BatchId,
+
+        [Parameter(ParameterSetName = 'VectorStoreFileBatch', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [PSTypeName('PSOpenAI.VectorStore.FileBatch')]$Batch,
 
         [Parameter()]
         [int]$TimeoutSec = 0,
@@ -74,18 +81,26 @@ function Stop-VectorStoreFileBatch {
     }
 
     process {
-        # Get vector store id
-        [string][UrlEncodeTransformation()]$VsId = Get-VectorStoreIdFromInputObject $InputObject
-        if (-not $VsId) {
+        # Get ids
+        if ($PSCmdlet.ParameterSetName -ceq 'VectorStore') {
+            $VectorStoreId = $VectorStore.id
+        }
+        elseif ($PSCmdlet.ParameterSetName -ceq 'VectorStoreFileBatch') {
+            $VectorStoreId = $Batch.vector_store_id
+            $BatchId = $Batch.id
+        }
+
+        if (-not $VectorStoreId) {
             Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve vector store id.'))
+            return
+        }
+        if (-not $BatchId) {
+            Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve batch id.'))
             return
         }
 
         #region Construct Query URI
-        $QueryUri = $OpenAIParameter.Uri.ToString() -f $VsId
-        $UriBuilder = [System.UriBuilder]::new($QueryUri)
-        $UriBuilder.Path += "/$BatchId/cancel"
-        $QueryUri = $UriBuilder.Uri
+        $QueryUri = ($OpenAIParameter.Uri.ToString() -f $VectorStoreId) + "/$BatchId/cancel"
         #endregion
 
         #region Send API Request
@@ -115,7 +130,7 @@ function Stop-VectorStoreFileBatch {
 
         #region Parse response object
         try {
-            $Response = $Response | ConvertFrom-Json -ErrorAction Stop
+            $Response = $Response | ConvertFrom-Json -ErrorAction Stop | ParseVectorStoreFileBatchObject
         }
         catch {
             Write-Error -Exception $_.Exception
@@ -125,7 +140,7 @@ function Stop-VectorStoreFileBatch {
         # Wait for cancel
         if ($Wait) {
             Write-Verbose 'Waiting for a cancellation...'
-            $Result = $Response | PSOpenAI\Wait-VectorStoreFileBatch -StatusForExit ('cancelled', 'completed', 'failed', 'expired') @CommonParams
+            $Result = $Response | PSOpenAI\Wait-VectorStoreFileBatch -StatusForExit ('cancelled', 'completed', 'failed') @CommonParams
             if ($null -ne $Result -and $PassThru) {
                 Write-Output $Result
             }
@@ -134,7 +149,7 @@ function Stop-VectorStoreFileBatch {
             #region Output
             # No output on default
             if ($PassThru) {
-                ParseVectorStoreFileBatchObject $Response
+                $Response
             }
             #endregion
         }

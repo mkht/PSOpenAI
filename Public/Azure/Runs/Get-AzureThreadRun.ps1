@@ -2,35 +2,47 @@ function Get-AzureThreadRun {
     [CmdletBinding(DefaultParameterSetName = 'List')]
     [OutputType([pscustomobject])]
     param (
-        [Parameter(ParameterSetName = 'Get', Mandatory, ValueFromPipelineByPropertyName)]
-        [Alias('run_id')]
+        [Parameter(ParameterSetName = 'Get_Thread', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Parameter(ParameterSetName = 'List_Thread', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Alias('InputObject')]  # for backword compatibility
+        [PSTypeName('PSOpenAI.Thread')]$Thread,
+
+        [Parameter(ParameterSetName = 'Get_Id', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Parameter(ParameterSetName = 'List_Id', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [ValidateNotNullOrEmpty()]
+        [Alias('thread_id')]
+        [string][UrlEncodeTransformation()]$ThreadId,
+
+        [Parameter(ParameterSetName = 'Get_Thread', Mandatory, Position = 1, ValueFromPipelineByPropertyName)]
+        [Parameter(ParameterSetName = 'Get_Id', Mandatory, Position = 1, ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
+        [Alias('run_id')]
         [string][UrlEncodeTransformation()]$RunId,
 
-        [Parameter(Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
-        [Alias('thread_id')]
-        [Alias('Thread')]
-        [ValidateScript({ [bool](Get-ThreadIdFromInputObject $_) })]
-        [Object]$InputObject,
+        [Parameter(ParameterSetName = 'Get_ThreadRun', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [PSTypeName('PSOpenAI.Thread.Run')]$Run,
 
-        [Parameter(ParameterSetName = 'List')]
+        [Parameter(ParameterSetName = 'List_Thread')]
+        [Parameter(ParameterSetName = 'List_Id')]
         [ValidateRange(1, 100)]
         [int]$Limit = 20,
 
-        [Parameter(ParameterSetName = 'ListAll')]
+        [Parameter(ParameterSetName = 'List_Thread')]
+        [Parameter(ParameterSetName = 'List_Id')]
         [switch]$All,
 
-        [Parameter(ParameterSetName = 'ListAll', DontShow)]
+        [Parameter(ParameterSetName = 'List_Thread', DontShow)]
+        [Parameter(ParameterSetName = 'List_Id', DontShow)]
         [string]$After,
 
-        [Parameter(ParameterSetName = 'ListAll', DontShow)]
+        [Parameter(ParameterSetName = 'List_Thread', DontShow)]
+        [Parameter(ParameterSetName = 'List_Id', DontShow)]
         [string]$Before,
 
-        [Parameter(ParameterSetName = 'List')]
-        [Parameter(ParameterSetName = 'ListAll')]
+        [Parameter(ParameterSetName = 'List_Thread')]
+        [Parameter(ParameterSetName = 'List_Id')]
         [ValidateSet('asc', 'desc')]
         [string][LowerCaseTransformation()]$Order = 'asc',
-
         [Parameter()]
         [int]$TimeoutSec = 0,
 

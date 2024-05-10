@@ -2,16 +2,23 @@ function Remove-VectorStoreFile {
     [CmdletBinding()]
     [OutputType([pscustomobject])]
     param (
-        [Parameter(Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
-        [Alias('vector_store_id')]
-        [Alias('VectorStore')]
-        [ValidateScript({ [bool](Get-VectorStoreIdFromInputObject $_) })]
-        [Object]$InputObject,
+        [Parameter(ParameterSetName = 'VectorStore', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Alias('InputObject')]  # for backword compatibility
+        [PSTypeName('PSOpenAI.VectorStore')]$VectorStore,
 
-        [Parameter(Mandatory, Position = 1, ValueFromPipelineByPropertyName)]
+        [Parameter(ParameterSetName = 'Id', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
+        [Alias('vector_store_id')]
+        [string][UrlEncodeTransformation()]$VectorStoreId,
+
+        [Parameter(ParameterSetName = 'VectorStore', Mandatory, Position = 1, ValueFromPipelineByPropertyName)]
+        [Parameter(ParameterSetName = 'Id', Mandatory, Position = 1, ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
         [Alias('file_id')]
-        [Alias('Id')]
         [string][UrlEncodeTransformation()]$FileId,
+
+        [Parameter(ParameterSetName = 'VectorStoreFile', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [PSTypeName('PSOpenAI.VectorStore.File')]$VectorStoreFile,
 
         [Parameter()]
         [int]$TimeoutSec = 0,
@@ -65,15 +72,26 @@ function Remove-VectorStoreFile {
     }
 
     process {
-        # Get vector store id
-        [string][UrlEncodeTransformation()]$VsId = Get-VectorStoreIdFromInputObject $InputObject
-        if (-not $VsId) {
+        # Get ids
+        if ($PSCmdlet.ParameterSetName -ceq 'VectorStore') {
+            $VectorStoreId = $VectorStore.id
+        }
+        elseif ($PSCmdlet.ParameterSetName -ceq 'VectorStoreFile') {
+            $VectorStoreId = $VectorStoreFile.vector_store_id
+            $FileId = $VectorStoreFile.id
+        }
+
+        if (-not $VectorStoreId) {
             Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve vector store id.'))
+            return
+        }
+        if (-not $FileId) {
+            Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve vector store file id.'))
             return
         }
 
         #region Construct parameters for API request
-        $QueryUri = ($OpenAIParameter.Uri.ToString() -f $VsId) + "/$FileId"
+        $QueryUri = ($OpenAIParameter.Uri.ToString() -f $VectorStoreId) + "/$FileId"
         #endregion
 
         #region Send API Request

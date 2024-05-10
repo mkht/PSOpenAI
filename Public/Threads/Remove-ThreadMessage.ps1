@@ -2,13 +2,16 @@ function Remove-ThreadMessage {
     [CmdletBinding()]
     [OutputType([void])]
     param (
-        [Parameter(Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
-        [Alias('thread_id')]
-        [Alias('Thread')]
-        [ValidateScript({ [bool](Get-ThreadIdFromInputObject $_) })]
-        [Object]$InputObject,
+        [Parameter(ParameterSetName = 'Thread', Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Alias('InputObject')]  # for backword compatibility
+        [PSTypeName('PSOpenAI.Thread')]$Thread,
 
-        [Parameter(Mandatory, Position = 1, ValueFromPipelineByPropertyName)]
+        [Parameter(ParameterSetName = 'Id', Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
+        [Alias('thread_id')]
+        [string][UrlEncodeTransformation()]$ThreadId,
+
+        [Parameter(Mandatory, Position = 0, ValueFromPipelineByPropertyName)]
         [Alias('message_id')]
         [ValidateNotNullOrEmpty()]
         [string][UrlEncodeTransformation()]$MessageId,
@@ -66,7 +69,9 @@ function Remove-ThreadMessage {
 
     process {
         # Get thread_id
-        [string][UrlEncodeTransformation()]$ThreadID = Get-ThreadIdFromInputObject $InputObject
+        if ($PSCmdlet.ParameterSetName -ceq 'Thread') {
+            $ThreadId = $Thread.id
+        }
         if (-not $ThreadID) {
             Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve Thread ID.'))
             return

@@ -27,40 +27,37 @@ Describe 'Remove-Assistant' {
         }
 
         It 'Remove assistant with ID' {
-            { $script:Result = Remove-Assistant -InputObject 'asst_abc123' -ea Stop } | Should -Not -Throw
-            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName
+            { $script:Result = Remove-Assistant -AssistantId 'asst_abc123' -ea Stop } | Should -Not -Throw
+            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
+            $Result | Should -BeNullOrEmpty
         }
 
-        It 'Remove assistant with assistant object' {
-            $InObject = [pscustomobject]@{
-                id         = 'asst_abc123'
-                object     = 'assistant'
-                created_at = [datetime]::Today
+        Context 'Parameter Sets' {
+            It 'Id' {
+                # Named
+                { Remove-Assistant -AssistantId 'asst_abc123' -ea Stop } | Should -Not -Throw
+                # Positional
+                { Remove-Assistant 'asst_abc123' -ea Stop } | Should -Not -Throw
+                # Pipeline
+                { 'asst_abc123' | Remove-Assistant -ea Stop } | Should -Not -Throw
+                # Pipeline by property name
+                { [pscustomobject]@{assistant_id = 'asst_abc123' } | Remove-Assistant -ea Stop } | Should -Not -Throw
+                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 4 -Exactly
             }
-            { $script:Result = Remove-Assistant -InputObject $InObject -ea Stop } | Should -Not -Throw
-            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName
-        }
 
-        It 'Pipeline input with ID' {
-            $InObject = 'asst_abc123'
-            { $InObject | Remove-Assistant -ea Stop } | Should -Not -Throw
-            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName
-        }
-
-        It 'Pipeline input with Object' {
-            $InObject = [pscustomobject]@{
-                id         = 'asst_abc123'
-                object     = 'assistant'
-                created_at = [datetime]::Today
+            It 'VectorStore' {
+                $InObject = [pscustomobject]@{
+                    PSTypeName = 'PSOpenAI.Assistant'
+                    id         = 'asst_abc123'
+                }
+                # Named
+                { Remove-Assistant -Assistant $InObject -ea Stop } | Should -Not -Throw
+                # Positional
+                { Remove-Assistant $InObject -ea Stop } | Should -Not -Throw
+                # Pipeline
+                { $InObject | Remove-Assistant -ea Stop } | Should -Not -Throw
+                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 3 -Exactly
             }
-            { $InObject | Remove-Assistant -ea Stop } | Should -Not -Throw
-            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName
-        }
-
-        It 'Error on invalid input' {
-            $InObject = [datetime]::Today
-            { $InObject | Remove-Assistant -ea Stop } | Should -Throw
-            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 0 -Exactly
         }
     }
 

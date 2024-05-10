@@ -15,6 +15,7 @@ Describe 'Receive-ThreadRun' {
             Mock -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $PesterBoundParameters }
             Mock -Verifiable -ModuleName $script:ModuleName Wait-ThreadRun {
                 [pscustomobject]@{
+                    PSTypeName     = 'PSOpenAI.Thread.Run'
                     'id'           = 'run_abc123'
                     'object'       = 'thread.run'
                     'created_at'   = [datetime]::Today
@@ -27,6 +28,7 @@ Describe 'Receive-ThreadRun' {
             }
             Mock -Verifiable -ModuleName $script:ModuleName Get-Thread {
                 [pscustomobject]@{
+                    PSTypeName   = 'PSOpenAI.Thread'
                     'id'         = 'thread_abc123'
                     'object'     = 'thread'
                     'created_at' = [datetime]::Today
@@ -41,22 +43,24 @@ Describe 'Receive-ThreadRun' {
 
         It 'Receive run result' {
             $InObject = [PSCustomObject]@{
+                PSTypeName = 'PSOpenAI.Thread.Run'
                 id         = 'run_abc123'
                 thread_id  = 'thread_abc123'
                 object     = 'thread.run'
                 status     = 'completed'
                 started_at = [datetime]::Today
             }
-            { $script:Result = Receive-ThreadRun -InputObject $InObject -ea Stop } | Should -Not -Throw
+            { $script:Result = Receive-ThreadRun -Run $InObject -ea Stop } | Should -Not -Throw
             Should -Invoke Wait-ThreadRun -ModuleName $script:ModuleName -Times 0 -Exactly
             Should -Invoke Get-Thread -ModuleName $script:ModuleName -Times 1 -Exactly
             Should -Invoke Remove-Thread -ModuleName $script:ModuleName -Times 0 -Exactly
             $Result.id | Should -Be 'thread_abc123'
-            $Result.object | Should -Be 'thread'
+            $Result.psobject.TypeNames | Should -Contain 'PSOpenAI.Thread'
         }
 
         It 'Wait run completes then Receive run result' {
             $InObject = [PSCustomObject]@{
+                PSTypeName = 'PSOpenAI.Thread.Run'
                 id         = 'run_abc123'
                 thread_id  = 'thread_abc123'
                 object     = 'thread.run'
@@ -73,6 +77,7 @@ Describe 'Receive-ThreadRun' {
 
         It 'Wait run completes then Receive run result. Finally, Remove thread' {
             $InObject = [PSCustomObject]@{
+                PSTypeName = 'PSOpenAI.Thread.Run'
                 id         = 'run_abc123'
                 thread_id  = 'thread_abc123'
                 object     = 'thread.run'
@@ -89,6 +94,7 @@ Describe 'Receive-ThreadRun' {
 
         It '-AutoRemoveThread should use with -Wait' {
             $InObject = [PSCustomObject]@{
+                PSTypeName = 'PSOpenAI.Thread.Run'
                 id         = 'run_abc123'
                 thread_id  = 'thread_abc123'
                 object     = 'thread.run'

@@ -2,27 +2,29 @@ function Get-VectorStore {
     [CmdletBinding(DefaultParameterSetName = 'List')]
     [OutputType([pscustomobject])]
     param (
-        [Parameter(ParameterSetName = 'Get', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Parameter(ParameterSetName = 'Get_VectorStore', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Alias('InputObject')]  # for backword compatibility
+        [PSTypeName('PSOpenAI.VectorStore')]$VectorStore,
+
+        [Parameter(ParameterSetName = 'Get_Id', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
         [Alias('vector_store_id')]
-        [Alias('VectorStore')]
-        [ValidateScript({ [bool](Get-VectorStoreIdFromInputObject $_) })]
-        [Object]$InputObject,
+        [string][UrlEncodeTransformation()]$VectorStoreId,
 
         [Parameter(ParameterSetName = 'List')]
         [ValidateRange(1, 100)]
         [int]$Limit = 20,
 
-        [Parameter(ParameterSetName = 'ListAll')]
+        [Parameter(ParameterSetName = 'List')]
         [switch]$All,
 
-        [Parameter(ParameterSetName = 'ListAll', DontShow)]
+        [Parameter(ParameterSetName = 'List', DontShow)]
         [string]$After,
 
-        [Parameter(ParameterSetName = 'ListAll', DontShow)]
+        [Parameter(ParameterSetName = 'List', DontShow)]
         [string]$Before,
 
         [Parameter(ParameterSetName = 'List')]
-        [Parameter(ParameterSetName = 'ListAll')]
         [ValidateSet('asc', 'desc')]
         [string][LowerCaseTransformation()]$Order = 'asc',
 
@@ -78,26 +80,26 @@ function Get-VectorStore {
     }
 
     process {
-        # Get vector store id
-        if ($null -ne $InputObject) {
-            $VsId = Get-VectorStoreIdFromInputObject $InputObject
+        # Get id
+        if ($PSCmdlet.ParameterSetName -like '*_VectorStore') {
+            $VectorStoreId = $VectorStore.id
+            if (-not $VectorStoreId) {
+                Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve vector store id.'))
+                return
+            }
         }
 
         $UriBuilder = [System.UriBuilder]::new($OpenAIParameter.Uri)
-        if ($VsId) {
-            $UriBuilder.Path += "/$VsId"
-            $QueryUri = $UriBuilder.Uri
-        }
-        elseif ($PSCmdlet.ParameterSetName -eq 'List') {
-            $QueryParam = [System.Web.HttpUtility]::ParseQueryString($UriBuilder.Query)
-            $QueryParam.Add('limit', $Limit);
-            $QueryParam.Add('order', $Order);
-            $UriBuilder.Query = $QueryParam.ToString()
+        if ($PSCmdlet.ParameterSetName -like 'Get_*') {
+            $UriBuilder.Path += "/$VectorStoreId"
             $QueryUri = $UriBuilder.Uri
         }
         else {
             $QueryParam = [System.Web.HttpUtility]::ParseQueryString($UriBuilder.Query)
-            $QueryParam.Add('limit', '100');
+            if ($All) {
+                $Limit = 100
+            }
+            $QueryParam.Add('limit', $Limit);
             $QueryParam.Add('order', $Order);
             if ($After) {
                 $QueryParam.Add('after', $After);
@@ -158,7 +160,7 @@ function Get-VectorStore {
 
         #region Pagenation
         if ($Response.has_more) {
-            if ($PSCmdlet.ParameterSetName -eq 'ListAll') {
+            if ($All) {
                 # pagenate
                 $PagenationParam = $PSBoundParameters
                 $PagenationParam.After = $Response.last_id

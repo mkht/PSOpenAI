@@ -27,17 +27,36 @@ Describe 'Remove-OpenAIFile' {
 
         It 'Remove file with ID' {
             { $script:Result = Remove-OpenAIFile -ID 'file-abc123' -ea Stop } | Should -Not -Throw
-            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName
+            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
             $Result | Should -BeNullOrEmpty
         }
 
-        It 'Pipeline input' {
-            $InObject = [pscustomobject]@{
-                file_id = 'file-abc123'
-                object  = 'file'
+        Context 'Parameter Sets' {
+            It 'File' {
+                $InObject = [pscustomobject]@{
+                    PSTypeName = 'PSOpenAI.File'
+                    id         = 'file-abc123'
+                }
+                # Named
+                { Remove-OpenAIFile -File $InObject -ea Stop } | Should -Not -Throw
+                # Positional
+                { Remove-OpenAIFile $InObject -ea Stop } | Should -Not -Throw
+                # Pipeline
+                { $InObject | Remove-OpenAIFile -ea Stop } | Should -Not -Throw
+                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 3 -Exactly
             }
-            { $InObject | Remove-OpenAIFile -ea Stop } | Should -Not -Throw
-            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName
+
+            It 'Id' {
+                # Named
+                { Remove-OpenAIFile -FileId 'file-abc123' -ea Stop } | Should -Not -Throw
+                # Positional
+                { Remove-OpenAIFile 'file-abc123' -ea Stop } | Should -Not -Throw
+                # Pipeline
+                { 'file-abc123' | Remove-OpenAIFile -ea Stop } | Should -Not -Throw
+                # Pipeline by property name
+                { [pscustomobject]@{file_id = 'file-abc123' } | Remove-OpenAIFile -ea Stop } | Should -Not -Throw
+                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 4 -Exactly
+            }
         }
     }
 

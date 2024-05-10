@@ -2,10 +2,19 @@ function Stop-AzureThreadRun {
     [CmdletBinding()]
     [OutputType([pscustomobject])]
     param (
-        [Parameter(Mandatory, Position = 0, ValueFromPipeline)]
-        [ValidateScript({ ([string]$_.id).StartsWith('run_', [StringComparison]::Ordinal) -and ([string]$_.thread_id).StartsWith('thread_', [StringComparison]::Ordinal) })]
-        [Alias('Run')]
-        [Object]$InputObject,
+        [Parameter(ParameterSetName = 'Run', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Alias('InputObject')]  # for backword compatibility
+        [PSTypeName('PSOpenAI.Thread.Run')]$Run,
+
+        [Parameter(ParameterSetName = 'Id', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
+        [Alias('run_id')]
+        [string][UrlEncodeTransformation()]$RunId,
+
+        [Parameter(ParameterSetName = 'Id', Mandatory, Position = 1, ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
+        [Alias('thread_id')]
+        [string][UrlEncodeTransformation()]$ThreadId,
 
         [Parameter()]
         [int]$TimeoutSec = 0,

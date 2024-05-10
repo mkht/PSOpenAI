@@ -14,7 +14,7 @@ Retrieve batch output (result) items.
 
 ```
 Get-BatchOutput
-    [-InputObject] <Object>
+    [-BatchId] <String>
     [-Wait]
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
@@ -38,15 +38,15 @@ Get an output data in the specified ID of batch
 
 ## PARAMETERS
 
-### -InputObject
-Specifies a Batch ID or Batch object.
+### -BatchId
+Specifies a Batch ID.
 
 ```yaml
-Type: Object
-Aliases: Id
+Type: String
+Aliases: Id, batch_id
 Required: True
 Position: 0
-Accept pipeline input: True (ByValue)
+Accept pipeline input: True (ByPropertyName, ByValue)
 ```
 
 ### -Wait

@@ -7,7 +7,7 @@ BeforeAll {
     Import-Module (Join-Path $script:ModuleRoot "$script:ModuleName.psd1") -Force
 }
 
-Describe 'Set-Thread' {
+Describe 'Add-ThreadMessage' {
     Context 'Unit tests (offline)' -Tag 'Offline' {
 
         BeforeAll {
@@ -17,8 +17,10 @@ Describe 'Set-Thread' {
 {
     "id": "msg_abc123",
     "object": "thread.message",
-    "created_at": 1699017614,
+    "created_at": 1713226573,
+    "assistant_id": null,
     "thread_id": "thread_abc123",
+    "run_id": null,
     "role": "user",
     "content": [
         {
@@ -29,11 +31,9 @@ Describe 'Set-Thread' {
         }
         }
     ],
-    "file_ids": [],
-    "assistant_id": null,
-    "run_id": null,
+    "attachments": [],
     "metadata": {}
-    }
+}
 '@ }
             Mock -Verifiable -ModuleName $script:ModuleName Get-Thread {
                 [pscustomobject]@{
@@ -51,48 +51,57 @@ Describe 'Set-Thread' {
 
         It 'Add thread messages' {
             { $splat = @{
-                    InputObject = 'thread_abc123'
+                    ThreadId    = 'thread_abc123'
                     Message     = 'How does AI work? Explain it in simple terms.'
                     ErrorAction = 'Stop'
                 }
                 $script:Result = Add-ThreadMessage @splat
             } | Should -Not -Throw
-            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName
-            Should -Invoke Get-Thread -ModuleName $script:ModuleName -Times 0 -Exactly
+            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
+            Should -Not -Invoke Get-Thread -ModuleName $script:ModuleName
             $script:Result | Should -BeNullOrEmpty
         }
 
-        It 'Input from pipeline with thread object. And PassThru' {
-            $thread = [pscustomobject]@{
-                id         = 'thread_abc123'
-                metadata   = @{}
-                created_at = [datetime]::Today
-                Messages   = @()
-            }
+        It 'Add thread messages with PassThru' {
             { $splat = @{
+                    ThreadId    = 'thread_abc123'
                     Message     = 'How does AI work? Explain it in simple terms.'
                     PassThru    = $true
                     ErrorAction = 'Stop'
                 }
-                $script:Result = $thread | Add-ThreadMessage @splat
+                $script:Result = Add-ThreadMessage @splat
             } | Should -Not -Throw
-            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName
+            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
             Should -Invoke Get-Thread -ModuleName $script:ModuleName -Times 1 -Exactly
-            $script:Result.id | Should -Be 'thread_abc123'
+            $script:Result | Should -Not -BeNullOrEmpty
         }
 
-
-        It 'Error on invalid input' {
-            $InObject = [datetime]::Today
-            { $splat = @{
-                    InputObject = $InObject
-                    Message     = 'How does AI work? Explain it in simple terms.'
-                    ErrorAction = 'Stop'
+        Context 'Parameter Sets' {
+            It 'Thread' {
+                $InObject = [pscustomobject]@{
+                    PSTypeName = 'PSOpenAI.Thread'
+                    id         = 'thread_abc123'
                 }
-                $script:Result = Add-ThreadMessage @splat
-            } | Should -Throw
-            Should -Invoke Get-Thread -ModuleName $script:ModuleName -Times 0 -Exactly
-            Should -Invoke Get-Thread -ModuleName $script:ModuleName -Times 0 -Exactly
+                # Named
+                { Add-ThreadMessage -Thread $InObject -Message 'Hi' -ea Stop } | Should -Not -Throw
+                # Positional
+                { Add-ThreadMessage -Thread $InObject 'Hi' -ea Stop } | Should -Not -Throw
+                # Pipeline
+                { $InObject | Add-ThreadMessage -Message 'Hi' -ea Stop } | Should -Not -Throw
+                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 3 -Exactly
+            }
+
+            It 'Id' {
+                # Named
+                { Add-ThreadMessage -ThreadId 'thread_abc123' -Message 'Hi' -ea Stop } | Should -Not -Throw
+                # Positional
+                { Add-ThreadMessage 'Hi' -ThreadId 'thread_abc123' -ea Stop } | Should -Not -Throw
+                # Pipeline
+                { 'thread_abc123' | Add-ThreadMessage 'Hi' -ea Stop } | Should -Not -Throw
+                # Pipeline by property name
+                { [pscustomobject]@{thread_id = 'thread_abc123'; message = 'Hi' } | Add-ThreadMessage -ea Stop } | Should -Not -Throw
+                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 4 -Exactly
+            }
         }
     }
 
@@ -125,17 +134,17 @@ Describe 'Set-Thread' {
         It 'Add 3 thread messages' {
             $thread = New-Thread
             { $script:Result = $thread |`
-                Add-ThreadMessage -Message 'Hello.' -PassThru -ea Stop | `
-                Add-ThreadMessage -Message ' How' -PassThru -ea Stop | `
-                Add-ThreadMessage -Message ' are you?' -PassThru -ea Stop
-            } | Should -Not -Throw
-            $Result.id | Should -BeLike 'thread_*'
-            $Result.created_at | Should -BeOfType [datetime]
-            $Result.Messages.GetType().Fullname | Should -Be 'System.Object[]'
-            $Result.Messages | Should -HaveCount 3
-            $Result.Messages[0].content.text.value | Should -BeExactly 'Hello.'
-            $Result.Messages[1].content.text.value | Should -BeExactly ' How'
-            $Result.Messages[2].content.text.value | Should -BeExactly ' are you?'
+                        Add-ThreadMessage -Message 'Hello.' -PassThru -ea Stop | `
+                        Add-ThreadMessage -Message ' How' -PassThru -ea Stop | `
+                        Add-ThreadMessage -Message ' are you?' -PassThru -ea Stop
+                } | Should -Not -Throw
+                $Result.id | Should -BeLike 'thread_*'
+                $Result.created_at | Should -BeOfType [datetime]
+                $Result.Messages.GetType().Fullname | Should -Be 'System.Object[]'
+                $Result.Messages | Should -HaveCount 3
+                $Result.Messages[0].content.text.value | Should -BeExactly 'Hello.'
+                $Result.Messages[1].content.text.value | Should -BeExactly ' How'
+                $Result.Messages[2].content.text.value | Should -BeExactly ' are you?'
+            }
         }
     }
-}

@@ -2,10 +2,19 @@ function Submit-ToolOutput {
     [CmdletBinding()]
     [OutputType([pscustomobject])]
     param (
-        [Parameter(Mandatory, Position = 0, ValueFromPipeline)]
-        [ValidateScript({ ([string]$_.id).StartsWith('run_', [StringComparison]::Ordinal) -and ([string]$_.thread_id).StartsWith('thread_', [StringComparison]::Ordinal) })]
-        [Alias('Run')]
-        [Object]$InputObject,
+        [Parameter(ParameterSetName = 'Run', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Alias('InputObject')]  # for backword compatibility
+        [PSTypeName('PSOpenAI.Thread.Run')]$Run,
+
+        [Parameter(ParameterSetName = 'Id', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
+        [Alias('run_id')]
+        [string][UrlEncodeTransformation()]$RunId,
+
+        [Parameter(ParameterSetName = 'Id', Mandatory, Position = 1, ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
+        [Alias('thread_id')]
+        [string][UrlEncodeTransformation()]$ThreadId,
 
         [Parameter(Mandatory)]
         [AllowEmptyCollection()]
@@ -73,25 +82,31 @@ function Submit-ToolOutput {
     }
 
     process {
-        #region Parameter Validation
-        if ($InputObject.status -ne 'requires_action' -or $InputObject.required_action.type -ne 'submit_tool_outputs') {
-            Write-Error -Exception ([InvalidOperationException]::new(('Runs in status "{0}" do not accept tool outputs.' -f $InputObject.status)))
-            return
+        # Get ids
+        if ($PSCmdlet.ParameterSetName -ceq 'Run') {
+            $ThreadId = $Run.thread_id
+            $RunId = $Run.id
         }
-        #endregion
-
-        #region Construct Query URI
-        [string][UrlEncodeTransformation()]$ThreadId = $InputObject.thread_id
+        else {
+            $Run = PSOpenAI\Get-ThreadRun -RunId $RunId -ThreadId $ThreadId @CommonParams
+        }
         if (-not $ThreadId) {
             Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve Thread ID.'))
             return
         }
-        [string][UrlEncodeTransformation()]$RunId = $InputObject.id
         if (-not $RunId) {
             Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve Run ID.'))
             return
         }
 
+        #region Parameter Validation
+        if ($Run.status -ne 'requires_action' -or $Run.required_action.type -ne 'submit_tool_outputs') {
+            Write-Error -Exception ([InvalidOperationException]::new(('Runs in status "{0}" does not accept tool outputs.' -f $Run.status)))
+            return
+        }
+        #endregion
+
+        #region Construct Query URI
         $QueryUri = ($OpenAIParameter.Uri.ToString() -f $ThreadId)
         $UriBuilder = [System.UriBuilder]::new($QueryUri)
         $UriBuilder.Path += "/$RunId/submit_tool_outputs"

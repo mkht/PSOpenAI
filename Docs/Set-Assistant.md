@@ -14,7 +14,7 @@ Modifies an assistant.
 
 ```
 Set-Assistant
-    [-InputObject] <Object>
+    [-AssistantId] <String>
     [-Name <String>]
     [-Model <String>]
     [-Description <String>]
@@ -22,9 +22,9 @@ Set-Assistant
     [-UseCodeInterpreter]
     [-UseFileSearch]
     [-Functions]
-    [-FileIdsForCodeInterpreter <String[]>]
+    [-FileIdsForCodeInterpreter <Object[]>]
     [-VectorStoresForFileSearch <Object[]>]
-    [-FileIdsForFileSearch <String[]>]
+    [-FileIdsForFileSearch <Object[]>]
     [-Temperature <Double>]
     [-TopP <Double>]
     [-MetaData <IDictionary>]
@@ -44,19 +44,19 @@ Modifies an assistant.
 
 ### Example 1
 ```powershell
-PS C:\> $Assistant = Set-Assistant -Assistant 'asst_abc123' -Instructions "You are a math teacher." -UseCodeInterpreter $true
+PS C:\> $Assistant = Set-Assistant -AssistantId 'asst_abc123' -Instructions "You are a math teacher." -UseCodeInterpreter $true
 ```
 
 Modifies the assistant that has ID with `asst_abc123`.
 
 ## PARAMETERS
 
-### -InputObject
-Specifies ID of an assistant or Assistant object.
+### -AssistantId
+Specifies ID of an assistant.
 
 ```yaml
-Type: Object
-Aliases: Assistant, assistant_id
+Type: String
+Aliases: assistant_id
 Required: True
 Position: 0
 Accept pipeline input: True (ByPropertyName, ByValue)
@@ -99,7 +99,6 @@ Required: False
 Position: Named
 ```
 
-
 ### -UseCodeInterpreter
 Specifies Whether the code interpreter tool enable or not. The default is `$false`.
 
@@ -133,7 +132,7 @@ Position: Named
 A list of file IDs made available to the code_interpreter tool. There can be a maximum of 20 files associated with the tool.
 
 ```yaml
-Type: String[]
+Type: Object[]
 Required: False
 Position: Named
 ```
@@ -151,7 +150,7 @@ Position: Named
 A list of file IDs to add to the vector store. There can be a maximum of 10000 files in a vector store.
 
 ```yaml
-Type: String[]
+Type: Object[]
 Required: False
 Position: Named
 ```
@@ -239,14 +238,8 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
 
 ```yaml
 Type: Object
-Parameter Sets: (All)
-Aliases:
-
 Required: False
 Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
 ```
 
 ### -Organization

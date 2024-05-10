@@ -1,10 +1,14 @@
 function New-Assistant {
-    [CmdletBinding()]
+    [CmdletBinding(DefaultParameterSetName = 'AssistantId')]
     [OutputType([pscustomobject])]
     param (
-        # Hidden param, for Set-Assistants cmdlet
-        [Parameter(DontShow, ValueFromPipeline, ValueFromPipelineByPropertyName)]
-        [Object]$InputObject,
+        # Hidden param, for Set-Assistant cmdlet
+        [Parameter(DontShow, ParameterSetName = 'Assistant', ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [PSTypeName('PSOpenAI.Assistant')]$Assistant,
+
+        [Parameter(DontShow, ParameterSetName = 'AssistantId', ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
+        [string][UrlEncodeTransformation()]$AssistantId,
 
         [Parameter()]
         [ValidateLength(0, 256)]
@@ -50,16 +54,15 @@ function New-Assistant {
 
         [Parameter()]
         [ValidateCount(0, 20)]
-        [string[]]$FileIdsForCodeInterpreter,
+        [object[]]$FileIdsForCodeInterpreter,
 
         [Parameter()]
-        [ValidateScript({ [bool](Get-VectorStoreIdFromInputObject $_) })]
         [ValidateCount(1, 1)]   # Currently, allow only 1 vector store
         [object[]]$VectorStoresForFileSearch,
 
         [Parameter()]
         [ValidateCount(0, 10000)]
-        [string[]]$FileIdsForFileSearch,
+        [object[]]$FileIdsForFileSearch,
 
         [Parameter()]
         [ValidateRange(0.0, 2.0)]
@@ -130,17 +133,12 @@ function New-Assistant {
     }
 
     process {
-        #region Get assistant_id
-        if ($null -ne $InputObject) {
-            $AssistantId = Get-AssistantIdFromInputObject $InputObject
+        #region Construct parameters for API request
+        if ($Assistant) {
+            $AssistantId = $Assistant.id
         }
-        #endregion
-
-        #region Construct Query URI
         if (-not [string]::IsNullOrEmpty($AssistantId)) {
-            $UriBuilder = [System.UriBuilder]::new($OpenAIParameter.Uri)
-            $UriBuilder.Path += "/$AssistantId"
-            $QueryUri = $UriBuilder.Uri
+            $QueryUri = $OpenAIParameter.Uri.ToString() + "/$AssistantId"
         }
         else {
             $QueryUri = $OpenAIParameter.Uri
@@ -176,18 +174,45 @@ function New-Assistant {
         #region Construct tools resources
         $ToolResources = @{}
         if ($FileIdsForCodeInterpreter.Count -gt 0) {
-            $ToolResources.code_interpreter = @{'file_ids' = $FileIdsForCodeInterpreter }
+            $list = [System.Collections.Generic.List[string]]::new($FileIdsForCodeInterpreter.Count)
+            foreach ($item in $FileIdsForCodeInterpreter) {
+                if ($item -is [string]) {
+                    $list.Add($item)
+                }
+                elseif ($item.psobject.TypeNames -contains 'PSOpenAI.File') {
+                    $list.Add($item.id)
+                }
+            }
+            if ($list.Count -gt 0) {
+                $ToolResources.code_interpreter = @{'file_ids' = $list.ToArray() }
+            }
         }
         if ($FileIdsForFileSearch.Count -gt 0) {
-            $ToolResources.file_search = @{'vector_stores' = @(@{'file_ids' = $FileIdsForFileSearch }) }
-        }
-        if ($PSBoundParameters.ContainsKey('VectorStoresForFileSearch')) {
-            $vsids = @()
-            foreach ($vs in $VectorStoresForFileSearch) {
-                $vsids += Get-VectorStoreIdFromInputObject $vs
+            $list = [System.Collections.Generic.List[string]]::new($FileIdsForFileSearch.Count)
+            foreach ($item in $FileIdsForFileSearch) {
+                if ($item -is [string]) {
+                    $list.Add($item)
+                }
+                elseif ($item.psobject.TypeNames -contains 'PSOpenAI.File') {
+                    $list.Add($item.id)
+                }
             }
-            if ($vsids.Count -gt 0) {
-                $ToolResources.file_search = @{'vector_store_ids' = $vsids }
+            if ($list.Count -gt 0) {
+                $ToolResources.file_search = @{'vector_stores' = @(@{'file_ids' = $list.ToArray() }) }
+            }
+        }
+        if ($VectorStoresForFileSearch.Count -gt 0) {
+            $list = [System.Collections.Generic.List[string]]::new($FileIdsForFileSearch.Count)
+            foreach ($item in $VectorStoresForFileSearch) {
+                if ($item -is [string]) {
+                    $list.Add($item)
+                }
+                elseif ($item.psobject.TypeNames -contains 'PSOpenAI.VectorStore') {
+                    $list.Add($item.id)
+                }
+            }
+            if ($list.Count -gt 0) {
+                $ToolResources.file_search = @{'vector_store_ids' = $list.ToArray() }
             }
         }
         #endregion

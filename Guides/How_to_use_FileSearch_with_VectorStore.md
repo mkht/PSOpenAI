@@ -73,5 +73,5 @@ Delete Vector Store and uploaded files when no longer needed.
 $VectorStore | Remove-VectorStore
 
 # Remove uploaded files
-$UploadedFiles | Remove-OpenAIFiles
+$UploadedFiles | Remove-OpenAIFile
 ```

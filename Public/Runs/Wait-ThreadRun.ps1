@@ -1,11 +1,20 @@
 function Wait-ThreadRun {
-    [CmdletBinding(DefaultParameterSetName = 'StatusForWait')]
+    [CmdletBinding()]
     [OutputType([pscustomobject])]
     param (
-        [Parameter(Mandatory, Position = 0, ValueFromPipeline)]
-        [ValidateScript({ ([string]$_.id).StartsWith('run_', [StringComparison]::Ordinal) -and ([string]$_.thread_id).StartsWith('thread_', [StringComparison]::Ordinal) })]
-        [Alias('Run')]
-        [Object]$InputObject,
+        [Parameter(ParameterSetName = 'Run', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Alias('InputObject')]  # for backword compatibility
+        [PSTypeName('PSOpenAI.Thread.Run')]$Run,
+
+        [Parameter(ParameterSetName = 'Id', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
+        [Alias('run_id')]
+        [string][UrlEncodeTransformation()]$RunId,
+
+        [Parameter(ParameterSetName = 'Id', Mandatory, Position = 1, ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
+        [Alias('thread_id')]
+        [string][UrlEncodeTransformation()]$ThreadId,
 
         [Parameter()]
         [int]$TimeoutSec = 0,
@@ -34,7 +43,7 @@ function Wait-ThreadRun {
         [Alias('OrgId')]
         [string]$Organization,
 
-        [Parameter(ParameterSetName = 'StatusForWait')]
+        [Parameter()]
         [ValidateNotNullOrEmpty()]
         [ValidateSet(
             'queued',
@@ -48,7 +57,7 @@ function Wait-ThreadRun {
         )]
         [string[]]$StatusForWait = @('queued', 'in_progress'),
 
-        [Parameter(ParameterSetName = 'StatusForExit')]
+        [Parameter()]
         [ValidateNotNullOrEmpty()]
         [ValidateSet(
             'queued',
@@ -74,21 +83,9 @@ function Wait-ThreadRun {
 
     begin {
         # Parameter construction
-        if ($PSCmdlet.ParameterSetName -eq 'StatusForExit') {
-            $innerStatusForWait = [System.Collections.Generic.HashSet[string]]::new([string[]](
-                    'queued',
-                    'in_progress',
-                    'completed',
-                    'requires_action',
-                    'expired',
-                    'cancelling',
-                    'cancelled',
-                    'failed'
-                ))
+        $innerStatusForWait = [System.Collections.Generic.HashSet[string]]::new($StatusForWait)
+        if ($PSBoundParameters.ContainsKey('StatusForExit')) {
             $innerStatusForWait.ExceptWith([System.Collections.Generic.List[string]]$StatusForExit)
-        }
-        else {
-            $innerStatusForWait = [System.Collections.Generic.HashSet[string]]::new($StatusForWait)
         }
 
         # Parse Common params
@@ -96,11 +93,23 @@ function Wait-ThreadRun {
     }
 
     process {
-        $innerRunObject = $InputObject
+        # Get ids
+        if ($PSCmdlet.ParameterSetName -ceq 'Run') {
+            $ThreadId = $Run.thread_id
+            $RunId = $Run.id
+        }
+        if (-not $ThreadId) {
+            Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve Thread ID.'))
+            return
+        }
+        if (-not $RunId) {
+            Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve Run ID.'))
+            return
+        }
 
         $GetThreadRunparams = $CommonParams
-        $GetThreadRunparams.RunId = $innerRunObject.id
-        $GetThreadRunparams.InputObject = $innerRunObject.thread_id
+        $GetThreadRunparams.RunId = $RunId
+        $GetThreadRunparams.ThreadId = $ThreadId
         $GetThreadRunparams.Primitive = $true
 
         # Create cancellation token for timeout
@@ -110,15 +119,15 @@ function Wait-ThreadRun {
         }
 
         try {
-            $PollCounter = 1
+            $PollCounter = 0
             $ProgressTitle = 'Waiting for completes...'
-            while ($innerRunObject.status -and $innerRunObject.status -in $innerStatusForWait) {
+            do {
                 #Wait
-                Write-Progress -Activity $ProgressTitle -Status ('The status of run with id "{0}" is "{1}"' -f $innerRunObject.id, $innerRunObject.status) -PercentComplete -1
                 $innerRunObject = $null
                 Start-CancelableWait -Milliseconds ([System.Math]::Min((200 * ($PollCounter++)), 1000)) -CancellationToken $Cancellation.Token -ea Stop
                 $innerRunObject = PSOpenAI\Get-ThreadRun @GetThreadRunparams
-            }
+                Write-Progress -Activity $ProgressTitle -Status ('The status of run with id "{0}" is "{1}"' -f $innerRunObject.id, $innerRunObject.status) -PercentComplete -1
+            } while ($innerRunObject.status -and $innerRunObject.status -in $innerStatusForWait)
         }
         catch [OperationCanceledException] {
             Write-Error -ErrorRecord $_

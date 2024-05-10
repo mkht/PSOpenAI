@@ -1,11 +1,15 @@
 function Remove-AzureOpenAIFile {
-    [CmdletBinding()]
+    [CmdletBinding(DefaultParameterSetName = 'Id')]
     [OutputType([pscustomobject])]
     param (
-        [Parameter(Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
-        [Alias('file_id')]
+        [Parameter(ParameterSetName = 'File', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [PSTypeName('PSOpenAI.File')]$File,
+
+        [Parameter(ParameterSetName = 'Id', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [ValidateNotNullOrEmpty()]
-        [string][UrlEncodeTransformation()]$Id,
+        [Alias('file_id')]
+        [Alias('Id')]   # for backword compatibility
+        [string][UrlEncodeTransformation()]$FileId,
 
         [Parameter()]
         [int]$TimeoutSec = 0,

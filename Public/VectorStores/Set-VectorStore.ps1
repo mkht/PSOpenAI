@@ -2,11 +2,14 @@ function Set-VectorStore {
     [CmdletBinding()]
     [OutputType([pscustomobject])]
     param (
-        [Parameter(Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Parameter(ParameterSetName = 'VectorStore', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Alias('InputObject')]  # for backword compatibility
+        [PSTypeName('PSOpenAI.VectorStore')]$VectorStore,
+
+        [Parameter(ParameterSetName = 'VectorStoreId', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
         [Alias('vector_store_id')]
-        [Alias('VectorStore')]
-        [ValidateScript({ [bool](Get-VectorStoreIdFromInputObject $_) })]
-        [Object]$InputObject,
+        [string][UrlEncodeTransformation()]$VectorStoreId,
 
         [Parameter()]
         [string]$Name,

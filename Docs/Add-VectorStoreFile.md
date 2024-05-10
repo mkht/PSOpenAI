@@ -14,7 +14,7 @@ Attach a file to a vector store.
 
 ```
 Add-VectorStoreFile
-    [-InputObject] <Object>
+    [-VectorStoreId] <Object>
     [-FileId] <String>
     [-PassThru]
     [-TimeoutSec <Int32>]
@@ -32,14 +32,14 @@ Attach a file to a vector store.
 
 ### Example 1
 ```powershell
-PS C:\> Add-VectorStoreFile -InputObject 'vs_abc123' -FileId 'file-abc123'
+PS C:\> Add-VectorStoreFile -VectorStoreId 'vs_abc123' -FileId 'file-abc123'
 ```
 
 Attach a file with ID `file-abc123` to the vector store with ID `vs_abc123`.
 
 ### Example 2
 ```powershell
-PS C:\> $Store = Get-VectorStoreFile -InputObject 'vs_abc123'
+PS C:\> $Store = Get-VectorStoreFile -VectorStoreId 'vs_abc123'
 PS C:\> $Store = $Store | Add-VectorStoreFile -FileId 'file-abc123' -PassThru
 ```
 
@@ -47,15 +47,15 @@ Attach a file with ID `file-abc123` to the vector store with ID `vs_abc123`. The
 
 ## PARAMETERS
 
-### -InputObject
-The ID of the vector store for which to create a File.
+### -VectorStoreId
+The ID of the vector store for which to add a File.
 
 ```yaml
-Type: Object
-Aliases: VectorStore, vector_store_id
+Type: String
+Aliases: vector_store_id
 Required: True
 Position: 0
-Accept pipeline input: True (ByValue)
+Accept pipeline input: True (ByPropertyName, ByValue)
 ```
 
 ### -FileId
@@ -66,6 +66,7 @@ Type: String
 Aliases: file_id
 Required: True
 Position: 1
+Accept pipeline input: True (ByPropertyName, ByValue)
 ```
 
 ### -PassThru
@@ -119,14 +120,8 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
 
 ```yaml
 Type: Object
-Parameter Sets: (All)
-Aliases:
-
 Required: False
 Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
 ```
 
 ### -Organization

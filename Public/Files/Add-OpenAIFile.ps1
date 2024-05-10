@@ -1,11 +1,11 @@
 function Add-OpenAIFile {
     [CmdletBinding(DefaultParameterSetName = 'File')]
     [OutputType([pscustomobject])]
-    [Alias('Register-OpenAIFile')]
+    [Alias('Register-OpenAIFile')] # for backword compatibility
     param (
         [Parameter(ParameterSetName = 'File', Mandatory, Position = 0, ValueFromPipeline)]
-        [ValidateScript({ Test-Path -LiteralPath $_ -PathType Leaf })]
-        [string]$File,
+        [ValidateNotNullOrEmpty()]
+        [System.IO.FileInfo]$File,
 
         [Parameter(ParameterSetName = 'Content', Mandatory, Position = 0)]
         [ValidateNotNullOrEmpty()]
@@ -75,7 +75,15 @@ function Add-OpenAIFile {
         #region Construct parameters for API request
         $PostBody = [System.Collections.Specialized.OrderedDictionary]::new()
         if ($PSCmdlet.ParameterSetName -eq 'File') {
-            $PostBody.file = (Get-Item -LiteralPath $File)
+            if (-not $File.Exists) {
+                # Try to resolve relative path
+                $File = [System.IO.FileInfo]$PSCmdlet.SessionState.Path.GetUnresolvedProviderPathFromPSPath($File.Name)
+            }
+            if (-not $File.Exists) {
+                Write-Error -Exception ([System.Management.Automation.ItemNotFoundException]::new(("Cannot find path '{0}' because it does not exist." -f $File)))
+                return
+            }
+            $PostBody.file = $File
         }
         elseif ($PSCmdlet.ParameterSetName -eq 'Content') {
             $PostBody.file = @{

@@ -14,8 +14,8 @@ Create and run vector store file batch.
 
 ```
 Start-VectorStoreFileBatch
-    [-InputObject] <Object>
-    [-FileId] <String[]>
+    [-VectorStoreId] <String>
+    [-FileId] <Object[]>
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
     [-ApiBase <Uri>]
@@ -31,19 +31,19 @@ Create and run vector store file batch.
 
 ### Example 1
 ```powershell
-PS C:\> Start-VectorStoreFileBatch -InputObject 'vs_abc123' -FileId ('file-abc123', 'file-def456', 'file-ghi789')
+PS C:\> Start-VectorStoreFileBatch -VectorStoreId 'vs_abc123' -FileId ('file-abc123', 'file-def456', 'file-ghi789')
 ```
 
 Start a batch for adding 3 files to the vector store with ID `vs_abc123`
 
 ## PARAMETERS
 
-### -InputObject
+### -VectorStoreId
 The ID of the vector store for which to create a File Batch.
 
 ```yaml
-Type: Object
-Aliases: VectorStore, vector_store_id
+Type: String
+Aliases: vector_store_id
 Required: True
 Position: 0
 Accept pipeline input: True (ByValue, ByPropertyName)
@@ -53,7 +53,7 @@ Accept pipeline input: True (ByValue, ByPropertyName)
 A list of File IDs that the vector store should use.
 
 ```yaml
-Type: String[]
+Type: object[]
 Aliases: file_ids
 Required: True
 Position: 1
@@ -101,14 +101,8 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
 
 ```yaml
 Type: Object
-Parameter Sets: (All)
-Aliases:
-
 Required: False
 Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
 ```
 
 ### -Organization

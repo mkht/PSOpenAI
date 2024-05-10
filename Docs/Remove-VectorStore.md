@@ -14,7 +14,7 @@ Delete a vector store.
 
 ```
 Remove-VectorStore
-    [-InputObject] <Object>
+    [-VectorStoreId] <String>
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
     [-ApiBase <Uri>]
@@ -37,12 +37,12 @@ Delete a vector store with ID `vs_abc123`.
 
 ## PARAMETERS
 
-### -InputObject
+### -VectorStoreId
 The ID of the vector store to delete.
 
 ```yaml
-Type: Object
-Aliases: VectorStore, vector_store_id
+Type: String
+Aliases: vector_store_id
 Required: True
 Position: 0
 Accept pipeline input: True (ByValue, ByPropertyName)
@@ -90,14 +90,8 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
 
 ```yaml
 Type: Object
-Parameter Sets: (All)
-Aliases:
-
 Required: False
 Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
 ```
 
 ### -Organization

@@ -14,7 +14,7 @@ Modifies a vector store.
 
 ```
 Set-VectorStore
-    [-InputObject] <Object>
+    [-VectorStoreId] <String>
     [-Name <String>]
     [-ExpiresAfterDays <UInt16>]
     [-ExpiresAfterAnchor <String>]
@@ -34,19 +34,19 @@ Modifies a vector store.
 
 ### Example 1
 ```powershell
-PS C:\> Set-VectorStore -InputObject 'vs_abc123' -Name 'NewName-123'
+PS C:\> Set-VectorStore -VectorStoreId 'vs_abc123' -Name 'NewName-123'
 ```
 
 Modifies a name of vector store.
 
 ## PARAMETERS
 
-### -InputObject
+### -VectorStoreId
 The ID of the vector store to modify.
 
 ```yaml
-Type: Object
-Aliases: VectorStore, vector_store_id
+Type: String
+Aliases: vector_store_id
 Required: True
 Position: 0
 Accept pipeline input: True (ByValue, ByPropertyName)
@@ -131,14 +131,8 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
 
 ```yaml
 Type: Object
-Parameter Sets: (All)
-Aliases:
-
 Required: False
 Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
 ```
 
 ### -Organization

@@ -14,6 +14,9 @@ Create a thread.
 
 ```
 New-Thread
+    [-FileIdsForCodeInterpreter <Object[]>]
+    [-VectorStoresForFileSearch <Object[]>]
+    [-FileIdsForFileSearch <Object[]>]
     [-MetaData <IDictionary>]
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
@@ -36,6 +39,33 @@ PS C:\> $Thread = New-Thread
 Create a new thread.
 
 ## PARAMETERS
+
+### -FileIdsForCodeInterpreter
+A list of file IDs made available to the code_interpreter tool. There can be a maximum of 20 files associated with the tool.
+
+```yaml
+Type: Object[]
+Required: False
+Position: Named
+```
+
+### -VectorStoresForFileSearch
+The vector store attached to this thread. There can be a maximum of 1 vector store attached to the thread.
+
+```yaml
+Type: Object[]
+Required: False
+Position: Named
+```
+
+### -FileIdsForFileSearch
+A list of file IDs to add to the vector store. There can be a maximum of 10000 files in a vector store.
+
+```yaml
+Type: Object[]
+Required: False
+Position: Named
+```
 
 ### -MetaData
 Set of 16 key-value pairs that can be attached to an object. This can be useful for storing additional information about the object in a structured format.
@@ -88,14 +118,8 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
 
 ```yaml
 Type: Object
-Parameter Sets: (All)
-Aliases:
-
 Required: False
 Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
 ```
 
 ### -Organization

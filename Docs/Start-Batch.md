@@ -15,7 +15,7 @@ Creates and executes a batch from an uploaded file or input objects.
 ### BatchInput
 ```
 Start-Batch
-    -InputObject <Object[]>
+    -BatchInput <Object[]>
     [-Endpoint <String>]
     [-CompletionWindow <String>]
     [-MetaData <IDictionary>]
@@ -30,7 +30,7 @@ Start-Batch
 ### FileId
 ```
 Start-Batch
-    -FileId <String>[-Endpoint <String>]
+    -FileId <String>
     [-Endpoint <String>]
     [-CompletionWindow <String>]
     [-MetaData <IDictionary>]
@@ -68,15 +68,15 @@ You can create a batch input item by using the Request-ChatCompletion cmdlet wit
 
 ## PARAMETERS
 
-### -InputObject
+### -BatchInput
 Specifies batch input objects.
 
 ```yaml
 Type: Object[]
 Parameter Sets: BatchObject
 Required: True
-Position: Named
-Accept pipeline input: True (ByValue)
+Position: 0
+Accept pipeline input: True (ByValue, ByPropertyName)
 ```
 
 ### -FileId
@@ -87,7 +87,8 @@ Type: String
 Parameter Sets: FileId
 Aliases: input_file_id
 Required: True
-Position: Named
+Position: 0
+Accept pipeline input: True (ByValue, ByPropertyName)
 ```
 
 ### -CompletionWindow

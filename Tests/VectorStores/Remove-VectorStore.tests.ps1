@@ -27,38 +27,37 @@ Describe 'Remove-VectorStore' {
         }
 
         It 'Remove vector store with ID' {
-            { $script:Result = Remove-VectorStore -InputObject 'vs_abc123' -ea Stop } | Should -Not -Throw
+            { $script:Result = Remove-VectorStore -VectorStoreId 'vs_abc123' -ea Stop } | Should -Not -Throw
             Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
+            $Result | Should -BeNullOrEmpty
         }
 
-        It 'Remove vector store with object' {
-            $InObject = [pscustomobject]@{
-                id     = 'vs_abc123'
-                object = 'vector_store'
+        Context 'Parameter Sets' {
+            It 'Id' {
+                # Named
+                { Remove-VectorStore -VectorStoreId 'vs_abc123' -ea Stop } | Should -Not -Throw
+                # Positional
+                { Remove-VectorStore 'vs_abc123' -ea Stop } | Should -Not -Throw
+                # Pipeline
+                { 'vs_abc123' | Remove-VectorStore -ea Stop } | Should -Not -Throw
+                # Pipeline by property name
+                { [pscustomobject]@{vector_store_id = 'vs_abc123' } | Remove-VectorStore -ea Stop } | Should -Not -Throw
+                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 4 -Exactly
             }
-            { $script:Result = Remove-VectorStore -InputObject $InObject -ea Stop } | Should -Not -Throw
-            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
-        }
 
-        It 'Pipeline input with ID' {
-            $InObject = 'vs_abc123'
-            { $InObject | Remove-VectorStore -ea Stop } | Should -Not -Throw
-            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
-        }
-
-        It 'Pipeline input with Object' {
-            $InObject = [pscustomobject]@{
-                id     = 'vs_abc123'
-                object = 'vector_store'
+            It 'VectorStore' {
+                $InObject = [pscustomobject]@{
+                    PSTypeName = 'PSOpenAI.VectorStore'
+                    id         = 'vs_abc123'
+                }
+                # Named
+                { Remove-VectorStore -VectorStore $InObject -ea Stop } | Should -Not -Throw
+                # Positional
+                { Remove-VectorStore $InObject -ea Stop } | Should -Not -Throw
+                # Pipeline
+                { $InObject | Remove-VectorStore -ea Stop } | Should -Not -Throw
+                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 3 -Exactly
             }
-            { $InObject | Remove-VectorStore -ea Stop } | Should -Not -Throw
-            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
-        }
-
-        It 'Error on invalid input' {
-            $InObject = [datetime]::Today
-            { $InObject | Remove-VectorStore -ea Stop } | Should -Throw
-            Should -Not -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName
         }
     }
 }

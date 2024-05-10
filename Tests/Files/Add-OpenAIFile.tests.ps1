@@ -36,6 +36,16 @@ Describe 'Add-OpenAIFile' {
             $Result.created_at | Should -BeOfType [datetime]
         }
 
+        It 'Upload single file (Relative)' {
+            Push-Location $script:TestData
+            { $script:Result = Add-OpenAIFile -File 'sweets_donut.png' -Purpose assistants -ea Stop } | Should -Not -Throw
+            Pop-Location
+            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName
+            $Result.id | Should -BeExactly 'file-abc123'
+            $Result.object | Should -BeExactly 'file'
+            $Result.created_at | Should -BeOfType [datetime]
+        }
+
         It 'Pipeline input (FileInfo)' {
             $InObject = Get-Item ($script:TestData + '/sweets_donut.png')
             { $InObject | Add-OpenAIFile -Purpose assistants -ea Stop } | Should -Not -Throw
@@ -50,9 +60,16 @@ Describe 'Add-OpenAIFile' {
             $Result.created_at | Should -BeOfType [datetime]
         }
 
-        It 'Error if the file does not exist' {
+        It 'Error if the file does not exist (Absolute)' {
+            # Absolute
             { Add-OpenAIFile -File ($script:TestData + '/notexist.txt') -Purpose assistants -ea Stop } | Should -Throw
-            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 0 -Exactly
+            Should -Not -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName
+        }
+
+        It 'Error if the file does not exist (Relative)' {
+            # Absolute
+            { Add-OpenAIFile -File 'notexist.txt' -Purpose assistants -ea Stop } | Should -Throw
+            Should -Not -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName
         }
     }
 

@@ -14,7 +14,7 @@ Delete a thread.
 
 ```
 Remove-Thread
-    [-InputObject] <Object>
+    [-ThreadId] <String>
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
     [-ApiBase <Uri>]
@@ -30,7 +30,7 @@ Delete a thread.
 
 ### Example 1
 ```powershell
-PS C:\> Remove-Thread -Thread 'thread_abc13'
+PS C:\> Remove-Thread -ThreadId 'thread_abc13'
 ```
 
 Remove a thread that has the ID with `thread_abc13`
@@ -38,12 +38,12 @@ Remove a thread that has the ID with `thread_abc13`
 
 ## PARAMETERS
 
-### -InputObject
+### -ThreadId
 The ID of the thread to delete.
 
 ```yaml
-Type: Object
-Aliases: Thread, thread_id
+Type: String
+Aliases: thread_id
 Required: True
 Position: 0
 Accept pipeline input: True (ByPropertyName, ByValue)
@@ -91,14 +91,8 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
 
 ```yaml
 Type: Object
-Parameter Sets: (All)
-Aliases:
-
 Required: False
 Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
 ```
 
 ### -Organization

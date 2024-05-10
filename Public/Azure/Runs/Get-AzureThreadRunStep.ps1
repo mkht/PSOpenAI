@@ -1,32 +1,52 @@
 function Get-AzureThreadRunStep {
-    [CmdletBinding(DefaultParameterSetName = 'List')]
+    [CmdletBinding()]
     [OutputType([pscustomobject])]
     param (
-        [Parameter(ParameterSetName = 'Get', Mandatory, ValueFromPipelineByPropertyName)]
+        [Parameter(ParameterSetName = 'Get_Run', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Parameter(ParameterSetName = 'List_Run', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Alias('InputObject')]  # for backword compatibility
+        [PSTypeName('PSOpenAI.Thread.Run')]$Run,
+
+        [Parameter(ParameterSetName = 'Get_RunId', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Parameter(ParameterSetName = 'List_RunId', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
+        [Alias('run_id')]
+        [string][UrlEncodeTransformation()]$RunId,
+
+        [Parameter(ParameterSetName = 'Get_RunId', Mandatory, Position = 1, ValueFromPipelineByPropertyName)]
+        [Parameter(ParameterSetName = 'List_RunId', Mandatory, Position = 1, ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
+        [Alias('thread_id')]
+        [string][UrlEncodeTransformation()]$ThreadId,
+
+        [Parameter(ParameterSetName = 'Get_Run', Mandatory, Position = 1, ValueFromPipelineByPropertyName)]
+        [Parameter(ParameterSetName = 'Get_RunId', Mandatory, Position = 2, ValueFromPipelineByPropertyName)]
         [Alias('step_id')]
         [ValidateNotNullOrEmpty()]
         [string][UrlEncodeTransformation()]$StepId,
 
-        [Parameter(Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
-        [ValidateScript({ ([string]$_.id).StartsWith('run_', [StringComparison]::Ordinal) -and ([string]$_.thread_id).StartsWith('thread_', [StringComparison]::Ordinal) })]
-        [Alias('Run')]
-        [Object]$InputObject,
+        [Parameter(ParameterSetName = 'Get_RunStep', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [PSTypeName('PSOpenAI.Thread.Run.Step')]$Step,
 
-        [Parameter(ParameterSetName = 'List')]
+        [Parameter(ParameterSetName = 'List_Run')]
+        [Parameter(ParameterSetName = 'List_RunId')]
         [ValidateRange(1, 100)]
         [int]$Limit = 20,
 
-        [Parameter(ParameterSetName = 'ListAll')]
+        [Parameter(ParameterSetName = 'List_Run')]
+        [Parameter(ParameterSetName = 'List_RunId')]
         [switch]$All,
 
-        [Parameter(ParameterSetName = 'ListAll', DontShow)]
+        [Parameter(ParameterSetName = 'List_Run', DontShow)]
+        [Parameter(ParameterSetName = 'List_RunId', DontShow)]
         [string]$After,
 
-        [Parameter(ParameterSetName = 'ListAll', DontShow)]
+        [Parameter(ParameterSetName = 'List_Run', DontShow)]
+        [Parameter(ParameterSetName = 'List_RunId', DontShow)]
         [string]$Before,
 
-        [Parameter(ParameterSetName = 'List')]
-        [Parameter(ParameterSetName = 'ListAll')]
+        [Parameter(ParameterSetName = 'List_Run')]
+        [Parameter(ParameterSetName = 'List_RunId')]
         [ValidateSet('asc', 'desc')]
         [string][LowerCaseTransformation()]$Order = 'asc',
 

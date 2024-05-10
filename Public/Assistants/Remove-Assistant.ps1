@@ -2,11 +2,14 @@ function Remove-Assistant {
     [CmdletBinding()]
     [OutputType([void])]
     param (
-        [Parameter(Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Parameter(ParameterSetName = 'Assistant', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Alias('InputObject')]  # for backword compatibility
+        [PSTypeName('PSOpenAI.Assistant')]$Assistant,
+
+        [Parameter(ParameterSetName = 'Id', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
         [Alias('assistant_id')]
-        [Alias('Assistant')]
-        [ValidateScript({ [bool](Get-AssistantIdFromInputObject $_) })]
-        [Object]$InputObject,
+        [string][UrlEncodeTransformation()]$AssistantId,
 
         [Parameter()]
         [int]$TimeoutSec = 0,
@@ -61,9 +64,12 @@ function Remove-Assistant {
 
     process {
         # Get assistant_id
-        [string][UrlEncodeTransformation()]$AssistantId = Get-AssistantIdFromInputObject $InputObject
+        if ($PSCmdlet.ParameterSetName -ceq 'Assistant') {
+            $AssistantId = $Assistant.id
+        }
+
         if (-not $AssistantId) {
-            Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve Assistant ID.'))
+            Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve assistant id.'))
             return
         }
 

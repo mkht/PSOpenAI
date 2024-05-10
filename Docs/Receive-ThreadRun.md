@@ -14,7 +14,8 @@ Gets the results of the Run.
 
 ```
 Receive-ThreadRun
-    [-InputObject] <Object>
+    [-RunId] <String>
+    [-ThreadId] <String>
     [-Wait]
     [-AutoRemoveThread]
     [-TimeoutSec <Int32>]
@@ -32,14 +33,14 @@ Gets the results of the Run. Return is a Thread object.
 
 ### Example 1
 ```powershell
-PS C:\> Get-ThreadRun -RunID 'run_abc123' -Thread 'thread_abc123' | Receive-ThreadRun
+PS C:\> Get-ThreadRun -RunId 'run_abc123' -ThreadId 'thread_abc123' | Receive-ThreadRun
 ```
 
 Gets the results of the specified Run.
 
 ### Example 2
 ```powershell
-PS C:\> Start-ThreadRun -Thread 'thread_abc123' | Receive-ThreadRun -Wait
+PS C:\> Start-ThreadRun -ThreadId 'thread_abc123' | Receive-ThreadRun -Wait
 ```
 
 When the Wait switch is used, it waits until that Run is completed and then returns the result.
@@ -47,15 +48,26 @@ When the Wait switch is used, it waits until that Run is completed and then retu
 
 ## PARAMETERS
 
-### -InputObject
-The Run object.
+### -RunId
+The ID of the run to retrieve.
 
 ```yaml
-Type: Object
-Aliases: Run
+Type: String
+Aliases: run_id
 Required: True
 Position: 0
-Accept pipeline input: True (ByValue)
+Accept pipeline input: True (ByValue, ByPropertyName)
+```
+
+### -ThreadId
+The ID of the thread that was run.
+
+```yaml
+Type: String
+Aliases: thread_id
+Required: True
+Position: 1
+Accept pipeline input: True (ByPropertyName)
 ```
 
 ### -Wait
@@ -118,14 +130,8 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
 
 ```yaml
 Type: Object
-Parameter Sets: (All)
-Aliases:
-
 Required: False
 Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
 ```
 
 ### -Organization

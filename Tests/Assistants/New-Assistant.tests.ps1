@@ -40,9 +40,9 @@ Describe 'New-Assistant' {
 
         It 'Create assistant' {
             { $script:Result = New-Assistant -ea Stop } | Should -Not -Throw
-            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName
+            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
             $Result.id | Should -BeExactly 'asst_abc123'
-            $Result.object | Should -BeExactly 'assistant'
+            $Result.psobject.TypeNames | Should -Contain 'PSOpenAI.Assistant'
             $Result.created_at | Should -BeOfType [datetime]
         }
 
@@ -58,9 +58,9 @@ Describe 'New-Assistant' {
                 }
                 $script:Result = New-Assistant @params
             } | Should -Not -Throw
-            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName
+            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
             $Result.id | Should -BeExactly 'asst_abc123'
-            $Result.object | Should -BeExactly 'assistant'
+            $Result.psobject.TypeNames | Should -Contain 'PSOpenAI.Assistant'
             $Result.created_at | Should -BeOfType [datetime]
         }
     }

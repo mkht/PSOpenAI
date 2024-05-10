@@ -2,38 +2,60 @@ function Get-ThreadMessage {
     [CmdletBinding(DefaultParameterSetName = 'List')]
     [OutputType([pscustomobject])]
     param (
-        [Parameter(Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
-        [Alias('thread_id')]
-        [Alias('Thread')]
-        [ValidateScript({ [bool](Get-ThreadIdFromInputObject $_) })]
-        [Object]$InputObject,
+        [Parameter(ParameterSetName = 'Get_Thread', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Parameter(ParameterSetName = 'List_Thread', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Alias('InputObject')]  # for backword compatibility
+        [PSTypeName('PSOpenAI.Thread')]$Thread,
 
-        [Parameter(ParameterSetName = 'Get', Mandatory, Position = 1, ValueFromPipelineByPropertyName)]
+        [Parameter(ParameterSetName = 'Get_ThreadId', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Parameter(ParameterSetName = 'List_ThreadId', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
+        [Alias('thread_id')]
+        [string][UrlEncodeTransformation()]$ThreadId,
+
+        [Parameter(ParameterSetName = 'Get_Thread', Mandatory, Position = 1, ValueFromPipelineByPropertyName)]
+        [Parameter(ParameterSetName = 'Get_ThreadId', Mandatory, Position = 1, ValueFromPipelineByPropertyName)]
         [Alias('message_id')]
         [ValidateNotNullOrEmpty()]
         [string][UrlEncodeTransformation()]$MessageId,
 
-        [Parameter(ParameterSetName = 'List')]
+        [Parameter(ParameterSetName = 'List_Thread')]
+        [Parameter(ParameterSetName = 'List_ThreadId')]
+        [Alias('run_id')]
+        [string]$RunId,
+
+        [Parameter(ParameterSetName = 'List_Run', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [PSTypeName('PSOpenAI.Thread.Run')]$Run,
+
+        [Parameter(ParameterSetName = 'Get_RunStep', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [PSTypeName('PSOpenAI.Thread.Run.Step')]$Step,
+
+        [Parameter(ParameterSetName = 'List_Thread')]
+        [Parameter(ParameterSetName = 'List_ThreadId')]
+        [Parameter(ParameterSetName = 'List_Run')]
         [ValidateRange(1, 100)]
         [int]$Limit = 20,
 
-        [Parameter(ParameterSetName = 'ListAll')]
+        [Parameter(ParameterSetName = 'List_Thread')]
+        [Parameter(ParameterSetName = 'List_ThreadId')]
+        [Parameter(ParameterSetName = 'List_Run')]
         [switch]$All,
 
-        [Parameter(ParameterSetName = 'ListAll', DontShow)]
+        [Parameter(ParameterSetName = 'List_Thread', DontShow)]
+        [Parameter(ParameterSetName = 'List_ThreadId', DontShow)]
+        [Parameter(ParameterSetName = 'List_Run', DontShow)]
         [string]$After,
 
-        [Parameter(ParameterSetName = 'ListAll', DontShow)]
+        [Parameter(ParameterSetName = 'List_Thread', DontShow)]
+        [Parameter(ParameterSetName = 'List_ThreadId', DontShow)]
+        [Parameter(ParameterSetName = 'List_Run', DontShow)]
         [string]$Before,
 
-        [Parameter(ParameterSetName = 'List')]
-        [Parameter(ParameterSetName = 'ListAll')]
+        [Parameter(ParameterSetName = 'List_Thread')]
+        [Parameter(ParameterSetName = 'List_ThreadId')]
+        [Parameter(ParameterSetName = 'List_Run')]
         [ValidateSet('asc', 'desc')]
         [string][LowerCaseTransformation()]$Order = 'asc',
-
-        [Parameter(ParameterSetName = 'List')]
-        [Alias('run_id')]
-        [string]$RunId,
 
         [Parameter()]
         [int]$TimeoutSec = 0,
@@ -87,17 +109,23 @@ function Get-ThreadMessage {
     }
 
     process {
-        # Get thread_id
-        [string][UrlEncodeTransformation()]$ThreadID = Get-ThreadIdFromInputObject $InputObject
-        if (-not $ThreadID) {
-            Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve Thread ID.'))
-            return
+        # Get ids
+        if ($PSCmdlet.ParameterSetName -like '*_Thread') {
+            $ThreadId = $Thread.id
+        }
+        elseif ($PSCmdlet.ParameterSetName -like '*_Run') {
+            $ThreadId = $Run.thread_id
+            $RunId = $Run.id
+        }
+        elseif ($PSCmdlet.ParameterSetName -like '*_RunStep') {
+            $ThreadId = $Step.thread_id
+            $RunId = $Step.run_id
+            $MessageId = $Step.step_details.message_creation.message_id
         }
 
-        # Query run step messages (option)
-        if (-not $MessageId -and $InputObject.object -eq 'thread.run.step' -and $InputObject.type -eq 'message_creation') {
-            Write-Verbose 'Input is a run step object. Query associated message.'
-            $MessageId = $InputObject.step_details.message_creation.message_id
+        if (-not $ThreadId) {
+            Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve thread id.'))
+            return
         }
 
         $UriBuilder = [System.UriBuilder]::new($OpenAIParameter.Uri)
@@ -106,20 +134,16 @@ function Get-ThreadMessage {
             $UriBuilder.Path += "/$MessageId"
             $QueryUri = $UriBuilder.Uri
         }
-        elseif ($PSCmdlet.ParameterSetName -eq 'List') {
+        else {
             $QueryParam = [System.Web.HttpUtility]::ParseQueryString($UriBuilder.Query)
+            if ($All) {
+                $Limit = 100
+            }
             $QueryParam.Add('limit', $Limit);
             $QueryParam.Add('order', $Order);
             if ($RunId) {
                 $QueryParam.Add('run_id', $RunId);
             }
-            $UriBuilder.Query = $QueryParam.ToString()
-            $QueryUri = $UriBuilder.Uri
-        }
-        else {
-            $QueryParam = [System.Web.HttpUtility]::ParseQueryString($UriBuilder.Query)
-            $QueryParam.Add('limit', '100');
-            $QueryParam.Add('order', $Order);
             if ($After) {
                 $QueryParam.Add('after', $After);
             }
@@ -195,13 +219,11 @@ function Get-ThreadMessage {
 
         #region Pagenation
         if ($Response.has_more) {
-            if ($PSCmdlet.ParameterSetName -eq 'ListAll') {
+            if ($All) {
                 # pagenate
                 $PagenationParam = $PSBoundParameters
                 $PagenationParam.After = $Response.last_id
-                $null = $PagenationParam.Remove('Id')
                 $null = $PagenationParam.Remove('MessageId')
-                $null = $PagenationParam.Remove('Limit')
                 PSOpenAI\Get-ThreadMessage @PagenationParam
             }
             else {

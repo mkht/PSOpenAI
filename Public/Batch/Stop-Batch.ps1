@@ -2,10 +2,15 @@ function Stop-Batch {
     [CmdletBinding()]
     [OutputType([pscustomobject])]
     param (
-        [Parameter(Mandatory, Position = 0, ValueFromPipeline)]
-        [ValidateScript({ [bool](Get-BatchIdFromInputObject $_) })]
-        [Alias('Id')]
-        [object]$InputObject,
+        [Parameter(ParameterSetName = 'Batch', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Alias('InputObject')]  # for backword compatibility
+        [PSTypeName('PSOpenAI.Batch')]$Batch,
+
+        [Parameter(ParameterSetName = 'Id', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
+        [Alias('batch_id')]
+        [Alias('Id')]   # for backword compatibility
+        [string][UrlEncodeTransformation()]$BatchId,
 
         [Parameter()]
         [int]$TimeoutSec = 0,
@@ -71,15 +76,21 @@ function Stop-Batch {
     }
 
     process {
-        $BatchId = Get-BatchIdFromInputObject $InputObject
+        # Get id
+        if ($PSCmdlet.ParameterSetName -ceq 'Batch') {
+            $BatchId = $Batch.id
+        }
+        else {
+            $Batch = PSOpenAI\Get-Batch -BatchId $BatchId @CommonParams
+        }
         if (-not $BatchId) {
             Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve batch id.'))
             return
         }
 
         if (-not $Force) {
-            if ((-not $InputObject.status) -or ($InputObject.status -notin @('validating', 'in_progress', 'finalizing'))) {
-                Write-Error -Exception ([System.InvalidOperationException]::new(('Cannot cancel batch with status "{0}".' -f $InputObject.status)))
+            if ((-not $Batch.status) -or ($Batch.status -notin @('validating', 'in_progress', 'finalizing'))) {
+                Write-Error -Exception ([System.InvalidOperationException]::new(('Cannot cancel batch with status "{0}".' -f $Batch.status)))
                 return
             }
         }
@@ -116,7 +127,7 @@ function Stop-Batch {
 
         #region Parse response object
         try {
-            $Response = $Response | ConvertFrom-Json -ErrorAction Stop
+            $Response = $Response | ConvertFrom-Json -ErrorAction Stop | ParseBatchObject
         }
         catch {
             Write-Error -Exception $_.Exception
@@ -135,7 +146,7 @@ function Stop-Batch {
             #region Output
             # No output on default
             if ($PassThru) {
-                ParseBatchObject $Response
+                $Response
             }
             #endregion
         }

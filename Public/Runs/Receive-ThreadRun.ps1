@@ -2,10 +2,19 @@ function Receive-ThreadRun {
     [CmdletBinding()]
     [OutputType([pscustomobject])]
     param (
-        [Parameter(Mandatory, Position = 0, ValueFromPipeline)]
-        [ValidateScript({ ([string]$_.id).StartsWith('run_', [StringComparison]::Ordinal) -and ([string]$_.thread_id).StartsWith('thread_', [StringComparison]::Ordinal) })]
-        [Alias('Run')]
-        [Object]$InputObject,
+        [Parameter(ParameterSetName = 'Get_ThreadRun', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Alias('InputObject')]  # for backword compatibility
+        [PSTypeName('PSOpenAI.Thread.Run')]$Run,
+
+        [Parameter(ParameterSetName = 'Get_Id', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
+        [Alias('run_id')]
+        [string][UrlEncodeTransformation()]$RunId,
+
+        [Parameter(ParameterSetName = 'Get_Id', Mandatory, Position = 1, ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
+        [Alias('thread_id')]
+        [string][UrlEncodeTransformation()]$ThreadId,
 
         [Parameter()]
         [int]$TimeoutSec = 0,
@@ -61,12 +70,15 @@ function Receive-ThreadRun {
     }
 
     process {
-        if ($Wait -and $InputObject.status -ne 'completed') {
-            $InputObject = $InputObject | PSOpenAI\Wait-ThreadRun @CommonParams
+        if ($PSCmdlet.ParameterSetName -ceq 'Get_Id') {
+            $Run = PSOpenAI\Get-ThreadRun -ThreadId $ThreadId -RunId $RunId @CommonParams
         }
-        $ThreadIds += $InputObject.thread_id
-        PSOpenAI\Get-Thread -InputObject $InputObject.thread_id @CommonParams
-        return
+
+        if ($Wait -and $Run.status -ne 'completed') {
+            $Run = $Run | PSOpenAI\Wait-ThreadRun @CommonParams
+        }
+        $ThreadIds += $Run.thread_id
+        PSOpenAI\Get-Thread -ThreadId $Run.thread_id @CommonParams
     }
 
     end {

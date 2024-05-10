@@ -15,8 +15,8 @@ Retrieves a run.
 ### Get
 ```
 Get-ThreadRun
-    -RunId <String>
-    [-InputObject] <Object>
+    [-ThreadId] <String>
+    [-RunId] <String>
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
     [-ApiBase <Uri>]
@@ -28,22 +28,9 @@ Get-ThreadRun
 ### List
 ```
 Get-ThreadRun
-    [-InputObject] <Object>
+    [-ThreadId] <String>
+    [-All]
     [-Limit <Int32>]
-    [-Order <String>]
-    [-TimeoutSec <Int32>]
-    [-MaxRetryCount <Int32>]
-    [-ApiBase <Uri>]
-    [-ApiKey <SecureString>]
-    [-Organization <String>]
-    [<CommonParameters>]
-```
-
-### ListAll
-```
-Get-ThreadRun
-    -All
-    [-InputObject] <Object>
     [-Order <String>]
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
@@ -60,20 +47,31 @@ Retrieves a run.
 
 ### Example 1
 ```powershell
-PS C:\> Get-ThreadRun -RunID 'run_abc123' -Thread 'thread_abc123'
+PS C:\> Get-ThreadRun -RunId 'run_abc123' -ThreadId 'thread_abc123'
 ```
 
 Retrieve a run with ID `run_abc123` associated with the Thread whose ID is `thread_abc123`.
 
 ### Example 2
 ```powershell
-PS C:\> Get-ThreadRun -Thread 'thread_abc123' -All
+PS C:\> Get-ThreadRun -ThreadId 'thread_abc123' -All
 ```
 
 List all run objects associated with the Thread whose ID is `thread_abc123`.
 
 
 ## PARAMETERS
+
+### -ThreadId
+The ID of the thread that was run.
+
+```yaml
+Type: String
+Aliases: thread_id
+Required: True
+Position: 0
+Accept pipeline input: True (ByPropertyName, ByValue)
+```
 
 ### -RunId
 The ID of the run to retrieve.
@@ -83,19 +81,8 @@ Type: String
 Parameter Sets: Get
 Aliases: run_id
 Required: True
-Position: Named
+Position: 1
 Accept pipeline input: True (ByPropertyName)
-```
-
-### -InputObject
-The ID of the thread that was run.
-
-```yaml
-Type: Object
-Aliases: Thread, thread_id
-Required: True
-Position: 0
-Accept pipeline input: True (ByPropertyName, ByValue)
 ```
 
 ### -Limit
@@ -114,7 +101,7 @@ When this switch is specified, all run objects will be retrieved.
 
 ```yaml
 Type: SwitchParameter
-Parameter Sets: ListAll
+Parameter Sets: List
 Required: False
 Position: Named
 ```
@@ -124,7 +111,7 @@ Sort order by the created timestamp of the objects. `asc` for ascending order an
 
 ```yaml
 Type: String
-Parameter Sets: List, ListAll
+Parameter Sets: List
 Accepted values: asc, desc
 Required: False
 Position: Named
@@ -174,14 +161,8 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
 
 ```yaml
 Type: Object
-Parameter Sets: (All)
-Aliases:
-
 Required: False
 Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
 ```
 
 ### -Organization

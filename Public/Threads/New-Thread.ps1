@@ -1,26 +1,29 @@
 function New-Thread {
-    [CmdletBinding()]
+    [CmdletBinding(DefaultParameterSetName = 'Id')]
     [OutputType([pscustomobject])]
     param (
         # Hidden param, for Set-Thread cmdlet
-        [Parameter(DontShow, ValueFromPipeline, ValueFromPipelineByPropertyName)]
-        [Object]$InputObject,
+        [Parameter(DontShow, ParameterSetName = 'Thread', ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [PSTypeName('PSOpenAI.Thread')]$Thread,
+
+        [Parameter(DontShow, ParameterSetName = 'Id', ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
+        [string][UrlEncodeTransformation()]$ThreadId,
 
         [Parameter(DontShow)]
         [object[]]$Messages,
 
         [Parameter()]
         [ValidateCount(0, 20)]
-        [string[]]$FileIdsForCodeInterpreter,
+        [object[]]$FileIdsForCodeInterpreter,
 
         [Parameter()]
-        [ValidateScript({ [bool](Get-VectorStoreIdFromInputObject $_) })]
         [ValidateCount(1, 1)]
         [object[]]$VectorStoresForFileSearch,
 
         [Parameter()]
         [ValidateCount(0, 10000)]
-        [string[]]$FileIdsForFileSearch,
+        [object[]]$FileIdsForFileSearch,
 
         [Parameter()]
         [System.Collections.IDictionary]$MetaData,
@@ -80,36 +83,63 @@ function New-Thread {
     }
 
     process {
-        # Get thread_id
-        if ($null -ne $InputObject) {
-            [string][UrlEncodeTransformation()]$ThreadID = Get-ThreadIdFromInputObject $InputObject
-        }
-
         #region Construct parameters for API request
+        if ($Thread) {
+            $ThreadId = $Thread.id
+        }
         if (-not [string]::IsNullOrEmpty($ThreadID)) {
             $QueryUri = $OpenAIParameter.Uri.ToString() + "/$ThreadID"
         }
         else {
             $QueryUri = $OpenAIParameter.Uri
         }
+        #endregion
 
-        # Construct tools resources
+        #region Construct tools resources
         $ToolResources = @{}
         if ($FileIdsForCodeInterpreter.Count -gt 0) {
-            $ToolResources.code_interpreter = @{'file_ids' = $FileIdsForCodeInterpreter }
+            $list = [System.Collections.Generic.List[string]]::new($FileIdsForCodeInterpreter.Count)
+            foreach ($item in $FileIdsForCodeInterpreter) {
+                if ($item -is [string]) {
+                    $list.Add($item)
+                }
+                elseif ($item.psobject.TypeNames -contains 'PSOpenAI.File') {
+                    $list.Add($item.id)
+                }
+            }
+            if ($list.Count -gt 0) {
+                $ToolResources.code_interpreter = @{'file_ids' = $list.ToArray() }
+            }
         }
         if ($FileIdsForFileSearch.Count -gt 0) {
-            $ToolResources.file_search = @{'vector_stores' = @(@{'file_ids' = $FileIdsForFileSearch }) }
-        }
-        if ($PSBoundParameters.ContainsKey('VectorStoresForFileSearch')) {
-            $vsids = @()
-            foreach ($vs in $VectorStoresForFileSearch) {
-                $vsids += Get-VectorStoreIdFromInputObject $vs
+            $list = [System.Collections.Generic.List[string]]::new($FileIdsForFileSearch.Count)
+            foreach ($item in $FileIdsForFileSearch) {
+                if ($item -is [string]) {
+                    $list.Add($item)
+                }
+                elseif ($item.psobject.TypeNames -contains 'PSOpenAI.File') {
+                    $list.Add($item.id)
+                }
             }
-            if ($vsids.Count -gt 0) {
-                $ToolResources.file_search = @{'vector_store_ids' = $vsids }
+            if ($list.Count -gt 0) {
+                $ToolResources.file_search = @{'vector_stores' = @(@{'file_ids' = $list.ToArray() }) }
             }
         }
+        if ($VectorStoresForFileSearch.Count -gt 0) {
+            $list = [System.Collections.Generic.List[string]]::new($FileIdsForFileSearch.Count)
+            foreach ($item in $VectorStoresForFileSearch) {
+                if ($item -is [string]) {
+                    $list.Add($item)
+                }
+                elseif ($item.psobject.TypeNames -contains 'PSOpenAI.VectorStore') {
+                    $list.Add($item.id)
+                }
+            }
+            if ($list.Count -gt 0) {
+                $ToolResources.file_search = @{'vector_store_ids' = $list.ToArray() }
+            }
+        }
+        #endregion
 
         $PostBody = [System.Collections.Specialized.OrderedDictionary]::new()
         if ($ToolResources.Count -gt 0) {
@@ -138,14 +168,8 @@ function New-Thread {
                 if ($msg.message -is [string] -and -not [string]::IsNullOrEmpty($msg.message)) {
                     $t.content = $msg.message
                 }
-                if ($null -ne $msg.file_ids) {
-                    $i = [string[]]@()
-                    foreach ($fileid in $msg.file_ids) {
-                        $i += [string]$fileid
-                    }
-                    if ($i.Count -gt 0) {
-                        $t.file_ids = $i
-                    }
+                if ($msg.attachments.Count -gt 0) {
+                    $t.attachments = @($msg.attachments)
                 }
                 if ($msg.metadata -is [System.Collections.IDictionary]) {
                     $t.metadata = $msg.metadata
@@ -193,7 +217,7 @@ function New-Thread {
 
         #region Output
         Write-Verbose ('The thread with id "{0}" has been created.' -f $Response.id)
-        Write-Output (ParseThreadObject $Response -CommonParams $CommonParams -Primitive)
+        ParseThreadObject $Response -CommonParams $CommonParams -Primitive
         #endregion
     }
 

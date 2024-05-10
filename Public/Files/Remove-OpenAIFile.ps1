@@ -1,11 +1,15 @@
 function Remove-OpenAIFile {
-    [CmdletBinding()]
+    [CmdletBinding(DefaultParameterSetName = 'Id')]
     [OutputType([pscustomobject])]
     param (
-        [Parameter(Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
-        [Alias('file_id')]
+        [Parameter(ParameterSetName = 'File', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [PSTypeName('PSOpenAI.File')]$File,
+
+        [Parameter(ParameterSetName = 'Id', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [ValidateNotNullOrEmpty()]
-        [string][UrlEncodeTransformation()]$Id,
+        [Alias('file_id')]
+        [Alias('Id')]   # for backword compatibility
+        [string][UrlEncodeTransformation()]$FileId,
 
         [Parameter()]
         [int]$TimeoutSec = 0,
@@ -59,9 +63,18 @@ function Remove-OpenAIFile {
     }
 
     process {
+        # Get file id
+        if ($PSCmdlet.ParameterSetName -ceq 'File') {
+            $FileId = $File.id
+        }
+        if (-not $FileId) {
+            Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve file id.'))
+            return
+        }
+
         #region Construct Query URI
         $UriBuilder = [System.UriBuilder]::new($OpenAIParameter.Uri)
-        $UriBuilder.Path += "/$Id"
+        $UriBuilder.Path += "/$FileId"
         $QueryUri = $UriBuilder.Uri
         #endregion
 

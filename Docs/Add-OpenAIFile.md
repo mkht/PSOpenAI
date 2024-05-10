@@ -15,7 +15,7 @@ Upload a file that can be used across various endpoints.
 ### File
 ```
 Add-OpenAIFile
-    [-File] <String>
+    [-File] <FileInfo>
     -Purpose <String>
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
@@ -65,7 +65,7 @@ Upload a content of bytes to OpenAI
 The File path to be uploaded.
 
 ```yaml
-Type: String
+Type: System.IO.FileInfo
 Parameter Sets: File
 Required: True
 Position: 0
@@ -144,14 +144,8 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
 
 ```yaml
 Type: Object
-Parameter Sets: (All)
-Aliases:
-
 Required: False
 Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
 ```
 
 ### -Organization

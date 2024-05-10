@@ -2,13 +2,16 @@ function Add-ThreadMessage {
     [CmdletBinding()]
     [OutputType([pscustomobject])]
     param (
-        [Parameter(Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]
-        [Alias('thread_id')]
-        [Alias('Thread')]
-        [ValidateScript({ [bool](Get-ThreadIdFromInputObject $_) })]
-        [Object]$InputObject,
+        [Parameter(ParameterSetName = 'Thread', Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Alias('InputObject')]  # for backword compatibility
+        [PSTypeName('PSOpenAI.Thread')]$Thread,
 
-        [Parameter(Mandatory, Position = 0)]
+        [Parameter(ParameterSetName = 'Id', Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
+        [Alias('thread_id')]
+        [string][UrlEncodeTransformation()]$ThreadId,
+
+        [Parameter(Mandatory, Position = 0, ValueFromPipelineByPropertyName)]
         [Alias('Text')]
         [Alias('Content')]
         [ValidateNotNullOrEmpty()]
@@ -20,11 +23,11 @@ function Add-ThreadMessage {
 
         [Parameter()]
         [ValidateCount(0, 20)]
-        [string[]]$FileIdsForCodeInterpreter,
+        [object[]]$FileIdsForCodeInterpreter,
 
         [Parameter()]
         [ValidateCount(0, 10000)]
-        [string[]]$FileIdsForFileSearch,
+        [object[]]$FileIdsForFileSearch,
 
         [Parameter()]
         [System.Collections.IDictionary]$MetaData,
@@ -88,7 +91,9 @@ function Add-ThreadMessage {
 
     process {
         # Get thread_id
-        [string][UrlEncodeTransformation()]$ThreadID = Get-ThreadIdFromInputObject $InputObject
+        if ($PSCmdlet.ParameterSetName -ceq 'Thread') {
+            $ThreadId = $Thread.id
+        }
         if (-not $ThreadID) {
             Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve Thread ID.'))
             return
@@ -103,7 +108,13 @@ function Add-ThreadMessage {
         #region Construct parameters for API request
         $Attachments = @()
         if ($FileIdsForCodeInterpreter.Count -gt 0) {
-            foreach ($fileid in $FileIdsForCodeInterpreter) {
+            foreach ($item in $FileIdsForCodeInterpreter) {
+                if ($item -is [string]) {
+                    $fileid = $item
+                }
+                elseif ($item.psobject.TypeNames -contains 'PSOpenAI.File') {
+                    $fileid = $item.id
+                }
                 $Attachments += @{
                     'file_id' = $fileid
                     'tools'   = @(@{'type' = 'code_interpreter' })
@@ -111,7 +122,13 @@ function Add-ThreadMessage {
             }
         }
         if ($FileIdsForFileSearch.Count -gt 0) {
-            foreach ($fileid in $FileIdsForFileSearch) {
+            foreach ($item in $FileIdsForFileSearch) {
+                if ($item -is [string]) {
+                    $fileid = $item
+                }
+                elseif ($item.psobject.TypeNames -contains 'PSOpenAI.File') {
+                    $fileid = $item.id
+                }
                 $Attachments += @{
                     'file_id' = $fileid
                     'tools'   = @(@{'type' = 'file_search' })
@@ -157,7 +174,7 @@ function Add-ThreadMessage {
         #region Output
         # Output thread object only when the PassThru switch is specified.
         if ($PassThru) {
-            PSOpenAI\Get-Thread -InputObject $ThreadID @CommonParams
+            PSOpenAI\Get-Thread -ThreadId $ThreadID @CommonParams
         }
         #endregion
     }

@@ -30,6 +30,7 @@ Describe 'New-Thread' {
             { $script:Result = New-Thread -ea Stop } | Should -Not -Throw
             Should -InvokeVerifiable
             $Result.id | Should -BeExactly 'thread_abc1234'
+            $Result.psobject.TypeNames | Should -Contain 'PSOpenAI.Thread'
             $Result.created_at | Should -BeOfType [datetime]
             $Result.Messages.GetType().Fullname | Should -Be 'System.Object[]'
             $Result.Messages | Should -HaveCount 0

@@ -94,8 +94,8 @@ You can use `Remove-OpenAIFile` to delete them if necessary.
 
 ```PowerShell
 # Remove batch input file from storage
-Remove-OpenAIFile -Id $Batch.input_file_id
+Remove-OpenAIFile -FileId $Batch.input_file_id
 
 # Remove batch output file from storage
-Remove-OpenAIFile -Id $Batch.output_file_id
+Remove-OpenAIFile -FileId $Batch.output_file_id
 ```

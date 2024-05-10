@@ -2,12 +2,16 @@ function Start-Batch {
     [CmdletBinding(DefaultParameterSetName = 'BatchObject')]
     [OutputType([pscustomobject])]
     param (
-        [Parameter(ParameterSetName = 'FileId', Mandatory)]
+        [Parameter(ParameterSetName = 'File', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [PSTypeName('PSOpenAI.File')]$File,
+
+        [Parameter(ParameterSetName = 'FileId', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [Alias('input_file_id')]
         [string]$FileId,
 
-        [Parameter(ParameterSetName = 'BatchObject', Mandatory, ValueFromPipeline)]
-        [object[]]$InputObject,
+        [Parameter(ParameterSetName = 'BatchObject', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Alias('InputObject')]  # for backword compatibility
+        [PSTypeName('PSOpenAI.Batch.Input')]$BatchInput,
 
         [Parameter()]
         [string]$Endpoint = '/v1/chat/completions', #Currently only /v1/chat/completions is supported.
@@ -78,9 +82,9 @@ function Start-Batch {
 
     process {
         if ($PSCmdlet.ParameterSetName -ceq 'BatchObject') {
-            foreach ($item in $InputObject) {
+            foreach ($item in $BatchInput) {
                 # Validate input object
-                if ($null -eq $InputObject) {
+                if ($null -eq $item) {
                     continue
                 }
                 elseif (-not ($item.custom_id -and $item.method -and $item.url)) {
@@ -110,9 +114,16 @@ function Start-Batch {
             $bytedata = [System.Text.Encoding]::UTF8.GetBytes($BatchBag -join "`n")
             $filename = ('batch-psopenai_{0}_{1:x4}.jsonl' -f $StartTime.ToString('s'), (Get-Random -Maximum 65535))
             Write-Verbose -Message ('Uploading a batch data to OpenAI. (File name: "{0}")' -f $filename)
-            $fileobject = PSOpenAI\Add-OpenAIFile -Content $bytedata -Name $filename -Purpose batch @CommonParams
+            $fileobject = PSOpenAI\Add-OpenAIFile -Content $bytedata -Name $filename -Purpose 'batch' @CommonParams
             Write-Verbose -Message ('Batch data is successfully uploaded. (File ID: "{0}")' -f $fileobject.id)
             $FileId = $fileobject.id
+        }
+        elseif ($PSCmdlet.ParameterSetName -ceq 'File') {
+            if ($File.Count -gt 1) {
+                Write-Error -Exception ([System.ArgumentException]::new('Multiple file objects cannot be input.'))
+                return
+            }
+            $FileId = $File.id
         }
 
         if (-not $FileId) {

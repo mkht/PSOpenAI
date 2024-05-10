@@ -15,7 +15,7 @@ Retrieves an assistant.
 ### Get
 ```
 Get-Assistant
-    [-InputObject] <Object>
+    [-AssistantId] <String>
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
     [-ApiBase <Uri>]
@@ -27,20 +27,8 @@ Get-Assistant
 ### List
 ```
 Get-Assistant
+    [-All]
     [-Limit <Int32>]
-    [-Order <String>]
-    [-TimeoutSec <Int32>]
-    [-MaxRetryCount <Int32>]
-    [-ApiBase <Uri>]
-    [-ApiKey <SecureString>]
-    [-Organization <String>]
-    [<CommonParameters>]
-```
-
-### ListAll
-```
-Get-Assistant
-    -All
     [-Order <String>]
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
@@ -71,20 +59,20 @@ Get all assistants.
 
 ### Example 3
 ```powershell
-PS C:\> Get-Assistant -Assistant 'asst_abc123'
+PS C:\> Get-Assistant -AssistantId 'asst_abc123'
 ```
 
 Get an assistants with ID of `asst_abc123`.
 
 ## PARAMETERS
 
-### -InputObject
+### -AssistantId
 The ID of the assistant to retrieve.
 
 ```yaml
-Type: Object
+Type: String
 Parameter Sets: Get
-Aliases: Assistant, assistant_id
+Aliases:  assistant_id
 Required: True
 Position: 0
 Accept pipeline input: True (ByPropertyName, ByValue)
@@ -106,7 +94,7 @@ When this switch is specified, all Assistant objects will be retrieved.
 
 ```yaml
 Type: SwitchParameter
-Parameter Sets: ListAll
+Parameter Sets: List
 Required: False
 Position: Named
 ```
@@ -116,7 +104,7 @@ Sort order by the created timestamp of the objects. `asc` for ascending order an
 
 ```yaml
 Type: String
-Parameter Sets: List, ListAll
+Parameter Sets: List
 Accepted values: asc, desc
 Required: False
 Position: Named
@@ -165,14 +153,8 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
 
 ```yaml
 Type: Object
-Parameter Sets: (All)
-Aliases:
-
 Required: False
 Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
 ```
 
 ### -Organization

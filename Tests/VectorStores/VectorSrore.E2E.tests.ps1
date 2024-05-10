@@ -11,8 +11,10 @@ Describe 'Set-VectorStore' {
     Context 'End-to-End tests (online)' -Tag 'Online' {
         BeforeAll {
             # Prepare test datasets
-            $script:dataSet = Expand-Archive ($script:TestData + '/datasets.zip') -DestinationPath (Join-Path $TestDrive 'datasets') -Force -PassThru
+            $null = Expand-Archive ($script:TestData + '/datasets.zip') -DestinationPath (Join-Path $TestDrive 'datasets') -Force
+            $script:dataSet = Get-ChildItem (Join-Path $TestDrive 'datasets') -Recurse -File
             $script:dataSet = $script:dataSet | ? { -not $_.PSIsContainer }
+
         }
 
         It 'STEP1: Upload test data sets' {
@@ -58,7 +60,7 @@ Describe 'Set-VectorStore' {
         }
 
         It 'STEP6: Refresh vector store object' {
-            { $script:VectorStore = Get-VectorStore -InputObject $script:VectorStore -MaxRetryCount 5 -ea Stop } | Should -Not -Throw
+            { $script:VectorStore = Get-VectorStore -VectorStore $script:VectorStore -MaxRetryCount 5 -ea Stop } | Should -Not -Throw
             $VectorStore.file_counts.total | Should -Be $script:dataSet.Count
         }
 

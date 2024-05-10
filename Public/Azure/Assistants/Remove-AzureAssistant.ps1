@@ -2,11 +2,14 @@ function Remove-AzureAssistant {
     [CmdletBinding()]
     [OutputType([void])]
     param (
-        [Parameter(Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Parameter(ParameterSetName = 'Assistant', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Alias('InputObject')]  # for backword compatibility
+        [PSTypeName('PSOpenAI.Assistant')]$Assistant,
+
+        [Parameter(ParameterSetName = 'Id', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
         [Alias('assistant_id')]
-        [Alias('Assistant')]
-        [ValidateScript({ [bool](Get-AssistantIdFromInputObject $_) })]
-        [Object]$InputObject,
+        [string][UrlEncodeTransformation()]$AssistantId,
 
         [Parameter()]
         [int]$TimeoutSec = 0,
