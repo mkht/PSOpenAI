@@ -14,7 +14,7 @@ Translates audio into English.
 
 ```
 Request-AudioTranslation
-    [[-File] <FileInfo>]
+    [[-File] <String>]
     [-Model <String>]
     [-Prompt <String>]
     [-Format <String>]
@@ -48,7 +48,7 @@ Hello, My name is tanaka yoshio.
 The audio file to translate, in one of these formats: `flac`, `mp3`, `mp4`, `mpeg`, `mpga`, `m4a`, `ogg`, `wav`, or `webm`.  
 
 ```yaml
-Type: FileInfo
+Type: String
 Required: False
 Position: 1
 Accept pipeline input: True (ByValue)

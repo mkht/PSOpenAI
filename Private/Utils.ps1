@@ -99,18 +99,15 @@ function Resolve-FileInfo {
     [OutputType([System.IO.FileInfo])]
     param(
         [Parameter(Mandatory, Position = 0)]
-        [System.IO.FileInfo]$File
+        [string]$File
     )
-    [string]$refT = ''
-    if (-not $File.Exists -and -not $PSCmdlet.SessionState.Path.IsPSAbsolute($File.FullName, [ref]$refT)) {
-        # Try to resolve relative path
-        $File = [System.IO.FileInfo]$PSCmdlet.SessionState.Path.GetUnresolvedProviderPathFromPSPath($File.Name)
-    }
-    if (-not $File.Exists) {
-        Write-Error -Exception ([System.Management.Automation.ItemNotFoundException]::new(("Cannot find path '{0}' because it does not exist." -f $File.FullName)))
+    # Try to resolve relative path
+    $FileInfo = [System.IO.FileInfo]$PSCmdlet.SessionState.Path.GetUnresolvedProviderPathFromPSPath($File)
+    if (-not $FileInfo.Exists) {
+        Write-Error -Exception ([System.Management.Automation.ItemNotFoundException]::new(("Cannot find path '{0}' because it does not exist." -f $FileInfo.FullName)))
         return
     }
-    $File
+    $FileInfo
 }
 
 function DecryptSecureString {

@@ -15,7 +15,7 @@ Upload a file that can be used across various endpoints.
 ### File
 ```
 Add-OpenAIFile
-    [-File] <FileInfo>
+    [-File] <String>
     -Purpose <String>
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
@@ -65,7 +65,7 @@ Upload a content of bytes to OpenAI
 The File path to be uploaded.
 
 ```yaml
-Type: System.IO.FileInfo
+Type: String
 Parameter Sets: File
 Required: True
 Position: 0

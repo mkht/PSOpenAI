@@ -14,9 +14,9 @@ Creates an edited or extended image given an original image and a prompt.
 
 ```
 Request-ImageEdit
-    -Image <FileInfo>
+    -Image <String>
     -Prompt <String>
-    [-Mask <FileInfo>]
+    [-Mask <String>]
     [-NumberOfImages <UInt16>]
     [-Size <String>]
     [-Format <String>]
@@ -31,9 +31,9 @@ Request-ImageEdit
 
 ```
 Request-ImageEdit
-    -Image <FileInfo>
+    -Image <String>
     -Prompt <String>
-    [-Mask <FileInfo>]
+    [-Mask <String>]
     [-NumberOfImages <UInt16>]
     [-Size <String>]
     -OutFile <String>
@@ -80,7 +80,7 @@ Must be a valid PNG file, less than 4MB, and square.
 If mask is not provided, image must have transparency, which will be used as the mask.
 
 ```yaml
-Type: FileInfo
+Type: String
 Aliases: File
 Required: True
 Position: Named
@@ -103,7 +103,7 @@ where alpha is zero) indicate where image should be edited.
 Must be a valid PNG file, less than 4MB, and have the same dimensions as image.
 
 ```yaml
-Type: FileInfo
+Type: String
 Required: False
 Position: Named
 ```

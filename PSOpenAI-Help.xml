@@ -20,9 +20,9 @@
           <maml:description>
             <maml:para>The File path to be uploaded.</maml:para>
           </maml:description>
-          <command:parameterValue required="true" variableLength="false">System.IO.FileInfo</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
-            <maml:name>System.IO.FileInfo</maml:name>
+            <maml:name>String</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -226,9 +226,9 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <maml:description>
           <maml:para>The File path to be uploaded.</maml:para>
         </maml:description>
-        <command:parameterValue required="true" variableLength="false">System.IO.FileInfo</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
-          <maml:name>System.IO.FileInfo</maml:name>
+          <maml:name>String</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -10494,9 +10494,9 @@ https://platform.openai.com/docs/guides/speech-to-text/speech-to-text</maml:para
             <maml:para>(Required) The audio file to transcribe, in one of these formats: `flac`, `mp3`, `mp4`, `mpeg`, `mpga`, `m4a`, `ogg`, `wav`, or `webm`.
 </maml:para>
           </maml:description>
-          <command:parameterValue required="true" variableLength="false">FileInfo</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
-            <maml:name>FileInfo</maml:name>
+            <maml:name>String</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -10655,9 +10655,9 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
           <maml:para>(Required) The audio file to transcribe, in one of these formats: `flac`, `mp3`, `mp4`, `mpeg`, `mpga`, `m4a`, `ogg`, `wav`, or `webm`.
 </maml:para>
         </maml:description>
-        <command:parameterValue required="true" variableLength="false">FileInfo</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
-          <maml:name>FileInfo</maml:name>
+          <maml:name>String</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -10872,9 +10872,9 @@ https://platform.openai.com/docs/guides/speech-to-text/speech-to-text</maml:para
             <maml:para>(Required) The audio file to translate, in one of these formats: `flac`, `mp3`, `mp4`, `mpeg`, `mpga`, `m4a`, `ogg`, `wav`, or `webm`.
 </maml:para>
           </maml:description>
-          <command:parameterValue required="true" variableLength="false">FileInfo</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
-            <maml:name>FileInfo</maml:name>
+            <maml:name>String</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -11008,9 +11008,9 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
           <maml:para>(Required) The audio file to translate, in one of these formats: `flac`, `mp3`, `mp4`, `mpeg`, `mpga`, `m4a`, `ogg`, `wav`, or `webm`.
 </maml:para>
         </maml:description>
-        <command:parameterValue required="true" variableLength="false">FileInfo</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
-          <maml:name>FileInfo</maml:name>
+          <maml:name>String</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -12462,9 +12462,9 @@ https://platform.openai.com/docs/guides/images/image-generation</maml:para>
             <maml:para>(Required) The image to edit.
 Must be a valid PNG file, less than 4MB, and square. If mask is not provided, image must have transparency, which will be used as the mask.</maml:para>
           </maml:description>
-          <command:parameterValue required="true" variableLength="false">FileInfo</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
-            <maml:name>FileInfo</maml:name>
+            <maml:name>String</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -12488,9 +12488,9 @@ The maximum length is 1000 characters.</maml:para>
             <maml:para>An additional image whose fully transparent areas (e.g. where alpha is zero) indicate where image should be edited.
 Must be a valid PNG file, less than 4MB, and have the same dimensions as image.</maml:para>
           </maml:description>
-          <command:parameterValue required="true" variableLength="false">FileInfo</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
-            <maml:name>FileInfo</maml:name>
+            <maml:name>String</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -12623,9 +12623,9 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
             <maml:para>(Required) The image to edit.
 Must be a valid PNG file, less than 4MB, and square. If mask is not provided, image must have transparency, which will be used as the mask.</maml:para>
           </maml:description>
-          <command:parameterValue required="true" variableLength="false">FileInfo</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
-            <maml:name>FileInfo</maml:name>
+            <maml:name>String</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -12649,9 +12649,9 @@ The maximum length is 1000 characters.</maml:para>
             <maml:para>An additional image whose fully transparent areas (e.g. where alpha is zero) indicate where image should be edited.
 Must be a valid PNG file, less than 4MB, and have the same dimensions as image.</maml:para>
           </maml:description>
-          <command:parameterValue required="true" variableLength="false">FileInfo</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
-            <maml:name>FileInfo</maml:name>
+            <maml:name>String</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -12784,9 +12784,9 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
           <maml:para>(Required) The image to edit.
 Must be a valid PNG file, less than 4MB, and square. If mask is not provided, image must have transparency, which will be used as the mask.</maml:para>
         </maml:description>
-        <command:parameterValue required="true" variableLength="false">FileInfo</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
-          <maml:name>FileInfo</maml:name>
+          <maml:name>String</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -12810,9 +12810,9 @@ The maximum length is 1000 characters.</maml:para>
           <maml:para>An additional image whose fully transparent areas (e.g. where alpha is zero) indicate where image should be edited.
 Must be a valid PNG file, less than 4MB, and have the same dimensions as image.</maml:para>
         </maml:description>
-        <command:parameterValue required="true" variableLength="false">FileInfo</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
-          <maml:name>FileInfo</maml:name>
+          <maml:name>String</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -13675,9 +13675,9 @@ https://platform.openai.com/docs/guides/images/image-generation</maml:para>
             <maml:para>(Required) The image to use as the basis for the variation(s).
 Must be a valid PNG file, less than 4MB, and square.</maml:para>
           </maml:description>
-          <command:parameterValue required="true" variableLength="false">FileInfo</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
-            <maml:name>FileInfo</maml:name>
+            <maml:name>String</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -13810,9 +13810,9 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
             <maml:para>(Required) The image to use as the basis for the variation(s).
 Must be a valid PNG file, less than 4MB, and square.</maml:para>
           </maml:description>
-          <command:parameterValue required="true" variableLength="false">FileInfo</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
-            <maml:name>FileInfo</maml:name>
+            <maml:name>String</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -13945,9 +13945,9 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
           <maml:para>(Required) The image to use as the basis for the variation(s).
 Must be a valid PNG file, less than 4MB, and square.</maml:para>
         </maml:description>
-        <command:parameterValue required="true" variableLength="false">FileInfo</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
-          <maml:name>FileInfo</maml:name>
+          <maml:name>String</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>

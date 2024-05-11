@@ -4,7 +4,7 @@ function Request-AudioTranslation {
     param (
         [Parameter(Mandatory, Position = 0, ValueFromPipeline)]
         [ValidateNotNullOrEmpty()]
-        [System.IO.FileInfo]$File,
+        [string]$File,
 
         [Parameter()]
         [Completions('whisper-1')]

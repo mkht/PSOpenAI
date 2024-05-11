@@ -4,11 +4,11 @@ function Request-ImageEdit {
         [Parameter(Mandatory)]
         [ValidateNotNullOrEmpty()]
         [Alias('File')]
-        [System.IO.FileInfo]$Image,
+        [string]$Image,
 
         [Parameter()]
         [ValidateNotNullOrEmpty()]
-        [System.IO.FileInfo]$Mask,
+        [string]$Mask,
 
         [Parameter(Mandatory)]
         [ValidateLength(1, 1000)]
@@ -87,7 +87,7 @@ function Request-ImageEdit {
     }
 
     process {
-        $Image = Resolve-FileInfo $Image
+        $ImageFileInfo = Resolve-FileInfo $Image
         # (Only PS6+)
         # If the filename contains non-ASCII characters,
         # the OpenAI API cannot recognize the file format correctly and returns an error.
@@ -95,15 +95,15 @@ function Request-ImageEdit {
         # We need to find a better way.
         $IsTempImageFileCreated = $false
         if ($PSVersionTable.PSVersion.Major -ge 6) {
-            if ($Image.Name -match '[^\u0000-\u007F]') {
+            if ($ImageFileInfo.Name -match '[^\u0000-\u007F]') {
                 Write-Warning 'File name contains non-ASCII characters. It is strongly recommended that file name only contains ASCII characters.'
-                $Image = Copy-TempFile -SourceFile $Image -ErrorAction Stop
+                $ImageFileInfo = Copy-TempFile -SourceFile $ImageFileInfo -ErrorAction Stop
                 $IsTempImageFileCreated = $true
             }
         }
 
         if ($PSBoundParameters.ContainsKey('Mask')) {
-            $Mask = Resolve-FileInfo $Mask
+            $MaskFileInfo = Resolve-FileInfo $Mask
             # (Only PS6+)
             # If the filename contains non-ASCII characters,
             # the OpenAI API cannot recognize the file format correctly and returns an error.
@@ -111,9 +111,9 @@ function Request-ImageEdit {
             # We need to find a better way.
             $IsTempMaskFileCreated = $false
             if ($PSVersionTable.PSVersion.Major -ge 6) {
-                if ($Mask.Name -match '[^\u0000-\u007F]') {
+                if ($MaskFileInfo.Name -match '[^\u0000-\u007F]') {
                     Write-Warning 'File name contains non-ASCII characters. It is strongly recommended that file name only contains ASCII characters.'
-                    $Mask = Copy-TempFile -SourceFile $Mask -ErrorAction Stop
+                    $MaskFileInfo = Copy-TempFile -SourceFile $MaskFileInfo -ErrorAction Stop
                     $IsTempMaskFileCreated = $true
                 }
             }
@@ -136,10 +136,10 @@ function Request-ImageEdit {
 
         #region Construct parameters for API request
         $PostBody = [System.Collections.Specialized.OrderedDictionary]::new()
-        $PostBody.image = $Image
+        $PostBody.image = $ImageFileInfo
         $PostBody.prompt = $Prompt
         if ($Mask) {
-            $PostBody.mask = $Mask
+            $PostBody.mask = $MaskFileInfo
         }
         if ($NumberOfImages -ge 1) {
             $PostBody.n = $NumberOfImages
@@ -188,11 +188,11 @@ function Request-ImageEdit {
             $Response = Invoke-OpenAIAPIRequest @splat
         }
         finally {
-            if ($IsTempImageFileCreated -and (Test-Path $Image -PathType Leaf)) {
-                Remove-Item $Image -Force -ErrorAction SilentlyContinue
+            if ($IsTempImageFileCreated -and (Test-Path $ImageFileInfo -PathType Leaf)) {
+                Remove-Item $ImageFileInfo -Force -ErrorAction SilentlyContinue
             }
-            if ($IsTempMaskFileCreated -and (Test-Path $Mask -PathType Leaf)) {
-                Remove-Item $Mask -Force -ErrorAction SilentlyContinue
+            if ($IsTempMaskFileCreated -and (Test-Path $MaskFileInfo -PathType Leaf)) {
+                Remove-Item $MaskFileInfo -Force -ErrorAction SilentlyContinue
             }
         }
         # error check

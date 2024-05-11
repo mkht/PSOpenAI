@@ -5,7 +5,7 @@ function Add-OpenAIFile {
     param (
         [Parameter(ParameterSetName = 'File', Mandatory, Position = 0, ValueFromPipeline)]
         [ValidateNotNullOrEmpty()]
-        [System.IO.FileInfo]$File,
+        [string]$File,
 
         [Parameter(ParameterSetName = 'Content', Mandatory, Position = 0)]
         [ValidateNotNullOrEmpty()]

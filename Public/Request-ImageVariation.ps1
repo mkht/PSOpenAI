@@ -4,7 +4,7 @@ function Request-ImageVariation {
         [Parameter(Mandatory, Position = 0, ValueFromPipeline)]
         [ValidateNotNullOrEmpty()]
         [Alias('File')]
-        [System.IO.FileInfo]$Image,
+        [string]$Image,
 
         [Parameter()]
         [ValidateRange(1, 10)]
