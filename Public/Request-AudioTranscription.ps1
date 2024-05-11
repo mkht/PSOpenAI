@@ -3,8 +3,8 @@ function Request-AudioTranscription {
     [OutputType([string])]
     param (
         [Parameter(Mandatory, Position = 0, ValueFromPipeline)]
-        [ValidateScript({ Test-Path -LiteralPath $_ -PathType Leaf })]
-        [string]$File,
+        [ValidateNotNullOrEmpty()]
+        [System.IO.FileInfo]$File,
 
         [Parameter()]
         [Completions('whisper-1')]
@@ -96,7 +96,7 @@ function Request-AudioTranscription {
     }
 
     process {
-        $FileInfo = (Get-Item -LiteralPath $File)
+        $FileInfo = Resolve-FileInfo $File
         # (Only PS6+)
         # If the filename contains non-ASCII characters,
         # the OpenAI API cannot recognize the file format correctly and returns an error.

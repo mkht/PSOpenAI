@@ -75,16 +75,7 @@ function Add-OpenAIFile {
         #region Construct parameters for API request
         $PostBody = [System.Collections.Specialized.OrderedDictionary]::new()
         if ($PSCmdlet.ParameterSetName -eq 'File') {
-            [string]$refT = ''
-            if (-not $File.Exists -and -not $PSCmdlet.SessionState.Path.IsPSAbsolute($File.FullName, [ref]$refT)) {
-                # Try to resolve relative path
-                $File = [System.IO.FileInfo]$PSCmdlet.SessionState.Path.GetUnresolvedProviderPathFromPSPath($File.Name)
-            }
-            if (-not $File.Exists) {
-                Write-Error -Exception ([System.Management.Automation.ItemNotFoundException]::new(("Cannot find path '{0}' because it does not exist." -f $File.FullName)))
-                return
-            }
-            $PostBody.file = $File
+            $PostBody.file = Resolve-FileInfo $File
         }
         elseif ($PSCmdlet.ParameterSetName -eq 'Content') {
             $PostBody.file = @{

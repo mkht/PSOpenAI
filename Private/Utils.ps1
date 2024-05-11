@@ -94,6 +94,25 @@ function Merge-Dictionary {
     $o
 }
 
+function Resolve-FileInfo {
+    [CmdletBinding()]
+    [OutputType([System.IO.FileInfo])]
+    param(
+        [Parameter(Mandatory, Position = 0)]
+        [System.IO.FileInfo]$File
+    )
+    [string]$refT = ''
+    if (-not $File.Exists -and -not $PSCmdlet.SessionState.Path.IsPSAbsolute($File.FullName, [ref]$refT)) {
+        # Try to resolve relative path
+        $File = [System.IO.FileInfo]$PSCmdlet.SessionState.Path.GetUnresolvedProviderPathFromPSPath($File.Name)
+    }
+    if (-not $File.Exists) {
+        Write-Error -Exception ([System.Management.Automation.ItemNotFoundException]::new(("Cannot find path '{0}' because it does not exist." -f $File.FullName)))
+        return
+    }
+    $File
+}
+
 function DecryptSecureString {
     [CmdletBinding()]
     [OutputType([string])]

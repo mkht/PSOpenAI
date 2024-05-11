@@ -2,9 +2,9 @@ function Request-ImageVariation {
     [CmdletBinding(DefaultParameterSetName = 'Format')]
     param (
         [Parameter(Mandatory, Position = 0, ValueFromPipeline)]
+        [ValidateNotNullOrEmpty()]
         [Alias('File')]
-        [ValidateScript({ Test-Path -LiteralPath $_ -PathType Leaf })]
-        [string]$Image,
+        [System.IO.FileInfo]$Image,
 
         [Parameter()]
         [ValidateRange(1, 10)]
@@ -78,7 +78,7 @@ function Request-ImageVariation {
     }
 
     process {
-        $FileInfo = (Get-Item -LiteralPath $Image)
+        $FileInfo = Resolve-FileInfo $Image
         # (Only PS6+)
         # If the filename contains non-ASCII characters,
         # the OpenAI API cannot recognize the file format correctly and returns an error.

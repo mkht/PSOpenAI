@@ -2,6 +2,7 @@
 ### Unreleased
 - Add `-Images` parameter to `Add-ThreadMessage`.  
   This makes that the image input can be used in Assistants.
+- Fix issues about relative file path input.
 - Rename `Register-OpenAIFile` to `Add-OpenAIFile`.  
   (Note: You can still use `Register-OpenAIFile` as an alias. However, in the future release, the alias will be removed.)
 

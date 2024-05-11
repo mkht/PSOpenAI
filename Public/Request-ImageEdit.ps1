@@ -2,13 +2,13 @@ function Request-ImageEdit {
     [CmdletBinding(DefaultParameterSetName = 'Format')]
     param (
         [Parameter(Mandatory)]
+        [ValidateNotNullOrEmpty()]
         [Alias('File')]
-        [ValidateScript({ Test-Path -LiteralPath $_ -PathType Leaf })]
-        [string]$Image,
+        [System.IO.FileInfo]$Image,
 
         [Parameter()]
-        [ValidateScript({ Test-Path -LiteralPath $_ -PathType Leaf })]
-        [string]$Mask,
+        [ValidateNotNullOrEmpty()]
+        [System.IO.FileInfo]$Mask,
 
         [Parameter(Mandatory)]
         [ValidateLength(1, 1000)]
@@ -87,7 +87,7 @@ function Request-ImageEdit {
     }
 
     process {
-        $ImageFileInfo = (Get-Item -LiteralPath $Image)
+        $Image = Resolve-FileInfo $Image
         # (Only PS6+)
         # If the filename contains non-ASCII characters,
         # the OpenAI API cannot recognize the file format correctly and returns an error.
@@ -95,15 +95,15 @@ function Request-ImageEdit {
         # We need to find a better way.
         $IsTempImageFileCreated = $false
         if ($PSVersionTable.PSVersion.Major -ge 6) {
-            if ($ImageFileInfo.Name -match '[^\u0000-\u007F]') {
+            if ($Image.Name -match '[^\u0000-\u007F]') {
                 Write-Warning 'File name contains non-ASCII characters. It is strongly recommended that file name only contains ASCII characters.'
-                $ImageFileInfo = Copy-TempFile -SourceFile $ImageFileInfo -ErrorAction Stop
+                $Image = Copy-TempFile -SourceFile $Image -ErrorAction Stop
                 $IsTempImageFileCreated = $true
             }
         }
 
         if ($PSBoundParameters.ContainsKey('Mask')) {
-            $MaskFileInfo = (Get-Item -LiteralPath $Mask)
+            $Mask = Resolve-FileInfo $Mask
             # (Only PS6+)
             # If the filename contains non-ASCII characters,
             # the OpenAI API cannot recognize the file format correctly and returns an error.
@@ -111,9 +111,9 @@ function Request-ImageEdit {
             # We need to find a better way.
             $IsTempMaskFileCreated = $false
             if ($PSVersionTable.PSVersion.Major -ge 6) {
-                if ($MaskFileInfo.Name -match '[^\u0000-\u007F]') {
+                if ($Mask.Name -match '[^\u0000-\u007F]') {
                     Write-Warning 'File name contains non-ASCII characters. It is strongly recommended that file name only contains ASCII characters.'
-                    $MaskFileInfo = Copy-TempFile -SourceFile $MaskFileInfo -ErrorAction Stop
+                    $Mask = Copy-TempFile -SourceFile $Mask -ErrorAction Stop
                     $IsTempMaskFileCreated = $true
                 }
             }
@@ -136,10 +136,10 @@ function Request-ImageEdit {
 
         #region Construct parameters for API request
         $PostBody = [System.Collections.Specialized.OrderedDictionary]::new()
-        $PostBody.image = $ImageFileInfo
+        $PostBody.image = $Image
         $PostBody.prompt = $Prompt
-        if ($MaskFileInfo) {
-            $PostBody.mask = $MaskFileInfo
+        if ($Mask) {
+            $PostBody.mask = $Mask
         }
         if ($NumberOfImages -ge 1) {
             $PostBody.n = $NumberOfImages
@@ -188,11 +188,11 @@ function Request-ImageEdit {
             $Response = Invoke-OpenAIAPIRequest @splat
         }
         finally {
-            if ($IsTempImageFileCreated -and (Test-Path $ImageFileInfo -PathType Leaf)) {
-                Remove-Item $ImageFileInfo -Force -ErrorAction SilentlyContinue
+            if ($IsTempImageFileCreated -and (Test-Path $Image -PathType Leaf)) {
+                Remove-Item $Image -Force -ErrorAction SilentlyContinue
             }
-            if ($IsTempMaskFileCreated -and (Test-Path $MaskFileInfo -PathType Leaf)) {
-                Remove-Item $MaskFileInfo -Force -ErrorAction SilentlyContinue
+            if ($IsTempMaskFileCreated -and (Test-Path $Mask -PathType Leaf)) {
+                Remove-Item $Mask -Force -ErrorAction SilentlyContinue
             }
         }
         # error check
