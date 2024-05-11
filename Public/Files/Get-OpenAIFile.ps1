@@ -18,7 +18,8 @@ function Get-OpenAIFile {
             'batch',
             'batch_output',
             'fine-tune',
-            'fine-tune-results'
+            'fine-tune-results',
+            'vision'
         )]
         [ValidateNotNullOrEmpty()]
         [string][UrlEncodeTransformation()]$Purpose,

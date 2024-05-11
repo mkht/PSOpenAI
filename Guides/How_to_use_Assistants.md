@@ -183,8 +183,7 @@ $Thread | Remove-Thread
 $Assistant | Remove-Assistant
 ```
 
-
-## Additional Tips: Use more pipelines.
+## Additional Tips 1: Use more pipelines.
 
 The process described in this guide can be simplified using pipelines.
 
@@ -202,4 +201,30 @@ $Result = New-Thread |`
 $Result.Messages.SimpleContent[-1].Content
 
 Hello! I'm an AI assistant trained to provide information and assist with...
+```
+
+## Additional Tips 2: How to input images
+
+```PowerShell
+# Create a new Assistant
+# You should use vision-compatible models such as a gpt-4-turbo.
+$Assistant = New-Assistant -Model "gpt-4-turbo"
+
+# Upload images for references
+$Image1 = Add-OpenAIFile -File "C:\images\car_photo1.jpg" -Purpose vision
+$Image2 = Add-OpenAIFile -File "C:\images\car_photo2.jpg" -Purpose vision
+
+# Create a Thread and add a ,essage with images.
+$Thread = New-Thread | Add-ThreadMessage "Which photo is more appropriate for a car catalog?" -Images $Image1, $Image2 -PassThru
+
+# Starts run and receive the result when completes.
+$Result = $Thread | Start-ThreadRun -Assistant $Assistant | Receive-ThreadRun -Wait
+
+# Dislpays only Assistant response message
+$Result.Messages.SimpleContent[-1].Content
+
+The more appropriate photo for a car catalog would be the first image. 
+This image highlights the design and performance aesthetics.
+
+The second photo, showing a dusty and apparently neglected in a garage, does not showcase the vehicle attractively and would not be suitable for marketing purposes in a car catalog.
 ```

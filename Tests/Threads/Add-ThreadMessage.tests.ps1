@@ -128,7 +128,7 @@ Describe 'Add-ThreadMessage' {
             $Result.created_at | Should -BeOfType [datetime]
             $Result.Messages.GetType().Fullname | Should -Be 'System.Object[]'
             $Result.Messages | Should -HaveCount 1
-            $Result.Messages[0].content.text.value | Should -BeExactly 'How does AI work? Explain it in simple terms.'
+            $Result.Messages[0].content[0].text.value | Should -BeExactly 'How does AI work? Explain it in simple terms.'
         }
 
         It 'Add 3 thread messages' {
@@ -142,9 +142,28 @@ Describe 'Add-ThreadMessage' {
                 $Result.created_at | Should -BeOfType [datetime]
                 $Result.Messages.GetType().Fullname | Should -Be 'System.Object[]'
                 $Result.Messages | Should -HaveCount 3
-                $Result.Messages[0].content.text.value | Should -BeExactly 'Hello.'
-                $Result.Messages[1].content.text.value | Should -BeExactly ' How'
-                $Result.Messages[2].content.text.value | Should -BeExactly ' are you?'
+                $Result.Messages[0].content[0].text.value | Should -BeExactly 'Hello.'
+                $Result.Messages[1].content[0].text.value | Should -BeExactly ' How'
+                $Result.Messages[2].content[0].text.value | Should -BeExactly ' are you?'
             }
+        }
+
+        It 'Add thread message with image url' {
+            $thread = New-Thread
+            { $splat = @{
+                    Message     = 'Please explain about this image.'
+                    Images      = 'https://upload.wikimedia.org/wikipedia/commons/8/8c/Churchillaan_16_%28132%29_-_131070_-_onroerenderfgoed.jpg'
+                    PassThru    = $true
+                    ErrorAction = 'Stop'
+                }
+                $script:Result = $thread | Add-ThreadMessage @splat
+            } | Should -Not -Throw
+            $Result.id | Should -BeLike 'thread_*'
+            $Result.created_at | Should -BeOfType [datetime]
+            $Result.Messages.GetType().Fullname | Should -Be 'System.Object[]'
+            $Result.Messages | Should -HaveCount 1
+            $Result.Messages | Should -HaveCount 1
+            $Result.Messages[0].content[0].text.value | Should -BeExactly 'Please explain about this image.'
+            $Result.Messages[0].content[1].type | Should -Be 'image_url'
         }
     }

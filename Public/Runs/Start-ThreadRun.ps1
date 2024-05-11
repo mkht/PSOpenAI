@@ -57,6 +57,14 @@ function Start-ThreadRun {
         [string]$Message,
 
         [Parameter(ParameterSetName = 'ThreadAndRun')]
+        [ValidateNotNullOrEmpty()]
+        [object[]]$Images,
+
+        [Parameter(ParameterSetName = 'ThreadAndRun')]
+        [ValidateSet('auto', 'low', 'high')]
+        [string][LowerCaseTransformation()]$ImageDetail = 'auto',
+
+        [Parameter(ParameterSetName = 'ThreadAndRun')]
         [Completions('user', 'assistant')]
         [string][LowerCaseTransformation()]$Role = 'user',
 
@@ -356,10 +364,10 @@ function Start-ThreadRun {
         }
 
         # Additional messages
-        $Messages = [System.Collections.Generic.List[object]]::new()
+        $Messages = [System.Collections.Generic.List[hashtable]]::new()
         foreach ($msg in $AdditionalMessages) {
             if ($msg.role) {
-                $tm = [ordered]@{
+                $tm = @{
                     role    = [string]$msg.role
                     content = $msg.content
                 }
@@ -373,7 +381,7 @@ function Start-ThreadRun {
                 }
             }
             else {
-                $tm = [ordered]@{
+                $tm = @{
                     role    = 'user'
                     content = [string]$msg
                 }
@@ -382,12 +390,74 @@ function Start-ThreadRun {
         }
 
         if ($PSCmdlet.ParameterSetName -ceq 'ThreadAndRun') {
-            if ($Message) {
-                $um = [ordered]@{
-                    role    = $Role
-                    content = $Message
+            if ($Images.Count -gt 0) {
+                $ContentsList = [System.Collections.Generic.List[hashtable]]::new($Images.Count + 1)
+                # Text Message
+                $ContentsList.Add(
+                    @{
+                        type = 'text'
+                        text = $Message
+                    }
+                )
+                # Images
+                foreach ($image in $Images) {
+                    # File object
+                    if ($image.psobject.TypeNames -contains 'PSOpenAI.File') {
+                        $ContentsList.Add(
+                            @{
+                                type       = 'image_file'
+                                image_file = @{
+                                    file_id = $image.id
+                                    detail  = $ImageDetail
+                                }
+                            }
+                        )
+                    }
+                    elseif ($image -is [string]) {
+                        $imageUri = [uri]$image
+                        if ($imageUri.Scheme -in ('https', 'http')) {
+                            # Image URL
+                            $ContentsList.Add(
+                                @{
+                                    type      = 'image_url'
+                                    image_url = @{
+                                        url    = $imageUri.AbsoluteUri
+                                        detail = $ImageDetail
+                                    }
+                                }
+                            )
+                        }
+                        else {
+                            # File-ID or something else
+                            $ContentsList.Add(
+                                @{
+                                    type       = 'image_file'
+                                    image_file = @{
+                                        file_id = $image
+                                        detail  = $ImageDetail
+                                    }
+                                }
+                            )
+                        }
+                    }
+                    else {
+                        # Invalid
+                        Write-Error -Message 'Invalid input. Please specify a valid URL or File ID.'
+                        continue
+                    }
                 }
-                $Messages.Add($um)
+
+                $Messages.Add(@{
+                        role    = $Role
+                        content = $ContentsList.ToArray()
+                    })
+            }
+            else {
+                # Only a text message
+                $Messages.Add(@{
+                        role    = $Role
+                        content = $Message
+                    })
             }
             $PostBody.thread = @{}
             $PostBody.thread.messages = $Messages

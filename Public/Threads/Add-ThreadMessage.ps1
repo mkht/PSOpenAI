@@ -18,6 +18,14 @@ function Add-ThreadMessage {
         [string]$Message,
 
         [Parameter()]
+        [ValidateNotNullOrEmpty()]
+        [object[]]$Images,
+
+        [Parameter()]
+        [ValidateSet('auto', 'low', 'high')]
+        [string][LowerCaseTransformation()]$ImageDetail = 'auto',
+
+        [Parameter()]
         [Completions('user', 'assistant')]
         [string][LowerCaseTransformation()]$Role = 'user',
 
@@ -138,7 +146,68 @@ function Add-ThreadMessage {
 
         $PostBody = [System.Collections.Specialized.OrderedDictionary]::new()
         $PostBody.role = $Role
-        $PostBody.content = $Message
+        if ($Images.Count -gt 0) {
+            $ContentsList = [System.Collections.Generic.List[hashtable]]::new($Images.Count + 1)
+            # Text Message
+            $ContentsList.Add(
+                @{
+                    type = 'text'
+                    text = $Message
+                }
+            )
+            # Images
+            foreach ($image in $Images) {
+                # File object
+                if ($image.psobject.TypeNames -contains 'PSOpenAI.File') {
+                    $ContentsList.Add(
+                        @{
+                            type       = 'image_file'
+                            image_file = @{
+                                file_id = $image.id
+                                detail  = $ImageDetail
+                            }
+                        }
+                    )
+                }
+                elseif ($image -is [string]) {
+                    $imageUri = [uri]$image
+                    if ($imageUri.Scheme -in ('https', 'http')) {
+                        # Image URL
+                        $ContentsList.Add(
+                            @{
+                                type      = 'image_url'
+                                image_url = @{
+                                    url    = $imageUri.AbsoluteUri
+                                    detail = $ImageDetail
+                                }
+                            }
+                        )
+                    }
+                    else {
+                        # File-ID or something else
+                        $ContentsList.Add(
+                            @{
+                                type       = 'image_file'
+                                image_file = @{
+                                    file_id = $image
+                                    detail  = $ImageDetail
+                                }
+                            }
+                        )
+                    }
+                }
+                else {
+                    # Invalid
+                    Write-Error -Message 'Invalid input. Please specify a valid URL or File ID.'
+                    continue
+                }
+            }
+            $PostBody.content = $ContentsList
+        }
+        else {
+            # Only a text message
+            $PostBody.content = $Message
+        }
         if ($Attachments.Count -gt 0) {
             $PostBody.attachments = $Attachments
         }

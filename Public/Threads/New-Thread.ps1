@@ -162,11 +162,14 @@ function New-Thread {
                 if ($msg.role -is [string] -and -not [string]::IsNullOrEmpty($msg.role)) {
                     $t.user = $msg.role
                 }
+                if ($msg.message -is [string] -and -not [string]::IsNullOrEmpty($msg.message)) {
+                    $t.content = $msg.message
+                }
                 if ($msg.content -is [string] -and -not [string]::IsNullOrEmpty($msg.content)) {
                     $t.content = $msg.content
                 }
-                if ($msg.message -is [string] -and -not [string]::IsNullOrEmpty($msg.message)) {
-                    $t.content = $msg.message
+                elseif ($msg.content -is [array]) {
+                    $t.content = $msg.content
                 }
                 if ($msg.attachments.Count -gt 0) {
                     $t.attachments = @($msg.attachments)

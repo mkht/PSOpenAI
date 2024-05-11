@@ -208,7 +208,7 @@ function Get-ThreadMessage {
                     [PSCustomObject]@{
                         Role    = $this.role
                         Type    = $c.type
-                        Content = $(if ($c.type -eq 'text') { $c.text.value }elseif ($c.type -eq 'image_file') { $c.image_file.file_id })
+                        Content = $(if ($c.type -eq 'text') { $c.text.value }elseif ($c.type -eq 'image_file') { $c.image_file.file_id }elseif ($c.type -eq 'image_url') { $c.image_url.url })
                     }
                 }
             } -Force
