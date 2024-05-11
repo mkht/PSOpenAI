@@ -15,7 +15,7 @@ Transcribes audio into the input language.
 ### Language (Default)
 ```
 Request-AudioTranscription
-    [[-File] <String>]
+    [[-File] <FileInfo>]
     [-Model <String>]
     [-Prompt <String>]
     [-Format <String>]
@@ -52,11 +52,10 @@ Hello, I am david.
 The audio file to transcribe, in one of these formats: `flac`, `mp3`, `mp4`, `mpeg`, `mpga`, `m4a`, `ogg`, `wav`, or `webm`.  
 
 ```yaml
-Type: String
+Type: FileInfo
 Required: True
 Position: 1
 Accept pipeline input: True (ByValue)
-Accept wildcard characters: False
 ```
 
 ### -Model

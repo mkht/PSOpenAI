@@ -16,6 +16,8 @@ Add a message to the Thread.
 Add-ThreadMessage
     -ThreadId <String>
     [-Message] <String>
+    [-Images <Object[]>]
+    [-ImageDetail <String>]
     [-Role <String>]
     [-FileIdsForCodeInterpreter <String[]>]
     [-FileIdsForFileSearch <String[]>]
@@ -69,6 +71,25 @@ Type: String
 Aliases: Content, Text
 Required: True
 Position: 0
+```
+
+### -Images
+An array of images for reference to vision-compatible models. You can specify uploaded file id or URL of image.
+
+```yaml
+Type: Object[]
+Required: False
+Position: Named
+```
+
+### -ImageDetail
+Specifies the detail level of the image if specified by the user. "low" uses fewer tokens, you can opt in to high resolution using "high".
+
+```yaml
+Type: String
+Required: False
+Position: Named
+Default value: auto
 ```
 
 ### -Role

@@ -14,7 +14,7 @@ Creates a variation of a given image.
 
 ```
 Request-ImageVariation
-    [-Image] <String>
+    [-Image] <FileInfo>
     [-NumberOfImages <UInt16>]
     [-Size <String>]
     [-Format <String>]
@@ -29,7 +29,7 @@ Request-ImageVariation
 
 ```
 Request-ImageVariation
-    [-Image] <String>
+    [-Image] <FileInfo>
     [-NumberOfImages <UInt16>]
     [-Size <String>]
     -OutFile <String>
@@ -75,13 +75,11 @@ The image to use as the basis for the variation(s).
 Must be a valid PNG file, less than 4MB, and square.
 
 ```yaml
-Type: String
-Parameter Sets: (All)
+Type: FileInfo
 Aliases: File
 Required: True
 Position: 1
 Accept pipeline input: True (ByValue)
-Accept wildcard characters: False
 ```
 
 ### -NumberOfImages

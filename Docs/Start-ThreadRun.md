@@ -17,6 +17,8 @@ Starts a run.
 Start-ThreadRun
     [-Assistant] <String>
     -Message <String>
+    [-Images <Object[]>]
+    [-ImageDetail <String>]
     [-Model <String>]
     [-Instructions <String>]
     [-AdditionalMessages <Object[]>]
@@ -341,6 +343,25 @@ Type: String
 Aliases: Content, Text
 Required: True
 Position: Named
+```
+
+### -Images
+An array of images for reference to vision-compatible models. You can specify uploaded file id or URL of image.
+
+```yaml
+Type: Object[]
+Required: False
+Position: Named
+```
+
+### -ImageDetail
+Specifies the detail level of the image if specified by the user. "low" uses fewer tokens, you can opt in to high resolution using "high".
+
+```yaml
+Type: String
+Required: False
+Position: Named
+Default value: auto
 ```
 
 ### -Role
