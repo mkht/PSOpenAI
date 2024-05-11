@@ -14,7 +14,7 @@ This guide describes how to use File search with Assistants and Vector Store API
 
 To access your files, upload your files to OpenAI and create a Vector Store to contain them.
 
-Use the `Register-OpenAIFile` and `New-VectorStore` cmdlet.
+Use the `Add-OpenAIFile` and `New-VectorStore` cmdlet.
 
 ```PowerShell
 # Import PSOpenAI module and Set API key.
@@ -23,7 +23,7 @@ $env:OPENAI_API_KEY = '<Put your API key here>'
 
 # Upload some files for file search
 ## You need to set the purpose as "assistants"
-$UploadedFiles = Get-ChildItem "C:\UploadFiles\*" -File | Register-OpenAIFile -Purpose "assistants"
+$UploadedFiles = Get-ChildItem "C:\UploadFiles\*" -File | Add-OpenAIFile -Purpose "assistants"
 
 # Create new vector store and attach uploaded items to that.
 $VectorStore = New-VectorStore -Name 'VectorStore-1' -FileId $UploadedFiles.Id

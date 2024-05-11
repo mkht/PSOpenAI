@@ -122,15 +122,15 @@ Install-Module -Name PSOpenAI
 <details>
 <summary>For Azure OpenAI Service functions (deprecated)</summary>
 
-+ [Get-AzureOpenAIModels](/Docs/Get-AzureOpenAIModels.md)
-+ [Request-AudioSpeech](/Docs/Request-AzureAudioSpeech.md)
-+ [Request-AzureAudioTranscription](/Docs/Request-AzureAudioTranscription.md)
-+ [Request-AzureAudioTranslation](/Docs/Request-AzureAudioTranslation.md)
-+ [Request-AzureChatCompletion](/Docs/Request-AzureChatCompletion.md)
-+ [Request-AzureChatGPT](/Docs/Request-AZureChatCompletion.md)
-+ [Request-AzureEmbeddings](/Docs/Request-AzureEmbeddings.md)
-+ [Request-AzureImageGeneration](/Docs/Request-AzureImageGeneration.md)
-+ [Request-AzureTextCompletion](/Docs/Request-AzureTextCompletion.md)
++ Get-AzureOpenAIModels
++ Request-AudioSpeech
++ Request-AzureAudioTranscription
++ Request-AzureAudioTranslation
++ Request-AzureChatCompletion
++ Request-AzureChatGPT
++ Request-AzureEmbeddings
++ Request-AzureImageGeneration
++ Request-AzureTextCompletion
 + Get-AzureAssistant
 + New-AzureAssistant
 + Set-AzureAssistant

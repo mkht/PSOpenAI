@@ -1,4 +1,11 @@
 # 変更履歴
+### 3.10.0
+- `Add-ThreadMessage`に`-Images`パラメータを追加  
+    Assistantsを使用して画像入力を利用可能になります
+- 相対ファイルパスに関する不具合の修正
+- `Register-OpenAIFile`を`Add-OpenAIFile`に名称変更  
+    エイリアスとして`Register-OpenAIFile`も引き続き使用できますが、将来のリリースで削除されます
+
 ### 3.9.1
 - `Start-ThreadRun`が特定の条件で認証エラーを発生させる問題を修正 (#11) (Thanks @potatoqualitee!)
 - Windows PowerShell 5.1 で`Start-ThreadRun`に`-Stream`を指定した場合に実行が失敗する問題を修正
