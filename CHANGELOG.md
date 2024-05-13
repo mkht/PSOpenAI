@@ -1,4 +1,7 @@
 # Changelog
+### 3.11.0
+- Add `gpt-4o` model to tab completions.
+
 ### 3.10.0
 - Add `-Images` parameter to `Add-ThreadMessage`.  
   This makes that the image input can be used in Assistants.
