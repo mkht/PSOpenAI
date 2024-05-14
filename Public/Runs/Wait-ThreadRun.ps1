@@ -53,7 +53,8 @@ function Wait-ThreadRun {
             'expired',
             'cancelling',
             'cancelled',
-            'failed'
+            'failed',
+            'incomplete'
         )]
         [string[]]$StatusForWait = @('queued', 'in_progress'),
 
