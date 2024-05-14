@@ -114,7 +114,7 @@ function Request-Embeddings {
         }
         #endregion
 
-        # As Batchs
+        # As Batch
         if ($AsBatch) {
             if ([string]::IsNullOrEmpty($CustomBatchId)) {
                 $CustomBatchId = 'request-{0:x4}' -f (Get-Random -Maximum 65535)
