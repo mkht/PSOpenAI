@@ -20,6 +20,7 @@
     },
     "search.exclude": {
         "**/*.tiktoken": true,
+        "**/*.xml": true,
         "**/src": true,
         "**/TestData": true
     }
