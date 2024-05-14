@@ -10,7 +10,7 @@ function ConvertFrom-Token {
         [string][LowerCaseTransformation()]$Model,
 
         [Parameter(Mandatory = $false, Position = 1, ParameterSetName = 'encoding')]
-        [ValidateSet('cl100k_base')]
+        [ValidateSet('cl100k_base', 'o200k_base')]
         [string]$Encoding = 'cl100k_base',
 
         [Parameter()]
@@ -31,7 +31,10 @@ function ConvertFrom-Token {
             }
         }
 
-        $Decoder = [PSOpenAI.TokenizerLib.Cl100kBaseTokenizer]::Decode
+        $Decoder = switch ($Encoding) {
+            'cl100k_base' { [PSOpenAI.TokenizerLib.Cl100kBaseTokenizer]::Decode }
+            'o200k_base' { [PSOpenAI.TokenizerLib.O200kBaseTokenizer]::Decode }
+        }
         $TokenList = [System.Collections.Generic.List[int]]::new()
     }
 

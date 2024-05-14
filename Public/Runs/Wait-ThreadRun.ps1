@@ -120,7 +120,7 @@ function Wait-ThreadRun {
         }
 
         try {
-            $PollCounter = 0
+            [uint]$PollCounter = 0
             $ProgressTitle = 'Waiting for completes...'
             do {
                 #Wait

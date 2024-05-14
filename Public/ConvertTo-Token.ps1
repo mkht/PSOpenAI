@@ -10,7 +10,7 @@ function ConvertTo-Token {
         [string][LowerCaseTransformation()]$Model,
 
         [Parameter(Mandatory = $false, Position = 1, ParameterSetName = 'encoding')]
-        [ValidateSet('cl100k_base')]
+        [ValidateSet('cl100k_base', 'o200k_base')]
         [string]$Encoding = 'cl100k_base'
     )
 
@@ -30,6 +30,7 @@ function ConvertTo-Token {
 
         $Encoder = switch ($Encoding) {
             'cl100k_base' { [PSOpenAI.TokenizerLib.Cl100kBaseTokenizer]::Encode }
+            'o200k_base' { [PSOpenAI.TokenizerLib.O200kBaseTokenizer]::Encode }
         }
     }
 

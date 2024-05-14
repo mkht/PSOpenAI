@@ -44,7 +44,7 @@ ConvertFrom-Token -Token $Tokens -Model 'gpt-4'
 
 ### Example 2
 ```powershell
-(9468, 235, 230, 9468, 235, 240, 9468, 235, 239) | ConvertFrom-Token
+(102415, 230, 102415, 240, 102415, 239) | ConvertFrom-Token -Encoding 'o200k_base'
 # Output: 🍈🍒🍑
 ```
 
@@ -61,13 +61,13 @@ Accept pipeline input: True (ByValue)
 ```
 
 ### -Encoding
-Specifies the encoding name. Currently, accepted value is only `cl100k_base`.  
+Specifies the encoding name. Currently `cl100k_base` and `o200k_base` are supported.  
 It cannot be specified with the model name.
 
 ```yaml
 Type: String
 Parameter Sets: encoding
-Accepted values: cl100k_base
+Accepted values: cl100k_base, o200k_base
 Required: False
 Position: 1
 Default value: cl100k_base

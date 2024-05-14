@@ -116,7 +116,7 @@ function Wait-VectorStoreFileBatch {
         }
 
         try {
-            $PollCounter = 0
+            [uint]$PollCounter = 0
             $ProgressTitle = 'Waiting for completion...'
             do {
                 #Wait

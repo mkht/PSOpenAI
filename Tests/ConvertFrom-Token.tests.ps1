@@ -13,7 +13,7 @@ Describe 'ConvertFrom-Token' {
             $script:Result = $null
         }
 
-        It 'Encoding: cl100k_base (<Id>)' -ForEach @(
+        It 'Encoding: cl100k_base (<Id>)' -Foreach @(
             @{ Id = 1; Text = ''; Token = @() }
             @{ Id = 2; Text = 'a'; Token = , 64 }
             @{ Id = 3; Text = 'Hello, World! How are you today? 🌍'; Token = (9906, 11, 4435, 0, 2650, 527, 499, 3432, 30, 11410, 234, 235) }
@@ -22,6 +22,17 @@ Describe 'ConvertFrom-Token' {
             @{ Id = 6; Text = '🍏🍎🍐🍊🍋🍌🍉🍇🍓🍈🍒🍑'; Token = (9468, 235, 237, 9468, 235, 236, 9468, 235, 238, 9468, 235, 232, 9468, 235, 233, 9468, 235, 234, 9468, 235, 231, 9468, 235, 229, 9468, 235, 241, 9468, 235, 230, 9468, 235, 240, 9468, 235, 239) }
         ) {
             ConvertFrom-Token -Token $Token -Encoding 'cl100k_base' | Should -Be $Text
+        }
+
+        It 'Encoding: o200k_base (<Id>)' -Foreach @(
+            @{ Id = 1; Text = ''; Token = @() }
+            @{ Id = 2; Text = 'a'; Token = , 64 }
+            @{ Id = 3; Text = 'Hello, World! How are you today? 🌍'; Token = (13225, 11, 5922, 0, 3253, 553, 481, 4044, 30, 130321, 235) }
+            @{ Id = 4; Text = 'こんにちは、世界！お元気ですか？'; Token = (95839, 1395, 28428, 3393, 8930, 6753, 25717, 15121, 7128, 4802) }
+            @{ Id = 5; Text = 'Здравствуйте, это мой первый раз здесь. Что мне делать?'; Token = (182298, 11, 8577, 65733, 62134, 4702, 44039, 13, 53319, 27934, 45321, 30) }
+            @{ Id = 6; Text = '🍏🍎🍐🍊🍋🍌🍉🍇🍓🍈🍒🍑'; Token = (102415, 237, 102415, 236, 102415, 238, 102415, 232, 102415, 233, 102415, 234, 102415, 231, 102415, 229, 102415, 241, 102415, 230, 102415, 240, 102415, 239) }
+        ) {
+            ConvertFrom-Token -Token $Token -Encoding 'o200k_base' | Should -Be $Text
         }
 
         It 'Input from pipeline' {

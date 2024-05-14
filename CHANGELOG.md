@@ -1,5 +1,6 @@
 # Changelog
 ### Unreleased
+- Support for `o200k_base` tokenizer that is used in `gpt-4o`.
 - Add `-AsBatch` for embeddings and text completions.
 - Add `incomplete` status of Run.
 
