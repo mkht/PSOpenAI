@@ -14,7 +14,13 @@ function Start-Batch {
         [PSTypeName('PSOpenAI.Batch.Input')]$BatchInput,
 
         [Parameter()]
-        [string]$Endpoint = '/v1/chat/completions', #Currently only /v1/chat/completions is supported.
+        [ValidateNotNullOrEmpty()]
+        [Completions(
+            '/v1/chat/completions',
+            '/v1/embeddings',
+            '/v1/completions'
+        )]
+        [string][LowerCaseTransformation()]$Endpoint = '/v1/chat/completions',
 
         [Parameter()]
         [Alias('completion_window')]
@@ -82,6 +88,11 @@ function Start-Batch {
 
     process {
         if ($PSCmdlet.ParameterSetName -ceq 'BatchObject') {
+            # Set endpoint url
+            if ((-not $PSBoundParameters.ContainsKey('Endpoint')) -and $BatchInput[0].url) {
+                $Endpoint = $BatchInput[0].url
+            }
+
             foreach ($item in $BatchInput) {
                 # Validate input object
                 if ($null -eq $item) {

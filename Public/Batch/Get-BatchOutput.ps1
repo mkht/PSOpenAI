@@ -81,7 +81,7 @@ function Get-BatchOutput {
         }
 
         if (-not $OutputFileId) {
-            Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve batch output file id.'))
+            Write-Error -Exception ([System.InvalidOperationException]::new('Could not retrieve batch output file id.'))
             return
         }
 

@@ -65,6 +65,12 @@ function Request-TextCompletion {
         [uint16]$BestOf,
 
         [Parameter()]
+        [switch]$AsBatch,
+
+        [Parameter()]
+        [string]$CustomBatchId,
+
+        [Parameter()]
         [int]$TimeoutSec = 0,
 
         [Parameter()]
@@ -190,6 +196,21 @@ function Request-TextCompletion {
             $PostBody.n = 1
         }
         #endregion
+
+        # As Batchs
+        if ($AsBatch) {
+            if ([string]::IsNullOrEmpty($CustomBatchId)) {
+                $CustomBatchId = 'request-{0:x4}' -f (Get-Random -Maximum 65535)
+            }
+            $batchInputObject = [pscustomobject]@{
+                'custom_id' = $CustomBatchId
+                'method'    = 'POST'
+                'url'       = $OpenAIParameter.BatchEndpoint
+                'body'      = [pscustomobject]$PostBody
+            }
+            $batchInputObject.PSObject.TypeNames.Insert(0, 'PSOpenAI.Batch.Input')
+            return $batchInputObject
+        }
 
         #region Send API Request (Stream)
         if ($Stream) {

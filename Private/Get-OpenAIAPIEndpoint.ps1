@@ -33,10 +33,11 @@ function Get-OpenAIAPIEndpoint {
         'Text.Completion' {
             $UriBuilder.Path += '/completions'
             @{
-                Name        = 'text.completion'
-                Method      = 'Post'
-                Uri         = $UriBuilder.Uri
-                ContentType = 'application/json'
+                Name          = 'text.completion'
+                Method        = 'Post'
+                Uri           = $UriBuilder.Uri
+                ContentType   = 'application/json'
+                BatchEndpoint = '/v1/completions'
             }
             continue
         }
@@ -123,10 +124,11 @@ function Get-OpenAIAPIEndpoint {
         'Embeddings' {
             $UriBuilder.Path += '/embeddings'
             @{
-                Name        = 'embeddings'
-                Method      = 'Post'
-                Uri         = $UriBuilder.Uri
-                ContentType = 'application/json'
+                Name          = 'embeddings'
+                Method        = 'Post'
+                Uri           = $UriBuilder.Uri
+                ContentType   = 'application/json'
+                BatchEndpoint = '/v1/embeddings'
             }
             continue
         }
