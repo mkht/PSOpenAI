@@ -1,4 +1,9 @@
 # 変更履歴
+### 3.12.0
+- `gpt-4o`で使用されている`o200k_base`トークナイザーに対応します
+- embeddings と text completions に`-AsBatch`オプションを追加します
+- Run の状態に`imcomplete`を追加します
+
 ### 3.11.0
 - モデル名のタブ補完に`gpt-4o`を追加します
 

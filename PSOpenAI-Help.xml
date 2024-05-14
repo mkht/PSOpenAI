@@ -1094,11 +1094,12 @@ PS C:\&gt; $Store = $Store | Add-VectorStoreFile -FileId 'file-abc123' -PassThru
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="1" aliases="none">
           <maml:name>Encoding</maml:name>
           <maml:description>
-            <maml:para>Specifies the encoding name. Currently, accepted value is only `cl100k_base`.
+            <maml:para>Specifies the encoding name. Currently `cl100k_base` and `o200k_base` are supported.
 It cannot be specified with the model name.</maml:para>
           </maml:description>
           <command:parameterValueGroup>
             <command:parameterValue required="false" command:variableLength="false">cl100k_base</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">o200k_base</command:parameterValue>
           </command:parameterValueGroup>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1175,7 +1176,7 @@ It cannot be specified with the encoding name.</maml:para>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="1" aliases="none">
         <maml:name>Encoding</maml:name>
         <maml:description>
-          <maml:para>Specifies the encoding name. Currently, accepted value is only `cl100k_base`.
+          <maml:para>Specifies the encoding name. Currently `cl100k_base` and `o200k_base` are supported.
 It cannot be specified with the model name.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -1248,7 +1249,7 @@ ConvertFrom-Token -Token $Tokens -Model 'gpt-4'
       </command:example>
       <command:example>
         <maml:title>-------------------------- Example 2 --------------------------</maml:title>
-        <dev:code>(9468, 235, 230, 9468, 235, 240, 9468, 235, 239) | ConvertFrom-Token
+        <dev:code>(102415, 230, 102415, 240, 102415, 239) | ConvertFrom-Token -Encoding 'o200k_base'
 # Output: 🍈🍒🍑</dev:code>
         <dev:remarks>
           <maml:para></maml:para>
@@ -1297,11 +1298,12 @@ The output values are compatible with OpenAI tiktoken.</maml:para>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="1" aliases="none">
           <maml:name>Encoding</maml:name>
           <maml:description>
-            <maml:para>Specifies the encoding name. Currently, accepted value is only `cl100k_base`.
+            <maml:para>Specifies the encoding name. Currently `cl100k_base` and `o200k_base` are supported.
 It cannot be specified with the model name.</maml:para>
           </maml:description>
           <command:parameterValueGroup>
             <command:parameterValue required="false" command:variableLength="false">cl100k_base</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">o200k_base</command:parameterValue>
           </command:parameterValueGroup>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1356,7 +1358,7 @@ It cannot be specified with the encoding name.</maml:para>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="1" aliases="none">
         <maml:name>Encoding</maml:name>
         <maml:description>
-          <maml:para>Specifies the encoding name. Currently, accepted value is only `cl100k_base`.
+          <maml:para>Specifies the encoding name. Currently `cl100k_base` and `o200k_base` are supported.
 It cannot be specified with the model name.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -1417,8 +1419,8 @@ ConvertTo-Token -Text $Text -Model 'gpt-4'
       </command:example>
       <command:example>
         <maml:title>-------------------------- Example 2 --------------------------</maml:title>
-        <dev:code>'🍈🍒🍑' | ConvertTo-Token
-# Output: (9468, 235, 230, 9468, 235, 240, 9468, 235, 239)</dev:code>
+        <dev:code>'🍈🍒🍑' | ConvertTo-Token -Encoding 'o200k_base'
+# Output: (102415, 230, 102415, 240, 102415, 239)</dev:code>
         <dev:remarks>
           <maml:para></maml:para>
         </dev:remarks>
@@ -12190,6 +12192,31 @@ https://platform.openai.com/docs/guides/embeddings</maml:para>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>AsBatch</maml:name>
+          <maml:description>
+            <maml:para>If this is specified, this cmdlet returns an object for Batch input
+It does not perform an API request to OpenAI. It is useful with `Start-Batch` cmdlet.</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>CustomBatchId</maml:name>
+          <maml:description>
+            <maml:para>A unique id that will be used to match outputs to inputs of batch. Must be unique for each request in a batch.
+This parameter is valid only when the `-AsBatch` swicth is used. Otherwise, it is simply ignored.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>TimeoutSec</maml:name>
           <maml:description>
             <maml:para>Specifies how long the request can be pending before it times out. The default value is `0` (infinite).</maml:para>
@@ -12312,6 +12339,32 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <maml:name>User</maml:name>
         <maml:description>
           <maml:para>A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>AsBatch</maml:name>
+        <maml:description>
+          <maml:para>If this is specified, this cmdlet returns an object for Batch input
+It does not perform an API request to OpenAI. It is useful with `Start-Batch` cmdlet.</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>CustomBatchId</maml:name>
+        <maml:description>
+          <maml:para>A unique id that will be used to match outputs to inputs of batch. Must be unique for each request in a batch.
+This parameter is valid only when the `-AsBatch` swicth is used. Otherwise, it is simply ignored.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -14620,6 +14673,31 @@ ID 23182 maps to "apple" and ID 88847 maps to "banana". Thus, this example incre
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>AsBatch</maml:name>
+          <maml:description>
+            <maml:para>If this is specified, this cmdlet returns an object for Batch input
+It does not perform an API request to OpenAI. It is useful with `Start-Batch` cmdlet.</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>CustomBatchId</maml:name>
+          <maml:description>
+            <maml:para>A unique id that will be used to match outputs to inputs of batch. Must be unique for each request in a batch.
+This parameter is valid only when the `-AsBatch` swicth is used. Otherwise, it is simply ignored.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>TimeoutSec</maml:name>
           <maml:description>
             <maml:para>Specifies how long the request can be pending before it times out. The default value is `0` (infinite).</maml:para>
@@ -14874,6 +14952,32 @@ ID 23182 maps to "apple" and ID 88847 maps to "banana". Thus, this example incre
         <command:parameterValue required="true" variableLength="false">UInt16</command:parameterValue>
         <dev:type>
           <maml:name>UInt16</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>AsBatch</maml:name>
+        <maml:description>
+          <maml:para>If this is specified, this cmdlet returns an object for Batch input
+It does not perform an API request to OpenAI. It is useful with `Start-Batch` cmdlet.</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>CustomBatchId</maml:name>
+        <maml:description>
+          <maml:para>A unique id that will be used to match outputs to inputs of batch. Must be unique for each request in a batch.
+This parameter is valid only when the `-AsBatch` swicth is used. Otherwise, it is simply ignored.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -16222,7 +16326,7 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>Endpoint</maml:name>
           <maml:description>
-            <maml:para>The endpoint to be used for all requests in the batch. Currently only "/v1/chat/completions" is supported.</maml:para>
+            <maml:para>The endpoint to be used for all requests in the batch. Currently "/v1/chat/completions", "/v1/embeddings", and "/v1/completions" are supported.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -16342,7 +16446,7 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>Endpoint</maml:name>
           <maml:description>
-            <maml:para>The endpoint to be used for all requests in the batch. Currently only "/v1/chat/completions" is supported.</maml:para>
+            <maml:para>The endpoint to be used for all requests in the batch. Currently "/v1/chat/completions", "/v1/embeddings", and "/v1/completions" are supported.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -16474,7 +16578,7 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>Endpoint</maml:name>
         <maml:description>
-          <maml:para>The endpoint to be used for all requests in the batch. Currently only "/v1/chat/completions" is supported.</maml:para>
+          <maml:para>The endpoint to be used for all requests in the batch. Currently "/v1/chat/completions", "/v1/embeddings", and "/v1/completions" are supported.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -19004,6 +19108,7 @@ If specifies one or more statuses for `-StatusForExit`, this cmdlet waits until 
             <command:parameterValue required="false" command:variableLength="false">cancelling</command:parameterValue>
             <command:parameterValue required="false" command:variableLength="false">cancelled</command:parameterValue>
             <command:parameterValue required="false" command:variableLength="false">failed</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">incomplete</command:parameterValue>
           </command:parameterValueGroup>
           <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
           <dev:type>
@@ -19028,6 +19133,7 @@ Note: Do not specify `completed` for this parameter. cmdlet may not exit permane
             <command:parameterValue required="false" command:variableLength="false">cancelling</command:parameterValue>
             <command:parameterValue required="false" command:variableLength="false">cancelled</command:parameterValue>
             <command:parameterValue required="false" command:variableLength="false">failed</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">incomplete</command:parameterValue>
           </command:parameterValueGroup>
           <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
           <dev:type>
