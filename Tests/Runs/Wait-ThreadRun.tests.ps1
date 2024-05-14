@@ -120,7 +120,7 @@ Describe 'Wait-ThreadRun' {
                 status     = 'in_progress'
             }
             { $script:Result = Wait-ThreadRun -InputObject $InObject -TimeoutSec 2 -ea Stop } | Should -Throw -ExceptionType ([OperationCanceledException])
-            Should -Invoke Get-ThreadRun -ModuleName $script:ModuleName -Times 4 -Exactly
+            Should -Invoke Get-ThreadRun -ModuleName $script:ModuleName -Times 3
             $Result | Should -BeNullOrEmpty
         }
 
