@@ -29,6 +29,8 @@ Request-TextCompletion
     [-User <String>]
     [-Echo <Boolean>]
     [-BestOf <UInt16>]
+    [-AsBatch]
+    [-CustomBatchId <String>]
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
     [-ApiBase <Uri>]
@@ -213,6 +215,26 @@ Generates best_of completions server-side and returns the "best" (the one with t
 ```yaml
 Type: UInt16
 Aliases: best_of
+Required: False
+Position: Named
+```
+
+### -AsBatch
+If this is specified, this cmdlet returns an object for Batch input  
+It does not perform an API request to OpenAI. It is useful with `Start-Batch` cmdlet.
+
+```yaml
+Type: SwitchParameter
+Required: False
+Position: Named
+Default value: False
+```
+
+### -CustomBatchId
+A unique id that will be used to match outputs to inputs of batch. Must be unique for each request in a batch.  
+This parameter is valid only when the `-AsBatch` swicth is used. Otherwise, it is simply ignored.
+```yaml
+Type: String
 Required: False
 Position: Named
 ```

@@ -75,7 +75,7 @@ If specifies one or more statuses for `-StatusForExit`, this cmdlet waits until 
 
 ```yaml
 Type: String[]
-Accepted values: queued, in_progress, completed, requires_action, expired, cancelling, cancelled, failed
+Accepted values: queued, in_progress, completed, requires_action, expired, cancelling, cancelled, failed, incomplete
 Required: False
 Position: Named
 ```
@@ -86,7 +86,7 @@ Note: Do not specify `completed` for this parameter. cmdlet may not exit permane
 
 ```yaml
 Type: String[]
-Accepted values: queued, in_progress, completed, requires_action, expired, cancelling, cancelled, failed
+Accepted values: queued, in_progress, completed, requires_action, expired, cancelling, cancelled, failed, incomplete
 Required: False
 Position: Named
 Default value: queued, in_progress

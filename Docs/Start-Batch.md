@@ -103,7 +103,7 @@ Default value: 24h
 ```
 
 ### -Endpoint
-The endpoint to be used for all requests in the batch. Currently only "/v1/chat/completions" is supported.
+The endpoint to be used for all requests in the batch. Currently "/v1/chat/completions", "/v1/embeddings", and "/v1/completions" are supported.
 
 ```yaml
 Type: String

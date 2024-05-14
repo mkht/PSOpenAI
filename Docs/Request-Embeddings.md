@@ -19,6 +19,8 @@ Request-Embeddings
     [-Format <String>]
     [-Dimensions <Int32>]
     [-User <String>]
+    [-AsBatch]
+    [-CustomBatchId <String>]
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
     [-ApiBase <Uri>]
@@ -93,6 +95,26 @@ Position: Named
 ### -User
 A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse.
 
+```yaml
+Type: String
+Required: False
+Position: Named
+```
+
+### -AsBatch
+If this is specified, this cmdlet returns an object for Batch input  
+It does not perform an API request to OpenAI. It is useful with `Start-Batch` cmdlet.
+
+```yaml
+Type: SwitchParameter
+Required: False
+Position: Named
+Default value: False
+```
+
+### -CustomBatchId
+A unique id that will be used to match outputs to inputs of batch. Must be unique for each request in a batch.  
+This parameter is valid only when the `-AsBatch` swicth is used. Otherwise, it is simply ignored.
 ```yaml
 Type: String
 Required: False

@@ -1,4 +1,8 @@
 # Changelog
+### Unreleased
+- Add `-AsBatch` for embeddings and text completions.
+- Add `incomplete` status of Run.
+
 ### 3.11.0
 - Add `gpt-4o` model to tab completions.
 
