@@ -31,7 +31,7 @@ namespace PSOpenAI.TokenizerLib
             { "<|endofprompt|>", 100276}
         };
         private static readonly Regex s_encodingRegex = new Regex(
-            @"(?i:'s|'t|'re|'ve|'m|'ll|'d)|[^\r\n\p{L}\p{N}]?\p{L}+|\p{N}{1,3}| ?[^\s\p{L}\p{N}]+[\r\n]*|\s*[\r\n]+|\s+(?!\S)|\s+",
+            @"'(?i:[sdmt]|ll|ve|re)|[^\r\n\p{L}\p{N}]?\p{L}+|\p{N}{1,3}| ?[^\s\p{L}\p{N}]+[\r\n]*|\s*[\r\n]|\s+(?!\S)|\s+",
             RegexOptions.Compiled);
         private static readonly IReadOnlyDictionary<byte[], int> Encoder = null!;
         private static readonly IReadOnlyDictionary<int, byte[]> Decoder = null!;
