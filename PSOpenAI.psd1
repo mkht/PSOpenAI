@@ -42,6 +42,9 @@
         'ConvertFrom-Token',
         'ConvertTo-Token',
         'Get-CosineSimilarity',
+        'Get-OpenAIContext',
+        'Clear-OpenAIContext',
+        'Set-OpenAIContext',
         ### OpenAI ###
         'Get-Assistant',
         'New-Assistant',

@@ -151,11 +151,17 @@ function ParseCommonParams {
         )
     )
     $OutParam = @{}
-    # CommonParams
-    $ParamNames.Where({
-            $Arguments.ContainsKey($_)
-        }).ForEach({
-            $OutParam.Add($_, $Arguments."$_")
-        })
+    $CurrentContext = PSOpenAI\Get-OpenAIContext
+
+    foreach ($item in $ParamNames) {
+        # Context param
+        if ($null -ne $CurrentContext.$item) {
+            $OutParam.$item = $CurrentContext.$item
+        }
+        # Explicit param
+        if ($Arguments.ContainsKey($item)) {
+            $OutParam.$item = $Arguments[$item]
+        }
+    }
     $OutParam
 }

@@ -79,17 +79,8 @@ function Request-ImageGeneration {
     )
 
     begin {
-        # Initialize API Key
-        [securestring]$SecureToken = Initialize-APIKey -ApiKey $ApiKey -ErrorAction Stop
-
-        # Initialize API Base
-        $ApiBase = Initialize-APIBase -ApiBase $ApiBase -ApiType ([OpenAIApiType]::OpenAI) -ErrorAction Stop
-
-        # Initialize Organization ID
-        $Organization = Initialize-OrganizationID -OrgId $Organization
-
         # Get API context
-        $OpenAIParameter = Get-OpenAIContext -EndpointName 'Image.Generation' -ApiType $ApiType -AuthType $AuthType -ApiBase $ApiBase -ApiVersion $ApiVersion -ErrorAction Stop -Engine $Model
+        $OpenAIParameter = Get-OpenAIAPIParameter -EndpointName 'Image.Generation' -Parameters $PSBoundParameters -Engine $Model -ErrorAction Stop
     }
 
     process {
@@ -135,7 +126,7 @@ function Request-ImageGeneration {
                 break
             }
         }
-        if ($ApiType -eq [OpenAIApiType]::OpenAI) {
+        if ($OpenAIParameter.ApiType -eq [OpenAIApiType]::OpenAI) {
             if ($PSBoundParameters.ContainsKey('Model')) {
                 $PostBody.model = $Model
             }
@@ -153,11 +144,11 @@ function Request-ImageGeneration {
             Method            = $OpenAIParameter.Method
             Uri               = $OpenAIParameter.Uri
             ContentType       = $OpenAIParameter.ContentType
-            TimeoutSec        = $TimeoutSec
-            MaxRetryCount     = $MaxRetryCount
-            ApiKey            = $SecureToken
+            TimeoutSec        = $OpenAIParameter.TimeoutSec
+            MaxRetryCount     = $OpenAIParameter.MaxRetryCount
+            ApiKey            = $OpenAIParameter.ApiKey
             AuthType          = $OpenAIParameter.AuthType
-            Organization      = $Organization
+            Organization      = $OpenAIParameter.Organization
             Body              = $PostBody
             AdditionalQuery   = $AdditionalQuery
             AdditionalHeaders = $AdditionalHeaders
@@ -189,10 +180,13 @@ function Request-ImageGeneration {
 
         #region Output
         if ($PSCmdlet.ParameterSetName -eq 'OutFile') {
+            # Convert to absolute path
+            $AbsoluteOutFile = $PSCmdlet.GetUnresolvedProviderPathFromPSPath($OutFile)
             # create parent directory if it does not exist
-            $ParentDirectory = Split-Path $OutFile -Parent
+            $ParentDirectory = Split-Path $AbsoluteOutFile -Parent
             if (-not $ParentDirectory) {
-                $ParentDirectory = [string]$PWD
+                $ParentDirectory = [string](Get-Location -PSProvider FileSystem).ProviderPath
+                $AbsoluteOutFile = Join-Path $ParentDirectory $AbsoluteOutFile
             }
             if (-not (Test-Path -LiteralPath $ParentDirectory -PathType Container)) {
                 $null = New-Item -Path $ParentDirectory -ItemType Directory -Force
@@ -205,11 +199,11 @@ function Request-ImageGeneration {
 
             # Download image
             $ResponseContent | Select-Object -ExpandProperty 'url' | Select-Object -First 1 | ForEach-Object {
-                Write-Verbose ('Downloading image to {0}' -f $OutFile)
+                Write-Verbose ('Downloading image to {0}' -f $AbsoluteOutFile)
                 $splat = @{
                     Uri             = $_
                     Method          = 'Get'
-                    OutFile         = $OutFile
+                    OutFile         = $AbsoluteOutFile
                     UseBasicParsing = $true
                 }
                 Microsoft.PowerShell.Utility\Invoke-WebRequest @splat

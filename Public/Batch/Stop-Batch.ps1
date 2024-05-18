@@ -59,17 +59,8 @@ function Stop-Batch {
     )
 
     begin {
-        # Initialize API Key
-        [securestring]$SecureToken = Initialize-APIKey -ApiKey $ApiKey -ErrorAction Stop
-
-        # Initialize API Base
-        $ApiBase = Initialize-APIBase -ApiBase $ApiBase -ApiType $ApiType -ErrorAction Stop
-
-        # Initialize Organization ID
-        $Organization = Initialize-OrganizationID -OrgId $Organization
-
         # Get API context
-        $OpenAIParameter = Get-OpenAIContext -EndpointName 'Batch' -ApiType $ApiType -AuthType $AuthType -ApiBase $ApiBase -ApiVersion $ApiVersion -ErrorAction Stop
+        $OpenAIParameter = Get-OpenAIAPIParameter -EndpointName 'Batch' -Parameters $PSBoundParameters -ErrorAction Stop
 
         # Parse Common params
         $CommonParams = ParseCommonParams $PSBoundParameters
@@ -106,11 +97,11 @@ function Stop-Batch {
             Method            = 'Post'
             Uri               = $QueryUri
             ContentType       = $OpenAIParameter.ContentType
-            TimeoutSec        = $TimeoutSec
-            MaxRetryCount     = $MaxRetryCount
-            ApiKey            = $SecureToken
+            TimeoutSec        = $OpenAIParameter.TimeoutSec
+            MaxRetryCount     = $OpenAIParameter.MaxRetryCount
+            ApiKey            = $OpenAIParameter.ApiKey
             AuthType          = $OpenAIParameter.AuthType
-            Organization      = $Organization
+            Organization      = $OpenAIParameter.Organization
             AdditionalQuery   = $AdditionalQuery
             AdditionalHeaders = $AdditionalHeaders
             AdditionalBody    = $AdditionalBody

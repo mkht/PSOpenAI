@@ -108,19 +108,10 @@ function Request-TextCompletion {
     )
 
     begin {
-        # Initialize API Key
-        [securestring]$SecureToken = Initialize-APIKey -ApiKey $ApiKey -ErrorAction Stop
-
-        # Initialize API Base
-        $ApiBase = Initialize-APIBase -ApiBase $ApiBase -ApiType $ApiType -ErrorAction Stop
-
-        # Initialize Organization ID
-        $Organization = Initialize-OrganizationID -OrgId $Organization
-
         # Get API context
-        $OpenAIParameter = Get-OpenAIContext -EndpointName 'Text.Completion' -ApiType $ApiType -AuthType $AuthType -ApiBase $ApiBase -ApiVersion $ApiVersion -ErrorAction Stop -Engine $Model
+        $OpenAIParameter = Get-OpenAIAPIParameter -EndpointName 'Text.Completion' -Parameters $PSBoundParameters -Engine $Model -ErrorAction Stop
 
-        if ($ApiType -eq [OpenAIApiType]::Azure) {
+        if ($OpenAIParameter.ApiType -eq [OpenAIApiType]::Azure) {
             # Temporal engine name for Azure
             $Engine = 'text-davinci-003'
         }
@@ -146,7 +137,7 @@ function Request-TextCompletion {
 
         #region Construct parameters for API request
         $PostBody = [System.Collections.Specialized.OrderedDictionary]::new()
-        if ($ApiType -eq [OpenAIApiType]::OpenAI) {
+        if ($OpenAIParameter.ApiType -eq [OpenAIApiType]::OpenAI) {
             $PostBody.model = $Model
         }
         if ($PSBoundParameters.ContainsKey('Prompt')) {
@@ -219,11 +210,11 @@ function Request-TextCompletion {
                 Method            = $OpenAIParameter.Method
                 Uri               = $OpenAIParameter.Uri
                 ContentType       = $OpenAIParameter.ContentType
-                TimeoutSec        = $TimeoutSec
-                MaxRetryCount     = $MaxRetryCount
-                ApiKey            = $SecureToken
+                TimeoutSec        = $OpenAIParameter.TimeoutSec
+                MaxRetryCount     = $OpenAIParameter.MaxRetryCount
+                ApiKey            = $OpenAIParameter.ApiKey
                 AuthType          = $OpenAIParameter.AuthType
-                Organization      = $Organization
+                Organization      = $OpenAIParameter.Organization
                 Body              = $PostBody
                 Stream            = $Stream
                 AdditionalQuery   = $AdditionalQuery
@@ -260,11 +251,11 @@ function Request-TextCompletion {
                 Method            = $OpenAIParameter.Method
                 Uri               = $OpenAIParameter.Uri
                 ContentType       = $OpenAIParameter.ContentType
-                TimeoutSec        = $TimeoutSec
-                MaxRetryCount     = $MaxRetryCount
-                ApiKey            = $SecureToken
+                TimeoutSec        = $OpenAIParameter.TimeoutSec
+                MaxRetryCount     = $OpenAIParameter.MaxRetryCount
+                ApiKey            = $OpenAIParameter.ApiKey
                 AuthType          = $OpenAIParameter.AuthType
-                Organization      = $Organization
+                Organization      = $OpenAIParameter.Organization
                 Body              = $PostBody
                 AdditionalQuery   = $AdditionalQuery
                 AdditionalHeaders = $AdditionalHeaders

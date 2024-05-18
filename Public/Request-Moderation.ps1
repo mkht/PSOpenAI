@@ -44,17 +44,8 @@ function Request-Moderation {
     )
 
     begin {
-        # Initialize API Key
-        [securestring]$SecureToken = Initialize-APIKey -ApiKey $ApiKey -ErrorAction Stop
-
-        # Initialize API Base
-        $ApiBase = Initialize-APIBase -ApiBase $ApiBase -ApiType ([OpenAIApiType]::OpenAI) -ErrorAction Stop
-
-        # Initialize Organization ID
-        $Organization = Initialize-OrganizationID -OrgId $Organization
-
         # Get API endpoint
-        $OpenAIParameter = Get-OpenAIAPIEndpoint -EndpointName 'Moderation' -ApiBase $ApiBase -ErrorAction Stop
+        $OpenAIParameter = Get-OpenAIAPIParameter -EndpointName 'Moderation' -Parameters $PSBoundParameters -ErrorAction Stop
     }
 
     process {
@@ -82,10 +73,10 @@ function Request-Moderation {
             Method            = $OpenAIParameter.Method
             Uri               = $OpenAIParameter.Uri
             ContentType       = $OpenAIParameter.ContentType
-            TimeoutSec        = $TimeoutSec
-            MaxRetryCount     = $MaxRetryCount
-            ApiKey            = $SecureToken
-            Organization      = $Organization
+            TimeoutSec        = $OpenAIParameter.TimeoutSec
+            MaxRetryCount     = $OpenAIParameter.MaxRetryCount
+            ApiKey            = $OpenAIParameter.ApiKey
+            Organization      = $OpenAIParameter.Organization
             Body              = $PostBody
             AdditionalQuery   = $AdditionalQuery
             AdditionalHeaders = $AdditionalHeaders

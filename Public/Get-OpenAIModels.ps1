@@ -45,17 +45,8 @@ function Get-OpenAIModels {
     )
 
     begin {
-        # Initialize API Key
-        [securestring]$SecureToken = Initialize-APIKey -ApiKey $ApiKey -ErrorAction Stop
-
-        # Initialize API Base
-        $ApiBase = Initialize-APIBase -ApiBase $ApiBase -ApiType $ApiType -ErrorAction Stop
-
-        # Initialize Organization ID
-        $Organization = Initialize-OrganizationID -OrgId $Organization
-
         # Get API context
-        $OpenAIParameter = Get-OpenAIContext -EndpointName 'Models' -ApiType $ApiType -AuthType $AuthType -ApiBase $ApiBase -ApiVersion $ApiVersion -ErrorAction Stop
+        $OpenAIParameter = Get-OpenAIAPIParameter -EndpointName 'Models' -Parameters $PSBoundParameters -ErrorAction Stop
     }
 
     process {
@@ -69,11 +60,11 @@ function Get-OpenAIModels {
         $splat = @{
             Method            = $OpenAIParameter.Method
             Uri               = $OpenAIParameter.Uri
-            ApiKey            = $SecureToken
+            ApiKey            = $OpenAIParameter.ApiKey
             AuthType          = $OpenAIParameter.AuthType
-            Organization      = $Organization
-            TimeoutSec        = $TimeoutSec
-            MaxRetryCount     = $MaxRetryCount
+            Organization      = $OpenAIParameter.Organization
+            TimeoutSec        = $OpenAIParameter.TimeoutSec
+            MaxRetryCount     = $OpenAIParameter.MaxRetryCount
             AdditionalQuery   = $AdditionalQuery
             AdditionalHeaders = $AdditionalHeaders
             AdditionalBody    = $AdditionalBody
@@ -100,7 +91,7 @@ function Get-OpenAIModels {
         foreach ($m in $Models) {
             if ($null -eq $m) { continue }
             # Add custom type name and properties to output object.
-            if ($ApiType -eq [OpenAIApiType]::OpenAI) {
+            if ($OpenAIParameter.ApiType -eq [OpenAIApiType]::OpenAI) {
                 $m.PSObject.TypeNames.Insert(0, 'PSOpenAI.Model')
             }
             if ($unixtime = $m.created -as [long]) {

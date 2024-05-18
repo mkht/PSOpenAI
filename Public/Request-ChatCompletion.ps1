@@ -186,19 +186,10 @@ function Request-ChatCompletion {
     )
 
     begin {
-        # Initialize API Key
-        [securestring]$SecureToken = Initialize-APIKey -ApiKey $ApiKey -ErrorAction Stop
-
-        # Initialize API Base
-        $ApiBase = Initialize-APIBase -ApiBase $ApiBase -ApiType $ApiType -ErrorAction Stop
-
-        # Initialize Organization ID
-        $Organization = Initialize-OrganizationID -OrgId $Organization
-
         # Get API context
-        $OpenAIParameter = Get-OpenAIContext -EndpointName 'Chat.Completion' -ApiType $ApiType -AuthType $AuthType -Engine $Model -ApiBase $ApiBase -ApiVersion $ApiVersion -ErrorAction Stop
+        $OpenAIParameter = Get-OpenAIAPIParameter -EndpointName 'Chat.Completion' -Parameters $PSBoundParameters -Engine $Model -ErrorAction Stop
 
-        if ($ApiType -eq [OpenAIApiType]::Azure) {
+        if ($OpenAIParameter.ApiType -eq [OpenAIApiType]::Azure) {
             # Temporal engine name for Azure
             $Engine = 'gpt-3.5-turbo'
         }
@@ -254,7 +245,7 @@ function Request-ChatCompletion {
         #region Construct parameters for API request
         $Response = $null
         $PostBody = [System.Collections.Specialized.OrderedDictionary]::new()
-        if ($ApiType -eq [OpenAIApiType]::OpenAI) {
+        if ($OpenAIParameter.ApiType -eq [OpenAIApiType]::OpenAI) {
             $PostBody.model = $Model
         }
         if ($PSBoundParameters.ContainsKey('Tools')) {
@@ -418,11 +409,11 @@ function Request-ChatCompletion {
                 Method            = $OpenAIParameter.Method
                 Uri               = $OpenAIParameter.Uri
                 ContentType       = $OpenAIParameter.ContentType
-                TimeoutSec        = $TimeoutSec
-                MaxRetryCount     = $MaxRetryCount
-                ApiKey            = $SecureToken
+                TimeoutSec        = $OpenAIParameter.TimeoutSec
+                MaxRetryCount     = $OpenAIParameter.MaxRetryCount
+                ApiKey            = $OpenAIParameter.ApiKey
                 AuthType          = $OpenAIParameter.AuthType
-                Organization      = $Organization
+                Organization      = $OpenAIParameter.Organization
                 Body              = $PostBody
                 Stream            = $Stream
                 AdditionalQuery   = $AdditionalQuery
@@ -470,11 +461,11 @@ function Request-ChatCompletion {
                 Method            = $OpenAIParameter.Method
                 Uri               = $OpenAIParameter.Uri
                 ContentType       = $OpenAIParameter.ContentType
-                TimeoutSec        = $TimeoutSec
-                MaxRetryCount     = $MaxRetryCount
-                ApiKey            = $SecureToken
+                TimeoutSec        = $OpenAIParameter.TimeoutSec
+                MaxRetryCount     = $OpenAIParameter.MaxRetryCount
+                ApiKey            = $OpenAIParameter.ApiKey
                 AuthType          = $OpenAIParameter.AuthType
-                Organization      = $Organization
+                Organization      = $OpenAIParameter.Organization
                 Body              = $PostBody
                 AdditionalQuery   = $AdditionalQuery
                 AdditionalHeaders = $AdditionalHeaders

@@ -62,17 +62,8 @@ function Get-OpenAIFile {
     )
 
     begin {
-        # Initialize API Key
-        [securestring]$SecureToken = Initialize-APIKey -ApiKey $ApiKey -ErrorAction Stop
-
-        # Initialize API Base
-        $ApiBase = Initialize-APIBase -ApiBase $ApiBase -ApiType ([OpenAIApiType]::OpenAI) -ErrorAction Stop
-
-        # Initialize Organization ID
-        $Organization = Initialize-OrganizationID -OrgId $Organization
-
         # Get API context
-        $OpenAIParameter = Get-OpenAIContext -EndpointName 'Files' -ApiType $ApiType -AuthType $AuthType -ApiBase $ApiBase -ApiVersion $ApiVersion -ErrorAction Stop
+        $OpenAIParameter = Get-OpenAIAPIParameter -EndpointName 'Files' -Parameters $PSBoundParameters -ErrorAction Stop
     }
 
     process {
@@ -109,10 +100,10 @@ function Get-OpenAIFile {
             Method            = 'Get'
             Uri               = $QueryUri
             ContentType       = $OpenAIParameter.ContentType
-            TimeoutSec        = $TimeoutSec
-            MaxRetryCount     = $MaxRetryCount
-            ApiKey            = $SecureToken
-            Organization      = $Organization
+            TimeoutSec        = $OpenAIParameter.TimeoutSec
+            MaxRetryCount     = $OpenAIParameter.MaxRetryCount
+            ApiKey            = $OpenAIParameter.ApiKey
+            Organization      = $OpenAIParameter.Organization
             AdditionalQuery   = $AdditionalQuery
             AdditionalHeaders = $AdditionalHeaders
             AdditionalBody    = $AdditionalBody

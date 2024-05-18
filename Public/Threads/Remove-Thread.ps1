@@ -49,17 +49,8 @@ function Remove-Thread {
     )
 
     begin {
-        # Initialize API Key
-        [securestring]$SecureToken = Initialize-APIKey -ApiKey $ApiKey -ErrorAction Stop
-
-        # Initialize API Base
-        $ApiBase = Initialize-APIBase -ApiBase $ApiBase -ApiType $ApiType -ErrorAction Stop
-
-        # Initialize Organization ID
-        $Organization = Initialize-OrganizationID -OrgId $Organization
-
         # Get API context
-        $OpenAIParameter = Get-OpenAIContext -EndpointName 'Threads' -ApiType $ApiType -AuthType $AuthType -ApiBase $ApiBase -ApiVersion $ApiVersion -ErrorAction Stop
+        $OpenAIParameter = Get-OpenAIAPIParameter -EndpointName 'Threads' -Parameters $PSBoundParameters -ErrorAction Stop
     }
 
     process {
@@ -84,11 +75,11 @@ function Remove-Thread {
             Method            = 'Delete'
             Uri               = $QueryUri
             ContentType       = $OpenAIParameter.ContentType
-            TimeoutSec        = $TimeoutSec
-            MaxRetryCount     = $MaxRetryCount
-            ApiKey            = $SecureToken
+            TimeoutSec        = $OpenAIParameter.TimeoutSec
+            MaxRetryCount     = $OpenAIParameter.MaxRetryCount
+            ApiKey            = $OpenAIParameter.ApiKey
             AuthType          = $OpenAIParameter.AuthType
-            Organization      = $Organization
+            Organization      = $OpenAIParameter.Organization
             Headers           = @{'OpenAI-Beta' = 'assistants=v2' }
             AdditionalQuery   = $AdditionalQuery
             AdditionalHeaders = $AdditionalHeaders

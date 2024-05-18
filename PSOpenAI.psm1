@@ -26,6 +26,9 @@ if ($ExportFunctions.Count -ge 1) {
     Export-ModuleMember -Function $ExportFunctions -Alias *
 }
 
+# Initialize context dictionary
+Clear-OpenAIContext
+
 # Export classes
 $ExportableTypes = @(
     [APIRequestException]

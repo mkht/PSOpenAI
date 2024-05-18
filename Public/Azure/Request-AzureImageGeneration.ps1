@@ -146,9 +146,9 @@ function Request-AzureImageGeneration {
                 Method            = $OpenAIParameter.Method
                 Uri               = $OpenAIParameter.Uri
                 ContentType       = $OpenAIParameter.ContentType
-                TimeoutSec        = $TimeoutSec
-                MaxRetryCount     = $MaxRetryCount
-                ApiKey            = $SecureToken
+                TimeoutSec        = $OpenAIParameter.TimeoutSec
+                MaxRetryCount     = $OpenAIParameter.MaxRetryCount
+                ApiKey            = $OpenAIParameter.ApiKey
                 AuthType          = $AuthType
                 Body              = $PostBody
                 ReturnRawResponse = $true
@@ -197,8 +197,8 @@ function Request-AzureImageGeneration {
                     $params = @{
                         Method            = 'Get'
                         Uri               = $NextLocation
-                        TimeoutSec        = $TimeoutSec
-                        ApiKey            = $SecureToken
+                        TimeoutSec        = $OpenAIParameter.TimeoutSec
+                        ApiKey            = $OpenAIParameter.ApiKey
                         AuthType          = $AuthType
                         AdditionalQuery   = $AdditionalQuery
                         AdditionalHeaders = $AdditionalHeaders

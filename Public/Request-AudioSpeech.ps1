@@ -85,17 +85,8 @@ function Request-AudioSpeech {
     )
 
     begin {
-        # Initialize API Key
-        [securestring]$SecureToken = Initialize-APIKey -ApiKey $ApiKey -ErrorAction Stop
-
-        # Initialize API Base
-        $ApiBase = Initialize-APIBase -ApiBase $ApiBase -ApiType ([OpenAIApiType]::OpenAI) -ErrorAction Stop
-
-        # Initialize Organization ID
-        $Organization = Initialize-OrganizationID -OrgId $Organization
-
         # Get API context
-        $OpenAIParameter = Get-OpenAIContext -EndpointName 'Audio.Speech' -ApiType $ApiType -AuthType $AuthType -ApiBase $ApiBase -ApiVersion $ApiVersion -ErrorAction Stop -Engine $Model
+        $OpenAIParameter = Get-OpenAIAPIParameter -EndpointName 'Audio.Speech' -Parameters $PSBoundParameters -Engine $Model -ErrorAction Stop
     }
 
     process {
@@ -141,11 +132,11 @@ function Request-AudioSpeech {
                 Method            = $OpenAIParameter.Method
                 Uri               = $OpenAIParameter.Uri
                 ContentType       = $OpenAIParameter.ContentType
-                TimeoutSec        = $TimeoutSec
-                MaxRetryCount     = $MaxRetryCount
-                ApiKey            = $SecureToken
+                TimeoutSec        = $OpenAIParameter.TimeoutSec
+                MaxRetryCount     = $OpenAIParameter.MaxRetryCount
+                ApiKey            = $OpenAIParameter.ApiKey
                 AuthType          = $OpenAIParameter.AuthType
-                Organization      = $Organization
+                Organization      = $OpenAIParameter.Organization
                 Body              = $PostBody
                 AdditionalQuery   = $AdditionalQuery
                 AdditionalHeaders = $AdditionalHeaders

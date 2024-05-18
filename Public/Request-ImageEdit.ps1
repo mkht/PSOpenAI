@@ -73,17 +73,8 @@ function Request-ImageEdit {
     )
 
     begin {
-        # Initialize API Key
-        [securestring]$SecureToken = Initialize-APIKey -ApiKey $ApiKey -ErrorAction Stop
-
-        # Initialize API Base
-        $ApiBase = Initialize-APIBase -ApiBase $ApiBase -ApiType ([OpenAIApiType]::OpenAI) -ErrorAction Stop
-
-        # Initialize Organization ID
-        $Organization = Initialize-OrganizationID -OrgId $Organization
-
         # Get API endpoint
-        $OpenAIParameter = Get-OpenAIAPIEndpoint -EndpointName 'Image.Edit' -ApiBase $ApiBase -ErrorAction Stop
+        $OpenAIParameter = Get-OpenAIAPIParameter -EndpointName 'Image.Edit' -Parameters $PSBoundParameters -ErrorAction Stop
     }
 
     process {
@@ -176,10 +167,10 @@ function Request-ImageEdit {
                 Method            = $OpenAIParameter.Method
                 Uri               = $OpenAIParameter.Uri
                 ContentType       = $OpenAIParameter.ContentType
-                TimeoutSec        = $TimeoutSec
-                MaxRetryCount     = $MaxRetryCount
-                ApiKey            = $SecureToken
-                Organization      = $Organization
+                TimeoutSec        = $OpenAIParameter.TimeoutSec
+                MaxRetryCount     = $OpenAIParameter.MaxRetryCount
+                ApiKey            = $OpenAIParameter.ApiKey
+                Organization      = $OpenAIParameter.Organization
                 Body              = $PostBody
                 AdditionalQuery   = $AdditionalQuery
                 AdditionalHeaders = $AdditionalHeaders
@@ -215,10 +206,13 @@ function Request-ImageEdit {
 
         #region Output
         if ($PSCmdlet.ParameterSetName -eq 'OutFile') {
+            # Convert to absolute path
+            $AbsoluteOutFile = $PSCmdlet.GetUnresolvedProviderPathFromPSPath($OutFile)
             # create parent directory if it does not exist
-            $ParentDirectory = Split-Path $OutFile -Parent
+            $ParentDirectory = Split-Path $AbsoluteOutFile -Parent
             if (-not $ParentDirectory) {
-                $ParentDirectory = [string]$PWD
+                $ParentDirectory = [string](Get-Location -PSProvider FileSystem).ProviderPath
+                $AbsoluteOutFile = Join-Path $ParentDirectory $AbsoluteOutFile
             }
             if (-not (Test-Path -LiteralPath $ParentDirectory -PathType Container)) {
                 $null = New-Item -Path $ParentDirectory -ItemType Directory -Force
@@ -234,7 +228,7 @@ function Request-ImageEdit {
                 $splat = @{
                     Uri             = $_
                     Method          = 'Get'
-                    OutFile         = $OutFile
+                    OutFile         = $AbsoluteOutFile
                     UseBasicParsing = $true
                 }
                 Microsoft.PowerShell.Utility\Invoke-WebRequest @splat

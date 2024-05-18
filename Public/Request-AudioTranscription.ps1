@@ -71,17 +71,8 @@ function Request-AudioTranscription {
     )
 
     begin {
-        # Initialize API Key
-        [securestring]$SecureToken = Initialize-APIKey -ApiKey $ApiKey -ErrorAction Stop
-
-        # Initialize API Base
-        $ApiBase = Initialize-APIBase -ApiBase $ApiBase -ApiType $ApiType -ErrorAction Stop
-
-        # Initialize Organization ID
-        $Organization = Initialize-OrganizationID -OrgId $Organization
-
         # Get API context
-        $OpenAIParameter = Get-OpenAIContext -EndpointName 'Audio.Transcription' -ApiType $ApiType -AuthType $AuthType -ApiBase $ApiBase -ApiVersion $ApiVersion -ErrorAction Stop -Engine $Model
+        $OpenAIParameter = Get-OpenAIAPIParameter -EndpointName 'Audio.Transcription' -Parameters $PSBoundParameters -Engine $Model -ErrorAction Stop
 
         # Convert language name to ISO-639-1 format (if we can)
         if ($PSCmdlet.ParameterSetName -eq 'Language' -and $PSBoundParameters.ContainsKey('Language')) {
@@ -113,7 +104,7 @@ function Request-AudioTranscription {
 
         #region Construct parameters for API request
         $PostBody = [System.Collections.Specialized.OrderedDictionary]::new()
-        if ($ApiType -eq [OpenAIApiType]::OpenAI) {
+        if ($OpenAIParameter.ApiType -eq [OpenAIApiType]::OpenAI) {
             $PostBody.model = $Model
         }
         $PostBody.file = $FileInfo
@@ -139,11 +130,11 @@ function Request-AudioTranscription {
                 Method            = $OpenAIParameter.Method
                 Uri               = $OpenAIParameter.Uri
                 ContentType       = $OpenAIParameter.ContentType
-                TimeoutSec        = $TimeoutSec
-                MaxRetryCount     = $MaxRetryCount
-                ApiKey            = $SecureToken
+                TimeoutSec        = $OpenAIParameter.TimeoutSec
+                MaxRetryCount     = $OpenAIParameter.MaxRetryCount
+                ApiKey            = $OpenAIParameter.ApiKey
                 AuthType          = $OpenAIParameter.AuthType
-                Organization      = $Organization
+                Organization      = $OpenAIParameter.Organization
                 Body              = $PostBody
                 AdditionalQuery   = $AdditionalQuery
                 AdditionalHeaders = $AdditionalHeaders

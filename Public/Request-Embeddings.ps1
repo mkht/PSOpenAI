@@ -72,17 +72,8 @@ function Request-Embeddings {
     )
 
     begin {
-        # Initialize API Key
-        [securestring]$SecureToken = Initialize-APIKey -ApiKey $ApiKey -ErrorAction Stop
-
-        # Initialize API Base
-        $ApiBase = Initialize-APIBase -ApiBase $ApiBase -ApiType $ApiType -ErrorAction Stop
-
-        # Initialize Organization ID
-        $Organization = Initialize-OrganizationID -OrgId $Organization
-
         # Get API context
-        $OpenAIParameter = Get-OpenAIContext -EndpointName 'Embeddings' -ApiType $ApiType -AuthType $AuthType -ApiBase $ApiBase -ApiVersion $ApiVersion -ErrorAction Stop -Engine $Model
+        $OpenAIParameter = Get-OpenAIAPIParameter -EndpointName 'Embeddings' -Parameters $PSBoundParameters -Engine $Model -ErrorAction Stop
     }
 
     process {
@@ -94,7 +85,7 @@ function Request-Embeddings {
 
         #region Construct parameters for API request
         $PostBody = [System.Collections.Specialized.OrderedDictionary]::new()
-        if ($ApiType -eq [OpenAIApiType]::OpenAI) {
+        if ($OpenAIParameter.ApiType -eq [OpenAIApiType]::OpenAI) {
             $PostBody.model = $Model
         }
         if ($Text.Count -eq 1) {
@@ -134,11 +125,11 @@ function Request-Embeddings {
             Method            = $OpenAIParameter.Method
             Uri               = $OpenAIParameter.Uri
             ContentType       = $OpenAIParameter.ContentType
-            TimeoutSec        = $TimeoutSec
-            MaxRetryCount     = $MaxRetryCount
-            ApiKey            = $SecureToken
+            TimeoutSec        = $OpenAIParameter.TimeoutSec
+            MaxRetryCount     = $OpenAIParameter.MaxRetryCount
+            ApiKey            = $OpenAIParameter.ApiKey
             AuthType          = $OpenAIParameter.AuthType
-            Organization      = $Organization
+            Organization      = $OpenAIParameter.Organization
             Body              = $PostBody
             AdditionalQuery   = $AdditionalQuery
             AdditionalHeaders = $AdditionalHeaders
