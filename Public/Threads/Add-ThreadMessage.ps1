@@ -207,6 +207,24 @@ function Add-ThreadMessage {
         }
         #endregion
 
+        #region Wait for good time to send API request
+        $waitTime = 0
+        $run = Get-ThreadRun -ThreadId $ThreadId -All
+        if ($run.status) {
+            while ($run.status -ne 'completed' -and $waitTime -le 5) {
+                Start-Sleep -Seconds 1
+                $waitTime++
+                $run = Get-Run -ThreadId $ThreadID -All
+            }
+
+            if ($run.status -ne 'completed') {
+                foreach ($runid in $run.id) {
+                    $null = Stop-ThreadRun -ThreadId $ThreadID -RunId $runid
+                }
+            }
+        }
+        #endregion
+
         #region Send API Request
         $params = @{
             Method            = $OpenAIParameter.Method
