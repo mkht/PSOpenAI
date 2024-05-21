@@ -208,19 +208,17 @@ function Add-ThreadMessage {
         #endregion
 
         #region Wait for good time to send API request
-        $waitTime = 0
-        $run = Get-ThreadRun -ThreadId $ThreadId -All
-        if ($run.status) {
-            while ($run.status -ne 'completed' -and $waitTime -le 5) {
+        $runs = Get-ThreadRun -ThreadId $ThreadId -All
+        foreach ($run in $runs) {
+            $waitTime = 0
+            $run = Get-Run -ThreadId $ThreadId -RunId $run.id
+            while ($run.status -in 'queued', 'in_progress', 'requires_action' -and $waitTime -le 5) {
                 Start-Sleep -Seconds 1
                 $waitTime++
-                $run = Get-Run -ThreadId $ThreadID -All
+                $run = Get-Run -ThreadId $ThreadId -RunId $run.id
             }
-
-            if ($run.status -ne 'completed') {
-                foreach ($runid in $run.id) {
-                    $null = Stop-ThreadRun -ThreadId $ThreadID -RunId $runid
-                }
+            if ($run.status -in 'queued', 'in_progress', 'requires_action') {
+                $null = Stop-ThreadRun -ThreadId $ThreadId -RunId $run.id
             }
         }
         #endregion
