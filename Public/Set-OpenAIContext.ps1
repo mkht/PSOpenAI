@@ -49,6 +49,17 @@ function Set-OpenAIContext {
     if ($PSBoundParameters.ContainsKey('AuthType')) {
         $Global:PSOpenAIContextDictionary['AuthType'] = $AuthType
     }
+    elseif (
+        $Global:PSOpenAIContextDictionary['ApiType'] -eq [OpenAIApiType]::Azure `
+            -and $Global:PSOpenAIContextDictionary['AuthType'] -ieq 'openai'
+    ) {
+        $Global:PSOpenAIContextDictionary['AuthType'] = 'azure'
+    }
+    elseif (
+        $Global:PSOpenAIContextDictionary['ApiType'] -eq [OpenAIApiType]::OpenAI
+    ) {
+        $Global:PSOpenAIContextDictionary['AuthType'] = 'openai'
+    }
     if ($PSBoundParameters.ContainsKey('Organization')) {
         $Global:PSOpenAIContextDictionary['Organization'] = $Organization
     }
