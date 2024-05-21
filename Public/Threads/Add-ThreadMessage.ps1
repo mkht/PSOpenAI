@@ -211,11 +211,11 @@ function Add-ThreadMessage {
         $runs = Get-ThreadRun -ThreadId $ThreadId -All
         foreach ($run in $runs) {
             $waitTime = 0
-            $run = Get-Run -ThreadId $ThreadId -RunId $run.id
+            $run = Get-ThreadRun -ThreadId $ThreadId -RunId $run.id
             while ($run.status -in 'queued', 'in_progress', 'requires_action' -and $waitTime -le 5) {
                 Start-Sleep -Seconds 1
                 $waitTime++
-                $run = Get-Run -ThreadId $ThreadId -RunId $run.id
+                $run = Get-ThreadRun -ThreadId $ThreadId -RunId $run.id
             }
             if ($run.status -in 'queued', 'in_progress', 'requires_action') {
                 $null = Stop-ThreadRun -ThreadId $ThreadId -RunId $run.id
