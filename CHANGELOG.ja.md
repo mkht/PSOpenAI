@@ -1,4 +1,11 @@
 # 変更履歴
+### 3.13.0
+- 共通パラメータをコンテキストとして設定するための新しい関数を追加します
+  + [Get-OpenAIContext](/Docs/Get-OpenAIContext.md)
+  + [Set-OpenAIContext](/Docs/Set-OpenAIContext.md)
+  + [Clear-OpenAIContext](/Docs/Clear-OpenAIContext.md)
+- `cl100k_base`トークナイザーのパフォーマンスを向上
+
 ### 3.12.0
 - `gpt-4o`で使用されている`o200k_base`トークナイザーに対応します
 - embeddings と text completions に`-AsBatch`オプションを追加します
