@@ -17,7 +17,7 @@ function Get-AzureOpenAIAPIEndpoint {
     )
 
     $ApiVersion = $ApiVersion.Trim()
-    $DefaultApiVersion = '2024-03-01-preview'
+    $DefaultApiVersion = '2024-05-01-preview'
 
     $UriBuilder = [System.UriBuilder]::new($ApiBase)
     if ($UriBuilder.Path.StartsWith('//', [StringComparison]::Ordinal)) {
@@ -177,6 +177,54 @@ function Get-AzureOpenAIAPIEndpoint {
             $UriBuilder.Query = ('api-version={0}' -f $InnerApiVersion)
             @{
                 Name        = 'runs'
+                Method      = 'Post'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+            continue
+        }
+        'ThreadAndRun' {
+            $InnerApiVersion = if ($ApiVersion) { $ApiVersion }else { $DefaultApiVersion }
+            $UriBuilder.Path += '/openai/threads/runs'
+            $UriBuilder.Query = ('api-version={0}' -f $InnerApiVersion)
+            @{
+                Name        = 'thread_and_run'
+                Method      = 'Post'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+            continue
+        }
+        'VectorStores' {
+            $InnerApiVersion = if ($ApiVersion) { $ApiVersion }else { $DefaultApiVersion }
+            $UriBuilder.Path += '/openai/vector_stores'
+            $UriBuilder.Query = ('api-version={0}' -f $InnerApiVersion)
+            @{
+                Name        = 'vector_stores'
+                Method      = 'Post'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+            continue
+        }
+        'VectorStore.Files' {
+            $InnerApiVersion = if ($ApiVersion) { $ApiVersion }else { $DefaultApiVersion }
+            $UriBuilder.Path += '/openai/vector_stores/{0}/files'
+            $UriBuilder.Query = ('api-version={0}' -f $InnerApiVersion)
+            @{
+                Name        = 'vector_store_files'
+                Method      = 'Post'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+            continue
+        }
+        'VectorStore.FileBatches' {
+            $InnerApiVersion = if ($ApiVersion) { $ApiVersion }else { $DefaultApiVersion }
+            $UriBuilder.Path += '/openai/vector_stores/{0}/file_batches'
+            $UriBuilder.Query = ('api-version={0}' -f $InnerApiVersion)
+            @{
+                Name        = 'vector_store_file_batches'
                 Method      = 'Post'
                 Uri         = $UriBuilder.Uri
                 ContentType = 'application/json'
