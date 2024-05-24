@@ -215,7 +215,7 @@ function Add-ThreadMessage {
             $runs = Get-ThreadRun -ThreadId $ThreadId -All
             foreach ($run in $runs) {
                 Write-Verbose "Waiting for the run to complete. Run ID: $($run.id)"
-                Wait-ThreadRun -Run $run @CommonParams
+                $null = Wait-ThreadRun -Run $run @CommonParams
             }
         }
         #endregion
