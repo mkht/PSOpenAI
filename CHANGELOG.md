@@ -1,4 +1,11 @@
 # Changelog
+### 3.13.0
+- Add new utility functions for set commmon params (context)
+  + [Get-OpenAIContext](/Docs/Get-OpenAIContext.md)
+  + [Set-OpenAIContext](/Docs/Set-OpenAIContext.md)
+  + [Clear-OpenAIContext](/Docs/Clear-OpenAIContext.md)
+- Improve performance of cl100k_base tokenizer
+
 ### 3.12.0
 - Support for `o200k_base` tokenizer that is used in `gpt-4o`.
 - Add `-AsBatch` for embeddings and text completions.

@@ -36,6 +36,9 @@ Install-Module -Name PSOpenAI
 + [ConvertFrom-Token](/Docs/ConvertFrom-Token.md)
 + [ConvertTo-Token](/Docs/ConvertTo-Token.md)
 + [Get-CosineSimilarity](/Docs/Get-CosineSimilarity.md)
++ [Get-OpenAIContext](/Docs/Get-OpenAIContext.md)
++ [Set-OpenAIContext](/Docs/Set-OpenAIContext.md)
++ [Clear-OpenAIContext](/Docs/Clear-OpenAIContext.md)
 
 ### OpenAI
 #### Chat
