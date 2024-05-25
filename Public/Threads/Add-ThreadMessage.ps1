@@ -212,11 +212,14 @@ function Add-ThreadMessage {
 
         #region Wait for good time to send API request
         if ($WaitForRunComplete) {
-            $runs = Get-ThreadRun -ThreadId $ThreadId -All
-            foreach ($run in $runs) {
-                Write-Verbose "Waiting for the run to complete. Run ID: $($run.id)"
-                $null = Wait-ThreadRun -Run $run @CommonParams
-            }
+            # It is not possible to add a message to a Thread while the state of the Run associated with the Thread is "active" (will fail with a 400 bad request).
+            # Wait for the Run to finish before adding a message.
+            # Although requires_action is in the "active" state, it will not complete unless the user actively operates on it.
+            # Do not wait to avoid getting stuck in an infinite loop.
+            $null = Get-ThreadRun -ThreadId $ThreadId -All @CommonParams | `
+                    Where-Object { $_.status -notin ('completed', 'cancelled', 'expired', 'failed') } | `
+                    ForEach-Object { Write-Verbose "Waiting for the run to complete. Run ID: $($_.id)"; $_ } | `
+                    Wait-ThreadRun -StatusForWait ('queued', 'in_progress', 'cancelling') @CommonParams
         }
         #endregion
 
