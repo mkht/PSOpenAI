@@ -217,7 +217,7 @@ function Add-ThreadMessage {
             # Although requires_action is in the "active" state, it will not complete unless the user actively operates on it.
             # Do not wait to avoid getting stuck in an infinite loop.
             $null = Get-ThreadRun -ThreadId $ThreadId -All @CommonParams | `
-                    Where-Object { $_.status -notin ('completed', 'cancelled', 'expired', 'failed') } | `
+                    Where-Object { $_.status -notin ('completed', 'cancelled', 'expired', 'failed', 'requires_action') } | `
                     ForEach-Object { Write-Verbose "Waiting for the run to complete. Run ID: $($_.id)"; $_ } | `
                     Wait-ThreadRun -StatusForWait ('queued', 'in_progress', 'cancelling') @CommonParams
         }

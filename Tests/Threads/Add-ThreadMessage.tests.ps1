@@ -76,6 +76,87 @@ Describe 'Add-ThreadMessage' {
             $script:Result | Should -Not -BeNullOrEmpty
         }
 
+        It 'Wait for run complete - 1' {
+            Mock -Verifiable -ModuleName $script:ModuleName Get-ThreadRun {
+                [pscustomobject]@{
+                    PSTypeName = 'PSOpenAI.Thread.Run'
+                    id         = 'run_abc123'
+                    thread_id  = 'thread_abc123'
+                    status     = 'in_progress'
+                }
+            }
+            Mock -Verifiable -ModuleName $script:ModuleName Wait-ThreadRun {
+                [pscustomobject]@{
+                    PSTypeName = 'PSOpenAI.Thread'
+                    id         = 'thread_abc123'
+                }
+            }
+            { $splat = @{
+                    ThreadId           = 'thread_abc123'
+                    Message            = 'How does AI work? Explain it in simple terms.'
+                    WaitForRunComplete = $true
+                    ErrorAction        = 'Stop'
+                }
+                $script:Result = Add-ThreadMessage @splat
+            } | Should -Not -Throw
+            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
+            Should -Invoke Get-ThreadRun -ModuleName $script:ModuleName -Times 1 -Exactly
+            Should -Invoke Wait-ThreadRun -ModuleName $script:ModuleName -Times 1
+            $script:Result | Should -BeNullOrEmpty
+        }
+
+        It 'Wait for run complete - 2' {
+            Mock -Verifiable -ModuleName $script:ModuleName Get-ThreadRun {
+                [pscustomobject]@{
+                    PSTypeName = 'PSOpenAI.Thread.Run'
+                    id         = 'run_abc123'
+                    thread_id  = 'thread_abc123'
+                    status     = 'requires_action'
+                }
+            }
+            Mock -Verifiable -ModuleName $script:ModuleName Wait-ThreadRun {
+                [pscustomobject]@{
+                    PSTypeName = 'PSOpenAI.Thread'
+                    id         = 'thread_abc123'
+                }
+            }
+            { $splat = @{
+                    ThreadId           = 'thread_abc123'
+                    Message            = 'How does AI work? Explain it in simple terms.'
+                    WaitForRunComplete = $true
+                    ErrorAction        = 'Stop'
+                }
+                $script:Result = Add-ThreadMessage @splat
+            } | Should -Not -Throw
+            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
+            Should -Invoke Get-ThreadRun -ModuleName $script:ModuleName -Times 1 -Exactly
+            Should -Not -Invoke Wait-ThreadRun -ModuleName $script:ModuleName
+            $script:Result | Should -BeNullOrEmpty
+        }
+
+        It 'Wait for run complete - timeout' {
+            Mock -Verifiable -ModuleName $script:ModuleName Get-ThreadRun {
+                [pscustomobject]@{
+                    PSTypeName = 'PSOpenAI.Thread.Run'
+                    id         = 'run_abc123'
+                    thread_id  = 'thread_abc123'
+                    status     = 'in_progress'
+                }
+            }
+            { $splat = @{
+                    ThreadId           = 'thread_abc123'
+                    Message            = 'How does AI work? Explain it in simple terms.'
+                    WaitForRunComplete = $true
+                    TimeoutSec         = 2
+                    ErrorAction        = 'Stop'
+                }
+                $script:Result = Add-ThreadMessage @splat
+            } | Should -Throw -ExceptionType ([OperationCanceledException])
+            Should -Not -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName
+            Should -Invoke Get-ThreadRun -ModuleName $script:ModuleName -Times 1
+            $script:Result | Should -BeNullOrEmpty
+        }
+
         Context 'Parameter Sets' {
             It 'Thread' {
                 $InObject = [pscustomobject]@{
