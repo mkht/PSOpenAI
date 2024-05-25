@@ -71,6 +71,9 @@ function Add-ThreadMessage {
         [switch]$PassThru,
 
         [Parameter()]
+        [switch]$WaitForRunComplete,
+
+        [Parameter()]
         [System.Collections.IDictionary]$AdditionalQuery,
 
         [Parameter()]
@@ -204,6 +207,16 @@ function Add-ThreadMessage {
         }
         if ($PSBoundParameters.ContainsKey('Metadata')) {
             $PostBody.metadata = $Metadata
+        }
+        #endregion
+
+        #region Wait for good time to send API request
+        if ($WaitForRunComplete) {
+            $runs = Get-ThreadRun -ThreadId $ThreadId -All
+            foreach ($run in $runs) {
+                Write-Verbose "Waiting for the run to complete. Run ID: $($run.id)"
+                $null = Wait-ThreadRun -Run $run @CommonParams
+            }
         }
         #endregion
 

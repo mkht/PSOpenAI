@@ -28,6 +28,7 @@ Add-ThreadMessage
     [-ApiKey <SecureString>]
     [-Organization <String>]
     [-PassThru]
+    [-WaitForRunComplete]
     [<CommonParameters>]
 ```
 
@@ -131,6 +132,16 @@ Position: Named
 
 ### -PassThru
 Returns a Thread object that the message added. By default, this cmdlet doesn't generate any output.
+
+```yaml
+Type: SwitchParameter
+Required: False
+Position: Named
+```
+
+### -WaitForRunComplete
+This switch parameter, when used, ensures that the cmdlet waits for any active run on the thread to complete before attempting to add a new message. This can help prevent errors that occur when trying to add messages to a thread while a run is still active.
+This parameter is optional. If not provided, the cmdlet will attempt to add a message to the thread immediately, regardless of whether a run is active or not.
 
 ```yaml
 Type: SwitchParameter
