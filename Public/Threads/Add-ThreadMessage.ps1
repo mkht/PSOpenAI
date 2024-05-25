@@ -216,10 +216,10 @@ function Add-ThreadMessage {
             # Wait for the Run to finish before adding a message.
             # Although requires_action is in the "active" state, it will not complete unless the user actively operates on it.
             # Do not wait to avoid getting stuck in an infinite loop.
-            $null = Get-ThreadRun -ThreadId $ThreadId -All @CommonParams | `
+            $null = PSOpenAI\Get-ThreadRun -ThreadId $ThreadId -All @CommonParams | `
                     Where-Object { $_.status -notin ('completed', 'cancelled', 'expired', 'failed', 'requires_action') } | `
                     ForEach-Object { Write-Verbose "Waiting for the run to complete. Run ID: $($_.id)"; $_ } | `
-                    Wait-ThreadRun -StatusForWait ('queued', 'in_progress', 'cancelling') @CommonParams
+                    PSOpenAI\Wait-ThreadRun -StatusForWait ('queued', 'in_progress', 'cancelling') @CommonParams
         }
         #endregion
 
