@@ -508,6 +508,17 @@ PS C:\&gt; Add-OpenAIFile -Content $ByteArray -Name 'filename.txt' -Purpose assi
           <dev:defaultValue>False</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>WaitForRunComplete</maml:name>
+          <maml:description>
+            <maml:para>This switch parameter, when used, ensures that the cmdlet waits for any active run on the thread to complete before attempting to add a new message. This can help prevent errors that occur when trying to add messages to a thread while a run is still active. This parameter is optional. If not provided, the cmdlet will attempt to add a message to the thread immediately, regardless of whether a run is active or not.</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>TimeoutSec</maml:name>
           <maml:description>
             <maml:para>Specifies how long the request can be pending before it times out.
@@ -680,6 +691,18 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <maml:name>PassThru</maml:name>
         <maml:description>
           <maml:para>Returns a Thread object that the message added. By default, this cmdlet doesn't generate any output.</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>WaitForRunComplete</maml:name>
+        <maml:description>
+          <maml:para>This switch parameter, when used, ensures that the cmdlet waits for any active run on the thread to complete before attempting to add a new message. This can help prevent errors that occur when trying to add messages to a thread while a run is still active. This parameter is optional. If not provided, the cmdlet will attempt to add a message to the thread immediately, regardless of whether a run is active or not.</maml:para>
         </maml:description>
         <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
         <dev:type>

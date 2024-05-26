@@ -1,4 +1,8 @@
 # 変更履歴
+### 3.14.0
+- Windows PowerShell 5.1でAzure OpenAI Serviceを使用する際のバグを修正
+- `Add-ThreadMessage`に`-WaitForRunComplete`パラメータを追加します
+
 ### 3.13.0
 - 共通パラメータをコンテキストとして設定するための新しい関数を追加します
   + [Get-OpenAIContext](/Docs/Get-OpenAIContext.md)

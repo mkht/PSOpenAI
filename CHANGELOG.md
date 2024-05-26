@@ -1,4 +1,8 @@
 # Changelog
+### 3.14.0
+- Fix issue on Windows PowerShell 5.1 with Azure OpenAI Service.
+- Add `-WaitForRunComplete` param to `Add-ThreadMessage`.  (#15) (Thanks @potatoqualitee!)
+
 ### 3.13.0
 - Add new utility functions for set commmon params (context)
   + [Get-OpenAIContext](/Docs/Get-OpenAIContext.md)
