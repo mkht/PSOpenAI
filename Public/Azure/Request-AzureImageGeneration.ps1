@@ -8,7 +8,7 @@ function Request-AzureImageGeneration {
         [Parameter(Mandatory = $false)]
         [Alias('Model')]
         [ValidateNotNullOrEmpty()]
-        [string]$Deployment,
+        [string]$Deployment = $script:DefaultDeploymentModel,
 
         [Parameter()]
         [ValidateRange(1, 5)]

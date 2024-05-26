@@ -16,7 +16,7 @@ function New-AzureAssistant {
 
         [Parameter(Mandatory)]
         [Alias('Model')]
-        [string]$Deployment,
+        [string]$Deployment = $script:DefaultDeploymentModel,
 
         [Parameter()]
         [ValidateLength(0, 512)]

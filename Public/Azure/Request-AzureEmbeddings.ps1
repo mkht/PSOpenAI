@@ -14,7 +14,7 @@ function Request-AzureEmbeddings {
 
         [Parameter(Mandatory)]
         [Alias('Model')]
-        [string]$Deployment,
+        [string]$Deployment = $script:DefaultDeploymentModel,
 
         [Parameter()]
         [Alias('encoding_format')]

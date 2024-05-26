@@ -19,6 +19,10 @@ function Set-OpenAIContext {
         [string]$AuthType = 'openai',
 
         [Parameter(ValueFromPipelineByPropertyName)]
+        [Alias('DeploymentName')]
+        [string]$Deployment,
+
+        [Parameter(ValueFromPipelineByPropertyName)]
         [Alias('OrgId')]
         [string]$Organization,
 
@@ -59,6 +63,9 @@ function Set-OpenAIContext {
         $Global:PSOpenAIContextDictionary['ApiType'] -eq [OpenAIApiType]::OpenAI
     ) {
         $Global:PSOpenAIContextDictionary['AuthType'] = 'openai'
+    }
+    if ($PSBoundParameters.ContainsKey('Deployment')) {
+        $script:DefaultDeploymentModel = $Deployment
     }
     if ($PSBoundParameters.ContainsKey('Organization')) {
         $Global:PSOpenAIContextDictionary['Organization'] = $Organization

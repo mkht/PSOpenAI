@@ -1,4 +1,5 @@
 
+$script:DefaultDeploymentModel = 'gpt-3.5-turbo'
 $PrivateDirectory = Join-Path $PSScriptRoot 'Private'
 $PublicDirectory = Join-Path $PSScriptRoot 'Public'
 

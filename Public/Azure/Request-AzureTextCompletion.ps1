@@ -12,7 +12,7 @@ function Request-AzureTextCompletion {
 
         [Parameter(Mandatory)]
         [Alias('Model')]
-        [string]$Deployment,
+        [string]$Deployment = $script:DefaultDeploymentModel,
 
         [Parameter()]
         [ValidateRange(0.0, 2.0)]

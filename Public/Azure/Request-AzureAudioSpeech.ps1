@@ -14,7 +14,7 @@ function Request-AzureAudioSpeech {
 
         [Parameter(Mandatory)]
         [Alias('Model')]
-        [string]$Deployment,
+        [string]$Deployment = $script:DefaultDeploymentModel,
 
         [Parameter()]
         [Completions(

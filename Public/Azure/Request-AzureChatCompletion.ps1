@@ -19,7 +19,7 @@ function Request-AzureChatCompletion {
 
         [Parameter(Mandatory)]
         [Alias('Model')]
-        [string]$Deployment,
+        [string]$Deployment = $script:DefaultDeploymentModel,
 
         [Parameter()]
         [AllowEmptyString()]
