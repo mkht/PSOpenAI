@@ -16,6 +16,9 @@ Create and run vector store file batch.
 Start-VectorStoreFileBatch
     [-VectorStoreId] <String>
     [-FileId] <Object[]>
+    [-ChunkingStrategy <String>]
+    [-MaxChunkSizeTokens <Int32>]
+    [-ChunkOverlapTokens <Int32>]
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
     [-ApiBase <Uri>]
@@ -57,6 +60,40 @@ Type: object[]
 Aliases: file_ids
 Required: True
 Position: 1
+```
+
+### -ChunkingStrategy
+The chunking strategy used to chunk the file(s). If not set, will use the "auto" strategy.
+
+```yaml
+Type: String
+Aliases: chunking_strategy
+Required: False
+Position: Named
+```
+
+### -MaxChunkSizeTokens
+The maximum number of tokens in each chunk. The default value is 800. The minimum value is 100 and the maximum value is 4096.  
+Note that the parameter only acceptable when the ChunkingStrategy is "static".
+
+```yaml
+Type: String
+Aliases: max_chunk_size_tokens
+Required: False
+Position: Named
+Default value: 800
+```
+
+### -ChunkOverlapTokens
+The number of tokens that overlap between chunks. The default value is 400. The value must not exceed half of MaxChunkSizeTokens.  
+Note that the parameter only acceptable when the ChunkingStrategy is "static".
+
+```yaml
+Type: String
+Aliases: chunk_overlap_tokens
+Required: False
+Position: Named
+Default value: 400
 ```
 
 ### -TimeoutSec

@@ -17,6 +17,21 @@ function Start-VectorStoreFileBatch {
         [object[]]$FileId,
 
         [Parameter()]
+        [ValidateSet('auto', 'static')]
+        [Alias('chunking_strategy')]
+        [string]$ChunkingStrategy,
+
+        [Parameter()]
+        [ValidateRange(100, 4096)]
+        [Alias('max_chunk_size_tokens')]
+        [int]$MaxChunkSizeTokens = 800,
+
+        [Parameter()]
+        [ValidateRange(0, 4096)]
+        [Alias('chunk_overlap_tokens')]
+        [int]$ChunkOverlapTokens = 400,
+
+        [Parameter()]
         [int]$TimeoutSec = 0,
 
         [Parameter()]
@@ -96,6 +111,21 @@ function Start-VectorStoreFileBatch {
         #region Construct parameters for API request
         $PostBody = [System.Collections.Specialized.OrderedDictionary]::new()
         $PostBody.file_ids = $BatchBag.ToArray()
+
+        if ($PSBoundParameters.ContainsKey('ChunkingStrategy')) {
+            $PostBody.chunking_strategy = @{type = $ChunkingStrategy }
+            if ($ChunkingStrategy -eq 'static') {
+                # validation (the overlap must not exceed half of max)
+                if (2 * $ChunkOverlapTokens -gt $MaxChunkSizeTokens) {
+                    Write-Error -Exception ([System.ArgumentException]::new('ChunkOverlapTokens must not exceed half of MaxChunkSizeTokens.'))
+                    return
+                }
+                $PostBody.chunking_strategy.static = @{
+                    max_chunk_size_tokens = $MaxChunkSizeTokens
+                    chunk_overlap_tokens  = $ChunkOverlapTokens
+                }
+            }
+        }
         #endregion
 
         #region Send API Request

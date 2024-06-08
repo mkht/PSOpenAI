@@ -1,7 +1,7 @@
 # Changelog
 ### Unreleased
-- Add `-ParallelToolCalls` switch parameter.
-
+- Add `-ParallelToolCalls` parameter.
+- Add `-ChunkingStrategy` parameter.
 
 ### 3.14.0
 - Fix issue on Windows PowerShell 5.1 with Azure OpenAI Service.

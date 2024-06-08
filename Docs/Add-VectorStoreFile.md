@@ -16,6 +16,9 @@ Attach a file to a vector store.
 Add-VectorStoreFile
     [-VectorStoreId] <Object>
     [-FileId] <String>
+    [-ChunkingStrategy <String>]
+    [-MaxChunkSizeTokens <Int32>]
+    [-ChunkOverlapTokens <Int32>]
     [-PassThru]
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
@@ -67,6 +70,40 @@ Aliases: file_id
 Required: True
 Position: 1
 Accept pipeline input: True (ByPropertyName, ByValue)
+```
+
+### -ChunkingStrategy
+The chunking strategy used to chunk the file(s). If not set, will use the "auto" strategy.
+
+```yaml
+Type: String
+Aliases: chunking_strategy
+Required: False
+Position: Named
+```
+
+### -MaxChunkSizeTokens
+The maximum number of tokens in each chunk. The default value is 800. The minimum value is 100 and the maximum value is 4096.  
+Note that the parameter only acceptable when the ChunkingStrategy is "static".
+
+```yaml
+Type: String
+Aliases: max_chunk_size_tokens
+Required: False
+Position: Named
+Default value: 800
+```
+
+### -ChunkOverlapTokens
+The number of tokens that overlap between chunks. The default value is 400. The value must not exceed half of MaxChunkSizeTokens.  
+Note that the parameter only acceptable when the ChunkingStrategy is "static".
+
+```yaml
+Type: String
+Aliases: chunk_overlap_tokens
+Required: False
+Position: Named
+Default value: 400
 ```
 
 ### -PassThru

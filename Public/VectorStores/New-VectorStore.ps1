@@ -27,6 +27,21 @@ function New-VectorStore {
         [string][LowerCaseTransformation()]$ExpiresAfterAnchor = 'last_active_at',
 
         [Parameter()]
+        [ValidateSet('auto', 'static')]
+        [Alias('chunking_strategy')]
+        [string]$ChunkingStrategy,
+
+        [Parameter()]
+        [ValidateRange(100, 4096)]
+        [Alias('max_chunk_size_tokens')]
+        [int]$MaxChunkSizeTokens = 800,
+
+        [Parameter()]
+        [ValidateRange(0, 4096)]
+        [Alias('chunk_overlap_tokens')]
+        [int]$ChunkOverlapTokens = 400,
+
+        [Parameter()]
         [System.Collections.IDictionary]$MetaData,
 
         [Parameter()]
@@ -97,6 +112,22 @@ function New-VectorStore {
             }
             if ($list.Count -gt 0) {
                 $PostBody.file_ids = $list.ToArray()
+            }
+
+            # chunking_strategy parameter is only applicable if file_ids is non-empty.
+            if ($PSBoundParameters.ContainsKey('ChunkingStrategy')) {
+                $PostBody.chunking_strategy = @{type = $ChunkingStrategy }
+                if ($ChunkingStrategy -eq 'static') {
+                    # validation (the overlap must not exceed half of max)
+                    if (2 * $ChunkOverlapTokens -gt $MaxChunkSizeTokens) {
+                        Write-Error -Exception ([System.ArgumentException]::new('ChunkOverlapTokens must not exceed half of MaxChunkSizeTokens.'))
+                        return
+                    }
+                    $PostBody.chunking_strategy.static = @{
+                        max_chunk_size_tokens = $MaxChunkSizeTokens
+                        chunk_overlap_tokens  = $ChunkOverlapTokens
+                    }
+                }
             }
         }
         if ($PSBoundParameters.ContainsKey('Name')) {
