@@ -25,6 +25,7 @@ Set-Assistant
     [-FileIdsForCodeInterpreter <Object[]>]
     [-VectorStoresForFileSearch <Object[]>]
     [-FileIdsForFileSearch <Object[]>]
+    [-MaxNumberOfFileSearchResults <UInt16>]
     [-Temperature <Double>]
     [-TopP <Double>]
     [-MetaData <IDictionary>]
@@ -142,6 +143,15 @@ The vector store attached to this assistant. There can be a maximum of 1 vector 
 
 ```yaml
 Type: Object[]
+Required: False
+Position: Named
+```
+
+### -MaxNumberOfFileSearchResults
+The maximum number of results the file search tool should output. This number should be between 1 and 50 inclusive.
+
+```yaml
+Type: UInt16
 Required: False
 Position: Named
 ```

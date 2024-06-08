@@ -66,6 +66,10 @@ function New-Assistant {
         [object[]]$FileIdsForFileSearch,
 
         [Parameter()]
+        [ValidateRange(1, 50)]
+        [uint16]$MaxNumberOfFileSearchResults,
+
+        [Parameter()]
         [ValidateRange(0.0, 2.0)]
         [double]$Temperature,
 
@@ -143,7 +147,11 @@ function New-Assistant {
             $Tools += @{'type' = 'code_interpreter' }
         }
         if ($UseFileSearch) {
-            $Tools += @{'type' = 'file_search' }
+            $fileseach = @{'type' = 'file_search' }
+            if ($PSBoundParameters.ContainsKey('MaxNumberOfFileSearchResults')) {
+                $fileseach.max_num_results = $MaxNumberOfFileSearchResults
+            }
+            $Tools += $fileseach
         }
         if ($Functions.Count -gt 0) {
             foreach ($f in $Functions) {

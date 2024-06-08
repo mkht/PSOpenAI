@@ -2,6 +2,7 @@
 ### Unreleased
 - Add `-ParallelToolCalls` parameter.
 - Add `-ChunkingStrategy` parameter.
+- Add `-MaxNumberOfFileSearchResults` parameter.
 
 ### 3.14.0
 - Fix issue on Windows PowerShell 5.1 with Azure OpenAI Service.

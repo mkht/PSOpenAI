@@ -67,6 +67,10 @@ function Set-Assistant {
         [object[]]$FileIdsForFileSearch,
 
         [Parameter()]
+        [ValidateRange(1, 50)]
+        [uint16]$MaxNumberOfFileSearchResults,
+
+        [Parameter()]
         [ValidateRange(0.0, 2.0)]
         [double]$Temperature,
 

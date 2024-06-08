@@ -23,6 +23,7 @@ New-Assistant
     [-Functions <IDictionary[]>]
     [-FileIdsForCodeInterpreter <Object[]>]
     [-VectorStoresForFileSearch <Object[]>]
+    [-MaxNumberOfFileSearchResults <UInt16>]
     [-FileIdsForFileSearch <Object[]>]
     [-Temperature <Double>]
     [-TopP <Double>]
@@ -139,6 +140,15 @@ A list of file IDs to add to the vector store. There can be a maximum of 10000 f
 
 ```yaml
 Type: Object[]
+Required: False
+Position: Named
+```
+
+### -MaxNumberOfFileSearchResults
+The maximum number of results the file search tool should output. This number should be between 1 and 50 inclusive.
+
+```yaml
+Type: UInt16
 Required: False
 Position: Named
 ```
