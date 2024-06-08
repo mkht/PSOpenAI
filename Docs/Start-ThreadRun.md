@@ -34,6 +34,7 @@ Start-ThreadRun
     [-UseCodeInterpreter]
     [-UseFileSearch]
     [-Functions <IDictionary>]
+    [-ParallelToolCalls]
     [-MetaData <IDictionary>]
     [-Temperature <Double>]
     [-Stream]
@@ -67,6 +68,7 @@ Start-ThreadRun
     [-UseCodeInterpreter]
     [-UseFileSearch]
     [-Functions <IDictionary>]
+    [-ParallelToolCalls]
     [-MetaData <IDictionary>]
     [-Temperature <Double>]
     [-Stream]
@@ -208,6 +210,17 @@ A list of functions the model may call. Use this to provide a list of functions 
 Type: IDictionary[]
 Required: False
 Position: Named
+```
+
+### -ParallelToolCalls
+Whether to enable parallel function calling during tool use. The default is true (enabled)
+
+```yaml
+Type: SwitchParameter
+Aliases: parallel_tool_calls
+Required: False
+Position: Named
+Default value: True
 ```
 
 ### -UseCodeInterpreter

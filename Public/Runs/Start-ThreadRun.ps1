@@ -118,6 +118,10 @@ function Start-ThreadRun {
         [System.Collections.IDictionary[]]$Functions,
 
         [Parameter()]
+        [Alias('parallel_tool_calls')]
+        [switch]$ParallelToolCalls,
+
+        [Parameter()]
         [System.Collections.IDictionary]$MetaData,
 
         [Parameter()]
@@ -329,6 +333,9 @@ function Start-ThreadRun {
         }
         if ($ToolResources.Count -gt 0) {
             $PostBody.tool_resources = $ToolResources
+        }
+        if ($PSBoundParameters.ContainsKey('ParallelToolCalls')) {
+            $PostBody.parallel_tool_calls = [bool]$ParallelToolCalls
         }
         if ($PSBoundParameters.ContainsKey('ToolChoice')) {
             if ($ToolChoice -in ('none', 'auto', 'required')) {
