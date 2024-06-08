@@ -1,4 +1,8 @@
 # Changelog
+### Unreleased
+- Add `-ParallelToolCalls` switch parameter.
+
+
 ### 3.14.0
 - Fix issue on Windows PowerShell 5.1 with Azure OpenAI Service.
 - Add `-WaitForRunComplete` param to `Add-ThreadMessage`.  (#15) (Thanks @potatoqualitee!)

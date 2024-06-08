@@ -23,6 +23,7 @@ Request-ChatCompletion
     [-ImageDetail <String>]
     [-Tools <IDictionary[]>]
     [-ToolChoice <Object>]
+    [-ParallelToolCalls]
     [-InvokeTools <String>]
     [-Temperature <Double>]
     [-TopP <Double>]
@@ -191,6 +192,17 @@ Type: Object
 Aliases: tool_choice
 Required: False
 Position: Named
+```
+
+### -ParallelToolCalls
+Whether to enable parallel function calling during tool use. The default is true (enabled)
+
+```yaml
+Type: SwitchParameter
+Aliases: parallel_tool_calls
+Required: False
+Position: Named
+Default value: True
 ```
 
 ### -InvokeTools

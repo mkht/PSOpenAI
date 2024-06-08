@@ -552,6 +552,48 @@ Describe 'Request-ChatCompletion' {
             $Result.History[-1].Content | Should -Not -BeNullOrEmpty
         }
 
+        It 'Parallel Tool calls (implicit execution)' {
+            Mock -ModuleName $script:ModuleName Invoke-ChatCompletionFunction {
+                @{Weather = 'Sunny'; Temperature = 25 }
+            }
+
+            $ToolsSpec = @(@{
+                    type     = 'function'
+                    function = @{
+                        name        = 'get_current_weather'
+                        description = 'Get the current weather in a given location'
+                        parameters  = @{
+                            type       = 'object'
+                            properties = @{
+                                'location' = @{type = 'string'; description = 'The city and state, e.g. San Francisco, CA' }
+                            }
+                            required   = @('location')
+                        }
+                    }
+                })
+
+            $Message = "What's the weather like in San Francisco, Tokyo, and Paris?"
+            { $params = @{
+                    Message           = $Message
+                    Model             = 'gpt-4o'
+                    Temperature       = 0
+                    Tools             = $ToolsSpec
+                    ToolChoice        = 'auto'
+                    ParallelToolCalls = $true
+                    InvokeTools       = 'Auto'
+                    ErrorAction       = 'Stop'
+                }
+                $script:Result = Request-ChatCompletion @params
+            } | Should -Not -Throw
+            Should -Invoke Invoke-ChatCompletionFunction -ModuleName $script:ModuleName -Times 3 -Exactly
+            $Result.Answer | Should -Not -BeNullOrEmpty
+            $Result.Message | Should -Be $Message
+            $Result.History[0].Role | Should -Be 'user'
+            $Result.History[0].Content | Should -Be $Message
+            $Result.History[-1].Role | Should -Be 'assistant'
+            $Result.History[-1].Content | Should -Not -BeNullOrEmpty
+        }
+
         It 'Function call (non execution) - Legacy' {
             $FunctionSpec = @{
                 name        = 'Test-Connection'
@@ -569,7 +611,7 @@ Describe 'Request-ChatCompletion' {
             $Message = 'Ping the Google Public DNS address three times and briefly report the results.'
             { $params = @{
                     Message                  = $Message
-                    Model                    = 'gpt-3.5-turbo-0613'
+                    Model                    = 'gpt-3.5-turbo-0125'
                     Temperature              = 0.1
                     Functions                = $FunctionSpec
                     InvokeFunctionOnCallMode = 'None'
@@ -599,7 +641,7 @@ Describe 'Request-ChatCompletion' {
             $Message = 'Ping the Google Public DNS address three times and briefly report the results.'
             { $params = @{
                     Message                  = $Message
-                    Model                    = 'gpt-3.5-turbo-0613'
+                    Model                    = 'gpt-3.5-turbo-0125'
                     Temperature              = 0.1
                     Functions                = $FunctionSpec
                     InvokeFunctionOnCallMode = 'Auto'

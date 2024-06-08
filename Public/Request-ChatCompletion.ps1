@@ -64,6 +64,10 @@ function Request-ChatCompletion {
         [Completions('none', 'auto', 'required')]
         [object]$ToolChoice,
 
+        [Parameter()]
+        [Alias('parallel_tool_calls')]
+        [switch]$ParallelToolCalls,
+
         # deprecated
         [Parameter(DontShow)]
         [Alias('function_call')]
@@ -257,6 +261,9 @@ function Request-ChatCompletion {
         }
         if ($PSBoundParameters.ContainsKey('ToolChoice')) {
             $PostBody.tool_choice = $ToolChoice
+        }
+        if ($PSBoundParameters.ContainsKey('ParallelToolCalls')) {
+            $PostBody.parallel_tool_calls = [bool]$ParallelToolCalls
         }
         # deprecated
         if ($PSBoundParameters.ContainsKey('FunctionCall')) {
