@@ -1,4 +1,9 @@
 # 変更履歴
+### 3.15.0
+- `-ParallelToolCalls` パラメータを追加
+- `-ChunkingStrategy` パラメータを追加
+- `-MaxNumberOfFileSearchResults` パラメータを追加
+
 ### 3.14.0
 - Windows PowerShell 5.1でAzure OpenAI Serviceを使用する際のバグを修正
 - `Add-ThreadMessage`に`-WaitForRunComplete`パラメータを追加します

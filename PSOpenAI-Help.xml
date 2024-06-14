@@ -854,6 +854,44 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="chunking_strategy">
+          <maml:name>ChunkingStrategy</maml:name>
+          <maml:description>
+            <maml:para>The chunking strategy used to chunk the file(s). If not set, will use the "auto" strategy.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="max_chunk_size_tokens">
+          <maml:name>MaxChunkSizeTokens</maml:name>
+          <maml:description>
+            <maml:para>The maximum number of tokens in each chunk. The default value is 800. The minimum value is 100 and the maximum value is 4096.
+Note that the parameter only acceptable when the ChunkingStrategy is "static".</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>800</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="chunk_overlap_tokens">
+          <maml:name>ChunkOverlapTokens</maml:name>
+          <maml:description>
+            <maml:para>The number of tokens that overlap between chunks. The default value is 400. The value must not exceed half of MaxChunkSizeTokens.
+Note that the parameter only acceptable when the ChunkingStrategy is "static".</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>400</dev:defaultValue>
+        </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>PassThru</maml:name>
           <maml:description>
@@ -960,6 +998,44 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="chunking_strategy">
+        <maml:name>ChunkingStrategy</maml:name>
+        <maml:description>
+          <maml:para>The chunking strategy used to chunk the file(s). If not set, will use the "auto" strategy.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="max_chunk_size_tokens">
+        <maml:name>MaxChunkSizeTokens</maml:name>
+        <maml:description>
+          <maml:para>The maximum number of tokens in each chunk. The default value is 800. The minimum value is 100 and the maximum value is 4096.
+Note that the parameter only acceptable when the ChunkingStrategy is "static".</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>800</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="chunk_overlap_tokens">
+        <maml:name>ChunkOverlapTokens</maml:name>
+        <maml:description>
+          <maml:para>The number of tokens that overlap between chunks. The default value is 400. The value must not exceed half of MaxChunkSizeTokens.
+Note that the parameter only acceptable when the ChunkingStrategy is "static".</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>400</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>PassThru</maml:name>
@@ -7401,6 +7477,18 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>MaxNumberOfFileSearchResults</maml:name>
+          <maml:description>
+            <maml:para>The maximum number of results the file search tool should output. This number should be between 1 and 50 inclusive.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">UInt16</command:parameterValue>
+          <dev:type>
+            <maml:name>UInt16</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>Temperature</maml:name>
           <maml:description>
             <maml:para>What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic.</maml:para>
@@ -7640,6 +7728,18 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <command:parameterValue required="true" variableLength="false">Object[]</command:parameterValue>
         <dev:type>
           <maml:name>Object[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>MaxNumberOfFileSearchResults</maml:name>
+        <maml:description>
+          <maml:para>The maximum number of results the file search tool should output. This number should be between 1 and 50 inclusive.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">UInt16</command:parameterValue>
+        <dev:type>
+          <maml:name>UInt16</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -8359,6 +8459,44 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
           </dev:type>
           <dev:defaultValue>last_active_at</dev:defaultValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="chunking_strategy">
+          <maml:name>ChunkingStrategy</maml:name>
+          <maml:description>
+            <maml:para>The chunking strategy used to chunk the file(s). If not set, will use the "auto" strategy. Only applicable if FileId is non-empty.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="max_chunk_size_tokens">
+          <maml:name>MaxChunkSizeTokens</maml:name>
+          <maml:description>
+            <maml:para>The maximum number of tokens in each chunk. The default value is 800. The minimum value is 100 and the maximum value is 4096.
+Note that the parameter only acceptable when the ChunkingStrategy is "static".</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>800</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="chunk_overlap_tokens">
+          <maml:name>ChunkOverlapTokens</maml:name>
+          <maml:description>
+            <maml:para>The number of tokens that overlap between chunks. The default value is 400. The value must not exceed half of MaxChunkSizeTokens.
+Note that the parameter only acceptable when the ChunkingStrategy is "static".</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>400</dev:defaultValue>
+        </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>MetaData</maml:name>
           <maml:description>
@@ -8490,6 +8628,44 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
           <maml:uri />
         </dev:type>
         <dev:defaultValue>last_active_at</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="chunking_strategy">
+        <maml:name>ChunkingStrategy</maml:name>
+        <maml:description>
+          <maml:para>The chunking strategy used to chunk the file(s). If not set, will use the "auto" strategy. Only applicable if FileId is non-empty.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="max_chunk_size_tokens">
+        <maml:name>MaxChunkSizeTokens</maml:name>
+        <maml:description>
+          <maml:para>The maximum number of tokens in each chunk. The default value is 800. The minimum value is 100 and the maximum value is 4096.
+Note that the parameter only acceptable when the ChunkingStrategy is "static".</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>800</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="chunk_overlap_tokens">
+        <maml:name>ChunkOverlapTokens</maml:name>
+        <maml:description>
+          <maml:para>The number of tokens that overlap between chunks. The default value is 400. The value must not exceed half of MaxChunkSizeTokens.
+Note that the parameter only acceptable when the ChunkingStrategy is "static".</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>400</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>MetaData</maml:name>
@@ -11438,6 +11614,17 @@ Specifying a particular function via `@{type = "function"; function = @{name = "
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="parallel_tool_calls">
+          <maml:name>ParallelToolCalls</maml:name>
+          <maml:description>
+            <maml:para>Whether to enable parallel function calling during tool use. The default is true (enabled)</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>True</dev:defaultValue>
+        </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>InvokeTools</maml:name>
           <maml:description>
@@ -11856,6 +12043,18 @@ Specifying a particular function via `@{type = "function"; function = @{name = "
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="parallel_tool_calls">
+        <maml:name>ParallelToolCalls</maml:name>
+        <maml:description>
+          <maml:para>Whether to enable parallel function calling during tool use. The default is true (enabled)</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>True</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>InvokeTools</maml:name>
@@ -15356,6 +15555,18 @@ We serves
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>MaxNumberOfFileSearchResults</maml:name>
+          <maml:description>
+            <maml:para>The maximum number of results the file search tool should output. This number should be between 1 and 50 inclusive.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">UInt16</command:parameterValue>
+          <dev:type>
+            <maml:name>UInt16</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>FileIdsForFileSearch</maml:name>
           <maml:description>
             <maml:para>A list of file IDs to add to the vector store. There can be a maximum of 10000 files in a vector store.</maml:para>
@@ -15607,6 +15818,18 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <command:parameterValue required="true" variableLength="false">Object[]</command:parameterValue>
         <dev:type>
           <maml:name>Object[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>MaxNumberOfFileSearchResults</maml:name>
+        <maml:description>
+          <maml:para>The maximum number of results the file search tool should output. This number should be between 1 and 50 inclusive.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">UInt16</command:parameterValue>
+        <dev:type>
+          <maml:name>UInt16</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -17252,6 +17475,17 @@ You can create a batch input item by using the Request-ChatCompletion cmdlet wit
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="parallel_tool_calls">
+          <maml:name>ParallelToolCalls</maml:name>
+          <maml:description>
+            <maml:para>Whether to enable parallel function calling during tool use. The default is true (enabled)</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>True</dev:defaultValue>
+        </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>UseCodeInterpreter</maml:name>
           <maml:description>
@@ -17678,6 +17912,18 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="parallel_tool_calls">
+        <maml:name>ParallelToolCalls</maml:name>
+        <maml:description>
+          <maml:para>Whether to enable parallel function calling during tool use. The default is true (enabled)</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>True</dev:defaultValue>
+      </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>UseCodeInterpreter</maml:name>
         <maml:description>
@@ -18035,6 +18281,44 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="chunking_strategy">
+          <maml:name>ChunkingStrategy</maml:name>
+          <maml:description>
+            <maml:para>The chunking strategy used to chunk the file(s). If not set, will use the "auto" strategy.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="max_chunk_size_tokens">
+          <maml:name>MaxChunkSizeTokens</maml:name>
+          <maml:description>
+            <maml:para>The maximum number of tokens in each chunk. The default value is 800. The minimum value is 100 and the maximum value is 4096.
+Note that the parameter only acceptable when the ChunkingStrategy is "static".</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>800</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="chunk_overlap_tokens">
+          <maml:name>ChunkOverlapTokens</maml:name>
+          <maml:description>
+            <maml:para>The number of tokens that overlap between chunks. The default value is 400. The value must not exceed half of MaxChunkSizeTokens.
+Note that the parameter only acceptable when the ChunkingStrategy is "static".</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>400</dev:defaultValue>
+        </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>TimeoutSec</maml:name>
           <maml:description>
@@ -18130,6 +18414,44 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="chunking_strategy">
+        <maml:name>ChunkingStrategy</maml:name>
+        <maml:description>
+          <maml:para>The chunking strategy used to chunk the file(s). If not set, will use the "auto" strategy.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="max_chunk_size_tokens">
+        <maml:name>MaxChunkSizeTokens</maml:name>
+        <maml:description>
+          <maml:para>The maximum number of tokens in each chunk. The default value is 800. The minimum value is 100 and the maximum value is 4096.
+Note that the parameter only acceptable when the ChunkingStrategy is "static".</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>800</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="chunk_overlap_tokens">
+        <maml:name>ChunkOverlapTokens</maml:name>
+        <maml:description>
+          <maml:para>The number of tokens that overlap between chunks. The default value is 400. The value must not exceed half of MaxChunkSizeTokens.
+Note that the parameter only acceptable when the ChunkingStrategy is "static".</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>400</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>TimeoutSec</maml:name>

@@ -1,5 +1,5 @@
 # Changelog
-### Unreleased
+### 3.15.0
 - Add `-ParallelToolCalls` parameter.
 - Add `-ChunkingStrategy` parameter.
 - Add `-MaxNumberOfFileSearchResults` parameter.
