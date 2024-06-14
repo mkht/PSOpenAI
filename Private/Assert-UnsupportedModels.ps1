@@ -33,8 +33,13 @@ class OpenAIDepricationModels {
         'text-similarity-davinci-001'   = [datetime]::new(2024, 01, 04)
         'text-search-davinci-doc-001'   = [datetime]::new(2024, 01, 04)
         'text-search-davinci-query-001' = [datetime]::new(2024, 01, 04)
-        'gpt-3.5-turbo-0613'            = [datetime]::new(2024, 06, 13)
-        'gpt-3.5-turbo-16k-0613'        = [datetime]::new(2024, 06, 13)
+        'gpt-3.5-turbo-0613'            = [datetime]::new(2024, 09, 13)
+        'gpt-3.5-turbo-16k-0613'        = [datetime]::new(2024, 09, 13)
+        'gpt-4-vision-preview'          = [datetime]::new(2024, 12, 06)
+        'gpt-4-1106-vision-preview'     = [datetime]::new(2024, 12, 06)
+        'gpt-4-32k'                     = [datetime]::new(2024, 12, 06)
+        'gpt-4-32k-0613'                = [datetime]::new(2025, 06, 06)
+        'gpt-4-32k-0314'                = [datetime]::new(2025, 06, 06)
     }
 }
 
