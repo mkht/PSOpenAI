@@ -1,4 +1,8 @@
 # Changelog
+### 3.15.1
+- Fix issues about Get/Add/Remove-OpenAIFile with Azure OpenAI Service.
+- Fix issue that the `New-VectorStore` with `-FileId` parameter.
+
 ### 3.15.0
 - Add `-ParallelToolCalls` parameter.
 - Add `-ChunkingStrategy` parameter.
