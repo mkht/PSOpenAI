@@ -104,10 +104,10 @@ function New-VectorStore {
             $list = [System.Collections.Generic.List[string]]::new($FileId.Count)
             foreach ($item in $FileId) {
                 if ($item -is [string]) {
-                    $PostBody.file_ids += $item
+                    $list.Add($item)
                 }
                 elseif ($item.psobject.TypeNames -contains 'PSOpenAI.File') {
-                    $PostBody.file_ids += $item.id
+                    $list.Add($item.id)
                 }
             }
             if ($list.Count -gt 0) {
