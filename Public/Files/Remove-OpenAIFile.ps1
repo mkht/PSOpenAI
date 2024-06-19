@@ -77,6 +77,7 @@ function Remove-OpenAIFile {
             TimeoutSec        = $OpenAIParameter.TimeoutSec
             MaxRetryCount     = $OpenAIParameter.MaxRetryCount
             ApiKey            = $OpenAIParameter.ApiKey
+            AuthType          = $OpenAIParameter.AuthType
             Organization      = $OpenAIParameter.Organization
             AdditionalQuery   = $AdditionalQuery
             AdditionalHeaders = $AdditionalHeaders
