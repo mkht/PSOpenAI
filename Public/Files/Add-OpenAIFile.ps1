@@ -65,6 +65,7 @@ function Add-OpenAIFile {
     process {
         #region Construct parameters for API request
         $PostBody = [System.Collections.Specialized.OrderedDictionary]::new()
+        $PostBody.purpose = $Purpose
         if ($PSCmdlet.ParameterSetName -eq 'File') {
             $PostBody.file = Resolve-FileInfo $File
         }
@@ -75,7 +76,6 @@ function Add-OpenAIFile {
                 Content  = $Content
             }
         }
-        $PostBody.purpose = $Purpose
         #endregion
 
         #region Send API Request

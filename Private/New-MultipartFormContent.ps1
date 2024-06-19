@@ -81,7 +81,9 @@ function GetMultipartStringContent {
     $contentType = 'text/plain'
     $header = @(
         ('Content-Disposition: form-data; name="{0}"' -f $fieldName),
-        ('Content-Type: {0}; charset=utf-8' -f $contentType),
+        # NOTE: Some Azure endpoints does not process requests correctly when this header is present,
+        #       even though it is allowed in the RFC and is not a problem in OpenAI. :(
+        # ('Content-Type: {0}; charset=utf-8' -f $contentType),
         '',
         ''
     ) -join "`r`n"
