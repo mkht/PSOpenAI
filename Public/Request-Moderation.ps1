@@ -45,7 +45,7 @@ function Request-Moderation {
 
     begin {
         # Get API endpoint
-        $OpenAIParameter = Get-OpenAIAPIParameter -EndpointName 'Moderation' -Parameters $PSBoundParameters -ErrorAction Stop
+        $OpenAIParameter = Get-OpenAIAPIParameter -EndpointName 'Moderations' -Parameters $PSBoundParameters -ErrorAction Stop
     }
 
     process {
@@ -121,3 +121,4 @@ function Request-Moderation {
 
     }
 }
+
