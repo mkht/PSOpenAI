@@ -222,6 +222,26 @@ function Get-OpenAIAPIEndpoint {
             }
             continue
         }
+        'FineTuning.Jobs' {
+            $UriBuilder.Path += '/fine_tuning/jobs'
+            @{
+                Name        = 'chat.completion'
+                Method      = 'Post'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+            continue
+        }
+        'FineTuning.JobEvents' {
+            $UriBuilder.Path += '/fine_tuning/jobs/{0}/events'
+            @{
+                Name        = 'finetuning.jobevents'
+                Method      = 'Post'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+            continue
+        }
         Default {
             Write-Error -Message ('{0} API endpoint is not provided by OpenAI' -f $_)
         }
