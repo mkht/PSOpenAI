@@ -455,10 +455,11 @@ function Get-OpenAIAPIEndpoint {
         'Batches' {
             $UriBuilder.Path += '/batches'
             @{
-                Name        = 'batches'
-                Method      = 'Post'
-                Uri         = $UriBuilder.Uri
-                ContentType = 'application/json'
+                Name          = 'batches'
+                Method        = 'Post'
+                Uri           = $UriBuilder.Uri
+                ContentType   = 'application/json'
+                BatchEndpoint = $null
             }
             continue
         }
