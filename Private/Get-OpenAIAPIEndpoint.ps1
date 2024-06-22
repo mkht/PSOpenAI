@@ -442,10 +442,10 @@ function Get-OpenAIAPIEndpoint {
             }
             continue
         }
-        'Threads.Runs.AndCreate' {
+        'Threads.Runs.CreateAndRun' {
             $UriBuilder.Path += '/threads/runs'
             @{
-                Name        = 'threads.runs.andcreate'
+                Name        = 'Threads.Runs.CreateAndRun'
                 Method      = 'Post'
                 Uri         = $UriBuilder.Uri
                 ContentType = 'application/json'
@@ -611,6 +611,51 @@ function Get-OpenAIAPIEndpoint {
                 ContentType = 'application/json'
             }
             continue
+        }
+        'Assistants.Modify' {
+            $UriBuilder.Path += '/assistants/{0}'
+            @{
+                Name        = 'assistants.modify'
+                Method      = 'Post'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+        }
+        'Threads.Modify' {
+            $UriBuilder.Path += '/threads/{0}'
+            @{
+                Name        = 'threads.modify'
+                Method      = 'Post'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+        }
+        'Threads.Messages.Modify' {
+            $UriBuilder.Path += '/threads/{0}/messages/{1}'
+            @{
+                Name        = 'threads.messages.modify'
+                Method      = 'Post'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+        }
+        'Threads.Runs.Modify' {
+            $UriBuilder.Path += '/threads/{0}/runs/{1}'
+            @{
+                Name        = 'threads.runs.modify'
+                Method      = 'Post'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+        }
+        'VectorStores.Modify' {
+            $UriBuilder.Path += '/vector_stores/{0}'
+            @{
+                Name        = 'vectorstores.modify'
+                Method      = 'Post'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
         }
         Default {
             Write-Error -Message ('{0} API endpoint is not provided by OpenAI' -f $_)
