@@ -9,7 +9,7 @@ function Get-OpenAIAPIEndpoint {
         [System.Uri]$ApiBase
     )
 
-    #Default base API URI
+    # Default base API URI
     if (-not $ApiBase.IsAbsoluteUri) {
         $ApiBase = [System.Uri]::new('https://api.openai.com/v1')
     }
@@ -19,10 +19,10 @@ function Get-OpenAIAPIEndpoint {
     }
 
     switch ($EndpointName) {
-        'Chat.Completion' {
+        'Chat.Completions' {
             $UriBuilder.Path += '/chat/completions'
             @{
-                Name          = 'chat.completion'
+                Name          = 'chat.completions'
                 Method        = 'Post'
                 Uri           = $UriBuilder.Uri
                 ContentType   = 'application/json'
@@ -30,10 +30,10 @@ function Get-OpenAIAPIEndpoint {
             }
             continue
         }
-        'Text.Completion' {
+        'Completions' {
             $UriBuilder.Path += '/completions'
             @{
-                Name          = 'text.completion'
+                Name          = 'completions'
                 Method        = 'Post'
                 Uri           = $UriBuilder.Uri
                 ContentType   = 'application/json'
@@ -41,30 +41,30 @@ function Get-OpenAIAPIEndpoint {
             }
             continue
         }
-        'Image.Generation' {
+        'Images.Generations' {
             $UriBuilder.Path += '/images/generations'
             @{
-                Name        = 'image.generation'
+                Name        = 'images.generations'
                 Method      = 'Post'
                 Uri         = $UriBuilder.Uri
                 ContentType = 'application/json'
             }
             continue
         }
-        'Image.Edit' {
+        'Images.Edits' {
             $UriBuilder.Path += '/images/edits'
             @{
-                Name        = 'image.edit'
+                Name        = 'images.edits'
                 Method      = 'Post'
                 Uri         = $UriBuilder.Uri
                 ContentType = 'multipart/form-data'
             }
             continue
         }
-        'Image.Variation' {
+        'Images.Variations' {
             $UriBuilder.Path += '/images/variations'
             @{
-                Name        = 'image.variation'
+                Name        = 'images.variations'
                 Method      = 'Post'
                 Uri         = $UriBuilder.Uri
                 ContentType = 'multipart/form-data'
@@ -81,43 +81,23 @@ function Get-OpenAIAPIEndpoint {
             }
             continue
         }
-        'Audio.Transcription' {
+        'Audio.Transcriptions' {
             $UriBuilder.Path += '/audio/transcriptions'
             @{
-                Name        = 'audio.transcription'
+                Name        = 'audio.transcriptions'
                 Method      = 'Post'
                 Uri         = $UriBuilder.Uri
                 ContentType = 'multipart/form-data'
             }
             continue
         }
-        'Audio.Translation' {
+        'Audio.Translations' {
             $UriBuilder.Path += '/audio/translations'
             @{
-                Name        = 'audio.translation'
+                Name        = 'audio.translations'
                 Method      = 'Post'
                 Uri         = $UriBuilder.Uri
                 ContentType = 'multipart/form-data'
-            }
-            continue
-        }
-        'Moderation' {
-            $UriBuilder.Path += '/moderations'
-            @{
-                Name        = 'moderation'
-                Method      = 'Post'
-                Uri         = $UriBuilder.Uri
-                ContentType = 'application/json'
-            }
-            continue
-        }
-        'Models' {
-            $UriBuilder.Path += '/models'
-            @{
-                Name        = 'models'
-                Method      = 'Get'
-                Uri         = $UriBuilder.Uri
-                ContentType = ''
             }
             continue
         }
@@ -142,11 +122,181 @@ function Get-OpenAIAPIEndpoint {
             }
             continue
         }
+        'Files.List' {
+            $UriBuilder.Path += '/files'
+            @{
+                Name        = 'files.list'
+                Method      = 'Get'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+            continue
+        }
+        'Files.Retrieve' {
+            $UriBuilder.Path += '/files/{0}'
+            @{
+                Name        = 'files.retrieve'
+                Method      = 'Get'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+            continue
+        }
+        'Files.Delete' {
+            $UriBuilder.Path += '/files/{0}'
+            @{
+                Name        = 'files.delete'
+                Method      = 'Delete'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+            continue
+        }
+        'Files.Content' {
+            $UriBuilder.Path += '/files/{0}/content'
+            @{
+                Name        = 'files.content'
+                Method      = 'Get'
+                Uri         = $UriBuilder.Uri
+                ContentType = ''
+            }
+            continue
+        }
+        'FineTuning.Jobs' {
+            $UriBuilder.Path += '/fine_tuning/jobs'
+            @{
+                Name        = 'finetuning.jobs'
+                Method      = 'Post'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+            continue
+        }
+        'FineTuning.Jobs.List' {
+            $UriBuilder.Path += '/fine_tuning/jobs'
+            @{
+                Name        = 'finetuning.jobs.list'
+                Method      = 'Get'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+            continue
+        }
+        'FineTuning.Jobs.Retrieve' {
+            $UriBuilder.Path += '/fine_tuning/jobs/{0}'
+            @{
+                Name        = 'finetuning.jobs.retrieve'
+                Method      = 'Get'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+            continue
+        }
+        'FineTuning.Jobs.Cancel' {
+            $UriBuilder.Path += '/fine_tuning/jobs/{0}/cancel'
+            @{
+                Name        = 'finetuning.jobs.cancel'
+                Method      = 'Post'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+            continue
+        }
+        'FineTuning.Jobs.Events' {
+            $UriBuilder.Path += '/fine_tuning/jobs/{0}/events'
+            @{
+                Name        = 'finetuning.jobs.events'
+                Method      = 'Get'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+            continue
+        }
+        'FineTuning.Jobs.Checkpoints' {
+            $UriBuilder.Path += '/fine_tuning/jobs/{0}/checkpoints'
+            @{
+                Name        = 'finetuning.jobs.checkpoints'
+                Method      = 'Get'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+            continue
+        }
+        'Moderations' {
+            $UriBuilder.Path += '/moderations'
+            @{
+                Name        = 'moderations'
+                Method      = 'Post'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+            continue
+        }
+        'Models' {
+            $UriBuilder.Path += '/models'
+            @{
+                Name        = 'models'
+                Method      = 'Get'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+            continue
+        }
+        'Models.Retrieve' {
+            $UriBuilder.Path += '/models/{0}'
+            @{
+                Name        = 'models.retrieve'
+                Method      = 'Get'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+            continue
+        }
+        'Models.Delete' {
+            $UriBuilder.Path += '/models/{0}'
+            @{
+                Name        = 'models.delete'
+                Method      = 'Delete'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+            continue
+        }
         'Assistants' {
             $UriBuilder.Path += '/assistants'
             @{
                 Name        = 'assistants'
                 Method      = 'Post'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+            continue
+        }
+        'Assistants.List' {
+            $UriBuilder.Path += '/assistants'
+            @{
+                Name        = 'assistants.list'
+                Method      = 'Get'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+            continue
+        }
+        'Assistants.Retrieve' {
+            $UriBuilder.Path += '/assistants/{0}'
+            @{
+                Name        = 'assistants.retrieve'
+                Method      = 'Get'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+            continue
+        }
+        'Assistants.Delete' {
+            $UriBuilder.Path += '/assistants/{0}'
+            @{
+                Name        = 'assistants.delete'
+                Method      = 'Delete'
                 Uri         = $UriBuilder.Uri
                 ContentType = 'application/json'
             }
@@ -162,27 +312,147 @@ function Get-OpenAIAPIEndpoint {
             }
             continue
         }
-        'Runs' {
+        'Threads.Retrieve' {
+            $UriBuilder.Path += '/threads/{0}'
+            @{
+                Name        = 'threads.retrieve'
+                Method      = 'Get'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+            continue
+        }
+        'Threads.Delete' {
+            $UriBuilder.Path += '/threads/{0}'
+            @{
+                Name        = 'threads.delete'
+                Method      = 'Delete'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+            continue
+        }
+        'Threads.Messages' {
+            $UriBuilder.Path += '/threads/{0}/messages'
+            @{
+                Name        = 'threads.messages'
+                Method      = 'Post'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+            continue
+        }
+        'Threads.Messages.List' {
+            $UriBuilder.Path += '/threads/{0}/messages'
+            @{
+                Name        = 'threads.messages.list'
+                Method      = 'Get'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+            continue
+        }
+        'Threads.Messages.Retrieve' {
+            $UriBuilder.Path += '/threads/{0}/messages/{1}'
+            @{
+                Name        = 'threads.messages.retrieve'
+                Method      = 'Get'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+            continue
+        }
+        'Threads.Messages.Delete' {
+            $UriBuilder.Path += '/threads/{0}/messages/{1}'
+            @{
+                Name        = 'threads.messages.delete'
+                Method      = 'Delete'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+            continue
+        }
+        'Threads.Runs' {
             $UriBuilder.Path += '/threads/{0}/runs'
             @{
-                Name        = 'runs'
+                Name        = 'threads.runs'
                 Method      = 'Post'
                 Uri         = $UriBuilder.Uri
                 ContentType = 'application/json'
             }
             continue
         }
-        'ThreadAndRun' {
+        'Threads.Runs.List' {
+            $UriBuilder.Path += '/threads/{0}/runs'
+            @{
+                Name        = 'threads.runs.list'
+                Method      = 'Get'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+            continue
+        }
+        'Threads.Runs.Retrieve' {
+            $UriBuilder.Path += '/threads/{0}/runs/{1}'
+            @{
+                Name        = 'threads.runs.retrieve'
+                Method      = 'Get'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+            continue
+        }
+        'Threads.Runs.Cancel' {
+            $UriBuilder.Path += '/threads/{0}/runs/{1}/cancel'
+            @{
+                Name        = 'threads.runs.cancel'
+                Method      = 'Post'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+            continue
+        }
+        'Threads.Runs.SubmitToolOutputs' {
+            $UriBuilder.Path += '/threads/{0}/runs/{1}/submit_tool_outputs'
+            @{
+                Name        = 'threads.runs.submittooloutputs'
+                Method      = 'Post'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+            continue
+        }
+        'Threads.Runs.Steps' {
+            $UriBuilder.Path += '/threads/{0}/runs/{1}/steps'
+            @{
+                Name        = 'threads.runs.steps'
+                Method      = 'Get'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+            continue
+        }
+        'Threads.Runs.Steps.Retrieve' {
+            $UriBuilder.Path += '/threads/{0}/runs/{1}/steps/{2}'
+            @{
+                Name        = 'threads.runs.steps.retrieve'
+                Method      = 'Get'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+            continue
+        }
+        'Threads.Runs.AndCreate' {
             $UriBuilder.Path += '/threads/runs'
             @{
-                Name        = 'thread_and_run'
+                Name        = 'threads.runs.andcreate'
                 Method      = 'Post'
                 Uri         = $UriBuilder.Uri
                 ContentType = 'application/json'
             }
             continue
         }
-        'Batch' {
+        'Batches' {
             $UriBuilder.Path += '/batches'
             @{
                 Name        = 'batches'
@@ -192,31 +462,151 @@ function Get-OpenAIAPIEndpoint {
             }
             continue
         }
+        'Batches.List' {
+            $UriBuilder.Path += '/batches'
+            @{
+                Name        = 'batches.list'
+                Method      = 'Get'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+            continue
+        }
+        'Batches.Retrieve' {
+            $UriBuilder.Path += '/batches/{0}'
+            @{
+                Name        = 'batches.retrieve'
+                Method      = 'Get'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+            continue
+        }
+        'Batches.Cancel' {
+            $UriBuilder.Path += '/batches/{0}/cancel'
+            @{
+                Name        = 'batches.cancel'
+                Method      = 'Post'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+            continue
+        }
         'VectorStores' {
             $UriBuilder.Path += '/vector_stores'
             @{
-                Name        = 'vector_stores'
+                Name        = 'vectorstores'
                 Method      = 'Post'
                 Uri         = $UriBuilder.Uri
                 ContentType = 'application/json'
             }
             continue
         }
-        'VectorStore.Files' {
+        'VectorStores.List' {
+            $UriBuilder.Path += '/vector_stores'
+            @{
+                Name        = 'vectorstores.list'
+                Method      = 'Get'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+            continue
+        }
+        'VectorStores.Retrieve' {
+            $UriBuilder.Path += '/vector_stores/{0}'
+            @{
+                Name        = 'vectorstores.retrieve'
+                Method      = 'Get'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+            continue
+        }
+        'VectorStores.Delete' {
+            $UriBuilder.Path += '/vector_stores/{0}'
+            @{
+                Name        = 'vectorstores.delete'
+                Method      = 'Delete'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+            continue
+        }
+        'VectorStores.Files' {
             $UriBuilder.Path += '/vector_stores/{0}/files'
             @{
-                Name        = 'vector_store_files'
+                Name        = 'vectorstores.files'
                 Method      = 'Post'
                 Uri         = $UriBuilder.Uri
                 ContentType = 'application/json'
             }
             continue
         }
-        'VectorStore.FileBatches' {
+        'VectorStores.Files.List' {
+            $UriBuilder.Path += '/vector_stores/{0}/files'
+            @{
+                Name        = 'vectorstores.files.list'
+                Method      = 'Get'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+            continue
+        }
+        'VectorStores.Files.Retrieve' {
+            $UriBuilder.Path += '/vector_stores/{0}/files/{1}'
+            @{
+                Name        = 'vectorstores.files.retrieve'
+                Method      = 'Get'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+            continue
+        }
+        'VectorStores.Files.Delete' {
+            $UriBuilder.Path += '/vector_stores/{0}/files/{1}'
+            @{
+                Name        = 'vectorstores.files.delete'
+                Method      = 'Delete'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+            continue
+        }
+        'VectorStores.FileBatches' {
             $UriBuilder.Path += '/vector_stores/{0}/file_batches'
             @{
-                Name        = 'vector_store_file_batches'
+                Name        = 'vectorstores.filebatches'
                 Method      = 'Post'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+            continue
+        }
+        'VectorStores.FileBatches.Retrieve' {
+            $UriBuilder.Path += '/vector_stores/{0}/file_batches/{1}'
+            @{
+                Name        = 'vectorstores.filebatches.retrieve'
+                Method      = 'Get'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+            continue
+        }
+        'VectorStores.FileBatches.Cancel' {
+            $UriBuilder.Path += '/vector_stores/{0}/file_batches/{1}/cancel'
+            @{
+                Name        = 'vectorstores.filebatches.cancel'
+                Method      = 'Post'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+            continue
+        }
+        'VectorStores.FileBatches.Files' {
+            $UriBuilder.Path += '/vector_stores/{0}/file_batches/{1}/files'
+            @{
+                Name        = 'vectorstores.filebatches.files'
+                Method      = 'Get'
                 Uri         = $UriBuilder.Uri
                 ContentType = 'application/json'
             }
