@@ -38,6 +38,7 @@ Request-ChatCompletion
     [-TopLogProbs <UInt16>]
     [-Format <String>]
     [-Seed <Int64>]
+    [-ServiceTier <String>]
     [-User <String>]
     [-AsBatch]
     [-CustomBatchId <String>]
@@ -353,6 +354,16 @@ If specified, the system will make a best effort to sample deterministically, su
 
 ```yaml
 Type: Int64
+Required: False
+Position: Named
+```
+
+### -ServiceTier
+Specifies the latency tier to use for processing the request. This parameter is relevant for customers subscribed to the scale tier service.
+
+```yaml
+Type: String
+Aliases: service_tier
 Required: False
 Position: Named
 ```

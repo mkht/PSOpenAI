@@ -141,6 +141,11 @@ function Request-ChatCompletion {
         [int64]$Seed,
 
         [Parameter()]
+        [Alias('service_tier')]
+        [Completions('auto', 'default')]
+        [string]$ServiceTier,
+
+        [Parameter()]
         [string]$User,
 
         [Parameter()]
@@ -304,6 +309,9 @@ function Request-ChatCompletion {
         }
         if ($PSBoundParameters.ContainsKey('Seed')) {
             $PostBody.seed = $Seed
+        }
+        if ($PSBoundParameters.ContainsKey('ServiceTier')) {
+            $PostBody.service_tier = $ServiceTier
         }
         if ($PSBoundParameters.ContainsKey('User')) {
             $PostBody.user = $User

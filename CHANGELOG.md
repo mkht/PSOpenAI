@@ -1,4 +1,7 @@
 # Changelog
+### Unreleased
+- Add `-ServiceTier` parameter to `Request-ChatCompletion`.
+
 ### 3.15.1
 - Fix issues about Get/Add/Remove-OpenAIFile with Azure OpenAI Service.
 - Fix issue that the `New-VectorStore` with `-FileId` parameter.
