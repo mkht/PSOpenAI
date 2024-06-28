@@ -80,7 +80,7 @@ function Request-ImageGeneration {
 
     begin {
         # Get API context
-        $OpenAIParameter = Get-OpenAIAPIParameter -EndpointName 'Image.Generation' -Parameters $PSBoundParameters -Engine $Model -ErrorAction Stop
+        $OpenAIParameter = Get-OpenAIAPIParameter -EndpointName 'Images.Generations' -Parameters $PSBoundParameters -Engine $Model -ErrorAction Stop
     }
 
     process {
@@ -226,3 +226,4 @@ function Request-ImageGeneration {
 
     }
 }
+

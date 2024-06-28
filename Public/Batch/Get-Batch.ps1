@@ -68,7 +68,7 @@ function Get-Batch {
 
     begin {
         # Get API context
-        $OpenAIParameter = Get-OpenAIAPIParameter -EndpointName 'Batch' -Parameters $PSBoundParameters -ErrorAction Stop
+        $OpenAIParameter = Get-OpenAIAPIParameter -EndpointName 'Batches' -Parameters $PSBoundParameters -ErrorAction Stop
     }
 
     process {
@@ -166,3 +166,4 @@ function Get-Batch {
 
     end {}
 }
+

@@ -68,7 +68,7 @@ function Start-Batch {
 
     begin {
         # Get API context
-        $OpenAIParameter = Get-OpenAIAPIParameter -EndpointName 'Batch' -Parameters $PSBoundParameters -ErrorAction Stop
+        $OpenAIParameter = Get-OpenAIAPIParameter -EndpointName 'Batches' -Parameters $PSBoundParameters -ErrorAction Stop
 
         # Parse Common params
         $CommonParams = ParseCommonParams $PSBoundParameters
@@ -181,3 +181,4 @@ function Start-Batch {
         #endregion
     }
 }
+

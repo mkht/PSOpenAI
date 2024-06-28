@@ -196,7 +196,7 @@ function Request-ChatCompletion {
 
     begin {
         # Get API context
-        $OpenAIParameter = Get-OpenAIAPIParameter -EndpointName 'Chat.Completion' -Parameters $PSBoundParameters -Engine $Model -ErrorAction Stop
+        $OpenAIParameter = Get-OpenAIAPIParameter -EndpointName 'Chat.Completions' -Parameters $PSBoundParameters -Engine $Model -ErrorAction Stop
 
         if ($OpenAIParameter.ApiType -eq [OpenAIApiType]::Azure) {
             # Temporal engine name for Azure
@@ -604,3 +604,4 @@ function Request-ChatCompletion {
 
     }
 }
+
