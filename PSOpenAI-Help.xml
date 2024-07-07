@@ -11807,6 +11807,18 @@ ID 23182 maps to "apple" and ID 88847 maps to "banana". Thus, this example incre
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="service_tier">
+          <maml:name>ServiceTier</maml:name>
+          <maml:description>
+            <maml:para>Specifies the latency tier to use for processing the request. This parameter is relevant for customers subscribed to the scale tier service.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>User</maml:name>
           <maml:description>
@@ -12235,6 +12247,18 @@ ID 23182 maps to "apple" and ID 88847 maps to "banana". Thus, this example incre
         <command:parameterValue required="true" variableLength="false">Int64</command:parameterValue>
         <dev:type>
           <maml:name>Int64</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="service_tier">
+        <maml:name>ServiceTier</maml:name>
+        <maml:description>
+          <maml:para>Specifies the latency tier to use for processing the request. This parameter is relevant for customers subscribed to the scale tier service.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>

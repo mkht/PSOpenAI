@@ -1,4 +1,7 @@
 # 変更履歴
+### 3.16.0
+- `Request-ChatCompletion`に`-ServiceTier`パラメータを追加
+
 ### 3.15.1
 - Azure OpenAI Service と Get/Add/Remove-OpenAIFile を組み合わせた場合の問題を修正
 - `New-VectorStore` に `-FileId` パラメータを指定した場合の問題を修正

@@ -1,5 +1,5 @@
 # Changelog
-### Unreleased
+### 3.16.0
 - Add `-ServiceTier` parameter to `Request-ChatCompletion`.
 
 ### 3.15.1
