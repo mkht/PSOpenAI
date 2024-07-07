@@ -118,41 +118,6 @@ Install-Module -Name PSOpenAI
 ### Azure OpenAI Service
 + [Guide: How to use with Azure OpenAI Service](Guides/How_to_use_with_Azure_OpenAI_Service.ipynb)
 
-> [!IMPORTANT]
-> The method of calling Azure OpenAI Service has changed. See the [guide](Guides/How_to_use_with_Azure_OpenAI_Service.ipynb) for details.  
-> The folded functions below are deprecated. These functions will be removed in the next major release.
-
-<details>
-<summary>For Azure OpenAI Service functions (deprecated)</summary>
-
-+ Get-AzureOpenAIModels
-+ Request-AudioSpeech
-+ Request-AzureAudioTranscription
-+ Request-AzureAudioTranslation
-+ Request-AzureChatCompletion
-+ Request-AzureChatGPT
-+ Request-AzureEmbeddings
-+ Request-AzureImageGeneration
-+ Request-AzureTextCompletion
-+ Get-AzureAssistant
-+ New-AzureAssistant
-+ Set-AzureAssistant
-+ Remove-AzureAssistant
-+ Get-AzureThread
-+ New-AzureThread
-+ Set-AzureThread
-+ Remove-AzureThread
-+ Get-AzureThreadMessage
-+ Add-AzureThreadMessage
-+ Get-AzureThreadRun
-+ Start-AzureThreadRun
-+ Stop-AzureThreadRun
-+ Wait-AzureThreadRun
-+ Receive-AzureThreadRun
-+ Get-AzureThreadRunStep
-
-</details>
-
 ----
 ## Usages
 

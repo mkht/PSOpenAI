@@ -1,6 +1,6 @@
 @{
     # Version number of this module.
-    ModuleVersion        = '3.16.0'
+    ModuleVersion        = '4.0.0'
 
     # Supported PSEditions
     CompatiblePSEditions = 'Core', 'Desktop'
@@ -97,41 +97,11 @@
         'Get-VectorStoreFileInBatch',
         'Start-VectorStoreFileBatch',
         'Stop-VectorStoreFileBatch',
-        'Wait-VectorStoreFileBatch',
-        ### Azure OpenAI Service ###
-        'Get-AzureOpenAIModels',
-        'Request-AzureAudioSpeech',
-        'Request-AzureAudioTranscription',
-        'Request-AzureAudioTranslation',
-        'Request-AzureChatCompletion',
-        'Request-AzureEmbeddings',
-        'Request-AzureTextCompletion',
-        'Request-AzureImageGeneration',
-        'Get-AzureAssistant',
-        'New-AzureAssistant',
-        'Remove-AzureAssistant',
-        'Set-AzureAssistant',
-        'Get-AzureThread',
-        'New-AzureThread',
-        'Remove-AzureThread',
-        'Set-AzureThread',
-        'Add-AzureThreadMessage',
-        'Get-AzureThreadMessage',
-        'Start-AzureThreadRun',
-        'Stop-AzureThreadRun',
-        'Get-AzureThreadRun',
-        'Wait-AzureThreadRun',
-        'Receive-AzureThreadRun',
-        'Submit-AzureToolOutput',
-        'Get-AzureThreadRunStep',
-        'Register-AzureOpenAIFile',
-        'Remove-AzureOpenAIFile',
-        'Get-AzureOpenAIFile',
-        'Get-AzureOpenAIFileContent'
+        'Wait-VectorStoreFileBatch'
     )
 
     # Aliases to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no aliases to export.
-    AliasesToExport      = @('Request-ChatGPT', 'Request-AzureChatGPT', 'Register-OpenAIFile')
+    AliasesToExport      = @('Request-ChatGPT', 'Register-OpenAIFile')
 
     TypesToProcess       = @(
         'PSOpenAI.Types.ps1xml'
