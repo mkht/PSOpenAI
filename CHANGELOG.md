@@ -1,4 +1,10 @@
 # Changelog
+### 4.0.0
+**This is a major release that includes breaking changes.**
+- **REMOVE** All Azure specific function is removed.  
+  You can use Azure OpenAI Service by `-ApiType` parameter.
+- Add `gpt-4o-mini` model to tab completions.
+
 ### 3.16.0
 - Add `-ServiceTier` parameter to `Request-ChatCompletion`.
 

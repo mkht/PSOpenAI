@@ -1,4 +1,10 @@
 # 変更履歴
+### 4.0.0
+**これは破壊的変更を含むメジャーリリースです。**
+- Azure専用関数をすべて削除しました  
+  `-ApiType`パラメータを使用することで引き続きAzure OpenAI Serviceを使用できます
+- モデル名のタブ補完に`gpt-4o-mini`を追加します
+
 ### 3.16.0
 - `Request-ChatCompletion`に`-ServiceTier`パラメータを追加
 
