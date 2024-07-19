@@ -114,41 +114,6 @@ Install-Module -Name PSOpenAI
 ### Azure OpenAI Service
 + [ガイド: Azure OpenAI Service の使用方法](Guides/How_to_use_with_Azure_OpenAI_Service.ipynb)
 
-> [!IMPORTANT]
-> Azure OpenAI Service を使用する方法は変更されました。 詳細は新しい[ガイド](Guides/How_to_use_with_Azure_OpenAI_Service.ipynb)を参照してください。  
-> この下に折りたたまれている関数は非推奨になりました 次のメジャーバージョンでは完全に削除されます。
-
-<details>
-<summary>Azure OpenAI Service 用の関数(非推奨)</summary>
-
-+ Get-AzureOpenAIModels
-+ Request-AudioSpeech
-+ Request-AzureAudioTranscription
-+ Request-AzureAudioTranslation
-+ Request-AzureChatCompletion
-+ Request-AzureChatGPT
-+ Request-AzureEmbeddings
-+ Request-AzureImageGeneration
-+ Request-AzureTextCompletion
-+ Get-AzureAssistant
-+ New-AzureAssistant
-+ Set-AzureAssistant
-+ Remove-AzureAssistant
-+ Get-AzureThread
-+ New-AzureThread
-+ Set-AzureThread
-+ Remove-AzureThread
-+ Get-AzureThreadMessage
-+ Add-AzureThreadMessage
-+ Get-AzureThreadRun
-+ Start-AzureThreadRun
-+ Stop-AzureThreadRun
-+ Wait-AzureThreadRun
-+ Receive-AzureThreadRun
-+ Get-AzureThreadRunStep
-
-</details>
-
 ----
 ## 使い方
 
