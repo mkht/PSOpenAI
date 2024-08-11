@@ -333,9 +333,15 @@ If you have a feature request or bug report, please tell us in Issue.
 
 + More docs, samples.
 + Performance improvements.
-+ Fully typed return objects.
-+ Limited support for Anthropic's Claude API.
++ Add a support for fine-tuning.
 
 ----
-## Licenses
+## License & Libraries
+
 [MIT License](/LICENSE)
+
+This module uses these OSS libraries.
+
+- [Newtonsoft.Json](https://www.newtonsoft.com/json) by jamesnk (MIT License)
+- [NJsonSchema](https://github.com/RicoSuter/NJsonSchema) by rsuter (MIT License)
+- [Microsoft.DeepDev.TokenizerLib](https://github.com/microsoft/Tokenizer) by microsoft (MIT License)
