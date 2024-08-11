@@ -56,7 +56,10 @@ function New-ChatCompletionFunctionFromPSCommand {
         [string[]]$ExcludeParameters,
 
         [Parameter()]
-        [string]$ParameterSetName
+        [string]$ParameterSetName,
+
+        [Parameter()]
+        [switch]$Strict
     )
 
     $FunctionDefinition = [ordered]@{}
@@ -107,16 +110,25 @@ function New-ChatCompletionFunctionFromPSCommand {
         $FunctionDefinition.Add('description', ($CommandHelp.Synopsis -replace "`r", ''))
     }
 
+    if ($Strict) {
+        $FunctionDefinition.Add('strict', $true)
+    }
+
     $paramHash = [ordered]@{type = 'object' }
     $props = [ordered]@{}
     foreach ($param in $TargetParameters) {
         $isHiddenParam = $false
         $pName = $param.Name
-        if ($param.IsMandatory) {
+        $propHash = ParseParameterType($param.ParameterType)
+
+        # All fields must be required in Structured Outputs
+        if ($param.IsMandatory -or $Strict) {
             $MandatoryParams.Add($pName)
         }
 
-        $propHash = ParseParameterType($param.ParameterType)
+        if (-not $param.IsMandatory) {
+            $propHash.'type' = [string[]]@($propHash.'type', 'null')
+        }
 
         $helpmsg = (($CommandHelp.parameters.parameter | Where-Object { $_.name -eq $pName }).description.text -join "`n") -replace "`r", ''
         if ([string]::IsNullOrWhiteSpace($helpmsg)) {
@@ -130,23 +142,27 @@ function New-ChatCompletionFunctionFromPSCommand {
             if ($attr -is [Parameter] -and $attr.DontShow) {
                 $isHiddenParam = $true
             }
-            elseif ($attr -is [ValidatePattern]) {
-                if ($attr.RegexPattern) { $propHash.pattern = $attr.RegexPattern }
-            }
-            elseif ($attr -is [ValidateCount]) {
-                $propHash.minItems = $attr.MinLength
-                $propHash.maxItems = $attr.MaxLength
-            }
-            elseif ($attr -is [ValidateLength]) {
-                $propHash.minLength = $attr.MinLength
-                $propHash.maxLength = $attr.MaxLength
-            }
-            elseif ($attr -is [ValidateRange]) {
-                if ($null -ne $attr.MinRange) { $propHash.minimum = $attr.MinRange }
-                if ($null -ne $attr.MaxRange) { $propHash.maximum = $attr.MaxRange }
-            }
-            elseif ($attr -is [ValidateSet]) {
-                $propHash.enum = $attr.ValidValues
+
+            # Attributes are not yet supported in Structured Outputs
+            if (-not $Strict) {
+                elseif ($attr -is [ValidatePattern]) {
+                    if ($attr.RegexPattern) { $propHash.pattern = $attr.RegexPattern }
+                }
+                elseif ($attr -is [ValidateCount]) {
+                    $propHash.minItems = $attr.MinLength
+                    $propHash.maxItems = $attr.MaxLength
+                }
+                elseif ($attr -is [ValidateLength]) {
+                    $propHash.minLength = $attr.MinLength
+                    $propHash.maxLength = $attr.MaxLength
+                }
+                elseif ($attr -is [ValidateRange]) {
+                    if ($null -ne $attr.MinRange) { $propHash.minimum = $attr.MinRange }
+                    if ($null -ne $attr.MaxRange) { $propHash.maximum = $attr.MaxRange }
+                }
+                elseif ($attr -is [ValidateSet]) {
+                    $propHash.enum = $attr.ValidValues
+                }
             }
         }
 
@@ -155,6 +171,7 @@ function New-ChatCompletionFunctionFromPSCommand {
         }
     }
     $paramHash.Add('properties', $props)
+    $paramHash.Add('additionalProperties', $false)
     if ($MandatoryParams.Count -gt 0) {
         $paramHash.Add('required', $MandatoryParams.ToArray())
     }

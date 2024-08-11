@@ -135,8 +135,11 @@ function Request-ChatCompletion {
 
         [Parameter()]
         [Alias('response_format')]
-        [ValidateSet('text', 'json_object', 'raw_response')]
-        [string][LowerCaseTransformation()]$Format = 'text',
+        [Completions('text', 'json_object', 'json_schema', 'raw_response')]
+        [object]$Format = 'text',
+
+        [Parameter()]
+        [string]$JsonSchema,
 
         [Parameter()]
         [int64]$Seed,
@@ -305,8 +308,33 @@ function Request-ChatCompletion {
                 $PostBody.top_logprobs = $TopLogProbs
             }
         }
-        if ($PSBoundParameters.ContainsKey('Format') -and $Format -ne 'raw_response') {
-            $PostBody.response_format = @{'type' = $Format }
+        if ($PSBoundParameters.ContainsKey('Format')) {
+            if ($Format -is [type]) {
+                # Structured Outputs
+                $typeSchema = ConvertTo-JsonSchema $Format
+                $PostBody.response_format = @{
+                    'type'        = 'json_schema'
+                    'json_schema' = @{
+                        'name'   = $Format.Name
+                        'strict' = $true
+                        'schema' = $typeSchema
+                    }
+                }
+            }
+            elseif ($Format -eq 'raw_response') {
+                # Nothing to do
+            }
+            else {
+                $PostBody.response_format = @{'type' = $Format }
+                if ($Format -eq 'json_schema') {
+                    if (-not $JsonSchema) {
+                        Write-Error -Exception ([System.ArgumentException]::new('JsonSchema must be specified.'))
+                    }
+                    else {
+                        $PostBody.response_format.json_schema = ConvertFrom-Json $JsonSchema -Depth 64 -NoEnumerate
+                    }
+                }
+            }
         }
         if ($PSBoundParameters.ContainsKey('Seed')) {
             $PostBody.seed = $Seed
@@ -493,11 +521,11 @@ function Request-ChatCompletion {
             if ($null -eq $Response) {
                 return
             }
+            # Parse response object
             if ($Format -eq 'raw_response') {
                 Write-Output $Response
                 return
             }
-            # Parse response object
             try {
                 $Response = $Response | ConvertFrom-Json -ErrorAction Stop
             }
@@ -597,7 +625,7 @@ function Request-ChatCompletion {
         #endregion
 
         #region Output
-        ParseChatCompletionObject $Response
+        ParseChatCompletionObject $Response -OutputType $Format
         #endregion
     }
 

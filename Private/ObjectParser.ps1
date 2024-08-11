@@ -170,6 +170,9 @@ function ParseChatCompletionObject {
         [PSCustomObject]$InputObject,
 
         [Parameter()]
+        [object]$OutputType, # for Structured Outputs
+
+        [Parameter()]
         [System.Collections.IDictionary]$CommonParams = @{},
 
         [Parameter()]
@@ -177,17 +180,55 @@ function ParseChatCompletionObject {
     )
     # Add custom type name and properties to output object.
     $InputObject.PSObject.TypeNames.Insert(0, 'PSOpenAI.Chat.Completion')
+
+    # Date and times
     if ($null -ne $InputObject.created -and ($unixtime = $InputObject.created -as [long])) {
         # convert unixtime to [DateTime] for read suitable
         $InputObject | Add-Member -MemberType NoteProperty -Name 'created' -Value ([System.DateTimeOffset]::FromUnixTimeSeconds($unixtime).LocalDateTime) -Force
     }
+
+    # User messages
     $LastUserMessage = ($Messages.Where({ $_.role -eq 'user' })[-1].content)
     if ($LastUserMessage -isnot [string]) {
         $LastUserMessage = [string]($LastUserMessage | Where-Object { $_.type -eq 'text' } | Select-Object -Last 1).text
     }
     if ($LastUserMessage) { $InputObject | Add-Member -MemberType NoteProperty -Name 'Message' -Value $LastUserMessage }
-    $InputObject | Add-Member -MemberType NoteProperty -Name 'Answer' -Value ([string[]]$InputObject.choices.message.content)
+
+    # AI messages
+    $Answer = @()
+    foreach ($choice in $InputObject.choices) {
+        # The model refuses to respond
+        if ($choice.message.refusal) {
+            Write-Warning ('The model refuses to respond. Refusal message:"{0}"' -f $choice.message.refusal)
+            $Answer += $choice.message.refusal
+            continue
+        }
+
+        if ($OutputType -is [type]) {
+            # Structured Outputs
+            ## Deserialize JSON output to .NET object
+            try {
+                $DeserializedObject = [Newtonsoft.Json.JsonConvert]::DeserializeObject($choice.message.content, $OutputType)
+                $choice.message | Add-Member -MemberType NoteProperty -Name 'parsed' -Value $DeserializedObject -Force
+                $Answer += $DeserializedObject
+            }
+            catch {
+                Write-Error -Exception $_.Exception
+            }
+        }
+        else {
+            $Answer += $choice.message.content
+        }
+    }
+    if ($OutputType -isnot [type]) {
+        $Answer = [string[]]$Answer
+    }
+    $InputObject | Add-Member -MemberType NoteProperty -Name 'Answer' -Value $Answer
+
+    # Add History
     if ($Messages) { $InputObject | Add-Member -MemberType NoteProperty -Name 'History' -Value $Messages.ToArray() }
+
+    # Return
     Write-Output $InputObject
 }
 

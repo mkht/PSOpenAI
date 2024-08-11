@@ -30,7 +30,10 @@ function New-ChatCompletionFunction {
         [string[]]$ExcludeParameters,
 
         [Parameter(ParameterSetName = 'PSCommand')]
-        [string]$ParameterSetName
+        [string]$ParameterSetName,
+
+        [Parameter()]
+        [switch]$Strict
     )
 
     # if ($PSCmdlet.ParameterSetName -eq 'Manual') {
