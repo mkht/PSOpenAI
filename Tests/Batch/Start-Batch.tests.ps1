@@ -69,14 +69,14 @@ Describe 'Start-Batch' {
                     'custom_id' = 'custom-1'
                     'method'    = 'POST'
                     'url'       = '/v1/chat/completions'
-                    'body'      = [pscustomobject]@{'model' = 'gpt-3.5-turbo' }
+                    'body'      = [pscustomobject]@{'model' = 'gpt-4o-mini' }
                 },
                 [pscustomobject]@{
                     PSTypeName  = 'PSOpenAI.Batch.Input'
                     'custom_id' = 'custom-2'
                     'method'    = 'POST'
                     'url'       = '/v1/chat/completions'
-                    'body'      = [pscustomobject]@{'model' = 'gpt-3.5-turbo' }
+                    'body'      = [pscustomobject]@{'model' = 'gpt-4o-mini' }
                 }
             )
             { $script:Result = Start-Batch -InputObject $BatchInputs -ea Stop } | Should -Not -Throw
@@ -95,14 +95,14 @@ Describe 'Start-Batch' {
                     'custom_id' = 'custom-1'
                     'method'    = 'POST'
                     'url'       = '/v1/chat/completions'
-                    'body'      = [pscustomobject]@{'model' = 'gpt-3.5-turbo' }
+                    'body'      = [pscustomobject]@{'model' = 'gpt-4o-mini' }
                 },
                 [pscustomobject]@{
                     PSTypeName  = 'PSOpenAI.Batch.Input'
                     'custom_id' = 'custom-2'
                     'method'    = 'POST'
                     'url'       = '/v1/chat/completions'
-                    'body'      = [pscustomobject]@{'model' = 'gpt-3.5-turbo' }
+                    'body'      = [pscustomobject]@{'model' = 'gpt-4o-mini' }
                 }
             )
             { $script:Result = $BatchInputs | Start-Batch -ea Stop } | Should -Not -Throw
@@ -161,7 +161,7 @@ Describe 'Start-Batch' {
                     'custom_id' = 'custom-1'
                     'method'    = 'POST'
                     'url'       = '/v1/chat/completions'
-                    'body'      = [pscustomobject]@{'model' = 'gpt-3.5-turbo' }
+                    'body'      = [pscustomobject]@{'model' = 'gpt-4o-mini' }
                 }
                 # Named
                 { Start-Batch -BatchInput $InObject -ea Stop } | Should -Not -Throw
@@ -179,21 +179,21 @@ Describe 'Start-Batch' {
                         'custom_id' = 'custom-1'
                         'method'    = 'POST'
                         'url'       = '/v1/chat/completions'
-                        'body'      = [pscustomobject]@{'model' = 'gpt-3.5-turbo' }
+                        'body'      = [pscustomobject]@{'model' = 'gpt-4o-mini' }
                     },
                     [pscustomobject]@{
                         PSTypeName  = 'PSOpenAI.Batch.Input'
                         'custom_id' = 'custom-2'
                         'method'    = 'POST'
                         'url'       = '/v1/chat/completions'
-                        'body'      = [pscustomobject]@{'model' = 'gpt-3.5-turbo' }
+                        'body'      = [pscustomobject]@{'model' = 'gpt-4o-mini' }
                     },
                     [pscustomobject]@{
                         PSTypeName  = 'PSOpenAI.Batch.Input'
                         'custom_id' = 'custom-3'
                         'method'    = 'POST'
                         'url'       = '/v1/chat/completions'
-                        'body'      = [pscustomobject]@{'model' = 'gpt-3.5-turbo' }
+                        'body'      = [pscustomobject]@{'model' = 'gpt-4o-mini' }
                     }
                 )
                 # Named

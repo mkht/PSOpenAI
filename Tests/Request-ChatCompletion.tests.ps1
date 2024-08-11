@@ -8,6 +8,20 @@ BeforeAll {
 }
 
 Describe 'Request-ChatCompletion' {
+
+    BeforeAll {
+        # Test class definitions for Structured Outputs
+        class Step {
+            [string]$Explanation
+            [string]$Output
+        }
+
+        class MathReasoning {
+            [Step[]]$Steps
+            [string]$FinalAnswer
+        }
+    }
+
     Context 'Unit tests (offline)' -Tag 'Offline' {
         BeforeAll {
             Mock -ModuleName $script:ModuleName Initialize-APIKey { [securestring]::new() }
@@ -49,6 +63,103 @@ Describe 'Request-ChatCompletion' {
             $Result.History[0].Content | Should -Be 'test'
             $Result.History[1].Role | Should -Be 'assistant'
             $Result.History[1].Content | Should -Be 'Hello there, how may I assist you today?'
+        }
+
+        It 'Structured Outputs (Auto parse)' {
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+{
+    "id": "chatcmpl-123",
+    "object": "chat.completion",
+    "created": 1723356481,
+    "model": "gpt-4o-2024-08-06",
+     "choices": [
+        {
+        "index": 0,
+        "message": {
+            "role": "assistant",
+            "content": "{\"Steps\":[{\"Explanation\":\"To find the value of x, we need to isolate it on one side of the equation. We'll start by removing the constant term (7) from the left side.\",\"Output\":\"8x + 7 - 7 = -23 - 7\"},{\"Explanation\":\"Subtracting 7 from both sides gives us this simplified equation:\",\"Output\":\"8x = -30\"},{\"Explanation\":\"Now, to solve for x, we need to divide both sides of the equation by 8, which is the coefficient of x.\",\"Output\":\"8x/8 = -30/8\"},{\"Explanation\":\"Simplifying the division gives us the answer. The fraction -30/8 can be simplified by dividing the numerator and the denominator by their greatest common divisor, which is 2.\",\"Output\":\"x = -15/4\"},{\"Explanation\":\"So the solution to the equation is x = -15/4.\",\"Output\":null}],\"FinalAnswer\":\"x = -15/4\"}",
+            "refusal": null
+        },
+        "logprobs": null,
+        "finish_reason": "stop"
+        }
+    ],
+    "usage": {
+        "prompt_tokens": 46,
+        "completion_tokens": 200,
+        "total_tokens": 246
+    },
+    "system_fingerprint": "fp_1633542941"
+    }
+'@ }
+            { $script:Result = Request-ChatCompletion -Message 'test' -ea Stop -Format ([MathReasoning]) } | Should -Not -Throw
+            Should -InvokeVerifiable
+            $Result.Answer | Should -HaveCount 1
+            $Result.Answer[0].GetType().Name | Should -Be 'MathReasoning'
+            $Result.Answer[0].FinalAnswer | Should -BeExactly 'x = -15/4'
+            $Result.choices[0].message.parsed.GetType().Name | Should -Be 'MathReasoning'
+            $Result.choices[0].message.content | Should -BeOfType ([string])
+        }
+
+        It 'The model stops to output in half way' {
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+{
+    "id": "chatcmpl-123",
+    "object": "chat.completion",
+    "created": 1677652288,
+    "choices": [{
+        "index": 0,
+        "message": {
+        "role": "assistant",
+        "content": "Hello there, how may"
+        },
+        "finish_reason": "length"
+    }],
+    "usage": {
+        "prompt_tokens": 9,
+        "completion_tokens": 7,
+        "total_tokens": 16
+    }
+}
+'@ }
+            { $script:Result = Request-ChatCompletion -Message 'test' -ea Stop } | Should -Not -Throw
+            Should -InvokeVerifiable
+            $Result.Answer | Should -HaveCount 1
+            $Result.Answer[0] | Should -BeExactly 'Hello there, how may'
+        }
+
+        It 'The model refuses to respond' {
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+{
+    "id": "chatcmpl-123",
+    "object": "chat.completion",
+    "created": 1723356481,
+    "model": "gpt-4o-2024-08-06",
+     "choices": [
+        {
+        "index": 0,
+        "message": {
+            "role": "assistant",
+            "refusal": "I'm sorry, I cannot assist with that request."
+        },
+        "logprobs": null,
+        "finish_reason": "stop"
+        }
+    ],
+    "usage": {
+        "prompt_tokens": 46,
+        "completion_tokens": 200,
+        "total_tokens": 246
+    },
+    "system_fingerprint": "fp_1633542941"
+    }
+'@ }
+            { $script:Result = Request-ChatCompletion -Message 'test' -ea Stop } | Should -Not -Throw
+            Should -InvokeVerifiable
+            $Result.Answer | Should -HaveCount 1
+            $Result.Answer[0] | Should -BeExactly "I'm sorry, I cannot assist with that request."
+            $Result.choices[0].message.content | Should -BeNullOrEmpty
+            $Result.choices[0].message.refusal | Should -BeExactly "I'm sorry, I cannot assist with that request."
         }
 
         It 'Stream output' {
@@ -368,6 +479,18 @@ Describe 'Request-ChatCompletion' {
             $Result.Answer | Should -HaveCount 2
         }
 
+        It 'Structured Outputs' {
+            $SystemMsg = 'You are a helpful math tutor. Guide the user through the solution step by step.'
+            $Prompt = 'how can I solve 8x + 7 = -23'
+            { $script:Result = Request-ChatCompletion -Message $Prompt -SystemMessage $SystemMsg -Model 'gpt-4o-mini' -Format ([MathReasoning]) -TimeoutSec 30 -ea Stop } | Should -Not -Throw
+            $Result | Should -BeOfType [pscustomobject]
+            $Result.object | Should -Be 'chat.completion'
+            $Result.Answer | Should -HaveCount 1
+            $Result.Answer[0].GetType().Name | Should -Be 'MathReasoning'
+            $Result.choices[0].message.parsed.GetType().Name | Should -Be 'MathReasoning'
+            $Result.choices[0].message.content | Should -BeOfType ([string])
+        }
+
         It 'Pipeline input (Message)' {
             { $script:Result = 'What your name' | Request-ChatCompletion -MaxTokens 10 -TimeoutSec 30 -ea Stop } | Should -Not -Throw
             $Result | Should -BeOfType [pscustomobject]
@@ -448,7 +571,7 @@ Describe 'Request-ChatCompletion' {
             $Message = 'Ping the Google Public DNS address three times and briefly report the results.'
             { $params = @{
                     Message     = $Message
-                    Model       = 'gpt-3.5-turbo-0125'
+                    Model       = 'gpt-4o-mini'
                     Temperature = 0.1
                     Tools       = $ToolsSpec
                     InvokeTools = 'None'
@@ -481,7 +604,7 @@ Describe 'Request-ChatCompletion' {
             $Message = 'Ping the Google Public DNS address three times and briefly report the results.'
             { $params = @{
                     Message     = $Message
-                    Model       = 'gpt-3.5-turbo-0125'
+                    Model       = 'gpt-4o-mini'
                     Temperature = 0
                     Tools       = $ToolsSpec
                     InvokeTools = 'Auto'
@@ -572,7 +695,7 @@ Describe 'Request-ChatCompletion' {
 
         It 'Image input (url)' {
             $RemoteImageUrl = 'https://upload.wikimedia.org/wikipedia/commons/a/a8/Dons_Coaches_coach_1957_Bedford_SB3_Yeates_Europa_NKY_161_at_Aldham_Old_Tyme_Rally_2014.jpg'
-            { $script:Result = Request-ChatCompletion -Model 'gpt-4-vision-preview' -Message "What's in this image?" -Images ($RemoteImageUrl) -ImageDetail Low  -TimeoutSec 30 -ea Stop } | Should -Not -Throw
+            { $script:Result = Request-ChatCompletion -Model 'gpt-4o' -Message "What's in this image?" -Images ($RemoteImageUrl) -ImageDetail Low  -TimeoutSec 30 -ea Stop } | Should -Not -Throw
             $Result | Should -BeOfType [pscustomobject]
             $Result.object | Should -Be 'chat.completion'
             $Result.Answer | Should -HaveCount 1
@@ -584,7 +707,7 @@ Describe 'Request-ChatCompletion' {
         }
 
         It 'Image input (local file)' {
-            { $script:Result = Request-ChatCompletion -Model 'gpt-4-vision-preview' -Message "What's in this image?" -Images ($script:TestData + '/sweets_donut.png')  -TimeoutSec 30 -ea Stop } | Should -Not -Throw
+            { $script:Result = Request-ChatCompletion -Model 'gpt-4o' -Message "What's in this image?" -Images ($script:TestData + '/sweets_donut.png')  -TimeoutSec 30 -ea Stop } | Should -Not -Throw
             $Result | Should -BeOfType [pscustomobject]
             $Result.object | Should -Be 'chat.completion'
             $Result.Answer | Should -HaveCount 1

@@ -24,7 +24,7 @@ Password should be between 8 and 12 random alphanumeric characters.
                 $RandomName = ('TEST' + (Get-Random -Maximum 1000))
                 { $splat = @{
                         Name               = $RandomName
-                        Model              = 'gpt-3.5-turbo'
+                        Model              = 'gpt-4o-mini'
                         Description        = 'Test assistant'
                         Instructions       = "You are an helpful assistant who is there to fulfill the user's wishes to the fullest."
                         UseCodeInterpreter = $true
@@ -118,7 +118,7 @@ Password should be between 8 and 12 random alphanumeric characters.
                 $RandomName = ('TEST' + (Get-Random -Maximum 1000))
                 { $splat = @{
                         Name                 = $RandomName
-                        Model                = 'gpt-3.5-turbo'
+                        Model                = 'gpt-4o-mini'
                         Description          = 'Test assistant'
                         Instructions         = $script:Instructions
                         UseCodeInterpreter   = $false

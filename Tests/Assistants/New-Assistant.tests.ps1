@@ -78,7 +78,7 @@ Describe 'New-Assistant' {
             $RandomName = ('TEST' + (Get-Random -Maximum 1000))
             { $params = @{
                     Name               = $RandomName
-                    Model              = 'gpt-3.5-turbo-0125'
+                    Model              = 'gpt-4o-mini'
                     Description        = 'Test assistant'
                     Instructions       = 'Do it'
                     UseCodeInterpreter = $true
@@ -92,7 +92,7 @@ Describe 'New-Assistant' {
             $Result.created_at | Should -BeOfType [datetime]
             $Result.name | Should -Be $RandomName
             $Result.description | Should -Be 'Test assistant'
-            $Result.model | Should -Be 'gpt-3.5-turbo-0125'
+            $Result.model | Should -Be 'gpt-4o-mini'
             $Result.instructions | Should -Be 'Do it'
             $Result.tools | Should -HaveCount 2
         }
