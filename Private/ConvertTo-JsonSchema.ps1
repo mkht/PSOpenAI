@@ -49,6 +49,9 @@ function ConvertTo-JsonSchema {
     begin {
         if (-not ('NJsonSchema.JsonSchema' -as [type])) {
             $LibsPath = Join-Path $PSScriptRoot '..\Libs\NJsonSchema\netstandard2.0'
+            if (-not ('Newtonsoft.Json.Schema.JsonSchema' -as [type])) {
+                Add-Type -Path (Join-Path $LibsPath 'Newtonsoft.Json.dll')
+            }
             Add-Type -Path (Join-Path $LibsPath 'Namotion.Reflection.dll')
             Add-Type -Path (Join-Path $LibsPath 'NJsonSchema.dll')
         }
@@ -60,7 +63,7 @@ function ConvertTo-JsonSchema {
 
     process {
         $typeSchemaRef = $generator.Generate($Type)
-        $typeSchemaObj = $typeSchemaRef.ToJson() | ConvertFrom-Json -Depth 64
+        $typeSchemaObj = $typeSchemaRef.ToJson() | ConvertFrom-Json
         _TreatJsonSchemaObjectProprs -SchemaObj $typeSchemaObj -RemoveUnsupportedKeyWords $true
         $typeSchemaObj
     }
