@@ -55,11 +55,6 @@ function Request-ChatCompletion {
         [ValidateNotNullOrEmpty()]
         [System.Collections.IDictionary[]]$Tools,
 
-        # deprecated
-        [Parameter(DontShow)]
-        [ValidateNotNullOrEmpty()]
-        [System.Collections.IDictionary[]]$Functions,
-
         [Parameter()]
         [Alias('tool_choice')]
         [Completions('none', 'auto', 'required')]
@@ -69,20 +64,10 @@ function Request-ChatCompletion {
         [Alias('parallel_tool_calls')]
         [switch]$ParallelToolCalls,
 
-        # deprecated
-        [Parameter(DontShow)]
-        [Alias('function_call')]
-        [Completions('none', 'auto')]
-        [object]$FunctionCall,
-
         [Parameter()]
         [Alias('InvokeFunctionOnCallMode')] # For backward compatibilty
         [ValidateSet('None', 'Auto', 'Confirm')]
         [string]$InvokeTools = 'None',
-
-        # deprecated
-        [Parameter(DontShow)]
-        [uint16]$MaxFunctionCallCount,
         #endregion Function call params
 
         [Parameter()]
@@ -222,9 +207,6 @@ function Request-ChatCompletion {
         if ($PSBoundParameters.ContainsKey('Name') -and (-not $PSBoundParameters.ContainsKey('Message'))) {
             Write-Warning 'Name parameter is ignored because the Message parameter is not specified.'
         }
-        if ($PSBoundParameters.ContainsKey('MaxFunctionCallCount')) {
-            Write-Warning 'MaxFunctionCallCount parameter is deprecated.'
-        }
         #endregion
 
         #region Tools paramter validation
@@ -264,19 +246,11 @@ function Request-ChatCompletion {
         if ($PSBoundParameters.ContainsKey('Tools')) {
             $PostBody.tools = @($Tools)
         }
-        # deprecated
-        if ($PSBoundParameters.ContainsKey('Functions')) {
-            $PostBody.functions = @($Functions)
-        }
         if ($PSBoundParameters.ContainsKey('ToolChoice')) {
             $PostBody.tool_choice = $ToolChoice
         }
         if ($PSBoundParameters.ContainsKey('ParallelToolCalls')) {
             $PostBody.parallel_tool_calls = [bool]$ParallelToolCalls
-        }
-        # deprecated
-        if ($PSBoundParameters.ContainsKey('FunctionCall')) {
-            $PostBody.function_call = $FunctionCall
         }
         if ($PSBoundParameters.ContainsKey('Temperature')) {
             $PostBody.temperature = $Temperature
@@ -372,10 +346,6 @@ function Request-ChatCompletion {
                 # tool_call_id is optional
                 if ($msg.tool_call_id) {
                     $tm.tool_call_id = $msg.tool_call_id
-                }
-                # function_call is optional
-                if ($msg.function_call) {
-                    $tm.function_call = $msg.function_call
                 }
                 $Messages.Add($tm)
             }
@@ -546,29 +516,14 @@ function Request-ChatCompletion {
             if ($tr.tool_calls) {
                 $rcm.Add('tool_calls', $tr.tool_calls)
             }
-            #deprecated
-            if ($tr.function_call) {
-                $rcm.Add('function_call', $tr.function_call)
-            }
             $Messages.Add($rcm)
         }
         #endregion
 
         #region Function call
-        if ($null -ne $Response.choices -and $Response.choices[0].finish_reason -in ('tool_calls', 'function_call')) {
+        if ($null -ne $Response.choices -and $Response.choices[0].finish_reason -eq 'tool_calls') {
             $ToolCallResults = @()
-            $fCalls = @()
-            if ($Response.choices[0].finish_reason -eq 'tool_calls') {
-                $fCalls = @($Response.choices[0].message.tool_calls)
-            }
-            else {
-                # function_call (deprecared)
-                $IsLegacyFunctionCall = $true
-                $fCalls = @(@{
-                        type     = 'function'
-                        function = $Response.choices[0].message.function_call
-                    })
-            }
+            $fCalls = @($Response.choices[0].message.tool_calls)
 
             foreach ($fCall in $fCalls) {
                 if ($fCall.type -ne 'function') {
@@ -592,19 +547,10 @@ function Request-ChatCompletion {
                 if ($null -eq $fCommandResult) {
                     continue
                 }
-                if (-not $IsLegacyFunctionCall) {
-                    $ToolCallResults += @{
-                        role         = 'tool'
-                        content      = $(if ($fCommandResult -is [string]) { $fCommandResult }else { (ConvertTo-Json $fCommandResult) })
-                        tool_call_id = $fCall.id
-                    }
-                }
-                else {
-                    $ToolCallResults += @{
-                        role    = 'function'
-                        content = $(if ($fCommandResult -is [string]) { $fCommandResult }else { (ConvertTo-Json $fCommandResult) })
-                        name    = $fCall.function.name
-                    }
+                $ToolCallResults += @{
+                    role         = 'tool'
+                    content      = $(if ($fCommandResult -is [string]) { $fCommandResult }else { (ConvertTo-Json $fCommandResult) })
+                    tool_call_id = $fCall.id
                 }
             }
 

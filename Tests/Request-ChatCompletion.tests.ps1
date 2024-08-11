@@ -74,57 +74,6 @@ Describe 'Request-ChatCompletion' {
             $Result | Should -BeExactly $Response_json
         }
 
-        It 'Function call (non execution) - Legacy' {
-            Mock Test-Path { return $true }
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
-{
-    "id": "chatcmpl-123",
-    "object": "chat.completion",
-    "created": 1677652288,
-    "choices": [{
-        "index": 0,
-        "message": {
-          "role": "assistant",
-          "content": null,
-          "function_call": {
-            "name": "Test-Path",
-            "arguments": "{\n  \"Path\": [\"C:\\test.txt\"],\n  \"PathType\": \"Leaf\"\n}"
-          }
-        },
-        "finish_reason": "function_call"
-    }],
-    "usage": {
-        "prompt_tokens": 221,
-        "completion_tokens": 30,
-        "total_tokens": 251
-    }
-}
-'@ }
-            $FunctionSpec = @{
-                name        = 'Test-Path'
-                description = 'test path'
-                parameters  = @{
-                    type       = 'object'
-                    properties = @{
-                        'Path'     = @{type = 'string' }
-                        'PathType' = @{type = 'string'; enum = ('Leaf', 'Container', 'Any') }
-                    }
-                    required   = @('Path')
-                }
-            }
-
-            { $script:Result = Request-ChatCompletion -Message 'test' -Functions $FunctionSpec -InvokeFunctionOnCallMode None -ea Stop } | Should -Not -Throw
-            Should -Invoke -CommandName 'Test-Path' -Times 0 -Exactly
-            Should -InvokeVerifiable
-            $Result.Answer | Should -BeNullOrEmpty
-            $Result.Message | Should -Be 'test'
-            $Result.choices[0].message.function_call.name | Should -BeExactly 'Test-Path'
-            $Result.History[0].Role | Should -Be 'user'
-            $Result.History[0].Content | Should -Be 'test'
-            $Result.History[1].Role | Should -Be 'assistant'
-            $Result.History[1].Content | Should -BeNullOrEmpty
-        }
-
         It 'Tool calls (non execution)' {
             Mock Test-Path { return $true }
             Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
@@ -592,73 +541,6 @@ Describe 'Request-ChatCompletion' {
             $Result.History[0].Content | Should -Be $Message
             $Result.History[-1].Role | Should -Be 'assistant'
             $Result.History[-1].Content | Should -Not -BeNullOrEmpty
-        }
-
-        It 'Function call (non execution) - Legacy' {
-            $FunctionSpec = @{
-                name        = 'Test-Connection'
-                description = 'The Test-Connection command sends pings to remote computers and returns replies.'
-                parameters  = @{
-                    type       = 'object'
-                    properties = @{
-                        'ComputerName' = @{type = 'string'; description = 'Specifies the target host name or ip address, e.g, "8.8.8.8" ' }
-                        'Count'        = @{type = 'integer'; description = 'Specifies the number of echo requests to send. The default value is 4.' }
-                    }
-                    required   = @('ComputerName')
-                }
-            }
-
-            $Message = 'Ping the Google Public DNS address three times and briefly report the results.'
-            { $params = @{
-                    Message                  = $Message
-                    Model                    = 'gpt-3.5-turbo-0125'
-                    Temperature              = 0.1
-                    Functions                = $FunctionSpec
-                    InvokeFunctionOnCallMode = 'None'
-                    ErrorAction              = 'Stop'
-                }
-                $script:Result = Request-ChatCompletion @params
-            } | Should -Not -Throw
-            $Result.Answer | Should -BeNullOrEmpty
-            $Result.Message | Should -Be $Message
-            $Result.choices[0].message.function_call.name | Should -BeExactly 'Test-Connection'
-        }
-
-        It 'Function call (implicit execution) - Legacy' {
-            $FunctionSpec = @{
-                name        = 'Test-Connection'
-                description = 'The Test-Connection command sends pings to remote computers and returns replies.'
-                parameters  = @{
-                    type       = 'object'
-                    properties = @{
-                        'ComputerName' = @{type = 'string'; description = 'Specifies the target host name or ip address, e.g, "8.8.8.8" ' }
-                        'Count'        = @{type = 'integer'; description = 'Specifies the number of echo requests to send. The default value is 4.' }
-                    }
-                    required   = @('ComputerName')
-                }
-            }
-
-            $Message = 'Ping the Google Public DNS address three times and briefly report the results.'
-            { $params = @{
-                    Message                  = $Message
-                    Model                    = 'gpt-3.5-turbo-0125'
-                    Temperature              = 0.1
-                    Functions                = $FunctionSpec
-                    InvokeFunctionOnCallMode = 'Auto'
-                    ErrorAction              = 'Stop'
-                }
-                $script:Result = Request-ChatCompletion @params
-            } | Should -Not -Throw
-            $Result.Answer | Should -Not -BeNullOrEmpty
-            $Result.Message | Should -Be $Message
-            $Result.History[0].Role | Should -Be 'user'
-            $Result.History[0].Content | Should -Be $Message
-            $Result.History[1].Role | Should -Be 'assistant'
-            $Result.History[1].function_call | Should -Not -BeNullOrEmpty
-            $Result.History[2].Role | Should -Be 'function'
-            $Result.History[2].Name | Should -Be 'Test-Connection'
-            $Result.History[3].Role | Should -Be 'assistant'
-            $Result.History[3].Content | Should -Not -BeNullOrEmpty
         }
 
         It 'Stream output' {
