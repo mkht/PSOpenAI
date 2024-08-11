@@ -2387,250 +2387,6 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
   </command:command>
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
     <command:details>
-      <command:name>Get-AzureOpenAIModels</command:name>
-      <command:verb>Get</command:verb>
-      <command:noun>AzureOpenAIModels</command:noun>
-      <maml:description>
-        <maml:para>Lists the currently available models.</maml:para>
-      </maml:description>
-    </command:details>
-    <maml:description>
-      <maml:para>Gets a list of all models that are accessible by the Azure OpenAI resource. These include base models as well as all successfully completed fine-tuned models owned by the Azure OpenAI resource.
-https://learn.microsoft.com/en-us/rest/api/cognitiveservices/azureopenaistable/models/list</maml:para>
-    </maml:description>
-    <command:syntax>
-      <command:syntaxItem>
-        <maml:name>Get-AzureOpenAIModels</maml:name>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="Model, ID">
-          <maml:name>Name</maml:name>
-          <maml:description>
-            <maml:para>Specifies the model name which you wish to get.
-If not specified, lists all available models.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>TimeoutSec</maml:name>
-          <maml:description>
-            <maml:para>Specifies how long the request can be pending before it times out.
-The default value is `0` (infinite).</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-          <dev:type>
-            <maml:name>Int32</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>0</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>MaxRetryCount</maml:name>
-          <maml:description>
-            <maml:para>Number between `0` and `100`.
-Specifies the maximum number of retries if the request fails.
-The default value is `0` (No retry).
-Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-          <dev:type>
-            <maml:name>Int32</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>0</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>ApiBase</maml:name>
-          <maml:description>
-            <maml:para>Specifies the name of your Azure OpenAI resource endpoint such like:  `https://{your-resource-name}.openai.azure.com/`
-If not specified, it will try to use `$global:OPENAI_API_BASE` or `$env:OPENAI_API_BASE`</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
-          <dev:type>
-            <maml:name>System.Uri</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>ApiVersion</maml:name>
-          <maml:description>
-            <maml:para>The API version to use for this operation.
-</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
-          <dev:type>
-            <maml:name>string</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>ApiKey</maml:name>
-          <maml:description>
-            <maml:para>Specifies API key for authentication.
-The type of data should `[string]` or `[securestring]`.
-If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_API_KEY`</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
-          <dev:type>
-            <maml:name>Object</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-      </command:syntaxItem>
-    </command:syntax>
-    <command:parameters>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="Model, ID">
-        <maml:name>Name</maml:name>
-        <maml:description>
-          <maml:para>Specifies the model name which you wish to get.
-If not specified, lists all available models.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-        <maml:name>TimeoutSec</maml:name>
-        <maml:description>
-          <maml:para>Specifies how long the request can be pending before it times out.
-The default value is `0` (infinite).</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-        <dev:type>
-          <maml:name>Int32</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>0</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-        <maml:name>MaxRetryCount</maml:name>
-        <maml:description>
-          <maml:para>Number between `0` and `100`.
-Specifies the maximum number of retries if the request fails.
-The default value is `0` (No retry).
-Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
-</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-        <dev:type>
-          <maml:name>Int32</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>0</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-        <maml:name>ApiBase</maml:name>
-        <maml:description>
-          <maml:para>Specifies the name of your Azure OpenAI resource endpoint such like:  `https://{your-resource-name}.openai.azure.com/`
-If not specified, it will try to use `$global:OPENAI_API_BASE` or `$env:OPENAI_API_BASE`</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
-        <dev:type>
-          <maml:name>System.Uri</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-        <maml:name>ApiVersion</maml:name>
-        <maml:description>
-          <maml:para>The API version to use for this operation.
-</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
-        <dev:type>
-          <maml:name>string</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-        <maml:name>ApiKey</maml:name>
-        <maml:description>
-          <maml:para>Specifies API key for authentication.
-The type of data should `[string]` or `[securestring]`.
-If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_API_KEY`</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
-        <dev:type>
-          <maml:name>Object</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-    </command:parameters>
-    <command:inputTypes />
-    <command:returnValues>
-      <command:returnValue>
-        <dev:type>
-          <maml:name>[pscustomobject]</maml:name>
-        </dev:type>
-        <maml:description>
-          <maml:para></maml:para>
-        </maml:description>
-      </command:returnValue>
-    </command:returnValues>
-    <maml:alertSet>
-      <maml:alert>
-        <maml:para></maml:para>
-      </maml:alert>
-    </maml:alertSet>
-    <command:examples>
-      <command:example>
-        <maml:title>------------ Example 1: List all available models. ------------</maml:title>
-        <dev:code>PS C:\&gt; $global:OPENAI_API_KEY = '&lt;Put your api key here&gt;'
-PS C:\&gt; $global:OPENAI_API_BASE  = 'https://&lt;resource-name&gt;.openai.azure.com/'
-PS C:\&gt; Get-AzureOpenAIModels | select -ExpandProperty ID
-
-text-curie-001
-text-davinci-001
-text-davinci-002
-gpt-35-turbo
-...</dev:code>
-        <dev:remarks>
-          <maml:para></maml:para>
-        </dev:remarks>
-      </command:example>
-      <command:example>
-        <maml:title>---------- Example 2: Get specific model information. ----------</maml:title>
-        <dev:code>PS C:\&gt; Get-AzureOpenAIModels -Name "gpt-35-turbo"
-
-capabilities     : @{fine_tune=False; ...
-lifecycle_status : preview
-deprecation      : @{inference=1690848000}
-id               : gpt-35-turbo
-status           : succeeded
-object           : model
-created_at       : 2023/03/09 9:00:00
-updated_at       : 2023/03/09 9:00:00</dev:code>
-        <dev:remarks>
-          <maml:para></maml:para>
-        </dev:remarks>
-      </command:example>
-    </command:examples>
-    <command:relatedLinks>
-      <maml:navigationLink>
-        <maml:linkText>Online Version:</maml:linkText>
-        <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Get-AzureOpenAIModels.md</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
-        <maml:linkText>https://learn.microsoft.com/en-us/rest/api/cognitiveservices/azureopenaistable/models/list</maml:linkText>
-        <maml:uri>https://learn.microsoft.com/en-us/rest/api/cognitiveservices/azureopenaistable/models/list</maml:uri>
-      </maml:navigationLink>
-    </command:relatedLinks>
-  </command:command>
-  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
-    <command:details>
       <command:name>Get-Batch</command:name>
       <command:verb>Get</command:verb>
       <command:noun>Batch</command:noun>
@@ -7528,13 +7284,27 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
           <maml:name>Format</maml:name>
           <maml:description>
             <maml:para>Specifies the format that the model must output.
-`auto` is default.
-`json_object` : Enables JSON mode, which guarantees the message the model generates is valid JSON.
-`raw_response` : This function will return raw response content from API.</maml:para>
+- `auto` is default.
+- `json_object` enables JSON mode, which guarantees the message the model generates is valid JSON.
+- `json_schema` enables Structured Outputs which guarantees the model will match your supplied JSON schema.</maml:para>
+            <maml:para>- `raw_response` returns raw response content from API.</maml:para>
           </maml:description>
-          <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
           <dev:type>
-            <maml:name>string</maml:name>
+            <maml:name>Object</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>JsonSchema</maml:name>
+          <maml:description>
+            <maml:para>Specifies an object or data structure to represent the JSON Schema that the model should be constrained to follow.
+Required if `json_schema` is specified for `-Format`. Otherwise, it is ignored.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -7784,13 +7554,27 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <maml:name>Format</maml:name>
         <maml:description>
           <maml:para>Specifies the format that the model must output.
-`auto` is default.
-`json_object` : Enables JSON mode, which guarantees the message the model generates is valid JSON.
-`raw_response` : This function will return raw response content from API.</maml:para>
+- `auto` is default.
+- `json_object` enables JSON mode, which guarantees the message the model generates is valid JSON.
+- `json_schema` enables Structured Outputs which guarantees the model will match your supplied JSON schema.</maml:para>
+          <maml:para>- `raw_response` returns raw response content from API.</maml:para>
         </maml:description>
-        <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
         <dev:type>
-          <maml:name>string</maml:name>
+          <maml:name>Object</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>JsonSchema</maml:name>
+        <maml:description>
+          <maml:para>Specifies an object or data structure to represent the JSON Schema that the model should be constrained to follow.
+Required if `json_schema` is specified for `-Format`. Otherwise, it is ignored.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -11786,7 +11570,21 @@ ID 23182 maps to "apple" and ID 88847 maps to "banana". Thus, this example incre
             <maml:para>Specifies the format that the model must output.
 - `text` is default.
 - `json_object` enables JSON mode, which guarantees the message the model generates is valid JSON.
-- `raw_response` returns raw response content from API.</maml:para>
+- `json_schema` enables Structured Outputs which guarantees the model will match your supplied JSON schema.</maml:para>
+            <maml:para>- `raw_response` returns raw response content from API.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
+          <dev:type>
+            <maml:name>Object</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>JsonSchema</maml:name>
+          <maml:description>
+            <maml:para>Specifies an object or data structure to represent the JSON Schema that the model should be constrained to follow.
+Required if `json_schema` is specified for `-Format`. Otherwise, it is ignored.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -12230,7 +12028,21 @@ ID 23182 maps to "apple" and ID 88847 maps to "banana". Thus, this example incre
           <maml:para>Specifies the format that the model must output.
 - `text` is default.
 - `json_object` enables JSON mode, which guarantees the message the model generates is valid JSON.
-- `raw_response` returns raw response content from API.</maml:para>
+- `json_schema` enables Structured Outputs which guarantees the model will match your supplied JSON schema.</maml:para>
+          <maml:para>- `raw_response` returns raw response content from API.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
+        <dev:type>
+          <maml:name>Object</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>JsonSchema</maml:name>
+        <maml:description>
+          <maml:para>Specifies an object or data structure to represent the JSON Schema that the model should be constrained to follow.
+Required if `json_schema` is specified for `-Format`. Otherwise, it is ignored.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -15642,13 +15454,27 @@ We serves
           <maml:name>Format</maml:name>
           <maml:description>
             <maml:para>Specifies the format that the model must output.
-`auto` is default.
-`json_object` : Enables JSON mode, which guarantees the message the model generates is valid JSON.
-`raw_response` : This function will return raw response content from API.</maml:para>
+- `auto` is default.
+- `json_object` enables JSON mode, which guarantees the message the model generates is valid JSON.
+- `json_schema` enables Structured Outputs which guarantees the model will match your supplied JSON schema.</maml:para>
+            <maml:para>- `raw_response` returns raw response content from API.</maml:para>
           </maml:description>
-          <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
           <dev:type>
-            <maml:name>string</maml:name>
+            <maml:name>Object</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>JsonSchema</maml:name>
+          <maml:description>
+            <maml:para>Specifies an object or data structure to represent the JSON Schema that the model should be constrained to follow.
+Required if `json_schema` is specified for `-Format`. Otherwise, it is ignored.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -15910,13 +15736,27 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <maml:name>Format</maml:name>
         <maml:description>
           <maml:para>Specifies the format that the model must output.
-`auto` is default.
-`json_object` : Enables JSON mode, which guarantees the message the model generates is valid JSON.
-`raw_response` : This function will return raw response content from API.</maml:para>
+- `auto` is default.
+- `json_object` enables JSON mode, which guarantees the message the model generates is valid JSON.
+- `json_schema` enables Structured Outputs which guarantees the model will match your supplied JSON schema.</maml:para>
+          <maml:para>- `raw_response` returns raw response content from API.</maml:para>
         </maml:description>
-        <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
         <dev:type>
-          <maml:name>string</maml:name>
+          <maml:name>Object</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>JsonSchema</maml:name>
+        <maml:description>
+          <maml:para>Specifies an object or data structure to represent the JSON Schema that the model should be constrained to follow.
+Required if `json_schema` is specified for `-Format`. Otherwise, it is ignored.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -17546,15 +17386,31 @@ You can create a batch input item by using the Request-ChatCompletion cmdlet wit
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="response_format">
           <maml:name>Format</maml:name>
           <maml:description>
-            <maml:para>Specifies the output format of this function.
-- default will only outputs text message.   - json_object enables JSON mode, which guarantees the message the model generates is valid JSON.   - raw_response returns raw response content from API.</maml:para>
+            <maml:para>Specifies the format that the model must output.
+- `default` will only outputs text message.</maml:para>
+            <maml:para>- `json_object` enables JSON mode, which guarantees the message the model generates is valid JSON.
+- `json_schema` enables Structured Outputs which guarantees the model will match your supplied JSON schema.</maml:para>
+            <maml:para>- `raw_response` returns raw response content from API.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
+          <dev:type>
+            <maml:name>Object</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>JsonSchema</maml:name>
+          <maml:description>
+            <maml:para>Specifies an object or data structure to represent the JSON Schema that the model should be constrained to follow.
+Required if `json_schema` is specified for `-Format`. Otherwise, it is ignored.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
             <maml:name>String</maml:name>
             <maml:uri />
           </dev:type>
-          <dev:defaultValue>default</dev:defaultValue>
+          <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>TimeoutSec</maml:name>
@@ -17987,15 +17843,31 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="response_format">
         <maml:name>Format</maml:name>
         <maml:description>
-          <maml:para>Specifies the output format of this function.
-- default will only outputs text message.   - json_object enables JSON mode, which guarantees the message the model generates is valid JSON.   - raw_response returns raw response content from API.</maml:para>
+          <maml:para>Specifies the format that the model must output.
+- `default` will only outputs text message.</maml:para>
+          <maml:para>- `json_object` enables JSON mode, which guarantees the message the model generates is valid JSON.
+- `json_schema` enables Structured Outputs which guarantees the model will match your supplied JSON schema.</maml:para>
+          <maml:para>- `raw_response` returns raw response content from API.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
+        <dev:type>
+          <maml:name>Object</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>JsonSchema</maml:name>
+        <maml:description>
+          <maml:para>Specifies an object or data structure to represent the JSON Schema that the model should be constrained to follow.
+Required if `json_schema` is specified for `-Format`. Otherwise, it is ignored.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
           <maml:name>String</maml:name>
           <maml:uri />
         </dev:type>
-        <dev:defaultValue>default</dev:defaultValue>
+        <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>TimeoutSec</maml:name>

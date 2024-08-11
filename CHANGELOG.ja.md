@@ -1,4 +1,10 @@
 # 変更履歴
+### 4.1.0
+- Structured Outputs (構造化出力) の使用に対応しました  
+  使い方の詳細はガイドを参照してください  
+  [Guide: How to use Structured Outputs](/Guides/How_to_use_StructuredOutputs.md)
+
+
 ### 4.0.0
 **これは破壊的変更を含むメジャーリリースです。**
 - Azure専用関数をすべて削除しました  

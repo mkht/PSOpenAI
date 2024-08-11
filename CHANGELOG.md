@@ -1,4 +1,9 @@
 # Changelog
+### 4.1.0
+- Add a support for Structured Outpus.  
+  Please refer to this guide.  
+  [Guide: How to use Structured Outputs](/Guides/How_to_use_StructuredOutputs.md)
+
 ### 4.0.0
 **This is a major release that includes breaking changes.**
 - **REMOVE** All Azure specific function is removed.  

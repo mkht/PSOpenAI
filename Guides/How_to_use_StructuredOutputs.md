@@ -5,7 +5,7 @@ Structured Outputs is a feature that ensures the model will always generate resp
 OpenAI's official guide is here.  
 https://platform.openai.com/docs/guides/structured-outputs/
 
-PSOpenAI module integrates a parasing helpers with PowerShell Class and .NET Class.
+PSOpenAI module integrates a parasing helpers with PowerShell Class and .NET types.
 
 This guide describes some use cases for Structured Outputs.
 
