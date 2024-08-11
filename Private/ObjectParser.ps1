@@ -199,8 +199,14 @@ function ParseChatCompletionObject {
     foreach ($choice in $InputObject.choices) {
         # The model refuses to respond
         if ($choice.message.refusal) {
-            Write-Warning ('The model refuses to respond. Refusal message:"{0}"' -f $choice.message.refusal)
+            Write-Warning ('The model refuses to respond. Refusal message: "{0}"' -f $choice.message.refusal)
             $Answer += $choice.message.refusal
+            continue
+        }
+
+        if ($choice.finish_reason -in ('stop', 'length', 'content_filter')) {
+            Write-Warning ('The model seems to have terminated response. Reason: "{0}"' -f $choice.finish_reason)
+            $Answer += $choice.message.content
             continue
         }
 
@@ -215,11 +221,12 @@ function ParseChatCompletionObject {
             catch {
                 Write-Error -Exception $_.Exception
             }
+            continue
         }
-        else {
-            $Answer += $choice.message.content
-        }
+
+        $Answer += $choice.message.content
     }
+
     if ($OutputType -isnot [type]) {
         $Answer = [string[]]$Answer
     }

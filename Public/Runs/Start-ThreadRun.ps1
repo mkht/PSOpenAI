@@ -139,8 +139,11 @@ function Start-ThreadRun {
 
         [Parameter()]
         [Alias('response_format')]
-        [ValidateSet('default', 'auto', 'text', 'json_object', 'raw_response')]
-        [string][LowerCaseTransformation()]$Format = 'default',
+        [ValidateSet('default', 'auto', 'text', 'json_object', 'json_schema', 'raw_response')]
+        [object]$Format = 'default',
+
+        [Parameter()]
+        [string]$JsonSchema,
 
         [Parameter()]
         [int]$TimeoutSec = 0,
@@ -355,12 +358,35 @@ function Start-ThreadRun {
                 $PostBody.tool_choice = @{type = $ToolChoice }
             }
         }
-        if ($PSBoundParameters.ContainsKey('Format') -and $Format -notin ('default', 'raw_response')) {
-            if ($Format -eq 'auto') {
+        if ($PSBoundParameters.ContainsKey('Format')) {
+            if ($Format -is [type]) {
+                # Structured Outputs
+                $typeSchema = ConvertTo-JsonSchema $Format
+                $PostBody.response_format = @{
+                    'type'        = 'json_schema'
+                    'json_schema' = @{
+                        'name'   = $Format.Name
+                        'strict' = $true
+                        'schema' = $typeSchema
+                    }
+                }
+            }
+            elseif ($Format -in ('default', 'raw_response')) {
+                # Nothing to do
+            }
+            elseif ($Format -eq 'auto') {
                 $PostBody.response_format = 'auto'
             }
             else {
                 $PostBody.response_format = @{'type' = $Format }
+                if ($Format -eq 'json_schema') {
+                    if (-not $JsonSchema) {
+                        Write-Error -Exception ([System.ArgumentException]::new('JsonSchema must be specified.'))
+                    }
+                    else {
+                        $PostBody.response_format.json_schema = ConvertFrom-Json $JsonSchema -Depth 64 -NoEnumerate
+                    }
+                }
             }
         }
 

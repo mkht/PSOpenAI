@@ -85,8 +85,11 @@ function Set-Assistant {
 
         [Parameter()]
         [Alias('response_format')]
-        [ValidateSet('default', 'auto', 'text', 'json_object', 'raw_response')]
-        [string][LowerCaseTransformation()]$Format = 'default',
+        [ValidateSet('default', 'auto', 'text', 'json_object', 'json_schema', 'raw_response')]
+        [object]$Format = 'default',
+
+        [Parameter()]
+        [string]$JsonSchema,
 
         [Parameter()]
         [int]$TimeoutSec = 0,
