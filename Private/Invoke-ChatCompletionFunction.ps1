@@ -19,6 +19,14 @@ function Invoke-ChatCompletionFunction {
     $fCommandResult = $null
     $fCommandInfo = Get-Command -Name $Name
     $fArguments = ConvertFrom-Json $Arguments | ObjectToHashTable
+
+    # Ignore null parameter
+    foreach ($key in $fArguments.Keys) {
+        if ($null -eq $fArguments.$key) {
+            $fArguments.Remove($key)
+        }
+    }
+
     $CommandQueryMessage = "Function: $Name / Arguments: $($Arguments -replace '[\r\n]', '')"
     if ($fCommandInfo.CommandType -in ('Cmdlet', 'Function', 'Alias')) {
         $canInvoke =

@@ -145,7 +145,7 @@ function New-ChatCompletionFunctionFromPSCommand {
 
             # Attributes are not yet supported in Structured Outputs
             if (-not $Strict) {
-                elseif ($attr -is [ValidatePattern]) {
+                if ($attr -is [ValidatePattern]) {
                     if ($attr.RegexPattern) { $propHash.pattern = $attr.RegexPattern }
                 }
                 elseif ($attr -is [ValidateCount]) {

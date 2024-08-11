@@ -22,6 +22,15 @@ Describe 'New-ChatCompletionFunction' {
             $FuncSpec.parameters.properties.Path.type | Should -Be 'array'
         }
 
+        It 'Strict mode, all param should be required' {
+            $FuncSpec = New-ChatCompletionFunction 'Test-Path' -Strict
+            $FuncSpec | Should -BeOfType [System.Collections.IDictionary]
+            $FuncSpec.name | Should -Be 'Test-Path'
+            $FuncSpec.strict | Should -Be $true
+            $FuncSpec.parameters.additionalProperties | Should -Be $false
+            $FuncSpec.parameters.required | Should -HaveCount ($FuncSpec.parameters.properties.Keys.Count)
+        }
+
         It 'IncludeParameters' {
             $FuncSpec = New-ChatCompletionFunction 'Test-Path' -IncludeParameters ('Path', 'PathType')
             $FuncSpec | Should -BeOfType [System.Collections.IDictionary]
@@ -29,7 +38,7 @@ Describe 'New-ChatCompletionFunction' {
             $FuncSpec.description | Should -Not -BeNullOrEmpty
             $FuncSpec.parameters.properties.Keys | Should -HaveCount 2
             $FuncSpec.parameters.properties.Path.type | Should -Be 'array'
-            $FuncSpec.parameters.properties.PathType.type | Should -Be 'string'
+            $FuncSpec.parameters.properties.PathType.type | Should -Be @('string', 'null')
         }
 
         It 'ExcludeParameters' {
