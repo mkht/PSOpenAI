@@ -204,7 +204,7 @@ function ParseChatCompletionObject {
             continue
         }
 
-        if ($choice.finish_reason -in ('stop', 'length', 'content_filter')) {
+        if ($choice.finish_reason -in ('length', 'content_filter')) {
             Write-Warning ('The model seems to have terminated response. Reason: "{0}"' -f $choice.finish_reason)
             $Answer += $choice.message.content
             continue
