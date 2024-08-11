@@ -36,7 +36,8 @@ Request-ChatCompletion
     [-LogitBias <IDictionary>]
     [-LogProbs <Boolean>]
     [-TopLogProbs <UInt16>]
-    [-Format <String>]
+    [-Format <Object>]
+    [-JsonSchema <String>]
     [-Seed <Int64>]
     [-ServiceTier <String>]
     [-User <String>]
@@ -340,11 +341,22 @@ Position: Named
 Specifies the format that the model must output.  
 - `text` is default.  
 - `json_object` enables JSON mode, which guarantees the message the model generates is valid JSON.  
+- `json_schema` enables Structured Outputs which guarantees the model will match your supplied JSON schema.
 - `raw_response` returns raw response content from API.
 
 ```yaml
-Type: String
+Type: Object
 Aliases: response_format
+Required: False
+Position: Named
+```
+
+### -JsonSchema
+Specifies an object or data structure to represent the JSON Schema that the model should be constrained to follow.  
+Required if `json_schema` is specified for `-Format`. Otherwise, it is ignored.
+
+```yaml
+Type: String
 Required: False
 Position: Named
 ```
