@@ -1,4 +1,7 @@
 # Changelog
+### 4.1.1
+- Fixed issue that occurred when using `json_schema` in Windows PowerShell 5.1 (#30)
+
 ### 4.1.0
 - Add a support for Structured Outpus.  
   Please refer to this guide.  

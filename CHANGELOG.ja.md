@@ -1,4 +1,7 @@
 # 変更履歴
+### 4.1.1
+- Windows PowerShell 5.1 で`-Format`に`json_schema`を指定した場合に発生するエラーを修正
+
 ### 4.1.0
 - Structured Outputs (構造化出力) の使用に対応しました  
   使い方の詳細はガイドを参照してください  
