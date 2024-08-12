@@ -101,6 +101,59 @@ Describe 'Request-ChatCompletion' {
             $Result.choices[0].message.content | Should -BeOfType ([string])
         }
 
+        It 'Structured Outputs (manual)' {
+            $ownSchema = @'
+{
+  "name": "reasoning_schema",
+  "strict": true,
+  "schema": {
+    "type": "object",
+    "properties": {
+      "reasoning_steps": {
+        "type": "array",
+        "items": { "type": "string" }
+      },
+      "answer": { "type": "string" }
+    },
+    "required": ["reasoning_steps", "answer"],
+    "additionalProperties": false
+  }
+}
+'@
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+{
+    "id": "chatcmpl-123",
+    "object": "chat.completion",
+    "created": 1723356481,
+    "model": "gpt-4o-2024-08-06",
+     "choices": [
+        {
+        "index": 0,
+        "message": {
+            "role": "assistant",
+            "content": "{\"reasoning_steps\":[\"Identify the two numbers being compared: 9.11 and 9.9.\",\"Recognize that both numbers take the form of decimals.\",\"Determine which decimal has a larger value by comparing the numbers directly.\",\"9.11 has one digit in the hundredths place (1) while 9.9 has no digits in the hundredths place, effectively being 9.90.\",\"Since 9.11 (9.110) is greater than 9.90, conclude that 9.11 is bigger.\"],\"answer\":\"9.11 is bigger than 9.9.\"}",
+            "refusal": null
+        },
+        "logprobs": null,
+        "finish_reason": "stop"
+        }
+    ],
+    "usage": {
+        "prompt_tokens": 46,
+        "completion_tokens": 200,
+        "total_tokens": 246
+    },
+    "system_fingerprint": "fp_1633542941"
+    }
+'@ }
+            { $script:Result = Request-ChatCompletion -Message 'test' -ea Stop -Format 'json_schema' -JsonSchema $ownSchema } | Should -Not -Throw
+            Should -InvokeVerifiable
+            $Result.Answer | Should -HaveCount 1
+            $Result.Answer[0].GetType().Name | Should -Be 'String'
+            { $script:JsonObject = ($Result.Answer[0] | ConvertFrom-Json -ea Stop) } | Should -Not -Throw
+            $JsonObject.answer | Should -BeExactly '9.11 is bigger than 9.9.'
+        }
+
         It 'The model stops to output in half way' {
             Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
 {

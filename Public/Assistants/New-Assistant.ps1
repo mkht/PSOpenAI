@@ -274,7 +274,7 @@ function New-Assistant {
                         Write-Error -Exception ([System.ArgumentException]::new('JsonSchema must be specified.'))
                     }
                     else {
-                        $PostBody.response_format.json_schema = ConvertFrom-Json $JsonSchema -Depth 64 -NoEnumerate
+                        $PostBody.response_format.json_schema = ConvertFrom-Json $JsonSchema
                     }
                 }
             }
