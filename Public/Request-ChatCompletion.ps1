@@ -194,6 +194,10 @@ function Request-ChatCompletion {
         else {
             $Engine = $Model
         }
+
+        # Set params for PS 7.x while still supporting 5.1
+        $PSDefaultParameterValues['ConvertFrom-Json:Depth'] = 64
+        $PSDefaultParameterValues['ConvertFrom-Json:NoEnumerate'] = $true
     }
 
     process {
