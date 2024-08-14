@@ -222,12 +222,12 @@ In this method, the Answer is set to a JSON string. How you parse this is up to 
 $Result.Answer[0]
 #> {
 #>   "reasoning_steps":[
-#>     "Identify the two numbers being compared: 9.11 and 9.9.",
-#>     "Recognize that both numbers take the form of decimals.",
-#>     "Determine which decimal has a larger value by comparing the numbers directly.",
-#>     "9.11 has one digit in the hundredths place (1) while 9.9 has no digits in the hundredths place, effectively being 9.90.",
-#>     "Since 9.11 (9.110) is greater than 9.90, conclude that 9.11 is bigger."
+#>     "We need to compare two decimal numbers: 9.11 and 9.9.",
+#>     "First, we can write the two numbers with the same number of decimal places for easier comparison: 9.11 and 9.90.",
+#>     "Now we compare the numbers digit by digit from left to right:",
+#>     "The whole number part of both is 9, so we look at the first decimal place after the point: 1 in 9.11 and 9 in 9.90.",
+#>     "Since 1 is less than 9, we can conclude that 9.11 is less than 9.90."
 #>   ],
-#>   "answer":"9.11 is bigger than 9.9."
+#>  "answer":"9.9 is bigger than 9.11."
 #> }
 ```
