@@ -211,8 +211,7 @@ $ownJsonSchema = @'
 # Request to chat completion
 $Result = Request-ChatCompletion `
             -Model "gpt-4o-mini" `
-            -SystemMessage "9.11 and 9.9 -- which is bigger?" `
-            -Message $TextMessage `
+            -Message "9.11 and 9.9 -- which is bigger?" `
             -Format "json_schema" `
             -JsonSchema $ownJsonSchema
 ```
