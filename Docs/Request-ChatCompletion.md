@@ -90,13 +90,13 @@ PS C:\> Request-ChatCompletion 'Please describe ChatGPT in 100 charactors.' -Str
 ```PowerShell
 PS C:\> $PingFunction = New-ChatCompletionFunction -Command 'Test-Connection' -IncludeParameters ('TargetName','Count')
 PS C:\> $Message = 'Ping the Google Public DNS address three times and briefly report the results.'
-PS C:\> $GPTPingAnswer = Request-ChatCompletion -Message $Message -Model gpt-3.5-turbo-1106 -Tools $PingFunction -InvokeTools Auto
+PS C:\> $GPTPingAnswer = Request-ChatCompletion -Message $Message -Model gpt-4o -Tools $PingFunction -InvokeTools Auto
 PS C:\> $GPTPingAnswer | select Answer
 ```
 
 ### Example 5: Image input (Vision)
 ```PowerShell
-PS C:\> Request-ChatCompletion -Message $Message -Model gpt-4-vision-preview -Images "C:\image.png"
+PS C:\> Request-ChatCompletion -Message $Message -Model gpt-4o -Images "C:\image.png"
 ```
 
 ## PARAMETERS

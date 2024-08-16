@@ -61,10 +61,10 @@ Describe 'Get-OpenAIModels' {
         }
 
         It 'Get a specific AI model.' {
-            { $script:Models = Get-OpenAIModels -Name 'gpt-3.5-turbo-instruct' -ErrorAction Stop } | Should -Not -Throw
+            { $script:Models = Get-OpenAIModels -Name 'gpt-4o-mini' -ErrorAction Stop } | Should -Not -Throw
             $Models.GetType().Name | Should -Be 'PSCustomObject'
             @($Models).Count | Should -Be 1
-            $Models.id | Should -Be 'gpt-3.5-turbo-instruct'
+            $Models.id | Should -Be 'gpt-4o-mini'
             $Models.created | Should -BeOfType [datetime]
         }
 

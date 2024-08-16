@@ -148,10 +148,10 @@ Write-Output $Result.Answer
 ```
 
 > [!TIP]  
-> デフォルトで使用するモデルはGPT-3.5です。  
-> GPT-4を使用したい場合はモデル名を明示的に指定してください。  
+> デフォルトで使用するモデルはGPT-3.5-Turboです。  
+> GPT-4oなど他のモデルを使用したい場合はモデル名を明示的に指定してください。  
 > ```PowerShell
-> Request-ChatCompletion -Message "Who are you?" -Model "gpt-4"
+> Request-ChatCompletion -Message "Who are you?" -Model "gpt-4o"
 > ```
 > 
 

@@ -57,8 +57,8 @@ Creates and executes a batch from an uploaded file. You need to upload formatted
 ### Example 2
 ```powershell
 PS C:\> $BatchInputs = @()
-PS C:\> $BatchInputs += Request-ChatCompletion -Message 'Good morning.' -Model gpt-3.5-turbo -AsBatch -CustomBatchId 'custom-1'
-PS C:\> $BatchInputs += Request-ChatCompletion -Message 'Good night.' -Model gpt-3.5-turbo -AsBatch -CustomBatchId 'custom-2'
+PS C:\> $BatchInputs += Request-ChatCompletion -Message 'Good morning.' -Model gpt-4o-mini -AsBatch -CustomBatchId 'custom-1'
+PS C:\> $BatchInputs += Request-ChatCompletion -Message 'Good night.' -Model gpt-4o-mini -AsBatch -CustomBatchId 'custom-2'
 
 PS C:\> Start-Batch -InputObject $BatchInputs
 ```

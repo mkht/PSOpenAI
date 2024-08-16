@@ -25,11 +25,11 @@ $env:OPENAI_API_KEY = '<Put your API key here>'
 # Create 3 items for batch request
 $BatchItems = @()
 # item-1
-$BatchItems += Request-ChatCompletion -Message 'Hello.' -Model 'gpt-3.5-turbo' -AsBatch -CustomBatchId 'item-1'
+$BatchItems += Request-ChatCompletion -Message 'Hello.' -Model 'gpt-4o-mini' -AsBatch -CustomBatchId 'item-1'
 # item-2
-$BatchItems += Request-ChatCompletion -Message 'What is a hot dog?' -Model 'gpt-3.5-turbo' -AsBatch -CustomBatchId 'item-2'
+$BatchItems += Request-ChatCompletion -Message 'What is a hot dog?' -Model 'gpt-4o-mini' -AsBatch -CustomBatchId 'item-2'
 # item-3
-$BatchItems += Request-ChatCompletion -Message 'How do I say delicious in German?' -Model 'gpt-3.5-turbo' -AsBatch -CustomBatchId 'item-3'
+$BatchItems += Request-ChatCompletion -Message 'How do I say delicious in German?' -Model 'gpt-4o-mini' -AsBatch -CustomBatchId 'item-3'
 ```
 
 The important thing is to add an `-AsBatch` switch to `Request-ChatCompletion`. This creates an object for the batch instead of making an API request immediately.

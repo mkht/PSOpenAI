@@ -152,10 +152,10 @@ I am an AI language model created by OpenAI, designed to assist with ...
 ```
 
 > [!TIP]  
-> The default model used is GPT-3.5.  
-> If you can and want to use GPT-4, you can specifies model explicitly like this.  
+> The default model used is GPT-3.5-Turbo.  
+> If you want to use other models such as GPT-4o, you can specifies model explicitly like this.  
 > ```PowerShell
-> Request-ChatCompletion -Message "Who are you?" -Model "gpt-4"
+> Request-ChatCompletion -Message "Who are you?" -Model "gpt-4o"
 > ```
 
 

@@ -227,7 +227,7 @@ Describe 'Stop-ThreadRun' {
         }
 
         It 'Create thread' {
-            $script:Assistant = New-Assistant -Model gpt-3.5-turbo
+            $script:Assistant = New-Assistant -Model gpt-4o-mini
             $script:Thread = New-Thread | Add-ThreadMessage -Message 'How many people lives in Canada?' -PassThru
             $script:Run = $script:Thread | Start-ThreadRun -Assistant $script:Assistant
             { $script:Result = $script:Run | Stop-ThreadRun -Force -PassThru -TimeoutSec 30 -ea Stop } | Should -Not -Throw

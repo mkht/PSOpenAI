@@ -322,7 +322,7 @@ Describe 'Start-ThreadRun' {
     Context 'Integration tests (online)' -Tag 'Online' {
 
         BeforeAll {
-            $script:Assistant = New-Assistant -Model gpt-3.5-turbo
+            $script:Assistant = New-Assistant -Model gpt-4o-mini
         }
 
         BeforeEach {
