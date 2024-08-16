@@ -15,6 +15,7 @@ function Convert-ModelToEncoding {
         'gpt-35-turbo' { 'cl100k_base'; continue }  # Azure deployment name
         'gpt-4' { 'cl100k_base'; continue }
         'gpt-4o-*' { 'o200k_base'; continue }
+        'chatgpt-4o-*' { 'o200k_base'; continue }
         'gpt-4o' { 'o200k_base'; continue }
         # base
         'davince-002' { 'cl100k_base'; continue }

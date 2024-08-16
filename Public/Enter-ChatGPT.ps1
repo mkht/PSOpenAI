@@ -7,6 +7,7 @@ function Enter-ChatGPT {
             'gpt-4',
             'gpt-4o',
             'gpt-4o-mini',
+            'chatgpt-4o-latest',
             'gpt-3.5-turbo-16k',
             'gpt-3.5-turbo-0613',
             'gpt-3.5-turbo-16k-0613',
