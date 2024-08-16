@@ -1,4 +1,7 @@
 # Changelog
+### 4.2.0
+- Add support for new `chatgpt-4o-latest` model.
+
 ### 4.1.1
 - Fixed issue that occurred when using `json_schema` in Windows PowerShell 5.1 (#30)
 

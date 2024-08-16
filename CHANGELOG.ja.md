@@ -1,4 +1,7 @@
 # 変更履歴
+### 4.2.0
+- 新しい `chatgpt-4o-latest` モデルをサポート
+
 ### 4.1.1
 - Windows PowerShell 5.1 で`-Format`に`json_schema`を指定した場合に発生するエラーを修正
 

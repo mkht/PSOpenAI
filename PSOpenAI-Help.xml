@@ -12247,7 +12247,7 @@ En septembre 2021, la population estimée des États-Unis est d'environ 331,4 mi
         <maml:title>----------------- Example 4: Function calling -----------------</maml:title>
         <dev:code>PS C:\&gt; $PingFunction = New-ChatCompletionFunction -Command 'Test-Connection' -IncludeParameters ('TargetName','Count')
 PS C:\&gt; $Message = 'Ping the Google Public DNS address three times and briefly report the results.'
-PS C:\&gt; $GPTPingAnswer = Request-ChatCompletion -Message $Message -Model gpt-3.5-turbo-1106 -Tools $PingFunction -InvokeTools Auto
+PS C:\&gt; $GPTPingAnswer = Request-ChatCompletion -Message $Message -Model gpt-4o -Tools $PingFunction -InvokeTools Auto
 PS C:\&gt; $GPTPingAnswer | select Answer</dev:code>
         <dev:remarks>
           <maml:para></maml:para>
@@ -12255,7 +12255,7 @@ PS C:\&gt; $GPTPingAnswer | select Answer</dev:code>
       </command:example>
       <command:example>
         <maml:title>--------------- Example 5: Image input (Vision) ---------------</maml:title>
-        <dev:code>PS C:\&gt; Request-ChatCompletion -Message $Message -Model gpt-4-vision-preview -Images "C:\image.png"</dev:code>
+        <dev:code>PS C:\&gt; Request-ChatCompletion -Message $Message -Model gpt-4o -Images "C:\image.png"</dev:code>
         <dev:remarks>
           <maml:para></maml:para>
         </dev:remarks>
@@ -17158,8 +17158,8 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
       <command:example>
         <maml:title>-------------------------- Example 2 --------------------------</maml:title>
         <dev:code>PS C:\&gt; $BatchInputs = @()
-PS C:\&gt; $BatchInputs += Request-ChatCompletion -Message 'Good morning.' -Model gpt-3.5-turbo -AsBatch -CustomBatchId 'custom-1'
-PS C:\&gt; $BatchInputs += Request-ChatCompletion -Message 'Good night.' -Model gpt-3.5-turbo -AsBatch -CustomBatchId 'custom-2'
+PS C:\&gt; $BatchInputs += Request-ChatCompletion -Message 'Good morning.' -Model gpt-4o-mini -AsBatch -CustomBatchId 'custom-1'
+PS C:\&gt; $BatchInputs += Request-ChatCompletion -Message 'Good night.' -Model gpt-4o-mini -AsBatch -CustomBatchId 'custom-2'
 
 PS C:\&gt; Start-Batch -InputObject $BatchInputs</dev:code>
         <dev:remarks>
