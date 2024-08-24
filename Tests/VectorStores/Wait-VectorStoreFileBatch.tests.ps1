@@ -120,6 +120,26 @@ Describe 'Wait-VectorStoreFileBatch' {
             $Result | Should -BeNullOrEmpty
         }
 
+        It 'Custom polling intervals' {
+            Mock -Verifiable -ModuleName $script:ModuleName Get-VectorStoreFileBatch {
+                Start-Sleep -Seconds 0.2
+                [pscustomobject]@{
+                    PSTypeName        = 'PSOpenAI.VectorStore.FileBatch'
+                    'id'              = 'vsfb_abc123'
+                    'vector_store_id' = 'vs_abc123'
+                    'status'          = 'in_progress'
+                }
+            }
+            $InObject = [PSCustomObject]@{
+                PSTypeName      = 'PSOpenAI.VectorStore.FileBatch'
+                id              = 'vsfb_abc123'
+                vector_store_id = 'vs_abc123'
+                status          = 'in_progress'
+            }
+            { $script:Result = Wait-VectorStoreFileBatch -Batch $InObject -TimeoutSec 2 -PollIntervalSec 100 -ea Stop } | Should -Throw -ExceptionType ([OperationCanceledException])
+            Should -Invoke Get-VectorStoreFileBatch -ModuleName $script:ModuleName -Times 1 -Exactly
+        }
+
         Context 'Parameter Sets' {
             BeforeAll {
                 Mock -Verifiable -ModuleName $script:ModuleName Get-VectorStoreFileBatch {

@@ -20,6 +20,7 @@ Wait-ThreadRun
     [-StatusForExit <String[]>]
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
+    [-PollIntervalSec <Float>]
     [-ApiBase <Uri>]
     [-ApiKey <SecureString>]
     [-Organization <String>]
@@ -114,6 +115,17 @@ Type: Int32
 Required: False
 Position: Named
 Default value: 0
+```
+
+### -PollIntervalSec
+Specifies the interval in seconds to poll the status of the run.
+The default value is `1`.
+
+```yaml
+Type: Float
+Required: False
+Position: Named
+Default value: 1
 ```
 
 ### -ApiBase

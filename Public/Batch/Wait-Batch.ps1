@@ -20,6 +20,10 @@ function Wait-Batch {
         [int]$MaxRetryCount = 0,
 
         [Parameter()]
+        [ValidateRange(0, 1000)]
+        [float]$PollIntervalSec = 1.0,
+
+        [Parameter()]
         [OpenAIApiType]$ApiType = [OpenAIApiType]::OpenAI,
 
         [Parameter()]
@@ -106,11 +110,14 @@ function Wait-Batch {
 
         try {
             [uint32]$PollCounter = 0
+            [uint32]$PollIntervalMilliSec = $PollIntervalSec * 1000
+            [uint32]$InitialPollIntervalMilliSec = $PollIntervalMilliSec / 3
             $ProgressTitle = 'Waiting for completion...'
             do {
                 #Wait
                 $innerBatchObject = $null
-                Start-CancelableWait -Milliseconds ([System.Math]::Min((200 * ($PollCounter++)), 1000)) -CancellationToken $Cancellation.Token -ea Stop
+                $WaitMilliSec = [System.Math]::Min(($InitialPollIntervalMilliSec * ($PollCounter++)), $PollIntervalMilliSec)
+                Start-CancelableWait -Milliseconds $WaitMilliSec -CancellationToken $Cancellation.Token -ea Stop
                 $innerBatchObject = PSOpenAI\Get-Batch -BatchId $BatchId @CommonParams
                 Write-Progress -Activity $ProgressTitle -Status ('The status of batch with id "{0}" is "{1}"' -f $innerBatchObject.id, $innerBatchObject.status) -PercentComplete -1
             } while ($innerBatchObject.status -and $innerBatchObject.status -in $innerStatusForWait)

@@ -124,6 +124,28 @@ Describe 'Wait-ThreadRun' {
             $Result | Should -BeNullOrEmpty
         }
 
+        It 'Custom polling intervals' {
+            Mock -Verifiable -ModuleName $script:ModuleName Get-ThreadRun {
+                Start-Sleep -Seconds 0.1
+                [pscustomobject]@{
+                    PSTypeName  = 'PSOpenAI.Thread.Run'
+                    'id'        = 'run_abc123'
+                    'object'    = 'thread.run'
+                    'thread_id' = 'thread_abc123'
+                    'status'    = 'in_progress'
+                }
+            }
+            $InObject = [PSCustomObject]@{
+                PSTypeName = 'PSOpenAI.Thread.Run'
+                id         = 'run_abc123'
+                thread_id  = 'thread_abc123'
+                status     = 'in_progress'
+            }
+            { $script:Result = Wait-ThreadRun -InputObject $InObject -TimeoutSec 2 -PollIntervalSec 100 -ea Stop } | Should -Throw -ExceptionType ([OperationCanceledException])
+            Should -Invoke Get-ThreadRun -ModuleName $script:ModuleName -Times 1
+            $Result | Should -BeNullOrEmpty
+        }
+
         Context 'Parameter Sets' {
             BeforeAll {
                 Mock -Verifiable -ModuleName $script:ModuleName Get-ThreadRun {

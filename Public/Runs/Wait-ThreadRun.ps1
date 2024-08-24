@@ -24,6 +24,10 @@ function Wait-ThreadRun {
         [int]$MaxRetryCount = 0,
 
         [Parameter()]
+        [ValidateRange(0, 1000)]
+        [float]$PollIntervalSec = 1.0,
+
+        [Parameter()]
         [OpenAIApiType]$ApiType = [OpenAIApiType]::OpenAI,
 
         [Parameter()]
@@ -121,11 +125,14 @@ function Wait-ThreadRun {
 
         try {
             [uint32]$PollCounter = 0
+            [uint32]$PollIntervalMilliSec = $PollIntervalSec * 1000
+            [uint32]$InitialPollIntervalMilliSec = $PollIntervalMilliSec / 3
             $ProgressTitle = 'Waiting for completes...'
             do {
                 #Wait
                 $innerRunObject = $null
-                Start-CancelableWait -Milliseconds ([System.Math]::Min((200 * ($PollCounter++)), 1000)) -CancellationToken $Cancellation.Token -ea Stop
+                $WaitMilliSec = [System.Math]::Min(($InitialPollIntervalMilliSec * ($PollCounter++)), $PollIntervalMilliSec)
+                Start-CancelableWait -Milliseconds $WaitMilliSec -CancellationToken $Cancellation.Token -ea Stop
                 $innerRunObject = PSOpenAI\Get-ThreadRun @GetThreadRunparams
                 Write-Progress -Activity $ProgressTitle -Status ('The status of run with id "{0}" is "{1}"' -f $innerRunObject.id, $innerRunObject.status) -PercentComplete -1
             } while ($innerRunObject.status -and $innerRunObject.status -in $innerStatusForWait)

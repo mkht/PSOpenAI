@@ -105,7 +105,26 @@ Describe 'Wait-Batch' {
                 status     = 'in_progress'
             }
             { $script:Result = Wait-Batch -InputObject $InObject -TimeoutSec 2 -ea Stop } | Should -Throw -ExceptionType ([OperationCanceledException])
-            Should -Invoke Get-Batch -ModuleName $script:ModuleName -Times 1
+            Should -Invoke Get-Batch -ModuleName $script:ModuleName -Times 3
+            $Result | Should -BeNullOrEmpty
+        }
+
+        It 'Custom polling intervals' {
+            Mock -Verifiable -ModuleName $script:ModuleName Get-Batch {
+                Start-Sleep -Seconds 0.1
+                [pscustomobject]@{
+                    PSTypeName = 'PSOpenAI.Batch'
+                    'id'       = 'batch_abc123'
+                    'status'   = 'in_progress'
+                }
+            }
+            $InObject = [PSCustomObject]@{
+                PSTypeName = 'PSOpenAI.Batch'
+                id         = 'batch_abc123'
+                status     = 'in_progress'
+            }
+            { $script:Result = Wait-Batch -InputObject $InObject -TimeoutSec 2 -PollIntervalSec 100 -ea Stop } | Should -Throw -ExceptionType ([OperationCanceledException])
+            Should -Invoke Get-Batch -ModuleName $script:ModuleName -Times 1 -Exactly
             $Result | Should -BeNullOrEmpty
         }
 
