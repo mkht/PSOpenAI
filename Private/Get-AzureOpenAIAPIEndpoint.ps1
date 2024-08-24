@@ -17,7 +17,7 @@ function Get-AzureOpenAIAPIEndpoint {
     )
 
     $ApiVersion = $ApiVersion.Trim()
-    $DefaultApiVersion = '2024-05-01-preview'
+    $DefaultApiVersion = '2024-07-01-preview'
 
     $UriBuilder = [System.UriBuilder]::new($ApiBase)
     if ($UriBuilder.Path.StartsWith('//', [StringComparison]::Ordinal)) {
@@ -30,10 +30,11 @@ function Get-AzureOpenAIAPIEndpoint {
             $UriBuilder.Path += ('/openai/deployments/{0}/chat/completions' -f $Engine.Replace('/', '').Trim())
             $UriBuilder.Query = ('api-version={0}' -f $InnerApiVersion)
             @{
-                Name        = 'chat.completion'
-                Method      = 'Post'
-                Uri         = $UriBuilder.Uri
-                ContentType = 'application/json'
+                Name          = 'chat.completion'
+                Method        = 'Post'
+                Uri           = $UriBuilder.Uri
+                ContentType   = 'application/json'
+                BatchEndpoint = '/v1/chat/completions'
             }
             continue
         }
@@ -42,10 +43,11 @@ function Get-AzureOpenAIAPIEndpoint {
             $UriBuilder.Path += ('/openai/deployments/{0}/completions' -f $Engine.Replace('/', '').Trim())
             $UriBuilder.Query = ('api-version={0}' -f $InnerApiVersion)
             @{
-                Name        = 'text.completion'
-                Method      = 'Post'
-                Uri         = $UriBuilder.Uri
-                ContentType = 'application/json'
+                Name          = 'text.completion'
+                Method        = 'Post'
+                Uri           = $UriBuilder.Uri
+                ContentType   = 'application/json'
+                BatchEndpoint = '/v1/completions'
             }
             continue
         }
@@ -189,6 +191,17 @@ function Get-AzureOpenAIAPIEndpoint {
             $UriBuilder.Query = ('api-version={0}' -f $InnerApiVersion)
             @{
                 Name        = 'thread_and_run'
+                Method      = 'Post'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+            continue
+        }
+        'Batch' {
+            $InnerApiVersion = if ($ApiVersion) { $ApiVersion }else { $DefaultApiVersion }
+            $UriBuilder.Path += '/openai/batches'
+            @{
+                Name        = 'batches'
                 Method      = 'Post'
                 Uri         = $UriBuilder.Uri
                 ContentType = 'application/json'
