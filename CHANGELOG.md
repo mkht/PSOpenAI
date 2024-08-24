@@ -1,4 +1,9 @@
 # Changelog
+### Unreleased
+- Add `-PollIntervalSec` param for `Wait-*` functions.
+- Update default api version of Azure OpenAI Service to `2024-07-01-preview`
+- Fix misc bugs related to Azure OpenAI Service.
+
 ### 4.2.0
 - Add support for new `chatgpt-4o-latest` model.
 
