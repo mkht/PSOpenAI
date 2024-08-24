@@ -135,7 +135,9 @@ function Get-Batch {
         #endregion
 
         #region Output
-        if ($Response.object -eq 'list' -and ($null -ne $Response.data)) {
+        ## NOTE: In Azure API version 2024-07-01-preview, the response does not have 'object' property. (It seems that is a bug.)
+        # if ($Response.object -eq 'list' -and ($null -ne $Response.data)) {
+        if ($null -ne $Response.data) {
             # List of object
             $Responses = @($Response.data)
         }

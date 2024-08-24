@@ -73,7 +73,7 @@ function Start-Batch {
         # Parse Common params
         $CommonParams = ParseCommonParams $PSBoundParameters
 
-        $StartTime = [datetime]::Now.ToUniversalTime()
+        $StartTime = [System.DateTimeOffset]::Now.ToUniversalTime().ToUnixTimeSeconds()
         $BatchBag = [System.Collections.Generic.List[string]]::new()
     }
 
@@ -114,10 +114,13 @@ function Start-Batch {
             }
             # Should upload data first
             $bytedata = [System.Text.Encoding]::UTF8.GetBytes($BatchBag -join "`n")
-            $filename = ('batch-psopenai_{0}_{1:x4}.jsonl' -f $StartTime.ToString('s'), (Get-Random -Maximum 65535))
+            $filename = ('batch-psopenai_{0}_{1:x4}.jsonl' -f $StartTime, (Get-Random -Maximum 65535))
             Write-Verbose -Message ('Uploading a batch data to OpenAI. (File name: "{0}")' -f $filename)
             $fileobject = PSOpenAI\Add-OpenAIFile -Content $bytedata -Name $filename -Purpose 'batch' @CommonParams
             Write-Verbose -Message ('Batch data is successfully uploaded. (File ID: "{0}")' -f $fileobject.id)
+            if ($fileobject.status -and $fileobject.status -ne 'processed') {
+                $fileobject = Wait-OpenAIFileStatus -FileId $fileobject.id -StatusForWait ('pending', 'running') @CommonParams
+            }
             $FileId = $fileobject.id
         }
         elseif ($PSCmdlet.ParameterSetName -ceq 'File') {

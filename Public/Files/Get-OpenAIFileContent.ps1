@@ -77,7 +77,7 @@ function Get-OpenAIFileContent {
         $params = @{
             Method            = 'Get'
             Uri               = $QueryUri
-            ContentType       = $OpenAIParameter.ContentType
+            # ContentType       = $OpenAIParameter.ContentType
             TimeoutSec        = $OpenAIParameter.TimeoutSec
             MaxRetryCount     = $OpenAIParameter.MaxRetryCount
             ApiKey            = $OpenAIParameter.ApiKey

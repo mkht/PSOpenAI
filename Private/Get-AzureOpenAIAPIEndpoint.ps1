@@ -34,7 +34,7 @@ function Get-AzureOpenAIAPIEndpoint {
                 Method        = 'Post'
                 Uri           = $UriBuilder.Uri
                 ContentType   = 'application/json'
-                BatchEndpoint = '/v1/chat/completions'
+                BatchEndpoint = '/chat/completions'
             }
             continue
         }
@@ -47,7 +47,7 @@ function Get-AzureOpenAIAPIEndpoint {
                 Method        = 'Post'
                 Uri           = $UriBuilder.Uri
                 ContentType   = 'application/json'
-                BatchEndpoint = '/v1/completions'
+                BatchEndpoint = '/completions'
             }
             continue
         }
@@ -200,6 +200,7 @@ function Get-AzureOpenAIAPIEndpoint {
         'Batch' {
             $InnerApiVersion = if ($ApiVersion) { $ApiVersion }else { $DefaultApiVersion }
             $UriBuilder.Path += '/openai/batches'
+            $UriBuilder.Query = ('api-version={0}' -f $InnerApiVersion)
             @{
                 Name        = 'batches'
                 Method      = 'Post'

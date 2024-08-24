@@ -241,7 +241,7 @@ function Request-ChatCompletion {
         #region Construct parameters for API request
         $Response = $null
         $PostBody = [System.Collections.Specialized.OrderedDictionary]::new()
-        if ($OpenAIParameter.ApiType -eq [OpenAIApiType]::OpenAI) {
+        if ($OpenAIParameter.ApiType -eq [OpenAIApiType]::OpenAI -or $AsBatch) {
             $PostBody.model = $Model
         }
         if ($PSBoundParameters.ContainsKey('Tools')) {
