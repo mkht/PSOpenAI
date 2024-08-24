@@ -38,6 +38,9 @@ Describe 'New-Thread' {
     }
 
     Context 'Integration tests (online)' -Tag 'Online' {
+        BeforeAll {
+            Clear-OpenAIContext
+        }
 
         BeforeEach {
             $script:Result = ''
@@ -45,6 +48,40 @@ Describe 'New-Thread' {
 
         AfterEach {
             $script:Result | Remove-Thread -ea SilentlyContinue
+        }
+
+        It 'Create thread' {
+            { $script:Result = New-Thread -ea Stop } | Should -Not -Throw
+            $Result.id | Should -BeLike 'thread_*'
+            $Result.created_at | Should -BeOfType [datetime]
+            $Result.Messages.GetType().Fullname | Should -Be 'System.Object[]'
+            $Result.Messages | Should -HaveCount 0
+        }
+    }
+
+    Context 'Integration tests (Azure)' -Tag 'Azure' {
+        BeforeAll {
+            # Set Context for Azure OpenAI
+            $AzureContext = @{
+                ApiType    = 'Azure'
+                AuthType   = 'Azure'
+                ApiKey     = $env:AZURE_OPENAI_API_KEY
+                ApiBase    = $env:AZURE_OPENAI_ENDPOINT
+                TimeoutSec = 30
+            }
+            Set-OpenAIContext @AzureContext
+        }
+
+        BeforeEach {
+            $script:Result = ''
+        }
+
+        AfterEach {
+            $script:Result | Remove-Thread -ea SilentlyContinue
+        }
+
+        AfterAll {
+            Clear-OpenAIContext
         }
 
         It 'Create thread' {

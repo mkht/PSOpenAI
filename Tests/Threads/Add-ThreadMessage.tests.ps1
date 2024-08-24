@@ -13,7 +13,8 @@ Describe 'Add-ThreadMessage' {
         BeforeAll {
             Mock -ModuleName $script:ModuleName Initialize-APIKey { [securestring]::new() }
             Mock -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $PesterBoundParameters }
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest {
+                @'
 {
     "id": "msg_abc123",
     "object": "thread.message",
@@ -34,7 +35,8 @@ Describe 'Add-ThreadMessage' {
     "attachments": [],
     "metadata": {}
 }
-'@ }
+'@
+            }
             Mock -Verifiable -ModuleName $script:ModuleName Get-Thread {
                 [pscustomobject]@{
                     id         = 'thread_abc123'
@@ -188,6 +190,10 @@ Describe 'Add-ThreadMessage' {
 
     Context 'Integration tests (online)' -Tag 'Online' {
 
+        BeforeAll {
+            Clear-OpenAIContext
+        }
+
         BeforeEach {
             $script:Result = ''
         }
@@ -227,24 +233,68 @@ Describe 'Add-ThreadMessage' {
                 $Result.Messages[1].content[0].text.value | Should -BeExactly ' How'
                 $Result.Messages[2].content[0].text.value | Should -BeExactly ' are you?'
             }
+
+            It 'Add thread message with image url' {
+                $thread = New-Thread
+                { $splat = @{
+                        Message     = 'Please explain about this image.'
+                        Images      = 'https://upload.wikimedia.org/wikipedia/commons/8/8c/Churchillaan_16_%28132%29_-_131070_-_onroerenderfgoed.jpg'
+                        PassThru    = $true
+                        ErrorAction = 'Stop'
+                    }
+                    $script:Result = $thread | Add-ThreadMessage @splat
+                } | Should -Not -Throw
+                $Result.id | Should -BeLike 'thread_*'
+                $Result.created_at | Should -BeOfType [datetime]
+                $Result.Messages.GetType().Fullname | Should -Be 'System.Object[]'
+                $Result.Messages | Should -HaveCount 1
+                $Result.Messages | Should -HaveCount 1
+                $Result.Messages[0].content[0].text.value | Should -BeExactly 'Please explain about this image.'
+                $Result.Messages[0].content[1].type | Should -Be 'image_url'
+            }
         }
 
-        It 'Add thread message with image url' {
-            $thread = New-Thread
-            { $splat = @{
-                    Message     = 'Please explain about this image.'
-                    Images      = 'https://upload.wikimedia.org/wikipedia/commons/8/8c/Churchillaan_16_%28132%29_-_131070_-_onroerenderfgoed.jpg'
-                    PassThru    = $true
-                    ErrorAction = 'Stop'
+        Context 'Integration tests (Azure)' -Tag 'Azure' {
+
+            BeforeAll {
+                # Set Context for Azure OpenAI
+                $AzureContext = @{
+                    ApiType    = 'Azure'
+                    AuthType   = 'Azure'
+                    ApiKey     = $env:AZURE_OPENAI_API_KEY
+                    ApiBase    = $env:AZURE_OPENAI_ENDPOINT
+                    TimeoutSec = 30
                 }
-                $script:Result = $thread | Add-ThreadMessage @splat
-            } | Should -Not -Throw
-            $Result.id | Should -BeLike 'thread_*'
-            $Result.created_at | Should -BeOfType [datetime]
-            $Result.Messages.GetType().Fullname | Should -Be 'System.Object[]'
-            $Result.Messages | Should -HaveCount 1
-            $Result.Messages | Should -HaveCount 1
-            $Result.Messages[0].content[0].text.value | Should -BeExactly 'Please explain about this image.'
-            $Result.Messages[0].content[1].type | Should -Be 'image_url'
+                Set-OpenAIContext @AzureContext
+                $script:Model = 'gpt-4o-mini'
+            }
+
+            BeforeEach {
+                $script:Result = ''
+            }
+
+            AfterEach {
+                $script:Result | Remove-Thread -ea SilentlyContinue
+            }
+
+            AfterAll {
+                Clear-OpenAIContext
+            }
+
+            It 'Add thread message' {
+                $thread = New-Thread
+                { $splat = @{
+                        Message     = 'How does AI work? Explain it in simple terms.'
+                        PassThru    = $true
+                        ErrorAction = 'Stop'
+                    }
+                    $script:Result = $thread | Add-ThreadMessage @splat
+                } | Should -Not -Throw
+                $Result.id | Should -BeLike 'thread_*'
+                $Result.created_at | Should -BeOfType [datetime]
+                $Result.Messages.GetType().Fullname | Should -Be 'System.Object[]'
+                $Result.Messages | Should -HaveCount 1
+                $Result.Messages[0].content[0].text.value | Should -BeExactly 'How does AI work? Explain it in simple terms.'
+            }
         }
     }

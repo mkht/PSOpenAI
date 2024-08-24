@@ -69,12 +69,46 @@ Describe 'Get-OpenAIFileContent' {
 
     Context 'Integration tests (online)' -Tag 'Online' {
         BeforeAll {
+            Clear-OpenAIContext
+
             # Upload test files
             $script:File1 = Add-OpenAIFile -File ($script:TestData + '/my-data.jsonl') -Purpose fine-tune
         }
 
         AfterEach {
             $script:File1 | Remove-OpenAIFile -ea SilentlyContinue
+        }
+
+        It 'Save content to local file' {
+            $OutFile = (Join-Path $TestDrive 'my-data.jsonl')
+            { Get-OpenAIFileContent -FileId $script:File1.id -OutFile $OutFile -ea Stop } | Should -Not -Throw
+            $OutFile | Should -Exist
+        }
+    }
+
+    Context 'Integration tests (online)' -Tag 'Online' {
+        BeforeAll {
+            # Set Context for Azure OpenAI
+            $AzureContext = @{
+                ApiType    = 'Azure'
+                AuthType   = 'Azure'
+                ApiKey     = $env:AZURE_OPENAI_API_KEY
+                ApiBase    = $env:AZURE_OPENAI_ENDPOINT
+                TimeoutSec = 30
+            }
+            Set-OpenAIContext @AzureContext
+
+            # Upload test files
+            $script:File1 = Add-OpenAIFile -File ($script:TestData + '/my-data.jsonl') -Purpose fine-tune
+        }
+
+        AfterEach {
+            Start-Sleep -Seconds 5
+            $script:File1 | Remove-OpenAIFile -ea SilentlyContinue
+        }
+
+        AfterAll {
+            Clear-OpenAIContext
         }
 
         It 'Save content to local file' {

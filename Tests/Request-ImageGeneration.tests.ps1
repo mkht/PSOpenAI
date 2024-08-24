@@ -61,6 +61,10 @@ Describe 'Request-ImageGeneration' {
 
     Context 'Integration tests (online)' -Tag 'Online' {
 
+        BeforeAll {
+            Clear-OpenAIContext
+        }
+
         BeforeEach {
             $script:Result = ''
         }
@@ -133,6 +137,42 @@ Describe 'Request-ImageGeneration' {
                     ErrorAction   = 'Stop'
                 }
                 $script:Result = Request-ImageGeneration @params
+            } | Should -Not -Throw
+            $Result | Should -BeOfType [string]
+            $Result | Should -Match '^https://'
+        }
+    }
+
+    Context 'Integration tests (Azure)' -Tag 'Azure' {
+
+        BeforeAll {
+            $AzureContext = @{
+                ApiType    = 'Azure'
+                AuthType   = 'Azure'
+                ApiKey     = $env:AZURE_OPENAI_API_KEY
+                ApiBase    = $env:AZURE_OPENAI_ENDPOINT
+                TimeoutSec = 30
+            }
+            Set-OpenAIContext @AzureContext
+        }
+
+        BeforeEach {
+            $script:Result = ''
+        }
+
+        AfterAll {
+            Clear-OpenAIContext
+        }
+
+        It 'Image generation. Format = url' {
+            { $splat = @{
+                    Model       = 'dall-e-3'
+                    Prompt      = 'A polar bear on an ice block'
+                    Format      = 'url'
+                    Size        = 1024
+                    ErrorAction = 'Stop'
+                }
+                $script:Result = Request-ImageGeneration @splat
             } | Should -Not -Throw
             $Result | Should -BeOfType [string]
             $Result | Should -Match '^https://'

@@ -66,6 +66,10 @@ Describe 'New-Assistant' {
     }
 
     Context 'Integration tests (online)' -Tag 'Online' {
+        BeforeAll {
+            Clear-OpenAIContext
+        }
+
         BeforeEach {
             $script:Result = ''
         }
@@ -94,6 +98,52 @@ Describe 'New-Assistant' {
             $Result.description | Should -Be 'Test assistant'
             $Result.model | Should -Be 'gpt-4o-mini'
             $Result.instructions | Should -Be 'Do it'
+            $Result.tools | Should -HaveCount 2
+        }
+    }
+
+    Context 'Integration tests (Azure)' -Tag 'Azure' {
+        BeforeAll {
+            # Set Context for Azure OpenAI
+            $AzureContext = @{
+                ApiType    = 'Azure'
+                AuthType   = 'Azure'
+                ApiKey     = $env:AZURE_OPENAI_API_KEY
+                ApiBase    = $env:AZURE_OPENAI_ENDPOINT
+                TimeoutSec = 30
+            }
+            Set-OpenAIContext @AzureContext
+            $script:Model = 'gpt-4o-mini'
+        }
+
+        BeforeEach {
+            $script:Result = ''
+        }
+
+        AfterEach {
+            $script:Result | Remove-Assistant -ea SilentlyContinue
+        }
+
+        AfterAll {
+            Clear-OpenAIContext
+        }
+
+        It 'Create assistant (full param)' {
+            $RandomName = ('TEST' + (Get-Random -Maximum 1000))
+            { $params = @{
+                    Name               = $RandomName
+                    Model              = $script:Model
+                    Description        = 'Test assistant'
+                    Instructions       = 'Do it'
+                    UseCodeInterpreter = $true
+                    UseFileSearch      = $true
+                    ErrorAction        = 'Stop'
+                }
+                $script:Result = New-Assistant @params
+            } | Should -Not -Throw
+            $Result.object | Should -BeExactly 'assistant'
+            $Result.name | Should -Be $RandomName
+            $Result.description | Should -Be 'Test assistant'
             $Result.tools | Should -HaveCount 2
         }
     }

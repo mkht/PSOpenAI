@@ -292,6 +292,8 @@ Describe 'Get-ThreadMessage' {
     Context 'Integration tests (online)' -Tag 'Online' {
 
         BeforeAll {
+            Clear-OpenAIContext
+
             #Prepare test thread object with 25 messages
             $msgs = [string[]]'Hi' * 25
             $script:thread = New-Thread -Messages $msgs
@@ -303,6 +305,49 @@ Describe 'Get-ThreadMessage' {
 
         AfterAll {
             $script:thread | Remove-Thread -ea SilentlyContinue
+        }
+
+        It 'Get thread messages' {
+            { $script:Result = $script:thread | Get-ThreadMessage -ea Stop } | Should -Not -Throw
+            $Result | Should -HaveCount 20
+        }
+
+        It 'Get thread messages with limit' {
+            { $script:Result = $script:thread | Get-ThreadMessage -Limit 3 -ea Stop } | Should -Not -Throw
+            $Result | Should -HaveCount 3
+        }
+
+        It 'Get ALL thread messages' {
+            { $script:Result = $script:thread | Get-ThreadMessage -All -ea Stop } | Should -Not -Throw
+            $Result | Should -HaveCount 25
+        }
+    }
+
+    Context 'Integration tests (Azure)' -Tag 'Azure' {
+
+        BeforeAll {
+            # Set Context for Azure OpenAI
+            $AzureContext = @{
+                ApiType    = 'Azure'
+                AuthType   = 'Azure'
+                ApiKey     = $env:AZURE_OPENAI_API_KEY
+                ApiBase    = $env:AZURE_OPENAI_ENDPOINT
+                TimeoutSec = 30
+            }
+            Set-OpenAIContext @AzureContext
+
+            #Prepare test thread object with 25 messages
+            $msgs = [string[]]'Hi' * 25
+            $script:thread = New-Thread -Messages $msgs
+        }
+
+        BeforeEach {
+            $script:Result = ''
+        }
+
+        AfterAll {
+            $script:thread | Remove-Thread -ea SilentlyContinue
+            Clear-OpenAIContext
         }
 
         It 'Get thread messages' {

@@ -94,6 +94,9 @@ Describe 'Get-Thread' {
     }
 
     Context 'Integration tests (online)' -Tag 'Online' {
+        BeforeAll {
+            Clear-OpenAIContext
+        }
 
         BeforeEach {
             $script:Result = ''
@@ -104,6 +107,50 @@ Describe 'Get-Thread' {
                 $script:thread | Remove-Thread
                 $script:thread = $null
             }
+        }
+
+        It 'Get thread' {
+            $script:thread = New-Thread
+            { $script:Result = $thread | Get-Thread -ea Stop } | Should -Not -Throw
+            $Result.id | Should -BeLike 'thread_*'
+            $Result.created_at | Should -BeOfType [datetime]
+            $Result.Messages.GetType().Fullname | Should -Be 'System.Object[]'
+            $Result.Messages | Should -HaveCount 0
+        }
+
+        It 'Error on non existent thread' {
+            $thread_id = 'thread_notexit'
+            { $thread_id | Get-Thread -ea Stop } | Should -Throw
+        }
+    }
+
+    Context 'Integration tests (online)' -Tag 'Online' {
+        BeforeAll {
+            # Set Context for Azure OpenAI
+            $AzureContext = @{
+                ApiType    = 'Azure'
+                AuthType   = 'Azure'
+                ApiKey     = $env:AZURE_OPENAI_API_KEY
+                ApiBase    = $env:AZURE_OPENAI_ENDPOINT
+                TimeoutSec = 30
+            }
+            Set-OpenAIContext @AzureContext
+            $script:Model = 'gpt-4o-mini'
+        }
+
+        BeforeEach {
+            $script:Result = ''
+        }
+
+        AfterEach {
+            if ($script:thread) {
+                $script:thread | Remove-Thread
+                $script:thread = $null
+            }
+        }
+
+        AfterAll {
+            Clear-OpenAIContext
         }
 
         It 'Get thread' {

@@ -217,6 +217,10 @@ Describe 'Stop-ThreadRun' {
 
     Context 'Integration tests (online)' -Tag 'Online' {
 
+        BeforeAll {
+            Clear-OpenAIContext
+        }
+
         BeforeEach {
             $script:Result = ''
         }
@@ -226,9 +230,50 @@ Describe 'Stop-ThreadRun' {
             $script:Thread | Remove-Thread -ea SilentlyContinue
         }
 
-        It 'Create thread' {
+        It 'Create thread, then cancel it' {
             $script:Assistant = New-Assistant -Model gpt-4o-mini
             $script:Thread = New-Thread | Add-ThreadMessage -Message 'How many people lives in Canada?' -PassThru
+            $script:Run = $script:Thread | Start-ThreadRun -Assistant $script:Assistant
+            { $script:Result = $script:Run | Stop-ThreadRun -Force -PassThru -TimeoutSec 30 -ea Stop } | Should -Not -Throw
+            $Result.id | Should -Be $script:Run.id
+            $Result.thread_id | Should -Be $script:Thread.id
+            $Result.assistant_id | Should -BeLike $script:Assistant.id
+            $Result.object | Should -Be 'thread.run'
+            $Result.status | Should -BeIn @('cancelling', 'cancelled')
+        }
+    }
+
+    Context 'Integration tests (Azure)' -Tag 'Azure' {
+        BeforeAll {
+            # Set Context for Azure OpenAI
+            $AzureContext = @{
+                ApiType    = 'Azure'
+                AuthType   = 'Azure'
+                ApiKey     = $env:AZURE_OPENAI_API_KEY
+                ApiBase    = $env:AZURE_OPENAI_ENDPOINT
+                TimeoutSec = 30
+            }
+            Set-OpenAIContext @AzureContext
+
+            $script:Model = 'gpt-4o-mini'
+        }
+
+        BeforeEach {
+            $script:Result = ''
+        }
+
+        AfterEach {
+            $script:Assistant | Remove-Assistant -ea SilentlyContinue
+            $script:Thread | Remove-Thread -ea SilentlyContinue
+        }
+
+        AfterAll {
+            Clear-OpenAIContext
+        }
+
+        It 'Create thread, then cancel it' {
+            $script:Assistant = New-Assistant -Model $script:Model
+            $script:Thread = New-Thread | Add-ThreadMessage -Message 'How many people lives in China?' -PassThru
             $script:Run = $script:Thread | Start-ThreadRun -Assistant $script:Assistant
             { $script:Result = $script:Run | Stop-ThreadRun -Force -PassThru -TimeoutSec 30 -ea Stop } | Should -Not -Throw
             $Result.id | Should -Be $script:Run.id

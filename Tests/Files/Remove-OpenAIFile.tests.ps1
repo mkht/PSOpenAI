@@ -62,12 +62,43 @@ Describe 'Remove-OpenAIFile' {
 
     Context 'Integration tests (online)' -Tag 'Online' {
         BeforeAll {
+            Clear-OpenAIContext
+
             # Upload test files
             $script:File1 = Add-OpenAIFile -File ($script:TestData + '/my-data.jsonl') -Purpose fine-tune
         }
 
         BeforeEach {
             $script:Result = ''
+        }
+
+        It 'Remove a file' {
+            { Remove-OpenAIFile -ID $script:File1.id -ea Stop } | Should -Not -Throw
+        }
+    }
+
+    Context 'Integration tests (Azure)' -Tag 'Azure' {
+        BeforeAll {
+            # Set Context for Azure OpenAI
+            $AzureContext = @{
+                ApiType    = 'Azure'
+                AuthType   = 'Azure'
+                ApiKey     = $env:AZURE_OPENAI_API_KEY
+                ApiBase    = $env:AZURE_OPENAI_ENDPOINT
+                TimeoutSec = 30
+            }
+            Set-OpenAIContext @AzureContext
+
+            # Upload test files
+            $script:File1 = Add-OpenAIFile -File ($script:TestData + '/my-data.jsonl') -Purpose fine-tune
+        }
+
+        BeforeEach {
+            $script:Result = ''
+        }
+
+        AfterAll {
+            Clear-OpenAIContext
         }
 
         It 'Remove a file' {

@@ -62,6 +62,9 @@ Describe 'Remove-Assistant' {
     }
 
     Context 'Integration tests (online)' -Tag 'Online' {
+        BeforeAll {
+            Clear-OpenAIContext
+        }
 
         BeforeEach {
             $script:Result = ''
@@ -77,7 +80,37 @@ Describe 'Remove-Assistant' {
         It 'Error on non existent assistant' {
             $assistant_id = 'asst_notexit'
             { $assistant_id | Remove-Assistant -ea Stop } | Should -Throw
-            Should -Not -InvokeVerifiable
+        }
+    }
+
+    Context 'Integration tests (Azure)' -Tag 'Azure' {
+        BeforeAll {
+            # Set Context for Azure OpenAI
+            $AzureContext = @{
+                ApiType    = 'Azure'
+                AuthType   = 'Azure'
+                ApiKey     = $env:AZURE_OPENAI_API_KEY
+                ApiBase    = $env:AZURE_OPENAI_ENDPOINT
+                TimeoutSec = 30
+            }
+            Set-OpenAIContext @AzureContext
+            $script:Model = 'gpt-4o-mini'
+        }
+
+        BeforeEach {
+            $script:Result = ''
+        }
+
+        AfterAll {
+            Clear-OpenAIContext
+        }
+
+
+        It 'Remove assistant' {
+            $assistant = New-Assistant -Model $script:Model
+            { $assistant | Remove-Assistant -ea Stop } | Should -Not -Throw
+            $assistant = try { $assistant | Get-Assistant -ea Ignore }catch {}
+            $assistant | Should -BeNullOrEmpty
         }
     }
 }

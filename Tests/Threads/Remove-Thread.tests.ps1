@@ -72,9 +72,47 @@ Describe 'Remove-Thread' {
     }
 
     Context 'Integration tests (online)' -Tag 'Online' {
+        BeforeAll {
+            Clear-OpenAIContext
+        }
 
         BeforeEach {
             $script:Result = ''
+        }
+
+        It 'Remove thread' {
+            $thread = New-Thread
+            { $thread | Remove-Thread -ea Stop } | Should -Not -Throw
+            $thread = try { $thread | Get-Thread -ea Ignore }catch {}
+            $thread | Should -BeNullOrEmpty
+        }
+
+        It 'Error on non existent thread' {
+            $thread_id = 'thread_notexit'
+            { $thread_id | Remove-Thread -ea Stop } | Should -Throw
+            Should -Not -InvokeVerifiable
+        }
+    }
+
+    Context 'Integration tests (Azure)' -Tag 'Azure' {
+        BeforeAll {
+            # Set Context for Azure OpenAI
+            $AzureContext = @{
+                ApiType    = 'Azure'
+                AuthType   = 'Azure'
+                ApiKey     = $env:AZURE_OPENAI_API_KEY
+                ApiBase    = $env:AZURE_OPENAI_ENDPOINT
+                TimeoutSec = 30
+            }
+            Set-OpenAIContext @AzureContext
+        }
+
+        BeforeEach {
+            $script:Result = ''
+        }
+
+        AfterAll {
+            Clear-OpenAIContext
         }
 
         It 'Remove thread' {

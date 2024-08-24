@@ -504,6 +504,10 @@ Describe 'Request-ChatCompletion' {
 
     Context 'Integration tests (online)' -Tag 'Online' {
 
+        BeforeAll {
+            Clear-OpenAIContext
+        }
+
         BeforeEach {
             $script:Result = ''
 
@@ -748,7 +752,7 @@ Describe 'Request-ChatCompletion' {
 
         It 'Image input (url)' {
             $RemoteImageUrl = 'https://upload.wikimedia.org/wikipedia/commons/a/a8/Dons_Coaches_coach_1957_Bedford_SB3_Yeates_Europa_NKY_161_at_Aldham_Old_Tyme_Rally_2014.jpg'
-            { $script:Result = Request-ChatCompletion -Model 'gpt-4o' -Message "What's in this image?" -Images ($RemoteImageUrl) -ImageDetail Low  -TimeoutSec 30 -ea Stop } | Should -Not -Throw
+            { $script:Result = Request-ChatCompletion -Model 'gpt-4o-mini' -Message "What's in this image?" -Images ($RemoteImageUrl) -ImageDetail Low  -TimeoutSec 30 -ea Stop } | Should -Not -Throw
             $Result | Should -BeOfType [pscustomobject]
             $Result.object | Should -Be 'chat.completion'
             $Result.Answer | Should -HaveCount 1
@@ -760,7 +764,7 @@ Describe 'Request-ChatCompletion' {
         }
 
         It 'Image input (local file)' {
-            { $script:Result = Request-ChatCompletion -Model 'gpt-4o' -Message "What's in this image?" -Images ($script:TestData + '/sweets_donut.png')  -TimeoutSec 30 -ea Stop } | Should -Not -Throw
+            { $script:Result = Request-ChatCompletion -Model 'gpt-4o-mini' -Message "What's in this image?" -Images ($script:TestData + '/sweets_donut.png')  -TimeoutSec 30 -ea Stop } | Should -Not -Throw
             $Result | Should -BeOfType [pscustomobject]
             $Result.object | Should -Be 'chat.completion'
             $Result.Answer | Should -HaveCount 1
@@ -769,6 +773,55 @@ Describe 'Request-ChatCompletion' {
             $Result.Message | Should -Be "What's in this image?"
             $Result.History[0].Role | Should -Be 'user'
             $Result.History[1].Role | Should -Be 'assistant'
+        }
+    }
+
+    Context 'Integration tests (Azure OpenAI)' -Tag 'Azure' {
+
+        BeforeAll {
+            # Set Context for Azure OpenAI
+            $AzureContext = @{
+                ApiType    = 'Azure'
+                AuthType   = 'Azure'
+                ApiKey     = $env:AZURE_OPENAI_API_KEY
+                ApiBase    = $env:AZURE_OPENAI_ENDPOINT
+                TimeoutSec = 30
+            }
+            Set-OpenAIContext @AzureContext
+
+            # Deploymenet name
+            $script:Model = 'gpt-4o-mini'
+        }
+
+        BeforeEach {
+            $script:Result = ''
+        }
+
+        AfterAll {
+            Clear-OpenAIContext
+        }
+
+        It 'Chat completion' {
+            { $script:Result = Request-ChatCompletion -Message '君の名は？' -Model $script:Model -ea Stop } | Should -Not -Throw
+            $Result | Should -BeOfType [pscustomobject]
+            $Result.object | Should -Be 'chat.completion'
+            $Result.Answer | Should -HaveCount 1
+            # content_filter_results has only in Azure API
+            $Result.choices[0].content_filter_results | Should -Not -BeNullOrEmpty
+        }
+
+        It 'Stream output' {
+            $params = @{
+                Model               = $script:Model
+                Message             = 'Please describe about Azure'
+                MaxTokens           = 32
+                Stream              = $true
+                InformationVariable = 'Info'
+                ErrorAction         = 'Stop'
+            }
+            $Result = Request-ChatCompletion @params | Select-Object -First 10
+            $Result | Should -HaveCount 10
+            ([string[]]$Info) | Should -Be ([string[]]$Result)
         }
     }
 }

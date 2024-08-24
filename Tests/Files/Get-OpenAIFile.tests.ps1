@@ -131,6 +131,8 @@ Describe 'Get-OpenAIFile' {
 
     Context 'Integration tests (online)' -Tag 'Online' {
         BeforeAll {
+            Clear-OpenAIContext
+
             # Upload test files
             $script:File1 = Add-OpenAIFile -File ($script:TestData + '/sweets_donut.png') -Purpose assistants
             $script:File2 = Add-OpenAIFile -File ($script:TestData + '/my-data.jsonl') -Purpose fine-tune
@@ -142,6 +144,53 @@ Describe 'Get-OpenAIFile' {
 
         AfterAll {
             ($script:File1, $script:File2) | Remove-OpenAIFile -ea SilentlyContinue
+        }
+
+        It 'Get a single object with file ID' {
+            { $script:Result = Get-OpenAIFile -ID $script:File1.id -ea Stop } | Should -Not -Throw
+            $Result.id | Should -BeExactly $script:File1.id
+            $Result.object | Should -BeExactly 'file'
+            $Result.filename | Should -Be 'sweets_donut.png'
+        }
+
+        It 'Get all files.' {
+            { $script:Result = Get-OpenAIFile -ea Stop } | Should -Not -Throw
+            @($Result).Count | Should -BeGreaterOrEqual 2
+        }
+
+        It 'Get specified purpose files.' {
+            { $script:Result = Get-OpenAIFile -Purpose fine-tune -ea Stop } | Should -Not -Throw
+            @($Result).Count | Should -BeGreaterOrEqual 1
+            $Result.id | Should -Contain $script:File2.id
+            $Result.filename | Should -Contain 'my-data.jsonl'
+        }
+    }
+
+    Context 'Integration tests (Azure)' -Tag 'Azure' {
+        BeforeAll {
+            # Set Context for Azure OpenAI
+            $AzureContext = @{
+                ApiType    = 'Azure'
+                AuthType   = 'Azure'
+                ApiKey     = $env:AZURE_OPENAI_API_KEY
+                ApiBase    = $env:AZURE_OPENAI_ENDPOINT
+                TimeoutSec = 30
+            }
+            Set-OpenAIContext @AzureContext
+
+            # Upload test files
+            $script:File1 = Add-OpenAIFile -File ($script:TestData + '/sweets_donut.png') -Purpose assistants
+            $script:File2 = Add-OpenAIFile -File ($script:TestData + '/my-data.jsonl') -Purpose fine-tune
+        }
+
+        BeforeEach {
+            $script:Result = ''
+        }
+
+        AfterAll {
+            Start-Sleep -Seconds 5
+            ($script:File1, $script:File2) | Remove-OpenAIFile -ea SilentlyContinue
+            Clear-OpenAIContext
         }
 
         It 'Get a single object with file ID' {

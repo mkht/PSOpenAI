@@ -50,6 +50,10 @@ Describe 'Request-Embeddings' {
 
     Context 'Integration tests (online)' -Tag 'Online' {
 
+        BeforeAll {
+            Clear-OpenAIContext
+        }
+
         BeforeEach {
             $script:Result = ''
         }
@@ -86,6 +90,38 @@ Describe 'Request-Embeddings' {
             $Result.data | Should -HaveCount 1
             $Result.data[0].embedding | Should -BeOfType [string]
             [System.Convert]::FromBase64String($Result.data[0].embedding) | Should -HaveCount (1536 * 4)
+        }
+    }
+
+    Context 'Integration tests (Azure)' -Tag 'Azure' {
+        BeforeAll {
+            # Set Context for Azure OpenAI
+            $AzureContext = @{
+                ApiType    = 'Azure'
+                AuthType   = 'Azure'
+                ApiKey     = $env:AZURE_OPENAI_API_KEY
+                ApiBase    = $env:AZURE_OPENAI_ENDPOINT
+                TimeoutSec = 30
+            }
+            Set-OpenAIContext @AzureContext
+
+            $script:Model = 'text-embedding-ada-002'
+        }
+
+        BeforeEach {
+            $script:Result = ''
+        }
+
+        AfterAll {
+            Clear-OpenAIContext
+        }
+
+        It 'Get vector representation of text' {
+            { $script:Result = Request-Embeddings -Text 'Banana' -Model $script:Model -TimeoutSec 30 -ea Stop } | Should -Not -Throw
+            $Result | Should -BeOfType [pscustomobject]
+            $Result.data | Should -HaveCount 1
+            , $Result.data[0].embedding | Should -BeOfType [float[]]
+            $Result.data[0].embedding | Should -HaveCount 1536
         }
     }
 }

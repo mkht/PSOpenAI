@@ -61,6 +61,9 @@ Describe 'Remove-ThreadMessage' {
     }
 
     Context 'Integration tests (online)' -Tag 'Online' {
+        BeforeAll {
+            Clear-OpenAIContext
+        }
 
         BeforeEach {
             $script:Result = ''
@@ -82,6 +85,41 @@ Describe 'Remove-ThreadMessage' {
         It 'Error on non existent thread message' {
             $script:Thread = New-Thread | Add-ThreadMessage -Message 'Hello' -PassThru
             { $script:Thread | Remove-ThreadMessage -MessageId 'invalid_msg_id' -TimeoutSec 30 -ea Stop } | Should -Throw
+        }
+    }
+
+    Context 'Integration tests (Azure)' -Tag 'Azure' {
+        BeforeAll {
+            # Set Context for Azure OpenAI
+            $AzureContext = @{
+                ApiType    = 'Azure'
+                AuthType   = 'Azure'
+                ApiKey     = $env:AZURE_OPENAI_API_KEY
+                ApiBase    = $env:AZURE_OPENAI_ENDPOINT
+                TimeoutSec = 30
+            }
+            Set-OpenAIContext @AzureContext
+        }
+
+        BeforeEach {
+            $script:Result = ''
+        }
+
+        AfterEach {
+            $script:Thread | Remove-Thread -TimeoutSec 30 -MaxRetryCount 5
+            $script:Thread = $null
+        }
+
+        AfterAll {
+            Clear-OpenAIContext
+        }
+
+        It 'Remove thread message' {
+            $script:Thread = New-Thread | Add-ThreadMessage -Message 'Hello' -PassThru
+            $threadmessage = $script:Thread | Get-ThreadMessage
+            $threadmessage | Should -HaveCount 1
+            { $script:Thread | Remove-ThreadMessage -MessageId $threadmessage.id -TimeoutSec 30 -MaxRetryCount 5 -ea Stop } | Should -Not -Throw
+            $script:Thread | Get-ThreadMessage | Should -HaveCount 0
         }
     }
 }

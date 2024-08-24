@@ -78,6 +78,10 @@ Describe 'Add-OpenAIFile' {
             $script:Result = ''
         }
 
+        AfterAll {
+            Clear-OpenAIContext
+        }
+
         AfterEach {
             if ($script:Result.id) {
                 $script:Result | Remove-OpenAIFile -ea SilentlyContinue
@@ -106,6 +110,41 @@ Describe 'Add-OpenAIFile' {
             $Result.id | Should -BeLike 'file*'
             $Result.object | Should -BeExactly 'file'
             $Result.filename | Should -Be '日本語テキスト.txt'
+        }
+    }
+
+    Context 'Integration tests (Azure)' -Tag 'Azure' {
+        BeforeAll {
+            # Set Context for Azure OpenAI
+            $AzureContext = @{
+                ApiType    = 'Azure'
+                AuthType   = 'Azure'
+                ApiKey     = $env:AZURE_OPENAI_API_KEY
+                ApiBase    = $env:AZURE_OPENAI_ENDPOINT
+                TimeoutSec = 30
+            }
+            Set-OpenAIContext @AzureContext
+        }
+
+        BeforeEach {
+            $script:Result = ''
+        }
+
+        AfterEach {
+            if ($script:Result.id) {
+                $script:Result | Remove-OpenAIFile -ea SilentlyContinue
+            }
+        }
+
+        AfterAll {
+            Clear-OpenAIContext
+        }
+
+        It 'Upload test file' {
+            { $script:Result = Add-OpenAIFile -File ($script:TestData + '/my-data.jsonl') -Purpose fine-tune -ea Stop } | Should -Not -Throw
+            $Result.id | Should -BeLike 'file*'
+            $Result.object | Should -BeExactly 'file'
+            $Result.filename | Should -Be 'my-data.jsonl'
         }
     }
 }
