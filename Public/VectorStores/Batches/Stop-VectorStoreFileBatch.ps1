@@ -91,7 +91,10 @@ function Stop-VectorStoreFileBatch {
         }
 
         #region Construct Query URI
-        $QueryUri = ($OpenAIParameter.Uri.ToString() -f $VectorStoreId) + "/$BatchId/cancel"
+        $QueryUri = $OpenAIParameter.Uri.ToString() -f $VectorStoreId
+        $UriBuilder = [System.UriBuilder]::new($QueryUri)
+        $UriBuilder.Path += "/$BatchId/cancel"
+        $QueryUri = $UriBuilder.Uri
         #endregion
 
         #region Send API Request

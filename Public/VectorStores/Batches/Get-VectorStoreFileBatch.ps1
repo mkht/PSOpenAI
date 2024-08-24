@@ -82,7 +82,10 @@ function Get-VectorStoreFileBatch {
         }
 
         #region Construct Query URI
-        $QueryUri = ($OpenAIParameter.Uri.ToString() -f $VectorStoreId) + "/$BatchId"
+        $QueryUri = $OpenAIParameter.Uri.ToString() -f $VectorStoreId
+        $UriBuilder = [System.UriBuilder]::new($QueryUri)
+        $UriBuilder.Path += "/$BatchId"
+        $QueryUri = $UriBuilder.Uri
         #endregion
 
         #region Send API Request

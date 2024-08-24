@@ -73,7 +73,7 @@ function Remove-OpenAIFile {
         $params = @{
             Method            = 'Delete'
             Uri               = $QueryUri
-            ContentType       = $OpenAIParameter.ContentType
+            # ContentType       = $OpenAIParameter.ContentType
             TimeoutSec        = $OpenAIParameter.TimeoutSec
             MaxRetryCount     = $OpenAIParameter.MaxRetryCount
             ApiKey            = $OpenAIParameter.ApiKey
