@@ -188,7 +188,6 @@ Describe 'Get-OpenAIFile' {
         }
 
         AfterAll {
-            Start-Sleep -Seconds 5
             ($script:File1, $script:File2) | Remove-OpenAIFile -ea SilentlyContinue
             Clear-OpenAIContext
         }

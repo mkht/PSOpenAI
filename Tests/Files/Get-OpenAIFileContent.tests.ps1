@@ -103,7 +103,6 @@ Describe 'Get-OpenAIFileContent' {
         }
 
         AfterEach {
-            Start-Sleep -Seconds 5
             $script:File1 | Remove-OpenAIFile -ea SilentlyContinue
         }
 
