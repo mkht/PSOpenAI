@@ -101,7 +101,7 @@ Describe 'Wait-VectorStoreFileBatch' {
 
         It 'Error on timeout' {
             Mock -Verifiable -ModuleName $script:ModuleName Get-VectorStoreFileBatch {
-                Start-Sleep -Seconds 0.5
+                Start-Sleep -Seconds 0.2
                 [pscustomobject]@{
                     PSTypeName        = 'PSOpenAI.VectorStore.FileBatch'
                     'id'              = 'vsfb_abc123'
