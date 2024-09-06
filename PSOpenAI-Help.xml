@@ -5048,6 +5048,18 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Include</maml:name>
+          <maml:description>
+            <maml:para>A list of additional fields to include in the response.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>TimeoutSec</maml:name>
           <maml:description>
             <maml:para>Specifies how long the request can be pending before it times out.
@@ -5160,6 +5172,18 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
           <dev:defaultValue>asc</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Include</maml:name>
+          <maml:description>
+            <maml:para>A list of additional fields to include in the response.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>TimeoutSec</maml:name>
           <maml:description>
             <maml:para>Specifies how long the request can be pending before it times out.
@@ -5269,6 +5293,18 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
             <maml:uri />
           </dev:type>
           <dev:defaultValue>asc</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Include</maml:name>
+          <maml:description>
+            <maml:para>A list of additional fields to include in the response.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>TimeoutSec</maml:name>
@@ -5413,6 +5449,18 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
           <maml:uri />
         </dev:type>
         <dev:defaultValue>asc</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Include</maml:name>
+        <maml:description>
+          <maml:para>A list of additional fields to include in the response.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+        <dev:type>
+          <maml:name>String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>TimeoutSec</maml:name>
@@ -7245,6 +7293,30 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>RankerForFileSearch</maml:name>
+          <maml:description>
+            <maml:para>The ranker to use for the file search. If not specified will use the auto ranker.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>ScoreThresholdForFileSearch</maml:name>
+          <maml:description>
+            <maml:para>The score threshold for the file search. All values must be a floating point number between 0 and 1.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">double</command:parameterValue>
+          <dev:type>
+            <maml:name>double</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>Temperature</maml:name>
           <maml:description>
             <maml:para>What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic.</maml:para>
@@ -7510,6 +7582,30 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <command:parameterValue required="true" variableLength="false">UInt16</command:parameterValue>
         <dev:type>
           <maml:name>UInt16</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>RankerForFileSearch</maml:name>
+        <maml:description>
+          <maml:para>The ranker to use for the file search. If not specified will use the auto ranker.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>ScoreThresholdForFileSearch</maml:name>
+        <maml:description>
+          <maml:para>The score threshold for the file search. All values must be a floating point number between 0 and 1.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">double</command:parameterValue>
+        <dev:type>
+          <maml:name>double</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -15403,6 +15499,30 @@ We serves
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>RankerForFileSearch</maml:name>
+          <maml:description>
+            <maml:para>The ranker to use for the file search. If not specified will use the auto ranker.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>ScoreThresholdForFileSearch</maml:name>
+          <maml:description>
+            <maml:para>The score threshold for the file search. All values must be a floating point number between 0 and 1.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">double</command:parameterValue>
+          <dev:type>
+            <maml:name>double</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>FileIdsForFileSearch</maml:name>
           <maml:description>
             <maml:para>A list of file IDs to add to the vector store. There can be a maximum of 10000 files in a vector store.</maml:para>
@@ -15680,6 +15800,30 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <command:parameterValue required="true" variableLength="false">UInt16</command:parameterValue>
         <dev:type>
           <maml:name>UInt16</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>RankerForFileSearch</maml:name>
+        <maml:description>
+          <maml:para>The ranker to use for the file search. If not specified will use the auto ranker.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>ScoreThresholdForFileSearch</maml:name>
+        <maml:description>
+          <maml:para>The score threshold for the file search. All values must be a floating point number between 0 and 1.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">double</command:parameterValue>
+        <dev:type>
+          <maml:name>double</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -17267,6 +17411,18 @@ You can create a batch input item by using the Request-ChatCompletion cmdlet wit
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Include</maml:name>
+          <maml:description>
+            <maml:para>A list of additional fields to include in the response.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>FileIdsForCodeInterpreter</maml:name>
           <maml:description>
             <maml:para>A list of file IDs made available to the code_interpreter tool. There can be a maximum of 20 files associated with the tool.</maml:para>
@@ -17715,6 +17871,18 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <command:parameterValue required="true" variableLength="false">Object[]</command:parameterValue>
         <dev:type>
           <maml:name>Object[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Include</maml:name>
+        <maml:description>
+          <maml:para>A list of additional fields to include in the response.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+        <dev:type>
+          <maml:name>String[]</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -19455,6 +19623,18 @@ Note : Retries will only be performed if the request fails with a `429 (Rate lim
           <dev:defaultValue>0</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>PollIntervalSec</maml:name>
+          <maml:description>
+            <maml:para>Specifies the interval in seconds to poll the batch status. The default value is `1`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Float</command:parameterValue>
+          <dev:type>
+            <maml:name>Float</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>1.0</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>ApiBase</maml:name>
           <maml:description>
             <maml:para>Specifies an API endpoint URL such like: `https://your-api-endpoint.test/v1`
@@ -19565,6 +19745,18 @@ Note : Retries will only be performed if the request fails with a `429 (Rate lim
           <maml:uri />
         </dev:type>
         <dev:defaultValue>0</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>PollIntervalSec</maml:name>
+        <maml:description>
+          <maml:para>Specifies the interval in seconds to poll the batch status. The default value is `1`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Float</command:parameterValue>
+        <dev:type>
+          <maml:name>Float</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>1.0</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>ApiBase</maml:name>
@@ -19765,6 +19957,18 @@ Note : Retries will only be performed if the request fails with a `429 (Rate lim
           <dev:defaultValue>0</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>PollIntervalSec</maml:name>
+          <maml:description>
+            <maml:para>Specifies the interval in seconds to poll the status of the run. The default value is `1`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Float</command:parameterValue>
+          <dev:type>
+            <maml:name>Float</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>1</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>ApiBase</maml:name>
           <maml:description>
             <maml:para>Specifies an API endpoint URL such like: `https://your-api-endpoint.test/v1`
@@ -19887,6 +20091,18 @@ Note : Retries will only be performed if the request fails with a `429 (Rate lim
           <maml:uri />
         </dev:type>
         <dev:defaultValue>0</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>PollIntervalSec</maml:name>
+        <maml:description>
+          <maml:para>Specifies the interval in seconds to poll the status of the run. The default value is `1`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Float</command:parameterValue>
+        <dev:type>
+          <maml:name>Float</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>1</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>ApiBase</maml:name>
@@ -20058,6 +20274,18 @@ Note : Retries will only be performed if the request fails with a `429 (Rate lim
           <dev:defaultValue>0</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>PollIntervalSec</maml:name>
+          <maml:description>
+            <maml:para>Specifies the interval in seconds to poll the batch status. The default value is `1`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Float</command:parameterValue>
+          <dev:type>
+            <maml:name>Float</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>1.0</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>ApiBase</maml:name>
           <maml:description>
             <maml:para>Specifies an API endpoint URL such like: `https://your-api-endpoint.test/v1`
@@ -20173,6 +20401,18 @@ Note : Retries will only be performed if the request fails with a `429 (Rate lim
             <maml:uri />
           </dev:type>
           <dev:defaultValue>0</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>PollIntervalSec</maml:name>
+          <maml:description>
+            <maml:para>Specifies the interval in seconds to poll the batch status. The default value is `1`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Float</command:parameterValue>
+          <dev:type>
+            <maml:name>Float</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>1.0</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>ApiBase</maml:name>
@@ -20297,6 +20537,18 @@ Note : Retries will only be performed if the request fails with a `429 (Rate lim
           <maml:uri />
         </dev:type>
         <dev:defaultValue>0</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>PollIntervalSec</maml:name>
+        <maml:description>
+          <maml:para>Specifies the interval in seconds to poll the batch status. The default value is `1`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Float</command:parameterValue>
+        <dev:type>
+          <maml:name>Float</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>1.0</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>ApiBase</maml:name>
