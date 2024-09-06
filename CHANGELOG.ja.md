@@ -1,4 +1,11 @@
 # 変更履歴
+### 4.3.0
+- `Get-ThreadRunStep`に`-Include`パラメータを追加します
+- `New-Assistant`に`-RankerForFileSearch`および`-ScoreThresholdForFileSearch`パラメータを追加します
+- `Wait-*`関数に`-PollIntervalSec`パラメータを追加します
+- Azure OpenAI ServiceのデフォルトAPIバージョンを`2024-07-01-preview`に更新します
+- Azure OpenAI Serviceに関連するいくつかのバグを修正します
+
 ### 4.2.0
 - 新しい `chatgpt-4o-latest` モデルをサポート
 

@@ -1,5 +1,5 @@
 # Changelog
-### Unreleased
+### 4.3.0
 - Add `-Include` param for `Get-ThreadRunStep`.
 - Add `-RankerForFileSearch` and `-ScoreThresholdForFileSearch` params for `New-Assistant`.
 - Add `-PollIntervalSec` param for `Wait-*` functions.
