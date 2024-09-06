@@ -81,13 +81,16 @@ Describe 'New-Assistant' {
         It 'Create assistant (full param)' {
             $RandomName = ('TEST' + (Get-Random -Maximum 1000))
             { $params = @{
-                    Name               = $RandomName
-                    Model              = 'gpt-4o-mini'
-                    Description        = 'Test assistant'
-                    Instructions       = 'Do it'
-                    UseCodeInterpreter = $true
-                    UseFileSearch      = $true
-                    ErrorAction        = 'Stop'
+                    Name                         = $RandomName
+                    Model                        = 'gpt-4o-mini'
+                    Description                  = 'Test assistant'
+                    Instructions                 = 'Do it'
+                    UseCodeInterpreter           = $true
+                    UseFileSearch                = $true
+                    MaxNumberOfFileSearchResults = 5
+                    RankerForFileSearch          = 'default_2024_08_21'
+                    ScoreThresholdForFileSearch  = 0.5
+                    ErrorAction                  = 'Stop'
                 }
                 $script:Result = New-Assistant @params
             } | Should -Not -Throw

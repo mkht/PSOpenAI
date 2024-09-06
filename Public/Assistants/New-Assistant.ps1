@@ -72,6 +72,14 @@ function New-Assistant {
         [uint16]$MaxNumberOfFileSearchResults,
 
         [Parameter()]
+        [Completions('auto')]
+        [string]$RankerForFileSearch = 'auto',
+
+        [Parameter()]
+        [ValidateRange(0.0, 1.0)]
+        [double]$ScoreThresholdForFileSearch = 0.0,
+
+        [Parameter()]
         [ValidateRange(0.0, 2.0)]
         [double]$Temperature,
 
@@ -153,9 +161,23 @@ function New-Assistant {
         }
         if ($UseFileSearch) {
             $fileseach = @{'type' = 'file_search' }
+
+            # Construct file search options
+            $fileseach_options = @{}
             if ($PSBoundParameters.ContainsKey('MaxNumberOfFileSearchResults')) {
-                $fileseach.max_num_results = $MaxNumberOfFileSearchResults
+                $fileseach_options.max_num_results = $MaxNumberOfFileSearchResults
             }
+            if ($PSBoundParameters.ContainsKey('RankerForFileSearch') -or `
+                    $PSBoundParameters.ContainsKey('ScoreThresholdForFileSearch')) {
+                $fileseach_options.ranking_options = @{}
+                $fileseach_options.ranking_options.ranker = $RankerForFileSearch
+                $fileseach_options.ranking_options.score_threshold = $ScoreThresholdForFileSearch
+            }
+
+            if ($fileseach_options.Keys.Count -gt 0) {
+                $fileseach.file_search = $fileseach_options
+            }
+
             $Tools += $fileseach
         }
         if ($Functions.Count -gt 0) {

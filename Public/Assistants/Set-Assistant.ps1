@@ -73,6 +73,14 @@ function Set-Assistant {
         [uint16]$MaxNumberOfFileSearchResults,
 
         [Parameter()]
+        [Completions('auto')]
+        [string]$RankerForFileSearch = 'auto',
+
+        [Parameter()]
+        [ValidateRange(0.0, 1.0)]
+        [double]$ScoreThresholdForFileSearch = 0.0,
+
+        [Parameter()]
         [ValidateRange(0.0, 2.0)]
         [double]$Temperature,
 
