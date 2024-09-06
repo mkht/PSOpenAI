@@ -60,6 +60,7 @@ Start-ThreadRun
     [-Instructions <String>]
     [-AdditionalInstructions <String>]
     [-AdditionalMessages <Object[]>]
+    [-Include <String[]>]
     [-MaxPromptTokens <Int32>]
     [-MaxCompletionTokens <Int32>]
     [-TruncationStrategyType <String>]
@@ -155,6 +156,15 @@ Adds additional messages to the thread before creating the run.
 ```yaml
 Type: Object[]
 Aliases: additional_messages
+Required: False
+Position: Named
+```
+
+### -Include
+A list of additional fields to include in the response.
+
+```yaml
+Type: String[]
 Required: False
 Position: Named
 ```

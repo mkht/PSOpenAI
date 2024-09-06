@@ -1,5 +1,7 @@
 # Changelog
 ### Unreleased
+- Add `-Include` param for `Get-ThreadRunStep`.
+- Add `-RankerForFileSearch` and `-ScoreThresholdForFileSearch` params for `New-Assistant`.
 - Add `-PollIntervalSec` param for `Wait-*` functions.
 - Update default api version of Azure OpenAI Service to `2024-07-01-preview`
 - Fix misc bugs related to Azure OpenAI Service.

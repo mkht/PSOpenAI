@@ -18,6 +18,7 @@ Get-ThreadRunStep
     [-RunId] <String>
     [-ThreadId] <String>
     [-StepId] <String>
+    [-Include <String[]>]
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
     [-ApiBase <Uri>]
@@ -30,10 +31,11 @@ Get-ThreadRunStep
 ```
 Get-ThreadRunStep
     [-RunId] <String>
-    [-ThreadId] <String>]
+    [-ThreadId] <String>
     [-All]
     [-Limit <Int32>]
     [-Order <String>]
+    [-Include <String[]>]
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
     [-ApiBase <Uri>]
@@ -123,6 +125,15 @@ Accepted values: asc, desc
 Required: False
 Position: Named
 Default value: asc
+```
+
+### -Include
+A list of additional fields to include in the response.
+
+```yaml
+Type: String[]
+Required: False
+Position: Named
 ```
 
 ### -TimeoutSec

@@ -51,11 +51,11 @@ function Get-ThreadRunStep {
         [string][LowerCaseTransformation()]$Order = 'asc',
 
         [Parameter()]
-        [int]$TimeoutSec = 0,
-
-        [Parameter()]
         [Completions('step_details.tool_calls[*].file_search.results[*].content')]
         [string[]]$Include,
+
+        [Parameter()]
+        [int]$TimeoutSec = 0,
 
         [Parameter()]
         [ValidateRange(0, 100)]

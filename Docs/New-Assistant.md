@@ -24,6 +24,8 @@ New-Assistant
     [-FileIdsForCodeInterpreter <Object[]>]
     [-VectorStoresForFileSearch <Object[]>]
     [-MaxNumberOfFileSearchResults <UInt16>]
+    [-RankerForFileSearch <String>]
+    [-ScoreThresholdForFileSearch <Double>]
     [-FileIdsForFileSearch <Object[]>]
     [-Temperature <Double>]
     [-TopP <Double>]
@@ -150,6 +152,24 @@ The maximum number of results the file search tool should output. This number sh
 
 ```yaml
 Type: UInt16
+Required: False
+Position: Named
+```
+
+### -RankerForFileSearch
+The ranker to use for the file search. If not specified will use the auto ranker.
+
+```yaml
+Type: String
+Required: False
+Position: Named
+```
+
+### -ScoreThresholdForFileSearch
+The score threshold for the file search. All values must be a floating point number between 0 and 1.
+
+```yaml
+Type: double
 Required: False
 Position: Named
 ```

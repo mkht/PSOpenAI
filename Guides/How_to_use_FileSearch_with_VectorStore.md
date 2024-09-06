@@ -38,7 +38,7 @@ $VectorStore | Add-VectorStoreFile -FileId "file-abc123"
 # Create a new Assistant with File Search Enabled
 $Assistant = New-Assistant `
     -Name "My Assistant" `
-    -Model "gpt-3.5-turbo" `
+    -Model "gpt-4o-mini" `
     -UseFileSearch `
     -VectorStoresForFileSearch $VectorStore `
     -Instructions "You are a helpful assistant. You have access to the files you need to answer questions. Always answer based on the contents of the file."
