@@ -52,6 +52,11 @@ function Start-ThreadRun {
         [Alias('additional_messages')]
         [object[]]$AdditionalMessages,
 
+        [Parameter(ParameterSetName = 'Run_Thread')]
+        [Parameter(ParameterSetName = 'Run_ThreadId')]
+        [Completions('step_details.tool_calls[*].file_search.results[*].content')]
+        [string[]]$Include,
+
         #region Parameters for Thread and Run
         [Parameter(Mandatory, ParameterSetName = 'ThreadAndRun')]
         [Alias('Text')]
@@ -220,12 +225,21 @@ function Start-ThreadRun {
             return
         }
 
+        #region Construct query url
         if ($PSCmdlet.ParameterSetName -like 'Run_*') {
             $QueryUri = ($OpenAIParameter.Uri.ToString() -f $ThreadID)
+            $UriBuilder = [System.UriBuilder]::new($QueryUri)
+            $QueryParam = [System.Web.HttpUtility]::ParseQueryString($UriBuilder.Query)
+            if ($PSBoundParameters.ContainsKey('Include')) {
+                $QueryParam.Add('include[]', $Include)
+            }
+            $UriBuilder.Query = $QueryParam.ToString()
+            $QueryUri = $UriBuilder.Uri
         }
         else {
             $QueryUri = $OpenAIParameter.Uri
         }
+        #endregion
 
         #region Construct parameters for API request
         $PostBody = [System.Collections.Specialized.OrderedDictionary]::new()

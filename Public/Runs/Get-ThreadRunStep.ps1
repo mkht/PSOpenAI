@@ -54,6 +54,10 @@ function Get-ThreadRunStep {
         [int]$TimeoutSec = 0,
 
         [Parameter()]
+        [Completions('step_details.tool_calls[*].file_search.results[*].content')]
+        [string[]]$Include,
+
+        [Parameter()]
         [ValidateRange(0, 100)]
         [int]$MaxRetryCount = 0,
 
@@ -121,12 +125,12 @@ function Get-ThreadRunStep {
         $QueryUri = ($OpenAIParameter.Uri.ToString() -f $ThreadId)
         $UriBuilder = [System.UriBuilder]::new($QueryUri)
         $UriBuilder.Path += "/$RunId/steps"
+        $QueryParam = [System.Web.HttpUtility]::ParseQueryString($UriBuilder.Query)
+
         if ($PSCmdlet.ParameterSetName -like 'Get_*') {
             $UriBuilder.Path += "/$StepId"
-            $QueryUri = $UriBuilder.Uri
         }
         else {
-            $QueryParam = [System.Web.HttpUtility]::ParseQueryString($UriBuilder.Query)
             if ($All) {
                 $Limit = 100
             }
@@ -138,9 +142,14 @@ function Get-ThreadRunStep {
             if ($Before) {
                 $QueryParam.Add('before', $Before);
             }
-            $UriBuilder.Query = $QueryParam.ToString()
-            $QueryUri = $UriBuilder.Uri
         }
+
+        if ($PSBoundParameters.ContainsKey('Include')) {
+            $QueryParam.Add('include[]', $Include)
+        }
+
+        $UriBuilder.Query = $QueryParam.ToString()
+        $QueryUri = $UriBuilder.Uri
         #endregion
 
         #region Send API Request
