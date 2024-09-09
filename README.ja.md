@@ -217,20 +217,6 @@ Request-ChatCompletion 'Describe ChatGPT in 100 charactors.' -Stream | Write-Hos
 
 ![Stream](/Docs/images/StreamOutput.gif)
 
-### 関数呼び出し
-
-関数呼び出し は Chat Completion API のオプション機能です。  
-関数の定義をパラメータとしてGPTモデルに与えると、モデルが呼び出すべき関数の名前と引数を生成します。
-
-詳しい使い方は[ガイド](/Guides/How_to_call_functions_with_ChatGPT.ipynb)を参照してください。
-
-```PowerShell
-$Message = 'Ping the Google Public DNS address three times and briefly report the results.'
-$PingFunction = New-ChatCompletionFunction -Command 'Test-Connection' -IncludeParameters ('TargetName', 'Count')
-$Answer = Request-ChatCompletion -Message $Message -Model gpt-3.5-turbo-0613 -Functions $PingFunction -InvokeFunctionOnCallMode Auto
-```
-
-
 ### 一部が欠けた画像を復元する
 
 一部がマスクされた画像を与え、推定された全体画像を出力させる例です。  

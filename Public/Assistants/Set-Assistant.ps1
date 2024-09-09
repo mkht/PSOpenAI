@@ -23,8 +23,6 @@ function Set-Assistant {
             'gpt-4o-mini',
             'chatgpt-4o-latest',
             'gpt-3.5-turbo-16k',
-            'gpt-3.5-turbo-0613',
-            'gpt-3.5-turbo-16k-0613',
             'gpt-3.5-turbo-1106',
             'gpt-3.5-turbo-0125',
             'gpt-4-0613',
