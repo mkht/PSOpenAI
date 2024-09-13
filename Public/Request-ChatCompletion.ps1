@@ -31,7 +31,9 @@ function Request-ChatCompletion {
             'gpt-4-32k',
             'gpt-4-32k-0613',
             'gpt-4-turbo',
-            'gpt-4-turbo-2024-04-09'
+            'gpt-4-turbo-2024-04-09',
+            'o1-mini',
+            'o1-preview'
         )]
         [string][LowerCaseTransformation()]$Model = 'gpt-3.5-turbo',
 
