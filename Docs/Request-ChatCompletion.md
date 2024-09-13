@@ -31,6 +31,7 @@ Request-ChatCompletion
     [-Stream]
     [-StopSequence <String[]>]
     [-MaxTokens <Int32>]
+    [-MaxCompletionTokens <Int32>]
     [-PresencePenalty <Double>]
     [-FrequencyPenalty <Double>]
     [-LogitBias <IDictionary>]
@@ -273,12 +274,21 @@ Position: Named
 ```
 
 ### -MaxTokens
-The maximum number of tokens allowed for the generated answer.  
-Maximum value depends on model. (`4096` for `gpt-3.5-turbo` or `8192` for `gpt-4`)
+This value is now deprecated in favor of MaxCompletionTokens.
 
 ```yaml
 Type: Int32
 Aliases: max_tokens
+Required: False
+Position: Named
+```
+
+### -MaxCompletionTokens
+An upper bound for the number of tokens that can be generated for a completion, including visible output tokens and reasoning tokens.
+
+```yaml
+Type: Int32
+Aliases: max_completion_tokens
 Required: False
 Position: Named
 ```
@@ -340,8 +350,8 @@ Position: Named
 ### -Format
 Specifies the format that the model must output.  
 - `text` is default.  
-- `json_object` enables JSON mode, which guarantees the message the model generates is valid JSON.  
-- `json_schema` enables Structured Outputs which guarantees the model will match your supplied JSON schema.
+- `json_object` enables JSON mode, which ensures the message the model generates is valid JSON.  
+- `json_schema` enables Structured Outputs which ensures the model will match your supplied JSON schema.
 - `raw_response` returns raw response content from API.
 
 ```yaml

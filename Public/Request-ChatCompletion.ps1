@@ -91,9 +91,15 @@ function Request-ChatCompletion {
         [string[]]$StopSequence,
 
         [Parameter()]
+        [System.Obsolete('The MaxTokens is now deprecated in favor of MaxCompletionTokens')]
         [ValidateRange(0, 2147483647)]
         [Alias('max_tokens')]
         [int]$MaxTokens,
+
+        [Parameter()]
+        [ValidateRange(0, 2147483647)]
+        [Alias('max_completion_tokens')]
+        [int]$MaxCompletionTokens,
 
         [Parameter()]
         [ValidateRange(-2.0, 2.0)]
@@ -265,6 +271,9 @@ function Request-ChatCompletion {
         }
         if ($PSBoundParameters.ContainsKey('MaxTokens')) {
             $PostBody.max_tokens = $MaxTokens
+        }
+        if ($PSBoundParameters.ContainsKey('MaxCompletionTokens')) {
+            $PostBody.max_completion_tokens = $MaxCompletionTokens
         }
         if ($PSBoundParameters.ContainsKey('PresencePenalty')) {
             $PostBody.presence_penalty = $PresencePenalty

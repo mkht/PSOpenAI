@@ -1,5 +1,7 @@
 # Changelog
 ### Unreleased
+- Add `-MaxCompletionTokens` parameter for `Request-ChatCompletion`.  
+   The `-MaxTokens` parameter is now deprecated.
 - `gpt-3.5-turbo-0613` and `gpt-3.5-turbo-16k-0613` is deprecated on 2024-09-13.  
    You can still call these models, but it is removed from model name completion.
 
