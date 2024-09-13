@@ -1,4 +1,11 @@
 # 変更履歴
+### 4.4.0
+- タブ補完に`o1-preview`と`o1-mini`モデルを追加します
+- `Request-ChatCompletion`に`-MaxCompletionTokens`パラメータを追加します  
+    `-MaxTokens`パラメータは非推奨となりましたが、引き続き使用可能です
+- `gpt-3.5-turbo-0613`と`gpt-3.5-turbo-16k-0613`は2024年9月13日に廃止されました  
+    これらのモデルは引き続き呼び出すことができますが、モデル名の補完からは削除されます
+
 ### 4.3.0
 - `Get-ThreadRunStep`に`-Include`パラメータを追加します
 - `New-Assistant`に`-RankerForFileSearch`および`-ScoreThresholdForFileSearch`パラメータを追加します

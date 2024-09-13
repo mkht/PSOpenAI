@@ -15,7 +15,9 @@ function Enter-ChatGPT {
             'gpt-4-32k',
             'gpt-4-32k-0613',
             'gpt-4-turbo',
-            'gpt-4-turbo-2024-04-09'
+            'gpt-4-turbo-2024-04-09',
+            'o1-mini',
+            'o1-preview'
         )]
         [string][LowerCaseTransformation()]$Model,
 
@@ -41,8 +43,8 @@ function Enter-ChatGPT {
 
         [Parameter()]
         [ValidateRange(0, 2147483647)]
-        [Alias('max_tokens')]
-        [int]$MaxTokens,
+        [Alias('max_completion_tokens')]
+        [int]$MaxCompletionTokens,
 
         [Parameter()]
         [ValidateRange(-2.0, 2.0)]

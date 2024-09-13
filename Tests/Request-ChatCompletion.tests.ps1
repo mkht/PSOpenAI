@@ -343,7 +343,7 @@ Describe 'Request-ChatCompletion' {
             }
             $StopWatch = [System.Diagnostics.Stopwatch]::new()
             $StopWatch.Start()
-            { Request-ChatCompletion -Message 'test' -MaxRetryCount 3 -MaxTokens 16 -ea Stop } | Should -Throw
+            { Request-ChatCompletion -Message 'test' -MaxRetryCount 3 -MaxCompletionTokens 16 -ea Stop } | Should -Throw
             $StopWatch.Stop()
             Should -Invoke -CommandName 'Invoke-WebRequest' -ModuleName $script:ModuleName -Times 1 -Exactly
         }
@@ -360,7 +360,7 @@ Describe 'Request-ChatCompletion' {
             }
             $StopWatch = [System.Diagnostics.Stopwatch]::new()
             $StopWatch.Start()
-            { Request-ChatCompletion -Message 'test' -MaxRetryCount 3 -MaxTokens 16 -ea Stop } | Should -Throw
+            { Request-ChatCompletion -Message 'test' -MaxRetryCount 3 -MaxCompletionTokens 16 -ea Stop } | Should -Throw
             $StopWatch.Stop()
             Should -Invoke -CommandName 'Invoke-WebRequest' -ModuleName $script:ModuleName -Times 1 -Exactly
         }
@@ -382,7 +382,7 @@ Describe 'Request-ChatCompletion' {
             }
             $StopWatch = [System.Diagnostics.Stopwatch]::new()
             $StopWatch.Start()
-            { Request-ChatCompletion -Message 'test' -MaxRetryCount 1 -MaxTokens 16 -ea Stop } | Should -Throw
+            { Request-ChatCompletion -Message 'test' -MaxRetryCount 1 -MaxCompletionTokens 16 -ea Stop } | Should -Throw
             $StopWatch.Stop()
             Should -Invoke -CommandName 'Invoke-WebRequest' -ModuleName $script:ModuleName -Times 2 -Exactly
         }
@@ -404,7 +404,7 @@ Describe 'Request-ChatCompletion' {
             }
             $StopWatch = [System.Diagnostics.Stopwatch]::new()
             $StopWatch.Start()
-            { Request-ChatCompletion -Message 'test' -MaxRetryCount 1 -MaxTokens 16 -ea Stop } | Should -Throw
+            { Request-ChatCompletion -Message 'test' -MaxRetryCount 1 -MaxCompletionTokens 16 -ea Stop } | Should -Throw
             $StopWatch.Stop()
             Should -Invoke -CommandName 'Invoke-WebRequest' -ModuleName $script:ModuleName -Times 1 -Exactly
         }
@@ -426,7 +426,7 @@ Describe 'Request-ChatCompletion' {
             }
             $StopWatch = [System.Diagnostics.Stopwatch]::new()
             $StopWatch.Start()
-            { Request-ChatCompletion -Message 'test' -MaxRetryCount 1 -MaxTokens 16 -ea Stop } | Should -Throw
+            { Request-ChatCompletion -Message 'test' -MaxRetryCount 1 -MaxCompletionTokens 16 -ea Stop } | Should -Throw
             $StopWatch.Stop()
             Should -Invoke -CommandName 'Invoke-WebRequest' -ModuleName $script:ModuleName -Times 2 -Exactly
             # The retry interval should around 200ms
@@ -451,7 +451,7 @@ Describe 'Request-ChatCompletion' {
             }
             $StopWatch = [System.Diagnostics.Stopwatch]::new()
             $StopWatch.Start()
-            { Request-ChatCompletion -Message 'test' -MaxRetryCount 1 -MaxTokens 16 -ea Stop } | Should -Throw
+            { Request-ChatCompletion -Message 'test' -MaxRetryCount 1 -MaxCompletionTokens 16 -ea Stop } | Should -Throw
             $StopWatch.Stop()
             Should -Invoke -CommandName 'Invoke-WebRequest' -ModuleName $script:ModuleName -Times 2 -Exactly
             # The retry interval should around 1s
@@ -471,7 +471,7 @@ Describe 'Request-ChatCompletion' {
             }
             $StopWatch = [System.Diagnostics.Stopwatch]::new()
             $StopWatch.Start()
-            { Request-ChatCompletion -Message 'test' -MaxRetryCount 3 -MaxTokens 16 -ea Stop } | Should -Throw
+            { Request-ChatCompletion -Message 'test' -MaxRetryCount 3 -MaxCompletionTokens 16 -ea Stop } | Should -Throw
             $StopWatch.Stop()
             Should -Invoke -CommandName 'Invoke-WebRequest' -ModuleName $script:ModuleName -Times 4 -Exactly
             # The retry interval is given a jitter of 0.8 to 1.2 times, so the minimum is 5.6s ((1+2+4)*0.8) and the maximum is 8.4s
@@ -496,7 +496,7 @@ Describe 'Request-ChatCompletion' {
             }
             $StopWatch = [System.Diagnostics.Stopwatch]::new()
             $StopWatch.Start()
-            { Request-ChatCompletion -Message 'test' -MaxRetryCount 1 -MaxTokens 16 -ea Stop } | Should -Throw
+            { Request-ChatCompletion -Message 'test' -MaxRetryCount 1 -MaxCompletionTokens 16 -ea Stop } | Should -Throw
             $StopWatch.Stop()
             Should -Invoke -CommandName 'Invoke-WebRequest' -ModuleName $script:ModuleName -Times 2 -Exactly
         }
@@ -530,7 +530,7 @@ Describe 'Request-ChatCompletion' {
         }
 
         It 'Chat completion, multiple answers' {
-            { $script:Result = Request-ChatCompletion -Message 'What your name' -NumberOfAnswers 2 -MaxTokens 10 -TimeoutSec 30 -ea Stop } | Should -Not -Throw
+            { $script:Result = Request-ChatCompletion -Message 'What your name' -NumberOfAnswers 2 -MaxCompletionTokens 10 -TimeoutSec 30 -ea Stop } | Should -Not -Throw
             $Result | Should -BeOfType [pscustomobject]
             $Result.object | Should -Be 'chat.completion'
             $Result.Answer | Should -HaveCount 2
@@ -549,15 +549,15 @@ Describe 'Request-ChatCompletion' {
         }
 
         It 'Pipeline input (Message)' {
-            { $script:Result = 'What your name' | Request-ChatCompletion -MaxTokens 10 -TimeoutSec 30 -ea Stop } | Should -Not -Throw
+            { $script:Result = 'What your name' | Request-ChatCompletion -MaxCompletionTokens 10 -TimeoutSec 30 -ea Stop } | Should -Not -Throw
             $Result | Should -BeOfType [pscustomobject]
             $Result.object | Should -Be 'chat.completion'
             $Result.Answer | Should -HaveCount 1
         }
 
         It 'Pipeline input (Conversations)' {
-            { $script:First = Request-ChatCompletion -Message 'What' -MaxTokens 10 -TimeoutSec 30 -ea Stop } | Should -Not -Throw
-            { $script:Result = $script:First | Request-ChatCompletion -Message 'When' -MaxTokens 10 -TimeoutSec 30 -ea Stop } | Should -Not -Throw
+            { $script:First = Request-ChatCompletion -Message 'What' -MaxCompletionTokens 10 -TimeoutSec 30 -ea Stop } | Should -Not -Throw
+            { $script:Result = $script:First | Request-ChatCompletion -Message 'When' -MaxCompletionTokens 10 -TimeoutSec 30 -ea Stop } | Should -Not -Throw
             $Result | Should -BeOfType [pscustomobject]
             $Result.object | Should -Be 'chat.completion'
             $Result.History[0].Role | Should -Be 'user'
@@ -601,7 +601,7 @@ Describe 'Request-ChatCompletion' {
                     }
                 )
             }
-            { $script:Result = $ExampleMessages | Request-ChatCompletion -MaxTokens 10 -TimeoutSec 30 -ea Stop } | Should -Not -Throw
+            { $script:Result = $ExampleMessages | Request-ChatCompletion -MaxCompletionTokens 10 -TimeoutSec 30 -ea Stop } | Should -Not -Throw
             $Result | Should -BeOfType [pscustomobject]
             $Result.object | Should -Be 'chat.completion'
             $Result.Answer | Should -HaveCount 1
@@ -726,7 +726,7 @@ Describe 'Request-ChatCompletion' {
         It 'Stream output' {
             $params = @{
                 Message             = 'Please describe about ChatGPT'
-                MaxTokens           = 32
+                MaxCompletionTokens = 32
                 Stream              = $true
                 InformationVariable = 'Info'
                 TimeoutSec          = 30
@@ -743,7 +743,7 @@ Describe 'Request-ChatCompletion' {
             }
             $StopWatch = [System.Diagnostics.Stopwatch]::new()
             $StopWatch.Start()
-            { Request-ChatCompletion -Message 'test' -MaxRetryCount 1 -MaxTokens 16 -ea Stop } | Should -Throw
+            { Request-ChatCompletion -Message 'test' -MaxRetryCount 1 -MaxCompletionTokens 16 -ea Stop } | Should -Throw
             $StopWatch.Stop()
             Should -Invoke -CommandName 'Invoke-WebRequest' -ModuleName $script:ModuleName -Times 2 -Exactly
             # The retry interval is given a jitter of 0.8 to 1.2 times, so the minimum is 0.8 seconds.
@@ -814,7 +814,7 @@ Describe 'Request-ChatCompletion' {
             $params = @{
                 Model               = $script:Model
                 Message             = 'Please describe about Azure'
-                MaxTokens           = 32
+                MaxCompletionTokens = 32
                 Stream              = $true
                 InformationVariable = 'Info'
                 ErrorAction         = 'Stop'

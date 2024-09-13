@@ -19,7 +19,7 @@ Enter-ChatGPT
     [-Temperature <Double>]
     [-TopP <Double>]
     [-StopSequence <String[]>]
-    [-MaxTokens <Int32>]
+    [-MaxCompletionTokens <Int32>]
     [-PresencePenalty <Double>]
     [-FrequencyPenalty <Double>]
     [-TimeoutSec <Int32>]
@@ -99,13 +99,13 @@ Required: False
 Position: Named
 ```
 
-### -MaxTokens
+### -MaxCompletionTokens
 The maximum number of tokens allowed for the generated answer.  
 Maximum value depends on model. (`4096` for `gpt-3.5-turbo` or `8192` for `gpt-4`)
 
 ```yaml
 Type: Int32
-Aliases: max_tokens
+Aliases: max_completion_tokens
 Required: False
 Position: Named
 ```

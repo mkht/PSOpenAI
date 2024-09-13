@@ -1666,8 +1666,8 @@ So `0.1` means only the tokens comprising the top `10%` probability mass are con
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="max_tokens">
-          <maml:name>MaxTokens</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="max_completion_tokens">
+          <maml:name>MaxCompletionTokens</maml:name>
           <maml:description>
             <maml:para>The maximum number of tokens allowed for the generated answer.
 Maximum value depends on model. (`4096` for `gpt-3.5-turbo` or `8192` for `gpt-4`)</maml:para>
@@ -1850,8 +1850,8 @@ So `0.1` means only the tokens comprising the top `10%` probability mass are con
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="max_tokens">
-        <maml:name>MaxTokens</maml:name>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="max_completion_tokens">
+        <maml:name>MaxCompletionTokens</maml:name>
         <maml:description>
           <maml:para>The maximum number of tokens allowed for the generated answer.
 Maximum value depends on model. (`4096` for `gpt-3.5-turbo` or `8192` for `gpt-4`)</maml:para>
@@ -7357,8 +7357,8 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
           <maml:description>
             <maml:para>Specifies the format that the model must output.
 - `auto` is default.
-- `json_object` enables JSON mode, which guarantees the message the model generates is valid JSON.
-- `json_schema` enables Structured Outputs which guarantees the model will match your supplied JSON schema.</maml:para>
+- `json_object` enables JSON mode, which ensures the message the model generates is valid JSON.
+- `json_schema` enables Structured Outputs which ensures the model will match your supplied JSON schema.</maml:para>
             <maml:para>- `raw_response` returns raw response content from API.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
@@ -7651,8 +7651,8 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <maml:description>
           <maml:para>Specifies the format that the model must output.
 - `auto` is default.
-- `json_object` enables JSON mode, which guarantees the message the model generates is valid JSON.
-- `json_schema` enables Structured Outputs which guarantees the model will match your supplied JSON schema.</maml:para>
+- `json_object` enables JSON mode, which ensures the message the model generates is valid JSON.
+- `json_schema` enables Structured Outputs which ensures the model will match your supplied JSON schema.</maml:para>
           <maml:para>- `raw_response` returns raw response content from API.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
@@ -11585,8 +11585,19 @@ The default value is `1`.</maml:para>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="max_tokens">
           <maml:name>MaxTokens</maml:name>
           <maml:description>
-            <maml:para>The maximum number of tokens allowed for the generated answer.
-Maximum value depends on model. (`4096` for `gpt-3.5-turbo` or `8192` for `gpt-4`)</maml:para>
+            <maml:para>This value is now deprecated in favor of MaxCompletionTokens.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="max_completion_tokens">
+          <maml:name>MaxCompletionTokens</maml:name>
+          <maml:description>
+            <maml:para>An upper bound for the number of tokens that can be generated for a completion, including visible output tokens and reasoning tokens.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -11665,8 +11676,8 @@ ID 23182 maps to "apple" and ID 88847 maps to "banana". Thus, this example incre
           <maml:description>
             <maml:para>Specifies the format that the model must output.
 - `text` is default.
-- `json_object` enables JSON mode, which guarantees the message the model generates is valid JSON.
-- `json_schema` enables Structured Outputs which guarantees the model will match your supplied JSON schema.</maml:para>
+- `json_object` enables JSON mode, which ensures the message the model generates is valid JSON.
+- `json_schema` enables Structured Outputs which ensures the model will match your supplied JSON schema.</maml:para>
             <maml:para>- `raw_response` returns raw response content from API.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
@@ -12043,8 +12054,19 @@ The default value is `1`.</maml:para>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="max_tokens">
         <maml:name>MaxTokens</maml:name>
         <maml:description>
-          <maml:para>The maximum number of tokens allowed for the generated answer.
-Maximum value depends on model. (`4096` for `gpt-3.5-turbo` or `8192` for `gpt-4`)</maml:para>
+          <maml:para>This value is now deprecated in favor of MaxCompletionTokens.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="max_completion_tokens">
+        <maml:name>MaxCompletionTokens</maml:name>
+        <maml:description>
+          <maml:para>An upper bound for the number of tokens that can be generated for a completion, including visible output tokens and reasoning tokens.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
@@ -12123,8 +12145,8 @@ ID 23182 maps to "apple" and ID 88847 maps to "banana". Thus, this example incre
         <maml:description>
           <maml:para>Specifies the format that the model must output.
 - `text` is default.
-- `json_object` enables JSON mode, which guarantees the message the model generates is valid JSON.
-- `json_schema` enables Structured Outputs which guarantees the model will match your supplied JSON schema.</maml:para>
+- `json_object` enables JSON mode, which ensures the message the model generates is valid JSON.
+- `json_schema` enables Structured Outputs which ensures the model will match your supplied JSON schema.</maml:para>
           <maml:para>- `raw_response` returns raw response content from API.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
@@ -15575,8 +15597,8 @@ We serves
           <maml:description>
             <maml:para>Specifies the format that the model must output.
 - `auto` is default.
-- `json_object` enables JSON mode, which guarantees the message the model generates is valid JSON.
-- `json_schema` enables Structured Outputs which guarantees the model will match your supplied JSON schema.</maml:para>
+- `json_object` enables JSON mode, which ensures the message the model generates is valid JSON.
+- `json_schema` enables Structured Outputs which ensures the model will match your supplied JSON schema.</maml:para>
             <maml:para>- `raw_response` returns raw response content from API.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
@@ -15881,8 +15903,8 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <maml:description>
           <maml:para>Specifies the format that the model must output.
 - `auto` is default.
-- `json_object` enables JSON mode, which guarantees the message the model generates is valid JSON.
-- `json_schema` enables Structured Outputs which guarantees the model will match your supplied JSON schema.</maml:para>
+- `json_object` enables JSON mode, which ensures the message the model generates is valid JSON.
+- `json_schema` enables Structured Outputs which ensures the model will match your supplied JSON schema.</maml:para>
           <maml:para>- `raw_response` returns raw response content from API.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
@@ -17544,8 +17566,8 @@ You can create a batch input item by using the Request-ChatCompletion cmdlet wit
           <maml:description>
             <maml:para>Specifies the format that the model must output.
 - `default` will only outputs text message.</maml:para>
-            <maml:para>- `json_object` enables JSON mode, which guarantees the message the model generates is valid JSON.
-- `json_schema` enables Structured Outputs which guarantees the model will match your supplied JSON schema.</maml:para>
+            <maml:para>- `json_object` enables JSON mode, which ensures the message the model generates is valid JSON.
+- `json_schema` enables Structured Outputs which ensures the model will match your supplied JSON schema.</maml:para>
             <maml:para>- `raw_response` returns raw response content from API.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
@@ -18013,8 +18035,8 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <maml:description>
           <maml:para>Specifies the format that the model must output.
 - `default` will only outputs text message.</maml:para>
-          <maml:para>- `json_object` enables JSON mode, which guarantees the message the model generates is valid JSON.
-- `json_schema` enables Structured Outputs which guarantees the model will match your supplied JSON schema.</maml:para>
+          <maml:para>- `json_object` enables JSON mode, which ensures the message the model generates is valid JSON.
+- `json_schema` enables Structured Outputs which ensures the model will match your supplied JSON schema.</maml:para>
           <maml:para>- `raw_response` returns raw response content from API.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>

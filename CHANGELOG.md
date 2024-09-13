@@ -1,5 +1,6 @@
 # Changelog
-### Unreleased
+### 4.4.0
+- Add `o1-preview` and `o1-mini` models to tab completions.
 - Add `-MaxCompletionTokens` parameter for `Request-ChatCompletion`.  
    The `-MaxTokens` parameter is now deprecated.
 - `gpt-3.5-turbo-0613` and `gpt-3.5-turbo-16k-0613` is deprecated on 2024-09-13.  

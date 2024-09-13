@@ -19,7 +19,7 @@ Describe 'Batch E2E Test' {
         It 'STEP1: Create multiple batch input objects' {
             # Create 4 input objects
             { (1..4) | ForEach-Object {
-                    $script:BatchInputs += Request-ChatCompletion -Message 'Hello.' -Model gpt-4o-mini -AsBatch -CustomBatchId ("custom-batchtest-$_") -MaxTokens 15 -ea Stop
+                    $script:BatchInputs += Request-ChatCompletion -Message 'Hello.' -Model gpt-4o-mini -AsBatch -CustomBatchId ("custom-batchtest-$_") -MaxCompletionTokens 15 -ea Stop
                 } } | Should -Not -Throw
             $script:BatchInputs | Should -HaveCount 4
             $script:BatchInputs[0].custom_id | Should -Be 'custom-batchtest-1'
@@ -96,7 +96,7 @@ Describe 'Batch E2E Test' {
         It 'STEP1: Create multiple batch input objects' {
             # Create 2 input objects
             { (1..2) | ForEach-Object {
-                    $script:BatchInputs += Request-ChatCompletion -Message 'Hello.' -Model $script:Model -AsBatch -CustomBatchId ("custom-batchtest-$_") -MaxTokens 15 -ea Stop
+                    $script:BatchInputs += Request-ChatCompletion -Message 'Hello.' -Model $script:Model -AsBatch -CustomBatchId ("custom-batchtest-$_") -MaxCompletionTokens 15 -ea Stop
                 } } | Should -Not -Throw
             $script:BatchInputs | Should -HaveCount 2
             $script:BatchInputs[0].custom_id | Should -Be 'custom-batchtest-1'
