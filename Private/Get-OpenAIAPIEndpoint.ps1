@@ -222,6 +222,46 @@ function Get-OpenAIAPIEndpoint {
             }
             continue
         }
+        'Uploads.Create' {
+            $UriBuilder.Path += '/uploads'
+            @{
+                Name        = 'uploads_create'
+                Method      = 'Post'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+            continue
+        }
+        'Uploads.Part.Add' {
+            $UriBuilder.Path += '/uploads/{0}/parts'
+            @{
+                Name        = 'uploads_part_add'
+                Method      = 'Post'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'multipart/form-data'
+            }
+            continue
+        }
+        'Uploads.Complete' {
+            $UriBuilder.Path += '/uploads/{0}/complete'
+            @{
+                Name        = 'uploads_complete'
+                Method      = 'Post'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+            continue
+        }
+        'Uploads.Cancel' {
+            $UriBuilder.Path += '/uploads/{0}/cancel'
+            @{
+                Name        = 'uploads_cancel'
+                Method      = 'Post'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+            continue
+        }
         Default {
             Write-Error -Message ('{0} API endpoint is not provided by OpenAI' -f $_)
         }
