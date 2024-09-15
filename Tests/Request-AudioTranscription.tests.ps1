@@ -92,5 +92,19 @@ Describe 'Request-AudioTranscription' {
             $ret.text.Length | Should -BeGreaterThan 1
             $ret.task | Should -Be 'transcribe'
         }
+
+        It 'Non-ASCII filename' {
+            Copy-Item ($script:TestData + '/voice_japanese.mp3') 'TestDrive:/日本語音声ファイル.mp3'
+            { $params = @{
+                    File        = 'TestDrive:/日本語音声ファイル.mp3'
+                    TimeoutSec  = 30
+                    ErrorAction = 'Stop'
+                }
+
+                $script:Text = Request-AudioTranscription @params
+            } | Should -Not -Throw
+            $Text | Should -BeOfType [string]
+            $Text.Length | Should -BeGreaterThan 1
+        }
     }
 }

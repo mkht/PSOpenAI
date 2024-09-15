@@ -88,19 +88,6 @@ function Request-AudioTranscription {
 
     process {
         $FileInfo = Resolve-FileInfo $File
-        # (Only PS6+)
-        # If the filename contains non-ASCII characters,
-        # the OpenAI API cannot recognize the file format correctly and returns an error.
-        # As a workaround, copy the file to a temporary file and send it.
-        # We need to find a better way.
-        $IsTempFileCreated = $false
-        if ($PSVersionTable.PSVersion.Major -ge 6) {
-            if ($FileInfo.Name -match '[^\u0000-\u007F]') {
-                Write-Warning 'File name contains non-ASCII characters. It is strongly recommended that file name only contains ASCII characters.'
-                $FileInfo = Copy-TempFile -SourceFile $FileInfo -ErrorAction Stop
-                $IsTempFileCreated = $true
-            }
-        }
 
         #region Construct parameters for API request
         $PostBody = [System.Collections.Specialized.OrderedDictionary]::new()
@@ -125,28 +112,22 @@ function Request-AudioTranscription {
         }
 
         #region Send API Request
-        try {
-            $splat = @{
-                Method            = $OpenAIParameter.Method
-                Uri               = $OpenAIParameter.Uri
-                ContentType       = $OpenAIParameter.ContentType
-                TimeoutSec        = $OpenAIParameter.TimeoutSec
-                MaxRetryCount     = $OpenAIParameter.MaxRetryCount
-                ApiKey            = $OpenAIParameter.ApiKey
-                AuthType          = $OpenAIParameter.AuthType
-                Organization      = $OpenAIParameter.Organization
-                Body              = $PostBody
-                AdditionalQuery   = $AdditionalQuery
-                AdditionalHeaders = $AdditionalHeaders
-                AdditionalBody    = $AdditionalBody
-            }
-            $Response = Invoke-OpenAIAPIRequest @splat
+        $splat = @{
+            Method            = $OpenAIParameter.Method
+            Uri               = $OpenAIParameter.Uri
+            ContentType       = $OpenAIParameter.ContentType
+            TimeoutSec        = $OpenAIParameter.TimeoutSec
+            MaxRetryCount     = $OpenAIParameter.MaxRetryCount
+            ApiKey            = $OpenAIParameter.ApiKey
+            AuthType          = $OpenAIParameter.AuthType
+            Organization      = $OpenAIParameter.Organization
+            Body              = $PostBody
+            AdditionalQuery   = $AdditionalQuery
+            AdditionalHeaders = $AdditionalHeaders
+            AdditionalBody    = $AdditionalBody
         }
-        finally {
-            if ($IsTempFileCreated -and (Test-Path $FileInfo -PathType Leaf)) {
-                Remove-Item $FileInfo -Force -ErrorAction SilentlyContinue
-            }
-        }
+        $Response = Invoke-OpenAIAPIRequest @splat
+
         # error check
         if ($null -eq $Response) {
             return

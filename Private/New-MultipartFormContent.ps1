@@ -104,8 +104,12 @@ function GetMultipartBytesContent {
         [string]$fileName
     )
     $contentType = 'application/octet-stream'
+    $ContentDispositionHeader = 'Content-Disposition: form-data; name="{0}"' -f $fieldName
+    if (-not [string]::IsNullOrWhiteSpace($fileName)) {
+        $ContentDispositionHeader += "; filename*=utf-8''{0}" -f [Uri]::EscapeDataString($fileName)
+    }
     $header = @(
-        ('Content-Disposition: form-data; name="{0}"; filename="{1}"' -f $fieldName, $fileName),
+        $ContentDispositionHeader,
         ('Content-Type: {0}' -f $contentType),
         '',
         ''

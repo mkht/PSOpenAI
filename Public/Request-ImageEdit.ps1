@@ -79,35 +79,9 @@ function Request-ImageEdit {
 
     process {
         $ImageFileInfo = Resolve-FileInfo $Image
-        # (Only PS6+)
-        # If the filename contains non-ASCII characters,
-        # the OpenAI API cannot recognize the file format correctly and returns an error.
-        # As a workaround, copy the file to a temporary file and send it.
-        # We need to find a better way.
-        $IsTempImageFileCreated = $false
-        if ($PSVersionTable.PSVersion.Major -ge 6) {
-            if ($ImageFileInfo.Name -match '[^\u0000-\u007F]') {
-                Write-Warning 'File name contains non-ASCII characters. It is strongly recommended that file name only contains ASCII characters.'
-                $ImageFileInfo = Copy-TempFile -SourceFile $ImageFileInfo -ErrorAction Stop
-                $IsTempImageFileCreated = $true
-            }
-        }
 
         if ($PSBoundParameters.ContainsKey('Mask')) {
             $MaskFileInfo = Resolve-FileInfo $Mask
-            # (Only PS6+)
-            # If the filename contains non-ASCII characters,
-            # the OpenAI API cannot recognize the file format correctly and returns an error.
-            # As a workaround, copy the file to a temporary file and send it.
-            # We need to find a better way.
-            $IsTempMaskFileCreated = $false
-            if ($PSVersionTable.PSVersion.Major -ge 6) {
-                if ($MaskFileInfo.Name -match '[^\u0000-\u007F]') {
-                    Write-Warning 'File name contains non-ASCII characters. It is strongly recommended that file name only contains ASCII characters.'
-                    $MaskFileInfo = Copy-TempFile -SourceFile $MaskFileInfo -ErrorAction Stop
-                    $IsTempMaskFileCreated = $true
-                }
-            }
         }
 
         if ($NumberOfImages -gt 1) {
@@ -162,30 +136,21 @@ function Request-ImageEdit {
         #endregion
 
         #region Send API Request
-        try {
-            $splat = @{
-                Method            = $OpenAIParameter.Method
-                Uri               = $OpenAIParameter.Uri
-                ContentType       = $OpenAIParameter.ContentType
-                TimeoutSec        = $OpenAIParameter.TimeoutSec
-                MaxRetryCount     = $OpenAIParameter.MaxRetryCount
-                ApiKey            = $OpenAIParameter.ApiKey
-                Organization      = $OpenAIParameter.Organization
-                Body              = $PostBody
-                AdditionalQuery   = $AdditionalQuery
-                AdditionalHeaders = $AdditionalHeaders
-                AdditionalBody    = $AdditionalBody
-            }
-            $Response = Invoke-OpenAIAPIRequest @splat
+        $splat = @{
+            Method            = $OpenAIParameter.Method
+            Uri               = $OpenAIParameter.Uri
+            ContentType       = $OpenAIParameter.ContentType
+            TimeoutSec        = $OpenAIParameter.TimeoutSec
+            MaxRetryCount     = $OpenAIParameter.MaxRetryCount
+            ApiKey            = $OpenAIParameter.ApiKey
+            Organization      = $OpenAIParameter.Organization
+            Body              = $PostBody
+            AdditionalQuery   = $AdditionalQuery
+            AdditionalHeaders = $AdditionalHeaders
+            AdditionalBody    = $AdditionalBody
         }
-        finally {
-            if ($IsTempImageFileCreated -and (Test-Path $ImageFileInfo -PathType Leaf)) {
-                Remove-Item $ImageFileInfo -Force -ErrorAction SilentlyContinue
-            }
-            if ($IsTempMaskFileCreated -and (Test-Path $MaskFileInfo -PathType Leaf)) {
-                Remove-Item $MaskFileInfo -Force -ErrorAction SilentlyContinue
-            }
-        }
+        $Response = Invoke-OpenAIAPIRequest @splat
+
         # error check
         if ($null -eq $Response) {
             return
