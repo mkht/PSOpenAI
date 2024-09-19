@@ -1,4 +1,7 @@
 # Changelog
+### 4.4.1
+- Refactor file upload handling for non-ASCII filenames.
+
 ### 4.4.0
 - Add `o1-preview` and `o1-mini` models to tab completions.
 - Add `-MaxCompletionTokens` parameter for `Request-ChatCompletion`.  

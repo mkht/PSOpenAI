@@ -1,4 +1,7 @@
 # 変更履歴
+### 4.4.1
+- 非ASCIIファイル名のファイルアップロード処理を改善
+
 ### 4.4.0
 - タブ補完に`o1-preview`と`o1-mini`モデルを追加します
 - `Request-ChatCompletion`に`-MaxCompletionTokens`パラメータを追加します  
