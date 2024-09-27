@@ -13,7 +13,7 @@ function Request-Moderation {
         [string[]]$Text,
 
         [Parameter()]
-        [Completions('text-moderation-latest', 'text-moderation-stable')]
+        [Completions('text-moderation-latest', 'text-moderation-stable', 'omni-moderation-latest')]
         [string][LowerCaseTransformation()]$Model,
 
         [Parameter()]

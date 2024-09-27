@@ -1,4 +1,7 @@
 # Changelog
+### 4.5.0
+- Add `omni-moderation-latest` model to tab completions.
+
 ### 4.4.1
 - Refactor file upload handling for non-ASCII filenames.
 

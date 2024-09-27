@@ -62,7 +62,6 @@ Accept pipeline input: True (ByValue)
 
 ### -Model
 The name of model to use.  
-Two content moderations models are available: `text-moderation-stable` and `text-moderation-latest`.  
 The default value is `text-moderation-latest`.
 
 ```yaml
