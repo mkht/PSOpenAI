@@ -34,7 +34,7 @@ https://platform.openai.com/docs/guides/moderation/overview
 ### Example 1
 ```PowerShell
 PS C:\> $Result = Request-Moderation -Text "I want to kill them."
-PS C:\> $Result.results.categories
+PS C:\> $Result.results[0].categories
 ```
 ```yaml
 sexual           : False
@@ -49,15 +49,22 @@ violence/graphic : False
 ## PARAMETERS
 
 ### -Text
-(Required)
-The input text to classify.
+A string of text to classify for moderation.
 
 ```yaml
 Type: String[]
 Aliases: Input
-Required: True
+Required: False
 Position: 1
 Accept pipeline input: True (ByValue)
+```
+
+### -Images
+An array of images to passing the model. You can specifies local image file or remote url.  
+
+```yaml
+Type: String[]
+Required: False
 ```
 
 ### -Model

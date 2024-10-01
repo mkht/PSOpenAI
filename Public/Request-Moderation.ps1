@@ -7,10 +7,13 @@ function Request-Moderation {
           But avoid using the variable name $Input for variable name,
           because it is used as an automatic variable in PowerShell.
         #>
-        [Parameter(Mandatory, Position = 0, ValueFromPipeline)]
+        [Parameter(Position = 0, ValueFromPipeline)]
         [ValidateNotNullOrEmpty()]
         [Alias('Input')]
         [string[]]$Text,
+
+        [Parameter()]
+        [string[]]$Images,
 
         [Parameter()]
         [Completions('text-moderation-latest', 'text-moderation-stable', 'omni-moderation-latest')]
@@ -49,20 +52,48 @@ function Request-Moderation {
     }
 
     process {
-        # Text is required
-        if ($null -eq $Text -or $Text.Count -eq 0) {
-            Write-Error -Exception ([System.ArgumentException]::new('"Text" property is required.'))
+        # Text or Image is required
+        if ($Text.Count -eq 0 -and $Images.Count -eq 0) {
+            Write-Error -Exception ([System.ArgumentException]::new('"Text" or "Images" property is required.'))
             return
         }
 
         #region Construct parameters for API request
         $PostBody = [System.Collections.Specialized.OrderedDictionary]::new()
-        if ($Text.Count -eq 1) {
-            $PostBody.input = [string](@($Text)[0])
+        $InputArray = @()
+
+        foreach ($txt in $Text) {
+            if ($Images.Count -gt 0) {
+                $InputArray += [pscustomobject]@{
+                    raw_input = $txt
+                    input     = @{type = 'text'; text = $txt }
+                }
+            }
+            else {
+                $InputArray += [pscustomobject]@{
+                    raw_input = $txt
+                    input     = $txt
+                }
+            }
         }
-        else {
-            $PostBody.input = $Text
+
+        foreach ($image in $Images) {
+            if (Test-Path -LiteralPath $image -PathType Leaf) {
+                $InputArray += [pscustomobject]@{
+                    raw_input = $image
+                    input     = @{type = 'image_url'; image_url = @{url = (Convert-ImageToDataURL $image) } }
+                }
+            }
+            else {
+                $InputArray += [pscustomobject]@{
+                    raw_input = $image
+                    input     = @{type = 'image_url'; image_url = @{url = $image } }
+                }
+            }
         }
+
+        $PostBody.input = @($InputArray.input)
+
         if ($PSBoundParameters.ContainsKey('Model')) {
             $PostBody.model = $Model
         }
@@ -104,7 +135,7 @@ function Request-Moderation {
             # Add custom type name and properties to output object.
             $Response.PSObject.TypeNames.Insert(0, 'PSOpenAI.Moderation')
             for ($i = 0; $i -lt @($Response.results).Count; $i++) {
-                @($Response.results)[$i] | Add-Member -MemberType NoteProperty -Name 'Text' -Value @($Text)[$i]
+                @($Response.results)[$i] | Add-Member -MemberType NoteProperty -Name 'Input' -Value $InputArray[$i].raw_input
 
                 # Output a warning message when input text violates the content policy
                 if (@($Response.results)[$i].flagged -eq $true) {
