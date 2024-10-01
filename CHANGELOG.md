@@ -1,4 +1,7 @@
 # Changelog
+### 4.6.0
+- Add `-Images` parameter for `Request-Moderation`.
+
 ### 4.5.0
 - Add `omni-moderation-latest` model to tab completions.
 

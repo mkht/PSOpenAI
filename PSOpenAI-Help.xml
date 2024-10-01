@@ -14507,10 +14507,23 @@ https://platform.openai.com/docs/guides/moderation/overview</maml:para>
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Request-Moderation</maml:name>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="Input">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="Input">
           <maml:name>Text</maml:name>
           <maml:description>
-            <maml:para>(Required) The input text to classify.</maml:para>
+            <maml:para>A string of text to classify for moderation.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Images</maml:name>
+          <maml:description>
+            <maml:para>An array of images to passing the model. You can specifies local image file or remote url.
+</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
           <dev:type>
@@ -14603,10 +14616,23 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="Input">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="Input">
         <maml:name>Text</maml:name>
         <maml:description>
-          <maml:para>(Required) The input text to classify.</maml:para>
+          <maml:para>A string of text to classify for moderation.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+        <dev:type>
+          <maml:name>String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Images</maml:name>
+        <maml:description>
+          <maml:para>An array of images to passing the model. You can specifies local image file or remote url.
+</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
         <dev:type>
@@ -14717,7 +14743,7 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
       <command:example>
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
         <dev:code>PS C:\&gt; $Result = Request-Moderation -Text "I want to kill them."
-PS C:\&gt; $Result.results.categories
+PS C:\&gt; $Result.results[0].categories
 
 sexual           : False
 hate             : False

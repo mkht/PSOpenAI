@@ -1,6 +1,9 @@
 # 変更履歴
+### 4.6.0
+- `Request-Moderation`に`-Images`パラメータを追加します
+
 ### 4.5.0
-- `omni-moderation-latest`モデルをタブ補完に追加します。
+- `omni-moderation-latest`モデルをタブ補完に追加します
 
 ### 4.4.1
 - 非ASCIIファイル名のファイルアップロード処理を改善
