@@ -1,4 +1,8 @@
 # Changelog
+### 4.7.0
+- Add `-Store` & `-MetaData` params for `Request-ChatCompletion`.  
+  For support Stored Completions that was annouced at OpenAI DevDay 2024.
+
 ### 4.6.0
 - Add `-Images` parameter for `Request-Moderation`.
 

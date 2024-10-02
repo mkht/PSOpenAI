@@ -1,4 +1,9 @@
 # 変更履歴
+### 4.7.0
+- `Request-ChatCompletion`に`-Store`と`-MetaData`パラメータを追加します  
+  これを使用するとチャット応答を保存し、モデル蒸留や評価といった  
+  OpenAI DevDay 2024で発表された機能に利用できます
+
 ### 4.6.0
 - `Request-Moderation`に`-Images`パラメータを追加します
 
