@@ -15,6 +15,7 @@ Given a input text, outputs if the model classifies it as violating OpenAI's con
 ```
 Request-Moderation
     [-Text] <String[]>
+    [-Images <String[]>]
     [-Model <String>]
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
@@ -65,6 +66,7 @@ An array of images to passing the model. You can specifies local image file or r
 ```yaml
 Type: String[]
 Required: False
+Position: Named
 ```
 
 ### -Model
