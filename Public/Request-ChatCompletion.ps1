@@ -88,6 +88,12 @@ function Request-ChatCompletion {
         [switch]$Stream = $false,
 
         [Parameter()]
+        [switch]$Store = $false,
+
+        [Parameter()]
+        [System.Collections.IDictionary]$MetaData,
+
+        [Parameter()]
         [ValidateCount(1, 4)]
         [Alias('stop')]
         [string[]]$StopSequence,
@@ -267,6 +273,12 @@ function Request-ChatCompletion {
         }
         if ($PSBoundParameters.ContainsKey('NumberOfAnswers')) {
             $PostBody.n = $NumberOfAnswers
+        }
+        if ($Store.IsPresent) {
+            $PostBody.store = $Store.ToBool()
+        }
+        if ($PSBoundParameters.ContainsKey('MetaData')) {
+            $PostBody.metadata = $MetaData
         }
         if ($PSBoundParameters.ContainsKey('StopSequence')) {
             $PostBody.stop = $StopSequence

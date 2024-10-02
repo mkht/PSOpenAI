@@ -29,6 +29,8 @@ Request-ChatCompletion
     [-TopP <Double>]
     [-NumberOfAnswers <UInt16>]
     [-Stream]
+    [-Store]
+    [-MetaData <IDictionary>]
     [-StopSequence <String[]>]
     [-MaxTokens <Int32>]
     [-MaxCompletionTokens <Int32>]
@@ -261,6 +263,25 @@ Type: SwitchParameter
 Required: False
 Position: Named
 Default value: False
+```
+
+### -Store
+Whether or not to store the output of this chat completion request for use in model distillation or evals.
+
+```yaml
+Type: SwitchParameter
+Required: False
+Position: Named
+Default value: False
+```
+
+### -MetaData
+Developer-defined tags and values used for filtering completions in the dashboard.
+
+```yaml
+Type: IDictionary
+Required: False
+Position: Named
 ```
 
 ### -StopSequence
