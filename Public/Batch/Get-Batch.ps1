@@ -91,13 +91,13 @@ function Get-Batch {
             if ($All) {
                 $Limit = 100
             }
-            $QueryParam.Add('limit', $Limit);
-            # $QueryParam.Add('order', $Order);
+            $QueryParam.Add('limit', $Limit)
+            # $QueryParam.Add('order', $Order)
             if ($After) {
-                $QueryParam.Add('after', $After);
+                $QueryParam.Add('after', $After)
             }
             # if ($Before) {
-            #     $QueryParam.Add('before', $Before);
+            #     $QueryParam.Add('before', $Before)
             # }
             $UriBuilder.Query = $QueryParam.ToString()
             $QueryUri = $UriBuilder.Uri

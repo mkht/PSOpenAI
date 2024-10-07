@@ -130,16 +130,16 @@ function Get-ThreadMessage {
             if ($All) {
                 $Limit = 100
             }
-            $QueryParam.Add('limit', $Limit);
-            $QueryParam.Add('order', $Order);
+            $QueryParam.Add('limit', $Limit)
+            $QueryParam.Add('order', $Order)
             if ($RunId) {
-                $QueryParam.Add('run_id', $RunId);
+                $QueryParam.Add('run_id', $RunId)
             }
             if ($After) {
-                $QueryParam.Add('after', $After);
+                $QueryParam.Add('after', $After)
             }
             if ($Before) {
-                $QueryParam.Add('before', $Before);
+                $QueryParam.Add('before', $Before)
             }
             $UriBuilder.Query = $QueryParam.ToString()
             $QueryUri = $UriBuilder.Uri

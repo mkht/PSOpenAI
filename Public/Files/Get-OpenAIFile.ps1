@@ -85,7 +85,7 @@ function Get-OpenAIFile {
         else {
             if ($PSBoundParameters.ContainsKey('Purpose')) {
                 $QueryParam = [System.Web.HttpUtility]::ParseQueryString($UriBuilder.Query)
-                $QueryParam.Add('purpose', $Purpose);
+                $QueryParam.Add('purpose', $Purpose)
                 $UriBuilder.Query = $QueryParam.ToString()
                 $QueryUri = $UriBuilder.Uri
             }
