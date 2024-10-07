@@ -14,13 +14,13 @@ function Get-OpenAIAPIEndpoint {
         $ApiBase = [System.Uri]::new('https://api.openai.com/v1')
     }
     $UriBuilder = [System.UriBuilder]::new($ApiBase)
-    if ($UriBuilder.Path.StartsWith('//', [StringComparison]::Ordinal)) {
-        $UriBuilder.Path = $UriBuilder.Path.TrimStart('/')
+    if (-not $UriBuilder.Path.EndsWith('/', [StringComparison]::Ordinal)) {
+        $UriBuilder.Path += '/'
     }
 
     switch ($EndpointName) {
         'Chat.Completion' {
-            $UriBuilder.Path += '/chat/completions'
+            $UriBuilder.Path += 'chat/completions'
             @{
                 Name          = 'chat.completion'
                 Method        = 'Post'
@@ -31,7 +31,7 @@ function Get-OpenAIAPIEndpoint {
             continue
         }
         'Text.Completion' {
-            $UriBuilder.Path += '/completions'
+            $UriBuilder.Path += 'completions'
             @{
                 Name          = 'text.completion'
                 Method        = 'Post'
@@ -42,7 +42,7 @@ function Get-OpenAIAPIEndpoint {
             continue
         }
         'Image.Generation' {
-            $UriBuilder.Path += '/images/generations'
+            $UriBuilder.Path += 'images/generations'
             @{
                 Name        = 'image.generation'
                 Method      = 'Post'
@@ -52,7 +52,7 @@ function Get-OpenAIAPIEndpoint {
             continue
         }
         'Image.Edit' {
-            $UriBuilder.Path += '/images/edits'
+            $UriBuilder.Path += 'images/edits'
             @{
                 Name        = 'image.edit'
                 Method      = 'Post'
@@ -62,7 +62,7 @@ function Get-OpenAIAPIEndpoint {
             continue
         }
         'Image.Variation' {
-            $UriBuilder.Path += '/images/variations'
+            $UriBuilder.Path += 'images/variations'
             @{
                 Name        = 'image.variation'
                 Method      = 'Post'
@@ -72,7 +72,7 @@ function Get-OpenAIAPIEndpoint {
             continue
         }
         'Audio.Speech' {
-            $UriBuilder.Path += '/audio/speech'
+            $UriBuilder.Path += 'audio/speech'
             @{
                 Name        = 'audio.speech'
                 Method      = 'Post'
@@ -82,7 +82,7 @@ function Get-OpenAIAPIEndpoint {
             continue
         }
         'Audio.Transcription' {
-            $UriBuilder.Path += '/audio/transcriptions'
+            $UriBuilder.Path += 'audio/transcriptions'
             @{
                 Name        = 'audio.transcription'
                 Method      = 'Post'
@@ -92,7 +92,7 @@ function Get-OpenAIAPIEndpoint {
             continue
         }
         'Audio.Translation' {
-            $UriBuilder.Path += '/audio/translations'
+            $UriBuilder.Path += 'audio/translations'
             @{
                 Name        = 'audio.translation'
                 Method      = 'Post'
@@ -102,7 +102,7 @@ function Get-OpenAIAPIEndpoint {
             continue
         }
         'Moderation' {
-            $UriBuilder.Path += '/moderations'
+            $UriBuilder.Path += 'moderations'
             @{
                 Name        = 'moderation'
                 Method      = 'Post'
@@ -112,7 +112,7 @@ function Get-OpenAIAPIEndpoint {
             continue
         }
         'Models' {
-            $UriBuilder.Path += '/models'
+            $UriBuilder.Path += 'models'
             @{
                 Name        = 'models'
                 Method      = 'Get'
@@ -122,7 +122,7 @@ function Get-OpenAIAPIEndpoint {
             continue
         }
         'Embeddings' {
-            $UriBuilder.Path += '/embeddings'
+            $UriBuilder.Path += 'embeddings'
             @{
                 Name          = 'embeddings'
                 Method        = 'Post'
@@ -133,7 +133,7 @@ function Get-OpenAIAPIEndpoint {
             continue
         }
         'Files' {
-            $UriBuilder.Path += '/files'
+            $UriBuilder.Path += 'files'
             @{
                 Name        = 'files'
                 Method      = 'Post'
@@ -143,7 +143,7 @@ function Get-OpenAIAPIEndpoint {
             continue
         }
         'Assistants' {
-            $UriBuilder.Path += '/assistants'
+            $UriBuilder.Path += 'assistants'
             @{
                 Name        = 'assistants'
                 Method      = 'Post'
@@ -153,7 +153,7 @@ function Get-OpenAIAPIEndpoint {
             continue
         }
         'Threads' {
-            $UriBuilder.Path += '/threads'
+            $UriBuilder.Path += 'threads'
             @{
                 Name        = 'threads'
                 Method      = 'Post'
@@ -163,7 +163,7 @@ function Get-OpenAIAPIEndpoint {
             continue
         }
         'Runs' {
-            $UriBuilder.Path += '/threads/{0}/runs'
+            $UriBuilder.Path += 'threads/{0}/runs'
             @{
                 Name        = 'runs'
                 Method      = 'Post'
@@ -173,7 +173,7 @@ function Get-OpenAIAPIEndpoint {
             continue
         }
         'ThreadAndRun' {
-            $UriBuilder.Path += '/threads/runs'
+            $UriBuilder.Path += 'threads/runs'
             @{
                 Name        = 'thread_and_run'
                 Method      = 'Post'
@@ -183,7 +183,7 @@ function Get-OpenAIAPIEndpoint {
             continue
         }
         'Batch' {
-            $UriBuilder.Path += '/batches'
+            $UriBuilder.Path += 'batches'
             @{
                 Name        = 'batches'
                 Method      = 'Post'
@@ -193,7 +193,7 @@ function Get-OpenAIAPIEndpoint {
             continue
         }
         'VectorStores' {
-            $UriBuilder.Path += '/vector_stores'
+            $UriBuilder.Path += 'vector_stores'
             @{
                 Name        = 'vector_stores'
                 Method      = 'Post'
@@ -203,7 +203,7 @@ function Get-OpenAIAPIEndpoint {
             continue
         }
         'VectorStore.Files' {
-            $UriBuilder.Path += '/vector_stores/{0}/files'
+            $UriBuilder.Path += 'vector_stores/{0}/files'
             @{
                 Name        = 'vector_store_files'
                 Method      = 'Post'
@@ -213,7 +213,7 @@ function Get-OpenAIAPIEndpoint {
             continue
         }
         'VectorStore.FileBatches' {
-            $UriBuilder.Path += '/vector_stores/{0}/file_batches'
+            $UriBuilder.Path += 'vector_stores/{0}/file_batches'
             @{
                 Name        = 'vector_store_file_batches'
                 Method      = 'Post'
