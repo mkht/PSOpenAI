@@ -17,8 +17,7 @@ function Get-AzureOpenAIAPIEndpoint {
     )
 
     $ApiVersion = $ApiVersion.Trim()
-    $DefaultApiVersion = '2024-07-01-preview'
-
+    $DefaultApiVersion = '2024-10-01-preview'
     $UriBuilder = [System.UriBuilder]::new($ApiBase)
     if (-not $UriBuilder.Path.EndsWith('/', [StringComparison]::Ordinal)) {
         $UriBuilder.Path += '/'
@@ -242,6 +241,24 @@ function Get-AzureOpenAIAPIEndpoint {
                 Method      = 'Post'
                 Uri         = $UriBuilder.Uri
                 ContentType = 'application/json'
+            }
+            continue
+        }
+        'Realtime' {
+            $InnerApiVersion = if ($ApiVersion) { $ApiVersion }else { $DefaultApiVersion }
+            $UriBuilder.Path += 'openai/realtime'
+            $UriBuilder.Query = ('api-version={0}' -f $InnerApiVersion)
+            if ($UriBuilder.Scheme -eq 'https') {
+                $UriBuilder.Scheme = 'wss'
+            }
+            elseif ($UriBuilder.Scheme -eq 'http') {
+                $UriBuilder.Scheme = 'ws'
+            }
+            @{
+                Name        = 'realtime'
+                Method      = ''
+                Uri         = $UriBuilder.Uri
+                ContentType = ''
             }
             continue
         }
