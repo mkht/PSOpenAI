@@ -66,7 +66,7 @@ function Set-OpenAIRealtimeSessionConfiguration {
 
         [Parameter()]
         [ValidateRange(-1, 4096)]
-        [int]$MaxOutputTokens = -1
+        [int]$MaxResponseOutputTokens = -1
     )
 
     begin {
@@ -124,12 +124,12 @@ function Set-OpenAIRealtimeSessionConfiguration {
         if ($PSBoundParameters.ContainsKey('Temperature')) {
             $MessageObject.session.temperature = $Temperature
         }
-        if ($PSBoundParameters.ContainsKey('MaxOutputTokens')) {
-            if ($MaxOutputTokens -lt 0) {
-                $MessageObject.session.max_output_tokens = 'inf'
+        if ($PSBoundParameters.ContainsKey('MaxResponseOutputTokens')) {
+            if ($MaxResponseOutputTokens -lt 0) {
+                $MessageObject.session.max_response_output_tokens = 'inf'
             }
             else {
-                $MessageObject.session.max_output_tokens = $Temperature
+                $MessageObject.session.max_response_output_tokens = $Temperature
             }
         }
 
