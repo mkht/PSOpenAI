@@ -16,9 +16,6 @@ function Set-OpenAIRealtimeSessionConfiguration {
         [Completions(
             'alloy',
             'echo',
-            'fable',
-            'onyx',
-            'nova',
             'shimmer'
         )]
         [string][LowerCaseTransformation()]$Voice,

@@ -16,9 +16,6 @@ function Request-OpenAIRealtimeSessionResponse {
         [Completions(
             'alloy',
             'echo',
-            'fable',
-            'onyx',
-            'nova',
             'shimmer'
         )]
         [string][LowerCaseTransformation()]$Voice,

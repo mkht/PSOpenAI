@@ -106,6 +106,7 @@ function Connect-OpenAIRealtimeSession {
         #region Init message receive thread
         $ReceiveMessageJobScript = {
             param($ws, $consolehost)
+
             $_buffer = [System.Net.WebSockets.WebSocket]::CreateClientBuffer(1024 * 18, 1024)
             $_ct = [System.Threading.CancellationToken]::new($false)
             $receiveResult = $null
