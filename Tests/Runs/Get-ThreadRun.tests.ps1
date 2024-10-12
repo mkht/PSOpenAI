@@ -125,6 +125,52 @@ Describe 'Get-ThreadRun' {
             $Result.psobject.TypeNames | Should -Contain 'PSOpenAI.Thread.Run'
         }
 
+        It 'Warn when the run object has error messages' {
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+{
+    "id": "run_warn123",
+    "object": "thread.run",
+    "created_at": 1698107661,
+    "assistant_id": "asst_warn123",
+    "thread_id": "thread_warn123",
+    "status": "failed",
+    "failed_at": 1699073498,
+    "last_error": {"code": "invalid_prompt", "message": "TEST ERROR"},
+    "model": "gpt-4o-mini",
+    "incomplete_details": null
+}
+'@ } -ParameterFilter { 'https://api.openai.com/v1/threads/thread_warn123/runs/run_warn123' -eq $Uri }
+            $script:Warn = $null
+            { $script:Result = Get-ThreadRun -ThreadId 'thread_warn123' -RunId 'run_warn123' -ea Stop -wv Warn1; $script:Warn = $Warn1 } | Should -Not -Throw
+            Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly -Scope It
+            $Result | Should -BeOfType [pscustomobject]
+            $Result.psobject.TypeNames | Should -Contain 'PSOpenAI.Thread.Run'
+            $script:Warn[0].Message | Should -Match 'TEST ERROR'
+        }
+
+        It 'Warn when the run object has incomplete messages' {
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+{
+    "id": "run_warn456",
+    "object": "thread.run",
+    "created_at": 1698107661,
+    "assistant_id": "asst_warn456",
+    "thread_id": "thread_warn456",
+    "status": "incomplete",
+    "failed_at": null,
+    "last_error": null,
+    "incomplete_details": {"reason": "TEST INCOMPLETE"},
+    "model": "gpt-4o-mini"
+}
+'@ } -ParameterFilter { 'https://api.openai.com/v1/threads/thread_warn456/runs/run_warn456' -eq $Uri }
+            $script:Warn = $null
+            { $script:Result = Get-ThreadRun -ThreadId 'thread_warn456' -RunId 'run_warn456' -ea Stop -wv Warn1; $script:Warn = $Warn1 } | Should -Not -Throw
+            Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly -Scope It
+            $Result | Should -BeOfType [pscustomobject]
+            $Result.psobject.TypeNames | Should -Contain 'PSOpenAI.Thread.Run'
+            $script:Warn[0].Message | Should -Match 'TEST INCOMPLETE'
+        }
+
         Context 'Parameter Sets' {
             It 'Get_Id' {
                 # Named
