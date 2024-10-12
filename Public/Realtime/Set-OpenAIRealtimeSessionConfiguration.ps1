@@ -129,7 +129,7 @@ function Set-OpenAIRealtimeSessionConfiguration {
                 $MessageObject.session.max_response_output_tokens = 'inf'
             }
             else {
-                $MessageObject.session.max_response_output_tokens = $Temperature
+                $MessageObject.session.max_response_output_tokens = $MaxResponseOutputTokens
             }
         }
 
