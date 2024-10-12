@@ -1,4 +1,8 @@
 # Changelog
+### Unreleased
+- Outputs Run and RunStep error messages as warnings.
+- Fix minor issues.
+
 ### 4.7.0
 - Add `-Store` & `-MetaData` params for `Request-ChatCompletion`.  
   For support Stored Completions that was annouced at OpenAI DevDay 2024.
