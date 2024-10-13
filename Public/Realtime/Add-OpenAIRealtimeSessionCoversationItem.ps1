@@ -121,7 +121,7 @@ function Add-OpenAIRealtimeSessionCoversationItem {
             }
         }
 
-        PSOpenAI\Send-OpenAIRealtimeSessionMessage -Message ($MessageObject | ConvertTo-Json -Depth 10)
+        PSOpenAI\Send-OpenAIRealtimeSessionEvent -Message ($MessageObject | ConvertTo-Json -Depth 10)
 
         if ($TriggerResponse) {
             PSOpenAI\Request-OpenAIRealtimeSessionResponse

@@ -1,4 +1,4 @@
-function Send-OpenAIRealtimeSessionMessage {
+function Send-OpenAIRealtimeSessionEvent {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory, Position = 0, ValueFromPipeline)]

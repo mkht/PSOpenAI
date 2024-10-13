@@ -20,7 +20,7 @@ function Remove-OpenAIRealtimeSessionCoversationItem {
             $MessageObject.event_id = $EventId
         }
 
-        PSOpenAI\Send-OpenAIRealtimeSessionMessage -Message ($MessageObject | ConvertTo-Json -Depth 10)
+        PSOpenAI\Send-OpenAIRealtimeSessionEvent -Message ($MessageObject | ConvertTo-Json -Depth 10)
     }
 
     end {

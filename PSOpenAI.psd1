@@ -100,7 +100,7 @@
         'Wait-VectorStoreFileBatch',
         'Connect-OpenAIRealtimeSession',
         'Disconnect-OpenAIRealtimeSession',
-        'Send-OpenAIRealtimeSessionMessage',
+        'Send-OpenAIRealtimeSessionEvent',
         'Set-OpenAIRealtimeSessionConfiguration',
         'Add-OpenAIRealtimeSessionCoversationItem',
         'Request-OpenAIRealtimeSessionResponse',
