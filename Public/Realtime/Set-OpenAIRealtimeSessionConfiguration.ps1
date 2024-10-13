@@ -61,6 +61,10 @@ function Set-OpenAIRealtimeSessionConfiguration {
         [uint16]$TurnDetectionSilenceDuration,
 
         [Parameter()]
+        [ValidateNotNullOrEmpty()]
+        [System.Collections.IDictionary[]]$Tools,
+
+        [Parameter()]
         [ValidateRange(0.0, 2.0)]
         [float]$Temperature,
 
@@ -131,6 +135,10 @@ function Set-OpenAIRealtimeSessionConfiguration {
             else {
                 $MessageObject.session.max_response_output_tokens = $MaxResponseOutputTokens
             }
+        }
+
+        if ($PSBoundParameters.ContainsKey('Tools')) {
+            $MessageObject.session.tools = $Tools
         }
 
         PSOpenAI\Send-OpenAIRealtimeSessionEvent -Message ($MessageObject | ConvertTo-Json -Depth 10)
