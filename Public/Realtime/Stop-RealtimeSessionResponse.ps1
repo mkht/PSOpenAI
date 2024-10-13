@@ -1,4 +1,4 @@
-function Stop-OpenAIRealtimeSessionResponse {
+function Stop-RealtimeSessionResponse {
     [CmdletBinding()]
     param (
         [Parameter()]
@@ -10,7 +10,7 @@ function Stop-OpenAIRealtimeSessionResponse {
     }
 
     process {
-        PSOpenAI\Send-OpenAIRealtimeSessionEvent -Message ($MessageObject | ConvertTo-Json -Depth 10)
+        PSOpenAI\Send-RealtimeSessionEvent -Message ($MessageObject | ConvertTo-Json -Depth 10)
     }
 
     end {

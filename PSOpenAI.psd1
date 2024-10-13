@@ -98,14 +98,14 @@
         'Start-VectorStoreFileBatch',
         'Stop-VectorStoreFileBatch',
         'Wait-VectorStoreFileBatch',
-        'Connect-OpenAIRealtimeSession',
-        'Disconnect-OpenAIRealtimeSession',
-        'Send-OpenAIRealtimeSessionEvent',
-        'Set-OpenAIRealtimeSessionConfiguration',
-        'Add-OpenAIRealtimeSessionCoversationItem',
-        'Request-OpenAIRealtimeSessionResponse',
-        'Remove-OpenAIRealtimeSessionCoversationItem',
-        'Stop-OpenAIRealtimeSessionResponse'
+        'Connect-RealtimeSession',
+        'Disconnect-RealtimeSession',
+        'Send-RealtimeSessionEvent',
+        'Set-RealtimeSessionConfiguration',
+        'Add-RealtimeSessionConversationItem',
+        'Request-RealtimeSessionResponse',
+        'Remove-RealtimeSessionConversationItem',
+        'Stop-RealtimeSessionResponse'
     )
 
     # Aliases to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no aliases to export.

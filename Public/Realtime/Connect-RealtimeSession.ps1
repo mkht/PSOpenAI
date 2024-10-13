@@ -1,4 +1,4 @@
-function Connect-OpenAIRealtimeSession {
+function Connect-RealtimeSession {
     [CmdletBinding()]
     param (
         [Parameter()]
@@ -25,8 +25,8 @@ function Connect-OpenAIRealtimeSession {
     begin {
         # Global lock
         # Limit to only 1 session at a time
-        if ($global:PSOpenAIRealtimeSessionLock) {
-            Write-Error 'Creating a new session is locked, run Disconnect-OpenAIRealtimeSession to terminate existing session.'
+        if ($global:PSRealtimeSessionLock) {
+            Write-Error 'Creating a new session is locked, run Disconnect-RealtimeSession to terminate existing session.'
             return
         }
 
@@ -87,7 +87,7 @@ function Connect-OpenAIRealtimeSession {
             if ($WebSocketClient.State -eq [System.Net.WebSockets.WebSocketState]::Open) {
                 Write-Host 'Connected.' -ForegroundColor Green
                 Write-Verbose 'Connected.'
-                $global:PSOpenAIRealtimeSessionLock = $true
+                $global:PSRealtimeSessionLock = $true
             }
             else {
                 Write-Error 'Connection failed.'

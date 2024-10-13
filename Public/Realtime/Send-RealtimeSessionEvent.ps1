@@ -1,4 +1,4 @@
-function Send-OpenAIRealtimeSessionEvent {
+function Send-RealtimeSessionEvent {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory, Position = 0, ValueFromPipeline)]
@@ -10,7 +10,7 @@ function Send-OpenAIRealtimeSessionEvent {
 
     process {
         if ($null -eq $script:WebSocketClient) {
-            Write-Error 'No valid session found, please run Connect-OpenAIRealtimeSession to initiate connection.'
+            Write-Error 'No valid session found, please run Connect-RealtimeSession to initiate connection.'
             return
         }
         elseif ($script:WebSocketClient.State -ne [System.Net.WebSockets.WebSocketState]::Open) {

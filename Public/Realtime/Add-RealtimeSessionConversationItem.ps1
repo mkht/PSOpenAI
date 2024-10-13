@@ -1,4 +1,4 @@
-function Add-OpenAIRealtimeSessionCoversationItem {
+function Add-RealtimeSessionConversationItem {
     [CmdletBinding()]
     param (
         [Parameter()]
@@ -121,10 +121,10 @@ function Add-OpenAIRealtimeSessionCoversationItem {
             }
         }
 
-        PSOpenAI\Send-OpenAIRealtimeSessionEvent -Message ($MessageObject | ConvertTo-Json -Depth 10)
+        PSOpenAI\Send-RealtimeSessionEvent -Message ($MessageObject | ConvertTo-Json -Depth 10)
 
         if ($TriggerResponse) {
-            PSOpenAI\Request-OpenAIRealtimeSessionResponse
+            PSOpenAI\Request-RealtimeSessionResponse
         }
     }
 

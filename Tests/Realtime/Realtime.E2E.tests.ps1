@@ -17,7 +17,7 @@ Describe 'Realtime E2E Test' {
 
         Context 'Text In / Text Out' {
             BeforeAll {
-                Disconnect-OpenAIRealtimeSession
+                Disconnect-RealtimeSession
 
                 $global:ReceiveStack = [System.Collections.Concurrent.ConcurrentStack[object]]::new()
                 $global:SendStack = [System.Collections.Concurrent.ConcurrentStack[string]]::new()
@@ -44,16 +44,16 @@ Describe 'Realtime E2E Test' {
             }
 
             It 'STEP1: Connect to session' {
-                { Connect-OpenAIRealtimeSession -Model 'gpt-4o-realtime-preview-2024-10-01' -ea Stop } | Should -Not -Throw
+                { Connect-RealtimeSession -Model 'gpt-4o-realtime-preview-2024-10-01' -ea Stop } | Should -Not -Throw
             }
 
             It 'STEP1-1: Only one session is allowed' {
-                { Connect-OpenAIRealtimeSession -Model 'gpt-4o-realtime-preview-2024-10-01' -ea Stop } | Should -Throw
+                { Connect-RealtimeSession -Model 'gpt-4o-realtime-preview-2024-10-01' -ea Stop } | Should -Throw
             }
 
             It 'STEP2: Configure session' {
                 $item = $null
-                { Set-OpenAIRealtimeSessionConfiguration `
+                { Set-RealtimeSessionConfiguration `
                         -Instructions $script:Instructions `
                         -Modalities 'text' `
                         -Temperature 0.6 `
@@ -73,7 +73,7 @@ Describe 'Realtime E2E Test' {
 
             It 'STEP3: Input a user message' {
                 $item = $null
-                { Add-OpenAIRealtimeSessionCoversationItem -Role 'user' -Message $script:PromptMessage -ea Stop } | Should -Not -Throw
+                { Add-RealtimeSessionConversationItem -Role 'user' -Message $script:PromptMessage -ea Stop } | Should -Not -Throw
                 Start-Sleep -Seconds 1
 
                 $null = $global:SendStack.TryPeek([ref]$item)
@@ -86,7 +86,7 @@ Describe 'Realtime E2E Test' {
 
             It 'STEP4: Trigger response' {
                 $item = $null
-                { Request-OpenAIRealtimeSessionResponse -MaxOutputTokens 12 -ea Stop } | Should -Not -Throw
+                { Request-RealtimeSessionResponse -MaxOutputTokens 12 -ea Stop } | Should -Not -Throw
                 Start-Sleep -Seconds 5
 
                 $null = $global:SendStack.TryPeek([ref]$item)
@@ -107,7 +107,7 @@ Describe 'Realtime E2E Test' {
 
             It 'STEP5: Input a next message (with trigger response)' {
                 $item = $null
-                { Add-OpenAIRealtimeSessionCoversationItem -Role 'user' -Message $script:PromptNextMessage -TriggerResponse -ea Stop } | Should -Not -Throw
+                { Add-RealtimeSessionConversationItem -Role 'user' -Message $script:PromptNextMessage -TriggerResponse -ea Stop } | Should -Not -Throw
                 Start-Sleep -Seconds 12
 
                 $null = $global:SendStack.TryPeek([ref]$item)
@@ -120,7 +120,7 @@ Describe 'Realtime E2E Test' {
             }
 
             It 'STEP6: Close session' {
-                { Disconnect-OpenAIRealtimeSession -ea Stop } | Should -Not -Throw
+                { Disconnect-RealtimeSession -ea Stop } | Should -Not -Throw
             }
         }
     }

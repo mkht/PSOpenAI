@@ -1,4 +1,4 @@
-function Set-OpenAIRealtimeSessionConfiguration {
+function Set-RealtimeSessionConfiguration {
     [CmdletBinding()]
     param (
         [Parameter()]
@@ -63,6 +63,10 @@ function Set-OpenAIRealtimeSessionConfiguration {
         [Parameter()]
         [ValidateNotNullOrEmpty()]
         [System.Collections.IDictionary[]]$Tools,
+
+        [Parameter()]
+        [Completions('none', 'auto', 'required')]
+        [string]$ToolChoice,
 
         [Parameter()]
         [ValidateRange(0.0, 2.0)]
@@ -140,8 +144,11 @@ function Set-OpenAIRealtimeSessionConfiguration {
         if ($PSBoundParameters.ContainsKey('Tools')) {
             $MessageObject.session.tools = $Tools
         }
+        if ($PSBoundParameters.ContainsKey('ToolChoice')) {
+            $MessageObject.session.tool_choice = $ToolChoice
+        }
 
-        PSOpenAI\Send-OpenAIRealtimeSessionEvent -Message ($MessageObject | ConvertTo-Json -Depth 10)
+        PSOpenAI\Send-RealtimeSessionEvent -Message ($MessageObject | ConvertTo-Json -Depth 10)
     }
 
     end {

@@ -1,4 +1,4 @@
-function Request-OpenAIRealtimeSessionResponse {
+function Request-RealtimeSessionResponse {
     [CmdletBinding()]
     param (
         [Parameter()]
@@ -69,7 +69,7 @@ function Request-OpenAIRealtimeSessionResponse {
             }
         }
 
-        PSOpenAI\Send-OpenAIRealtimeSessionEvent -Message ($MessageObject | ConvertTo-Json -Depth 10)
+        PSOpenAI\Send-RealtimeSessionEvent -Message ($MessageObject | ConvertTo-Json -Depth 10)
     }
 
     end {

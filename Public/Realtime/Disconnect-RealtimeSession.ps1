@@ -1,4 +1,4 @@
-function Disconnect-OpenAIRealtimeSession {
+function Disconnect-RealtimeSession {
     [CmdletBinding()]
     param ()
 
@@ -47,6 +47,6 @@ function Disconnect-OpenAIRealtimeSession {
                 Write-Error -Exception $_.Exception
             }
         }
-        $global:PSOpenAIRealtimeSessionLock = $false
+        $global:PSRealtimeSessionLock = $false
     }
 }

@@ -65,13 +65,13 @@ Import-Module ..\PSOpenAI.psd1 -Force
 $env:OPENAI_API_KEY = '<Put your API key here>'
 
 # Connect to a session
-Connect-OpenAIRealtimeSession
+Connect-RealtimeSession
 ```
 
 Then, configure session settings as needed.
 ```powershell
 # Configure system message, output type, etc.
-Set-OpenAIRealtimeSessionConfiguration `
+Set-RealtimeSessionConfiguration `
     -Modalities 'text' `
     -Instructions 'You are a assistant for children. Always choose words that are easy for the child to understand.' `
     -Temperature 0.6
@@ -83,7 +83,7 @@ You can add as many messages as you need to the session.
 In turn-based dialogue mode, the AI will not start generating answers once you have added messages.
 
 ```powershell
-Add-OpenAIRealtimeSessionCoversationItem `
+Add-RealtimeSessionConversationItem `
   -Role 'user' `
   -Message 'Hello. Why is the sun so bright?'
 ```
@@ -91,7 +91,7 @@ Add-OpenAIRealtimeSessionCoversationItem `
 After adding messages, request the AI to generate an answer.
 
 ```powershell
-Request-OpenAIRealtimeSessionResponse
+Request-RealtimeSessionResponse
 ```
 
 Since we configured the output AI response events in blue in Step 1, blue text will be displayed on the console.
@@ -101,11 +101,11 @@ Since we configured the output AI response events in blue in Step 1, blue text w
 Repeat this step if you wish to continue the dialogue.
 
 ```powershell
-Add-OpenAIRealtimeSessionCoversationItem `
+Add-RealtimeSessionConversationItem `
   -Role 'user' `
   -Message "Hmmm, I'm not understanding. Explain it more simply."
 
-Request-OpenAIRealtimeSessionResponse
+Request-RealtimeSessionResponse
 ```
 
 ## Final Step: Close session
@@ -113,7 +113,7 @@ Request-OpenAIRealtimeSessionResponse
 Finally, close the session when the conversation is over.
 
 ```powershell
-Disconnect-OpenAIRealtimeSession
+Disconnect-RealtimeSession
 ```
 
 > [!NOTE]  
