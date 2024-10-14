@@ -317,7 +317,7 @@ $global:OPENAI_API_BASE  = 'https://<resource-name>.openai.azure.com/'
 
 Request-ChatCompletion `
   -Message 'Hello Azure OpenAI Service.' `
-  -Deployment 'gpt-35-turbo' `
+  -Model 'gpt-35-turbo' `
   -ApiType Azure
 ```
 
