@@ -5,29 +5,29 @@ function Start-RealtimeSessionAudioInput {
 
     begin {
         # Platform check
-        # if ($PSVersionTable.PSVersion -lt 7.4) {
-        #     Write-Error 'PowerShell version 7.4 or higher is required to run this command.'
-        #     return
-        # }
-        # if (-not $IsWindows) {
-        #     Write-Error 'This command can be run only on Windows.'
-        #     return
-        # }
+        if ($PSVersionTable.PSVersion -lt 7.4) {
+            Write-Error 'PowerShell version 7.4 or higher is required to run this command.'
+            return
+        }
+        if (-not $IsWindows) {
+            Write-Error 'This command can be run only on Windows.'
+            return
+        }
 
-        # # Session check
-        # if ($null -eq $script:WebSocketClient) {
-        #     Write-Error 'No valid session found, please run Connect-RealtimeSession to initiate connection.'
-        #     return
-        # }
-        # elseif ($script:WebSocketClient.State -ne [System.Net.WebSockets.WebSocketState]::Open) {
-        #     Write-Error 'Session already closed.'
-        #     return
-        # }
+        # Session check
+        if ($null -eq $script:WebSocketClient) {
+            Write-Error 'No valid session found, please run Connect-RealtimeSession to initiate connection.'
+            return
+        }
+        elseif ($script:WebSocketClient.State -ne [System.Net.WebSockets.WebSocketState]::Open) {
+            Write-Error 'Session already closed.'
+            return
+        }
 
-        # if ($global:PSOpenAISpeakerInput) {
-        #     Write-Warning 'Audio input is already started.'
-        #     return
-        # }
+        if ($global:PSOpenAISpeakerInput) {
+            Write-Warning 'Audio input is already started.'
+            return
+        }
 
         # Class definitions
         # This code is copied from https://github.com/Azure-Samples/aoai-realtime-audio-sdk/blob/8105a5c3ab9cc54fe864aa6f8259f72c6829eec7/dotnet/samples/console-from-mic/MicrophoneAudioStream.cs
@@ -184,6 +184,7 @@ public class MicrophoneAudioStream : Stream, IDisposable
                     audio = $audioData
                 } | ConvertTo-Json
                 [ArraySegment[byte]]$messageBytes = [System.Text.Encoding]::UTF8.GetBytes($jsonMessage)
+
                 # Send message
                 $_ct = [Threading.CancellationToken]::new($false)
                 $null = $ws.SendAsync(
