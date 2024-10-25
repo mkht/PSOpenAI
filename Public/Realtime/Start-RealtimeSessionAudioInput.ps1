@@ -14,6 +14,12 @@ function Start-RealtimeSessionAudioInput {
             return
         }
 
+        # No Audio input device
+        if ([NAudio.Wave.WaveInEvent]::DeviceCount -le 0) {
+            Write-Error 'There is no audio input device on this computer.'
+            return
+        }
+
         # Session check
         if ($null -eq $script:WebSocketClient) {
             Write-Error 'No valid session found, please run Connect-RealtimeSession to initiate connection.'

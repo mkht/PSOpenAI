@@ -44,6 +44,10 @@ function Start-RealtimeSessionAudioOutput {
                 $this._waveOutEvent.Play()
             }
 
+            [int] GetDeviceNumber() {
+                return $this._waveOutEvent.DeviceNumber
+            }
+
             [void] EnqueueForPlayback([byte[]]$audioData) {
                 $this._waveProvider.AddSamples($audioData, 0, $audioData.Length)
             }
@@ -61,6 +65,15 @@ function Start-RealtimeSessionAudioOutput {
 
         # Start thread
         $global:PSOpenAISpeakerOutput = [SpeakerOutput]::new()
+
+        # No audio output device
+        if ($global:PSOpenAISpeakerOutput.GetDeviceNumber() -lt 0) {
+            $global:PSOpenAISpeakerOutput.Dispose()
+            $global:PSOpenAISpeakerOutput = $null
+            Write-Error 'There is no audio output device on this computer.'
+            return
+        }
+
         $script:PSOpenAISpeakerOutputEventHandlerJob = `
             Register-EngineEvent -SourceIdentifier 'PSOpenAI.Realtime.ReceiveMessage' -Action {
             $o = $Event.SourceArgs[0]
