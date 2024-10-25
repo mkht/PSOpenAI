@@ -106,8 +106,7 @@ function Set-RealtimeSessionConfiguration {
                 $MessageObject.session.input_audio_transcription = $null
             }
             else {
-                $MessageObject.session.input_audio_transcription = @{enabled = $true }
-                $MessageObject.session.input_audio_transcription.model = $InputAudioTranscriptionModel
+                $MessageObject.session.input_audio_transcription = @{model = $InputAudioTranscriptionModel }
             }
         }
 

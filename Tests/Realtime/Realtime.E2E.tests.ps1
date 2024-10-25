@@ -73,7 +73,7 @@ Describe 'Realtime E2E Test' {
 
             It 'STEP3: Input a user message' {
                 $item = $null
-                { Add-RealtimeSessionConversationItem -Role 'user' -Message $script:PromptMessage -ea Stop } | Should -Not -Throw
+                { Add-RealtimeSessionItem -Role 'user' -Message $script:PromptMessage -ea Stop } | Should -Not -Throw
                 Start-Sleep -Seconds 1
 
                 $null = $global:SendStack.TryPeek([ref]$item)
@@ -107,7 +107,7 @@ Describe 'Realtime E2E Test' {
 
             It 'STEP5: Input a next message (with trigger response)' {
                 $item = $null
-                { Add-RealtimeSessionConversationItem -Role 'user' -Message $script:PromptNextMessage -TriggerResponse -ea Stop } | Should -Not -Throw
+                { Add-RealtimeSessionItem -Role 'user' -Message $script:PromptNextMessage -TriggerResponse -ea Stop } | Should -Not -Throw
                 Start-Sleep -Seconds 12
 
                 $null = $global:SendStack.TryPeek([ref]$item)

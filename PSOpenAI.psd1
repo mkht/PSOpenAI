@@ -33,7 +33,10 @@
     # Assemblies that must be loaded prior to importing this module
     RequiredAssemblies   = @(
         'Libs\CustomAttributes\netstandard2.0\CustomAttributes.dll',
-        'Libs\TokenizerLib\netstandard2.0\TokenizerLib.dll'
+        'Libs\TokenizerLib\netstandard2.0\TokenizerLib.dll',
+        'Libs\NAudio\net472\NAudio.Core.dll'
+        'Libs\NAudio\net472\NAudio.WinMM.dll'
+        'Libs\NAudio\net472\NAudio.dll'
     )
 
     # Functions to export from this module
@@ -102,10 +105,14 @@
         'Disconnect-RealtimeSession',
         'Send-RealtimeSessionEvent',
         'Set-RealtimeSessionConfiguration',
-        'Add-RealtimeSessionConversationItem',
+        'Add-RealtimeSessionItem',
         'Request-RealtimeSessionResponse',
-        'Remove-RealtimeSessionConversationItem',
-        'Stop-RealtimeSessionResponse'
+        'Remove-RealtimeSessionItem',
+        'Stop-RealtimeSessionResponse',
+        'Start-RealtimeSessionAudioOutput',
+        'Stop-RealtimeSessionAudioOutput',
+        'Start-RealtimeSessionAudioInput',
+        'Stop-RealtimeSessionAudioInput'
     )
 
     # Aliases to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no aliases to export.

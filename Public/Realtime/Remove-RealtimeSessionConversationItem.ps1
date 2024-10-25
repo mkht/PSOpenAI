@@ -1,4 +1,4 @@
-function Remove-RealtimeSessionConversationItem {
+function Remove-RealtimeSessionItem {
     [CmdletBinding()]
     param (
         [Parameter()]

@@ -5,13 +5,24 @@ $PublicDirectory = Join-Path $PSScriptRoot 'Public'
 $PrivateFunctions = Get-ChildItem -LiteralPath $PrivateDirectory -Recurse -Filter '*.ps1' -File
 $PublicFunctions = Get-ChildItem -LiteralPath $PublicDirectory -Recurse -Filter '*.ps1' -File
 
+# Exclude on specific platfotm.
+$Exclude = @()
+if (-not $IsWindows -or $PSVersionTable.PSVersion -lt 7.4) {
+    $Exclude = @(
+        'Start-RealtimeSessionAudioOutput.ps1'
+        'Stop-RealtimeSessionAudioOutput.ps1'
+        'Stop-RealtimeSessionAudioInput.ps1'
+        'Stop-RealtimeSessionAudioInput.ps1'
+    )
+}
+
 # Include Private functions
-$PrivateFunctions | ForEach-Object {
+$PrivateFunctions | Where-Object { $_.Name -notin $Exclude } | ForEach-Object {
     . $_.FullName
 }
 
 # Include Public functions
-$PublicFunctions | ForEach-Object {
+$PublicFunctions | Where-Object { $_.Name -notin $Exclude }  | ForEach-Object {
     . $_.FullName
 }
 

@@ -1,4 +1,4 @@
-function Add-RealtimeSessionConversationItem {
+function Add-RealtimeSessionItem {
     [CmdletBinding()]
     param (
         [Parameter()]

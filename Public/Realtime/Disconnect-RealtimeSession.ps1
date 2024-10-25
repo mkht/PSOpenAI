@@ -47,6 +47,15 @@ function Disconnect-RealtimeSession {
                 Write-Error -Exception $_.Exception
             }
         }
+
+        if (Test-Path -LiteralPath 'Function:/Stop-RealtimeSessionAudioOutput') {
+            PSOpenAI\Stop-RealtimeSessionAudioOutput
+        }
+
+        if (Test-Path -LiteralPath 'Function:/Stop-RealtimeSessionAudioInput') {
+            PSOpenAI\Stop-RealtimeSessionAudioInput
+        }
+
         $global:PSRealtimeSessionLock = $false
     }
 }

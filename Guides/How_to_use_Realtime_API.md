@@ -83,7 +83,7 @@ You can add as many messages as you need to the session.
 In turn-based dialogue mode, the AI will not start generating answers once you have added messages.
 
 ```powershell
-Add-RealtimeSessionConversationItem `
+Add-RealtimeSessionItem `
   -Role 'user' `
   -Message 'Hello. Why is the sun so bright?'
 ```
@@ -101,7 +101,7 @@ Since we configured the output AI response events in blue in Step 1, blue text w
 Repeat this step if you wish to continue the dialogue.
 
 ```powershell
-Add-RealtimeSessionConversationItem `
+Add-RealtimeSessionItem `
   -Role 'user' `
   -Message "Hmmm, I'm not understanding. Explain it more simply."
 
