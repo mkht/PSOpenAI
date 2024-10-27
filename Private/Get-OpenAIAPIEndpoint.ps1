@@ -222,6 +222,22 @@ function Get-OpenAIAPIEndpoint {
             }
             continue
         }
+        'Realtime' {
+            $UriBuilder.Path += 'realtime'
+            if ($UriBuilder.Scheme -eq 'https') {
+                $UriBuilder.Scheme = 'wss'
+            }
+            elseif ($UriBuilder.Scheme -eq 'http') {
+                $UriBuilder.Scheme = 'ws'
+            }
+            @{
+                Name        = 'realtime'
+                Method      = ''
+                Uri         = $UriBuilder.Uri
+                ContentType = ''
+            }
+            continue
+        }
         Default {
             Write-Error -Message ('{0} API endpoint is not provided by OpenAI' -f $_)
         }

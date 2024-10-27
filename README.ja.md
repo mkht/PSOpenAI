@@ -80,6 +80,24 @@ Install-Module -Name PSOpenAI
 + [Wait-VectorStoreFileBatch](/Docs/Wait-VectorStoreFileBatch.md)
 + [Get-VectorStoreFileInBatch](/Docs/Get-VectorStoreFileInBatch.md)
 
+#### Realtime
+[Guide: Realtime API の使用方法](/Guides/How_to_use_Realtime-API.md)  
+
++ [Connect-RealtimeSession](/Docs/Connect-RealtimeSession.md)
++ [Disconnect-RealtimeSession](/Docs/Disconnect-RealtimeSession.md)
++ [Set-RealtimeSessionCofiguration](/Docs/Set-RealtimeSessionCofiguration.md)
++ [Send-RealtimeSessionEvent](/Docs/Send-RealtimeSessionEvent.md)
++ [Add-RealtimeSession](/Docs/Add-Add.md)
++ [Remove-RealtimeSessionItem](/Docs/Remove-RealtimeSessionItem.md)
++ [Reuest-RealtimeSessionResponse](/Docs/Reuest-RealtimeSessionResponse.md)
++ [Stop-RealtimeSessionResponse](/Docs/Stop-RealtimeSessionResponse.md)
++ [Start-RealtimeSessionAudioInput](/Docs/Start-RealtimeSessionAudioInput.md) *
++ [Stop-RealtimeSessionAudioInput](/Docs/Stop-RealtimeSessionAudioInput.md) *
++ [Start-RealtimeSessionAudioOutput](/Docs/Start-RealtimeSessionAudioInput.md) *
++ [Stop-RealtimeSessionAudioOutput](/Docs/Stop-RealtimeSessionAudioInput.md) *
+
+> [*] Windows と PowerShell 7.4 以上の組み合わせでのみ動作します
+
 #### Images
 + [Request-ImageEdit](/Docs/Request-ImageEdit.md)
 + [Request-ImageGeneration](/Docs/Request-ImageGeneration.md)

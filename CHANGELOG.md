@@ -1,7 +1,11 @@
 # Changelog
-### Unreleased
+### Unrelease
+- Add an experimental support for Realtime API.  
+  This enables real-time conversations with the AI assitstant. Please refer to this guide.  
+  [Guide: How to use Realtime API](/Guides/How_to_use_Realtime_API.md)
+- Update default api version of Azure OpenAI Service to `2024-10-01-preview`
 - Outputs Run and RunStep error messages as warnings.
-- Fix minor issues.
+- Fix an issue where some request URIs contains duplicate slashes.
 
 ### 4.7.0
 - Add `-Store` & `-MetaData` params for `Request-ChatCompletion`.  
