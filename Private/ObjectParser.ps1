@@ -50,6 +50,18 @@ function ParseThreadRunObject {
         }
     }
     Write-Output $InputObject
+
+    # Output warning message if the status is not success.
+    if ($null -ne $InputObject.last_error) {
+        $WarnMessage = ('The status of run with id "{0}" is "{1}". Reason: "{2}" ({3})' -f `
+                $InputObject.id, $InputObject.status, $InputObject.last_error.message, $InputObject.last_error.code)
+        Write-Warning -Message $WarnMessage
+    }
+    if ($null -ne $InputObject.incomplete_details) {
+        $WarnMessage = ('The status of run with id "{0}" is "{1}". Reason: "{2}"' -f `
+                $InputObject.id, $InputObject.status, $InputObject.incomplete_details.reason)
+        Write-Warning -Message $WarnMessage
+    }
 }
 
 function ParseThreadRunStepObject {
@@ -134,6 +146,13 @@ function ParseThreadRunStepObject {
 
     $InputObject | Add-Member -MemberType NoteProperty -Name 'SimpleContent' -Value $simplecontent -Force
     Write-Output $InputObject
+
+    # Output warning message if the status is not success.
+    if ($null -ne $InputObject.last_error) {
+        $WarnMessage = ('The status of run step with id "{0}" is "{1}". Reason: "{2}" ({3})' -f `
+                $InputObject.id, $InputObject.status, $InputObject.last_error.message, $InputObject.last_error.code)
+        Write-Warning -Message $WarnMessage
+    }
 }
 
 function ParseThreadObject {

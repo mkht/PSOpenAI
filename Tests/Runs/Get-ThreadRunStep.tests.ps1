@@ -146,6 +146,29 @@ Describe 'Get-ThreadRunStep' {
             $Result[0].SimpleContent.content | Should -Be 'Hi! How can I help you today?'
         }
 
+        It 'Warn when the run step object has error messages' {
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+{
+    "id": "step_warn123",
+    "object": "thread.run.step",
+    "created_at": 1699063291,
+    "run_id": "run_warn123",
+    "assistant_id": "asst_warn123",
+    "thread_id": "thread_warn123",
+    "type": "message_creation",
+    "status": "failed",
+    "last_error": {"code": "server_error", "message": "TEST ERROR"},
+    "step_details": null
+}
+'@ } -ParameterFilter { 'https://api.openai.com/v1/threads/thread_warn123/runs/run_warn123/steps/step_warn123' -eq $Uri }
+            $script:Warn = $null
+            { $script:Result = Get-ThreadRunStep -RunId 'run_warn123' -ThreadId 'thread_warn123' -StepId 'step_warn123' -ea Stop -wv Warn1; $script:Warn = $Warn1 } | Should -Not -Throw
+            Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly -Scope It
+            $Result.id | Should -BeExactly 'step_warn123'
+            $Result.psobject.TypeNames | Should -Contain 'PSOpenAI.Thread.Run.Step'
+            $script:Warn[0].Message | Should -Match 'TEST ERROR'
+        }
+
         Context 'Parameter Sets' {
             It 'Get_Run' {
                 $InObject = [pscustomobject]@{
