@@ -69,7 +69,7 @@ function Set-RealtimeSessionConfiguration {
         [string]$ToolChoice,
 
         [Parameter()]
-        [ValidateRange(0.0, 2.0)]
+        [ValidateRange(0.6, 1.2)]
         [float]$Temperature,
 
         [Parameter()]

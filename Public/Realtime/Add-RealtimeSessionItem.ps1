@@ -34,7 +34,7 @@ function Add-RealtimeSessionItem {
         )]
         [string]$Role = 'user',
 
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory, Position = 0)]
         [Alias('Text')]
         [Alias('Message')]
         [ValidateNotNullOrEmpty()]
