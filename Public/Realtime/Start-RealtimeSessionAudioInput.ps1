@@ -218,6 +218,9 @@ public class MicrophoneAudioStream : Stream, IDisposable
         AddParameter('audio', $MicInputStream).
         AddParameter('consolehost', $Host).BeginInvoke()
         #endregion
+
+        Write-Host 'Audio input from mic has started.' -ForegroundColor Green
+        Write-Verbose 'Audio input from mic has started.'
     }
 
     process {}

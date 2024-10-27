@@ -14,5 +14,8 @@ function Stop-RealtimeSessionAudioOutput {
             $global:PSOpenAISpeakerOutput.Dispose()
             $global:PSOpenAISpeakerOutput = $null
         }
+
+        Write-Host 'Audio output has been stopped.' -ForegroundColor Green
+        Write-Verbose 'Audio output has been stopped.'
     }
 }

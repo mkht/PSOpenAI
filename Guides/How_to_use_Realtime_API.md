@@ -10,10 +10,9 @@ PSOpenAI provides the ability to use the Realtime API in an event-based style th
 > [!WARNING]  
 > The Realtime API is still in Beta. Specifications, usage, and parameters are subject to change without announcement.
 
-> [!NOTE]  
-> PSOpenAI does not yet support voice input/output and use of tools. There are plans to support this in the future.
+## Basics
 
-## Step 1: Subscribe events
+### Step 1: Subscribe events
 
 PSOpenAI notifies messages received from the server in real time as events.
 
@@ -55,7 +54,7 @@ There are various types that can be received. All are listed in the [OpenAI refe
 - `response.text.done`
 
 
-## Step 2: Connect & configure session
+### Step 2: Connect & configure session
 
 You need to connect to a session for conversation.
 
@@ -77,7 +76,7 @@ Set-RealtimeSessionConfiguration `
     -Temperature 0.6
 ```
 
-## Step 3: Send messages
+### Step 3: Send messages
 
 You can add as many messages as you need to the session.  
 In turn-based dialogue mode, the AI will not start generating answers once you have added messages.
@@ -108,7 +107,7 @@ Add-RealtimeSessionItem `
 Request-RealtimeSessionResponse
 ```
 
-## Final Step: Close session
+### Final Step: Close session
 
 Finally, close the session when the conversation is over.
 
@@ -124,4 +123,58 @@ Disconnect-RealtimeSession
 
 ```powershell
 Unregister-Event -SourceIdentifier "PSOpenAI.Realtime.ReceiveMessage"
+```
+
+## Mic-In / Speaker-Out
+
+> [!IMPORTANT]  
+> Mic-In and Speaker-Out features are only functional on **Windows** with **PowerShell 7.4+**.  
+> Other platforms, such as Linux can not use these functions.
+
+PSOpenAI has helper functions to capture audio from the microphone and output the server's response to the speaker device.
+
+- Start-RealtimeSessionAudioInput
+- Stop-RealtimeSessionAudioInput
+- Start-RealtimeSessionAudioOutput
+- Stop-RealtimeSessionAudioOutput
+
+These funcrions enables real-time conversations with the AI using the PowerShell console.
+
+### Sample script
+
+This is a sample script that connect to a real-time session, configures the server's voice response to be enabled, and then starts speaker output and microphone input.
+
+By enabling automatic turn detection, the response is initiated at the server's decision without a need to manually run `Request-RealtimeSessionResponse`.
+
+```powershell
+$env:OPENAI_API_KEY = '<Put your API key here>'
+
+# Connect to a session.
+Connect-RealtimeSession
+
+# Enables audio response with automatic turn detection.
+Set-RealtimeSessionConfiguration -Modalities audio -EnableTurnDetection $true
+
+# Activates speaker output.
+Start-RealtimeSessionAudioOutput
+
+# Activates capture audio from the mic.
+Start-RealtimeSessionAudioInput
+
+Write-Host 'Now you can talk with the assistants in realtime.'
+```
+
+Once microphone input is activated, all audio from the microphone is sent to the server.
+
+Never forget to stop the microphone input and end the session when you are satisfied with conversation with the assistant.
+
+```powershell
+# Deactivates speaker output.
+Stop-RealtimeSessionAudioOutput
+
+# Deactivates mic in.
+Stop-RealtimeSessionAudioInput
+
+# Disconnect from the session.
+Disconnect-RealtimeSession
 ```

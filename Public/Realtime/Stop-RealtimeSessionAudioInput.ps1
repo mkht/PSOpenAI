@@ -19,6 +19,9 @@ function Stop-RealtimeSessionAudioInput {
                 Write-Error -Exception $_.Exception
             }
         }
+
+        Write-Host 'Audio input has been stopped.' -ForegroundColor Green
+        Write-Verbose 'Audio input has been stopped.'
     }
     clean {
         if ($null -ne $script:MicInputStream) {
