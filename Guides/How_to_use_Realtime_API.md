@@ -128,7 +128,7 @@ Unregister-Event -SourceIdentifier "PSOpenAI.Realtime.ReceiveMessage"
 ## Mic-In / Speaker-Out
 
 > [!IMPORTANT]  
-> Mic-In and Speaker-Out features are only functional on **Windows** with **PowerShell 7.4+**.  
+> Mic-In and Speaker-Out features are only works on **Windows** with **PowerShell 7.4+**.  
 > Other platforms, such as Linux can not use these functions.
 
 PSOpenAI has helper functions to capture audio from the microphone and output the server's response to the speaker device.
