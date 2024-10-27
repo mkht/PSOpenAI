@@ -1,6 +1,6 @@
 @{
     # Version number of this module.
-    ModuleVersion        = '4.7.0'
+    ModuleVersion        = '4.8.0'
 
     # Supported PSEditions
     CompatiblePSEditions = 'Core', 'Desktop'
@@ -101,7 +101,7 @@
         'Start-VectorStoreFileBatch',
         'Stop-VectorStoreFileBatch',
         'Wait-VectorStoreFileBatch',
-        ### Raltime ###
+        ### Realtime ###
         'Connect-RealtimeSession',
         'Disconnect-RealtimeSession',
         'Send-RealtimeSessionEvent',

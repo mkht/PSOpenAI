@@ -1,4 +1,13 @@
 # 変更履歴
+### 4.8.0
+- Realtime APIの実験的なサポートを追加します  
+  これを使用するとAIアシスタントとリアルタイムの会話が可能になります  
+  詳しくはガイドを参照してください  
+  [Guide: How to use Realtime API](/Guides/How_to_use_Realtime_API.md)
+- Azure OpenAI ServiceのデフォルトAPIバージョンを`2024-10-01-preview`に更新します
+- Run および RunStep にエラーが含まれている場合、それを警告メッセージとして出力します
+- APIリクエストURIのいくつかに二重にスラッシュが含まれていた問題を修正します
+
 ### 4.7.0
 - `Request-ChatCompletion`に`-Store`と`-MetaData`パラメータを追加します  
   これを使用するとチャット応答を保存し、モデル蒸留や評価といった  
