@@ -85,15 +85,15 @@ Install-Module -Name PSOpenAI
 + [Get-VectorStoreFileInBatch](/Docs/Get-VectorStoreFileInBatch.md)
 
 #### Realtime
-[Guide: How to use Realtime API](/Guides/How_to_use_Realtime-API.md)  
+[Guide: How to use Realtime API](/Guides/How_to_use_Realtime_API.md)  
 
 + [Connect-RealtimeSession](/Docs/Connect-RealtimeSession.md)
 + [Disconnect-RealtimeSession](/Docs/Disconnect-RealtimeSession.md)
 + [Set-RealtimeSessionCofiguration](/Docs/Set-RealtimeSessionCofiguration.md)
 + [Send-RealtimeSessionEvent](/Docs/Send-RealtimeSessionEvent.md)
-+ [Add-RealtimeSession](/Docs/Add-Add.md)
++ [Add-RealtimeSessionItem](/Docs/Add-RealtimeSessionItem.md)
 + [Remove-RealtimeSessionItem](/Docs/Remove-RealtimeSessionItem.md)
-+ [Reuest-RealtimeSessionResponse](/Docs/Reuest-RealtimeSessionResponse.md)
++ [Request-RealtimeSessionResponse](/Docs/Request-RealtimeSessionResponse.md)
 + [Stop-RealtimeSessionResponse](/Docs/Stop-RealtimeSessionResponse.md)
 + [Start-RealtimeSessionAudioInput](/Docs/Start-RealtimeSessionAudioInput.md) *
 + [Stop-RealtimeSessionAudioInput](/Docs/Stop-RealtimeSessionAudioInput.md) *
