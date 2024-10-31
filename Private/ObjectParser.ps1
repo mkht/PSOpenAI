@@ -189,7 +189,7 @@ function ParseChatCompletionObject {
         [PSCustomObject]$InputObject,
 
         [Parameter()]
-        [object[]]$Messages,
+        [System.Collections.Generic.List[object]]$Messages,
 
         [Parameter()]
         [object]$OutputType, # for Structured Outputs
