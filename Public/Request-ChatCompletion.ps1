@@ -24,6 +24,7 @@ function Request-ChatCompletion {
             'gpt-4o',
             'gpt-4o-mini',
             'chatgpt-4o-latest',
+            'gpt-4o-audio-preview',
             'gpt-3.5-turbo-16k',
             'gpt-3.5-turbo-1106',
             'gpt-3.5-turbo-0125',
@@ -43,7 +44,32 @@ function Request-ChatCompletion {
         [Alias('RolePrompt')]
         [string[]]$SystemMessage,
 
-        # For GPT-4 Turbo with Vision
+        # For Audio
+        [Parameter()]
+        [ValidateSet('text', 'audio')]
+        [string[]]$Modalities,
+
+        [Parameter()]
+        [Completions('alloy', 'ash', 'ballad', 'coral', 'echo', 'sage', 'shimmer', 'verse')]
+        [string][LowerCaseTransformation()]$Voice = 'alloy',
+
+        [Parameter()]
+        [Alias('input_audio')]
+        [string]$InputAudio,
+
+        [Parameter()]
+        [Completions('wav', 'mp3')]
+        [string][LowerCaseTransformation()]$InputAudioFormat,
+
+        [Parameter()]
+        [ValidateNotNullOrEmpty()]
+        [string]$AudioOutFile,
+
+        [Parameter()]
+        [Completions('wav', 'mp3', 'flac', 'opus', 'pcm16')]
+        [string][LowerCaseTransformation()]$OutputAudioFormat = 'mp3',
+
+        # For Vison
         [Parameter()]
         [string[]]$Images,
 
@@ -256,6 +282,15 @@ function Request-ChatCompletion {
         if ($OpenAIParameter.ApiType -eq [OpenAIApiType]::OpenAI -or $AsBatch) {
             $PostBody.model = $Model
         }
+        if ($PSBoundParameters.ContainsKey('Modalities')) {
+            $PostBody.modalities = $Modalities
+            if ($Modalities -contains 'audio') {
+                $PostBody.audio = @{
+                    'voice'  = $Voice
+                    'format' = $OutputAudioFormat
+                }
+            }
+        }
         if ($PSBoundParameters.ContainsKey('Tools')) {
             $PostBody.tools = @($Tools)
         }
@@ -354,8 +389,14 @@ function Request-ChatCompletion {
         foreach ($msg in $History) {
             if ($msg.role) {
                 $tm = [ordered]@{
-                    role    = [string]$msg.role
-                    content = $msg.content
+                    role = [string]$msg.role
+                }
+                if ($msg.content) {
+                    $tm.content = $msg.content
+                }
+                # audio
+                if ($msg.audio.id) {
+                    $tm.audio = @{id = $msg.audio.id }
                 }
                 # name is optional
                 if ($msg.name) {
@@ -382,16 +423,53 @@ function Request-ChatCompletion {
             }
         }
         # Add user message (question)
-        if (-not [string]::IsNullOrWhiteSpace($Message)) {
+        if (-not [string]::IsNullOrWhiteSpace($Message) -or -not [string]::IsNullOrEmpty($InputAudio)) {
             $um = [ordered]@{
                 role    = $Role
                 content = $Message.Trim()
             }
-            # For GPT-4 with Vison
+
+            # For Audio
+            if ($InputAudio) {
+                $um.content = @()
+                if (-not [string]::IsNullOrWhiteSpace($Message)) {
+                    $um.content += @{type = 'text'; text = $Message.Trim() }
+                }
+
+                $auc = $null
+                if (-not (Test-Path -LiteralPath $InputAudio -PathType Leaf)) {
+                    Write-Error -Exception ([System.IO.FileNotFoundException]::new("Could not find file '$InputAudio'", $InputAudio))
+                }
+                else {
+                    $audioItem = Get-Item -LiteralPath $InputAudio
+                    if ($InputAudioFormat) {
+                        $audioformat = $InputAudioFormat
+                    }
+                    else {
+                        $audioformat = $audioItem.Extension.ToLower()
+                    }
+                    $auc = @{
+                        type        = 'input_audio'
+                        input_audio = @{
+                            data   = ([System.Convert]::ToBase64String([System.IO.File]::ReadAllBytes($audioItem.FullName)))
+                            format = $audioformat
+                        }
+                    }
+                }
+                if ($null -ne $auc) {
+                    $um.content += $auc
+                }
+            }
+
+            # For Vison
             if ($PSBoundParameters.ContainsKey('Images')) {
-                $um.content = @(
-                    @{type = 'text'; text = $Message.Trim() }
-                )
+                if ($um.content -isnot [array]) {
+                    $um.content = @()
+                    if (-not [string]::IsNullOrWhiteSpace($Message)) {
+                        $um.content += @{type = 'text'; text = $Message.Trim() }
+                    }
+                }
+
                 foreach ($image in $Images) {
                     $imc = $null
                     if (Test-Path -LiteralPath $image -PathType Leaf) {
@@ -407,6 +485,7 @@ function Request-ChatCompletion {
                     $um.content += $imc
                 }
             }
+
             # name poperty is optional
             if (-not [string]::IsNullOrWhiteSpace($Name)) {
                 $um.name = $Name.Trim()
@@ -535,6 +614,9 @@ function Request-ChatCompletion {
                 role    = $tr.role
                 content = $tr.content
             }
+            if ($tr.audio) {
+                $rcm.Add('audio', (@{id = $tr.audio.id }))
+            }
             if ($tr.tool_calls) {
                 $rcm.Add('tool_calls', $tr.tool_calls)
             }
@@ -593,7 +675,39 @@ function Request-ChatCompletion {
         #endregion
 
         #region Output
-        ParseChatCompletionObject $Response -OutputType $Format
+
+        # Save audio to file
+        if ($PSBoundParameters.ContainsKey('AudioOutFile')) {
+            foreach ($choice in $InputObject.choices) {
+                if ($null -eq $choice.message.audio.data) {
+                    continue
+                }
+
+                try {
+                    # Convert to absolute path
+                    $AbsoluteOutFile = $PSCmdlet.GetUnresolvedProviderPathFromPSPath($AudioOutFile)
+                    # create parent directory if it does not exist
+                    $ParentDirectory = Split-Path $AbsoluteOutFile -Parent
+                    if (-not $ParentDirectory) {
+                        $ParentDirectory = [string](Get-Location -PSProvider FileSystem).ProviderPath
+                        $AbsoluteOutFile = Join-Path $ParentDirectory $AbsoluteOutFile
+                    }
+                    if (-not (Test-Path -LiteralPath $ParentDirectory -PathType Container)) {
+                        $null = New-Item -Path $ParentDirectory -ItemType Directory -Force
+                    }
+
+                    # Output file
+                    [System.IO.File]::WriteAllBytes($AbsoluteOutFile, ([System.Convert]::FromBase64String($choice.message.audio.data)))
+                }
+                catch {
+                    Write-Error -Exception $_.Exception
+                }
+
+                break
+            }
+        }
+
+        ParseChatCompletionObject $Response -Messages $Messages -OutputType $Format
         #endregion
     }
 

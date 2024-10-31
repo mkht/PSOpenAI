@@ -189,6 +189,9 @@ function ParseChatCompletionObject {
         [PSCustomObject]$InputObject,
 
         [Parameter()]
+        [object[]]$Messages,
+
+        [Parameter()]
         [object]$OutputType, # for Structured Outputs
 
         [Parameter()]
@@ -226,6 +229,12 @@ function ParseChatCompletionObject {
         if ($choice.finish_reason -in ('length', 'content_filter')) {
             Write-Warning ('The model seems to have terminated response. Reason: "{0}"' -f $choice.finish_reason)
             $Answer += $choice.message.content
+            continue
+        }
+
+        # The model respond by audio
+        if ($null -eq $choice.message.content -and $choice.message.audio.transcript) {
+            $Answer += $choice.message.audio.transcript
             continue
         }
 
