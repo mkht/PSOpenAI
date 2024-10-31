@@ -678,30 +678,19 @@ function Request-ChatCompletion {
 
         # Save audio to file
         if ($PSBoundParameters.ContainsKey('AudioOutFile')) {
-            foreach ($choice in $InputObject.choices) {
+            foreach ($choice in $Response.choices) {
                 if ($null -eq $choice.message.audio.data) {
                     continue
                 }
 
                 try {
-                    # Convert to absolute path
-                    $AbsoluteOutFile = $PSCmdlet.GetUnresolvedProviderPathFromPSPath($AudioOutFile)
-                    # create parent directory if it does not exist
-                    $ParentDirectory = Split-Path $AbsoluteOutFile -Parent
-                    if (-not $ParentDirectory) {
-                        $ParentDirectory = [string](Get-Location -PSProvider FileSystem).ProviderPath
-                        $AbsoluteOutFile = Join-Path $ParentDirectory $AbsoluteOutFile
-                    }
-                    if (-not (Test-Path -LiteralPath $ParentDirectory -PathType Container)) {
-                        $null = New-Item -Path $ParentDirectory -ItemType Directory -Force
-                    }
-
-                    # Output file
-                    [System.IO.File]::WriteAllBytes($AbsoluteOutFile, ([System.Convert]::FromBase64String($choice.message.audio.data)))
+                    $audioData = [System.Convert]::FromBase64String($choice.message.audio.data)
                 }
                 catch {
                     Write-Error -Exception $_.Exception
                 }
+
+                Write-ByteContent -OutFile $AudioOutFile -Bytes $audioData
 
                 break
             }

@@ -97,25 +97,7 @@ function Get-OpenAIFileContent {
 
         #region Output
         if ($OutFile) {
-            try {
-                # Convert to absolute path
-                $AbsoluteOutFile = $PSCmdlet.GetUnresolvedProviderPathFromPSPath($OutFile)
-                # create parent directory if it does not exist
-                $ParentDirectory = Split-Path $AbsoluteOutFile -Parent
-                if (-not $ParentDirectory) {
-                    $ParentDirectory = [string](Get-Location -PSProvider FileSystem).ProviderPath
-                    $AbsoluteOutFile = Join-Path $ParentDirectory $AbsoluteOutFile
-                }
-                if (-not (Test-Path -LiteralPath $ParentDirectory -PathType Container)) {
-                    $null = New-Item -Path $ParentDirectory -ItemType Directory -Force
-                }
-
-                # Output file
-                [System.IO.File]::WriteAllBytes($AbsoluteOutFile, ([byte[]]$Response))
-            }
-            catch {
-                Write-Error -Exception $_.Exception
-            }
+            Write-ByteContent -OutFile $OutFile -Bytes ([byte[]]$Response)
         }
         else {
             Write-Output $Response
