@@ -1,6 +1,6 @@
 # Changelog
-### Unreleased
-- Add a support for audio input / output in `Request-ChatCompletions`.
+### 4.9.0
+- Add a support for audio input / output in `Request-ChatCompletion`.
 
   ```PowerShell
   Request-ChatCompletion -Model gpt-4o-audio-preview `

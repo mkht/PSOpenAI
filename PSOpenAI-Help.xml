@@ -12171,6 +12171,79 @@ This is an optional field, and may contain a-z, A-Z, 0-9, hyphens, and underscor
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Modalities</maml:name>
+          <maml:description>
+            <maml:para>Output types that you would like the model to generate for this request.
+Some models can generate both text and audio. To request that responses, you can specify: `("text", "audio")`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Voice</maml:name>
+          <maml:description>
+            <maml:para>The voice the model uses to respond.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="input_audio">
+          <maml:name>InputAudio</maml:name>
+          <maml:description>
+            <maml:para>The path of the audio file to passing the model. Supported formats are `wav` and `mp3`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>InputAudioFormat</maml:name>
+          <maml:description>
+            <maml:para>Specifies the format of the input audio file. If not specified, the format is automatically determined from the file extension.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>AudioOutFile</maml:name>
+          <maml:description>
+            <maml:para>Specifies where audio response from the model will be saved. If the model does not return a audio response, nothing is saved.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>OutputAudioFormat</maml:name>
+          <maml:description>
+            <maml:para>Specifies the format of the output audio file. The default value is `mp3`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>Images</maml:name>
           <maml:description>
             <maml:para>An array of images to passing the model. You can specifies local image file or remote url.
@@ -12656,6 +12729,79 @@ This is an optional field, and may contain a-z, A-Z, 0-9, hyphens, and underscor
         <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
         <dev:type>
           <maml:name>String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Modalities</maml:name>
+        <maml:description>
+          <maml:para>Output types that you would like the model to generate for this request.
+Some models can generate both text and audio. To request that responses, you can specify: `("text", "audio")`</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+        <dev:type>
+          <maml:name>String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Voice</maml:name>
+        <maml:description>
+          <maml:para>The voice the model uses to respond.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="input_audio">
+        <maml:name>InputAudio</maml:name>
+        <maml:description>
+          <maml:para>The path of the audio file to passing the model. Supported formats are `wav` and `mp3`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>InputAudioFormat</maml:name>
+        <maml:description>
+          <maml:para>Specifies the format of the input audio file. If not specified, the format is automatically determined from the file extension.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>AudioOutFile</maml:name>
+        <maml:description>
+          <maml:para>Specifies where audio response from the model will be saved. If the model does not return a audio response, nothing is saved.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>OutputAudioFormat</maml:name>
+        <maml:description>
+          <maml:para>Specifies the format of the output audio file. The default value is `mp3`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -13151,6 +13297,13 @@ PS C:\&gt; $GPTPingAnswer | select Answer</dev:code>
       <command:example>
         <maml:title>--------------- Example 5: Image input (Vision) ---------------</maml:title>
         <dev:code>PS C:\&gt; Request-ChatCompletion -Message $Message -Model gpt-4o -Images "C:\image.png"</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>--------------- Example 6: Audio input / output ---------------</maml:title>
+        <dev:code>PS C:\&gt; Request-ChatCompletion -Modalities text, audio -InputAudio 'C:\hello.mp3' -AudioOutFile 'C:\response.mp3' -Model gpt-4o-audio-preview</dev:code>
         <dev:remarks>
           <maml:para></maml:para>
         </dev:remarks>
