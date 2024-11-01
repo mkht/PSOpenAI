@@ -1,4 +1,15 @@
 # Changelog
+### Unreleased
+- Add a support for audio input / output in `Request-ChatCompletions`.
+
+  ```PowerShell
+  Request-ChatCompletion -Model gpt-4o-audio-preview `
+    -Modalities text, audio `
+    -Voice 'shimmer' `
+    -InputAudio 'C:\hello.mp3' `
+    -AudioOutFile 'C:\response.mp3'
+  ```
+
 ### 4.8.0
 - Add an experimental support for Realtime API.  
   This enables real-time conversations with the AI assitstant. Please refer to this guide.  

@@ -19,6 +19,12 @@ Request-ChatCompletion
     [-Name <String>]
     [-Model <String>]
     [-SystemMessage <String[]>]
+    [-Modalities <String[]>]
+    [-Voice <String>]
+    [-InputAudio <String>]
+    [-InputAudioFormat <String>]
+    [-AudioOutFile <String>]
+    [-OutputAudioFormat <String>]
     [-Images <String[]>]
     [-ImageDetail <String>]
     [-Tools <IDictionary[]>]
@@ -102,6 +108,11 @@ PS C:\> $GPTPingAnswer | select Answer
 PS C:\> Request-ChatCompletion -Message $Message -Model gpt-4o -Images "C:\image.png"
 ```
 
+### Example 6: Audio input / output
+```PowerShell
+PS C:\> Request-ChatCompletion -Modalities text, audio -InputAudio 'C:\hello.mp3' -AudioOutFile 'C:\response.mp3' -Model gpt-4o-audio-preview
+```
+
 ## PARAMETERS
 
 ### -Message
@@ -152,6 +163,62 @@ An optional text to set the behavior of the assistant.
 ```yaml
 Type: String[]
 Aliases: system, RolePrompt
+Required: False
+Position: Named
+```
+
+### -Modalities
+Output types that you would like the model to generate for this request.  
+Some models can generate both text and audio. To request that responses, you can specify: `("text", "audio")`
+
+```yaml
+Type: String[]
+Required: False
+Position: Named
+```
+
+### -Voice
+The voice the model uses to respond.
+
+```yaml
+Type: String
+Required: False
+Position: Named
+```
+
+### -InputAudio
+The path of the audio file to passing the model. Supported formats are `wav` and `mp3`.
+
+```yaml
+Type: String
+Aliases: input_audio
+Required: False
+Position: Named
+```
+
+### -InputAudioFormat
+Specifies the format of the input audio file. If not specified, the format is automatically determined from the file extension.
+
+```yaml
+Type: String
+Required: False
+Position: Named
+```
+
+### -AudioOutFile
+Specifies where audio response from the model will be saved. If the model does not return a audio response, nothing is saved.
+
+```yaml
+Type: String
+Required: False
+Position: Named
+```
+
+### -OutputAudioFormat
+Specifies the format of the output audio file. The default value is `mp3`.
+
+```yaml
+Type: String
 Required: False
 Position: Named
 ```
