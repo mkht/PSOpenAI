@@ -1,5 +1,5 @@
 # 変更履歴
-### 4.9.0
+### 4.9.1
 - `Request-ChatCompletion`が音声入出力に対応しました
 
   ```PowerShell
@@ -9,6 +9,8 @@
     -InputAudio 'C:\hello.mp3' `
     -AudioOutFile 'C:\response.mp3'
   ```
+
+- gpt4-32kモデルの廃止予定日が正しくない問題を修正
 
 ### 4.8.0
 - Realtime APIの実験的なサポートを追加します  
