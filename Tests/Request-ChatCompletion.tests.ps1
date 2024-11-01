@@ -305,6 +305,52 @@ Describe 'Request-ChatCompletion' {
             $Result.History[1].Content | Should -BeNullOrEmpty
         }
 
+        It 'Audio In/Out' {
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+{
+    "id": "chatcmpl-abc123",
+    "object": "chat.completion",
+    "created": 1699458335,
+    "model": "gpt-4o-audio-preview-2024-10-01",
+    "choices": [
+        {
+        "index": 0,
+        "message": {
+            "role": "assistant",
+            "content": null,
+            "refusal": null,
+            "audio": {
+                "id": "audio_abc123",
+                "expires_at": "1730483694",
+                "data": "VEVTVA==",
+                "transcript": "How can I assist you today?"
+            }
+        },
+        "finish_reason": "stop"
+        }
+    ],
+    "usage": {
+        "prompt_tokens": 28,
+        "completion_tokens": 109,
+        "total_tokens": 137
+    },
+    "system_fingerprint": "fp_abc123"
+    }
+'@ }
+
+            { $script:Result = Request-ChatCompletion `
+                    -Modalities ('text', 'audio') -Voice 'shimmer' -Model gpt-4o-audio-preview `
+                    -InputAudio ($script:TestData + '/voice_japanese.mp3') `
+                    -AudioOutFile (Join-Path $TestDrive 'audio_out.mp3') -ea Stop } | Should -Not -Throw
+            Should -InvokeVerifiable
+            $Result.Answer[0] | Should -BeExactly 'How can I assist you today?'
+            $Result.choices[0].message.audio | Should -Not -BeNullOrEmpty
+            $Result.History[1].role | Should -Be 'assistant'
+            $Result.History[1].audio.id | Should -BeExactly 'audio_abc123'
+
+            (Join-Path $TestDrive 'audio_out.mp3') | Should -FileContentMatchExactly 'TEST'
+        }
+
         It 'Use collect endpoint' {
             Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @"
 {"choices": [{"message": {"content": "$($PesterBoundParameters.Uri)"}}]}
@@ -773,6 +819,20 @@ Describe 'Request-ChatCompletion' {
             $Result.Message | Should -Be "What's in this image?"
             $Result.History[0].Role | Should -Be 'user'
             $Result.History[1].Role | Should -Be 'assistant'
+        }
+
+        It 'Audio In/Out' {
+            { $script:Result = Request-ChatCompletion `
+                    -Modalities ('text', 'audio') -Voice 'shimmer' -Model gpt-4o-audio-preview `
+                    -InputAudio ($script:TestData + '/voice_japanese.mp3') `
+                    -AudioOutFile (Join-Path $TestDrive 'audio_out1.mp3') `
+                    -TimeoutSec 30 -ea Stop } | Should -Not -Throw
+            $Result | Should -BeOfType [pscustomobject]
+            $Result.object | Should -Be 'chat.completion'
+            $Result.Answer | Should -HaveCount 1
+            $Result.Answer[0] | Should -BeOfType [string]
+
+            (Join-Path $TestDrive 'audio_out1.mp3') | Should -Exist
         }
     }
 
