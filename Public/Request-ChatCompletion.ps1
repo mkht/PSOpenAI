@@ -446,7 +446,7 @@ function Request-ChatCompletion {
                         $audioformat = $InputAudioFormat
                     }
                     else {
-                        $audioformat = $audioItem.Extension.ToLower()
+                        $audioformat = $audioItem.Extension.ToLower().TrimStart([char]'.')
                     }
                     $auc = @{
                         type        = 'input_audio'
