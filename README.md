@@ -368,3 +368,4 @@ This module uses these OSS libraries.
 - [Newtonsoft.Json](https://www.newtonsoft.com/json) by jamesnk (MIT License)
 - [NJsonSchema](https://github.com/RicoSuter/NJsonSchema) by rsuter (MIT License)
 - [Microsoft.DeepDev.TokenizerLib](https://github.com/microsoft/Tokenizer) by microsoft (MIT License)
+- [NAudio](https://github.com/naudio/NAudio) by Mark Heath (MIT License)

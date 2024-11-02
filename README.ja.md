@@ -42,6 +42,8 @@ Install-Module -Name PSOpenAI
 
 ### OpenAI
 #### Chat
+[ガイド: Chat の使用方法](/Guides/How_to_use_Chat.md)
+
 + [Enter-ChatGPT](/Docs/Enter-ChatGPT.md)
 + [Request-ChatCompletion](/Docs/Request-ChatCompletion.md)
 + [New-ChatCompletionFunction](/Docs/New-ChatCompletionFunction.md)
@@ -130,7 +132,7 @@ Install-Module -Name PSOpenAI
 + [Get-BatchOutput](/Docs/Get-BatchOutput.md)
 
 ### Azure OpenAI Service
-+ [ガイド: Azure OpenAI Service の使用方法](Guides/How_to_use_with_Azure_OpenAI_Service.ipynb)
++ [ガイド: Azure OpenAI Service の使用方法](Guides/How_to_use_with_Azure_OpenAI_Service.md)
 
 ----
 ## 使い方
@@ -273,6 +275,9 @@ violence/graphic : False
 
 ----
 ## API キーについて
+
++ [ガイド: APIキーとコンテキストについて](Guides/How_to_handle_API-keys_and_Context.md)
+
 ほぼ全ての関数で認証のための API キーが必要です.  
 OpenAI のアカウントを作成し、以下URLから API キーを取得する必要があります。  
 https://platform.openai.com/account/api-keys
@@ -305,7 +310,7 @@ PS C:> Request-ChatCompletion -Message "Who are you?" -ApiKey '<Put your API key
 ## Azure OpenAI Service
 OpenAI ではなく Azure OpenAI Service を使用する場合は、AzureテナントにOpenAIリソースを作成し、APIキーとエンドポイントURLを取得する必要があります。詳細な手順はGuidesを参照してください。
 
-+ [How to use with Azure OpenAI Service](Guides/How_to_use_with_Azure_OpenAI_Service.ipynb)
++ [How to use with Azure OpenAI Service](Guides/How_to_use_with_Azure_OpenAI_Service.md)
 
 ### Azure のサンプルコード
 ```powershell
@@ -314,7 +319,7 @@ $global:OPENAI_API_BASE  = 'https://<resource-name>.openai.azure.com/'
 
 Request-ChatCompletion `
   -Message 'Hello Azure OpenAI Service.' `
-  -Deployment 'gpt-35-turbo' `
+  -Model 'gpt-4o' `
   -ApiType Azure
 ```
 
