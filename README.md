@@ -46,6 +46,8 @@ Install-Module -Name PSOpenAI
 
 ### OpenAI
 #### Chat
+[Guide: How to use Chat](/Guides/How_to_use_Chat.md)
+
 + [Enter-ChatGPT](/Docs/Enter-ChatGPT.md)
 + [Request-ChatCompletion](/Docs/Request-ChatCompletion.md)
 + [New-ChatCompletionFunction](/Docs/New-ChatCompletionFunction.md)
@@ -134,7 +136,7 @@ Install-Module -Name PSOpenAI
 + [Request-TextCompletion](/Docs/Request-TextCompletion.md)
 
 ### Azure OpenAI Service
-+ [Guide: How to use with Azure OpenAI Service](Guides/How_to_use_with_Azure_OpenAI_Service.ipynb)
++ [Guide: How to use with Azure OpenAI Service](Guides/How_to_use_with_Azure_OpenAI_Service.md)
 
 ----
 ## Usages
@@ -292,6 +294,9 @@ violence/graphic : False
 
 ----
 ## About API key
+
++ [Guide: How to handle API keys and context parameters](Guides/How_to_handle_API-keys_and_Context.md)
+
 Almost all functions require an API key for authentication.  
 You need to sign-up OpenAI account and generates API key from here.  
 https://platform.openai.com/account/api-keys
@@ -326,7 +331,7 @@ PS C:> Request-ChatCompletion -Message "Who are you?" -ApiKey '<Put your API key
 ## Azure OpenAI Service
 If you want to use Azure OpenAI Service instead of OpenAI. You should create Azure OpenAI resource to your Azure tenant, and get API key and endpoint url. See guides for more details.
 
-+ [Guide: How to use with Azure OpenAI Service](Guides/How_to_use_with_Azure_OpenAI_Service.ipynb)
++ [Guide: How to use with Azure OpenAI Service](Guides/How_to_use_with_Azure_OpenAI_Service.md)
 
 ### Sample code for Azure
 ```powershell
@@ -335,7 +340,7 @@ $global:OPENAI_API_BASE  = 'https://<resource-name>.openai.azure.com/'
 
 Request-ChatCompletion `
   -Message 'Hello Azure OpenAI Service.' `
-  -Model 'gpt-35-turbo' `
+  -Model 'gpt-4o' `
   -ApiType Azure
 ```
 
