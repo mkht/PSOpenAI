@@ -190,7 +190,7 @@ $InputMessage = 'I want to kill them.'
 # Test the input message.
 $InputModeration = Request-Moderation -Text $InputMessage
 if ($InputModeration.results[0].flagged) {
-    # Custom procedure whtn the input message violates the polocy.
+    # Custom procedure when the input message violates the policy.
     Write-Host 'Input message is harmful.' -ForegroundColor Yellow
 }
 else {
@@ -203,7 +203,7 @@ $Response = Request-ChatCompletion -Message $InputMessage -Model 'gpt-4o-mini' -
 # Test the output message.
 $OutputModeration = Request-Moderation -Text $Response.Answer[0]
 if ($OutputModeration.results[0].flagged) {
-    # Custom procedure whtn the output message violates the polocy.
+    # Custom procedure when the output message violates the policy.
     Write-Host 'Output message is harmful.' -ForegroundColor Yellow
 }
 else {
