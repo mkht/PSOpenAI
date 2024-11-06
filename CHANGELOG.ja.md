@@ -1,4 +1,8 @@
 # 変更履歴
+### 4.10.0
+- `Request-ChatCompletion`に`-Prediction`パラメータを追加します  
+  参照: [Use Predicted Outputs](https://platform.openai.com/docs/guides/latency-optimization#use-predicted-outputs)  
+
 ### 4.9.1
 - `Request-ChatCompletion`が音声入出力に対応しました
 

@@ -98,6 +98,10 @@ function Request-ChatCompletion {
         #endregion Function call params
 
         [Parameter()]
+        [ValidateNotNullOrEmpty()]
+        [string]$Prediction,
+
+        [Parameter()]
         [ValidateRange(0.0, 2.0)]
         [double]$Temperature,
 
@@ -299,6 +303,12 @@ function Request-ChatCompletion {
         }
         if ($PSBoundParameters.ContainsKey('ParallelToolCalls')) {
             $PostBody.parallel_tool_calls = [bool]$ParallelToolCalls
+        }
+        if ($PSBoundParameters.ContainsKey('Prediction')) {
+            $PostBody.prediction = @{
+                'type'    = 'content'
+                'content' = $Prediction
+            }
         }
         if ($PSBoundParameters.ContainsKey('Temperature')) {
             $PostBody.temperature = $Temperature

@@ -12324,6 +12324,18 @@ Specifying a particular function via `@{type = "function"; function = @{name = "
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Prediction</maml:name>
+          <maml:description>
+            <maml:para>Static predicted output content, such as the content of a text file that is being regenerated.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>Temperature</maml:name>
           <maml:description>
             <maml:para>What sampling temperature to use, between `0` and `2`.
@@ -12879,6 +12891,18 @@ Specifying a particular function via `@{type = "function"; function = @{name = "
 - `None`: The requested function is not executed. This is the default.
 - `Auto`: Automatically executes the requested function.
 - `Confirm`: Displays a confirmation to the user before executing the requested function.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Prediction</maml:name>
+        <maml:description>
+          <maml:para>Static predicted output content, such as the content of a text file that is being regenerated.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>

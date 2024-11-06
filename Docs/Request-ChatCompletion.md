@@ -31,6 +31,7 @@ Request-ChatCompletion
     [-ToolChoice <Object>]
     [-ParallelToolCalls]
     [-InvokeTools <String>]
+    [-Prediction <String>]
     [-Temperature <Double>]
     [-TopP <Double>]
     [-NumberOfAnswers <UInt16>]
@@ -282,6 +283,15 @@ Selects the action to be taken when the GPT model requests a function call.
 - `None`: The requested function is not executed. This is the default.  
 - `Auto`: Automatically executes the requested function.  
 - `Confirm`: Displays a confirmation to the user before executing the requested function.
+
+```yaml
+Type: String
+Required: False
+Position: Named
+```
+
+### -Prediction
+Static predicted output content, such as the content of a text file that is being regenerated.
 
 ```yaml
 Type: String

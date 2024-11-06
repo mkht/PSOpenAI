@@ -1,4 +1,8 @@
 # Changelog
+### 4.10.0
+- Add `-Prediction` param for `Request-ChatCompletion`.  
+  ref: [Use Predicted Outputs](https://platform.openai.com/docs/guides/latency-optimization#use-predicted-outputs)  
+
 ### 4.9.1
 - Add a support for audio input / output in `Request-ChatCompletion`.
 
