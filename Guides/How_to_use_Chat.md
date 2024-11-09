@@ -84,7 +84,7 @@ This script displays as:
 
 The system message can be used to prime the assistant with different personalities or behaviors.
 
-Use `-RolePrompt` parameter for specifiyng system message.
+Use `-SystemMessage` parameter for specifiyng system message.
 
 Be aware that the how much pay attention to the system message is depending on the model.
 
@@ -92,7 +92,7 @@ Be aware that the how much pay attention to the system message is depending on t
 $Response = Request-ChatCompletion `
   -Model "gpt-4o-mini" `
   -Message "What is the population of the United States? Please answer briefly." `
-  -RolePrompt "Please answer in Russian."
+  -SystemMessage "Please answer in Russian."
 
 $Response.Answer
 # > На октябрь 2023 года население США составляет примерно 333 миллиона человек.
