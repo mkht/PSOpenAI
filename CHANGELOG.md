@@ -1,4 +1,7 @@
 # Changelog
+### Unreleased
+- Add `-All`, `-Limit` & `-Order` params for `Get-OpenAIFile`.  
+
 ### 4.10.0
 - Add `-Prediction` param for `Request-ChatCompletion`.  
   ref: [Use Predicted Outputs](https://platform.openai.com/docs/guides/latency-optimization#use-predicted-outputs)  
