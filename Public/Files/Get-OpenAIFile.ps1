@@ -24,6 +24,20 @@ function Get-OpenAIFile {
         [ValidateNotNullOrEmpty()]
         [string][UrlEncodeTransformation()]$Purpose,
 
+        [Parameter(ParameterSetName = 'List')]
+        [ValidateRange(1, 10000)]
+        [int]$Limit = 10000,
+
+        [Parameter(ParameterSetName = 'List')]
+        [switch]$All,
+
+        [Parameter(ParameterSetName = 'List')]
+        [ValidateSet('asc', 'desc')]
+        [string][LowerCaseTransformation()]$Order = 'desc',
+
+        [Parameter(ParameterSetName = 'List', DontShow)]
+        [string]$After,
+
         [Parameter()]
         [int]$TimeoutSec = 0,
 
@@ -83,15 +97,30 @@ function Get-OpenAIFile {
             $QueryUri = $UriBuilder.Uri
         }
         else {
+            $QueryParam = [System.Web.HttpUtility]::ParseQueryString($UriBuilder.Query)
+
+            # When this function was first implemented,
+            # the Limit, Order, and After parameters did not exist in the API.
+            # These were added in API version 2024-11-04. To maintain backward compatibility,
+            # these query parameters are only used if explicitly specified by the user.
+            if ($All) {
+                $QueryParam.Add('limit', 10000)
+            }
+            elseif ($PSBoundParameters.ContainsKey('Limit')) {
+                $QueryParam.Add('limit', $Limit)
+            }
+            if ($PSBoundParameters.ContainsKey('Order')) {
+                $QueryParam.Add('order', $Order)
+            }
+            if ($PSBoundParameters.ContainsKey('After')) {
+                $QueryParam.Add('after', $After)
+            }
             if ($PSBoundParameters.ContainsKey('Purpose')) {
-                $QueryParam = [System.Web.HttpUtility]::ParseQueryString($UriBuilder.Query)
                 $QueryParam.Add('purpose', $Purpose)
-                $UriBuilder.Query = $QueryParam.ToString()
-                $QueryUri = $UriBuilder.Uri
             }
-            else {
-                $QueryUri = $OpenAIParameter.Uri
-            }
+
+            $UriBuilder.Query = $QueryParam.ToString()
+            $QueryUri = $UriBuilder.Uri
         }
         #endregion
 
@@ -144,6 +173,20 @@ function Get-OpenAIFile {
                 $res | Add-Member -MemberType NoteProperty -Name 'created_at' -Value ([System.DateTimeOffset]::FromUnixTimeSeconds($unixtime).LocalDateTime) -Force
             }
             Write-Output $res
+        }
+        #endregion
+
+        #region Pagenation
+        if ($Response.has_more) {
+            if ($All) {
+                # pagenate
+                $PagenationParam = $PSBoundParameters
+                $PagenationParam.After = $Response.last_id
+                PSOpenAI\Get-OpenAIFile @PagenationParam
+            }
+            else {
+                Write-Warning 'There is more data that has not been retrieved.'
+            }
         }
         #endregion
     }

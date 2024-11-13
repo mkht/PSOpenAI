@@ -28,6 +28,9 @@ Get-OpenAIFile
 ```
 Get-OpenAIFile
     [-Purpose <String>]
+    [-All]
+    [-Limit <Int32>]
+    [-Order <String>]
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
     [-ApiBase <Uri>]
@@ -48,6 +51,12 @@ PS C:\> Get-OpenAIFile -FileId "file-abc123"
 
 This command retrieves a file with the specified ID from OpenAI.
 
+### Example 2
+```powershell
+PS C:\> Get-OpenAIFile -Purpose "assistants" -All
+```
+
+Lists all files where the purpose attribute is assistants.
 
 ## PARAMETERS
 
@@ -71,6 +80,39 @@ Type: String
 Parameter Sets: List
 Required: False
 Position: Named
+```
+
+### -Limit
+A limit on the number of objects to be returned. Limit can range between 1 and 10000, and the default is 10000.
+
+```yaml
+Type: Int32
+Parameter Sets: List
+Required: False
+Position: Named
+Default value: 10000
+```
+
+### -All
+When this switch is specified, all objects will be retrieved.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: List
+Required: False
+Position: Named
+```
+
+### -Order
+Sort order by the created timestamp of the objects. `asc` for ascending order and `desc` for descending order. The default is `desc`
+
+```yaml
+Type: String
+Parameter Sets: List
+Accepted values: asc, desc
+Required: False
+Position: Named
+Default value: desc
 ```
 
 ### -TimeoutSec
