@@ -1,5 +1,7 @@
 # Changelog
-### Unreleased
+### 4.11.0
+- The model name parameters are now case sensitive.  
+  Previously, model names were converted to lowercase internally. This is optimal for the OpenAI, but some compatible API servers require uppercase model names.
 - Add `-All`, `-Limit` & `-Order` params for `Get-OpenAIFile`.  
 
 ### 4.10.0

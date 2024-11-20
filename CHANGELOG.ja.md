@@ -1,4 +1,9 @@
 # 変更履歴
+### 4.11.0
+- モデル名は大文字と小文字を判別するように変更されます  
+  これまでパラメータで指定されたモデル名は内部で小文字に変換されていました。これはOpenAIには適した動作ですが、一部の互換APIサーバは大文字を含むモデル名を必要としています。
+- `Get-OpenAIFile`に `-All`, `-Limit`, `-Order`パラメータを追加します
+
 ### 4.10.0
 - `Request-ChatCompletion`に`-Prediction`パラメータを追加します  
   参照: [Use Predicted Outputs](https://platform.openai.com/docs/guides/latency-optimization#use-predicted-outputs)  
