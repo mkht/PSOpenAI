@@ -12,7 +12,7 @@ function Request-TextCompletion {
 
         [Parameter()]
         [Completions('gpt-3.5-turbo-instruct', 'babbage-002', 'davinci-002')]
-        [string][LowerCaseTransformation()]$Model = 'gpt-3.5-turbo-instruct',
+        [string]$Model = 'gpt-3.5-turbo-instruct',
 
         [Parameter()]
         [ValidateRange(0.0, 2.0)]

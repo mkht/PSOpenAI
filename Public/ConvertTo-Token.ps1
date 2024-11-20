@@ -7,7 +7,7 @@ function ConvertTo-Token {
         [string]$Text,
 
         [Parameter(Mandatory, Position = 1, ParameterSetName = 'model')]
-        [string][LowerCaseTransformation()]$Model,
+        [string]$Model,
 
         [Parameter(Mandatory = $false, Position = 1, ParameterSetName = 'encoding')]
         [ValidateSet('cl100k_base', 'o200k_base')]

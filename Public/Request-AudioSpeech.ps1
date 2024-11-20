@@ -14,7 +14,7 @@ function Request-AudioSpeech {
 
         [Parameter()]
         [Completions('tts-1', 'tts-1-hd')]
-        [string][LowerCaseTransformation()]$Model = 'tts-1',
+        [string]$Model = 'tts-1',
 
         [Parameter()]
         [Completions(

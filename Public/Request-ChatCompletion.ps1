@@ -36,7 +36,7 @@ function Request-ChatCompletion {
             'o1-mini',
             'o1-preview'
         )]
-        [string][LowerCaseTransformation()]$Model = 'gpt-3.5-turbo',
+        [string]$Model = 'gpt-3.5-turbo',
 
         [Parameter()]
         [AllowEmptyString()]

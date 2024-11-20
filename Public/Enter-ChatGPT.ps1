@@ -19,7 +19,7 @@ function Enter-ChatGPT {
             'o1-mini',
             'o1-preview'
         )]
-        [string][LowerCaseTransformation()]$Model,
+        [string]$Model,
 
         [Parameter()]
         [AllowEmptyString()]

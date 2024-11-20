@@ -2,7 +2,10 @@ function Connect-RealtimeSession {
     [CmdletBinding()]
     param (
         [Parameter()]
-        [string][LowerCaseTransformation()]$Model = 'gpt-4o-realtime-preview-2024-10-01',
+        [Completions(
+            'gpt-4o-realtime-preview-2024-10-01'
+        )]
+        [string]$Model = 'gpt-4o-realtime-preview-2024-10-01',
 
         [Parameter()]
         [OpenAIApiType]$ApiType = [OpenAIApiType]::OpenAI,

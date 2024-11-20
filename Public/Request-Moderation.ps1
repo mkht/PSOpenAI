@@ -17,7 +17,7 @@ function Request-Moderation {
 
         [Parameter()]
         [Completions('text-moderation-latest', 'text-moderation-stable', 'omni-moderation-latest')]
-        [string][LowerCaseTransformation()]$Model,
+        [string]$Model,
 
         [Parameter()]
         [int]$TimeoutSec = 0,

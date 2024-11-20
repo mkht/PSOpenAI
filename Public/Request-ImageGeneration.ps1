@@ -10,7 +10,7 @@ function Request-ImageGeneration {
             'dall-e-2',
             'dall-e-3'
         )]
-        [string][LowerCaseTransformation()]$Model = 'dall-e-2',
+        [string]$Model = 'dall-e-2',
 
         [Parameter()]
         [ValidateRange(1, 10)]

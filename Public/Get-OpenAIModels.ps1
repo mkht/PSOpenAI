@@ -5,7 +5,7 @@ function Get-OpenAIModels {
         [Parameter(Position = 0, ValueFromPipeline)]
         [Alias('ID')]
         [Alias('Model')]
-        [string][LowerCaseTransformation()]$Name,
+        [string]$Name,
 
         [Parameter()]
         [int]$TimeoutSec = 0,

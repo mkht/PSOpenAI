@@ -31,7 +31,7 @@ function Set-Assistant {
             'gpt-4-turbo',
             'gpt-4-turbo-2024-04-09'
         )]
-        [string][LowerCaseTransformation()]$Model = 'gpt-3.5-turbo',
+        [string]$Model = 'gpt-3.5-turbo',
 
         [Parameter()]
         [ValidateLength(0, 512)]

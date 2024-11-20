@@ -14,7 +14,7 @@ function Request-Embeddings {
 
         [Parameter()]
         [Completions('text-embedding-ada-002', 'text-embedding-3-small', 'text-embedding-3-large')]
-        [string][LowerCaseTransformation()]$Model = 'text-embedding-ada-002',
+        [string]$Model = 'text-embedding-ada-002',
 
         [Parameter()]
         [Alias('encoding_format')]
