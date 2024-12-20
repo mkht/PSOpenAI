@@ -10,7 +10,7 @@ function Request-ChatCompletion {
 
         [Parameter()]
         [ValidateNotNullOrEmpty()]
-        [Completions('user', 'system', 'function')]
+        [Completions('user', 'system', 'developer', 'function')]
         [string][LowerCaseTransformation()]$Role = 'user',
 
         [Parameter()]
@@ -45,6 +45,10 @@ function Request-ChatCompletion {
         [Alias('system')]
         [Alias('RolePrompt')]
         [string[]]$SystemMessage,
+
+        [Parameter()]
+        [AllowEmptyString()]
+        [string[]]$DeveloperMessage,
 
         # For Audio
         [Parameter()]
@@ -121,6 +125,11 @@ function Request-ChatCompletion {
 
         [Parameter()]
         [switch]$Store = $false,
+
+        [Parameter()]
+        [Alias('reasoning_effort')]
+        [Completions('low', 'medium', 'high')]
+        [string]$ReasoningEffort = 'medium',
 
         [Parameter()]
         [System.Collections.IDictionary]$MetaData,
@@ -324,6 +333,9 @@ function Request-ChatCompletion {
         if ($Store.IsPresent) {
             $PostBody.store = $Store.ToBool()
         }
+        if ($PSBoundParameters.ContainsKey('ReasoningEffort')) {
+            $PostBody.reasoning_effort = $ReasoningEffort
+        }
         if ($PSBoundParameters.ContainsKey('MetaData')) {
             $PostBody.metadata = $MetaData
         }
@@ -431,6 +443,15 @@ function Request-ChatCompletion {
                 $Messages.Add([ordered]@{
                         role    = 'system'
                         content = $rp.Trim()
+                    })
+            }
+        }
+        # Specifies developer messages (only if specified)
+        foreach ($dp in $DeveloperMessage) {
+            if (-not [string]::IsNullOrWhiteSpace($dp)) {
+                $Messages.Add([ordered]@{
+                        role    = 'developer'
+                        content = $dp.Trim()
                     })
             }
         }
@@ -678,6 +699,7 @@ function Request-ChatCompletion {
                 $null = $SecondRequestParam.Remove('Role')
                 $null = $SecondRequestParam.Remove('Name')
                 $null = $SecondRequestParam.Remove('SystemMessage')
+                $null = $SecondRequestParam.Remove('DeveloperMessage')
                 $Messages.AddRange($ToolCallResults)
                 $SecondRequestParam.History = $Messages.ToArray()
                 Request-ChatCompletion @SecondRequestParam
