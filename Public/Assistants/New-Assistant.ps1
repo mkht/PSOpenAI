@@ -20,7 +20,6 @@ function New-Assistant {
             'gpt-4',
             'gpt-4o',
             'gpt-4o-mini',
-            'chatgpt-4o-latest',
             'gpt-3.5-turbo-16k',
             'gpt-3.5-turbo-1106',
             'gpt-3.5-turbo-0125',
