@@ -15,8 +15,13 @@ function Set-RealtimeSessionConfiguration {
         [Parameter()]
         [Completions(
             'alloy',
+            'ash',
+            'ballad',
+            'coral',
             'echo',
-            'shimmer'
+            'sage',
+            'shimmer',
+            'verse'
         )]
         [string][LowerCaseTransformation()]$Voice,
 
