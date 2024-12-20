@@ -25,6 +25,7 @@ function Request-ChatCompletion {
             'gpt-4o-mini',
             'chatgpt-4o-latest',
             'gpt-4o-audio-preview',
+            'gpt-4o-mini-audio-preview',
             'gpt-3.5-turbo-16k',
             'gpt-3.5-turbo-1106',
             'gpt-3.5-turbo-0125',
@@ -33,6 +34,7 @@ function Request-ChatCompletion {
             'gpt-4-32k-0613',
             'gpt-4-turbo',
             'gpt-4-turbo-2024-04-09',
+            'o1',
             'o1-mini',
             'o1-preview'
         )]
