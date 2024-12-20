@@ -19,6 +19,7 @@ Request-ChatCompletion
     [-Name <String>]
     [-Model <String>]
     [-SystemMessage <String[]>]
+    [-DeveloperMessage <String[]>]
     [-Modalities <String[]>]
     [-Voice <String>]
     [-InputAudio <String>]
@@ -37,6 +38,7 @@ Request-ChatCompletion
     [-NumberOfAnswers <UInt16>]
     [-Stream]
     [-Store]
+    [-ReasoningEffort <String>]
     [-MetaData <IDictionary>]
     [-StopSequence <String[]>]
     [-MaxTokens <Int32>]
@@ -128,7 +130,7 @@ Accept pipeline input: True (ByPropertyName, ByValue)
 ```
 
 ### -Role
-The role of the messages author. One of `user`, `system`, or `function`.  
+The role of the messages author. One of `user`, `system`, `developer` or `function`.  
 The default is `user`.
 
 ```yaml
@@ -164,6 +166,15 @@ An optional text to set the behavior of the assistant.
 ```yaml
 Type: String[]
 Aliases: system, RolePrompt
+Required: False
+Position: Named
+```
+
+### -DeveloperMessage
+Developer-provided instructions that the model should follow, regardless of messages sent by the user. With o1 models and newer, developer messages replace the previous system messages.
+
+```yaml
+Type: String[]
 Required: False
 Position: Named
 ```
@@ -350,6 +361,18 @@ Type: SwitchParameter
 Required: False
 Position: Named
 Default value: False
+```
+
+### -ReasoningEffort
+**o1 models only**  
+Constrains effort on reasoning for reasoning models. Currently supported values are low, medium, and high.  
+Reducing reasoning effort can result in faster responses and fewer tokens used on reasoning in a response.
+
+```yaml
+Type: String
+Aliases: reasoning_effort
+Required: False
+Position: Named
 ```
 
 ### -MetaData

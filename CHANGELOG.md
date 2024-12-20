@@ -1,4 +1,9 @@
 # Changelog
+### 4.12.0
+- Add `-DeveloperMessage` & `-ReasoningEffort` params for `Request-ChatCompletion`.  
+- Add `o1` and `gpt-4o-mini-audio-preview` models to tab completions.
+- Fixed an issue where model names incompatible with Assistants were included in tab completions.
+
 ### 4.11.0
 - The model name parameters are now case sensitive.  
   Previously, model names were converted to lowercase internally. This is optimal for the OpenAI, but some compatible API servers require uppercase model names.
