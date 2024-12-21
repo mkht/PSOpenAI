@@ -34,12 +34,37 @@ function Request-RealtimeSessionResponse {
         [string][LowerCaseTransformation()]$OutputAudioFormat,
 
         [Parameter()]
+        [ValidateNotNullOrEmpty()]
+        [System.Collections.IDictionary[]]$Tools,
+
+        [Parameter()]
+        [Completions('none', 'auto', 'required')]
+        [string]$ToolChoice,
+
+        [Parameter()]
         [ValidateRange(0.6, 1.2)]
         [float]$Temperature,
 
         [Parameter()]
         [ValidateRange(-1, 4096)]
-        [int]$MaxOutputTokens = -1
+        [int]$MaxOutputTokens = -1,
+
+        [Parameter()]
+        [Completions('auto', 'none')]
+        [String]$Conversation,
+
+        [Parameter()]
+        [System.Collections.IDictionary]$MetaData,
+
+        <#
+          In OpenAI's API, this corresponds to the "Input" parameter name.
+          But avoid using the variable name $Input for variable name,
+          because it is used as an automatic variable in PowerShell.
+        #>
+        [Parameter()]
+        [AllowEmptyCollection()]
+        [Alias('Input')]
+        [object[]]$InputObject
     )
 
     begin {
@@ -62,6 +87,12 @@ function Request-RealtimeSessionResponse {
         if ($PSBoundParameters.ContainsKey('OutputAudioFormat')) {
             $MessageObject.response.output_audio_format = $OutputAudioFormat
         }
+        if ($PSBoundParameters.ContainsKey('Tools')) {
+            $MessageObject.response.tools = $Tools
+        }
+        if ($PSBoundParameters.ContainsKey('ToolChoice')) {
+            $MessageObject.response.tool_choice = $ToolChoice
+        }
         if ($PSBoundParameters.ContainsKey('Temperature')) {
             $MessageObject.response.temperature = $Temperature
         }
@@ -73,8 +104,18 @@ function Request-RealtimeSessionResponse {
                 $MessageObject.response.max_output_tokens = $MaxOutputTokens
             }
         }
+        if ($PSBoundParameters.ContainsKey('Conversation')) {
+            $MessageObject.response.conversation = $Conversation
+        }
+        if ($PSBoundParameters.ContainsKey('MetaData')) {
+            $MessageObject.response.metadata = $MetaData
+        }
+        if ($PSBoundParameters.ContainsKey('InputObject')) {
+            $MessageObject.response.input = $InputObject
+        }
 
-        PSOpenAI\Send-RealtimeSessionEvent -Message ($MessageObject | ConvertTo-Json -Depth 10)
+        #PSOpenAI\Send-RealtimeSessionEvent -Message ($MessageObject | ConvertTo-Json -Depth 10)
+        $MessageObject | ConvertTo-Json -Depth 10
     }
 
     end {

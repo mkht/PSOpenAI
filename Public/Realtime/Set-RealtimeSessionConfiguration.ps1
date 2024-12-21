@@ -66,6 +66,9 @@ function Set-RealtimeSessionConfiguration {
         [uint16]$TurnDetectionSilenceDuration,
 
         [Parameter()]
+        [bool]$CreateResponseOnTurnEnd = $true,
+
+        [Parameter()]
         [ValidateNotNullOrEmpty()]
         [System.Collections.IDictionary[]]$Tools,
 
@@ -129,6 +132,9 @@ function Set-RealtimeSessionConfiguration {
                 }
                 if ($PSBoundParameters.ContainsKey('TurnDetectionThreshold')) {
                     $MessageObject.session.turn_detection.silence_duration_ms = $TurnDetectionSilenceDuration
+                }
+                if ($PSBoundParameters.ContainsKey('CreateResponseOnTurnEnd')) {
+                    $MessageObject.session.turn_detection.create_response = $CreateResponseOnTurnEnd
                 }
             }
         }

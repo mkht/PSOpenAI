@@ -2,6 +2,7 @@
 ### 4.12.0
 - Add `-DeveloperMessage` & `-ReasoningEffort` params for `Request-ChatCompletion`.  
 - Add `o1` and `gpt-4o-mini-audio-preview` models to tab completions.
+- Add `-CreateResponseOnTurnEnd` param for `Set-RealtimeSessionConfiguration`.
 - Fixed an issue where model names incompatible with Assistants were included in tab completions.
 
 ### 4.11.0

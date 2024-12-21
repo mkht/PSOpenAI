@@ -27,6 +27,7 @@ Set-RealtimeSessionConfiguration
     [-TurnDetectionThreshold <Single>]
     [-TurnDetectionPrefixPadding <UInt16>]
     [-TurnDetectionSilenceDuration <UInt16>]
+    [-CreateResponseOnTurnEnd <Boolean>]
     [-Tools <IDictionary[]>]
     [-ToolChoice <String>]
     [-Temperature <Single>]
@@ -195,6 +196,15 @@ Type: String
 Required: False
 Position: Named
 Default value: server_vad
+```
+
+### -CreateResponseOnTurnEnd
+Whether or not to automatically generate a response when VAD is enabled. true by default.
+```yaml
+Type: Boolean
+Required: False
+Position: Named
+Default value: True
 ```
 
 ### -Voice
