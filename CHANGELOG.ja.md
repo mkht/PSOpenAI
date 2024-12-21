@@ -1,4 +1,10 @@
 # 変更履歴
+### 4.12.0
+- `Request-ChatCompletion`に`-DeveloperMessage`および`-ReasoningEffort`パラメータを追加しました 
+- タブ補完に`o1`および`gpt-4o-mini-audio-preview`モデルを追加しました
+- `Set-RealtimeSessionConfiguration`に`-CreateResponseOnTurnEnd`パラメータを追加しました
+- Assistantと互換性のないモデル名がタブ補完に含まれていた問題を修正しました
+
 ### 4.11.0
 - モデル名は大文字と小文字を判別するように変更されます  
   これまでパラメータで指定されたモデル名は内部で小文字に変換されていました。これはOpenAIには適した動作ですが、一部の互換APIサーバは大文字を含むモデル名を必要としています。
