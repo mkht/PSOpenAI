@@ -11,7 +11,7 @@ if (-not $IsWindows -or $PSVersionTable.PSVersion -lt 7.4) {
     $Exclude = @(
         'Start-RealtimeSessionAudioOutput.ps1'
         'Stop-RealtimeSessionAudioOutput.ps1'
-        'Stop-RealtimeSessionAudioInput.ps1'
+        'Start-RealtimeSessionAudioInput.ps1'
         'Stop-RealtimeSessionAudioInput.ps1'
     )
 }
