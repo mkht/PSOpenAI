@@ -1,4 +1,7 @@
 # Changelog
+### 4.12.1
+- Fixed an issue where the proper API was not being called when adding items in a Realtime session
+
 ### 4.12.0
 - Add `-DeveloperMessage` & `-ReasoningEffort` params for `Request-ChatCompletion`.  
 - Add `o1` and `gpt-4o-mini-audio-preview` models to tab completions.

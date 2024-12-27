@@ -1,4 +1,7 @@
 # 変更履歴
+### 4.12.1
+- リアルタイムセッションにアイテムを追加する際に適切なAPIが呼び出されない問題を修正しました
+
 ### 4.12.0
 - `Request-ChatCompletion`に`-DeveloperMessage`および`-ReasoningEffort`パラメータを追加しました 
 - タブ補完に`o1`および`gpt-4o-mini-audio-preview`モデルを追加しました

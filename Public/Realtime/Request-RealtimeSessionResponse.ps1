@@ -114,8 +114,7 @@ function Request-RealtimeSessionResponse {
             $MessageObject.response.input = $InputObject
         }
 
-        #PSOpenAI\Send-RealtimeSessionEvent -Message ($MessageObject | ConvertTo-Json -Depth 10)
-        $MessageObject | ConvertTo-Json -Depth 10
+        PSOpenAI\Send-RealtimeSessionEvent -Message ($MessageObject | ConvertTo-Json -Depth 10)
     }
 
     end {
