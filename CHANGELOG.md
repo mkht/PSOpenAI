@@ -1,5 +1,5 @@
 # Changelog
-### 4.12.1
+### 4.12.2
 - Fixed an issue where the proper API was not being called when adding items in a Realtime session
 
 ### 4.12.0
