@@ -9,13 +9,9 @@ function Start-RealtimeSessionAudioInput {
             Write-Error 'PowerShell version 7.4 or higher is required to run this command.'
             return
         }
-        if (-not $IsWindows) {
-            Write-Error 'This command can be run only on Windows.'
-            return
-        }
 
         # No Audio input device
-        if ([NAudio.Wave.WaveInEvent]::DeviceCount -le 0) {
+        if ([NAudio.Sdl2.WaveInSdl]::DeviceCount -le 0) {
             Write-Error 'There is no audio input device on this computer.'
             return
         }
@@ -42,6 +38,7 @@ using System;
 using System.IO;
 using System.Threading;
 using NAudio.Wave;
+using NAudio.Sdl2;
 
 #nullable disable
 
@@ -61,7 +58,7 @@ public class MicrophoneAudioStream : Stream, IDisposable
     private int _bufferReadPos = 0;
     private int _bufferWritePos = 0;
 
-    private readonly WaveInEvent _waveInEvent;
+    private readonly WaveInSdl _waveInEvent;
 
     private MicrophoneAudioStream()
     {
@@ -168,7 +165,7 @@ public class MicrophoneAudioStream : Stream, IDisposable
         base.Dispose(disposing);
     }
 }
-'@ -ReferencedAssemblies 'System', 'System.Threading', 'System.Threading.Thread', 'NETStandard', 'NAudio', 'NAudio.Core', 'NAudio.WinMM'
+'@ -ReferencedAssemblies 'System', 'System.Threading', 'System.Threading.Thread', 'NETStandard', 'NAudio.Core', 'NAudio.Sdl2'
 
         # Start thread
         $script:MicInputStream = [MicrophoneAudioStream]::Start()

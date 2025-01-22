@@ -9,10 +9,6 @@ function Start-RealtimeSessionAudioOutput {
             Write-Error 'PowerShell version 7.4 or higher is required to run this command.'
             return
         }
-        if (-not $IsWindows) {
-            Write-Error 'This command can be run only on Windows.'
-            return
-        }
 
         # Session check
         if ($null -eq $script:WebSocketClient) {
@@ -33,13 +29,13 @@ function Start-RealtimeSessionAudioOutput {
         [NoRunspaceAffinity()]
         class SpeakerOutput : System.IDisposable {
             hidden [NAudio.Wave.BufferedWaveProvider]$_waveProvider
-            hidden [NAudio.Wave.WaveOutEvent]$_waveOutEvent
+            hidden [NAudio.Sdl2.WaveOutSdl]$_waveOutEvent
 
             SpeakerOutput() {
                 $outputAudioFormat = [NAudio.Wave.WaveFormat]::new(24000, 16, 1)
                 $this._waveProvider = [NAudio.Wave.BufferedWaveProvider]::new($outputAudioFormat)
                 $this._waveProvider.BufferDuration = [timespan]::FromMinutes(2)
-                $this._waveOutEvent = [NAudio.Wave.WaveOutEvent]::new()
+                $this._waveOutEvent = [NAudio.Sdl2.WaveOutSdl]::new()
                 $this._waveOutEvent.Init($this._waveProvider)
                 $this._waveOutEvent.Play()
             }

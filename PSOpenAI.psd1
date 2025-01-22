@@ -34,9 +34,8 @@
     RequiredAssemblies   = @(
         'Libs\CustomAttributes\netstandard2.0\CustomAttributes.dll',
         'Libs\TokenizerLib\netstandard2.0\TokenizerLib.dll',
-        'Libs\NAudio\net472\NAudio.Core.dll'
-        'Libs\NAudio\net472\NAudio.WinMM.dll'
-        'Libs\NAudio\net472\NAudio.dll'
+        'Libs\NAudio\netstandard2.0\NAudio.Core.dll',
+        'Libs\NAudio\netstandard2.0\NAudio.Sdl2.dll'
     )
 
     # Functions to export from this module
