@@ -19,10 +19,13 @@ function Request-AudioSpeech {
         [Parameter()]
         [Completions(
             'alloy',
+            'ash',
+            'coral',
             'echo',
             'fable',
             'onyx',
             'nova',
+            'sage',
             'shimmer'
         )]
         [string][LowerCaseTransformation()]$Voice = 'alloy',

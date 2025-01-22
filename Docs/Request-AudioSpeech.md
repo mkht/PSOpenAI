@@ -77,7 +77,7 @@ Default value: tts-1
 ```
 
 ### -Voice
-The voice to use when generating the audio. Supported voices are `alloy`, `echo`, `fable`, `onyx`, `nova`, and `shimmer`.  
+The voice to use when generating the audio. Supported voices are `alloy`, `ash`, `coral`, `echo`, `fable`, `onyx`, `nova`, `sage` and `shimmer`.  
 The default value is `alloy`.
 
 ```yaml
