@@ -1,4 +1,8 @@
 # Changelog
+### 4.13.0
+- Add new voices for `Request-AudioSpeech`.  
+  + `ash`, `coral`, `sage`
+
 ### 4.12.2
 - Fixed an issue where the proper API was not being called when adding items in a Realtime session
 

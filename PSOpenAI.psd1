@@ -1,6 +1,6 @@
 @{
     # Version number of this module.
-    ModuleVersion        = '4.12.2'
+    ModuleVersion        = '4.13.0'
 
     # Supported PSEditions
     CompatiblePSEditions = 'Core', 'Desktop'
@@ -18,7 +18,7 @@
     CompanyName          = ''
 
     # Copyright statement for this module
-    Copyright            = '(c) 2024 mkht. All rights reserved.'
+    Copyright            = '(c) 2025 mkht. All rights reserved.'
 
     # Description of the functionality provided by this module
     Description          = 'PowerShell module for OpenAI API'
