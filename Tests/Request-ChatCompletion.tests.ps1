@@ -351,6 +351,53 @@ Describe 'Request-ChatCompletion' {
             (Join-Path $TestDrive 'audio_out.mp3') | Should -FileContentMatchExactly 'TEST'
         }
 
+        It 'Image input (Vision)' {
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+{
+  "id": "chatcmpl-abc123",
+  "object": "chat.completion",
+  "created": 1737867293,
+  "model": "gpt-4o-mini-2024-07-18",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "This is a donut.",
+        "refusal": null
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1145,
+    "completion_tokens": 59,
+    "total_tokens": 1204,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "audio_tokens": 0
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 0,
+      "audio_tokens": 0,
+      "accepted_prediction_tokens": 0,
+      "rejected_prediction_tokens": 0
+    }
+  },
+  "service_tier": "default",
+  "system_fingerprint": "fp_abc123"
+}
+'@ }
+
+            { $script:Result = Request-ChatCompletion `
+                    -Images ($script:TestData + '/sweets_donut.png') `
+                    -Model gpt-4o-mini -ea Stop } | Should -Not -Throw
+            Should -InvokeVerifiable
+            $Result.Answer[0] | Should -BeExactly 'This is a donut.'
+            $Result.History[1].role | Should -Be 'assistant'
+        }
+
         It 'Use collect endpoint' {
             Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @"
 {"choices": [{"message": {"content": "$($PesterBoundParameters.Uri)"}}]}
@@ -688,6 +735,15 @@ Describe 'Request-ChatCompletion' {
         }
 
         It 'Tool calls (implicit execution)' {
+            Mock -ModuleName $script:ModuleName Invoke-ChatCompletionFunction { return @'
+Ping Source Address Latency(ms) BufferSize(B) Status
+---- ------ ------- ----------- ------------- ------
+   1 TEST-1 8.8.8.8          10            32 Success
+   2 TEST-1 8.8.8.8           9            32 Success
+   3 TEST-1 8.8.8.8          10            32 Success
+'@
+            }
+
             $ToolsSpec = @(@{
                     type     = 'function'
                     function = @{
@@ -715,6 +771,7 @@ Describe 'Request-ChatCompletion' {
                 }
                 $script:Result = Request-ChatCompletion @params
             } | Should -Not -Throw
+            Should -Invoke Invoke-ChatCompletionFunction -ModuleName $script:ModuleName -Times 1
             $Result.Answer | Should -Not -BeNullOrEmpty
             $Result.Message | Should -Be $Message
             $Result.History[0].Role | Should -Be 'user'

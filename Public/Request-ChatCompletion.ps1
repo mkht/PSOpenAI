@@ -455,76 +455,79 @@ function Request-ChatCompletion {
                     })
             }
         }
-        # Add user message (question)
-        if (-not [string]::IsNullOrWhiteSpace($Message) -or -not [string]::IsNullOrEmpty($InputAudio)) {
-            $um = [ordered]@{
-                role    = $Role
-                content = $Message.Trim()
+        #region Add user messages
+        $um = [ordered]@{
+            role    = 'user'
+            content = @()
+        }
+
+        # Text message
+        if (-not [string]::IsNullOrWhiteSpace($Message)) {
+            $um.content += @{type = 'text'; text = $Message.Trim() }
+        }
+
+        # Audio input
+        if ($InputAudio) {
+            $auc = $null
+            if (-not (Test-Path -LiteralPath $InputAudio -PathType Leaf)) {
+                Write-Error -Exception ([System.IO.FileNotFoundException]::new("Could not find file '$InputAudio'", $InputAudio))
             }
-
-            # For Audio
-            if ($InputAudio) {
-                $um.content = @()
-                if (-not [string]::IsNullOrWhiteSpace($Message)) {
-                    $um.content += @{type = 'text'; text = $Message.Trim() }
-                }
-
-                $auc = $null
-                if (-not (Test-Path -LiteralPath $InputAudio -PathType Leaf)) {
-                    Write-Error -Exception ([System.IO.FileNotFoundException]::new("Could not find file '$InputAudio'", $InputAudio))
+            else {
+                $audioItem = Get-Item -LiteralPath $InputAudio
+                if ($InputAudioFormat) {
+                    $audioformat = $InputAudioFormat
                 }
                 else {
-                    $audioItem = Get-Item -LiteralPath $InputAudio
-                    if ($InputAudioFormat) {
-                        $audioformat = $InputAudioFormat
-                    }
-                    else {
-                        $audioformat = $audioItem.Extension.ToLower().TrimStart([char]'.')
-                    }
-                    $auc = @{
-                        type        = 'input_audio'
-                        input_audio = @{
-                            data   = ([System.Convert]::ToBase64String([System.IO.File]::ReadAllBytes($audioItem.FullName)))
-                            format = $audioformat
-                        }
-                    }
+                    $audioformat = $audioItem.Extension.ToLower().TrimStart([char]'.')
                 }
-                if ($null -ne $auc) {
-                    $um.content += $auc
+                $auc = @{
+                    type        = 'input_audio'
+                    input_audio = @{
+                        data   = ([System.Convert]::ToBase64String([System.IO.File]::ReadAllBytes($audioItem.FullName)))
+                        format = $audioformat
+                    }
                 }
             }
-
-            # For Vison
-            if ($PSBoundParameters.ContainsKey('Images')) {
-                if ($um.content -isnot [array]) {
-                    $um.content = @()
-                    if (-not [string]::IsNullOrWhiteSpace($Message)) {
-                        $um.content += @{type = 'text'; text = $Message.Trim() }
-                    }
-                }
-
-                foreach ($image in $Images) {
-                    $imc = $null
-                    if (Test-Path -LiteralPath $image -PathType Leaf) {
-                        $imc = @{type = 'image_url'; image_url = @{url = (Convert-ImageToDataURL $image) } }
-                    }
-                    else {
-                        $imc = @{type = 'image_url'; image_url = @{url = $image } }
-                    }
-                    if ($null -eq $imc) { continue }
-                    if ($PSBoundParameters.ContainsKey('ImageDetail')) {
-                        $imc.image_url.detail = $ImageDetail
-                    }
-                    $um.content += $imc
-                }
+            if ($null -ne $auc) {
+                $um.content += $auc
             }
+        }
 
-            # name poperty is optional
-            if (-not [string]::IsNullOrWhiteSpace($Name)) {
-                $um.name = $Name.Trim()
+        # Vision input
+        if ($PSBoundParameters.ContainsKey('Images')) {
+            foreach ($image in $Images) {
+                if ([string]::IsNullOrWhiteSpace($image)) { continue }
+                $imc = $null
+                if (Test-Path -LiteralPath $image -PathType Leaf) {
+                    $imc = @{type = 'image_url'; image_url = @{url = (Convert-ImageToDataURL $image) } }
+                }
+                else {
+                    $imc = @{type = 'image_url'; image_url = @{url = $image } }
+                }
+                if ($null -eq $imc) { continue }
+                if ($PSBoundParameters.ContainsKey('ImageDetail')) {
+                    $imc.image_url.detail = $ImageDetail
+                }
+                $um.content += $imc
             }
+        }
+
+        # name poperty is optional
+        if (-not [string]::IsNullOrWhiteSpace($Name)) {
+            $um.name = $Name.Trim()
+        }
+
+        # For backword compatibility,
+        # if the user message has only one text message,
+        # modify the message object to be a classical string format.
+        if ($um.content.Count -eq 1 -and $um.content[0].type -eq 'text') {
+            $um.content = $um.content[0].text
+        }
+
+        if ($um.content.Count -ge 1) {
             $Messages.Add($um)
         }
+        #endregion
 
         # Error if messages is empty.
         if ($Messages.Count -eq 0) {
