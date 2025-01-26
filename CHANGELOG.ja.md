@@ -1,4 +1,7 @@
 # 変更履歴
+### 4.13.1
+- `Request-ChatCompletion`にMessageパラメータを指定せず、Imagesパラメータのみを指定した場合にリクエストが実行されない問題を修正しました (Issue [#36](https://github.com/mkht/PSOpenAI/issues/36))
+
 ### 4.13.0
 - `Request-AudioSpeech`に新しい音声を追加しました
   + `ash`, `coral`, `sage`

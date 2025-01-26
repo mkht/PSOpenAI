@@ -467,7 +467,7 @@ function Request-ChatCompletion {
         }
 
         # Audio input
-        if ($InputAudio) {
+        if ($PSBoundParameters.ContainsKey('InputAudio')) {
             $auc = $null
             if (-not (Test-Path -LiteralPath $InputAudio -PathType Leaf)) {
                 Write-Error -Exception ([System.IO.FileNotFoundException]::new("Could not find file '$InputAudio'", $InputAudio))
@@ -517,7 +517,7 @@ function Request-ChatCompletion {
             $um.name = $Name.Trim()
         }
 
-        # For backword compatibility,
+        # For historical reasons,
         # if the user message has only one text message,
         # modify the message object to be a classical string format.
         if ($um.content.Count -eq 1 -and $um.content[0].type -eq 'text') {
