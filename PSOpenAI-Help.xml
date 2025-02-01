@@ -17762,6 +17762,30 @@ PS C:\&gt; Request-ChatCompletion -Message 'Hello Azure OpenAI'</dev:code>
           <dev:defaultValue>whisper-1</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>InputAudioTranscriptionLanguage</maml:name>
+          <maml:description>
+            <maml:para>The language of the input audio. Supplying the input language in ISO-639-1 (e.g. en) format will improve accuracy and latency.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>InputAudioTranscriptionPrompt</maml:name>
+          <maml:description>
+            <maml:para>An optional text to guide the model's style or continue a previous audio segment. The prompt should match the audio language.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>Instructions</maml:name>
           <maml:description>
             <maml:para>The default system instructions (i.e. system message) prepended to model calls. This field allows the client to guide the model on desired responses.</maml:para>
@@ -17983,6 +18007,30 @@ PS C:\&gt; Request-ChatCompletion -Message 'Hello Azure OpenAI'</dev:code>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>whisper-1</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>InputAudioTranscriptionLanguage</maml:name>
+        <maml:description>
+          <maml:para>The language of the input audio. Supplying the input language in ISO-639-1 (e.g. en) format will improve accuracy and latency.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>InputAudioTranscriptionPrompt</maml:name>
+        <maml:description>
+          <maml:para>An optional text to guide the model's style or continue a previous audio segment. The prompt should match the audio language.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>Instructions</maml:name>

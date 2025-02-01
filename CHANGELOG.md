@@ -1,4 +1,11 @@
 # Changelog
+### 4.14.0
+- Add `o3-mini` for `Request-ChatCompletion`.
+- Add new parameters for `Set-RealtimeSessionConfiguration`.
+  + `-InputAudioTranscriptionLanguage`
+  + `-InputAudioTranscriptionPrompt`
+- Update default Azure OpenAI API version to `2025-01-01-preview`.
+
 ### 4.13.1
 - Fixed an issue where a request would not execute if only the Images parameter was specified without the Message parameter in `Request-ChatCompletion`. (Issue [#36](https://github.com/mkht/PSOpenAI/issues/36))
 
