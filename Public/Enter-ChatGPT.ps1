@@ -17,7 +17,8 @@ function Enter-ChatGPT {
             'gpt-4-turbo',
             'gpt-4-turbo-2024-04-09',
             'o1-mini',
-            'o1-preview'
+            'o1-preview',
+            'o3-mini'
         )]
         [string]$Model,
 
