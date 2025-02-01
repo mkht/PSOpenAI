@@ -39,8 +39,12 @@ function Initialize-APIKey {
         }
     }
 
-    if ($p.StartsWith('sk-', [StringComparison]::Ordinal)) { $first = 6 }else { $first = 3 }
-    Write-Verbose -Message (('API key to be used is {0}' -f $p) | Get-MaskedString -Target $p -First $first -Last 2 -MaxNumberOfAsterisks 45)
+    $first = switch -CaseSensitive -Wildcard ($p) {
+        'sk-proj-*' { 11; continue }
+        'sk-*' { 6; continue }
+        default { 3 }
+    }
+    Write-Verbose -Message (Get-MaskedString -Source ("API key to be used is $p") -Target $p -First $first -Last 2 -MaxNumberOfAsterisks 45)
     $p = $null
     $ApiKey
 }
