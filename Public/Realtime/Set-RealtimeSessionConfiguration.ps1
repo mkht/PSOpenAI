@@ -49,6 +49,12 @@ function Set-RealtimeSessionConfiguration {
         [string][LowerCaseTransformation()]$InputAudioTranscriptionModel = 'whisper-1',
 
         [Parameter()]
+        [string]$InputAudioTranscriptionLanguage,
+
+        [Parameter()]
+        [string]$InputAudioTranscriptionPrompt,
+
+        [Parameter()]
         [bool]$EnableTurnDetection,
 
         [Parameter()]
@@ -114,7 +120,16 @@ function Set-RealtimeSessionConfiguration {
                 $MessageObject.session.input_audio_transcription = $null
             }
             else {
-                $MessageObject.session.input_audio_transcription = @{model = $InputAudioTranscriptionModel }
+                $InputAudioTranscriptionParam = @{
+                    model = $InputAudioTranscriptionModel
+                }
+                if ($PSBoundParameters.ContainsKey('InputAudioTranscriptionLanguage')) {
+                    $InputAudioTranscriptionParam.language = $InputAudioTranscriptionLanguage
+                }
+                if ($PSBoundParameters.ContainsKey('InputAudioTranscriptionPrompt')) {
+                    $InputAudioTranscriptionParam.prompt = $InputAudioTranscriptionPrompt
+                }
+                $MessageObject.session.input_audio_transcription = $InputAudioTranscriptionParam
             }
         }
 

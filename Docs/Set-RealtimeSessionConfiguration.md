@@ -22,6 +22,8 @@ Set-RealtimeSessionConfiguration
     [-OutputAudioFormat <String>]
     [-EnableInputAudioTranscription <Boolean>]
     [-InputAudioTranscriptionModel <String>]
+    [-InputAudioTranscriptionLanguage <String>]
+    [-InputAudioTranscriptionPrompt <String>]
     [-EnableTurnDetection <Boolean>] 
     [-TurnDetectionType <String>] 
     [-TurnDetectionThreshold <Single>]
@@ -95,6 +97,24 @@ Type: String
 Required: False
 Position: Named
 Default value: whisper-1
+```
+
+### -InputAudioTranscriptionLanguage
+The language of the input audio. Supplying the input language in ISO-639-1 (e.g. en) format will improve accuracy and latency.
+
+```yaml
+Type: String
+Required: False
+Position: Named
+```
+
+### -InputAudioTranscriptionPrompt
+An optional text to guide the model's style or continue a previous audio segment. The prompt should match the audio language.
+
+```yaml
+Type: String
+Required: False
+Position: Named
 ```
 
 ### -Instructions
