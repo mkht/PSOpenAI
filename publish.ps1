@@ -11,7 +11,7 @@ Param (
 
     [Parameter(Mandatory = $false)]
     [ValidateNotNullOrEmpty()]
-    [string[]]$ExcludeFiles = @('.gitignore', '.gitmodules', 'test.ps1'),
+    [string[]]$ExcludeFiles = @('.gitignore', '.gitmodules', '.gitattributes', 'PSScriptAnalyzerRules.psd1'),
 
     [switch]$WhatIf
 )
