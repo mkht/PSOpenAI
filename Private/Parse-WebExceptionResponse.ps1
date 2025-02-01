@@ -82,8 +82,20 @@ function Parse-WebExceptionResponse {
             $ex = [UnauthorizedException]::new($ErrorMessage, $ErrorResponse , $ErrorContent, $InnerException)
             continue
         }
+        403 {
+            $ex = [PermissionDeniedException]::new($ErrorMessage, $ErrorResponse , $ErrorContent, $InnerException)
+            continue
+        }
         404 {
             $ex = [NotFoundException]::new($ErrorMessage, $ErrorResponse , $ErrorContent, $InnerException)
+            continue
+        }
+        409 {
+            $ex = [ConflictException]::new($ErrorMessage, $ErrorResponse , $ErrorContent, $InnerException)
+            continue
+        }
+        422 {
+            $ex = [UnprocessableEntityException]::new($ErrorMessage, $ErrorResponse , $ErrorContent, $InnerException)
             continue
         }
         429 {

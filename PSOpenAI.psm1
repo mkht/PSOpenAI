@@ -46,7 +46,10 @@ $ExportableTypes = @(
     [BadRequestException]
     [ContentFilteredException]
     [UnauthorizedException]
+    [PermissionDeniedException]
     [NotFoundException]
+    [ConflictException]
+    [UnprocessableEntityException]
     [RateLimitExceededException]
     [QuotaLimitExceededException]
 )

@@ -106,6 +106,21 @@ class UnauthorizedException : APIRequestException {
     ) {}
 }
 
+class PermissionDeniedException : APIRequestException {
+    PermissionDeniedException (
+        [string]$message,
+        [object]$response,
+        [object]$content,
+        [Exception]$innerException
+    ) : base(
+        [string]$message,
+        [object]$response,
+        [object]$content,
+        [System.Net.HttpStatusCode]403,
+        [Exception]$innerException
+    ) {}
+}
+
 class NotFoundException : APIRequestException {
     NotFoundException (
         [string]$message,
@@ -117,6 +132,36 @@ class NotFoundException : APIRequestException {
         [object]$response,
         [object]$content,
         [System.Net.HttpStatusCode]404,
+        [Exception]$innerException
+    ) {}
+}
+
+class ConflictException : APIRequestException {
+    ConflictException (
+        [string]$message,
+        [object]$response,
+        [object]$content,
+        [Exception]$innerException
+    ) : base(
+        [string]$message,
+        [object]$response,
+        [object]$content,
+        [System.Net.HttpStatusCode]409,
+        [Exception]$innerException
+    ) {}
+}
+
+class UnprocessableEntityException : APIRequestException {
+    UnprocessableEntityException (
+        [string]$message,
+        [object]$response,
+        [object]$content,
+        [Exception]$innerException
+    ) : base(
+        [string]$message,
+        [object]$response,
+        [object]$content,
+        [System.Net.HttpStatusCode]422,
         [Exception]$innerException
     ) {}
 }
