@@ -1,4 +1,11 @@
 # Changelog
+### Unreleased
+- Implement new api exception types.
+  + `PermissionDeniedException`
+  + `ConflictException`
+  + `UnprocessableEntityException`
+- Minor improvements.
+
 ### 4.14.0
 - Add `o3-mini` for `Request-ChatCompletion`.
 - Add new parameters for `Set-RealtimeSessionConfiguration`.
