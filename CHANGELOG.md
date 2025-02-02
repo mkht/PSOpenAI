@@ -1,5 +1,7 @@
 # Changelog
 ### Unreleased
+- Allow `-MaxTokens` and `-MaxCompletionTokens` parameters to accept `-1` as a valid value.  
+  This is for compatibility APIs; the official OpenAI API returns an error for values less than `1`.
 - Implement new api exception types.
   + `PermissionDeniedException`
   + `ConflictException`
