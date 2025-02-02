@@ -36,7 +36,6 @@ function Request-TextCompletion {
         [switch]$Stream = $false,
 
         [Parameter()]
-        [ValidateRange(-1, 2147483647)]
         [Alias('max_tokens')]
         [int]$MaxTokens = 2048,
 

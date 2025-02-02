@@ -142,12 +142,10 @@ function Request-ChatCompletion {
 
         [Parameter()]
         [System.Obsolete('The MaxTokens is now deprecated in favor of MaxCompletionTokens')]
-        [ValidateRange(-1, 2147483647)]
         [Alias('max_tokens')]
         [int]$MaxTokens,
 
         [Parameter()]
-        [ValidateRange(-1, 2147483647)]
         [Alias('max_completion_tokens')]
         [int]$MaxCompletionTokens,
 
