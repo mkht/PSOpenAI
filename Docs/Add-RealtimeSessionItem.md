@@ -67,12 +67,12 @@ Position: Named
 ```
 
 ### -ContentType
-The content type (`input_text`, `input_audio`, `text`).  
+The content type (`input_text`, `input_audio`, `item_reference`, `text`).  
 The default value is `input_text`.
 
 ```yaml
 Type: String
-Accepted values: input_text, input_audio, text, audio
+Accepted values: input_text, input_audio, item_reference, text
 Required: False
 Position: Named
 Default value: input_text

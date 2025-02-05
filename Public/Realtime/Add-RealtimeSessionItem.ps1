@@ -44,8 +44,8 @@ function Add-RealtimeSessionItem {
         [ValidateSet(
             'input_text',
             'input_audio',
-            'text',
-            'audio'
+            'item_reference',
+            'text'
         )]
         [ValidateNotNullOrEmpty()]
         [string]$ContentType = 'input_text',
@@ -96,8 +96,11 @@ function Add-RealtimeSessionItem {
         if ($ContentType -in ('input_text', 'text')) {
             $MessageObject.item.content[0].text = $Content
         }
-        elseif ($ContentType -in ('input_audio', 'audio')) {
+        elseif ($ContentType -eq 'input_audio') {
             $MessageObject.item.content[0].audio = $Content
+        }
+        elseif ($ContentType -eq 'item_reference') {
+            $MessageObject.item.content[0].id = $Content
         }
         if ($PSBoundParameters.ContainsKey('ContentTranscript')) {
             $MessageObject.item.content[0].transcript = $ContentTranscript
