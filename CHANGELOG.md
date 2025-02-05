@@ -1,5 +1,5 @@
 # Changelog
-### Unreleased
+### 4.15.0
 - Add support for `item_reference` content type in `Add-RealtimeSessionItem`.
 - Allow `-MaxTokens` and `-MaxCompletionTokens` parameters to accept negative values.  
   This is for compatibility APIs; the official OpenAI API returns an error for values less than `1`.

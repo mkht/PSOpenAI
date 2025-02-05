@@ -426,14 +426,14 @@ PS C:\&gt; Add-OpenAIFile -Content $ByteArray -Name 'filename.txt' -Purpose assi
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>ContentType</maml:name>
           <maml:description>
-            <maml:para>The content type (`input_text`, `input_audio`, `text`).
+            <maml:para>The content type (`input_text`, `input_audio`, `item_reference`, `text`).
 The default value is `input_text`.</maml:para>
           </maml:description>
           <command:parameterValueGroup>
             <command:parameterValue required="false" command:variableLength="false">input_text</command:parameterValue>
             <command:parameterValue required="false" command:variableLength="false">input_audio</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">item_reference</command:parameterValue>
             <command:parameterValue required="false" command:variableLength="false">text</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">audio</command:parameterValue>
           </command:parameterValueGroup>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -619,7 +619,7 @@ The default is `message`.</maml:para>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>ContentType</maml:name>
         <maml:description>
-          <maml:para>The content type (`input_text`, `input_audio`, `text`).
+          <maml:para>The content type (`input_text`, `input_audio`, `item_reference`, `text`).
 The default value is `input_text`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>

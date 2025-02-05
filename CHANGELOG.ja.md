@@ -1,4 +1,14 @@
 # 変更履歴
+### 4.15.0
+- `Add-RealtimeSessionItem`で`item_reference`コンテンツタイプをサポートしました
+- `-MaxTokens`および`-MaxCompletionTokens`パラメータが負の値を受け付けるようになりました  
+    これは互換APIのためのものです。公式のOpenAI APIでは値が`1`未満の場合にエラーを返します。
+- 新しいAPI例外型を実装しました
+    + `PermissionDeniedException`
+    + `ConflictException`
+    + `UnprocessableEntityException`
+- 軽微な改善
+
 ### 4.14.0
 - `Request-ChatCompletion`に`o3-mini`モデルを追加しました
 - `Set-RealtimeSessionConfiguration`に新しいパラメータを追加しました
