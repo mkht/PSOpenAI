@@ -19,6 +19,7 @@ Set-Assistant
     [-Model <String>]
     [-Description <String>]
     [-Instructions <String>]
+    [-ReasoningEffort <String>]
     [-UseCodeInterpreter]
     [-UseFileSearch]
     [-Functions]
@@ -99,6 +100,19 @@ The system instructions that the assistant uses. The maximum length is 256,000 c
 
 ```yaml
 Type: String
+Required: False
+Position: Named
+```
+
+### -ReasoningEffort
+**o1 and o3-mini models only**  
+Constrains effort on reasoning for reasoning models.  
+Currently supported values are `low`, `medium`, and `high`.  
+Reducing reasoning effort can result in faster responses and fewer tokens used on reasoning in a response.
+
+```yaml
+Type: String
+Aliases: reasoning_effort
 Required: False
 Position: Named
 ```

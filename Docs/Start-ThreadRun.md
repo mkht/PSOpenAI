@@ -21,6 +21,7 @@ Start-ThreadRun
     [-ImageDetail <String>]
     [-Model <String>]
     [-Instructions <String>]
+    [-ReasoningEffort <String>]
     [-AdditionalMessages <Object[]>]
     [-Role <String>]
     [-FileIdsForCodeInterpreter <Object[]>]
@@ -58,6 +59,7 @@ Start-ThreadRun
     [-Assistant] <Object>
     [-Model <String>]
     [-Instructions <String>]
+    [-ReasoningEffort <String>]
     [-AdditionalInstructions <String>]
     [-AdditionalMessages <Object[]>]
     [-Include <String[]>]
@@ -136,6 +138,20 @@ Overrides the instructions of the assistant. This is useful for modifying the be
 
 ```yaml
 Type: String
+Required: False
+Position: Named
+```
+
+
+### -ReasoningEffort
+**o1 and o3-mini models only**  
+Constrains effort on reasoning for reasoning models.  
+Currently supported values are `low`, `medium`, and `high`.  
+Reducing reasoning effort can result in faster responses and fewer tokens used on reasoning in a response.
+
+```yaml
+Type: String
+Aliases: reasoning_effort
 Required: False
 Position: Named
 ```

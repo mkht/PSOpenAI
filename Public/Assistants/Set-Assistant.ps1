@@ -28,7 +28,9 @@ function Set-Assistant {
             'gpt-4-32k',
             'gpt-4-32k-0613',
             'gpt-4-turbo',
-            'gpt-4-turbo-2024-04-09'
+            'gpt-4-turbo-2024-04-09',
+            'o1',
+            'o3-mini'
         )]
         [string]$Model = 'gpt-3.5-turbo',
 
@@ -39,6 +41,11 @@ function Set-Assistant {
         [Parameter()]
         [ValidateLength(0, 256000)]
         [string]$Instructions,
+
+        [Parameter()]
+        [Alias('reasoning_effort')]
+        [Completions('low', 'medium', 'high')]
+        [string]$ReasoningEffort = 'medium',
 
         [Parameter()]
         [switch]$UseCodeInterpreter,
