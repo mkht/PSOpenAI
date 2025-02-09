@@ -1,4 +1,8 @@
 # 変更履歴
+### 4.16.0
+- アシスタント関連の関数に`-ReasoningEffort`パラメータを追加しました
+- アシスタント関連の関数に`o1`および`o3-mini`モデルを追加しました
+
 ### 4.15.0
 - `Add-RealtimeSessionItem`で`item_reference`コンテンツタイプをサポートしました
 - `-MaxTokens`および`-MaxCompletionTokens`パラメータが負の値を受け付けるようになりました  

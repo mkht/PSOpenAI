@@ -1,4 +1,8 @@
 # Changelog
+### 4.16.0
+- Add `-ReasoningEffort` parameter to assistant functions.
+- Add `o1` and `o3-mini` models to assistant functions.
+
 ### 4.15.0
 - Add support for `item_reference` content type in `Add-RealtimeSessionItem`.
 - Allow `-MaxTokens` and `-MaxCompletionTokens` parameters to accept negative values.  

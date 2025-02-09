@@ -7927,6 +7927,21 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="reasoning_effort">
+          <maml:name>ReasoningEffort</maml:name>
+          <maml:description>
+            <maml:para>o1 and o3-mini models only 
+Constrains effort on reasoning for reasoning models.
+Currently supported values are `low`, `medium`, and `high`.
+Reducing reasoning effort can result in faster responses and fewer tokens used on reasoning in a response.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>UseCodeInterpreter</maml:name>
           <maml:description>
@@ -8211,6 +8226,21 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <maml:name>Instructions</maml:name>
         <maml:description>
           <maml:para>The system instructions that the assistant uses. The maximum length is 256,000 characters.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="reasoning_effort">
+        <maml:name>ReasoningEffort</maml:name>
+        <maml:description>
+          <maml:para>o1 and o3-mini models only 
+Constrains effort on reasoning for reasoning models.
+Currently supported values are `low`, `medium`, and `high`.
+Reducing reasoning effort can result in faster responses and fewer tokens used on reasoning in a response.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -16849,6 +16879,21 @@ We serves
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="reasoning_effort">
+          <maml:name>ReasoningEffort</maml:name>
+          <maml:description>
+            <maml:para>o1 and o3-mini models only 
+Constrains effort on reasoning for reasoning models.
+Currently supported values are `low`, `medium`, and `high`.
+Reducing reasoning effort can result in faster responses and fewer tokens used on reasoning in a response.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>UseCodeInterpreter</maml:name>
           <maml:description>
@@ -17145,6 +17190,21 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <maml:name>Instructions</maml:name>
         <maml:description>
           <maml:para>The system instructions that the assistant uses. The maximum length is 256,000 characters.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="reasoning_effort">
+        <maml:name>ReasoningEffort</maml:name>
+        <maml:description>
+          <maml:para>o1 and o3-mini models only 
+Constrains effort on reasoning for reasoning models.
+Currently supported values are `low`, `medium`, and `high`.
+Reducing reasoning effort can result in faster responses and fewer tokens used on reasoning in a response.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -19427,6 +19487,21 @@ You can create a batch input item by using the Request-ChatCompletion cmdlet wit
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="reasoning_effort">
+          <maml:name>ReasoningEffort</maml:name>
+          <maml:description>
+            <maml:para>o1 and o3-mini models only 
+Constrains effort on reasoning for reasoning models.
+Currently supported values are `low`, `medium`, and `high`.
+Reducing reasoning effort can result in faster responses and fewer tokens used on reasoning in a response.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="additional_instructions">
           <maml:name>AdditionalInstructions</maml:name>
           <maml:description>
@@ -19884,6 +19959,21 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <maml:name>Instructions</maml:name>
         <maml:description>
           <maml:para>Overrides the instructions of the assistant. This is useful for modifying the behavior on a per-run basis.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="reasoning_effort">
+        <maml:name>ReasoningEffort</maml:name>
+        <maml:description>
+          <maml:para>o1 and o3-mini models only 
+Constrains effort on reasoning for reasoning models.
+Currently supported values are `low`, `medium`, and `high`.
+Reducing reasoning effort can result in faster responses and fewer tokens used on reasoning in a response.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
