@@ -214,9 +214,14 @@ function ParseChatCompletionObject {
     if ($LastUserMessage -isnot [string]) {
         $LastUserMessage = [string]($LastUserMessage | Where-Object { $_.type -eq 'text' } | Select-Object -Last 1).text
     }
-    if ($LastUserMessage) { $InputObject | Add-Member -MemberType NoteProperty -Name 'Message' -Value $LastUserMessage }
+    if ($LastUserMessage) {
+        $InputObject | Add-Member -MemberType NoteProperty -Name 'Message' -Value $LastUserMessage
+    }
+    else {
+        $InputObject | Add-Member -MemberType NoteProperty -Name 'Message' -Value $null
+    }
 
-    # AI messages
+    # Assistant messages
     $Answer = @()
     foreach ($choice in $InputObject.choices) {
         # The model refuses to respond
@@ -261,7 +266,13 @@ function ParseChatCompletionObject {
     $InputObject | Add-Member -MemberType NoteProperty -Name 'Answer' -Value $Answer
 
     # Add History
-    if ($Messages) { $InputObject | Add-Member -MemberType NoteProperty -Name 'History' -Value $Messages.ToArray() }
+    if ($Messages.Count -gt 0) {
+        $Messages | ForEach-Object { $_.PSObject.TypeNames.Insert(0, 'PSOpenAI.Chat.Completion.Message') }
+        $InputObject | Add-Member -MemberType NoteProperty -Name 'History' -Value $Messages.ToArray()
+    }
+    else {
+        $InputObject | Add-Member -MemberType NoteProperty -Name 'History' -Value @()
+    }
 
     # Return
     Write-Output $InputObject
@@ -316,4 +327,39 @@ function ParseVectorStoreFileBatchObject {
         }
     }
     Write-Output $InputObject
+}
+
+function ParseChatCompletionMessageObject {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory, Position = 0, ValueFromPipeline)]
+        [PSCustomObject]$InputObject
+    )
+
+    $OutputObject = [ordered]@{
+        id      = $InputObject.id
+        role    = $InputObject.role
+        content = $InputObject.content
+    }
+
+    if ($InputObject.refusal) {
+        $OutputObject.Add('refusal', $InputObject.refusal)
+    }
+    if ($InputObject.name) {
+        $OutputObject.Add('name', $InputObject.name)
+    }
+    if ($InputObject.content_parts) {
+        $OutputObject.Add('content_parts', $InputObject.content_parts)
+    }
+    if ($InputObject.audio) {
+        $OutputObject.Add('audio', $InputObject.audio)
+    }
+    if ($InputObject.tool_calls) {
+        $OutputObject.Add('tool_calls', $InputObject.tool_calls)
+    }
+    if ($InputObject.function_call) {
+        $OutputObject.Add('function_call', $InputObject.tool_calls)
+    }
+
+    Write-Output $OutputObject
 }
