@@ -2,10 +2,10 @@
 
 BeforeAll {
     $ProgressPreference = 'SilentlyContinue'
-    $script:ModuleRoot = Split-Path $PSScriptRoot -Parent
+    $script:ModuleRoot = Split-Path (Split-Path $PSScriptRoot -Parent) -Parent
     $script:ModuleName = 'PSOpenAI'
-    $script:TestData = Join-Path $PSScriptRoot 'TestData'
-    $script:TestImageData = [string](Resolve-Path (Join-Path $PSScriptRoot '../Docs/images'))
+    $script:TestData = Join-Path $script:ModuleRoot 'Tests/TestData'
+    $script:TestImageData = Join-Path $script:ModuleRoot 'Docs/images'
     Import-Module (Join-Path $script:ModuleRoot "$script:ModuleName.psd1") -Force
 }
 

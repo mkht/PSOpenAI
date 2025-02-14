@@ -8,7 +8,7 @@ Import-Module (Join-Path $script:ModuleRoot "$script:ModuleName.psd1") -Force
 BeforeAll {
     $script:ModuleRoot = Split-Path $PSScriptRoot -Parent
     $script:ModuleName = 'PSOpenAI'
-    $script:TestData = Join-Path $PSScriptRoot 'TestData'
+    $script:TestData = Join-Path $script:ModuleRoot 'Tests/TestData'
     Import-Module (Join-Path $script:ModuleRoot "$script:ModuleName.psd1") -Force
 }
 
