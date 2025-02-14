@@ -3,7 +3,7 @@ function Request-ChatCompletion {
     [OutputType([pscustomobject])]
     [Alias('Request-ChatGPT')]
     param (
-        [Parameter(Mandatory = $false, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Parameter(Mandatory = $false, Position = 0, ValueFromPipeline)]
         [Alias('Text')]
         [ValidateNotNullOrEmpty()]
         [string]$Message,
@@ -17,7 +17,7 @@ function Request-ChatCompletion {
         [ValidatePattern('^[a-zA-Z0-9_-]{1,64}$')]   # May contain a-z, A-Z, 0-9, hyphens, and underscores, with a maximum length of 64 characters.
         [string]$Name,
 
-        [Parameter()]
+        [Parameter(ValueFromPipelineByPropertyName)]
         [Completions(
             'gpt-3.5-turbo',
             'gpt-4',

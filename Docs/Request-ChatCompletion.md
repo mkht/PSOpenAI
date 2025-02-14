@@ -126,7 +126,7 @@ Type: String
 Aliases: Text
 Required: False
 Position: 1
-Accept pipeline input: True (ByPropertyName, ByValue)
+Accept pipeline input: True (ByValue)
 ```
 
 ### -Role
@@ -157,6 +157,7 @@ The default value is `gpt-3.5-turbo`.
 Type: String
 Required: False
 Position: Named
+Accept pipeline input: True (ByPropertyName)
 Default value: gpt-3.5-turbo
 ```
 
