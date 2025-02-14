@@ -1,4 +1,12 @@
 # 変更履歴
+### Unreleased
+- Stored Chat Completions 操作用の新しい関数を追加しました  
+  + [Get-ChatCompletion](/Docs/Get-ChatCompletion.md)
+  + [Set-ChatCompletion](/Docs/Set-ChatCompletion.md)
+  + [Remove-ChatCompletion](/Docs/Remove-ChatCompletion.md)
+- `Request-ChatCompletion`における拒否メッセージの処理を改善しました
+- いくつかの軽微な改善
+
 ### 4.16.0
 - アシスタント関連の関数に`-ReasoningEffort`パラメータを追加しました
 - アシスタント関連の関数に`o1`および`o3-mini`モデルを追加しました

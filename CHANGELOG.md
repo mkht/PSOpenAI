@@ -1,4 +1,12 @@
 # Changelog
+### Unreleased
+- Add new functions for storing chat completions.  
+  + [Get-ChatCompletion](/Docs/Get-ChatCompletion.md)
+  + [Set-ChatCompletion](/Docs/Set-ChatCompletion.md)
+  + [Remove-ChatCompletion](/Docs/Remove-ChatCompletion.md)
+- Improved handling of refusal messages in `Request-ChatCompletion`.
+- Minor improvements.
+
 ### 4.16.0
 - Add `-ReasoningEffort` parameter to assistant functions.
 - Add `o1` and `o3-mini` models to assistant functions.

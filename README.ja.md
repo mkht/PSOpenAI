@@ -46,6 +46,9 @@ Install-Module -Name PSOpenAI
 
 + [Enter-ChatGPT](/Docs/Enter-ChatGPT.md)
 + [Request-ChatCompletion](/Docs/Request-ChatCompletion.md)
++ [Get-ChatCompletion](/Docs/Get-ChatCompletion.md)
++ [Set-ChatCompletion](/Docs/Set-ChatCompletion.md)
++ [Remove-ChatCompletion](/Docs/Remove-ChatCompletion.md)
 + [New-ChatCompletionFunction](/Docs/New-ChatCompletionFunction.md)
 
 #### Assistants
