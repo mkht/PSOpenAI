@@ -414,9 +414,21 @@ function Request-ChatCompletion {
                 $tm = [ordered]@{
                     role = [string]$msg.role
                 }
-                if ($msg.content) {
+
+                # refusal (only on assistant messages)
+                if ($msg.refusal -and $msg.role -eq 'assistant') {
+                    $tm.content = @(
+                        @{
+                            type    = 'refusal'
+                            refusal = $msg.refusal
+                        }
+                    )
+                }
+                # text content
+                elseif ($msg.content) {
                     $tm.content = $msg.content
                 }
+
                 # audio
                 if ($msg.audio.id) {
                     $tm.audio = @{id = $msg.audio.id }
@@ -516,8 +528,8 @@ function Request-ChatCompletion {
             $um.name = $Name.Trim()
         }
 
-        # For historical reasons,
-        # if the user message has only one text message,
+        # By historical reasons,
+        # when the user message has only one text message,
         # modify the message object to be a classical string format.
         if ($um.content.Count -eq 1 -and $um.content[0].type -eq 'text') {
             $um.content = $um.content[0].text
@@ -528,7 +540,7 @@ function Request-ChatCompletion {
         }
         #endregion
 
-        # Error if messages is empty.
+        # Error if message is empty.
         if ($Messages.Count -eq 0) {
             Write-Error 'No message is specified. You must specify one or more messages.'
             return
@@ -644,16 +656,19 @@ function Request-ChatCompletion {
 
         #region For history, add AI response to messages list.
         if (@($Response.choices.message).Count -ge 1) {
-            $tr = @($Response.choices.message)[0]
+            $msg = @($Response.choices.message)[0]
             $rcm = [ordered]@{
-                role    = $tr.role
-                content = $tr.content
+                role    = $msg.role
+                content = $msg.content
             }
-            if ($tr.audio) {
-                $rcm.Add('audio', (@{id = $tr.audio.id }))
+            if ($msg.refusal) {
+                $rcm.Add('refusal', $msg.refusal)
             }
-            if ($tr.tool_calls) {
-                $rcm.Add('tool_calls', $tr.tool_calls)
+            if ($msg.audio) {
+                $rcm.Add('audio', (@{id = $msg.audio.id }))
+            }
+            if ($msg.tool_calls) {
+                $rcm.Add('tool_calls', $msg.tool_calls)
             }
             $Messages.Add($rcm)
         }
