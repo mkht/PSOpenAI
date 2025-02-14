@@ -73,6 +73,11 @@ function Set-ChatCompletion {
         $QueryUri = $UriBuilder.Uri
         #endregion
 
+        #region Construct parameters for API request
+        $PostBody = [System.Collections.Specialized.OrderedDictionary]::new()
+        $PostBody.metadata = $MetaData
+        #endregion
+
         #region Send API Request
         $params = @{
             Method            = 'Post'
@@ -83,6 +88,7 @@ function Set-ChatCompletion {
             ApiKey            = $OpenAIParameter.ApiKey
             AuthType          = $OpenAIParameter.AuthType
             Organization      = $OpenAIParameter.Organization
+            Body              = $PostBody
             AdditionalQuery   = $AdditionalQuery
             AdditionalHeaders = $AdditionalHeaders
             AdditionalBody    = $AdditionalBody
