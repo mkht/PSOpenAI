@@ -11,7 +11,6 @@ Describe 'Get-ChatCompletionMessage' {
     Context 'Unit tests (offline)' -Tag 'Offline' {
         BeforeAll {
             Mock -ModuleName $script:ModuleName Initialize-APIKey { [securestring]::new() }
-
         }
 
         BeforeEach {
@@ -50,7 +49,7 @@ Describe 'Get-ChatCompletionMessage' {
                 Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
                 $Result | Should -HaveCount 2
                 $Result[0].id | Should -BeExactly 'chatcmpl-abc123-0'
-                $Result[0] | Should -BeOfType [Ordered]
+                $Result[0] | Should -BeOfType [System.Collections.Specialized.OrderedDictionary]
                 $Result[0].content | Should -BeExactly 'write a haiku about ai'
             }
         }

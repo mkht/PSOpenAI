@@ -19,7 +19,7 @@ Describe 'Get-ChatCompletion' {
   "created": 1738960610,
   "request_id": "req_ded123",
   "usage": {
-    "total_tokens": 31,
+    "total_tokens": 31
   },
   "metadata": {},
   "choices": [
@@ -29,12 +29,11 @@ Describe 'Get-ChatCompletion' {
         "content": "I am a helpful assistant.",
         "role": "assistant"
       },
-      "finish_reason": "stop",
+      "finish_reason": "stop"
     }
   ],
   "response_format": null
 }
-
 '@
             } -ParameterFilter { 'https://api.openai.com/v1/chat/completions/chatcmpl-abc123' -eq $Uri }
 
@@ -59,7 +58,7 @@ Describe 'Get-ChatCompletion' {
             "content": "I am a helpful assistant.",
             "role": "assistant"
           },
-          "finish_reason": "stop",
+          "finish_reason": "stop"
         }
       ],
       "response_format": null
@@ -81,7 +80,7 @@ Describe 'Get-ChatCompletion' {
             "content": "How do I help you?",
             "role": "assistant"
           },
-          "finish_reason": "stop",
+          "finish_reason": "stop"
         }
       ],
       "response_format": null
