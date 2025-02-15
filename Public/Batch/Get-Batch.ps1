@@ -160,7 +160,10 @@ function Get-Batch {
                 PSOpenAI\Get-Bacth @PagenationParam
             }
             else {
-                Write-Warning 'There is more data that has not been retrieved.'
+                # Display warning message if there is more data. (Except when the user specifies -Limit parameter explicitly.)
+                if (-not $PSBoundParameters.ContainsKey('Limit')) {
+                    Write-Warning 'There is more data that has not been retrieved.'
+                }
             }
         }
         #endregion
