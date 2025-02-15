@@ -159,7 +159,7 @@ Describe 'Get-ChatCompletion' {
 }
 '@
             }
-            { Get-ChatCompletion -TimeoutSec 1.8 -All -ea Stop } | Should -Throw -ExceptionType ([System.TimeoutException])
+            { Get-ChatCompletion -TimeoutSec 2 -All -ea Stop } | Should -Throw -ExceptionType ([System.TimeoutException])
             Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 2 -Exactly -Scope It
         }
 
