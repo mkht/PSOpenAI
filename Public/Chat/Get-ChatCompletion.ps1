@@ -96,14 +96,10 @@ function Get-ChatCompletion {
             $QueryParam = [System.Web.HttpUtility]::ParseQueryString($UriBuilder.Query)
 
             if ($All) {
-                $QueryParam.Add('limit', 100)
+                $Limit = 100
             }
-            elseif ($PSBoundParameters.ContainsKey('Limit')) {
-                $QueryParam.Add('limit', $Limit)
-            }
-            if ($PSBoundParameters.ContainsKey('Order')) {
-                $QueryParam.Add('order', $Order)
-            }
+            $QueryParam.Add('limit', $Limit)
+            $QueryParam.Add('order', $Order)
             if ($PSBoundParameters.ContainsKey('After')) {
                 $QueryParam.Add('after', $After)
             }
@@ -166,7 +162,7 @@ function Get-ChatCompletion {
             }
 
             # Add assistant response to messages list.
-            $msg = @($Response.choices.message)[0]
+            $msg = @($res.choices.message)[0]
             $rcm = [ordered]@{
                 role    = $msg.role
                 content = $msg.content

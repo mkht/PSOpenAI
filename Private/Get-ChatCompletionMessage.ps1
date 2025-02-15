@@ -85,18 +85,13 @@ function Get-ChatCompletionMessage {
         $UriBuilder = [System.UriBuilder]::new($OpenAIParameter.Uri)
         $UriBuilder.Path += "/$CompletionId/messages"
         $QueryUri = $UriBuilder.Uri
-
         $QueryParam = [System.Web.HttpUtility]::ParseQueryString($UriBuilder.Query)
 
         if ($All) {
-            $QueryParam.Add('limit', 100)
+            $Limit = 100
         }
-        elseif ($PSBoundParameters.ContainsKey('Limit')) {
-            $QueryParam.Add('limit', $Limit)
-        }
-        if ($PSBoundParameters.ContainsKey('Order')) {
-            $QueryParam.Add('order', $Order)
-        }
+        $QueryParam.Add('limit', $Limit)
+        $QueryParam.Add('order', $Order)
         if ($PSBoundParameters.ContainsKey('After')) {
             $QueryParam.Add('after', $After)
         }
@@ -133,6 +128,7 @@ function Get-ChatCompletionMessage {
         }
         catch {
             Write-Error -Exception $_.Exception
+            return
         }
         #endregion
 
@@ -158,7 +154,7 @@ function Get-ChatCompletionMessage {
                 # pagenate
                 $PagenationParam = $PSBoundParameters
                 $PagenationParam.After = $Response.last_id
-                PSOpenAI\Get-ChatCompletionMessage @PagenationParam
+                Get-ChatCompletionMessage @PagenationParam
             }
             else {
                 # Display warning message if there is more data. (Except when the user specifies -Limit parameter explicitly.)
