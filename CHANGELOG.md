@@ -1,12 +1,12 @@
 # Changelog
-### Unreleased
+### 4.17.0
 - Add new functions for storing chat completions.  
   + [Get-ChatCompletion](/Docs/Get-ChatCompletion.md)
   + [Set-ChatCompletion](/Docs/Set-ChatCompletion.md)
   + [Remove-ChatCompletion](/Docs/Remove-ChatCompletion.md)
 - Improved handling of refusal messages in `Request-ChatCompletion`.
 - Improved stability of `Get-*` commands.
-- Minor improvements.
+- Minor improvements / fixes.
 
 ### 4.16.0
 - Add `-ReasoningEffort` parameter to assistant functions.
