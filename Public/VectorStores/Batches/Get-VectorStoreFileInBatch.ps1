@@ -81,6 +81,9 @@ function Get-VectorStoreFileInBatch {
     begin {
         # Get API context
         $OpenAIParameter = Get-OpenAIAPIParameter -EndpointName 'VectorStore.FileBatches' -Parameters $PSBoundParameters -ErrorAction Stop
+
+        # Iterator flag
+        [bool]$HasMore = $true
     }
 
     process {
@@ -102,90 +105,117 @@ function Get-VectorStoreFileInBatch {
             return
         }
 
-        $QueryUri = $OpenAIParameter.Uri.ToString() -f $VectorStoreId
-        $UriBuilder = [System.UriBuilder]::new($QueryUri)
-        $UriBuilder.Path += "/$BatchId/files"
-        $QueryParam = [System.Web.HttpUtility]::ParseQueryString($UriBuilder.Query)
-        if ($All) {
-            $Limit = 100
+        # Create cancellation token for timeout
+        $Cancellation = [System.Threading.CancellationTokenSource]::new()
+        if ($TimeoutSec -gt 0) {
+            $Cancellation.CancelAfter([timespan]::FromSeconds($TimeoutSec))
         }
-        $QueryParam.Add('limit', $Limit)
-        $QueryParam.Add('order', $Order)
-        if ($After) {
-            $QueryParam.Add('after', $After)
-        }
-        if ($Before) {
-            $QueryParam.Add('before', $Before)
-        }
-        if ($Filter) {
-            $QueryParam.Add('filter', $Filter)
-        }
-        $UriBuilder.Query = $QueryParam.ToString()
-        $QueryUri = $UriBuilder.Uri
 
-        #region Send API Request
-        $params = @{
-            Method            = 'Get'
-            Uri               = $QueryUri
-            ContentType       = $OpenAIParameter.ContentType
-            TimeoutSec        = $OpenAIParameter.TimeoutSec
-            MaxRetryCount     = $OpenAIParameter.MaxRetryCount
-            ApiKey            = $OpenAIParameter.ApiKey
-            AuthType          = $OpenAIParameter.AuthType
-            Organization      = $OpenAIParameter.Organization
-            Headers           = @{'OpenAI-Beta' = 'assistants=v2' }
-            AdditionalQuery   = $AdditionalQuery
-            AdditionalHeaders = $AdditionalHeaders
-            AdditionalBody    = $AdditionalBody
-        }
-        $Response = Invoke-OpenAIAPIRequest @params
-
-        # error check
-        if ($null -eq $Response) {
-            return
-        }
-        #endregion
-
-        #region Parse response object
         try {
-            $Response = $Response | ConvertFrom-Json -ErrorAction Stop
+            #region Pagenaion Loop
+            while ($HasMore) {
+                #region Construct Query URI
+                $QueryUri = $OpenAIParameter.Uri.ToString() -f $VectorStoreId
+                $UriBuilder = [System.UriBuilder]::new($QueryUri)
+                $UriBuilder.Path += "/$BatchId/files"
+                $QueryParam = [System.Web.HttpUtility]::ParseQueryString($UriBuilder.Query)
+                if ($All) {
+                    $Limit = 100
+                }
+                $QueryParam.Add('limit', $Limit)
+                $QueryParam.Add('order', $Order)
+                if ($After) {
+                    $QueryParam.Add('after', $After)
+                }
+                if ($Before) {
+                    $QueryParam.Add('before', $Before)
+                }
+                if ($Filter) {
+                    $QueryParam.Add('filter', $Filter)
+                }
+                $UriBuilder.Query = $QueryParam.ToString()
+                $QueryUri = $UriBuilder.Uri
+                #endregion
+
+                #region Send API Request
+                $params = @{
+                    Method            = 'Get'
+                    Uri               = $QueryUri
+                    ContentType       = $OpenAIParameter.ContentType
+                    TimeoutSec        = $OpenAIParameter.TimeoutSec
+                    MaxRetryCount     = $OpenAIParameter.MaxRetryCount
+                    ApiKey            = $OpenAIParameter.ApiKey
+                    AuthType          = $OpenAIParameter.AuthType
+                    Organization      = $OpenAIParameter.Organization
+                    Headers           = @{'OpenAI-Beta' = 'assistants=v2' }
+                    AdditionalQuery   = $AdditionalQuery
+                    AdditionalHeaders = $AdditionalHeaders
+                    AdditionalBody    = $AdditionalBody
+                }
+                $Response = Invoke-OpenAIAPIRequest @params
+
+                # error check
+                if ($null -eq $Response) {
+                    return
+                }
+                #endregion
+
+                #region Parse response object
+                try {
+                    $Response = $Response | ConvertFrom-Json -ErrorAction Stop
+                }
+                catch {
+                    Write-Error -Exception $_.Exception
+                    return
+                }
+                #endregion
+
+                # Check cancellation
+                $Cancellation.Token.ThrowIfCancellationRequested()
+
+                # Update iterator flag
+                if ($HasMore = [bool]$Response.has_more) {
+                    if ($All -and $Response.last_id) {
+                        $After = $Response.last_id
+                    }
+                    else {
+                        $HasMore = $false
+                        if (-not $PSBoundParameters.ContainsKey('Limit')) {
+                            Write-Warning 'There is more data that has not been retrieved.'
+                        }
+                    }
+                }
+
+                #region Output
+                if ($Response.object -eq 'list' -and ($null -ne $Response.data)) {
+                    # List of object
+                    $Responses = @($Response.data)
+                }
+                else {
+                    # Single object
+                    $Responses = @($Response)
+                }
+                # parse objects
+                foreach ($res in $Responses) {
+                    ParseVectorStoreFileObject $res
+                }
+                #endregion
+            }
+            #endregion
+        }
+        catch [OperationCanceledException] {
+            Write-TimeoutError
+            return
         }
         catch {
             Write-Error -Exception $_.Exception
+            return
         }
-        #endregion
-
-        #region Output
-        if ($Response.object -eq 'list' -and ($null -ne $Response.data)) {
-            # List of object
-            $Responses = @($Response.data)
-        }
-        else {
-            # Single object
-            $Responses = @($Response)
-        }
-        # parse objects
-        foreach ($res in $Responses) {
-            ParseVectorStoreFileObject $res
-        }
-        #endregion
-
-        #region Pagenation
-        if ($Response.has_more) {
-            if ($All) {
-                # pagenate
-                $PagenationParam = $PSBoundParameters
-                $PagenationParam.After = $Response.last_id
-                PSOpenAI\Get-VectorStoreFile @PagenationParam
-            }
-            else {
-                # Display warning message if there is more data. (Except when the user specifies -Limit parameter explicitly.)
-                if (-not $PSBoundParameters.ContainsKey('Limit')) {
-                    Write-Warning 'There is more data that has not been retrieved.'
-                }
+        finally {
+            if ($null -ne $Cancellation) {
+                $Cancellation.Dispose()
             }
         }
-        #endregion
     }
 
     end {

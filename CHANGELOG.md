@@ -5,6 +5,7 @@
   + [Set-ChatCompletion](/Docs/Set-ChatCompletion.md)
   + [Remove-ChatCompletion](/Docs/Remove-ChatCompletion.md)
 - Improved handling of refusal messages in `Request-ChatCompletion`.
+- Improved stability of `Get-*` commands.
 - Minor improvements.
 
 ### 4.16.0

@@ -78,16 +78,23 @@ function Get-OpenAIModels {
         #endregion
 
         #region Parse response object
-        $Response = try { ($Response | ConvertFrom-Json -ErrorAction Ignore) }catch { Write-Error -Exception $_.Exception }
+        try {
+            $Response = $Response | ConvertFrom-Json -ErrorAction Stop
+        }
+        catch {
+            Write-Error -Exception $_.Exception
+            return
+        }
+        #endregion
+
+        #region Output
         if ($Response.object -eq 'list') {
             $Models = @($Response.data)
         }
         else {
             $Models = @($Response)
         }
-        #endregion
 
-        #region Output
         foreach ($m in $Models) {
             if ($null -eq $m) { continue }
             # Add custom type name and properties to output object.

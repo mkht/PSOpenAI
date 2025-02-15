@@ -97,6 +97,9 @@ function Get-ThreadMessage {
     begin {
         # Get API context
         $OpenAIParameter = Get-OpenAIAPIParameter -EndpointName 'Threads' -Parameters $PSBoundParameters -ErrorAction Stop
+
+        # Iterator flag
+        [bool]$HasMore = $true
     }
 
     process {
@@ -119,112 +122,138 @@ function Get-ThreadMessage {
             return
         }
 
-        $UriBuilder = [System.UriBuilder]::new($OpenAIParameter.Uri)
-        $UriBuilder.Path += "/$ThreadID/messages"
-        if ($MessageId) {
-            $UriBuilder.Path += "/$MessageId"
-            $QueryUri = $UriBuilder.Uri
-        }
-        else {
-            $QueryParam = [System.Web.HttpUtility]::ParseQueryString($UriBuilder.Query)
-            if ($All) {
-                $Limit = 100
-            }
-            $QueryParam.Add('limit', $Limit)
-            $QueryParam.Add('order', $Order)
-            if ($RunId) {
-                $QueryParam.Add('run_id', $RunId)
-            }
-            if ($After) {
-                $QueryParam.Add('after', $After)
-            }
-            if ($Before) {
-                $QueryParam.Add('before', $Before)
-            }
-            $UriBuilder.Query = $QueryParam.ToString()
-            $QueryUri = $UriBuilder.Uri
+        # Create cancellation token for timeout
+        $Cancellation = [System.Threading.CancellationTokenSource]::new()
+        if ($TimeoutSec -gt 0) {
+            $Cancellation.CancelAfter([timespan]::FromSeconds($TimeoutSec))
         }
 
-        #region Send API Request
-        $params = @{
-            Method            = 'Get'
-            Uri               = $QueryUri
-            ContentType       = $OpenAIParameter.ContentType
-            TimeoutSec        = $OpenAIParameter.TimeoutSec
-            MaxRetryCount     = $OpenAIParameter.MaxRetryCount
-            ApiKey            = $OpenAIParameter.ApiKey
-            AuthType          = $OpenAIParameter.AuthType
-            Organization      = $OpenAIParameter.Organization
-            Headers           = @{'OpenAI-Beta' = 'assistants=v2' }
-            AdditionalQuery   = $AdditionalQuery
-            AdditionalHeaders = $AdditionalHeaders
-            AdditionalBody    = $AdditionalBody
-        }
-        $Response = Invoke-OpenAIAPIRequest @params
-
-        # error check
-        if ($null -eq $Response) {
-            return
-        }
-        #endregion
-
-        #region Parse response object
         try {
-            $Response = $Response | ConvertFrom-Json -ErrorAction Stop
+            #region Pagenaion Loop
+            while ($HasMore) {
+                #region Construct Query URI
+                $UriBuilder = [System.UriBuilder]::new($OpenAIParameter.Uri)
+                $UriBuilder.Path += "/$ThreadID/messages"
+                if ($MessageId) {
+                    $UriBuilder.Path += "/$MessageId"
+                    $QueryUri = $UriBuilder.Uri
+                }
+                else {
+                    $QueryParam = [System.Web.HttpUtility]::ParseQueryString($UriBuilder.Query)
+                    if ($All) {
+                        $Limit = 100
+                    }
+                    $QueryParam.Add('limit', $Limit)
+                    $QueryParam.Add('order', $Order)
+                    if ($RunId) {
+                        $QueryParam.Add('run_id', $RunId)
+                    }
+                    if ($After) {
+                        $QueryParam.Add('after', $After)
+                    }
+                    if ($Before) {
+                        $QueryParam.Add('before', $Before)
+                    }
+                    $UriBuilder.Query = $QueryParam.ToString()
+                    $QueryUri = $UriBuilder.Uri
+                }
+                #endregion
+
+                #region Send API Request
+                $params = @{
+                    Method            = 'Get'
+                    Uri               = $QueryUri
+                    ContentType       = $OpenAIParameter.ContentType
+                    TimeoutSec        = $OpenAIParameter.TimeoutSec
+                    MaxRetryCount     = $OpenAIParameter.MaxRetryCount
+                    ApiKey            = $OpenAIParameter.ApiKey
+                    AuthType          = $OpenAIParameter.AuthType
+                    Organization      = $OpenAIParameter.Organization
+                    Headers           = @{'OpenAI-Beta' = 'assistants=v2' }
+                    AdditionalQuery   = $AdditionalQuery
+                    AdditionalHeaders = $AdditionalHeaders
+                    AdditionalBody    = $AdditionalBody
+                }
+                $Response = Invoke-OpenAIAPIRequest @params
+
+                # error check
+                if ($null -eq $Response) {
+                    return
+                }
+                #endregion
+
+                #region Parse response object
+                try {
+                    $Response = $Response | ConvertFrom-Json -ErrorAction Stop
+                }
+                catch {
+                    Write-Error -Exception $_.Exception
+                    return
+                }
+                #endregion
+
+                # Check cancellation
+                $Cancellation.Token.ThrowIfCancellationRequested()
+
+                # Update iterator flag
+                if ($HasMore = [bool]$Response.has_more) {
+                    if ($All -and $Response.last_id) {
+                        $After = $Response.last_id
+                    }
+                    else {
+                        $HasMore = $false
+                        if (-not $PSBoundParameters.ContainsKey('Limit')) {
+                            Write-Warning 'There is more data that has not been retrieved.'
+                        }
+                    }
+                }
+
+                #region Output
+                if ($Response.object -eq 'list' -and ($null -ne $Response.data)) {
+                    # List of object
+                    $Responses = @($Response.data)
+                }
+                else {
+                    # Single object
+                    $Responses = @($Response)
+                }
+                # parse objects
+                foreach ($res in $Responses) {
+                    # Add custom type name and properties to output object.
+                    $res.PSObject.TypeNames.Insert(0, 'PSOpenAI.Thread.Message')
+                    if ($null -ne $res.created_at -and ($unixtime = $res.created_at -as [long])) {
+                        # convert unixtime to [DateTime] for read suitable
+                        $res | Add-Member -MemberType NoteProperty -Name 'created_at' -Value ([System.DateTimeOffset]::FromUnixTimeSeconds($unixtime).LocalDateTime) -Force
+                    }
+                    $res | Add-Member -MemberType ScriptProperty -Name 'SimpleContent' -Value {
+                        foreach ($c in $this.content) {
+                            [PSCustomObject]@{
+                                Role    = $this.role
+                                Type    = $c.type
+                                Content = $(if ($c.type -eq 'text') { $c.text.value }elseif ($c.type -eq 'image_file') { $c.image_file.file_id }elseif ($c.type -eq 'image_url') { $c.image_url.url })
+                            }
+                        }
+                    } -Force
+
+                    Write-Output $res
+                }
+                #endregion
+            }
+            #endregion
+        }
+        catch [OperationCanceledException] {
+            Write-TimeoutError
+            return
         }
         catch {
             Write-Error -Exception $_.Exception
+            return
         }
-        #endregion
-
-        #region Output
-        if ($Response.object -eq 'list' -and ($null -ne $Response.data)) {
-            # List of object
-            $Responses = @($Response.data)
-        }
-        else {
-            # Single object
-            $Responses = @($Response)
-        }
-        # parse objects
-        foreach ($res in $Responses) {
-            # Add custom type name and properties to output object.
-            $res.PSObject.TypeNames.Insert(0, 'PSOpenAI.Thread.Message')
-            if ($null -ne $res.created_at -and ($unixtime = $res.created_at -as [long])) {
-                # convert unixtime to [DateTime] for read suitable
-                $res | Add-Member -MemberType NoteProperty -Name 'created_at' -Value ([System.DateTimeOffset]::FromUnixTimeSeconds($unixtime).LocalDateTime) -Force
-            }
-            $res | Add-Member -MemberType ScriptProperty -Name 'SimpleContent' -Value {
-                foreach ($c in $this.content) {
-                    [PSCustomObject]@{
-                        Role    = $this.role
-                        Type    = $c.type
-                        Content = $(if ($c.type -eq 'text') { $c.text.value }elseif ($c.type -eq 'image_file') { $c.image_file.file_id }elseif ($c.type -eq 'image_url') { $c.image_url.url })
-                    }
-                }
-            } -Force
-
-            Write-Output $res
-        }
-        #endregion
-
-        #region Pagenation
-        if ($Response.has_more) {
-            if ($All) {
-                # pagenate
-                $PagenationParam = $PSBoundParameters
-                $PagenationParam.After = $Response.last_id
-                $null = $PagenationParam.Remove('MessageId')
-                PSOpenAI\Get-ThreadMessage @PagenationParam
-            }
-            else {
-                # Display warning message if there is more data. (Except when the user specifies -Limit parameter explicitly.)
-                if (-not $PSBoundParameters.ContainsKey('Limit')) {
-                    Write-Warning 'There is more data that has not been retrieved.'
-                }
+        finally {
+            if ($null -ne $Cancellation) {
+                $Cancellation.Dispose()
             }
         }
-        #endregion
     }
 
     end {

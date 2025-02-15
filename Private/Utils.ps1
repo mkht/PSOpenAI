@@ -165,3 +165,15 @@ function ParseCommonParams {
     }
     $OutParam
 }
+
+function Write-TimeoutError {
+    [CmdletBinding()]
+    param ()
+    $er = [ErrorRecord]::new(
+        ([TimeoutException]::new('The operation was canceled due to timeout.')),
+        'PSOpenAI.APIRequest.TimeoutException',
+        [ErrorCategory]::OperationTimeout,
+        $null
+    )
+    $PSCmdlet.WriteError($er)
+}

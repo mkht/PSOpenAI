@@ -175,23 +175,6 @@ function Get-OpenAIFile {
             Write-Output $res
         }
         #endregion
-
-        #region Pagenation
-        if ($Response.has_more) {
-            if ($All) {
-                # pagenate
-                $PagenationParam = $PSBoundParameters
-                $PagenationParam.After = $Response.last_id
-                PSOpenAI\Get-OpenAIFile @PagenationParam
-            }
-            else {
-                # Display warning message if there is more data. (Except when the user specifies -Limit parameter explicitly.)
-                if (-not $PSBoundParameters.ContainsKey('Limit')) {
-                    Write-Warning 'There is more data that has not been retrieved.'
-                }
-            }
-        }
-        #endregion
     }
 
     end {
