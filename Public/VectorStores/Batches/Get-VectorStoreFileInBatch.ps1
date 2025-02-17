@@ -112,7 +112,7 @@ function Get-VectorStoreFileInBatch {
         }
 
         try {
-            #region Pagenaion Loop
+            #region Pagenation Loop
             while ($HasMore) {
                 #region Construct Query URI
                 $QueryUri = $OpenAIParameter.Uri.ToString() -f $VectorStoreId

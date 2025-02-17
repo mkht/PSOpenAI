@@ -131,7 +131,7 @@ function Get-ThreadRunStep {
         }
 
         try {
-            #region Pagenaion Loop
+            #region Pagenation Loop
             while ($HasMore) {
                 #region Construct query url
                 $QueryUri = ($OpenAIParameter.Uri.ToString() -f $ThreadId)

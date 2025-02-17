@@ -129,7 +129,7 @@ function Get-ThreadMessage {
         }
 
         try {
-            #region Pagenaion Loop
+            #region Pagenation Loop
             while ($HasMore) {
                 #region Construct Query URI
                 $UriBuilder = [System.UriBuilder]::new($OpenAIParameter.Uri)
