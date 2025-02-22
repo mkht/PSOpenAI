@@ -28,10 +28,6 @@ function Get-OpenAIAPIParameter {
         $ApiParam = Get-AzureOpenAIAPIEndpoint -EndpointName $EndpointName -ApiBase $OpenAIParameter.ApiBase -ApiVersion $OpenAIParameter.ApiVersion -Engine $Engine
     }
     else {
-        # It looks like the API base URL is Azure even though the API type is OpenAI. In this case, ignore the base URL.
-        if (([string]([uri]$OpenAIParameter.ApiBase).IdnHost).EndsWith('.azure.com', [System.StringComparison]::OrdinalIgnoreCase)) {
-            $OpenAIParameter.ApiBase = $null
-        }
         $OpenAIParameter.AuthType = 'openai'
         $ApiParam = Get-OpenAIAPIEndpoint -EndpointName $EndpointName -ApiBase $OpenAIParameter.ApiBase
     }
