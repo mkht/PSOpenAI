@@ -1,4 +1,14 @@
 # Changelog
+### Unreleased
+- Fix an issue where requests to `*.azure.com` could not be executed when the `ApiType` is `OpenAI`. [#38](https://github.com/mkht/PSOpenAI/issues/38)  
+  This allows the use of GitHub Models and Azure ML.
+```PowerShell
+# Example for GitHub Models
+$env:OPENAI_API_KEY  = '<Your-GitHub-Token>'
+$env:OPENAI_API_BASE = 'https://models.inference.ai.azure.com/'
+Request-ChatCompletion -Message 'Hello.' -Model 'DeepSeek-R1' -ApiType OpenAI
+```
+
 ### 4.17.0
 - Add new functions for storing chat completions.  
   + [Get-ChatCompletion](/Docs/Get-ChatCompletion.md)
