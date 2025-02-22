@@ -127,42 +127,42 @@ Describe 'Get-OpenAIAPIParameter' {
                 Should -Invoke Get-AzureOpenAIAPIEndpoint -Times 1 -Exactly
             }
 
-            It 'When the API base URL is Azure even though the API type is OpenAI. In this case, ignore the base URL.' {
-                $ExplicitParams = @{}
-                $Context = @{
-                    ApiKey   = 'CONTEXT_KEY'
-                    ApiType  = 'OpenAI'
-                    AuthType = 'Azure'                          # Should ignore
-                    ApiBase  = 'https://test.openai.azure.com/' # Should ignore
-                }
-                Set-OpenAIContext @Context
-                $ret = Get-OpenAIAPIParameter -EndpointName 'foo' -Parameters $ExplicitParams
-                $ret.Uri | Should -Be 'https://api.openai.com/v1/chat/completions'
-                $ret.ApiType | Should -Be 'OpenAI'
-                $ret.AuthType | Should -Be 'openai'
-                $ret.ApiBase | Should -BeNullOrEmpty
-                Get-PlainTextFromSecureString $ret.ApiKey | Should -Be 'CONTEXT_KEY'
-                Should -Invoke Get-OpenAIAPIEndpoint -Times 1 -Exactly
-            }
-
-            It 'When the API base URL is NOT Azure and the API type is OpenAI. In this case, obey specified base URL.' {
+            It 'Custom API base URL (OpenAI)' {
                 $ExplicitParams = @{
                     ApiKey  = 'PARAM_KEY'
                     ApiType = 'OpenAI'
-                    ApiBase = 'https://test.openai.notazure.com/'
+                    ApiBase = 'https://custombase.localhost.local/'
                 }
-                $Context = @{
-                    ApiKey   = 'CONTEXT_KEY'
-                    ApiType  = 'Azure'
-                    AuthType = 'Azure'
-                    ApiBase  = 'https://test.openai.azure.com/'
-                }
-                Set-OpenAIContext @Context
                 $ret = Get-OpenAIAPIParameter -EndpointName 'foo' -Parameters $ExplicitParams
                 $ret.ApiType | Should -Be 'OpenAI'
                 $ret.AuthType | Should -Be 'openai'
-                $ret.ApiBase | Should -Be 'https://test.openai.notazure.com/'
-                Get-PlainTextFromSecureString $ret.ApiKey | Should -Be 'PARAM_KEY'
+                $ret.ApiBase | Should -Be 'https://custombase.localhost.local/'
+                Should -Invoke Get-OpenAIAPIEndpoint -Times 1 -Exactly
+            }
+
+            It 'Custom API base URL (Azure)' {
+                $ExplicitParams = @{
+                    ApiKey  = 'PARAM_KEY'
+                    ApiType = 'Azure'
+                    ApiBase = 'https://custombase.localhost.local/inference'
+                }
+                $ret = Get-OpenAIAPIParameter -EndpointName 'foo' -Parameters $ExplicitParams
+                $ret.ApiType | Should -Be 'Azure'
+                $ret.AuthType | Should -Be 'azure'
+                $ret.ApiBase | Should -Be 'https://custombase.localhost.local/inference'
+                Should -Invoke Get-AzureOpenAIAPIEndpoint -Times 1 -Exactly
+            }
+
+            It 'Custom API base URL (IP address with port number)' {
+                $ExplicitParams = @{
+                    ApiKey  = 'PARAM_KEY'
+                    ApiType = 'OpenAI'
+                    ApiBase = 'http://127.0.0.1:8080/v1'
+                }
+                $ret = Get-OpenAIAPIParameter -EndpointName 'foo' -Parameters $ExplicitParams
+                $ret.ApiType | Should -Be 'OpenAI'
+                $ret.AuthType | Should -Be 'openai'
+                $ret.ApiBase | Should -Be 'http://127.0.0.1:8080/v1'
                 Should -Invoke Get-OpenAIAPIEndpoint -Times 1 -Exactly
             }
         }
