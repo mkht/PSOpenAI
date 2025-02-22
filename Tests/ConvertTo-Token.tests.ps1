@@ -13,7 +13,7 @@ Describe 'ConvertTo-Token' {
             $script:Result = $null
         }
 
-        It 'Encoding: cl100k_base (<Id>)' -Foreach @(
+        It 'Encoding: cl100k_base (<Id>)' -ForEach @(
             @{ Id = 1; Text = ''; Token = @() }
             @{ Id = 2; Text = 'a'; Token = , 64 }
             @{ Id = 3; Text = 'Hello, World! How are you today? 🌍'; Token = (9906, 11, 4435, 0, 2650, 527, 499, 3432, 30, 11410, 234, 235) }
@@ -24,7 +24,7 @@ Describe 'ConvertTo-Token' {
             (ConvertTo-Token -Text $Text -Encoding 'cl100k_base') | Should -Be $Token
         }
 
-        It 'Encoding: o200k_base (<Id>)' -Foreach @(
+        It 'Encoding: o200k_base (<Id>)' -ForEach @(
             @{ Id = 1; Text = ''; Token = @() }
             @{ Id = 2; Text = 'a'; Token = , 64 }
             @{ Id = 3; Text = 'Hello, World! How are you today? 🌍'; Token = (13225, 11, 5922, 0, 3253, 553, 481, 4044, 30, 130321, 235) }
@@ -35,11 +35,12 @@ Describe 'ConvertTo-Token' {
             (ConvertTo-Token -Text $Text -Encoding 'o200k_base') | Should -Be $Token
         }
 
-        It 'From model name (<Model>)' -Foreach @(
+        It 'From model name (<Model>)' -ForEach @(
             @{Model = 'gpt-3.5-turbo-0613'; Expected = 5584 }
             @{Model = 'gpt-4-unknown'; Expected = 5584 }
             @{Model = 'gpt-4o'; Expected = 5609 }
             @{Model = 'gpt-4o-2999-12-31'; Expected = 5609 }
+            @{Model = 'o3-mini'; Expected = 5609 }
             @{Model = 'text-embedding-3-small'; Expected = 5584 }
         ) {
             $Text = Get-Content ($script:TestData + '/lib.rs.txt') -Raw
