@@ -30,6 +30,7 @@ Set-RealtimeSessionConfiguration
     [-TurnDetectionPrefixPadding <UInt16>]
     [-TurnDetectionSilenceDuration <UInt16>]
     [-CreateResponseOnTurnEnd <Boolean>]
+    [-InterruptResponse <Boolean>]
     [-Tools <IDictionary[]>]
     [-ToolChoice <String>]
     [-Temperature <Single>]
@@ -220,6 +221,15 @@ Default value: server_vad
 
 ### -CreateResponseOnTurnEnd
 Whether or not to automatically generate a response when VAD is enabled. true by default.
+```yaml
+Type: Boolean
+Required: False
+Position: Named
+Default value: True
+```
+
+### -InterruptResponse
+Whether or not to automatically interrupt any ongoing response with output to the default conversation when a VAD start event occurs. true by default.
 ```yaml
 Type: Boolean
 Required: False

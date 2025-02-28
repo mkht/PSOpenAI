@@ -2,6 +2,7 @@
 ### Unreleased
 - Add `gpt-4.5-preview` model.
 - Add model encoding mappings for `gpt-4.5-preview`, `o1` and `o3` models.
+- Add `-InterruptResponse` parameter to `Set-RealtimeSessionConfiguration`
 - Fix an issue where requests to `*.azure.com` could not be executed when the `ApiType` is `OpenAI`. [#38](https://github.com/mkht/PSOpenAI/issues/38)  
   This allows the use of GitHub Models and Azure ML.
 ```PowerShell

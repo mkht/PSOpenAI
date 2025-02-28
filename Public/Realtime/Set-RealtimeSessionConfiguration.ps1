@@ -75,6 +75,9 @@ function Set-RealtimeSessionConfiguration {
         [bool]$CreateResponseOnTurnEnd = $true,
 
         [Parameter()]
+        [bool]$InterruptResponse = $true,
+
+        [Parameter()]
         [ValidateNotNullOrEmpty()]
         [System.Collections.IDictionary[]]$Tools,
 
@@ -150,6 +153,9 @@ function Set-RealtimeSessionConfiguration {
                 }
                 if ($PSBoundParameters.ContainsKey('CreateResponseOnTurnEnd')) {
                     $MessageObject.session.turn_detection.create_response = $CreateResponseOnTurnEnd
+                }
+                if ($PSBoundParameters.ContainsKey('InterruptResponse')) {
+                    $MessageObject.session.turn_detection.interrupt_response = $InterruptResponse
                 }
             }
         }
