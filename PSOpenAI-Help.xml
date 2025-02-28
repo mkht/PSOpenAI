@@ -18844,6 +18844,18 @@ PS C:\&gt; Request-ChatCompletion -Message 'Hello Azure OpenAI'</dev:code>
           <dev:defaultValue>True</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>InterruptResponse</maml:name>
+          <maml:description>
+            <maml:para>Whether or not to automatically interrupt any ongoing response with output to the default conversation when a VAD start event occurs. true by default.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Boolean</command:parameterValue>
+          <dev:type>
+            <maml:name>Boolean</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>True</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>Voice</maml:name>
           <maml:description>
             <maml:para>The voice the model uses to respond. Cannot be changed once the model has responded with audio at least once.</maml:para>
@@ -19078,6 +19090,18 @@ PS C:\&gt; Request-ChatCompletion -Message 'Hello Azure OpenAI'</dev:code>
         <maml:name>CreateResponseOnTurnEnd</maml:name>
         <maml:description>
           <maml:para>Whether or not to automatically generate a response when VAD is enabled. true by default.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Boolean</command:parameterValue>
+        <dev:type>
+          <maml:name>Boolean</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>True</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>InterruptResponse</maml:name>
+        <maml:description>
+          <maml:para>Whether or not to automatically interrupt any ongoing response with output to the default conversation when a VAD start event occurs. true by default.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Boolean</command:parameterValue>
         <dev:type>

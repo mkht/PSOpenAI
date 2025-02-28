@@ -1,4 +1,17 @@
 # 変更履歴
+### 4.18.0
+- `gpt-4.5-preview` を追加しました
+- `ConvertTo-Token`、`ConvertFrom-Token`が`gpt-4.5-preview`、`o1`、 `o3` モデルに対応しました
+- `Set-RealtimeSessionConfiguration` に `-InterruptResponse` パラメータを追加しました
+- `ApiType` が `OpenAI` の場合、`*.azure.com` へのリクエストが実行できない問題を修正しました [#38](https://github.com/mkht/PSOpenAI/issues/38)  
+  これにより GitHub Models や Azure ML の使用が可能になります
+```PowerShell
+# Example for GitHub Models
+$env:OPENAI_API_KEY  = '<Your-GitHub-Token>'
+$env:OPENAI_API_BASE = 'https://models.inference.ai.azure.com/'
+Request-ChatCompletion -Message 'Hello.' -Model 'DeepSeek-R1' -ApiType OpenAI
+```
+
 ### 4.17.0
 - Stored Chat Completions 操作用の新しい関数を追加しました  
   + [Get-ChatCompletion](/Docs/Get-ChatCompletion.md)
