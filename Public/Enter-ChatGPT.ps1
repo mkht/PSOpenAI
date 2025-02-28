@@ -16,6 +16,7 @@ function Enter-ChatGPT {
             'gpt-4-32k-0613',
             'gpt-4-turbo',
             'gpt-4-turbo-2024-04-09',
+            'gpt-4.5-preview',
             'o1-mini',
             'o1-preview',
             'o3-mini'
