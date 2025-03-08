@@ -17,7 +17,7 @@ function Get-AzureOpenAIAPIEndpoint {
     )
 
     $ApiVersion = $ApiVersion.Trim()
-    $DefaultApiVersion = '2025-01-01-preview'
+    $DefaultApiVersion = '2025-02-01-preview'
     $UriBuilder = [System.UriBuilder]::new($ApiBase)
     if (-not $UriBuilder.Path.EndsWith('/', [StringComparison]::Ordinal)) {
         $UriBuilder.Path += '/'

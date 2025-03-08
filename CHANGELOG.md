@@ -1,4 +1,7 @@
 # Changelog
+### Unreleased
+- Update default Azure OpenAI API version to `2025-02-01-preview`.
+
 ### 4.18.0
 - Add `gpt-4.5-preview` model.
 - Add model encoding mappings for `gpt-4.5-preview`, `o1` and `o3` models.
