@@ -2,6 +2,11 @@ function Get-OpenAIContext {
     [CmdletBinding()]
     [OutputType([pscustomobject])]
     param()
+
+    if ($null -eq $Global:PSOpenAIContextDictionary) {
+        Clear-OpenAIContext # This initializes the dictionary
+    }
+
     [PSCustomObject]@{
         ApiKey        = $Global:PSOpenAIContextDictionary['ApiKey']
         ApiType       = $Global:PSOpenAIContextDictionary['ApiType']
