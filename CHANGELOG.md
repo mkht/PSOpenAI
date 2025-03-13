@@ -1,6 +1,16 @@
 # Changelog
-### Unreleased
+### 4.19.0
+- Add new models for `Request-ChatCompletion`.
+  + `gpt-4o-search-preview`
+  + `gpt-4o-mini-search-preview`
+- Add new parameters for Web search to `Request-ChatCompletion`
 - Update default Azure OpenAI API version to `2025-02-01-preview`.
+
+```PowerShell
+# Example for Web search
+Request-ChatCompletion -Model gpt-4o-search-preview -WebSearchContextSize high `
+  -Message ' What was a happy news in the world today?'
+```
 
 ### 4.18.0
 - Add `gpt-4.5-preview` model.

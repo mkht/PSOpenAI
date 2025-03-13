@@ -13057,6 +13057,66 @@ Specifying a particular function via `@{type = "function"; function = @{name = "
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>WebSearchContextSize</maml:name>
+          <maml:description>
+            <maml:para>High level guidance for the amount of context window space to use for the web search. One of `low`, `medium`, or `high`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>WebSearchUserLocationCity</maml:name>
+          <maml:description>
+            <maml:para>Approximate location parameters for the web search.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>WebSearchUserLocationCountry</maml:name>
+          <maml:description>
+            <maml:para>Approximate location parameters for the web search.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>WebSearchUserLocationRegion</maml:name>
+          <maml:description>
+            <maml:para>Approximate location parameters for the web search.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>WebSearchUserLocationTimeZone</maml:name>
+          <maml:description>
+            <maml:para>Approximate location parameters for the web search.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>Prediction</maml:name>
           <maml:description>
             <maml:para>Static predicted output content, such as the content of a text file that is being regenerated.</maml:para>
@@ -13132,7 +13192,7 @@ The default value is `1`.</maml:para>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="reasoning_effort">
           <maml:name>ReasoningEffort</maml:name>
           <maml:description>
-            <maml:para>o1 models only 
+            <maml:para>o-series models only 
 Constrains effort on reasoning for reasoning models. Currently supported values are low, medium, and high.
 Reducing reasoning effort can result in faster responses and fewer tokens used on reasoning in a response.</maml:para>
           </maml:description>
@@ -13659,6 +13719,66 @@ Specifying a particular function via `@{type = "function"; function = @{name = "
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>WebSearchContextSize</maml:name>
+        <maml:description>
+          <maml:para>High level guidance for the amount of context window space to use for the web search. One of `low`, `medium`, or `high`</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>WebSearchUserLocationCity</maml:name>
+        <maml:description>
+          <maml:para>Approximate location parameters for the web search.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>WebSearchUserLocationCountry</maml:name>
+        <maml:description>
+          <maml:para>Approximate location parameters for the web search.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>WebSearchUserLocationRegion</maml:name>
+        <maml:description>
+          <maml:para>Approximate location parameters for the web search.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>WebSearchUserLocationTimeZone</maml:name>
+        <maml:description>
+          <maml:para>Approximate location parameters for the web search.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>Prediction</maml:name>
         <maml:description>
           <maml:para>Static predicted output content, such as the content of a text file that is being regenerated.</maml:para>
@@ -13736,7 +13856,7 @@ The default value is `1`.</maml:para>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="reasoning_effort">
         <maml:name>ReasoningEffort</maml:name>
         <maml:description>
-          <maml:para>o1 models only 
+          <maml:para>o-series models only 
 Constrains effort on reasoning for reasoning models. Currently supported values are low, medium, and high.
 Reducing reasoning effort can result in faster responses and fewer tokens used on reasoning in a response.</maml:para>
         </maml:description>

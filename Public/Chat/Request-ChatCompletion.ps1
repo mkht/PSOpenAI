@@ -26,6 +26,8 @@ function Request-ChatCompletion {
             'chatgpt-4o-latest',
             'gpt-4o-audio-preview',
             'gpt-4o-mini-audio-preview',
+            'gpt-4o-search-preview',
+            'gpt-4o-mini-search-preview',
             'gpt-3.5-turbo-16k',
             'gpt-3.5-turbo-1106',
             'gpt-3.5-turbo-0125',
@@ -104,6 +106,27 @@ function Request-ChatCompletion {
         [ValidateSet('None', 'Auto', 'Confirm')]
         [string]$InvokeTools = 'None',
         #endregion Function call params
+
+        #region Web Search
+        [Parameter()]
+        [ValidateSet('low', 'medium', 'high')]
+        [string][LowerCaseTransformation()]$WebSearchContextSize,
+
+        [Parameter(DontShow)]
+        [string]$WebSearchUserLocationType = 'approximate', # Currently, only 'approximate' is acceptable.
+
+        [Parameter()]
+        [string]$WebSearchUserLocationCity,
+
+        [Parameter()]
+        [string]$WebSearchUserLocationCountry,
+
+        [Parameter()]
+        [string]$WebSearchUserLocationRegion,
+
+        [Parameter()]
+        [string]$WebSearchUserLocationTimeZone,
+        #endregion Web Search
 
         [Parameter()]
         [ValidateNotNullOrEmpty()]
@@ -402,8 +425,40 @@ function Request-ChatCompletion {
         }
         if ($Stream) {
             $PostBody.stream = [bool]$Stream
-            # When using the Stream option, limit NumberOfAnswers to 1 to optimize output. (this limit may be relaxed in the future)
-            $PostBody.n = 1
+            $PostBody.Remove('n')
+        }
+
+        # Web Search
+        $webSearchOptions = @{}
+
+        if ($PSBoundParameters.ContainsKey('WebSearchContextSize')) {
+            $webSearchOptions.search_context_size = $WebSearchContextSize
+        }
+
+        $approximateLocation = @{}
+
+        if ($PSBoundParameters.ContainsKey('WebSearchUserLocationCity')) {
+            $approximateLocation.city = $WebSearchUserLocationCity
+        }
+        if ($PSBoundParameters.ContainsKey('WebSearchUserLocationCountry')) {
+            $approximateLocation.country = $WebSearchUserLocationCountry
+        }
+        if ($PSBoundParameters.ContainsKey('WebSearchUserLocationRegion')) {
+            $approximateLocation.region = $WebSearchUserLocationRegion
+        }
+        if ($PSBoundParameters.ContainsKey('WebSearchUserLocationTimeZone')) {
+            $approximateLocation.timezone = $WebSearchUserLocationTimeZone
+        }
+
+        if ($approximateLocation.Keys.Count -gt 0) {
+            $webSearchOptions.user_location = @{
+                type        = $WebSearchUserLocationType
+                approximate = $approximateLocation
+            }
+        }
+
+        if ($webSearchOptions.Keys.Count -gt 0) {
+            $PostBody.web_search_options = $webSearchOptions
         }
         #endregion
 

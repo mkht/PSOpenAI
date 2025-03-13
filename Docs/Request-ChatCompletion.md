@@ -32,6 +32,11 @@ Request-ChatCompletion
     [-ToolChoice <Object>]
     [-ParallelToolCalls]
     [-InvokeTools <String>]
+    [-WebSearchContextSize <String>]
+    [-WebSearchUserLocationCity <String>]
+    [-WebSearchUserLocationCountry <String>]
+    [-WebSearchUserLocationRegion <String>]
+    [-WebSearchUserLocationTimeZone <String>]
     [-Prediction <String>]
     [-Temperature <Double>]
     [-TopP <Double>]
@@ -302,6 +307,51 @@ Required: False
 Position: Named
 ```
 
+### -WebSearchContextSize
+High level guidance for the amount of context window space to use for the web search. One of `low`, `medium`, or `high`
+
+```yaml
+Type: String
+Required: False
+Position: Named
+```
+
+### -WebSearchUserLocationCity
+Approximate location parameters for the web search.
+
+```yaml
+Type: String
+Required: False
+Position: Named
+```
+
+### -WebSearchUserLocationCountry
+Approximate location parameters for the web search.
+
+```yaml
+Type: String
+Required: False
+Position: Named
+```
+
+### -WebSearchUserLocationRegion
+Approximate location parameters for the web search.
+
+```yaml
+Type: String
+Required: False
+Position: Named
+```
+
+### -WebSearchUserLocationTimeZone
+Approximate location parameters for the web search.
+
+```yaml
+Type: String
+Required: False
+Position: Named
+```
+
 ### -Prediction
 Static predicted output content, such as the content of a text file that is being regenerated.
 
@@ -365,7 +415,7 @@ Default value: False
 ```
 
 ### -ReasoningEffort
-**o1 models only**  
+**o-series models only**  
 Constrains effort on reasoning for reasoning models. Currently supported values are low, medium, and high.  
 Reducing reasoning effort can result in faster responses and fewer tokens used on reasoning in a response.
 

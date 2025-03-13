@@ -1,4 +1,15 @@
 # 変更履歴
+### 4.19.0
+- `Request-ChatCompletion`のモデル名タブ補完に`gpt-4o-search-preview` と `gpt-4o-mini-search-preview` を追加しました
+- Web検索用の新しいパラメータを `Request-ChatCompletion` に追加しました
+- デフォルトの Azure OpenAI API バージョンを `2025-02-01-preview` に更新しました
+
+```PowerShell
+# Example for Web search
+Request-ChatCompletion -Model gpt-4o-search-preview -WebSearchContextSize high `
+  -Message ' What was a happy news in the world today?'
+```
+
 ### 4.18.0
 - `gpt-4.5-preview` を追加しました
 - `ConvertTo-Token`、`ConvertFrom-Token`が`gpt-4.5-preview`、`o1`、 `o3` モデルに対応しました
