@@ -47,6 +47,9 @@ function Invoke-OpenAIAPIRequest {
         [IDictionary]$AdditionalHeaders,
 
         [Parameter()]
+        [IDictionary]$WebOptions,
+
+        [Parameter()]
         [int]$TimeoutSec = 0,
 
         [Parameter()]
@@ -131,6 +134,11 @@ function Invoke-OpenAIAPIRequest {
                 $Body = Merge-Dictionary $Body $AdditionalBody
             }
         }
+    }
+
+    # Additional Options
+    if ($PSBoundParameters.ContainsKey('WebOptions') -and $null -ne $WebOptions) {
+        $WebOptions = Assert-WebRequestOption -WebOptions $WebOptions -Stream:$Stream
     }
 
     #region Server-Sent-Events
@@ -265,7 +273,7 @@ function Invoke-OpenAIAPIRequest {
 
     #region Send API Request
     try {
-        $Response = Microsoft.PowerShell.Utility\Invoke-WebRequest @IwrParam
+        $Response = Microsoft.PowerShell.Utility\Invoke-WebRequest @IwrParam @WebOptions
     }
     catch [HttpRequestException], [WebException] {
         # Trash last error from cmdlet

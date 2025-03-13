@@ -234,7 +234,10 @@ function Request-ChatCompletion {
         [System.Collections.IDictionary]$AdditionalHeaders,
 
         [Parameter()]
-        [object]$AdditionalBody
+        [object]$AdditionalBody,
+
+        [Parameter()]
+        [System.Collections.IDictionary]$WebOptions
     )
 
     begin {
@@ -582,6 +585,7 @@ function Request-ChatCompletion {
                 AdditionalQuery   = $AdditionalQuery
                 AdditionalHeaders = $AdditionalHeaders
                 AdditionalBody    = $AdditionalBody
+                WebOptions        = $WebOptions
             }
             Invoke-OpenAIAPIRequest @splat |
                 Where-Object {
@@ -633,6 +637,7 @@ function Request-ChatCompletion {
                 AdditionalQuery   = $AdditionalQuery
                 AdditionalHeaders = $AdditionalHeaders
                 AdditionalBody    = $AdditionalBody
+                WebOptions        = $WebOptions
             }
             $Response = Invoke-OpenAIAPIRequest @splat
 
