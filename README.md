@@ -188,7 +188,7 @@ Generates audio from the input text.
 
 ```PowerShell
 $global:OPENAI_API_KEY = '<Put your API key here.>'
-Request-AudioSpeech -text 'Do something fun to play.' -OutFile 'C:\Output\text2speech.mp3' -Voice Onyx
+Request-AudioSpeech -Text 'Do something fun to play.' -OutFile 'C:\Output\text2speech.mp3' -Voice Onyx
 ```
 
 You can combine with ChatGPT.

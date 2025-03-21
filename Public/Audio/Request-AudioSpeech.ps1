@@ -13,7 +13,7 @@ function Request-AudioSpeech {
         [Object]$InputObject,
 
         [Parameter()]
-        [Completions('tts-1', 'tts-1-hd')]
+        [Completions('tts-1', 'tts-1-hd', 'gpt-4o-mini-tts')]
         [string]$Model = 'tts-1',
 
         [Parameter()]
@@ -29,6 +29,9 @@ function Request-AudioSpeech {
             'shimmer'
         )]
         [string][LowerCaseTransformation()]$Voice = 'alloy',
+
+        [Parameter()]
+        [string]$Instructions,
 
         [Parameter()]
         [Alias('response_format')]
@@ -127,6 +130,9 @@ function Request-AudioSpeech {
         }
         if ($PSBoundParameters.ContainsKey('Speed')) {
             $PostBody.speed = $Speed
+        }
+        if ($PSBoundParameters.ContainsKey('Instructions')) {
+            $PostBody.instructions = $Instructions
         }
 
         #region Send API Request

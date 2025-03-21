@@ -26,6 +26,25 @@ Describe 'Request-AudioTranscription' {
             $Text | Should -Be 'MOCKED'
         }
 
+        It 'Audio transcription (Stream text)' {
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest {
+                '{"type":"transcript.text.delta","delta":"ECHO","logprobs":[{"token":"ECHO","logprob":-0.0024760163,"bytes":[228,189,149]}]}'
+            }
+            $Result = Request-AudioTranscription -File ($script:TestData + '/voice_japanese.mp3') -Stream -ea Stop
+            Should -InvokeVerifiable
+            $Result | Should -Be 'ECHO'
+        }
+
+        It 'Audio transcription (Stream object)' {
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest {
+                '{"type":"transcript.text.delta","delta":"ECHO","logprobs":[{"token":"ECHO","logprob":-0.0024760163,"bytes":[228,189,149]}]}'
+            }
+            $Result = Request-AudioTranscription -File ($script:TestData + '/voice_japanese.mp3') -Stream -StreamOutputType object -ea Stop
+            Should -InvokeVerifiable
+            $Result.type | Should -Be 'transcript.text.delta'
+            $Result.delta | Should -Be 'ECHO'
+        }
+
         It 'Use collect endpoint' {
             $Result = Request-AudioTranscription -File ($script:TestData + '/voice_japanese.mp3')
             $Result.Uri | Should -Match 'transcriptions'
@@ -80,6 +99,7 @@ Describe 'Request-AudioTranscription' {
         It 'Audio transcription (format: verbose_json)' {
             { $params = @{
                     File        = ($script:TestData + '/voice_japanese.mp3')
+                    Model       = 'whisper-1'
                     Format      = 'verbose_json'
                     TimeoutSec  = 30
                     ErrorAction = 'Stop'
@@ -90,6 +110,18 @@ Describe 'Request-AudioTranscription' {
             $ret = ($Text | ConvertFrom-Json)
             $ret.text.Length | Should -BeGreaterThan 1
             $ret.task | Should -Be 'transcribe'
+        }
+
+        It 'Audio transcription (Stream)' {
+            $params = @{
+                File        = ($script:TestData + '/voice_japanese.mp3')
+                Model       = 'gpt-4o-mini-transcribe'
+                Stream      = $true
+                TimeoutSec  = 30
+                ErrorAction = 'Stop'
+            }
+            $Result = Request-AudioTranscription @params | Select-Object -First 3
+            $Result | Should -HaveCount 3
         }
 
         It 'Non-ASCII filename' {

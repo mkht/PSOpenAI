@@ -18,6 +18,7 @@ Request-AudioSpeech
     [-Text] <String>
     [-Model <String>]
     [-Voice <String>]
+    [-Instructions <String>]
     [-Format <String>]
     -OutFile <String>
     [-Speed <Double>]
@@ -66,7 +67,7 @@ Accept pipeline input: True (ByValue)
 ```
 
 ### -Model
-One of the available TTS models: `tts-1` or `tts-1-hd`  
+One of the available TTS models: `tts-1`, `tts-1-hd` or `gpt-4o-mini-tts`.  
 The default value is `tts-1`.
 
 ```yaml
@@ -85,6 +86,15 @@ Type: String
 Required: False
 Position: Named
 Default value: alloy
+```
+
+### -Instructions
+Control the voice of your generated audio with additional instructions. Does not work with `tts-1` or `tts-1-hd`.
+
+```yaml
+Type: String
+Required: True
+Position: Named
 ```
 
 ### -Format

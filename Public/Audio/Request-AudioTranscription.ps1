@@ -1,5 +1,5 @@
 function Request-AudioTranscription {
-    [CmdletBinding(DefaultParameterSetName = 'Language')]
+    [CmdletBinding(DefaultParameterSetName = 'Default')]
     [OutputType([string])]
     param (
         [Parameter(Mandatory, Position = 0, ValueFromPipeline)]
@@ -7,7 +7,7 @@ function Request-AudioTranscription {
         [string]$File,
 
         [Parameter()]
-        [Completions('whisper-1')]
+        [Completions('whisper-1', 'gpt-4o-transcribe', 'gpt-4o-mini-transcribe')]
         [string]$Model = 'whisper-1',
 
         [Parameter()]
@@ -23,15 +23,28 @@ function Request-AudioTranscription {
         [double]$Temperature,
 
         [Parameter()]
+        [Completions('logprobs')]
+        [string[]]$Include,
+
+        [Parameter()]
         [ValidateSet('word', 'segment')]
         [Alias('timestamp_granularities')]
         [string[]]$TimestampGranularities,
 
-        [Parameter(ParameterSetName = 'Language')]
+        [Parameter()]
         [string]$Language,
 
         [Parameter(DontShow, ParameterSetName = 'LiteralLanguage')]
         [string]$LiteralLanguage,
+
+        #region Stream
+        [Parameter(ParameterSetName = 'Stream')]
+        [switch]$Stream = $false,
+
+        [Parameter(ParameterSetName = 'Stream')]
+        [ValidateSet('text', 'object')]
+        [string]$StreamOutputType = 'text',
+        #endregion Stream
 
         [Parameter()]
         [int]$TimeoutSec = 0,
@@ -75,7 +88,7 @@ function Request-AudioTranscription {
         $OpenAIParameter = Get-OpenAIAPIParameter -EndpointName 'Audio.Transcription' -Parameters $PSBoundParameters -Engine $Model -ErrorAction Stop
 
         # Convert language name to ISO-639-1 format (if we can)
-        if ($PSCmdlet.ParameterSetName -eq 'Language' -and $PSBoundParameters.ContainsKey('Language')) {
+        if ($PSBoundParameters.ContainsKey('Language')) {
             $ci = Get-CultureInfo -LanguageName $Language -ErrorAction Ignore
             if ($ci -is [cultureinfo]) {
                 $Language = $ci.TwoLetterISOLanguageName
@@ -107,11 +120,16 @@ function Request-AudioTranscription {
         if ($PSBoundParameters.ContainsKey('TimestampGranularities')) {
             $PostBody.timestamp_granularities = $TimestampGranularities
         }
+        if ($PSBoundParameters.ContainsKey('Include')) {
+            $PostBody.'include[]' = $Include
+        }
         if ($Language) {
             $PostBody.language = $Language
         }
+        if ($Stream) {
+            $PostBody.stream = $Stream.ToBool()
+        }
 
-        #region Send API Request
         $splat = @{
             Method            = $OpenAIParameter.Method
             Uri               = $OpenAIParameter.Uri
@@ -126,6 +144,38 @@ function Request-AudioTranscription {
             AdditionalHeaders = $AdditionalHeaders
             AdditionalBody    = $AdditionalBody
         }
+
+        #region Send API Request (Stream)
+        if ($Stream) {
+            # Stream output
+            $splat.Stream = $true
+            Invoke-OpenAIAPIRequest @splat |
+                Where-Object {
+                    -not [string]::IsNullOrEmpty($_)
+                } | ForEach-Object {
+                    try {
+                        $_ | ConvertFrom-Json -ErrorAction Stop
+                    }
+                    catch {
+                        Write-Error -Exception $_.Exception
+                    }
+                } | ForEach-Object -Process {
+                    if ($StreamOutputType -eq 'text') {
+                        if ($_.type -cne 'transcript.text.delta') {
+                            continue
+                        }
+                        Write-Output $_.delta
+                    }
+                    else {
+                        Write-Output $_
+                    }
+                }
+
+            return
+        }
+        #endregion
+
+        #region Send API Request
         $Response = Invoke-OpenAIAPIRequest @splat
 
         # error check

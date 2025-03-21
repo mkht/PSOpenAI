@@ -20,8 +20,11 @@ Request-AudioTranscription
     [-Prompt <String>]
     [-Format <String>]
     [-Temperature <Double>]
+    [-Include <String[]>]
     [-TimestampGranularities <String[]>]
     [-Language <String>]
+    [-Stream]
+    [-StreamOutputType <String>]
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
     [-ApiBase <Uri>]
@@ -101,6 +104,16 @@ Required: False
 Position: Named
 ```
 
+### -Include
+Additional information to include in the transcription response.  
+`logprobs` only works with `-Format` set to `json` and only with the models `gpt-4o-transcribe` and `gpt-4o-mini-transcribe`
+
+```yaml
+Type: String[]
+Required: False
+Position: Named
+```
+
 ### -TimestampGranularities
 The timestamp granularities to populate for this transcription. Any of these options: `word`, or `segment`. The default is `segment`.
 
@@ -119,6 +132,27 @@ Supplying the input language in `ISO-639-1` format will improve accuracy and lat
 Type: String
 Required: False
 Position: Named
+```
+
+### -Stream
+If set to true, the model response data will be streamed.
+
+```yaml
+Type: SwitchParameter
+Required: False
+Position: Named
+Default value: False
+```
+
+### -StreamOutputType
+The format of the stream output, `text` or `object`.  
+The default value is `text`. This parameter is only used when `-Stream` is enabled.
+
+```yaml
+Type: String
+Required: False
+Position: Named
+Default value: text
 ```
 
 ### -TimeoutSec

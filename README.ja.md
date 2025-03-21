@@ -176,7 +176,21 @@ Write-Output $Result.Answer
 > ```PowerShell
 > Request-ChatCompletion -Message "Who are you?" -Model "gpt-4o"
 > ```
-> 
+
+### テキスト読み上げ
+
+入力テキストから音声読み上げを生成します。
+
+```PowerShell
+$global:OPENAI_API_KEY = '<APIキーをここに貼り付ける>'
+Request-AudioSpeech -Text 'Do something fun to play.' -OutFile 'C:\Output\text2speech.mp3' -Voice Onyx
+```
+
+ChatGPTと組み合わせることもできます。
+
+```PowerShell
+Request-ChatCompletion -Message "Who are you?" | Request-AudioSpeech -OutFile 'C:\Output\ChatAnswer.mp3' -Voice Nova
+```
 
 ### 音声文字起こし
 

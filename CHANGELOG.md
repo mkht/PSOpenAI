@@ -1,4 +1,17 @@
 # Changelog
+### Unreleased
+- Add new model and parameter for `Request-AudioSpeech`.  
+    + Models: `gpt-4o-mini-tts`
+    + Parameters: `-Instructions`
+- Add new models and parameters for `Request-AudioTranscription`.  
+    + Models: `gpt-4o-transcribe`, `gpt-4o-mini-transcribe`
+    + Parameters: `-Include`, `-Stream`, `-StreamOutputType`
+
+```PowerShell
+# Example for transcription with streaming output
+Request-AudioTranscription -Model 'gpt-4o-transcribe' -File 'C:\audio.wav' -Stream | Write-Host -NoNewline
+```
+
 ### 4.19.0
 - Add new models for `Request-ChatCompletion`.
   + `gpt-4o-search-preview`

@@ -77,8 +77,16 @@ function Invoke-OpenAIAPIRequestSSE {
     if ($null -ne [System.Net.HttpVersion]::Version20) {
         $RequestMessage.Version = [System.Net.HttpVersion]::Version20
     }
+
+    # Set Content
     if ($null -ne $Body) {
-        $RequestMessage.Content = [System.Net.Http.StringContent]::new(($Body | ConvertTo-Json -Compress -Depth 100), [Encoding]::UTF8, $ContentType)
+        if ($ContentType -eq 'application/json') {
+            $RequestMessage.Content = [System.Net.Http.StringContent]::new(($Body | ConvertTo-Json -Compress -Depth 100), [Encoding]::UTF8, $ContentType)
+        }
+        elseif ($Body -is [byte[]]) {
+            $RequestMessage.Content = [System.Net.Http.ByteArrayContent]::new($Body)
+            $null = $RequestMessage.Content.Headers.TryAddWithoutValidation('Content-Type', $ContentType)
+        }
     }
 
     # Set User-Agent
