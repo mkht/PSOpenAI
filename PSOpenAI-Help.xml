@@ -11779,7 +11779,7 @@ The text to generate audio for. The maximum length is 4096 characters.</maml:par
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>Model</maml:name>
           <maml:description>
-            <maml:para>One of the available TTS models: `tts-1` or `tts-1-hd`
+            <maml:para>One of the available TTS models: `tts-1`, `tts-1-hd` or `gpt-4o-mini-tts`.
 The default value is `tts-1`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -11801,6 +11801,18 @@ The default value is `alloy`.</maml:para>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>alloy</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Instructions</maml:name>
+          <maml:description>
+            <maml:para>Control the voice of your generated audio with additional instructions. Does not work with `tts-1` or `tts-1-hd`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="response_format">
           <maml:name>Format</maml:name>
@@ -11926,7 +11938,7 @@ The text to generate audio for. The maximum length is 4096 characters.</maml:par
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>Model</maml:name>
         <maml:description>
-          <maml:para>One of the available TTS models: `tts-1` or `tts-1-hd`
+          <maml:para>One of the available TTS models: `tts-1`, `tts-1-hd` or `gpt-4o-mini-tts`.
 The default value is `tts-1`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -11948,6 +11960,18 @@ The default value is `alloy`.</maml:para>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>alloy</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Instructions</maml:name>
+        <maml:description>
+          <maml:para>Control the voice of your generated audio with additional instructions. Does not work with `tts-1` or `tts-1-hd`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="response_format">
         <maml:name>Format</maml:name>
@@ -12187,6 +12211,19 @@ Higher values like `0.8` will make the output more random, while lower values li
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Include</maml:name>
+          <maml:description>
+            <maml:para>Additional information to include in the transcription response.
+`logprobs` only works with `-Format` set to `json` and only with the models `gpt-4o-transcribe` and `gpt-4o-mini-transcribe`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="timestamp_granularities">
           <maml:name>TimestampGranularities</maml:name>
           <maml:description>
@@ -12211,6 +12248,30 @@ Supplying the input language in `ISO-639-1` format will improve accuracy and lat
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Stream</maml:name>
+          <maml:description>
+            <maml:para>If set to true, the model response data will be streamed.</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>StreamOutputType</maml:name>
+          <maml:description>
+            <maml:para>The format of the stream output, `text` or `object`.
+The default value is `text`. This parameter is only used when `-Stream` is enabled.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>text</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>TimeoutSec</maml:name>
@@ -12348,6 +12409,19 @@ Higher values like `0.8` will make the output more random, while lower values li
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Include</maml:name>
+        <maml:description>
+          <maml:para>Additional information to include in the transcription response.
+`logprobs` only works with `-Format` set to `json` and only with the models `gpt-4o-transcribe` and `gpt-4o-mini-transcribe`</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+        <dev:type>
+          <maml:name>String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="timestamp_granularities">
         <maml:name>TimestampGranularities</maml:name>
         <maml:description>
@@ -12372,6 +12446,31 @@ Supplying the input language in `ISO-639-1` format will improve accuracy and lat
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Stream</maml:name>
+        <maml:description>
+          <maml:para>If set to true, the model response data will be streamed.</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>StreamOutputType</maml:name>
+        <maml:description>
+          <maml:para>The format of the stream output, `text` or `object`.
+The default value is `text`. This parameter is only used when `-Stream` is enabled.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>text</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>TimeoutSec</maml:name>

@@ -1,5 +1,5 @@
 # Changelog
-### Unreleased
+### 4.20.0
 - Add new model and parameter for `Request-AudioSpeech`.  
     + Models: `gpt-4o-mini-tts`
     + Parameters: `-Instructions`
