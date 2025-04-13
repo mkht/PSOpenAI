@@ -51,6 +51,11 @@ Install-Module -Name PSOpenAI
 + [Remove-ChatCompletion](/Docs/Remove-ChatCompletion.md)
 + [New-ChatCompletionFunction](/Docs/New-ChatCompletionFunction.md)
 
+#### Responses
+[ガイド: ChatCompletionからResponseへの移行](/Guides/Migrate_ChatCompletion_to_Response.md)  
+
++ [Request-Response](/Docs/Request-Response.md)
+
 #### Assistants
 [ガイド: Assistants の使用方法](/Guides/How_to_use_Assistants.md)  
 [ガイド: Assistants と Vector Store を使用したファイル検索](/Guides/How_to_use_FileSearch_with_VectorStore.md)

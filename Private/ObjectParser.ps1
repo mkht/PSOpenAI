@@ -278,6 +278,112 @@ function ParseChatCompletionObject {
     Write-Output $InputObject
 }
 
+function ParseResponseObject {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory, Position = 0, ValueFromPipeline)]
+        [PSCustomObject]$InputObject,
+
+        [Parameter()]
+        [System.Collections.Generic.List[object]]$Messages,
+
+        [Parameter()]
+        [object]$OutputType, # for Structured Outputs
+
+        [Parameter()]
+        [System.Collections.IDictionary]$CommonParams = @{}
+    )
+
+    # Add custom type name and properties to output object.
+    $InputObject.PSObject.TypeNames.Insert(0, 'PSOpenAI.Response')
+
+    # Date and times
+    @('created_at') | ForEach-Object {
+        if ($null -ne $InputObject.$_ -and ($unixtime = $InputObject.$_ -as [long])) {
+            # convert unixtime to [DateTime] for read suitable
+            $InputObject | Add-Member -MemberType NoteProperty -Name $_ -Value ([System.DateTimeOffset]::FromUnixTimeSeconds($unixtime).LocalDateTime) -Force
+        }
+    }
+
+    # Warning messages
+    foreach ($output in $InputObject.output) {
+        ## The model refuses to respond
+        if ($output.content.type -eq 'refusal') {
+            Write-Warning ('The model refuses to respond. Refusal message: "{0}"' -f $output.content.refusal)
+        }
+    }
+
+    if ($InputObject.status -eq 'incomplete') {
+        Write-Warning ('The status of response is "{0}". Details: "{1}"' -f $InputObject.status, $InputObject.incomplete_details.reason)
+    }
+    elseif ($InputObject.status -eq 'failed') {
+        Write-Warning ('The status of response is "{0}". Error: "{1}" ({2})' -f $InputObject.status, $InputObject.error.message, $InputObject.error.code)
+    }
+
+    # Last User message
+    $LastUserMessage = ($Messages.Where({ $_.role -eq 'user' })[-1].content)
+    if ($LastUserMessage -isnot [string]) {
+        $LastUserMessage = [string]($LastUserMessage | Where-Object { $_.type -eq 'input_text' } | Select-Object -Last 1).text
+    }
+    if ($LastUserMessage) {
+        $InputObject | Add-Member -MemberType NoteProperty -Name 'LastUserMessage' -Value $LastUserMessage
+    }
+    else {
+        $InputObject | Add-Member -MemberType NoteProperty -Name 'LastUserMessage' -Value $null
+    }
+
+    # Output Text
+    ## Note: This logic is same as the one in the openai-python SDK.
+    $InputObject | Add-Member -MemberType ScriptProperty -Name 'output_text' -Value `
+    {
+        $Texts = [System.Collections.Generic.List[string]]::new()
+        foreach ($output in $this.output) {
+            if ($output.type -eq 'message') {
+                foreach ($content in $output.content) {
+                    if ($content.type -eq 'output_text') {
+                        $Texts.Add($content.text)
+                    }
+                }
+            }
+        }
+        return (-join $Texts)
+    }
+
+    ## Structured Outputs
+    $StructuredOutputs = @()
+    if ($OutputType -is [type]) {
+        foreach ($output in $InputObject.output) {
+            if ($output.content.type -eq 'output_text') {
+                ## Deserialize JSON output to .NET object
+                try {
+                    $DeserializedObject = [Newtonsoft.Json.JsonConvert]::DeserializeObject($output.content.text, $OutputType)
+                    if ($null -ne $DeserializedObject) {
+                        $output.content | Add-Member -MemberType NoteProperty -Name 'parsed' -Value $DeserializedObject -Force
+                        $StructuredOutputs += $DeserializedObject
+                    }
+                }
+                catch {
+                    Write-Error -Exception $_.Exception
+                }
+            }
+        }
+    }
+    $InputObject | Add-Member -MemberType NoteProperty -Name 'StructuredOutputs' -Value $StructuredOutputs
+
+    # Add History
+    if ($Messages.Count -gt 0) {
+        $Messages | ForEach-Object { $_.PSObject.TypeNames.Insert(0, 'PSOpenAI.Response.Message') }
+        $InputObject | Add-Member -MemberType NoteProperty -Name 'History' -Value $Messages.ToArray()
+    }
+    else {
+        $InputObject | Add-Member -MemberType NoteProperty -Name 'History' -Value @()
+    }
+
+    # Return
+    Write-Output $InputObject
+}
+
+
 function ParseVectorStoreObject {
     [CmdletBinding()]
     param (

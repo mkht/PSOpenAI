@@ -1,4 +1,8 @@
 # Changelog
+### 4.21.0
+- Add new function `Request-Response` for OpenAI's new API interface for generating model responses.  
+  [Guide: Migrate ChatCompletion to Response](/Guides/Migrate_ChatCompletion_to_Response.md)  
+
 ### 4.20.0
 - Add new model and parameter for `Request-AudioSpeech`.  
     + Models: `gpt-4o-mini-tts`

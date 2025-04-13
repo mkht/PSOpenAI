@@ -55,6 +55,11 @@ Install-Module -Name PSOpenAI
 + [Remove-ChatCompletion](/Docs/Remove-ChatCompletion.md)
 + [New-ChatCompletionFunction](/Docs/New-ChatCompletionFunction.md)
 
+#### Responses
+[Guide: Migrate ChatCompletion to Response](/Guides/Migrate_ChatCompletion_to_Response.md)  
+
++ [Request-Response](/Docs/Request-Response.md)
+
 #### Assistants
 [Guide: How to use Assistants](/Guides/How_to_use_Assistants.md)  
 [Guide: How to use File search with Assistants and Vector Store](/Guides/How_to_use_FileSearch_with_VectorStore.md)

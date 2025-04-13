@@ -1,6 +1,6 @@
 @{
     # Version number of this module.
-    ModuleVersion        = '4.20.0'
+    ModuleVersion        = '4.21.0'
 
     # Supported PSEditions
     CompatiblePSEditions = 'Core', 'Desktop'
@@ -82,6 +82,7 @@
         'Request-ImageGeneration',
         'Request-ImageVariation',
         'Request-Moderation',
+        'Request-Response',
         'Request-TextCompletion',
         'Add-OpenAIFile',
         'Remove-OpenAIFile',

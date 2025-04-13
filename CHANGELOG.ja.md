@@ -1,4 +1,8 @@
 # 変更履歴
+### 4.21.0
+- 新しい関数`Request-Response`を追加しました。  
+    [ガイド: ChatCompletionからResponseへの移行](/Guides/Migrate_ChatCompletion_to_Response.md)  
+
 ### 4.20.0
 - `Request-AudioSpeech`に新しいモデルとパラメータを追加しました  
     + Models: `gpt-4o-mini-tts`

@@ -17,7 +17,7 @@ function Get-AzureOpenAIAPIEndpoint {
     )
 
     $ApiVersion = $ApiVersion.Trim()
-    $DefaultApiVersion = '2025-02-01-preview'
+    $DefaultApiVersion = '2025-03-01-preview'
     $UriBuilder = [System.UriBuilder]::new($ApiBase)
     if (-not $UriBuilder.Path.EndsWith('/', [StringComparison]::Ordinal)) {
         $UriBuilder.Path += '/'
@@ -259,6 +259,19 @@ function Get-AzureOpenAIAPIEndpoint {
                 Method      = ''
                 Uri         = $UriBuilder.Uri
                 ContentType = ''
+            }
+            continue
+        }
+        'Responses' {
+            $InnerApiVersion = if ($ApiVersion) { $ApiVersion }else { $DefaultApiVersion }
+            $UriBuilder.Path += 'openai/responses'
+            $UriBuilder.Query = ('api-version={0}' -f $InnerApiVersion)
+            @{
+                Name          = 'responses'
+                Method        = 'Post'
+                Uri           = $UriBuilder.Uri
+                ContentType   = 'application/json'
+                BatchEndpoint = '/responses'
             }
             continue
         }

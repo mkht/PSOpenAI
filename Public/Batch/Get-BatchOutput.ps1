@@ -98,6 +98,9 @@ function Get-BatchOutput {
             if ($ret.response.body.object -eq 'chat.completion') {
                 $ret.response.body = ParseChatCompletionObject $ret.response.body
             }
+            elseif ($ret.response.body.object -eq 'response') {
+                $ret.response.body = ParseResponseObject $ret.response.body
+            }
             $ret
         }
     }

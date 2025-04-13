@@ -238,6 +238,17 @@ function Get-OpenAIAPIEndpoint {
             }
             continue
         }
+        'Responses' {
+            $UriBuilder.Path += 'responses'
+            @{
+                Name          = 'responses'
+                Method        = 'Post'
+                Uri           = $UriBuilder.Uri
+                ContentType   = 'application/json'
+                BatchEndpoint = '/v1/responses'
+            }
+            continue
+        }
         Default {
             Write-Error -Message ('{0} API endpoint is not provided by OpenAI' -f $_)
         }
