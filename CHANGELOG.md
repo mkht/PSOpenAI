@@ -1,7 +1,11 @@
 # Changelog
+### Unreleased
+- Updates to supported voice list.
+
 ### 4.21.0
 - Add new function `Request-Response` for OpenAI's new API interface for generating model responses.  
   [Guide: Migrate ChatCompletion to Response](/Guides/Migrate_ChatCompletion_to_Response.md)  
+- Update default Azure OpenAI API version to `2025-03-01-preview`.
 
 ### 4.20.0
 - Add new model and parameter for `Request-AudioSpeech`.  

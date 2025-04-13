@@ -13,16 +13,7 @@ function Request-RealtimeSessionResponse {
         [string[]]$Modalities = @('text'),
 
         [Parameter()]
-        [Completions(
-            'alloy',
-            'ash',
-            'ballad',
-            'coral',
-            'echo',
-            'sage',
-            'shimmer',
-            'verse'
-        )]
+        [Completions('alloy', 'ash', 'ballad', 'coral', 'echo', 'fable', 'nova', 'onyx', 'sage', 'shimmer', 'verse')]
         [string][LowerCaseTransformation()]$Voice,
 
         [Parameter()]

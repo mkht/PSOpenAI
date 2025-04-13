@@ -17,17 +17,7 @@ function Request-AudioSpeech {
         [string]$Model = 'tts-1',
 
         [Parameter()]
-        [Completions(
-            'alloy',
-            'ash',
-            'coral',
-            'echo',
-            'fable',
-            'onyx',
-            'nova',
-            'sage',
-            'shimmer'
-        )]
+        [Completions('alloy', 'ash', 'ballad', 'coral', 'echo', 'fable', 'nova', 'onyx', 'sage', 'shimmer', 'verse')]
         [string][LowerCaseTransformation()]$Voice = 'alloy',
 
         [Parameter()]
