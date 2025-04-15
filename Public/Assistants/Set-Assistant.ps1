@@ -29,7 +29,9 @@ function Set-Assistant {
             'gpt-4-32k-0613',
             'gpt-4-turbo',
             'gpt-4-turbo-2024-04-09',
-            'gpt-4.5-preview',
+            'gpt-4.1',
+            'gpt-4.1-mini',
+            'gpt-4.1-nano',
             'o1',
             'o3-mini'
         )]

@@ -1,6 +1,8 @@
 # Changelog
-### Unreleased
+### 4.22.0
 - Updates to supported voice list.
+- Add `gpt-4.1`, `gpt-4.1-mini` and `gpt-4.1-nano` models.
+- Remove `gpt-4.5-preview` that will be shutdown on 2025-07-14.
 
 ### 4.21.0
 - Add new function `Request-Response` for OpenAI's new API interface for generating model responses.  

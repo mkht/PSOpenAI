@@ -40,6 +40,7 @@ class OpenAIDepricationModels {
         'gpt-4-32k'                     = [datetime]::new(2025, 06, 06)
         'gpt-4-32k-0613'                = [datetime]::new(2025, 06, 06)
         'gpt-4-32k-0314'                = [datetime]::new(2025, 06, 06)
+        'gpt-4.5-preview'               = [datetime]::new(2025, 07, 14)
     }
 }
 
