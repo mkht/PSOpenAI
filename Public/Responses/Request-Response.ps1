@@ -26,7 +26,9 @@ function Request-Response {
             'gpt-4.1-nano',
             'o1',
             'o1-pro',
+            'o3',
             'o3-mini',
+            'o4-mini',
             'computer-use-preview'
         )]
         [string]$Model = 'gpt-4o-mini',

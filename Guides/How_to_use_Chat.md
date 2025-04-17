@@ -25,7 +25,7 @@ $env:OPENAI_API_KEY = '<Put your API key here>'
 `Request-ChatCompletion` has some basic parameters:
 
 + `-Message`: The messages to the model.
-+ `-Model`: The name of the model you want to use (e.g.: `gpt-4o`, `o1-mini`).
++ `-Model`: The name of the model you want to use (e.g.: `gpt-4.1`, `o4-mini`).
 
 ```powershell
 $Response = Request-ChatCompletion -Message "Hi, please tell me your name." -Model "gpt-4o"

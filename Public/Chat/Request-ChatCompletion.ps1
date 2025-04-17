@@ -42,7 +42,9 @@ function Request-ChatCompletion {
             'o1',
             'o1-mini',
             'o1-preview',
-            'o3-mini'
+            'o3',
+            'o3-mini',
+            'o4-mini'
         )]
         [string]$Model = 'gpt-3.5-turbo',
 
