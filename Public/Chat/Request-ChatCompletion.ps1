@@ -64,7 +64,7 @@ function Request-ChatCompletion {
         [string[]]$Modalities,
 
         [Parameter()]
-        [Completions('alloy', 'ash', 'ballad', 'coral', 'echo', 'fable', 'nova', 'onyx', 'sage', 'shimmer', 'verse')]
+        [Completions('alloy', 'ash', 'ballad', 'coral', 'echo', 'fable', 'nova', 'onyx', 'sage', 'shimmer')]
         [string][LowerCaseTransformation()]$Voice = 'alloy',
 
         [Parameter()]
@@ -80,7 +80,7 @@ function Request-ChatCompletion {
         [string]$AudioOutFile,
 
         [Parameter()]
-        [Completions('wav', 'mp3', 'flac', 'opus', 'pcm16')]
+        [Completions('wav', 'aac', 'mp3', 'flac', 'opus', 'pcm16')]
         [string][LowerCaseTransformation()]$OutputAudioFormat = 'mp3',
 
         # For Vison
@@ -212,7 +212,7 @@ function Request-ChatCompletion {
 
         [Parameter()]
         [Alias('service_tier')]
-        [Completions('auto', 'default')]
+        [Completions('auto', 'default', 'flex')]
         [string]$ServiceTier,
 
         [Parameter()]

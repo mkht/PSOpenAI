@@ -196,8 +196,8 @@ function Request-Response {
         [string]$ReasoningEffort = 'medium',
 
         [Parameter()]
-        [Completions('concise', 'detailed')]
-        [string]$ReasoningGenerateSummary,
+        [Completions('auto', 'concise', 'detailed')]
+        [string]$ReasoningSummary,
         #endregion Reasoning
 
         [Parameter()]
@@ -224,6 +224,11 @@ function Request-Response {
         [Parameter()]
         [bool]$JsonSchemaStrict,
         #endregion Structured Outputs
+
+        [Parameter()]
+        [Alias('service_tier')]
+        [Completions('auto', 'default', 'flex')]
+        [string]$ServiceTier,
 
         [Parameter()]
         [string]$User,
@@ -333,6 +338,9 @@ function Request-Response {
         if ($PSBoundParameters.ContainsKey('Store')) {
             $PostBody.store = $Store
         }
+        if ($PSBoundParameters.ContainsKey('ServiceTier')) {
+            $PostBody.service_tier = $ServiceTier
+        }
         if ($PSBoundParameters.ContainsKey('User')) {
             $PostBody.user = $User
         }
@@ -345,8 +353,8 @@ function Request-Response {
         if ($PSBoundParameters.ContainsKey('ReasoningEffort')) {
             $ReasoningOptions.effort = $ReasoningEffort
         }
-        if ($PSBoundParameters.ContainsKey('ReasoningGenerateSummary')) {
-            $ReasoningOptions.generate_summary = $ReasoningGenerateSummary
+        if ($PSBoundParameters.ContainsKey('ReasoningSummary')) {
+            $ReasoningOptions.summary = $ReasoningSummary
         }
         if ($ReasoningOptions.Keys.Count -gt 0) {
             $PostBody.reasoning = $ReasoningOptions

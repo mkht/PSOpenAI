@@ -51,7 +51,7 @@ Request-Response
     [-Stream]
     [-StreamOutputType <String>] 
     [-ReasoningEffort <String>] 
-    [-ReasoningGenerateSummary <String>]
+    [-ReasoningSummary <String>]
     [-MetaData <IDictionary>]
     [-MaxOutputTokens <Int32>] 
     [-OutputType <Object>]
@@ -60,6 +60,7 @@ Request-Response
     [-JsonSchemaName <String>] 
     [-JsonSchemaDescription <String>] 
     [-JsonSchemaStrict <Boolean>] 
+    [-ServiceTier <String>]
     [-User <String>]
     [-Organization <String>]
     [-AsBatch]
@@ -464,9 +465,8 @@ Required: False
 Position: Named
 ```
 
-### -ReasoningGenerateSummary
-**computer_use_preview only**  
-A summary of the reasoning performed by the model. This can be useful for debugging and understanding the model's reasoning process. One of concise or detailed.
+### -ReasoningSummary
+A summary of the reasoning performed by the model. This can be useful for debugging and understanding the model's reasoning process. One of `auto`, `concise` or `detailed`.
 
 ```yaml
 Type: String
@@ -546,6 +546,16 @@ Whether to enable strict schema adherence when generating the output.
 
 ```yaml
 Type: Boolean
+Required: False
+Position: Named
+```
+
+### -ServiceTier
+Specifies the latency tier to use for processing the request. This parameter is relevant for customers subscribed to the scale tier service.
+
+```yaml
+Type: String
+Aliases: service_tier
 Required: False
 Position: Named
 ```
