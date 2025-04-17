@@ -1,4 +1,8 @@
 # Changelog
+### 4.23.0
+- Add `o3` and `o4-mini` models.
+- API update.
+
 ### 4.22.0
 - Updates to supported voice list.
 - Add `gpt-4.1`, `gpt-4.1-mini` and `gpt-4.1-nano` models.

@@ -1,11 +1,15 @@
 # 変更履歴
+### 4.23.0
+- `03`、`o4-mini`モデルを追加しました
+- APIの更新に追従
+- 
 ### 4.22.0
-- サポートされている音声リストを更新しました。
-- `gpt-4.1`、`gpt-4.1-mini`、`gpt-4.1-nano`モデルを追加しました。
-- 2025年7月14日に廃止予定の`gpt-4.5-preview`を削除しました。
+- サポートされている音声リストを更新しました
+- `gpt-4.1`、`gpt-4.1-mini`、`gpt-4.1-nano`モデルを追加しました
+- 2025年7月14日に廃止予定の`gpt-4.5-preview`を削除しました
 
 ### 4.21.0
-- 新しい関数`Request-Response`を追加しました。  
+- 新しい関数`Request-Response`を追加しました  
     [ガイド: ChatCompletionからResponseへの移行](/Guides/Migrate_ChatCompletion_to_Response.md)  
 
 ### 4.20.0

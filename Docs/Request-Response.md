@@ -1,6 +1,6 @@
 ---
 external help file: PSOpenAI-help.xml
-Module Name: psOpenAI
+Module Name: PSOpenAI
 online version: https://github.com/mkht/PSOpenAI/blob/main/Docs/Request-Response.md
 schema: 2.0.0
 ---

@@ -7,13 +7,12 @@ This guide explains how to migrate your code from the traditional `Request-ChatC
 There are several important functional differences.  
 `Request-Response` is not a superset of `Request-ChatCompletion`. There are things that can only be done with `Request-ChatCompletion`.
 
-| Feature                    | ChatCompletion |   Response    | Notes                                           |
-| -------------------------- | :------------: | :-----------: | ----------------------------------------------- |
-| Basic text chat            |       ✅        |       ✅       | Both support core chat functionality            |
-| Audio I/O                  |       ✅        |       ❌       | Audio features only available in ChatCompletion |
-| Newer models (o1-pro etc.) |       ❌        |       ✅       | Response required for latest models             |
-| Built-in tools             |       ❌        |       ✅       | File search, Computer-Use, etc.                 |
-| History management         |     Manual     | Auto / Manual | Response maintains state automatically          |
+| Feature            | ChatCompletion |   Response    | Notes                                           |
+| ------------------ | :------------: | :-----------: | ----------------------------------------------- |
+| Basic text chat    |       ✅        |       ✅       | Both support core chat functionality            |
+| Audio I/O          |       ✅        |       ❌       | Audio features only available in ChatCompletion |
+| Built-in tools     |       ❌        |       ✅       | File search, Computer-Use, etc.                 |
+| History management |     Manual     | Auto / Manual | Response maintains state automatically          |
 
 ## Usage Differences
 
