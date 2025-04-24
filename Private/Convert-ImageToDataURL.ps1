@@ -25,7 +25,28 @@ function Convert-FileToDataURL {
     }
 
     $FileItem = Get-Item -LiteralPath $File
-    $MimeType = switch ($FileItem.Extension) {
+    $MimeType = Get-MimeTypeFromFile -FileInfo $FileItem -DefaultMimeType $DefaultMimeType
+
+    try {
+        'data:' + $MimeType + ';base64,' + ([System.Convert]::ToBase64String([System.IO.File]::ReadAllBytes($FileItem.FullName)))
+    }
+    catch {
+        Write-Error -Exception $_.Exception
+    }
+}
+
+function Get-MimeTypeFromFile {
+    [CmdletBinding()]
+    [OutputType([string])]
+    param (
+        [Parameter(Mandatory, Position = 0, ValueFromPipeline)]
+        [System.IO.FileInfo]$FileInfo,
+
+        [Parameter()]
+        [string]$DefaultMimeType = 'application/octet-stream'
+    )
+
+    switch ($FileInfo.Extension) {
         '.jpeg' { 'image/jpeg'; continue }
         '.jpg' { 'image/jpeg'; continue }
         '.png' { 'image/png'; continue }
@@ -53,12 +74,5 @@ function Convert-FileToDataURL {
         '.ts' { 'application/typescript'; continue }
         '.txt' { 'text/plain'; continue }
         Default { $DefaultMimeType }
-    }
-
-    try {
-        'data:' + $MimeType + ';base64,' + ([System.Convert]::ToBase64String([System.IO.File]::ReadAllBytes($FileItem.FullName)))
-    }
-    catch {
-        Write-Error -Exception $_.Exception
     }
 }

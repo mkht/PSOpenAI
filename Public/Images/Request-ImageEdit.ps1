@@ -4,15 +4,22 @@ function Request-ImageEdit {
         [Parameter(Mandatory)]
         [ValidateNotNullOrEmpty()]
         [Alias('File')]
-        [string]$Image,
+        [string[]]$Image,
 
         [Parameter()]
         [ValidateNotNullOrEmpty()]
         [string]$Mask,
 
         [Parameter(Mandatory)]
-        [ValidateLength(1, 1000)]
+        [ValidateNotNullOrEmpty()]
         [string]$Prompt,
+
+        [Parameter()]
+        [Completions(
+            'gpt-image-1',
+            'dall-e-2'
+        )]
+        [string]$Model = 'dall-e-2',
 
         [Parameter()]
         [ValidateRange(1, 10)]
@@ -20,13 +27,20 @@ function Request-ImageEdit {
         [uint16]$NumberOfImages = 1,
 
         [Parameter()]
-        [ValidateSet('256', '512', '1024', '256x256', '512x512', '1024x1024')]
-        [string]$Size = '1024x1024',
+        [ValidateSet('auto', '1024x1024', '1536x1024', '1024x1536', '256x256', '512x512')]
+        [string]$Size = 'auto',
+
+        [Parameter()]
+        [ValidateSet('standard', 'low', 'medium', 'high', 'auto')]
+        [string][LowerCaseTransformation()]$Quality = 'auto',
 
         [Parameter(ParameterSetName = 'Format')]
         [Alias('response_format')]
         [ValidateSet('url', 'base64', 'byte')]
-        [string]$Format = 'url',
+        [string]$ResponseFormat = 'url',
+
+        [Parameter(ParameterSetName = 'Format')]
+        [switch]$OutputRawResponse,
 
         [Parameter(ParameterSetName = 'OutFile', Mandatory)]
         [ValidateNotNullOrEmpty()]
@@ -49,7 +63,6 @@ function Request-ImageEdit {
 
         # [Parameter(DontShow)]
         # [string]$AuthType = 'openai',
-
 
         [Parameter()]
         [ValidateRange(0, 100)]
@@ -78,43 +91,56 @@ function Request-ImageEdit {
     }
 
     process {
-        $ImageFileInfo = Resolve-FileInfo $Image
+        $InputImages = @()
+        foreach ($img in $Image) {
+            $InputImages += Resolve-FileInfo $img
+        }
 
         if ($PSBoundParameters.ContainsKey('Mask')) {
             $MaskFileInfo = Resolve-FileInfo $Mask
         }
 
-        if ($NumberOfImages -gt 1) {
-            if ($PSCmdlet.ParameterSetName -eq 'OutFile') {
-                $NumberOfImages = 1
-            }
-            elseif ($Format -eq 'byte') {
-                Write-Error -Message "When the format is specified as $Format, NumberOfImages should be 1."
-                return
-            }
-        }
-
-        # Parse Size property
-        if ($PSBoundParameters.ContainsKey('Size') -and ($num = $Size -as [int])) {
-            $Size = ('{0}x{0}' -f $num)
-        }
-
         #region Construct parameters for API request
         $PostBody = [System.Collections.Specialized.OrderedDictionary]::new()
-        $PostBody.image = $ImageFileInfo
         $PostBody.prompt = $Prompt
-        if ($Mask) {
+
+        if ( $InputImages.Count -gt 1) {
+            $PostBody.image = $InputImages
+        }
+        else {
+            $PostBody.image = $InputImages[0]
+        }
+
+        if ($MaskFileInfo) {
             $PostBody.mask = $MaskFileInfo
         }
-        if ($NumberOfImages -ge 1) {
+
+        if ($OpenAIParameter.ApiType -eq [OpenAIApiType]::OpenAI) {
+            if ($PSBoundParameters.ContainsKey('Model')) {
+                $PostBody.model = $Model
+            }
+        }
+
+        if ($PSBoundParameters.ContainsKey('NumberOfImages')) {
             $PostBody.n = $NumberOfImages
         }
-        if ($null -ne $Size) {
+        if ($PSBoundParameters.ContainsKey('Size')) {
             $PostBody.size = $Size
         }
-        switch ($Format) {
+        if ($PSBoundParameters.ContainsKey('Quality')) {
+            $PostBody.quality = $Quality
+        }
+        if ($PSBoundParameters.ContainsKey('User')) {
+            $PostBody.user = $User
+        }
+
+        switch ($ResponseFormat) {
+            { $Model -like 'gpt-image-*' } {
+                # GPT-Image model does not support response_format parameter
+                break
+            }
             { $PSCmdlet.ParameterSetName -eq 'OutFile' } {
-                $PostBody.response_format = 'url'
+                $PostBody.response_format = 'b64_json'
                 break
             }
             'url' {
@@ -129,9 +155,6 @@ function Request-ImageEdit {
                 $PostBody.response_format = 'b64_json'
                 break
             }
-        }
-        if ($PSBoundParameters.ContainsKey('User')) {
-            $PostBody.user = $User
         }
         #endregion
 
@@ -158,6 +181,10 @@ function Request-ImageEdit {
         #endregion
 
         #region Parse response object
+        if ($OutputRawResponse) {
+            Write-Output $Response
+            return
+        }
         try {
             $Response = $Response | ConvertFrom-Json -ErrorAction Stop
         }
@@ -171,28 +198,48 @@ function Request-ImageEdit {
 
         #region Output
         if ($PSCmdlet.ParameterSetName -eq 'OutFile') {
-            $AbsoluteOutFile = New-ParentFolder -File $OutFile
+            $AbsoluteFilePath = New-ParentFolder -File $OutFile
 
-            # Download image
-            $ResponseContent | Select-Object -ExpandProperty 'url' | Select-Object -First 1 | ForEach-Object {
-                $splat = @{
-                    Uri             = $_
-                    Method          = 'Get'
-                    OutFile         = $AbsoluteOutFile
-                    UseBasicParsing = $true
+            # Save image
+            $ResponseContent | Select-Object -ExpandProperty 'b64_json' | ForEach-Object -Begin { $Suffix = 0 } -Process {
+                if ( $Suffix -gt 0) {
+                    $Ext = [System.IO.Path]::GetExtension($AbsoluteFilePath)
+                    $BaseName = [System.IO.Path]::GetFileNameWithoutExtension($AbsoluteFilePath)
+                    $FileName = '{0}-{1}{2}' -f $BaseName, $Suffix, $Ext
+                    $SaveToPath = Join-Path (Split-Path $AbsoluteFilePath -Parent) $FileName
                 }
-                Microsoft.PowerShell.Utility\Invoke-WebRequest @splat
+                else {
+                    $SaveToPath = $AbsoluteFilePath
+                }
+
+                Write-Verbose ('Save image to {0}' -f $SaveToPath)
+                try {
+                    [System.IO.File]::WriteAllBytes($SaveToPath, [Convert]::FromBase64String($_))
+                }
+                catch {
+                    Write-Error -Exception $_.Exception
+                }
+                $Suffix++
             }
         }
-        elseif ($Format -eq 'url') {
+        elseif ($ResponseFormat -eq 'url') {
             Write-Output ($ResponseContent | Select-Object -ExpandProperty 'url')
         }
-        elseif ($Format -eq 'base64') {
+        elseif ($ResponseFormat -eq 'base64') {
             Write-Output ($ResponseContent | Select-Object -ExpandProperty 'b64_json')
         }
-        elseif ($Format -eq 'byte') {
-            [byte[]]$b = [Convert]::FromBase64String(($ResponseContent | Select-Object -ExpandProperty 'b64_json' | Select-Object -First 1))
-            Write-Output (, $b)
+        elseif ($ResponseFormat -eq 'byte') {
+            $ByteArrayList = [System.Collections.Generic.List[byte[]]]::new()
+            $ResponseContent | Select-Object -ExpandProperty 'b64_json' | ForEach-Object {
+                $ByteArrayList.Add([Convert]::FromBase64String($_))
+            }
+
+            if ( $ByteArrayList.Count -eq 1) {
+                Write-Output ($ByteArrayList[0])
+            }
+            else {
+                Write-Output ($ByteArrayList.ToArray())
+            }
         }
         #endregion
     }

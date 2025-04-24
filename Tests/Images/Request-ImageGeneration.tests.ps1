@@ -21,7 +21,187 @@ Describe 'Request-ImageGeneration' {
             $script:Result = ''
         }
 
-        It 'Generate image. format = url' {
+        It 'Generate image. Save to file.' {
+            $TestResponse = @'
+{
+  "created": 1713833628,
+  "data": [
+    {
+      "b64_json": "SEVMTE8="
+    }
+  ],
+  "usage": {
+    "input_tokens": 50,
+    "output_tokens": 50
+  }
+}
+'@
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $TestResponse }
+            { $splat = @{
+                    Prompt      = 'Hello'
+                    OutFile     = Join-Path $TestDrive 'file.png'
+                    Model       = 'dall-e-2'
+                    Size        = '256x256'
+                    TimeoutSec  = 30
+                    ErrorAction = 'Stop'
+                }
+                $script:Result = Request-ImageGeneration @splat
+            } | Should -Not -Throw
+            Should -InvokeVerifiable
+            $Result | Should -BeNullOrEmpty
+            (Join-Path $TestDrive 'file.png') | Should -FileContentMatchExactly 'HELLO'
+        }
+
+        It 'Generate multiple images. Save to files.' {
+            $TestResponse = @'
+{
+  "created": 1713833628,
+  "data": [
+    {
+      "b64_json": "RklSU1Q="
+    },
+    {
+      "b64_json": "U0VDT05E"
+    },
+    {
+      "b64_json": "VEhJUkQ="
+    }
+  ],
+  "usage": {
+    "input_tokens": 50,
+    "output_tokens": 50
+  }
+}
+'@
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $TestResponse }
+            { $splat = @{
+                    Prompt         = 'Hello'
+                    OutFile        = Join-Path $TestDrive 'fileA.png'
+                    NumberOfImages = 3
+                    Model          = 'dall-e-3'
+                    Size           = '1792x1024'
+                    Style          = 'vivid'
+                    Quality        = 'hd'
+                    TimeoutSec     = 30
+                    ErrorAction    = 'Stop'
+                }
+                $script:Result = Request-ImageGeneration @splat
+            } | Should -Not -Throw
+            Should -InvokeVerifiable
+            $Result | Should -BeNullOrEmpty
+            (Join-Path $TestDrive 'fileA.png') | Should -FileContentMatchExactly 'FIRST'
+            (Join-Path $TestDrive 'fileA-1.png') | Should -FileContentMatchExactly 'SECOND'
+            (Join-Path $TestDrive 'fileA-2.png') | Should -FileContentMatchExactly 'THIRD'
+        }
+
+        It 'Generate image. response_format = base64' {
+            $TestResponse = @'
+{
+  "created": 1713833628,
+  "data": [
+    {
+      "b64_json": "SEVMTE8="
+    }
+  ],
+  "usage": {
+    "input_tokens": 50,
+    "output_tokens": 50
+  }
+}
+'@
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $TestResponse }
+            { $script:Result = Request-ImageGeneration -Prompt 'sunflower' -ResponseFormat base64 -ea Stop } | Should -Not -Throw
+            Should -InvokeVerifiable
+            $Result | Should -BeOfType [string]
+            $Result | Should -BeExactly 'SEVMTE8='
+        }
+
+        It 'Generate multiple images. response_format = base64' {
+            $TestResponse = @'
+{
+  "created": 1713833628,
+  "data": [
+    {
+      "b64_json": "RklSU1Q="
+    },
+    {
+      "b64_json": "U0VDT05E"
+    }
+  ],
+  "usage": {
+    "input_tokens": 50,
+    "output_tokens": 50
+  }
+}
+'@
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $TestResponse }
+            { $script:Result = Request-ImageGeneration -Prompt 'sunflower' -NumberOfImages 2 -ResponseFormat base64 -ea Stop } | Should -Not -Throw
+            Should -InvokeVerifiable
+            $Result | Should -HaveCount 2
+            $Result[0] | Should -BeExactly 'RklSU1Q='
+            $Result[1] | Should -BeExactly 'U0VDT05E'
+        }
+
+        It 'Generate image. response_format = byte' {
+            $TestResponse = @'
+{
+  "created": 1713833628,
+  "data": [
+    {
+      "b64_json": "SEVMTE8="
+    }
+  ],
+  "usage": {
+    "input_tokens": 50,
+    "output_tokens": 50
+  }
+}
+'@
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $TestResponse }
+            { $script:Result = Request-ImageGeneration -Prompt 'sunflower' -ResponseFormat byte -ea Stop } | Should -Not -Throw
+            Should -InvokeVerifiable
+            $Result | Should -HaveCount 5
+            $Result[0] | Should -BeOfType [byte]
+            $Result[0] | Should -Be 72
+            $Result[1] | Should -Be 69
+            $Result[2] | Should -Be 76
+            $Result[3] | Should -Be 76
+            $Result[4] | Should -Be 79
+        }
+
+        It 'Generate multiple images. response_format = byte' {
+            $TestResponse = @'
+{
+  "created": 1713833628,
+  "data": [
+    {
+      "b64_json": "RklSU1Q="
+    },
+    {
+      "b64_json": "U0VDT05E"
+    }
+  ],
+  "usage": {
+    "input_tokens": 50,
+    "output_tokens": 50
+  }
+}
+'@
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $TestResponse }
+            { $script:Result = Request-ImageGeneration -Prompt 'sunflower' -NumberOfImages 2 -ResponseFormat byte -ea Stop } | Should -Not -Throw
+            Should -InvokeVerifiable
+            $Result | Should -HaveCount 2
+            $Result[0] | Should -HaveCount 5
+            $Result[1] | Should -HaveCount 6
+            $Result[0][0] | Should -BeOfType [byte]
+            $Result[0][0] | Should -Be 70
+            $Result[0][1] | Should -Be 73
+            $Result[1][0] | Should -BeOfType [byte]
+            $Result[1][0] | Should -Be 83
+            $Result[1][1] | Should -Be 69
+        }
+
+        It 'Generate image. response_format = url' {
             $TestResponse = @'
 {
     "created": 1678359675,
@@ -33,13 +213,35 @@ Describe 'Request-ImageGeneration' {
 }
 '@
             Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $TestResponse }
-            { $script:Result = Request-ImageGeneration -Prompt 'sunflower' -Format url -ea Stop } | Should -Not -Throw
+            { $script:Result = Request-ImageGeneration -Prompt 'sunflower' -ResponseFormat url -ea Stop } | Should -Not -Throw
             Should -InvokeVerifiable
             $Result | Should -BeOfType [string]
             $Result | Should -Be 'https://dummyimage.example.com'
         }
 
-        It 'Generate image. format = raw_response' {
+        It 'Generate multiple image. response_format = url' {
+            $TestResponse = @'
+{
+    "created": 1678359675,
+    "data": [
+        {
+        "url": "https://dummyimage1.example.com"
+        },
+        {
+        "url": "https://dummyimage2.example.com"
+        }
+    ]
+}
+'@
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $TestResponse }
+            { $script:Result = Request-ImageGeneration -Prompt 'sunflower' -NumberOfImages 2 -ResponseFormat url -ea Stop } | Should -Not -Throw
+            Should -InvokeVerifiable
+            $Result | Should -HaveCount 2
+            $Result[0] | Should -Be 'https://dummyimage1.example.com'
+            $Result[1] | Should -Be 'https://dummyimage2.example.com'
+        }
+
+        It 'Generate image. returns raw response' {
             $TestResponse = @'
 {
     "created": 1678359675,
@@ -51,7 +253,7 @@ Describe 'Request-ImageGeneration' {
 }
 '@
             Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $TestResponse }
-            { $script:Result = Request-ImageGeneration -Prompt 'sunflower' -Format raw_response -ea Stop } | Should -Not -Throw
+            { $script:Result = Request-ImageGeneration -Prompt 'sunflower' -ResponseFormat url -OutputRawResponse -ea Stop } | Should -Not -Throw
             Should -InvokeVerifiable
             $Result | Should -BeOfType [string]
             $Result | Should -BeExactly $TestResponse
@@ -72,7 +274,7 @@ Describe 'Request-ImageGeneration' {
             { $splat = @{
                     Prompt      = 'Lion'
                     OutFile     = Join-Path $TestDrive 'file1.png'
-                    Size        = 256
+                    Size        = '256x256'
                     TimeoutSec  = 30
                     ErrorAction = 'Stop'
                 }
@@ -82,63 +284,27 @@ Describe 'Request-ImageGeneration' {
             (Join-Path $TestDrive 'file1.png') | Should -Exist
         }
 
-        It 'Image generation. Format = url' {
-            { $splat = @{
-                    Prompt      = 'Pigs'
-                    Format      = 'url'
-                    Size        = 256
-                    TimeoutSec  = 30
-                    ErrorAction = 'Stop'
-                }
-                $script:Result = Request-ImageGeneration @splat
-            } | Should -Not -Throw
-            $Result | Should -BeOfType [string]
-            $Result | Should -Match '^https://'
-        }
-
-        It 'Image generation. Format = base64' {
+        It 'Generate image. Full parameters' {
             { $params = @{
-                    Prompt      = 'Dog'
-                    Format      = 'base64'
-                    Size        = 256
-                    TimeoutSec  = 30
-                    ErrorAction = 'Stop'
+                    Prompt            = 'A cute baby lion'
+                    Model             = 'gpt-image-1'
+                    ResponseFormat    = 'base64'
+                    Moderation        = 'low'
+                    NumberOfImages    = 2
+                    Size              = '1024x1024'
+                    Background        = 'transparent'
+                    Quality           = 'low'
+                    OutputFormat      = 'webp'
+                    OutputCompression = 50
+                    TimeoutSec        = 60
+                    MaxRetryCount     = 5
+                    ErrorAction       = 'Stop'
                 }
                 $script:Result = Request-ImageGeneration @params
             } | Should -Not -Throw
-            $Result | Should -BeOfType [string]
-            { [Convert]::FromBase64String($script:Result) } | Should -Not -Throw
-        }
-
-        It 'Image generation. Format = byte' {
-            { $params = @{
-                    Prompt      = 'Fox'
-                    Format      = 'byte'
-                    Size        = 256
-                    TimeoutSec  = 30
-                    ErrorAction = 'Stop'
-                }
-                $script:Result = Request-ImageGeneration @params
-            } | Should -Not -Throw
-            $Result.GetType().Name | Should -Be 'Byte[]'
-            $Result.Count | Should -BeGreaterThan 1
-        }
-
-        It 'Image generation. Specifies model name (dall-e-3) and styles.' {
-            { $params = @{
-                    Prompt        = 'A cute baby lion'
-                    Model         = 'dall-e-3'
-                    Format        = 'url'
-                    Quality       = 'HD'
-                    Style         = 'natural'
-                    TimeoutSec    = 30
-                    MaxRetryCount = 5
-                    ErrorAction   = 'Stop'
-                }
-                $script:Result = Request-ImageGeneration @params
-            } | Should -Not -Throw
-            $Result | Should -BeOfType [string]
-            $Result | Should -Match '^https://'
+            $Result | Should -HaveCount 2
+            $Result[0] | Should -BeOfType [string]
+            $Result[1] | Should -BeOfType [string]
         }
     }
 
@@ -165,11 +331,11 @@ Describe 'Request-ImageGeneration' {
 
         It 'Image generation. Format = url' {
             { $splat = @{
-                    Model       = 'dall-e-3'
-                    Prompt      = 'A polar bear on an ice block'
-                    Format      = 'url'
-                    Size        = 1024
-                    ErrorAction = 'Stop'
+                    Model          = 'dall-e-3'
+                    Prompt         = 'A polar bear on an ice block'
+                    ResponseFormat = 'url'
+                    Size           = '1024x1024'
+                    ErrorAction    = 'Stop'
                 }
                 $script:Result = Request-ImageGeneration @splat
             } | Should -Not -Throw

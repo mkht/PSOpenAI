@@ -68,8 +68,8 @@ function GetMultipartFileContent {
         [string]$fieldName,
         [FileInfo]$file
     )
-
-    GetMultipartBytesContent -fieldName $fieldName -content ([File]::ReadAllBytes($file.FullName)) -fileName $file.Name
+    $MimeType = Get-MimeTypeFromFile -FileInfo $file
+    GetMultipartBytesContent -fieldName $fieldName -content ([File]::ReadAllBytes($file.FullName)) -fileName $file.Name -ContentType $MimeType
 }
 
 function GetMultipartStringContent {
@@ -101,9 +101,9 @@ function GetMultipartBytesContent {
     param(
         [string]$fieldName,
         [byte[]]$content,
-        [string]$fileName
+        [string]$fileName,
+        [string]$contentType = 'application/octet-stream'
     )
-    $contentType = 'application/octet-stream'
     $ContentDispositionHeader = 'Content-Disposition: form-data; name="{0}"' -f $fieldName
     if (-not [string]::IsNullOrWhiteSpace($fileName)) {
         $ContentDispositionHeader += "; filename*=utf-8''{0}" -f [Uri]::EscapeDataString($fileName)
