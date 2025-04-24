@@ -618,6 +618,7 @@ Describe 'Request-Response' {
                     OutputType       = 'text'
                     MetaData         = @{'key1' = 'value1' }
                     ReasoningEffort  = 'low'
+                    ReasoningSummary = 'detailed'
                     Store            = $false
                     TimeoutSec       = 30
                     MaxRetryCount    = 3
@@ -626,7 +627,7 @@ Describe 'Request-Response' {
             } | Should -Not -Throw
             $Result | Should -BeOfType [pscustomobject]
             $Result.object | Should -Be 'response'
-            $Result.output | Should -HaveCount 1
+            $Result.output | Should -HaveCount 2
             $Result.output_text | Should -Not -BeNullOrEmpty
         }
 
@@ -814,7 +815,7 @@ Ping Source Address Latency(ms) BufferSize(B) Status
                     ComputerUseDisplayHeight = 1024
                     ComputerUseDisplayWidth  = 768
                     Images                   = ($script:TestData + '/google.png')
-                    ReasoningGenerateSummary = 'concise'
+                    ReasoningSummary         = 'concise'
                     Store                    = $false
                     TimeoutSec               = 30
                 }

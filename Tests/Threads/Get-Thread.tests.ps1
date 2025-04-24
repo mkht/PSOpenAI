@@ -124,7 +124,7 @@ Describe 'Get-Thread' {
         }
     }
 
-    Context 'Integration tests (online)' -Tag 'Online' {
+    Context 'Integration tests (Azure)' -Tag 'Azure' {
         BeforeAll {
             # Set Context for Azure OpenAI
             $AzureContext = @{
