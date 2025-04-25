@@ -217,6 +217,10 @@ function Request-ImageGeneration {
         }
         try {
             $Response = $Response | ConvertFrom-Json -ErrorAction Stop
+            if ($null -ne $Response.error.message) {
+                Write-Error -Message ('API returned error: ({0}) {1}' -f $Response.error.code, $Response.error.message)
+                return
+            }
         }
         catch {
             Write-Error -Exception $_.Exception

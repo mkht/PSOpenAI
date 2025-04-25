@@ -52,17 +52,18 @@ function Request-ImageEdit {
         [Parameter()]
         [int]$TimeoutSec = 0,
 
-        # [Parameter(DontShow)]
-        # [OpenAIApiType]$ApiType = [OpenAIApiType]::OpenAI,
+        [Parameter()]
+        [OpenAIApiType]$ApiType = [OpenAIApiType]::OpenAI,
 
         [Parameter()]
         [System.Uri]$ApiBase,
 
-        # [Parameter(DontShow)]
-        # [string]$ApiVersion,
+        [Parameter(DontShow)]
+        [string]$ApiVersion,
 
-        # [Parameter(DontShow)]
-        # [string]$AuthType = 'openai',
+        [Parameter()]
+        [ValidateSet('openai', 'azure', 'azure_ad')]
+        [string]$AuthType = 'openai',
 
         [Parameter()]
         [ValidateRange(0, 100)]
@@ -87,17 +88,28 @@ function Request-ImageEdit {
 
     begin {
         # Get API endpoint
-        $OpenAIParameter = Get-OpenAIAPIParameter -EndpointName 'Image.Edit' -Parameters $PSBoundParameters -ErrorAction Stop
+        $OpenAIParameter = Get-OpenAIAPIParameter -EndpointName 'Image.Edit' -Parameters $PSBoundParameters -Engine $Model -ErrorAction Stop
     }
 
     process {
         $InputImages = @()
+
         foreach ($img in $Image) {
-            $InputImages += Resolve-FileInfo $img
+            if ($OpenAIParameter.ApiType -eq [OpenAIApiType]::OpenAI) {
+                $InputImages += Resolve-FileInfo $img
+            }
+            else {
+                $InputImages += Convert-ImageToDataURL $img
+            }
         }
 
         if ($PSBoundParameters.ContainsKey('Mask')) {
-            $MaskFileInfo = Resolve-FileInfo $Mask
+            if ($OpenAIParameter.ApiType -eq [OpenAIApiType]::OpenAI) {
+                $MaskImage = Resolve-FileInfo $Mask
+            }
+            else {
+                $MaskImage = Convert-ImageToDataURL $Mask
+            }
         }
 
         #region Construct parameters for API request
@@ -111,8 +123,8 @@ function Request-ImageEdit {
             $PostBody.image = $InputImages[0]
         }
 
-        if ($MaskFileInfo) {
-            $PostBody.mask = $MaskFileInfo
+        if ($MaskImage) {
+            $PostBody.mask = $MaskImage
         }
 
         if ($OpenAIParameter.ApiType -eq [OpenAIApiType]::OpenAI) {
@@ -187,6 +199,10 @@ function Request-ImageEdit {
         }
         try {
             $Response = $Response | ConvertFrom-Json -ErrorAction Stop
+            if ($null -ne $Response.error.message) {
+                Write-Error -Message ('API returned error: ({0}) {1}' -f $Response.error.code, $Response.error.message)
+                return
+            }
         }
         catch {
             Write-Error -Exception $_.Exception

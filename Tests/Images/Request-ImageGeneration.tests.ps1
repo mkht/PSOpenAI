@@ -329,7 +329,22 @@ Describe 'Request-ImageGeneration' {
             Clear-OpenAIContext
         }
 
-        It 'Image generation. Format = url' {
+        It 'Image generation. Save to file.' {
+            { $splat = @{
+                    Model       = 'dall-e-3'
+                    Prompt      = 'A polar bear on an ice block'
+                    OutFile     = Join-Path $TestDrive 'file1.png'
+                    Size        = '1024x1024'
+                    TimeoutSec  = 30
+                    ErrorAction = 'Stop'
+                }
+                $script:Result = Request-ImageGeneration @splat
+            } | Should -Not -Throw
+            $Result | Should -BeNullOrEmpty
+            (Join-Path $TestDrive 'file1.png') | Should -Exist
+        }
+
+        It 'Image generation. response_format = url' {
             { $splat = @{
                     Model          = 'dall-e-3'
                     Prompt         = 'A polar bear on an ice block'
