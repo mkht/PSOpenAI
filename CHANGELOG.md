@@ -1,4 +1,10 @@
 # Changelog
+### Unreleased
+- Add `gpt-image-1` model support for `Request-ImageGeneration` and `Request-ImageEdit`.
+- Add Azure support for `Request-ImageEdit`. (Not fully tested.)
+- Update default Azure OpenAI API version to `2025-04-01-preview`.
+- Fix some minor issues.
+
 ### 4.23.0
 - Add `o3` and `o4-mini` models.
 - API update.
