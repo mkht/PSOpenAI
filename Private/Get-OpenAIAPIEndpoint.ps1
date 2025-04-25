@@ -249,6 +249,16 @@ function Get-OpenAIAPIEndpoint {
             }
             continue
         }
+        'Responses.InputItems' {
+            $UriBuilder.Path += 'responses/{0}/input_items'
+            @{
+                Name        = 'responses_input_items'
+                Method      = 'Get'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+            continue
+        }
         Default {
             Write-Error -Message ('{0} API endpoint is not provided by OpenAI' -f $_)
         }

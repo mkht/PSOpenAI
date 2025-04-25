@@ -287,6 +287,18 @@ function Get-AzureOpenAIAPIEndpoint {
             }
             continue
         }
+        'Responses.InputItems' {
+            $InnerApiVersion = if ($ApiVersion) { $ApiVersion }else { $DefaultApiVersion }
+            $UriBuilder.Path += 'openai/responses/{0}/input_items'
+            $UriBuilder.Query = ('api-version={0}' -f $InnerApiVersion)
+            @{
+                Name        = 'responses_input_items'
+                Method      = 'Get'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+            continue
+        }
         Default {
             Write-Error -Message ('{0} API endpoint is not provided by Azure OpenAI Service' -f $_)
         }
