@@ -1,5 +1,6 @@
 # Changelog
 ### Unreleased
+- Add `Connect-RealtimeTranscriptionSession` and `Set-RealtimeTranscriptionSessionConfiguration`.
 - Add `gpt-image-1` model support for `Request-ImageGeneration` and `Request-ImageEdit`.
 - Add Azure support for `Request-ImageEdit`. (Not fully tested.)
 - Update default Azure OpenAI API version to `2025-04-01-preview`.

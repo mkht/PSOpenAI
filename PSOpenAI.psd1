@@ -110,9 +110,11 @@
         'Wait-VectorStoreFileBatch',
         ### Realtime ###
         'Connect-RealtimeSession',
+        'Connect-RealtimeTranscriptionSession',
         'Disconnect-RealtimeSession',
         'Send-RealtimeSessionEvent',
         'Set-RealtimeSessionConfiguration',
+        'Set-RealtimeTranscriptionSessionConfiguration',
         'Add-RealtimeSessionItem',
         'Remove-RealtimeSessionItem',
         'Request-RealtimeSessionResponse',

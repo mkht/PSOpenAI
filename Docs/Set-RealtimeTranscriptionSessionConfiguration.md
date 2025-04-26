@@ -1,27 +1,23 @@
 ---
 external help file: PSOpenAI-help.xml
 Module Name: PSOpenAI
-online version: https://github.com/mkht/PSOpenAI/blob/main/Docs/Set-RealtimeSessionConfiguration.md
+online version: https://github.com/mkht/PSOpenAI/blob/main/Docs/Set-RealtimeTranscriptionSessionConfiguration.md
 schema: 2.0.0
 ---
 
-# Set-RealtimeSessionConfiguration
+# Set-RealtimeTranscriptionSessionConfiguration
 
 ## SYNOPSIS
-Set the realtime session's configuration.
+Set the realtime transcription session's configuration.
 
 ## SYNTAX
 
 ```
-Set-RealtimeSessionConfiguration
+Set-RealtimeTranscriptionSessionConfiguration
     [-EventId <String>]
-    [-Instructions <String>]
     [-Modalities <String[]>]
-    [-Voice <String>] 
     [-InputAudioFormat <String>]
-    [-OutputAudioFormat <String>]
     [-InputAudioNoiseReductionType <String>]
-    [-EnableInputAudioTranscription <Boolean>]
     [-InputAudioTranscriptionModel <String>]
     [-InputAudioTranscriptionLanguage <String>]
     [-InputAudioTranscriptionPrompt <String>]
@@ -33,37 +29,25 @@ Set-RealtimeSessionConfiguration
     [-TurnDetectionSilenceDuration <UInt16>]
     [-CreateResponseOnTurnEnd <Boolean>]
     [-InterruptResponse <Boolean>]
-    [-Tools <IDictionary[]>]
-    [-ToolChoice <String>]
-    [-Temperature <Single>]
-    [-MaxResponseOutputTokens <Int32>]
+    [-Include <Single[]>]
 ```
 
 ## DESCRIPTION
-Set the realtime session's configuration.
+Set the realtime transcription session's configuration.
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> Set-RealtimeSessionConfiguration `
-    -Modalities 'text','audio' `
-    -Voice 'shimmer' `
-    -EnableInputAudioTranscription $true `
+PS C:\> Set-RealtimeTranscriptionSessionConfiguration `
+    -InputAudioTranscriptionModel 'gpt-4o-transcribe'
+    -InputAudioTranscriptionLanguage 'de'
     -EnableTurnDetection $true
-    -Temperature 1.0
+    -TurnDetectionType 'server_vad'
+    -TurnDetectionThreshold 0.5
 ```
 
 ## PARAMETERS
-
-### -EnableInputAudioTranscription
-Enables input audio transcription.
-
-```yaml
-Type: Boolean
-Required: False
-Position: Named
-```
 
 ### -EnableTurnDetection
 Enables the server VAD mode. In this mode, the server will run voice activity detection (VAD) over the incoming audio and respond after the end of speech.
@@ -129,67 +113,12 @@ Required: False
 Position: Named
 ```
 
-### -Instructions
-The default system instructions (i.e. system message) prepended to model calls. This field allows the client to guide the model on desired responses.
-
-```yaml
-Type: String
-Required: False
-Position: Named
-```
-
-### -MaxResponseOutputTokens
-Maximum number of output tokens for a single assistant response. Provide an integer between 1 and 4096 to limit output tokens, or -1 for no limitations.
-
-```yaml
-Type: Int32
-Required: False
-Position: Named
-Default value: -1
-```
-
 ### -Modalities
 The set of modalities the model can respond with.
 
 ```yaml
 Type: String[]
 Accepted values: text, audio
-Required: False
-Position: Named
-```
-
-### -OutputAudioFormat
-The format of output audio. Options are `pcm16`, `g711_ulaw`, or `g711_alaw`.
-
-```yaml
-Type: String
-Required: False
-Position: Named
-```
-
-### -Temperature
-Sampling temperature for the model, limited to [0.6, 1.2].
-
-```yaml
-Type: Single
-Required: False
-Position: Named
-```
-
-### -ToolChoice
-How the model chooses tools. Options are `auto`, `none`, `required`, or specify a function.
-
-```yaml
-Type: String
-Required: False
-Position: Named
-```
-
-### -Tools
-Tools (functions) available to the model.
-
-```yaml
-Type: IDictionary[]
 Required: False
 Position: Named
 ```
@@ -242,7 +171,7 @@ Default value: auto
 ```
 
 ### -CreateResponseOnTurnEnd
-Whether or not to automatically generate a response when VAD is enabled. true by default.
+Not available for transcription sessions.
 
 ```yaml
 Type: Boolean
@@ -252,22 +181,13 @@ Default value: True
 ```
 
 ### -InterruptResponse
-Whether or not to automatically interrupt any ongoing response with output to the default conversation when a VAD start event occurs. true by default.
+Not available for transcription sessions.
 
 ```yaml
 Type: Boolean
 Required: False
 Position: Named
 Default value: True
-```
-
-### -Voice
-The voice the model uses to respond. Cannot be changed once the model has responded with audio at least once.
-
-```yaml
-Type: String
-Required: False
-Position: Named
 ```
 
 ## INPUTS
@@ -278,4 +198,4 @@ Position: Named
 
 ## RELATED LINKS
 
-[https://platform.openai.com/docs/api-reference/realtime-client-events/session/update](https://platform.openai.com/docs/api-reference/realtime-client-events/session/update)
+[https://platform.openai.com/docs/api-reference/realtime-client-events/transcription_session/update](https://platform.openai.com/docs/api-reference/realtime-client-events/transcription_session/update)

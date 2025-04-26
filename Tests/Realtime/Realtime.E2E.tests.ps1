@@ -44,11 +44,11 @@ Describe 'Realtime E2E Test' {
             }
 
             It 'STEP1: Connect to session' {
-                { Connect-RealtimeSession -Model 'gpt-4o-realtime-preview-2024-10-01' -ea Stop } | Should -Not -Throw
+                { Connect-RealtimeSession -Model 'gpt-4o-mini-realtime-preview-2024-12-17' -ea Stop } | Should -Not -Throw
             }
 
             It 'STEP1-1: Only one session is allowed' {
-                { Connect-RealtimeSession -Model 'gpt-4o-realtime-preview-2024-10-01' -ea Stop } | Should -Throw
+                { Connect-RealtimeSession -Model 'gpt-4o-mini-realtime-preview-2024-12-17' -ea Stop } | Should -Throw
             }
 
             It 'STEP2: Configure session' {
