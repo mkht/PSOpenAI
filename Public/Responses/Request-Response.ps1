@@ -146,7 +146,7 @@ function Request-Response {
         [string]$ComputerUseType = 'computer_use_preview', # Currently, only 'computer_use_preview' is acceptable.
 
         [Parameter()]
-        [Completions('browser', 'windows', 'mac', 'ubuntu')]
+        [Completions('browser', 'windows', 'mac', 'linux', 'ubuntu')]
         [string]$ComputerUseEnvironment,
 
         [Parameter()]
@@ -162,6 +162,7 @@ function Request-Response {
         [string]$PreviousResponseId,
 
         [Parameter()]
+        [Completions('file_search_call.results', 'message.input_image.image_url', 'computer_call_output.output.image_url', 'reasoning.encrypted_content')]
         [AllowEmptyCollection()]
         [string[]]$Include,
 
