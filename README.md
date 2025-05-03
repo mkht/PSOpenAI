@@ -99,8 +99,10 @@ Install-Module -Name PSOpenAI
 [Guide: How to use Realtime API](/Guides/How_to_use_Realtime_API.md)  
 
 + [Connect-RealtimeSession](/Docs/Connect-RealtimeSession.md)
++ [Connect-RealtimeTranscriptionSession](/Docs/Connect-RealtimeTranscriptionSession.md)
 + [Disconnect-RealtimeSession](/Docs/Disconnect-RealtimeSession.md)
 + [Set-RealtimeSessionCofiguration](/Docs/Set-RealtimeSessionCofiguration.md)
++ [Set-RealtimeTranscriptionSessionConfiguration](/Docs/Set-RealtimeTranscriptionSessionConfiguration.md)
 + [Send-RealtimeSessionEvent](/Docs/Send-RealtimeSessionEvent.md)
 + [Add-RealtimeSessionItem](/Docs/Add-RealtimeSessionItem.md)
 + [Remove-RealtimeSessionItem](/Docs/Remove-RealtimeSessionItem.md)
@@ -173,6 +175,7 @@ Quantum physics is a branch of science that deals with the behavior of ...
 ### Chat Completions
 
 The previous standard for generating text is the Chat Completions API. You can use that API to generate text from the model with the code below.  
+
 Chat Completions API is compatible with other AI services besides OpenAI, such as GitHub Models and Google Gemini. You can also use self-hosted local AI models with LM Studio or Ollama. That is explained in the Advanced section.
 
 ```PowerShell
@@ -378,7 +381,7 @@ Request-ChatCompletion `
 
 Almost all functions require an API key for authentication.  
 You need to sign-up OpenAI account and generates API key from here.  
-https://platform.openai.com/account/api-keys
+https://platform.openai.com/api-keys
 
 There are three ways to give an API key to functions.
 
