@@ -521,6 +521,7 @@ function Request-Response {
 
         # Specifies system messages (only if specified)
         $sysmsg = [pscustomobject]@{
+            type    = 'message'
             role    = 'system'
             content = @()
         }
@@ -535,6 +536,7 @@ function Request-Response {
 
         # Specifies developer messages (only if specified)
         $devmsg = [pscustomobject]@{
+            type    = 'message'
             role    = 'developer'
             content = @()
         }
@@ -549,6 +551,7 @@ function Request-Response {
 
         #region Add user messages
         $usermsg = [pscustomobject]@{
+            type    = 'message'
             role    = 'user'
             content = @()
         }
