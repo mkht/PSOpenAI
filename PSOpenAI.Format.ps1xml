@@ -77,7 +77,7 @@
         <TableHeaders>
           <TableColumnHeader>
             <Label>Type</Label>
-            <Width>10</Width>
+            <Width>16</Width>
           </TableColumnHeader>
           <TableColumnHeader>
             <Label>Role</Label>

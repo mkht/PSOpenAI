@@ -13,8 +13,6 @@ https://platform.openai.com/docs
 + About Azure OpenAI Service  
 https://learn.microsoft.com/en-us/azure/ai-services/openai/overview
 
-日本語版のREADMEは[こちら](/README.ja.md)
-
 ----
 ## Supported Platforms
 
@@ -23,7 +21,7 @@ https://learn.microsoft.com/en-us/azure/ai-services/openai/overview
 + Windows, macOS or Linux
 
 You need to sign-up OpenAI account and generates API key for authentication.  
-https://platform.openai.com/account/api-keys
+https://platform.openai.com/api-keys
 
 ----
 ## Installation
@@ -35,6 +33,9 @@ Install-Module -Name PSOpenAI
 
 ----
 ## Functions
+
+<details>
+<summary>The full list of functions</summary>
 
 ### Common
 + [ConvertFrom-Token](/Docs/ConvertFrom-Token.md)
@@ -146,62 +147,48 @@ Install-Module -Name PSOpenAI
 ### Azure OpenAI Service
 + [Guide: How to use with Azure OpenAI Service](Guides/How_to_use_with_Azure_OpenAI_Service.md)
 
+</details>
+
 ----
-## Usages
+## Usage
 
 See [Docs](/Docs) and [Guides](/Guides) for more detailed and complex scenario descriptions.
 
-### ChatGPT (Interactive)
+### Responses
 
-Communicate with ChatGPT interactively on the console.  
-
-```PowerShell
-$global:OPENAI_API_KEY = '<Put your API key here.>'
-Enter-ChatGPT
-```
-
-![Interactive Chat](/Docs/images/InteractiveChat.gif)
-
-
-### ChatGPT (Scripting)
-
-You can ask questions to ChatGPT.
+The primary method for interacting with OpenAI models. You can generate text from the model with the code below.
 
 ```PowerShell
-$global:OPENAI_API_KEY = '<Put your API key here.>'
-$Result = Request-ChatCompletion -Message "Who are you?"
-Write-Output $Result.Answer
+$env:OPENAI_API_KEY = '<Put your API key here.>'
+$Response = Request-Response -Model 'gpt-4o' -Message 'Explain quantum physics in simple terms.'
+Write-Output $Response.output_text
 ```
 
-This code outputs answer from ChatGPT
+This code outputs answer from model like this.
 
 ```
-I am an AI language model created by OpenAI, designed to assist with ...
+Quantum physics is a branch of science that deals with the behavior of ...
 ```
 
-> [!TIP]  
-> The default model used is GPT-3.5-Turbo.  
-> If you want to use other models such as GPT-4o, you can specifies model explicitly like this.  
-> ```PowerShell
-> Request-ChatCompletion -Message "Who are you?" -Model "gpt-4o"
-> ```
+### Chat Completions
 
+The previous standard for generating text is the Chat Completions API. You can use that API to generate text from the model with the code below.  
+Chat Completions API is compatible with other AI services besides OpenAI, such as GitHub Models and Google Gemini. You can also use self-hosted local AI models with LM Studio or Ollama. That is explained in the Advanced section.
+
+```PowerShell
+$env:OPENAI_API_KEY = '<Put your API key here.>'
+$Completion = Request-ChatCompletion -Model 'gpt-4o' -Message 'Give me a recipe for chocolate cake.'
+Write-Output $Completion.Answer[0]
+```
 
 ### Audio Speech (Text-to-Speech)
 
 Generates audio from the input text.
 
 ```PowerShell
-$global:OPENAI_API_KEY = '<Put your API key here.>'
-Request-AudioSpeech -Text 'Do something fun to play.' -OutFile 'C:\Output\text2speech.mp3' -Voice Onyx
+$env:OPENAI_API_KEY = '<Put your API key here.>'
+Request-AudioSpeech -Model 'gpt-4o-mini-tts' -Text 'Hello, My name is shimmer.' -OutFile 'C:\Output\text2speech.mp3' -Voice shimmer
 ```
-
-You can combine with ChatGPT.
-
-```PowerShell
-Request-ChatCompletion -Message "Who are you?" | Request-AudioSpeech -OutFile 'C:\Output\ChatAnswer.mp3' -Voice Nova
-```
-
 
 ### Audio transcription (Speech-to-Text)
 
@@ -209,63 +196,22 @@ Transcribes audio into the input language.
 
 ```PowerShell
 $global:OPENAI_API_KEY = '<Put your API key here.>'
-Request-AudioTranscription -File 'C:\SampleData\audio.mp3' -Format text
+Request-AudioTranscription -Model 'gpt-4o-transcribe' -File 'C:\SampleData\audio.mp3'
 ```
 
-This code transcribes voice in `C:\SampleData\audio.mp3`. Like this.
-
-```
-Perhaps he made up to the party afterwards and took her and ...
-```
-
-### Image generation (Text-to-Image)
+### Image generation
 
 Creating images from scratch based on a text prompt.
 
 ```PowerShell
 $global:OPENAI_API_KEY = '<Put your API key here.>'
-Request-ImageGeneration -Prompt 'A cute baby lion' -Model 'dall-e-2' -Size 256x256 -OutFile 'C:\output\babylion.png'
+Request-ImageGeneration -Model 'gpt-image-1' -Prompt 'A cute baby lion' -Size 1024x1024 -OutFile 'C:\output\babylion.png'
 ```
 
 This sample code saves image to `C:\output\babylion.png`.
 The saved image like this.
 
 ![Generated image](/Docs/images/babylion.png)
-
-
-### Multiple conversations with ChatGPT while keeping context.
-
-`Request-ChatCompletion` accepts past dialogs from pipeline. Additional questions can be asked while maintaining context.
-
-```PowerShell
-PS C:\> $FirstQA = Request-ChatCompletion -Message "What is the population of the United States?"
-PS C:\> Write-Output $FirstQA.Answer
-
-As of September 2021, the estimated population of the United States is around 331.4 million people.
-
-PS C:\> $SecondQA = $FirstQA | Request-ChatCompletion -Message "Translate the previous answer into French."
-PS C:\> Write-Output $SecondQA.Answer
-
-En septembre 2021, la population estimée des États-Unis est d'environ 331,4 millions de personnes.
-
-PS C:\> $ThirdQA = $SecondQA | Request-ChatCompletion -Message 'Please make it shorter.'
-PS C:\> Write-Output $ThirdQA.Answer
-
-La population des États-Unis est estimée à environ 331,4 millions de personnes.
-```
-
-### Stream completion outputs
-
-By default, results are output all at once after all OpenAI responses are complete, so it may take some time before results are available.
-
-To get responses sooner, you can use the `-Stream` option for `Request-ChatCompletion` and `Request-TextCompletion`. The results will be returned as a "stream". (similar to how ChatGPT WebUI displays)
-
-```PowerShell
-Request-ChatCompletion 'Describe ChatGPT in 100 charactors.' -Stream | Write-Host -NoNewline
-```
-
-![Stream](/Docs/images/StreamOutput.gif)
-
 
 ### Restore masked images
 
@@ -298,6 +244,131 @@ self-harm        : False
 sexual/minors    : False
 hate/threatening : False
 violence/graphic : False
+```
+
+### List available models
+
+Get a list of available models.
+
+```PowerShell
+$Models = Get-OpenAIModels
+```
+
+### Realtime (Beta)
+
+The Realtime API enables you to communicate with AI models live, in real time experiences.
+
+Here's a basic text-based example. For more detailed usage, please refer to the guide.
+[Guide: How to use Realtime API](/Guides/How_to_use_Realtime_API.md)
+
+```PowerShell
+$env:OPENAI_API_KEY = '<Put your API key here>'
+
+# Subscribe to events
+Register-EngineEvent -SourceIdentifier 'PSOpenAI.Realtime.ReceiveMessage' -Action {
+    $eventItem = $Event.SourceArgs[0]
+    switch ($eventItem.type) {
+        'response.text.delta' {
+            $eventItem.delta | Write-Host -NoNewLine -ForegroundColor Blue
+        }
+    }
+}
+
+# Connect to the Realtime session
+Connect-RealtimeSession -Model 'gpt-4o-realtime-preview'
+Set-RealtimeSessionConfiguration -Modalities 'text' -Instructions 'You are a science tutor.'
+
+# Send messages to the AI model
+Add-RealtimeSessionItem -Message 'Why does the sun rise in the east and set in the west?' -TriggerResponse
+
+# Disconnect
+Disconnect-RealtimeSession
+```
+
+----
+## Advanced
+
+### Multiple conversations keeping context.
+
+`Request-Response` and `Request-ChatCompletion` accepts past dialogs from pipeline. Additional questions can be asked while maintaining context.
+
+```PowerShell
+PS C:\> $FirstQA = Request-ChatCompletion -Model 'gpt-4.1-nano' -Message 'What is the population of the United States?'
+PS C:\> Write-Output $FirstQA.Answer
+
+As of October 2023, the estimated population of the United States is approximately 336 million people.
+
+PS C:\> $SecondQA = $FirstQA | Request-ChatCompletion -Message 'Translate the previous answer into French.'
+PS C:\> Write-Output $SecondQA.Answer
+
+En octobre 2023, la population estimée des États-Unis est d'environ 336 millions de personnes.
+
+PS C:\> $ThirdQA = $SecondQA | Request-ChatCompletion -Message 'Just tell me the number.'
+PS C:\> Write-Output $ThirdQA.Answer
+
+336 millions
+```
+
+### Streaming responses
+
+By default, results are output all at once after all responses are complete, so it may take some time before results are available. To get responses sooner, you can use the `-Stream` option for `Request-ChatCompletion` and `Request-Response`
+
+```PowerShell
+Request-ChatCompletion 'Describe ChatGPT in 100 charactors.' -Stream | Write-Host -NoNewline
+```
+
+![Stream](/Docs/images/StreamOutput.gif)
+
+
+### Vision (Image input)
+
+You can input images to the model and get answers.
+
+```PowerShell
+# Local file
+$Response = Request-Response -Model 'o4-mini' -Images 'C:\SampleData\donut.png' -Message 'How many donuts are there?'
+
+# Remote URL
+$Response = Request-Response -Model 'o4-mini' -Images 'https://upload.wikimedia.org/wikipedia/commons/5/5f/Cerro_El_%C3%81vila_desde_El_Bosque_-_Caracas.jpg' -Message 'Where is this?'
+```
+
+### Web Search
+
+Allow models to search the web for the latest information before generating a response.
+
+```PowerShell
+$Response = Request-Response -Model 'gpt-4.1' -Message 'What was a tech news in Merch 2025?' -UseWebSearch
+```
+
+### Azure OpenAI Service
+
+If you want to use Azure OpenAI Service instead of OpenAI. You should create Azure OpenAI resource to your Azure tenant, and get API key and endpoint url. See guides for more details.
+
++ [Guide: How to use with Azure OpenAI Service](Guides/How_to_use_with_Azure_OpenAI_Service.md)
+
+```powershell
+$global:OPENAI_API_KEY = '<Put your api key here>'
+$global:OPENAI_API_BASE  = 'https://<resource-name>.openai.azure.com/'
+
+Request-ChatCompletion `
+  -Model 'gpt-4o' `
+  -Message 'Hello Azure OpenAI Service.' `
+  -ApiType Azure
+```
+
+### OpenAI Compatible Servers
+
+If you want to use OpenAI compatible services such as GitHub Models, Google Gemini, self-hosted servers like LM Studio or Ollama.
+
+```powershell
+# This is an example for GitHub Models.
+$global:OPENAI_API_KEY = '<Put your GITHUB_TOKEN>'
+$global:OPENAI_API_BASE  = 'https://models.github.ai/inference'
+
+Request-ChatCompletion `
+  -Model 'microsoft/Phi-4-reasoning' `
+  -Message 'What is the capital of France?' `
+  -ApiType OpenAI
 ```
 
 ----
@@ -334,22 +405,6 @@ This is best used when the function is called only once or with few calls, such 
 
 ```PowerShell
 PS C:> Request-ChatCompletion -Message "Who are you?" -ApiKey '<Put your API key here.>'
-```
-
-## Azure OpenAI Service
-If you want to use Azure OpenAI Service instead of OpenAI. You should create Azure OpenAI resource to your Azure tenant, and get API key and endpoint url. See guides for more details.
-
-+ [Guide: How to use with Azure OpenAI Service](Guides/How_to_use_with_Azure_OpenAI_Service.md)
-
-### Sample code for Azure
-```powershell
-$global:OPENAI_API_KEY = '<Put your api key here>'
-$global:OPENAI_API_BASE  = 'https://<resource-name>.openai.azure.com/'
-
-Request-ChatCompletion `
-  -Message 'Hello Azure OpenAI Service.' `
-  -Model 'gpt-4o' `
-  -ApiType Azure
 ```
 
 ----
