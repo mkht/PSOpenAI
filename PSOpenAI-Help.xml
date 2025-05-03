@@ -1812,6 +1812,164 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
   </command:command>
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
     <command:details>
+      <command:name>Connect-RealtimeTranscriptionSession</command:name>
+      <command:verb>Connect</command:verb>
+      <command:noun>RealtimeTranscriptionSession</command:noun>
+      <maml:description>
+        <maml:para>Create a new OpenAI realtime transcription session.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>Create a new realtime transcription session. This technically means connecting to the WebSocket endpoint provided by the OpenAI Realtime API.</maml:para>
+      <maml:para>Once the session is opened, the connection will continue until it is disconnected from the server side or a DisConnect-RealtimeSession is executed. You always need run DisConnect-RealtimeSession when you are finished conversation.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Connect-RealtimeTranscriptionSession</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>ApiBase</maml:name>
+          <maml:description>
+            <maml:para>Specifies an API endpoint URL such like: `https://your-api-endpoint.test/v1`
+If not specified, it will use `https://api.openai.com/v1`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Uri</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>https://api.openai.com/v1</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>ApiKey</maml:name>
+          <maml:description>
+            <maml:para>Specifies API key for authentication.
+The type of data should `[string]` or `[securestring]`.
+If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_API_KEY`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
+          <dev:type>
+            <maml:name>Object</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>ApiType</maml:name>
+          <maml:description>
+            <maml:para>Specifies API type of use. `OpenAI`(default) or `Azure`</maml:para>
+          </maml:description>
+          <command:parameterValueGroup>
+            <command:parameterValue required="false" command:variableLength="false">OpenAI</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">Azure</command:parameterValue>
+          </command:parameterValueGroup>
+          <command:parameterValue required="true" variableLength="false">OpenAIApiType</command:parameterValue>
+          <dev:type>
+            <maml:name>OpenAIApiType</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>OpenAI</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>AuthType</maml:name>
+          <maml:description>
+            <maml:para>If you wish to use Entra-ID based authentication, specifies as `azure_ad`.</maml:para>
+          </maml:description>
+          <command:parameterValueGroup>
+            <command:parameterValue required="false" command:variableLength="false">openai</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">azure</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">azure_ad</command:parameterValue>
+          </command:parameterValueGroup>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>ApiBase</maml:name>
+        <maml:description>
+          <maml:para>Specifies an API endpoint URL such like: `https://your-api-endpoint.test/v1`
+If not specified, it will use `https://api.openai.com/v1`</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
+        <dev:type>
+          <maml:name>System.Uri</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>https://api.openai.com/v1</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>ApiKey</maml:name>
+        <maml:description>
+          <maml:para>Specifies API key for authentication.
+The type of data should `[string]` or `[securestring]`.
+If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_API_KEY`</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
+        <dev:type>
+          <maml:name>Object</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>ApiType</maml:name>
+        <maml:description>
+          <maml:para>Specifies API type of use. `OpenAI`(default) or `Azure`</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">OpenAIApiType</command:parameterValue>
+        <dev:type>
+          <maml:name>OpenAIApiType</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>OpenAI</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>AuthType</maml:name>
+        <maml:description>
+          <maml:para>If you wish to use Entra-ID based authentication, specifies as `azure_ad`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes />
+    <command:returnValues />
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; Connect-RealtimeTranscriptionSession</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Connect-RealtimeTranscriptionSession.md</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>https://platform.openai.com/docs/guides/realtime-transcription</maml:linkText>
+        <maml:uri>https://platform.openai.com/docs/guides/realtime-transcription</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
       <command:name>ConvertFrom-Token</command:name>
       <command:verb>ConvertFrom</command:verb>
       <command:noun>Token</command:noun>
@@ -5023,6 +5181,515 @@ created    : 2023/02/28 18:56:42</dev:code>
       <maml:navigationLink>
         <maml:linkText>https://platform.openai.com/docs/api-reference/models/list</maml:linkText>
         <maml:uri>https://platform.openai.com/docs/api-reference/models/list</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Get-Response</command:name>
+      <command:verb>Get</command:verb>
+      <command:noun>Response</command:noun>
+      <maml:description>
+        <maml:para>Retrieves a model response with the given ID.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>Retrieves a model response with the given ID.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Get-Response</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="response_id, Id">
+          <maml:name>ResponseId</maml:name>
+          <maml:description>
+            <maml:para>The ID of the response to retrieve.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>TimeoutSec</maml:name>
+          <maml:description>
+            <maml:para>Specifies how long the request can be pending before it times out.
+The default value is `0` (infinite).</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>0</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>MaxRetryCount</maml:name>
+          <maml:description>
+            <maml:para>Number between `0` and `100`.
+Specifies the maximum number of retries if the request fails.
+The default value is `0` (No retry).
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>0</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>ApiBase</maml:name>
+          <maml:description>
+            <maml:para>Specifies an API endpoint URL such like: `https://your-api-endpoint.test/v1`
+If not specified, it will use `https://api.openai.com/v1`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Uri</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>https://api.openai.com/v1</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>ApiKey</maml:name>
+          <maml:description>
+            <maml:para>Specifies API key for authentication.
+The type of data should `[string]` or `[securestring]`.
+If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_API_KEY`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
+          <dev:type>
+            <maml:name>Object</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="OrgId">
+          <maml:name>Organization</maml:name>
+          <maml:description>
+            <maml:para>Specifies Organization ID which used for an API request.
+If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPENAI_ORGANIZATION`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+          <dev:type>
+            <maml:name>string</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="response_id, Id">
+        <maml:name>ResponseId</maml:name>
+        <maml:description>
+          <maml:para>The ID of the response to retrieve.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>TimeoutSec</maml:name>
+        <maml:description>
+          <maml:para>Specifies how long the request can be pending before it times out.
+The default value is `0` (infinite).</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>0</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>MaxRetryCount</maml:name>
+        <maml:description>
+          <maml:para>Number between `0` and `100`.
+Specifies the maximum number of retries if the request fails.
+The default value is `0` (No retry).
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>0</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>ApiBase</maml:name>
+        <maml:description>
+          <maml:para>Specifies an API endpoint URL such like: `https://your-api-endpoint.test/v1`
+If not specified, it will use `https://api.openai.com/v1`</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
+        <dev:type>
+          <maml:name>System.Uri</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>https://api.openai.com/v1</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>ApiKey</maml:name>
+        <maml:description>
+          <maml:para>Specifies API key for authentication.
+The type of data should `[string]` or `[securestring]`.
+If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_API_KEY`</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
+        <dev:type>
+          <maml:name>Object</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="OrgId">
+        <maml:name>Organization</maml:name>
+        <maml:description>
+          <maml:para>Specifies Organization ID which used for an API request.
+If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPENAI_ORGANIZATION`</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+        <dev:type>
+          <maml:name>string</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes />
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>PSCustomObject</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; Get-Response -ResponseId "resp_abcd123"</dev:code>
+        <dev:remarks>
+          <maml:para>Get a response with the specified ID.</maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Get-Response.md</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>https://platform.openai.com/docs/api-reference/responses/get</maml:linkText>
+        <maml:uri>https://platform.openai.com/docs/api-reference/responses/get</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Get-ResponseInputItem</command:name>
+      <command:verb>Get</command:verb>
+      <command:noun>ResponseInputItem</command:noun>
+      <maml:description>
+        <maml:para>Lists or Retrieves an input items for a given response.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>Lists or Retrieves a Message of the Thread.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Get-ResponseInputItem</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="response_id, Id">
+          <maml:name>ResponseId</maml:name>
+          <maml:description>
+            <maml:para>The ID of the response to retrieve input items for.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Limit</maml:name>
+          <maml:description>
+            <maml:para>A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is 20.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>20</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>All</maml:name>
+          <maml:description>
+            <maml:para>When this switch is specified, all objects will be retrieved.</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Order</maml:name>
+          <maml:description>
+            <maml:para>The order to return the input items in. `asc` for ascending order and `desc` for descending order. The default is `asc`</maml:para>
+          </maml:description>
+          <command:parameterValueGroup>
+            <command:parameterValue required="false" command:variableLength="false">asc</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">desc</command:parameterValue>
+          </command:parameterValueGroup>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>asc</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>TimeoutSec</maml:name>
+          <maml:description>
+            <maml:para>Specifies how long the request can be pending before it times out.
+The default value is `0` (infinite).</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>0</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>MaxRetryCount</maml:name>
+          <maml:description>
+            <maml:para>Number between `0` and `100`.
+Specifies the maximum number of retries if the request fails.
+The default value is `0` (No retry).
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>0</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>ApiBase</maml:name>
+          <maml:description>
+            <maml:para>Specifies an API endpoint URL such like: `https://your-api-endpoint.test/v1`
+If not specified, it will use `https://api.openai.com/v1`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Uri</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>https://api.openai.com/v1</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>ApiKey</maml:name>
+          <maml:description>
+            <maml:para>Specifies API key for authentication.
+The type of data should `[string]` or `[securestring]`.
+If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_API_KEY`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
+          <dev:type>
+            <maml:name>Object</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="OrgId">
+          <maml:name>Organization</maml:name>
+          <maml:description>
+            <maml:para>Specifies Organization ID which used for an API request.
+If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPENAI_ORGANIZATION`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+          <dev:type>
+            <maml:name>string</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="response_id, Id">
+        <maml:name>ResponseId</maml:name>
+        <maml:description>
+          <maml:para>The ID of the response to retrieve input items for.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Limit</maml:name>
+        <maml:description>
+          <maml:para>A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is 20.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>20</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>All</maml:name>
+        <maml:description>
+          <maml:para>When this switch is specified, all objects will be retrieved.</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Order</maml:name>
+        <maml:description>
+          <maml:para>The order to return the input items in. `asc` for ascending order and `desc` for descending order. The default is `asc`</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>asc</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>TimeoutSec</maml:name>
+        <maml:description>
+          <maml:para>Specifies how long the request can be pending before it times out.
+The default value is `0` (infinite).</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>0</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>MaxRetryCount</maml:name>
+        <maml:description>
+          <maml:para>Number between `0` and `100`.
+Specifies the maximum number of retries if the request fails.
+The default value is `0` (No retry).
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>0</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>ApiBase</maml:name>
+        <maml:description>
+          <maml:para>Specifies an API endpoint URL such like: `https://your-api-endpoint.test/v1`
+If not specified, it will use `https://api.openai.com/v1`</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
+        <dev:type>
+          <maml:name>System.Uri</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>https://api.openai.com/v1</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>ApiKey</maml:name>
+        <maml:description>
+          <maml:para>Specifies API key for authentication.
+The type of data should `[string]` or `[securestring]`.
+If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_API_KEY`</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
+        <dev:type>
+          <maml:name>Object</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="OrgId">
+        <maml:name>Organization</maml:name>
+        <maml:description>
+          <maml:para>Specifies Organization ID which used for an API request.
+If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPENAI_ORGANIZATION`</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+        <dev:type>
+          <maml:name>string</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes />
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>PSCustomObject</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; Get-ResponseInputItem -ResponseId 'resp_abc123' -All</dev:code>
+        <dev:remarks>
+          <maml:para>List all input items associated with the response.</maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Get-ResponseInputItem.md</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>https://platform.openai.com/docs/api-reference/responses/input-itemss</maml:linkText>
+        <maml:uri>https://platform.openai.com/docs/api-reference/responses/input-itemss</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -10864,6 +11531,240 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
   </command:command>
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
     <command:details>
+      <command:name>Remove-Response</command:name>
+      <command:verb>Remove</command:verb>
+      <command:noun>Response</command:noun>
+      <maml:description>
+        <maml:para>Deletes a model response with the given ID.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>Deletes a model response with the given ID.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Remove-Response</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="response_id, Id">
+          <maml:name>ResponseId</maml:name>
+          <maml:description>
+            <maml:para>The ID of the response to delete.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>TimeoutSec</maml:name>
+          <maml:description>
+            <maml:para>Specifies how long the request can be pending before it times out.
+The default value is `0` (infinite).</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>0</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>TimeoutSec</maml:name>
+          <maml:description>
+            <maml:para>Specifies how long the request can be pending before it times out.
+The default value is `0` (infinite).</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>0</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>MaxRetryCount</maml:name>
+          <maml:description>
+            <maml:para>Number between `0` and `100`.
+Specifies the maximum number of retries if the request fails.
+The default value is `0` (No retry).
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>0</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>ApiBase</maml:name>
+          <maml:description>
+            <maml:para>Specifies an API endpoint URL such like: `https://your-api-endpoint.test/v1`
+If not specified, it will use `https://api.openai.com/v1`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Uri</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>https://api.openai.com/v1</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>ApiKey</maml:name>
+          <maml:description>
+            <maml:para>Specifies API key for authentication.
+The type of data should `[string]` or `[securestring]`.
+If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_API_KEY`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
+          <dev:type>
+            <maml:name>Object</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="OrgId">
+          <maml:name>Organization</maml:name>
+          <maml:description>
+            <maml:para>Specifies Organization ID which used for an API request.
+If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPENAI_ORGANIZATION`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+          <dev:type>
+            <maml:name>string</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="response_id, Id">
+        <maml:name>ResponseId</maml:name>
+        <maml:description>
+          <maml:para>The ID of the response to delete.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>TimeoutSec</maml:name>
+        <maml:description>
+          <maml:para>Specifies how long the request can be pending before it times out.
+The default value is `0` (infinite).</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>0</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>TimeoutSec</maml:name>
+        <maml:description>
+          <maml:para>Specifies how long the request can be pending before it times out.
+The default value is `0` (infinite).</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>0</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>MaxRetryCount</maml:name>
+        <maml:description>
+          <maml:para>Number between `0` and `100`.
+Specifies the maximum number of retries if the request fails.
+The default value is `0` (No retry).
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>0</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>ApiBase</maml:name>
+        <maml:description>
+          <maml:para>Specifies an API endpoint URL such like: `https://your-api-endpoint.test/v1`
+If not specified, it will use `https://api.openai.com/v1`</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
+        <dev:type>
+          <maml:name>System.Uri</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>https://api.openai.com/v1</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>ApiKey</maml:name>
+        <maml:description>
+          <maml:para>Specifies API key for authentication.
+The type of data should `[string]` or `[securestring]`.
+If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_API_KEY`</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
+        <dev:type>
+          <maml:name>Object</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="OrgId">
+        <maml:name>Organization</maml:name>
+        <maml:description>
+          <maml:para>Specifies Organization ID which used for an API request.
+If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPENAI_ORGANIZATION`</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+        <dev:type>
+          <maml:name>string</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes />
+    <command:returnValues />
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; Remove-Response -ResponseId 'resp_abc123'</dev:code>
+        <dev:remarks>
+          <maml:para>Remove a response has the ID `resp_abc123`</maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Remove-Response.md</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>https://platform.openai.com/docs/api-reference/responses/delete</maml:linkText>
+        <maml:uri>https://platform.openai.com/docs/api-reference/responses/delete</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
       <command:name>Remove-Thread</command:name>
       <command:verb>Remove</command:verb>
       <command:noun>Thread</command:noun>
@@ -14723,7 +15624,7 @@ Text      : Waiter, the food was delicious...</dev:code>
     </command:details>
     <maml:description>
       <maml:para>Creates an edited or extended image given an original image and a prompt.
-https://platform.openai.com/docs/guides/images/image-generation</maml:para>
+https://platform.openai.com/docs/guides/image-generation</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -14737,12 +15638,11 @@ https://platform.openai.com/docs/guides/images/image-generation</maml:para>
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="File">
           <maml:name>Image</maml:name>
           <maml:description>
-            <maml:para>(Required) The image to edit.
-Must be a valid PNG file, less than 4MB, and square. If mask is not provided, image must have transparency, which will be used as the mask.</maml:para>
+            <maml:para>(Required) The image(s) to edit. Must be a supported image file or an array of images. For gpt-image-1, each image should be a png, webp, or jpg file less than 25MB. For dall-e-2, you can only provide one image, and it should be a square png file less than 4MB.</maml:para>
           </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>String[]</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -14750,8 +15650,7 @@ Must be a valid PNG file, less than 4MB, and square. If mask is not provided, im
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>Prompt</maml:name>
           <maml:description>
-            <maml:para>(Required) A text description of the desired image(s).
-The maximum length is 1000 characters.</maml:para>
+            <maml:para>(Required) A text description of the desired image(s). The maximum length is 1000 characters for dall-e-2, and 32000 characters for gpt-image-1.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -14763,8 +15662,19 @@ The maximum length is 1000 characters.</maml:para>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>Mask</maml:name>
           <maml:description>
-            <maml:para>An additional image whose fully transparent areas (e.g. where alpha is zero) indicate where image should be edited.
-Must be a valid PNG file, less than 4MB, and have the same dimensions as image.</maml:para>
+            <maml:para>An additional image whose fully transparent areas (e.g. where alpha is zero) indicate where image should be edited. If there are multiple images provided, the mask will be applied on the first image. Must be a valid PNG file, less than 4MB, and have the same dimensions as image.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Model</maml:name>
+          <maml:description>
+            <maml:para>The model to use for image generation. Only dall-e-2 and gpt-image-1 are supported. Defaults to dall-e-2 unless a parameter specific to gpt-image-1 is used.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -14776,8 +15686,7 @@ Must be a valid PNG file, less than 4MB, and have the same dimensions as image.<
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="n">
           <maml:name>NumberOfImages</maml:name>
           <maml:description>
-            <maml:para>The number of images to generate.
-Must be between `1` and `10`. The default value is `1`.</maml:para>
+            <maml:para>The number of images to generate. Must be between 1 and 10.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">UInt16</command:parameterValue>
           <dev:type>
@@ -14787,30 +15696,51 @@ Must be between `1` and `10`. The default value is `1`.</maml:para>
           <dev:defaultValue>1</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Quality</maml:name>
+          <maml:description>
+            <maml:para>The quality of the image that will be generated. high, medium and low are only supported for gpt-image-1. dall-e-2 only supports standard quality. Defaults to auto.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>auto</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>Size</maml:name>
           <maml:description>
-            <maml:para>The size of the generated images.
-Must be one of `256x256`, `512x512`, or `1024x1024`. The default value is `1024x1024`.</maml:para>
+            <maml:para>The size of the generated images. Must be one of `1024x1024`, `1536x1024` (landscape), `1024x1536` (portrait), or `auto` (default value) for gpt-image-1, and one of `256x256`, `512x512`, or `1024x1024` for dall-e-2.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
             <maml:name>String</maml:name>
             <maml:uri />
           </dev:type>
-          <dev:defaultValue>1024x1024</dev:defaultValue>
+          <dev:defaultValue>auto</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="response_format">
-          <maml:name>Format</maml:name>
+          <maml:name>ResponseFormat</maml:name>
           <maml:description>
-            <maml:para>The format in which the generated images are returned.
-Must be one of `url`, `base64` or `byte`.</maml:para>
+            <maml:para>The format in which the generated images are returned. Must be one of `url`, `base64` or `byte`. gpt-image-1 only supports `base64`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
             <maml:name>String</maml:name>
             <maml:uri />
           </dev:type>
-          <dev:defaultValue>url</dev:defaultValue>
+          <dev:defaultValue>base64</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>OutputRawResponse</maml:name>
+          <maml:description>
+            <maml:para>If specifies this switch, an output of this function to be a raw response value from the API. (Normally JSON formatted string.)</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>User</maml:name>
@@ -14898,12 +15828,11 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="File">
           <maml:name>Image</maml:name>
           <maml:description>
-            <maml:para>(Required) The image to edit.
-Must be a valid PNG file, less than 4MB, and square. If mask is not provided, image must have transparency, which will be used as the mask.</maml:para>
+            <maml:para>(Required) The image(s) to edit. Must be a supported image file or an array of images. For gpt-image-1, each image should be a png, webp, or jpg file less than 25MB. For dall-e-2, you can only provide one image, and it should be a square png file less than 4MB.</maml:para>
           </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>String[]</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -14911,8 +15840,7 @@ Must be a valid PNG file, less than 4MB, and square. If mask is not provided, im
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>Prompt</maml:name>
           <maml:description>
-            <maml:para>(Required) A text description of the desired image(s).
-The maximum length is 1000 characters.</maml:para>
+            <maml:para>(Required) A text description of the desired image(s). The maximum length is 1000 characters for dall-e-2, and 32000 characters for gpt-image-1.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -14924,8 +15852,19 @@ The maximum length is 1000 characters.</maml:para>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>Mask</maml:name>
           <maml:description>
-            <maml:para>An additional image whose fully transparent areas (e.g. where alpha is zero) indicate where image should be edited.
-Must be a valid PNG file, less than 4MB, and have the same dimensions as image.</maml:para>
+            <maml:para>An additional image whose fully transparent areas (e.g. where alpha is zero) indicate where image should be edited. If there are multiple images provided, the mask will be applied on the first image. Must be a valid PNG file, less than 4MB, and have the same dimensions as image.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Model</maml:name>
+          <maml:description>
+            <maml:para>The model to use for image generation. Only dall-e-2 and gpt-image-1 are supported. Defaults to dall-e-2 unless a parameter specific to gpt-image-1 is used.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -14937,8 +15876,7 @@ Must be a valid PNG file, less than 4MB, and have the same dimensions as image.<
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="n">
           <maml:name>NumberOfImages</maml:name>
           <maml:description>
-            <maml:para>The number of images to generate.
-Must be between `1` and `10`. The default value is `1`.</maml:para>
+            <maml:para>The number of images to generate. Must be between 1 and 10.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">UInt16</command:parameterValue>
           <dev:type>
@@ -14948,23 +15886,33 @@ Must be between `1` and `10`. The default value is `1`.</maml:para>
           <dev:defaultValue>1</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>Size</maml:name>
+          <maml:name>Quality</maml:name>
           <maml:description>
-            <maml:para>The size of the generated images.
-Must be one of `256x256`, `512x512`, or `1024x1024`. The default value is `1024x1024`.</maml:para>
+            <maml:para>The quality of the image that will be generated. high, medium and low are only supported for gpt-image-1. dall-e-2 only supports standard quality. Defaults to auto.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
             <maml:name>String</maml:name>
             <maml:uri />
           </dev:type>
-          <dev:defaultValue>1024x1024</dev:defaultValue>
+          <dev:defaultValue>auto</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Size</maml:name>
+          <maml:description>
+            <maml:para>The size of the generated images. Must be one of `1024x1024`, `1536x1024` (landscape), `1024x1536` (portrait), or `auto` (default value) for gpt-image-1, and one of `256x256`, `512x512`, or `1024x1024` for dall-e-2.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>auto</dev:defaultValue>
         </command:parameter>
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>OutFile</maml:name>
           <maml:description>
-            <maml:para>Specify the file path where the generated images will be saved.
-This cannot be specified with the `Format` parameter. Also, `NumberOfImages` must be `1`.</maml:para>
+            <maml:para>Specify the file path where the generated images will be saved. This cannot be specified with the `ResponseFormat` parameter.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -15059,12 +16007,11 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="File">
         <maml:name>Image</maml:name>
         <maml:description>
-          <maml:para>(Required) The image to edit.
-Must be a valid PNG file, less than 4MB, and square. If mask is not provided, image must have transparency, which will be used as the mask.</maml:para>
+          <maml:para>(Required) The image(s) to edit. Must be a supported image file or an array of images. For gpt-image-1, each image should be a png, webp, or jpg file less than 25MB. For dall-e-2, you can only provide one image, and it should be a square png file less than 4MB.</maml:para>
         </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>String[]</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -15072,8 +16019,7 @@ Must be a valid PNG file, less than 4MB, and square. If mask is not provided, im
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>Prompt</maml:name>
         <maml:description>
-          <maml:para>(Required) A text description of the desired image(s).
-The maximum length is 1000 characters.</maml:para>
+          <maml:para>(Required) A text description of the desired image(s). The maximum length is 1000 characters for dall-e-2, and 32000 characters for gpt-image-1.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -15085,8 +16031,19 @@ The maximum length is 1000 characters.</maml:para>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>Mask</maml:name>
         <maml:description>
-          <maml:para>An additional image whose fully transparent areas (e.g. where alpha is zero) indicate where image should be edited.
-Must be a valid PNG file, less than 4MB, and have the same dimensions as image.</maml:para>
+          <maml:para>An additional image whose fully transparent areas (e.g. where alpha is zero) indicate where image should be edited. If there are multiple images provided, the mask will be applied on the first image. Must be a valid PNG file, less than 4MB, and have the same dimensions as image.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Model</maml:name>
+        <maml:description>
+          <maml:para>The model to use for image generation. Only dall-e-2 and gpt-image-1 are supported. Defaults to dall-e-2 unless a parameter specific to gpt-image-1 is used.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -15098,8 +16055,7 @@ Must be a valid PNG file, less than 4MB, and have the same dimensions as image.<
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="n">
         <maml:name>NumberOfImages</maml:name>
         <maml:description>
-          <maml:para>The number of images to generate.
-Must be between `1` and `10`. The default value is `1`.</maml:para>
+          <maml:para>The number of images to generate. Must be between 1 and 10.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">UInt16</command:parameterValue>
         <dev:type>
@@ -15109,36 +16065,57 @@ Must be between `1` and `10`. The default value is `1`.</maml:para>
         <dev:defaultValue>1</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Quality</maml:name>
+        <maml:description>
+          <maml:para>The quality of the image that will be generated. high, medium and low are only supported for gpt-image-1. dall-e-2 only supports standard quality. Defaults to auto.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>auto</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>Size</maml:name>
         <maml:description>
-          <maml:para>The size of the generated images.
-Must be one of `256x256`, `512x512`, or `1024x1024`. The default value is `1024x1024`.</maml:para>
+          <maml:para>The size of the generated images. Must be one of `1024x1024`, `1536x1024` (landscape), `1024x1536` (portrait), or `auto` (default value) for gpt-image-1, and one of `256x256`, `512x512`, or `1024x1024` for dall-e-2.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
           <maml:name>String</maml:name>
           <maml:uri />
         </dev:type>
-        <dev:defaultValue>1024x1024</dev:defaultValue>
+        <dev:defaultValue>auto</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="response_format">
-        <maml:name>Format</maml:name>
+        <maml:name>ResponseFormat</maml:name>
         <maml:description>
-          <maml:para>The format in which the generated images are returned.
-Must be one of `url`, `base64` or `byte`.</maml:para>
+          <maml:para>The format in which the generated images are returned. Must be one of `url`, `base64` or `byte`. gpt-image-1 only supports `base64`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
           <maml:name>String</maml:name>
           <maml:uri />
         </dev:type>
-        <dev:defaultValue>url</dev:defaultValue>
+        <dev:defaultValue>base64</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>OutputRawResponse</maml:name>
+        <maml:description>
+          <maml:para>If specifies this switch, an output of this function to be a raw response value from the API. (Normally JSON formatted string.)</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
       </command:parameter>
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>OutFile</maml:name>
         <maml:description>
-          <maml:para>Specify the file path where the generated images will be saved.
-This cannot be specified with the `Format` parameter. Also, `NumberOfImages` must be `1`.</maml:para>
+          <maml:para>Specify the file path where the generated images will be saved. This cannot be specified with the `ResponseFormat` parameter.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -15229,40 +16206,7 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
       </command:parameter>
     </command:parameters>
     <command:inputTypes />
-    <command:returnValues>
-      <command:returnValue>
-        <dev:type>
-          <maml:name>Format = url    : string or array of string</maml:name>
-        </dev:type>
-        <maml:description>
-          <maml:para></maml:para>
-        </maml:description>
-      </command:returnValue>
-      <command:returnValue>
-        <dev:type>
-          <maml:name>Format = base64 : Generated image data represented in base64 string.</maml:name>
-        </dev:type>
-        <maml:description>
-          <maml:para></maml:para>
-        </maml:description>
-      </command:returnValue>
-      <command:returnValue>
-        <dev:type>
-          <maml:name>Format = byte   : Byte array of generated image.</maml:name>
-        </dev:type>
-        <maml:description>
-          <maml:para></maml:para>
-        </maml:description>
-      </command:returnValue>
-      <command:returnValue>
-        <dev:type>
-          <maml:name>OutFile         : Nothing.</maml:name>
-        </dev:type>
-        <maml:description>
-          <maml:para></maml:para>
-        </maml:description>
-      </command:returnValue>
-    </command:returnValues>
+    <command:returnValues />
     <maml:alertSet>
       <maml:alert>
         <maml:para></maml:para>
@@ -15271,14 +16215,14 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
     <command:examples>
       <command:example>
         <maml:title>--------------- Example 1: Restore masked image. ---------------</maml:title>
-        <dev:code>Request-ImageEdit -Image C:\sunflower_mask.png -Prompt "sunflower" -OutFile C:\edit.png -Size 256x256</dev:code>
+        <dev:code>Request-ImageEdit -Model 'gpt-image-1' -Image C:\sunflower_mask.png -Prompt "sunflower" -OutFile C:\edit.png</dev:code>
         <dev:remarks>
           <maml:para>| Source (sunflower_mask.png)                  | Generated (edit.png)                             | | -------------------------------------------- | ------------------------------------------------ | | ! masked (/Docs/images/sunflower_masked.png) | ![restored](/Docs/images/sunflower_restored.png)|</maml:para>
         </dev:remarks>
       </command:example>
       <command:example>
         <maml:title>--- Example 2: Create variation image from source and mask. ---</maml:title>
-        <dev:code>Request-ImageEdit -Image C:\sand_with_feather.png -Mask C:\fether_mask.png -Prompt "A bird on the desert" -OutFile C:\edit2.png</dev:code>
+        <dev:code>Request-ImageEdit -Model 'gpt-image-1' -Image C:\sand_with_feather.png -Mask C:\fether_mask.png -Prompt "A bird on the desert" -OutFile C:\edit2.png</dev:code>
         <dev:remarks>
           <maml:para>| Source (sand_with_feather.png)                | Mask (fether_mask.png)                | Generated (edit2.png)               | | --------------------------------------------- | ------------------------------------- | ----------------------------------- | | ! masked (/Docs/images/sand_with_feather.png) | ![mask](/Docs/images/fether_mask.png) | ![restored](/Docs/images/edit2.png)|</maml:para>
         </dev:remarks>
@@ -15290,12 +16234,12 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Request-ImageEdit.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/guides/images/image-generation</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/guides/images/image-generation</maml:uri>
+        <maml:linkText>https://platform.openai.com/docs/guides/image-generation</maml:linkText>
+        <maml:uri>https://platform.openai.com/docs/guides/image-generation</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/images/create-edit</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/images/create-edit</maml:uri>
+        <maml:linkText>https://platform.openai.com/docs/api-reference/images/createEdit</maml:linkText>
+        <maml:uri>https://platform.openai.com/docs/api-reference/images/createEdit</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -15310,7 +16254,7 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
     </command:details>
     <maml:description>
       <maml:para>Creates an image given a prompt.
-https://platform.openai.com/docs/guides/images/image-generation</maml:para>
+https://platform.openai.com/docs/guides/image-generation</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -15324,8 +16268,7 @@ https://platform.openai.com/docs/guides/images/image-generation</maml:para>
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="none">
           <maml:name>Prompt</maml:name>
           <maml:description>
-            <maml:para>(Required) A text description of the desired image(s).
-</maml:para>
+            <maml:para>(Required) A text description of the desired image(s). The maximum length is 32000 characters for gpt-image-1, 1000 characters for dall-e-2 and 4000 characters for dall-e-3.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -15337,7 +16280,7 @@ https://platform.openai.com/docs/guides/images/image-generation</maml:para>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>Model</maml:name>
           <maml:description>
-            <maml:para>The model to use for image generation. The default is `dall-e-2`</maml:para>
+            <maml:para>The model to use for image generation. One of dall-e-2, dall-e-3, or gpt-image-1. Defaults to dall-e-2 unless a parameter specific to gpt-image-1 is used.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -15361,27 +16304,26 @@ https://platform.openai.com/docs/guides/images/image-generation</maml:para>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>Size</maml:name>
           <maml:description>
-            <maml:para>The size of the generated images. Must be one of `256x256`, `512x512`, or `1024x1024` for `dall-e-2`. Must be one of `1024x1024`, `1792x1024`, or `1024x1792` for `dall-e-3` models.
-The default value is `1024x1024`.</maml:para>
+            <maml:para>The size of the generated images. Must be one of `1024x1024`, `1536x1024` (landscape), `1024x1536` (portrait), or `auto` (default value) for gpt-image-1, one of `256x256`, `512x512`, or `1024x1024` for dall-e-2, and one of `1024x1024`, `1792x1024`, or `1024x1792` for dall-e-3.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
             <maml:name>String</maml:name>
             <maml:uri />
           </dev:type>
-          <dev:defaultValue>1024x1024</dev:defaultValue>
+          <dev:defaultValue>auto</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>Quality</maml:name>
           <maml:description>
-            <maml:para>The quality of the image that will be generated. `hd` creates images with finer details and greater consistency across the image. This param is only supported for `dall-e-3`.</maml:para>
+            <maml:para>The quality of the image that will be generated. `auto` (default value) will automatically select the best quality for the given model. high, medium and low are supported for gpt-image-1, hd and standard are supported for dall-e-3, standard is the only option for dall-e-2.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
             <maml:name>String</maml:name>
             <maml:uri />
           </dev:type>
-          <dev:defaultValue>standard</dev:defaultValue>
+          <dev:defaultValue>auto</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>Style</maml:name>
@@ -15395,11 +16337,58 @@ The default value is `1024x1024`.</maml:para>
           </dev:type>
           <dev:defaultValue>vivid</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="response_format">
-          <maml:name>Format</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Background</maml:name>
           <maml:description>
-            <maml:para>The format in which the generated images are returned.
-Must be one of `url`, `base64`, `byte` or `raw_response`.</maml:para>
+            <maml:para>Allows to set transparency for the background of the generated image(s). This parameter is only supported for gpt-image-1. Must be one of transparent, opaque or auto (default value).</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Moderation</maml:name>
+          <maml:description>
+            <maml:para>Control the content-moderation level for images generated by gpt-image-1. Must be either low for less restrictive filtering or auto (default value).</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="output_compression">
+          <maml:name>OutputCompression</maml:name>
+          <maml:description>
+            <maml:para>The compression level (0-100%) for the generated images. This parameter is only supported for gpt-image-1 with the webp or jpeg output formats, and defaults to 100.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">UInt16</command:parameterValue>
+          <dev:type>
+            <maml:name>UInt16</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="output_format">
+          <maml:name>OutputFormat</maml:name>
+          <maml:description>
+            <maml:para>The format in which the generated images are returned. This parameter is only supported for gpt-image-1. Must be one of png, jpeg, or webp.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="response_format">
+          <maml:name>ResponseFormat</maml:name>
+          <maml:description>
+            <maml:para>The format in which the generated images are returned. Must be one of `url`, `base64` or `byte`. gpt-image-1 only supports `base64`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -15407,6 +16396,17 @@ Must be one of `url`, `base64`, `byte` or `raw_response`.</maml:para>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>url</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>OutputRawResponse</maml:name>
+          <maml:description>
+            <maml:para>If specifies this switch, an output of this function to be a raw response value from the API. (Normally JSON formatted string.)</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>User</maml:name>
@@ -15494,8 +16494,7 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="none">
           <maml:name>Prompt</maml:name>
           <maml:description>
-            <maml:para>(Required) A text description of the desired image(s).
-</maml:para>
+            <maml:para>(Required) A text description of the desired image(s). The maximum length is 32000 characters for gpt-image-1, 1000 characters for dall-e-2 and 4000 characters for dall-e-3.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -15507,7 +16506,7 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>Model</maml:name>
           <maml:description>
-            <maml:para>The model to use for image generation. The default is `dall-e-2`</maml:para>
+            <maml:para>The model to use for image generation. One of dall-e-2, dall-e-3, or gpt-image-1. Defaults to dall-e-2 unless a parameter specific to gpt-image-1 is used.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -15531,27 +16530,26 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>Size</maml:name>
           <maml:description>
-            <maml:para>The size of the generated images. Must be one of `256x256`, `512x512`, or `1024x1024` for `dall-e-2`. Must be one of `1024x1024`, `1792x1024`, or `1024x1792` for `dall-e-3` models.
-The default value is `1024x1024`.</maml:para>
+            <maml:para>The size of the generated images. Must be one of `1024x1024`, `1536x1024` (landscape), `1024x1536` (portrait), or `auto` (default value) for gpt-image-1, one of `256x256`, `512x512`, or `1024x1024` for dall-e-2, and one of `1024x1024`, `1792x1024`, or `1024x1792` for dall-e-3.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
             <maml:name>String</maml:name>
             <maml:uri />
           </dev:type>
-          <dev:defaultValue>1024x1024</dev:defaultValue>
+          <dev:defaultValue>auto</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>Quality</maml:name>
           <maml:description>
-            <maml:para>The quality of the image that will be generated. `hd` creates images with finer details and greater consistency across the image. This param is only supported for `dall-e-3`.</maml:para>
+            <maml:para>The quality of the image that will be generated. `auto` (default value) will automatically select the best quality for the given model. high, medium and low are supported for gpt-image-1, hd and standard are supported for dall-e-3, standard is the only option for dall-e-2.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
             <maml:name>String</maml:name>
             <maml:uri />
           </dev:type>
-          <dev:defaultValue>standard</dev:defaultValue>
+          <dev:defaultValue>auto</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>Style</maml:name>
@@ -15565,11 +16563,58 @@ The default value is `1024x1024`.</maml:para>
           </dev:type>
           <dev:defaultValue>vivid</dev:defaultValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Background</maml:name>
+          <maml:description>
+            <maml:para>Allows to set transparency for the background of the generated image(s). This parameter is only supported for gpt-image-1. Must be one of transparent, opaque or auto (default value).</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Moderation</maml:name>
+          <maml:description>
+            <maml:para>Control the content-moderation level for images generated by gpt-image-1. Must be either low for less restrictive filtering or auto (default value).</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="output_compression">
+          <maml:name>OutputCompression</maml:name>
+          <maml:description>
+            <maml:para>The compression level (0-100%) for the generated images. This parameter is only supported for gpt-image-1 with the webp or jpeg output formats, and defaults to 100.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">UInt16</command:parameterValue>
+          <dev:type>
+            <maml:name>UInt16</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="output_format">
+          <maml:name>OutputFormat</maml:name>
+          <maml:description>
+            <maml:para>The format in which the generated images are returned. This parameter is only supported for gpt-image-1. Must be one of png, jpeg, or webp.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>OutFile</maml:name>
           <maml:description>
-            <maml:para>Specify the file path where the generated images will be saved.
-This cannot be specified with the `Format` parameter. Also, `NumberOfImages` must be `1`.</maml:para>
+            <maml:para>Specify the file path where the generated images will be saved. This cannot be specified with the `ResponseFormat` parameter.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -15664,8 +16709,7 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="none">
         <maml:name>Prompt</maml:name>
         <maml:description>
-          <maml:para>(Required) A text description of the desired image(s).
-</maml:para>
+          <maml:para>(Required) A text description of the desired image(s). The maximum length is 32000 characters for gpt-image-1, 1000 characters for dall-e-2 and 4000 characters for dall-e-3.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -15677,7 +16721,7 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>Model</maml:name>
         <maml:description>
-          <maml:para>The model to use for image generation. The default is `dall-e-2`</maml:para>
+          <maml:para>The model to use for image generation. One of dall-e-2, dall-e-3, or gpt-image-1. Defaults to dall-e-2 unless a parameter specific to gpt-image-1 is used.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -15701,27 +16745,26 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>Size</maml:name>
         <maml:description>
-          <maml:para>The size of the generated images. Must be one of `256x256`, `512x512`, or `1024x1024` for `dall-e-2`. Must be one of `1024x1024`, `1792x1024`, or `1024x1792` for `dall-e-3` models.
-The default value is `1024x1024`.</maml:para>
+          <maml:para>The size of the generated images. Must be one of `1024x1024`, `1536x1024` (landscape), `1024x1536` (portrait), or `auto` (default value) for gpt-image-1, one of `256x256`, `512x512`, or `1024x1024` for dall-e-2, and one of `1024x1024`, `1792x1024`, or `1024x1792` for dall-e-3.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
           <maml:name>String</maml:name>
           <maml:uri />
         </dev:type>
-        <dev:defaultValue>1024x1024</dev:defaultValue>
+        <dev:defaultValue>auto</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>Quality</maml:name>
         <maml:description>
-          <maml:para>The quality of the image that will be generated. `hd` creates images with finer details and greater consistency across the image. This param is only supported for `dall-e-3`.</maml:para>
+          <maml:para>The quality of the image that will be generated. `auto` (default value) will automatically select the best quality for the given model. high, medium and low are supported for gpt-image-1, hd and standard are supported for dall-e-3, standard is the only option for dall-e-2.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
           <maml:name>String</maml:name>
           <maml:uri />
         </dev:type>
-        <dev:defaultValue>standard</dev:defaultValue>
+        <dev:defaultValue>auto</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>Style</maml:name>
@@ -15735,11 +16778,58 @@ The default value is `1024x1024`.</maml:para>
         </dev:type>
         <dev:defaultValue>vivid</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="response_format">
-        <maml:name>Format</maml:name>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Background</maml:name>
         <maml:description>
-          <maml:para>The format in which the generated images are returned.
-Must be one of `url`, `base64`, `byte` or `raw_response`.</maml:para>
+          <maml:para>Allows to set transparency for the background of the generated image(s). This parameter is only supported for gpt-image-1. Must be one of transparent, opaque or auto (default value).</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Moderation</maml:name>
+        <maml:description>
+          <maml:para>Control the content-moderation level for images generated by gpt-image-1. Must be either low for less restrictive filtering or auto (default value).</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="output_compression">
+        <maml:name>OutputCompression</maml:name>
+        <maml:description>
+          <maml:para>The compression level (0-100%) for the generated images. This parameter is only supported for gpt-image-1 with the webp or jpeg output formats, and defaults to 100.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">UInt16</command:parameterValue>
+        <dev:type>
+          <maml:name>UInt16</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="output_format">
+        <maml:name>OutputFormat</maml:name>
+        <maml:description>
+          <maml:para>The format in which the generated images are returned. This parameter is only supported for gpt-image-1. Must be one of png, jpeg, or webp.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="response_format">
+        <maml:name>ResponseFormat</maml:name>
+        <maml:description>
+          <maml:para>The format in which the generated images are returned. Must be one of `url`, `base64` or `byte`. gpt-image-1 only supports `base64`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -15748,11 +16838,22 @@ Must be one of `url`, `base64`, `byte` or `raw_response`.</maml:para>
         </dev:type>
         <dev:defaultValue>url</dev:defaultValue>
       </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>OutputRawResponse</maml:name>
+        <maml:description>
+          <maml:para>If specifies this switch, an output of this function to be a raw response value from the API. (Normally JSON formatted string.)</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>OutFile</maml:name>
         <maml:description>
-          <maml:para>Specify the file path where the generated images will be saved.
-This cannot be specified with the `Format` parameter. Also, `NumberOfImages` must be `1`.</maml:para>
+          <maml:para>Specify the file path where the generated images will be saved. This cannot be specified with the `ResponseFormat` parameter.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -15843,48 +16944,7 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
       </command:parameter>
     </command:parameters>
     <command:inputTypes />
-    <command:returnValues>
-      <command:returnValue>
-        <dev:type>
-          <maml:name>Format = url             : string or array of string</maml:name>
-        </dev:type>
-        <maml:description>
-          <maml:para></maml:para>
-        </maml:description>
-      </command:returnValue>
-      <command:returnValue>
-        <dev:type>
-          <maml:name>Format = base64          : Generated image data represented in base64 string.</maml:name>
-        </dev:type>
-        <maml:description>
-          <maml:para></maml:para>
-        </maml:description>
-      </command:returnValue>
-      <command:returnValue>
-        <dev:type>
-          <maml:name>Format = byte            : Byte array of generated image.</maml:name>
-        </dev:type>
-        <maml:description>
-          <maml:para></maml:para>
-        </maml:description>
-      </command:returnValue>
-      <command:returnValue>
-        <dev:type>
-          <maml:name>Format = raw_response    : string</maml:name>
-        </dev:type>
-        <maml:description>
-          <maml:para></maml:para>
-        </maml:description>
-      </command:returnValue>
-      <command:returnValue>
-        <dev:type>
-          <maml:name>OutFile                  : Nothing.</maml:name>
-        </dev:type>
-        <maml:description>
-          <maml:para></maml:para>
-        </maml:description>
-      </command:returnValue>
-    </command:returnValues>
+    <command:returnValues />
     <maml:alertSet>
       <maml:alert>
         <maml:para></maml:para>
@@ -15893,14 +16953,14 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
     <command:examples>
       <command:example>
         <maml:title>------ Example 1: Creates and save an image from prompt. ------</maml:title>
-        <dev:code>Request-ImageGeneration -Prompt 'A cute baby lion' -Size 256x256 -OutFile C:\babylion.png</dev:code>
+        <dev:code>Request-ImageGeneration -Model 'gpt-image-1' -Prompt 'A cute baby lion' -OutFile C:\babylion.png</dev:code>
         <dev:remarks>
           <maml:para>! lion (/Docs/images/babylion.png)</maml:para>
         </dev:remarks>
       </command:example>
       <command:example>
         <maml:title>Example 2: Creates multiple images at once, and retrieve results by URL.</maml:title>
-        <dev:code>Request-ImageGeneration -Prompt 'Delicious ramen with gyoza' -Model dall-e-2 -Format "url" -NumberOfImages 3
+        <dev:code>Request-ImageGeneration -Model 'dall-e-3' -Prompt 'Delicious ramen with gyoza' -Model -ResponseFormat 'url' -NumberOfImages 3
 
 https://oaidalleapiprodscus.blob.core.windows.net/private/org-BXLtGIt0xglP9if8FVhkD...
 https://oaidalleapiprodscus.blob.core.windows.net/private/org-BXLtGIt0xglP9if8FVhkD...
@@ -15916,8 +16976,8 @@ https://oaidalleapiprodscus.blob.core.windows.net/private/org-BXLtGIt0xglP9if8FV
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Request-ImageGeneration.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/guides/images/image-generation</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/guides/images/image-generation</maml:uri>
+        <maml:linkText>https://platform.openai.com/docs/guides/image-generation</maml:linkText>
+        <maml:uri>https://platform.openai.com/docs/guides/image-generation</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>https://platform.openai.com/docs/api-reference/images/create</maml:linkText>
@@ -20359,9 +21419,21 @@ PS C:\&gt; Request-ChatCompletion -Message 'Hello Azure OpenAI'</dev:code>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>InputAudioNoiseReductionType</maml:name>
+          <maml:description>
+            <maml:para>Type of noise reduction. `none` is disable, `near_field` is for close-talking microphones such as headphones, `far_field` is for far-field microphones such as laptop or conference room microphones.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>InputAudioTranscriptionModel</maml:name>
           <maml:description>
-            <maml:para>The model to use for transcription, `whisper-1` is the only currently supported model.</maml:para>
+            <maml:para>The model to use for transcription, current options are `gpt-4o-transcribe`, `gpt-4o-mini-transcribe`, and `whisper-1`</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -20521,7 +21593,7 @@ PS C:\&gt; Request-ChatCompletion -Message 'Hello Azure OpenAI'</dev:code>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>TurnDetectionType</maml:name>
           <maml:description>
-            <maml:para>Type of turn detection, only `server_vad` is currently supported.</maml:para>
+            <maml:para>Type of turn detection, `server_vad` is automatically chunks the audio based on periods of silence, `semantic_vad` is chunks the audio when the model believes based on the words said by the user that they have completed their utterance.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -20529,6 +21601,18 @@ PS C:\&gt; Request-ChatCompletion -Message 'Hello Azure OpenAI'</dev:code>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>server_vad</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>TurnDetectionEagerness</maml:name>
+          <maml:description>
+            <maml:para>Used only for `semantic_vad` mode. The eagerness of the model to respond. `low` will wait longer for the user to continue speaking, `high` will respond more quickly. `auto` is the default and is equivalent to `medium`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>auto</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>CreateResponseOnTurnEnd</maml:name>
@@ -20618,9 +21702,21 @@ PS C:\&gt; Request-ChatCompletion -Message 'Hello Azure OpenAI'</dev:code>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>InputAudioNoiseReductionType</maml:name>
+        <maml:description>
+          <maml:para>Type of noise reduction. `none` is disable, `near_field` is for close-talking microphones such as headphones, `far_field` is for far-field microphones such as laptop or conference room microphones.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>InputAudioTranscriptionModel</maml:name>
         <maml:description>
-          <maml:para>The model to use for transcription, `whisper-1` is the only currently supported model.</maml:para>
+          <maml:para>The model to use for transcription, current options are `gpt-4o-transcribe`, `gpt-4o-mini-transcribe`, and `whisper-1`</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -20776,7 +21872,7 @@ PS C:\&gt; Request-ChatCompletion -Message 'Hello Azure OpenAI'</dev:code>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>TurnDetectionType</maml:name>
         <maml:description>
-          <maml:para>Type of turn detection, only `server_vad` is currently supported.</maml:para>
+          <maml:para>Type of turn detection, `server_vad` is automatically chunks the audio based on periods of silence, `semantic_vad` is chunks the audio when the model believes based on the words said by the user that they have completed their utterance.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -20784,6 +21880,18 @@ PS C:\&gt; Request-ChatCompletion -Message 'Hello Azure OpenAI'</dev:code>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>server_vad</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>TurnDetectionEagerness</maml:name>
+        <maml:description>
+          <maml:para>Used only for `semantic_vad` mode. The eagerness of the model to respond. `low` will wait longer for the user to continue speaking, `high` will respond more quickly. `auto` is the default and is equivalent to `medium`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>auto</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>CreateResponseOnTurnEnd</maml:name>
@@ -20851,6 +21959,421 @@ PS C:\&gt; Request-ChatCompletion -Message 'Hello Azure OpenAI'</dev:code>
       <maml:navigationLink>
         <maml:linkText>https://platform.openai.com/docs/api-reference/realtime-client-events/session/update</maml:linkText>
         <maml:uri>https://platform.openai.com/docs/api-reference/realtime-client-events/session/update</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Set-RealtimeTranscriptionSessionConfiguration</command:name>
+      <command:verb>Set</command:verb>
+      <command:noun>RealtimeTranscriptionSessionConfiguration</command:noun>
+      <maml:description>
+        <maml:para>Set the realtime transcription session's configuration.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>Set the realtime transcription session's configuration.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Set-RealtimeTranscriptionSessionConfiguration</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>EnableTurnDetection</maml:name>
+          <maml:description>
+            <maml:para>Enables the server VAD mode. In this mode, the server will run voice activity detection (VAD) over the incoming audio and respond after the end of speech.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Boolean</command:parameterValue>
+          <dev:type>
+            <maml:name>Boolean</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>EventId</maml:name>
+          <maml:description>
+            <maml:para>Optional client-generated ID used to identify this event.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>InputAudioFormat</maml:name>
+          <maml:description>
+            <maml:para>The format of input audio. Options are `pcm16`, `g711_ulaw`, or `g711_alaw`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>InputAudioNoiseReductionType</maml:name>
+          <maml:description>
+            <maml:para>Type of noise reduction. `none` is disable, `near_field` is for close-talking microphones such as headphones, `far_field` is for far-field microphones such as laptop or conference room microphones.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>InputAudioTranscriptionModel</maml:name>
+          <maml:description>
+            <maml:para>The model to use for transcription, current options are `gpt-4o-transcribe`, `gpt-4o-mini-transcribe`, and `whisper-1`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>whisper-1</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>InputAudioTranscriptionLanguage</maml:name>
+          <maml:description>
+            <maml:para>The language of the input audio. Supplying the input language in ISO-639-1 (e.g. en) format will improve accuracy and latency.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>InputAudioTranscriptionPrompt</maml:name>
+          <maml:description>
+            <maml:para>An optional text to guide the model's style or continue a previous audio segment. The prompt should match the audio language.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Modalities</maml:name>
+          <maml:description>
+            <maml:para>The set of modalities the model can respond with.</maml:para>
+          </maml:description>
+          <command:parameterValueGroup>
+            <command:parameterValue required="false" command:variableLength="false">text</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">audio</command:parameterValue>
+          </command:parameterValueGroup>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>TurnDetectionPrefixPadding</maml:name>
+          <maml:description>
+            <maml:para>Amount of audio to include before the VAD detected speech (in milliseconds).</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">UInt16</command:parameterValue>
+          <dev:type>
+            <maml:name>UInt16</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>TurnDetectionSilenceDuration</maml:name>
+          <maml:description>
+            <maml:para>Duration of silence to detect speech stop (in milliseconds). With shorter values the model will respond more quickly, but may jump in on short pauses from the user.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">UInt16</command:parameterValue>
+          <dev:type>
+            <maml:name>UInt16</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>TurnDetectionThreshold</maml:name>
+          <maml:description>
+            <maml:para>Activation threshold for VAD (0.0 to 1.0), this defaults to 0.5. A higher threshold will require louder audio to activate the model, and thus might perform better in noisy environments.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Single</command:parameterValue>
+          <dev:type>
+            <maml:name>Single</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>TurnDetectionType</maml:name>
+          <maml:description>
+            <maml:para>Type of turn detection, `server_vad` is automatically chunks the audio based on periods of silence, `semantic_vad` is chunks the audio when the model believes based on the words said by the user that they have completed their utterance.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>server_vad</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>TurnDetectionEagerness</maml:name>
+          <maml:description>
+            <maml:para>Used only for `semantic_vad` mode. The eagerness of the model to respond. `low` will wait longer for the user to continue speaking, `high` will respond more quickly. `auto` is the default and is equivalent to `medium`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>auto</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>CreateResponseOnTurnEnd</maml:name>
+          <maml:description>
+            <maml:para>Not available for transcription sessions.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Boolean</command:parameterValue>
+          <dev:type>
+            <maml:name>Boolean</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>True</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>InterruptResponse</maml:name>
+          <maml:description>
+            <maml:para>Not available for transcription sessions.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Boolean</command:parameterValue>
+          <dev:type>
+            <maml:name>Boolean</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>True</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>EnableTurnDetection</maml:name>
+        <maml:description>
+          <maml:para>Enables the server VAD mode. In this mode, the server will run voice activity detection (VAD) over the incoming audio and respond after the end of speech.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Boolean</command:parameterValue>
+        <dev:type>
+          <maml:name>Boolean</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>EventId</maml:name>
+        <maml:description>
+          <maml:para>Optional client-generated ID used to identify this event.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>InputAudioFormat</maml:name>
+        <maml:description>
+          <maml:para>The format of input audio. Options are `pcm16`, `g711_ulaw`, or `g711_alaw`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>InputAudioNoiseReductionType</maml:name>
+        <maml:description>
+          <maml:para>Type of noise reduction. `none` is disable, `near_field` is for close-talking microphones such as headphones, `far_field` is for far-field microphones such as laptop or conference room microphones.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>InputAudioTranscriptionModel</maml:name>
+        <maml:description>
+          <maml:para>The model to use for transcription, current options are `gpt-4o-transcribe`, `gpt-4o-mini-transcribe`, and `whisper-1`</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>whisper-1</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>InputAudioTranscriptionLanguage</maml:name>
+        <maml:description>
+          <maml:para>The language of the input audio. Supplying the input language in ISO-639-1 (e.g. en) format will improve accuracy and latency.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>InputAudioTranscriptionPrompt</maml:name>
+        <maml:description>
+          <maml:para>An optional text to guide the model's style or continue a previous audio segment. The prompt should match the audio language.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Modalities</maml:name>
+        <maml:description>
+          <maml:para>The set of modalities the model can respond with.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+        <dev:type>
+          <maml:name>String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>TurnDetectionPrefixPadding</maml:name>
+        <maml:description>
+          <maml:para>Amount of audio to include before the VAD detected speech (in milliseconds).</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">UInt16</command:parameterValue>
+        <dev:type>
+          <maml:name>UInt16</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>TurnDetectionSilenceDuration</maml:name>
+        <maml:description>
+          <maml:para>Duration of silence to detect speech stop (in milliseconds). With shorter values the model will respond more quickly, but may jump in on short pauses from the user.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">UInt16</command:parameterValue>
+        <dev:type>
+          <maml:name>UInt16</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>TurnDetectionThreshold</maml:name>
+        <maml:description>
+          <maml:para>Activation threshold for VAD (0.0 to 1.0), this defaults to 0.5. A higher threshold will require louder audio to activate the model, and thus might perform better in noisy environments.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Single</command:parameterValue>
+        <dev:type>
+          <maml:name>Single</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>TurnDetectionType</maml:name>
+        <maml:description>
+          <maml:para>Type of turn detection, `server_vad` is automatically chunks the audio based on periods of silence, `semantic_vad` is chunks the audio when the model believes based on the words said by the user that they have completed their utterance.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>server_vad</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>TurnDetectionEagerness</maml:name>
+        <maml:description>
+          <maml:para>Used only for `semantic_vad` mode. The eagerness of the model to respond. `low` will wait longer for the user to continue speaking, `high` will respond more quickly. `auto` is the default and is equivalent to `medium`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>auto</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>CreateResponseOnTurnEnd</maml:name>
+        <maml:description>
+          <maml:para>Not available for transcription sessions.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Boolean</command:parameterValue>
+        <dev:type>
+          <maml:name>Boolean</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>True</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>InterruptResponse</maml:name>
+        <maml:description>
+          <maml:para>Not available for transcription sessions.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Boolean</command:parameterValue>
+        <dev:type>
+          <maml:name>Boolean</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>True</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes />
+    <command:returnValues />
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; Set-RealtimeTranscriptionSessionConfiguration `
+    -InputAudioTranscriptionModel 'gpt-4o-transcribe'
+    -InputAudioTranscriptionLanguage 'de'
+    -EnableTurnDetection $true
+    -TurnDetectionType 'server_vad'
+    -TurnDetectionThreshold 0.5</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Set-RealtimeTranscriptionSessionConfiguration.md</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>https://platform.openai.com/docs/api-reference/realtime-client-events/transcription_session/update</maml:linkText>
+        <maml:uri>https://platform.openai.com/docs/api-reference/realtime-client-events/transcription_session/update</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>

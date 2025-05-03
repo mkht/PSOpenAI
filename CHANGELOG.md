@@ -1,5 +1,5 @@
 # Changelog
-### Unreleased
+### 4.24.0
 - Add `Connect-RealtimeTranscriptionSession` and `Set-RealtimeTranscriptionSessionConfiguration`.
 - Add `gpt-image-1` model support for `Request-ImageGeneration` and `Request-ImageEdit`.
 - Add Azure support for `Request-ImageEdit`. (Not fully tested.)

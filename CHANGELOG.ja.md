@@ -1,4 +1,11 @@
 # 変更履歴
+### 4.24.0
+- `Connect-RealtimeTranscriptionSession`および`Set-RealtimeTranscriptionSessionConfiguration`を追加しました
+- `Request-ImageGeneration`および`Request-ImageEdit`で`gpt-image-1`モデルをサポートしました
+- `Request-ImageEdit`にAzureサポートを追加しました（完全にはテストされていません）
+- デフォルトのAzure OpenAI APIバージョンを`2025-04-01-preview`に更新しました
+- いくつかの軽微な問題を修正しました
+
 ### 4.23.0
 - `03`、`o4-mini`モデルを追加しました
 - APIの更新に追従
