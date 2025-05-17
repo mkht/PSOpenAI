@@ -16,7 +16,7 @@ function Request-Moderation {
         [string[]]$Images,
 
         [Parameter()]
-        [Completions('text-moderation-latest', 'text-moderation-stable', 'omni-moderation-latest')]
+        [Completions('omni-moderation-latest')]
         [string]$Model,
 
         [Parameter()]

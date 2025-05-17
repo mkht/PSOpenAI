@@ -40,8 +40,6 @@ function Request-ChatCompletion {
             'gpt-4.1-mini',
             'gpt-4.1-nano',
             'o1',
-            'o1-mini',
-            'o1-preview',
             'o3',
             'o3-mini',
             'o4-mini'

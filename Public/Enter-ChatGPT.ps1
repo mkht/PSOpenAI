@@ -19,8 +19,6 @@ function Enter-ChatGPT {
             'gpt-4.1',
             'gpt-4.1-mini',
             'gpt-4.1-nano',
-            'o1-mini',
-            'o1-preview',
             'o3',
             'o3-mini',
             'o4-mini'

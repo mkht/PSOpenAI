@@ -76,7 +76,7 @@ function Invoke-OpenAIAPIRequest {
 
     #region Assert selected model is discontinued
     if ($null -ne $Body -and $null -ne $Body.model) {
-        Assert-UnsupportedModels -Model $Body.model
+        Assert-DeprecationModel -Model $Body.model
     }
     #endregion
 

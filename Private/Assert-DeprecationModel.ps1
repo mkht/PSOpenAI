@@ -41,10 +41,15 @@ class OpenAIDepricationModels {
         'gpt-4-32k-0613'                = [datetime]::new(2025, 06, 06)
         'gpt-4-32k-0314'                = [datetime]::new(2025, 06, 06)
         'gpt-4.5-preview'               = [datetime]::new(2025, 07, 14)
+        'o1-preview'                    = [datetime]::new(2025, 07, 28)
+        'o1-mini'                       = [datetime]::new(2025, 10, 27)
+        'text-moderation-007'           = [datetime]::new(2025, 10, 27)
+        'text-moderation-stable'        = [datetime]::new(2025, 10, 27)
+        'text-moderation-latest'        = [datetime]::new(2025, 10, 27)
     }
 }
 
-function Assert-UnsupportedModels {
+function Assert-DeprecationModel {
     [CmdletBinding()]
     [OutputType([void])]
     param (

@@ -70,14 +70,12 @@ Position: Named
 ```
 
 ### -Model
-The name of model to use.  
-The default value is `text-moderation-latest`.
+The content moderation model you would like to use.
 
 ```yaml
 Type: String
 Required: False
 Position: Named
-Default value: text-moderation-latest
 ```
 
 ### -TimeoutSec
