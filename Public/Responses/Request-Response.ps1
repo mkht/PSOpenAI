@@ -29,6 +29,7 @@ function Request-Response {
             'o3',
             'o3-mini',
             'o4-mini',
+            'codex-mini-latest',
             'computer-use-preview'
         )]
         [string]$Model = 'gpt-4o-mini',
