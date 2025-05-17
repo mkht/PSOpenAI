@@ -1,4 +1,8 @@
 # Changelog
+### 4.25.0
+- Add `codex-mini-latest` model.
+- Update deprecation models list.
+
 ### 4.24.0
 - Add `Connect-RealtimeTranscriptionSession` and `Set-RealtimeTranscriptionSessionConfiguration`.
 - Add `gpt-image-1` model support for `Request-ImageGeneration` and `Request-ImageEdit`.

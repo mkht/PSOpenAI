@@ -1,4 +1,8 @@
 # 変更履歴
+### 4.25.0
+- `codex-mini-latest`モデルを追加しました
+- 廃止予定モデルのリストを更新しました
+
 ### 4.24.0
 - `Connect-RealtimeTranscriptionSession`および`Set-RealtimeTranscriptionSessionConfiguration`を追加しました
 - `Request-ImageGeneration`および`Request-ImageEdit`で`gpt-image-1`モデルをサポートしました
