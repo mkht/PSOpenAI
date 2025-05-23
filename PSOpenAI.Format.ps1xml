@@ -69,6 +69,92 @@
       </TableControl>
     </View>
     <View>
+      <Name>PSOpenAI.Response</Name>
+      <ViewSelectedBy>
+        <TypeName>PSOpenAI.Response</TypeName>
+      </ViewSelectedBy>
+      <ListControl>
+        <ListEntries>
+          <ListEntry>
+            <ListItems>
+              <ListItem>
+                <PropertyName>id</PropertyName>
+              </ListItem>
+              <ListItem>
+                <PropertyName>object</PropertyName>
+              </ListItem>
+              <ListItem>
+                <PropertyName>created_at</PropertyName>
+              </ListItem>
+              <ListItem>
+                <PropertyName>status</PropertyName>
+              </ListItem>
+              <ListItem>
+                <PropertyName>error</PropertyName>
+                <ItemSelectionCondition>
+                  <ScriptBlock>$null -ne $_.error</ScriptBlock>
+                </ItemSelectionCondition>
+              </ListItem>
+              <ListItem>
+                <PropertyName>incomplete_details</PropertyName>
+                <ItemSelectionCondition>
+                  <ScriptBlock>$null -ne $_.incomplete_details</ScriptBlock>
+                </ItemSelectionCondition>
+              </ListItem>
+              <ListItem>
+                <Label>usage</Label>
+                <ScriptBlock>$_.usage | select input_tokens, output_tokens, total_tokens</ScriptBlock>
+              </ListItem>
+              <ListItem>
+                <PropertyName>user</PropertyName>
+                <ItemSelectionCondition>
+                  <ScriptBlock>$null -ne $_.user</ScriptBlock>
+                </ItemSelectionCondition>
+              </ListItem>
+              <ListItem>
+                <PropertyName>metadata</PropertyName>
+                <ItemSelectionCondition>
+                  <ScriptBlock>$_.metadata.Keys.Count -gt 0</ScriptBlock>
+                </ItemSelectionCondition>
+              </ListItem>
+              <ListItem>
+                <PropertyName>model</PropertyName>
+              </ListItem>
+              <ListItem>
+                <PropertyName>instructions</PropertyName>
+              </ListItem>
+              <ListItem>
+                <Label>output</Label>
+                <ScriptBlock>$_.Output.type</ScriptBlock>
+              </ListItem>
+              <ListItem>
+                <PropertyName>LastUserMessage</PropertyName>
+              </ListItem>
+              <ListItem>
+                <PropertyName>output_text</PropertyName>
+              </ListItem>
+              <ListItem>
+                <PropertyName>StructuredOutputs</PropertyName>
+                <ItemSelectionCondition>
+                  <ScriptBlock>$_.StructuredOutputs.Count -gt 0</ScriptBlock>
+                </ItemSelectionCondition>
+              </ListItem>
+              <ListItem>
+                <Label>History</Label>
+                <ScriptBlock>$_.History.type</ScriptBlock>
+                <ItemSelectionCondition>
+                  <ScriptBlock>$_.History.Count -gt 0</ScriptBlock>
+                </ItemSelectionCondition>
+              </ListItem>
+              <ListItem>
+                <PropertyName>previous_response_id</PropertyName>
+              </ListItem>
+            </ListItems>
+          </ListEntry>
+        </ListEntries>
+      </ListControl>
+    </View>
+    <View>
       <Name>PSOpenAI.Response.Message</Name>
       <ViewSelectedBy>
         <TypeName>PSOpenAI.Response.Message</TypeName>
