@@ -774,7 +774,7 @@ Ping Source Address Latency(ms) BufferSize(B) Status
             $Result.output_text | Should -Not -BeNullOrEmpty
         }
 
-        It 'File search (vector store)' {
+        It 'Tools - File search (vector store)' {
             { $script:Result = Request-Response -Model 'gpt-4o-mini' `
                     -Message 'Please breifly describe the flow of setup an Azure Stack HCI demo environment.' `
                     -UseFileSearch `
@@ -791,7 +791,7 @@ Ping Source Address Latency(ms) BufferSize(B) Status
             $Result.output[1].content[0].annotations.Count | Should -BeGreaterOrEqual 1
         }
 
-        It 'Web Search' {
+        It 'Tools - Web Search' {
             { $script:Result = Request-Response -Model 'gpt-4o-mini' `
                     -Message 'List recent top 3 tech news.' `
                     -UseWebSearch `
@@ -805,7 +805,7 @@ Ping Source Address Latency(ms) BufferSize(B) Status
             $Result.output[1].content[0].annotations.Count | Should -BeGreaterOrEqual 1
         }
 
-        It 'Computer Use' {
+        It 'Tools - Computer Use' {
             {
                 $param = @{
                     Message                  = 'Check the latest OpenAI news on Google.'
@@ -824,6 +824,26 @@ Ping Source Address Latency(ms) BufferSize(B) Status
             $Result.object | Should -Be 'response'
             $Result.LastUserMessage | Should -Be 'Check the latest OpenAI news on Google.'
             $Result.output.type | Should -Contain 'computer_call'
+        }
+
+        It 'Tools - Remote MCP' {
+            {
+                $param = @{
+                    Message            = 'How does microsoft/markitdown convert pptx to markdown?'
+                    Model              = 'gpt-4.1-mini'
+                    UseMCP             = $true
+                    MCPServerLabel     = 'DeepWiki'
+                    MCPServerUrl       = 'https://mcp.deepwiki.com/mcp'
+                    MCPRequireApproval = 'always'
+                    MCPOptionalHeaders = @{ 'X-Debug-Key' = '1234567890' }  # Only for test, no meaning
+                    Store              = $false
+                    TimeoutSec         = 30
+                }
+
+                $script:Result = Request-Response @param -ea Stop } | Should -Not -Throw
+            $Result.object | Should -Be 'response'
+            $Result.LastUserMessage | Should -Be 'Check the latest OpenAI news on Google.'
+            $Result.output[-1].type | Should -Be 'mcp_approval_request'
         }
     }
 

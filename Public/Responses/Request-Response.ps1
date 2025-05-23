@@ -156,6 +156,32 @@ function Request-Response {
         [Parameter()]
         [int]$ComputerUseDisplayWidth,
         #endregion Computer use
+
+        #region Remote MCP
+        [Parameter()]
+        [switch]$UseMCP,
+
+        [Parameter(DontShow)]
+        [string]$MCPType = 'mcp', # Always 'mcp'
+
+        [Parameter()]
+        [ValidateNotNullOrEmpty()]
+        [string]$MCPServerLabel,
+
+        [Parameter()]
+        [ValidateNotNullOrEmpty()]
+        [string]$MCPServerUrl,
+
+        [Parameter()]
+        [object]$MCPAllowedTools,
+
+        [Parameter()]
+        [Completions('always', 'never')]
+        [object]$MCPRequireApproval,
+
+        [Parameter()]
+        [System.Collections.IDictionary]$MCPOptionalHeaders,
+        #endregion Remote MCP
         #endregion Tools
 
         [Parameter()]
@@ -318,7 +344,14 @@ function Request-Response {
             if ($ToolChoice -in ('none', 'auto', 'required')) {
                 # Do nothing
             }
-            elseif ($ToolChoice -in ('file_search', 'web_search_preview', 'computer_use_preview')) {
+            elseif ($ToolChoice -in (
+                    'file_search',
+                    'web_search_preview',
+                    'computer_use_preview',
+                    'code_interpreter',
+                    'mcp',
+                    'image_generation'
+                )) {
                 # built-in tools
                 $ToolChoice = @{type = $ToolChoice }
             }
@@ -506,6 +539,52 @@ function Request-Response {
                 Write-Error 'ComputerUseDisplayWidth must be specified.'
             }
             $Tools += $ComputerUseTool
+        }
+
+        # Remote MCP
+        if ($UseMCP) {
+            # Server label and URL are required.
+            if ([string]::IsNullOrWhiteSpace($MCPServerLabel)) {
+                Write-Error 'MCPServerLabel must be specified.'
+            }
+            if ([string]::IsNullOrWhiteSpace($MCPServerUrl)) {
+                Write-Error 'MCPServerUrl must be specified.'
+            }
+
+            $MCPTool = @{
+                type         = $MCPType
+                server_label = $MCPServerLabel
+                server_url   = $MCPServerUrl
+            }
+
+            if ($PSBoundParameters.ContainsKey('MCPAllowedTools')) {
+                if ($MCPAllowedTools.tool_names.Count -gt 0) {
+                    $MCPAllowedTools = $MCPAllowedTools.tool_names
+                }
+                $MCPTool.allowed_tools = [string[]]$MCPAllowedTools
+            }
+            if ($PSBoundParameters.ContainsKey('MCPRequireApproval')) {
+                if ($MCPRequireApproval -is [string]) {
+                    $MCPTool.require_approval = $MCPRequireApproval.Trim()
+                }
+                else {
+                    $MCPApprovalFilter = @{}
+                    if ($MCPRequireApproval.always.tool_names.Count -gt 0) {
+                        $MCPApprovalFilter.always = @{tool_names = [string[]]$MCPRequireApproval.always.tool_names }
+                    }
+                    if ($MCPRequireApproval.never.tool_names.Count -gt 0) {
+                        $MCPApprovalFilter.never = @{tool_names = [string[]]$MCPRequireApproval.never.tool_names }
+                    }
+                    if ($MCPApprovalFilter.Keys.Count -gt 0) {
+                        $MCPTool.require_approval = $MCPApprovalFilter
+                    }
+                }
+            }
+            if ($MCPOptionalHeaders.Keys.Count -gt 0) {
+                $MCPTool.headers = $MCPOptionalHeaders
+            }
+
+            $Tools += $MCPTool
         }
 
         if ($Tools.Count -gt 0) {
