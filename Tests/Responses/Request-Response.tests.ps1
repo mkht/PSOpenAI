@@ -845,6 +845,56 @@ Ping Source Address Latency(ms) BufferSize(B) Status
             $Result.LastUserMessage | Should -Be 'Check the latest OpenAI news on Google.'
             $Result.output[-1].type | Should -Be 'mcp_approval_request'
         }
+
+        It 'Tools - Code Interpreter' {
+            {
+                $param = @{
+                    Message            = "How Many R's in 'Strawberry'? Solve it use with Python tools."
+                    Model              = 'gpt-4.1-mini'
+                    UseCodeInterpreter = $true
+                    ToolChoice         = 'required'
+                    Store              = $false
+                    TimeoutSec         = 30
+                }
+
+                $script:Result = Request-Response @param -ea Stop } | Should -Not -Throw
+            $Result.object | Should -Be 'response'
+            $Result.output.type | Should -Contain 'code_interpreter_call'
+        }
+
+        It 'Tools - Image Generation' {
+            {
+                $param = @{
+                    Message                          = 'Create an illustration of a young man wearing a brown bucket hat, holding a cola in his left hand and chicken in his right hand.'
+                    Model                            = 'gpt-4.1-mini'
+                    UseImageGeneration               = $true
+                    ImageGenerationOutputFormat      = 'jpeg'
+                    ImageGenerationQuality           = 'low'
+                    ImageGenerationSize              = '1024x1024'
+                    ImageGenerationOutputCompression = 80
+                    Store                            = $false
+                    TimeoutSec                       = 150
+                }
+
+                $script:Result = Request-Response @param -ea Stop } | Should -Not -Throw
+            $Result.object | Should -Be 'response'
+            $Result.output.type | Should -Contain 'image_generation_call'
+        }
+
+        It 'Tools - Local Shell' {
+            {
+                $param = @{
+                    Message       = 'List all files that the size is larger than 100MB in /var/logs'
+                    Model         = 'codex-mini-latest'
+                    UseLocalShell = $true
+                    Store         = $false
+                    TimeoutSec    = 30
+                }
+
+                $script:Result = Request-Response @param -ea Stop } | Should -Not -Throw
+            $Result.object | Should -Be 'response'
+            $Result.output.type | Should -Contain 'local_shell_call'
+        }
     }
 
     Context 'Integration tests (Azure OpenAI)' -Tag 'Azure' {

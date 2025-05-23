@@ -182,6 +182,69 @@ function Request-Response {
         [Parameter()]
         [System.Collections.IDictionary]$MCPOptionalHeaders,
         #endregion Remote MCP
+
+        #region Code Interpreter
+        [Parameter()]
+        [switch]$UseCodeInterpreter,
+
+        [Parameter(DontShow)]
+        [string]$CodeInterpreterType = 'code_interpreter', # Always 'code_interpreter'
+
+        [Parameter()]
+        [string]$ContainerId = 'auto',
+
+        [Parameter()]
+        [string[]]$ContainerFileIds,
+        #endregion Code Interpreter
+
+        #region Image Generation
+        [Parameter()]
+        [switch]$UseImageGeneration,
+
+        [Parameter(DontShow)]
+        [string]$ImageGenerationType = 'image_generation', # Always 'image_generation'
+
+        [Parameter()]
+        [Completions('gpt-image-1')]
+        [string]$ImageGenerationModel,
+
+        [Parameter()]
+        [Completions('transparent', 'opaque', 'auto')]
+        [string]$ImageGenerationBackGround = 'auto',
+
+        [Parameter()]
+        [string]$ImageGenerationInputImageMask,
+
+        [Parameter()]
+        [string]$ImageGenerationModeration = 'auto',
+
+        [Parameter()]
+        [ValidateRange(0, 100)]
+        [int]$ImageGenerationOutputCompression,
+
+        [Parameter()]
+        [ValidateSet('png', 'jpeg', 'webp')]
+        [string][LowerCaseTransformation()]$ImageGenerationOutputFormat = 'png',
+
+        [Parameter()]
+        [ValidateRange(0, 3)]
+        [int]$ImageGenerationPartialImages,
+
+        [Parameter()]
+        [ValidateSet('low', 'medium', 'high', 'auto')]
+        [string][LowerCaseTransformation()]$ImageGenerationQuality = 'auto',
+
+        [Parameter()]
+        [ValidateSet('auto', '1024x1024', '1536x1024', '1024x1536')]
+        [string]$ImageGenerationSize = 'auto',
+        #endregion Image Generation
+
+        #region Local shell
+        [Parameter()]
+        [switch]$UseLocalShell,
+
+        [Parameter(DontShow)]
+        [string]$LocalShellType = 'local_shell', # Always 'local_shell'
         #endregion Tools
 
         [Parameter()]
@@ -449,7 +512,7 @@ function Request-Response {
             $Tools += $Functions
         }
 
-        # File Search
+        #region File Search
         if ($UseFileSearch) {
             if ($FileSearchVectorStoreIds.Count -eq 0) {
                 Write-Error 'VectorStore Ids must be specified.'
@@ -481,7 +544,7 @@ function Request-Response {
             }
         }
 
-        # Web Search
+        #region Web Search
         if ($UseWebSearch) {
             $UserLocation = @{}
             $WebSearchTool = @{
@@ -512,7 +575,7 @@ function Request-Response {
             $Tools += $WebSearchTool
         }
 
-        # Computer Use
+        #region Computer Use
         if ($UseComputerUse) {
             # Computer Use should be used with 'truncation=auto'
             $PostBody.truncation = 'auto'
@@ -541,7 +604,7 @@ function Request-Response {
             $Tools += $ComputerUseTool
         }
 
-        # Remote MCP
+        #region Remote MCP
         if ($UseMCP) {
             # Server label and URL are required.
             if ([string]::IsNullOrWhiteSpace($MCPServerLabel)) {
@@ -585,6 +648,74 @@ function Request-Response {
             }
 
             $Tools += $MCPTool
+        }
+
+        #region Code Interpreter
+        if ($UseCodeInterpreter) {
+            $CodeInterpreterTool = @{
+                type      = $CodeInterpreterType
+                container = $ContainerId
+            }
+            if ($ContainerId -eq 'auto') {
+                # Auto container
+                $CodeInterpreterTool.container = @{type = 'auto' }
+                if ($PSBoundParameters.ContainsKey('ContainerFileIds')) {
+                    $CodeInterpreterTool.container.file_ids = $ContainerFileIds
+                }
+            }
+            $Tools += $CodeInterpreterTool
+        }
+
+        #region Image Generation
+        if ($UseImageGeneration) {
+            $ImageGenerationTool = @{
+                type = $ImageGenerationType
+            }
+            if ($PSBoundParameters.ContainsKey('ImageGenerationModel')) {
+                $ImageGenerationTool.model = $ImageGenerationModel
+            }
+            if ($PSBoundParameters.ContainsKey('ImageGenerationBackGround')) {
+                $ImageGenerationTool.background = $ImageGenerationBackGround
+            }
+            if ($PSBoundParameters.ContainsKey('ImageGenerationInputImageMask')) {
+                if (Test-Path -LiteralPath $ImageGenerationInputImageMask -PathType Leaf) {
+                    # local file
+                    $image_url = Convert-ImageToDataURL $ImageGenerationInputImageMask
+                    $ImageGenerationTool.input_image_mask = @{image_url = $image_url }
+                }
+                else {
+                    # File id
+                    $ImageGenerationTool.input_image_mask = @{file_id = $ImageGenerationInputImageMask }
+                }
+            }
+            if ($PSBoundParameters.ContainsKey('ImageGenerationModeration')) {
+                $ImageGenerationTool.moderation = $ImageGenerationModeration
+            }
+            if ($PSBoundParameters.ContainsKey('ImageGenerationOutputCompression')) {
+                $ImageGenerationTool.output_compression = $ImageGenerationOutputCompression
+            }
+            if ($PSBoundParameters.ContainsKey('ImageGenerationOutputFormat')) {
+                $ImageGenerationTool.output_format = $ImageGenerationOutputFormat
+            }
+            if ($PSBoundParameters.ContainsKey('ImageGenerationPartialImages')) {
+                $ImageGenerationTool.partial_images = $ImageGenerationPartialImages
+            }
+            if ($PSBoundParameters.ContainsKey('ImageGenerationQuality')) {
+                $ImageGenerationTool.quality = $ImageGenerationQuality
+            }
+            if ($PSBoundParameters.ContainsKey('ImageGenerationSize')) {
+                $ImageGenerationTool.size = $ImageGenerationSize
+            }
+
+            $Tools += $ImageGenerationTool
+        }
+
+        #region Local Shell
+        if ($UseLocalShell) {
+            $LocalShellTool = @{
+                type = $LocalShellType
+            }
+            $Tools += $LocalShellTool
         }
 
         if ($Tools.Count -gt 0) {
