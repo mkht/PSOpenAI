@@ -119,7 +119,7 @@ Describe 'Wait-ThreadRun' {
                 thread_id  = 'thread_abc123'
                 status     = 'in_progress'
             }
-            { $script:Result = Wait-ThreadRun -InputObject $InObject -TimeoutSec 2 -ea Stop } | Should -Throw -ExceptionType ([OperationCanceledException])
+            { $script:Result = Wait-ThreadRun -InputObject $InObject -TimeoutSec 2 -ea Stop } | Should -Throw -ExceptionType ([System.TimeoutException])
             Should -Invoke Get-ThreadRun -ModuleName $script:ModuleName -Times 3
             $Result | Should -BeNullOrEmpty
         }
@@ -141,7 +141,7 @@ Describe 'Wait-ThreadRun' {
                 thread_id  = 'thread_abc123'
                 status     = 'in_progress'
             }
-            { $script:Result = Wait-ThreadRun -InputObject $InObject -TimeoutSec 2 -PollIntervalSec 100 -ea Stop } | Should -Throw -ExceptionType ([OperationCanceledException])
+            { $script:Result = Wait-ThreadRun -InputObject $InObject -TimeoutSec 2 -PollIntervalSec 100 -ea Stop } | Should -Throw -ExceptionType ([System.TimeoutException])
             Should -Invoke Get-ThreadRun -ModuleName $script:ModuleName -Times 1
             $Result | Should -BeNullOrEmpty
         }

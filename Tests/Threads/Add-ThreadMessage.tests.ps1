@@ -153,7 +153,7 @@ Describe 'Add-ThreadMessage' {
                     ErrorAction        = 'Stop'
                 }
                 $script:Result = Add-ThreadMessage @splat
-            } | Should -Throw -ExceptionType ([OperationCanceledException])
+            } | Should -Throw -ExceptionType ([System.TimeoutException])
             Should -Not -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName
             Should -Invoke Get-ThreadRun -ModuleName $script:ModuleName -Times 1
             $script:Result | Should -BeNullOrEmpty

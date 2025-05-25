@@ -134,7 +134,7 @@ function Wait-VectorStoreFileBatch {
             } while ($innerBatchObject.status -and $innerBatchObject.status -in $innerStatusForWait)
         }
         catch [OperationCanceledException] {
-            Write-Error -ErrorRecord $_
+            Write-TimeoutError
             return
         }
         catch {

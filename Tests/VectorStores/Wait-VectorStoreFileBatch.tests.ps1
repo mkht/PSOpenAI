@@ -115,7 +115,7 @@ Describe 'Wait-VectorStoreFileBatch' {
                 vector_store_id = 'vs_abc123'
                 status          = 'in_progress'
             }
-            { $script:Result = Wait-VectorStoreFileBatch -Batch $InObject -TimeoutSec 2 -ea Stop } | Should -Throw -ExceptionType ([OperationCanceledException])
+            { $script:Result = Wait-VectorStoreFileBatch -Batch $InObject -TimeoutSec 2 -ea Stop } | Should -Throw -ExceptionType ([System.TimeoutException])
             Should -Invoke Get-VectorStoreFileBatch -ModuleName $script:ModuleName -Times 3
             $Result | Should -BeNullOrEmpty
         }
@@ -136,7 +136,7 @@ Describe 'Wait-VectorStoreFileBatch' {
                 vector_store_id = 'vs_abc123'
                 status          = 'in_progress'
             }
-            { $script:Result = Wait-VectorStoreFileBatch -Batch $InObject -TimeoutSec 2 -PollIntervalSec 100 -ea Stop } | Should -Throw -ExceptionType ([OperationCanceledException])
+            { $script:Result = Wait-VectorStoreFileBatch -Batch $InObject -TimeoutSec 2 -PollIntervalSec 100 -ea Stop } | Should -Throw -ExceptionType ([System.TimeoutException])
             Should -Invoke Get-VectorStoreFileBatch -ModuleName $script:ModuleName -Times 1 -Exactly
         }
 

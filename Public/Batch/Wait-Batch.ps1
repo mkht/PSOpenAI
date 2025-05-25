@@ -123,7 +123,7 @@ function Wait-Batch {
             } while ($innerBatchObject.status -and $innerBatchObject.status -in $innerStatusForWait)
         }
         catch [OperationCanceledException] {
-            Write-Error -ErrorRecord $_
+            Write-TimeoutError
             return
         }
         catch {

@@ -138,7 +138,7 @@ function Wait-ThreadRun {
             } while ($innerRunObject.status -and $innerRunObject.status -in $innerStatusForWait)
         }
         catch [OperationCanceledException] {
-            Write-Error -ErrorRecord $_
+            Write-TimeoutError
             return
         }
         catch {

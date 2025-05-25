@@ -69,7 +69,7 @@ Describe 'Wait-Batch' {
                 id         = 'batch_abc123'
                 status     = 'in_progress'
             }
-            { $script:Result = Wait-Batch -InputObject $InObject -StatusForWait ('cancelling', 'failed') -TimeoutSec 2 -ea Stop } | Should -Throw -ExceptionType ([System.OperationCanceledException])
+            { $script:Result = Wait-Batch -InputObject $InObject -StatusForWait ('cancelling', 'failed') -TimeoutSec 2 -ea Stop } | Should -Throw -ExceptionType ([System.TimeoutException])
             Should -Invoke Get-Batch -ModuleName $script:ModuleName -Times 1
         }
 
@@ -104,7 +104,7 @@ Describe 'Wait-Batch' {
                 id         = 'batch_abc123'
                 status     = 'in_progress'
             }
-            { $script:Result = Wait-Batch -InputObject $InObject -TimeoutSec 2 -ea Stop } | Should -Throw -ExceptionType ([OperationCanceledException])
+            { $script:Result = Wait-Batch -InputObject $InObject -TimeoutSec 2 -ea Stop } | Should -Throw -ExceptionType ([System.TimeoutException])
             Should -Invoke Get-Batch -ModuleName $script:ModuleName -Times 3
             $Result | Should -BeNullOrEmpty
         }
@@ -123,7 +123,7 @@ Describe 'Wait-Batch' {
                 id         = 'batch_abc123'
                 status     = 'in_progress'
             }
-            { $script:Result = Wait-Batch -InputObject $InObject -TimeoutSec 2 -PollIntervalSec 100 -ea Stop } | Should -Throw -ExceptionType ([OperationCanceledException])
+            { $script:Result = Wait-Batch -InputObject $InObject -TimeoutSec 2 -PollIntervalSec 100 -ea Stop } | Should -Throw -ExceptionType ([System.TimeoutException])
             Should -Invoke Get-Batch -ModuleName $script:ModuleName -Times 1 -Exactly
             $Result | Should -BeNullOrEmpty
         }
