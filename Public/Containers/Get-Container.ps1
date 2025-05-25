@@ -2,12 +2,10 @@ function Get-Container {
     [CmdletBinding(DefaultParameterSetName = 'List')]
     [OutputType([pscustomobject])]
     param (
-        [Parameter(ParameterSetName = 'Get_Container', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
-        [PSTypeName('PSOpenAI.Container')]$Container,
-
-        [Parameter(ParameterSetName = 'Get_Id', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Parameter(ParameterSetName = 'Get', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [ValidateNotNullOrEmpty()]
         [Alias('container_id')]
+        [Alias('Container')]
         [string][UrlEncodeTransformation()]$ContainerId,
 
         [Parameter(ParameterSetName = 'List')]
@@ -68,15 +66,6 @@ function Get-Container {
     }
 
     process {
-        # Get id
-        if ($PSCmdlet.ParameterSetName -like '*_Container') {
-            $ContainerId = $Container.id
-            if (-not $ContainerId) {
-                Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve container id.'))
-                return
-            }
-        }
-
         # Create cancellation token for timeout
         $Cancellation = [System.Threading.CancellationTokenSource]::new()
         if ($TimeoutSec -gt 0) {
@@ -87,7 +76,7 @@ function Get-Container {
             while ($HasMore) {
                 #region Construct Query URI
                 $UriBuilder = [System.UriBuilder]::new($OpenAIParameter.Uri)
-                if ($PSCmdlet.ParameterSetName -like 'Get_*') {
+                if ($PSCmdlet.ParameterSetName -eq 'Get') {
                     $UriBuilder.Path += "/$ContainerId"
                     $QueryUri = $UriBuilder.Uri
                 }

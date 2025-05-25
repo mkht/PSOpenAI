@@ -2,7 +2,7 @@ function Remove-OpenAIFile {
     [CmdletBinding(DefaultParameterSetName = 'Id')]
     [OutputType([pscustomobject])]
     param (
-        [Parameter(ParameterSetName = 'File', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Parameter(ParameterSetName = 'File', Mandatory, Position = 0, ValueFromPipeline)]
         [PSTypeName('PSOpenAI.File')]$File,
 
         [Parameter(ParameterSetName = 'Id', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]

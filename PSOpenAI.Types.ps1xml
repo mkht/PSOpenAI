@@ -1,8 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Types>
   <Type>
+    <Name>PSOpenAI.Container</Name>
+    <Members>
+      <ScriptMethod>
+        <Name>ToString</Name>
+        <Script>
+          $this.id -as [string]
+        </Script>
+      </ScriptMethod>
+    </Members>
+  </Type>
+  <Type>
+    <Name>PSOpenAI.Container.File</Name>
+    <Members>
+      <ScriptMethod>
+        <Name>ToString</Name>
+        <Script>
+          $this.id -as [string]
+        </Script>
+      </ScriptMethod>
+    </Members>
+  </Type>
+  <Type>
+    <Name>PSOpenAI.File</Name>
+    <Members>
+      <ScriptMethod>
+        <Name>ToString</Name>
+        <Script>
+          $this.id -as [string]
+        </Script>
+      </ScriptMethod>
+    </Members>
+  </Type>
+  <Type>
     <Name>PSOpenAI.Model</Name>
     <Members>
+      <ScriptMethod>
+        <Name>ToString</Name>
+        <Script>
+          $this.id -as [string]
+        </Script>
+      </ScriptMethod>
       <MemberSet>
         <Name>PSStandardMembers</Name>
         <Members>

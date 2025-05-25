@@ -1,38 +1,30 @@
 function Get-ContainerFile {
-    [CmdletBinding(DefaultParameterSetName = 'List_Container')]
+    [CmdletBinding(DefaultParameterSetName = 'List')]
     [OutputType([pscustomobject])]
     param (
-        [Parameter(ParameterSetName = 'Get_Container', Mandatory, Position = 0, ValueFromPipeline)]
-        [Parameter(ParameterSetName = 'List_Container', Mandatory, Position = 0, ValueFromPipeline)]
-        [PSTypeName('PSOpenAI.Container')]$Container,
-
-        [Parameter(ParameterSetName = 'Get_Id', Mandatory, Position = 0)]
-        [Parameter(ParameterSetName = 'List_Id', Mandatory, Position = 0)]
+        [Parameter(ParameterSetName = 'Get', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Parameter(ParameterSetName = 'List', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [ValidateNotNullOrEmpty()]
+        [Alias('Container')]
         [Alias('container_id')]
         [string][UrlEncodeTransformation()]$ContainerId,
 
-        [Parameter(ParameterSetName = 'Get_Container', Mandatory, Position = 1)]
-        [Parameter(ParameterSetName = 'Get_Id', Mandatory, Position = 1)]
+        [Parameter(ParameterSetName = 'Get', Mandatory, Position = 1)]
         [ValidateNotNullOrEmpty()]
         [string][UrlEncodeTransformation()]$FileId,
 
-        [Parameter(ParameterSetName = 'List_Container')]
-        [Parameter(ParameterSetName = 'List_Id')]
+        [Parameter(ParameterSetName = 'List')]
         [ValidateRange(1, 100)]
         [int]$Limit = 100,
 
-        [Parameter(ParameterSetName = 'List_Container')]
-        [Parameter(ParameterSetName = 'List_Id')]
+        [Parameter(ParameterSetName = 'List')]
         [switch]$All,
 
-        [Parameter(ParameterSetName = 'List_Container')]
-        [Parameter(ParameterSetName = 'List_Id')]
+        [Parameter(ParameterSetName = 'List')]
         [ValidateSet('asc', 'desc')]
         [string][LowerCaseTransformation()]$Order = 'asc',
 
-        [Parameter(ParameterSetName = 'List_Container', DontShow)]
-        [Parameter(ParameterSetName = 'List_Id', DontShow)]
+        [Parameter(ParameterSetName = 'List', DontShow)]
         [string]$After,
 
         [Parameter()]
@@ -81,15 +73,6 @@ function Get-ContainerFile {
     }
 
     process {
-        # Get ids
-        if ($PSCmdlet.ParameterSetName -like '*_Container') {
-            $ContainerId = $Container.id
-        }
-        if (-not $ContainerId) {
-            Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve container id.'))
-            return
-        }
-
         # Create cancellation token for timeout
         $Cancellation = [System.Threading.CancellationTokenSource]::new()
         if ($TimeoutSec -gt 0) {
@@ -102,7 +85,7 @@ function Get-ContainerFile {
                 #region Construct Query URI
                 $QueryUri = $OpenAIParameter.Uri.ToString() -f $ContainerId
                 $UriBuilder = [System.UriBuilder]::new($QueryUri)
-                if ($PSCmdlet.ParameterSetName -like 'Get_*') {
+                if ($PSCmdlet.ParameterSetName -eq 'Get') {
                     $UriBuilder.Path += "/$FileId"
                     $QueryUri = $UriBuilder.Uri
                 }

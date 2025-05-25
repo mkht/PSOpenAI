@@ -1,20 +1,20 @@
 function Get-ContainerFileContent {
-    [CmdletBinding(DefaultParameterSetName = 'Id')]
+    [CmdletBinding()]
     [OutputType([byte[]])]
     param (
-        [Parameter(ParameterSetName = 'Container', Mandatory, Position = 0, ValueFromPipeline)]
-        [PSTypeName('PSOpenAI.Container')]$Container,
-
-        [Parameter(ParameterSetName = 'Id', Mandatory, Position = 0, ValueFromPipelineByPropertyName)]
+        [Parameter(ParameterSetName = 'Id', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [ValidateNotNullOrEmpty()]
+        [Alias('Container')]
         [Alias('container_id')]
         [string][UrlEncodeTransformation()]$ContainerId,
 
-        [Parameter(ParameterSetName = 'Container', Mandatory, Position = 1)]
         [Parameter(ParameterSetName = 'Id', Mandatory, Position = 1, ValueFromPipelineByPropertyName)]
         [ValidateNotNullOrEmpty()]
         [Alias('file_id')]
         [string][UrlEncodeTransformation()]$FileId,
+
+        [Parameter(ParameterSetName = 'ContainerFile', Mandatory, Position = 0, ValueFromPipeline)]
+        [PSTypeName('PSOpenAI.Container.File')]$ContainerFile,
 
         [Parameter()]
         [ValidateNotNullOrEmpty()]
@@ -63,17 +63,10 @@ function Get-ContainerFileContent {
     }
 
     process {
-        # Get ids
-        if ($PSCmdlet.ParameterSetName -eq 'Container') {
-            $ContainerId = $Container.id
-        }
-        if (-not $ContainerId) {
-            Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve container id.'))
-            return
-        }
-        if (-not $FileId) {
-            Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve file id.'))
-            return
+        if ($PSCmdlet.ParameterSetName -eq 'ContainerFile') {
+            # Get ids from ContainerFile object
+            $ContainerId = $ContainerFile.container_id
+            $FileId = $ContainerFile.id
         }
 
         #region Construct Query URI

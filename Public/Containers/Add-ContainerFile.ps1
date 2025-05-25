@@ -1,25 +1,16 @@
 function Add-ContainerFile {
-    [CmdletBinding(DefaultParameterSetName = 'ContainerId_FileId')]
+    [CmdletBinding()]
     [OutputType([pscustomobject])]
     param (
-        [Parameter(ParameterSetName = 'Container_FileId', Mandatory, Position = 0, ValueFromPipeline)]
-        [Parameter(ParameterSetName = 'Container_File', Mandatory, Position = 0, ValueFromPipeline)]
-        [PSTypeName('PSOpenAI.Container')]$Container,
-
-        [Parameter(ParameterSetName = 'ContainerId_FileId', Mandatory, Position = 0)]
-        [Parameter(ParameterSetName = 'ContainerId_File', Mandatory, Position = 0)]
+        [Parameter(Mandatory, Position = 0, ValueFromPipeline)]
         [ValidateNotNullOrEmpty()]
+        [Alias('Container')]
         [Alias('container_id')]
         [string][UrlEncodeTransformation()]$ContainerId,
 
-        [Parameter(ParameterSetName = 'Container_FileId', Mandatory, Position = 1)]
-        [Parameter(ParameterSetName = 'ContainerId_FileId', Mandatory, Position = 1)]
-        [ValidateNotNullOrEmpty()]
-        [string][UrlEncodeTransformation()]$FileId,
-
-        [Parameter(ParameterSetName = 'Container_File', Mandatory, Position = 1, ValueFromPipeline)]
-        [Parameter(ParameterSetName = 'ContainerId_File', Mandatory, Position = 1, ValueFromPipeline)]
-        [string]$File,
+        [Parameter(Mandatory, Position = 1)]
+        [Alias('FileId')]
+        [object[]]$File,
 
         [Parameter()]
         [int]$TimeoutSec = 0,
@@ -64,68 +55,87 @@ function Add-ContainerFile {
     }
 
     process {
-        # Get ids
-        if ($PSCmdlet.ParameterSetName -like 'Container_*') {
-            $ContainerId = $Container.id
-        }
-        if (-not $ContainerId) {
-            Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve container id.'))
-            return
-        }
-
-        #region Construct parameters for API request
         $QueryUri = $OpenAIParameter.Uri.ToString() -f $ContainerId
-        $PostBody = [System.Collections.Specialized.OrderedDictionary]::new()
 
-        if ($PSCmdlet.ParameterSetName -like '_FileId') {
-            $PostBody.file_id = $FileId
-            $OpenAIParameter.ContentType = 'application/json'
+        # Create cancellation token for timeout
+        $Cancellation = [System.Threading.CancellationTokenSource]::new()
+        if ($TimeoutSec -gt 0) {
+            $Cancellation.CancelAfter([timespan]::FromSeconds($TimeoutSec))
         }
-        elseif (Test-Path -LiteralPath $File -PathType Leaf) {
-            $PostBody.file = Resolve-FileInfo $File
-            $OpenAIParameter.ContentType = 'multipart/form-data'
-        }
-        else {
-            $PostBody.file_id = [string]$File
-            $OpenAIParameter.ContentType = 'application/json'
-        }
-        #endregion
 
-        #region Send API Request
-        $params = @{
-            Method            = 'Post'
-            Uri               = $QueryUri
-            ContentType       = $OpenAIParameter.ContentType
-            TimeoutSec        = $OpenAIParameter.TimeoutSec
-            MaxRetryCount     = $OpenAIParameter.MaxRetryCount
-            ApiKey            = $OpenAIParameter.ApiKey
-            AuthType          = $OpenAIParameter.AuthType
-            Organization      = $OpenAIParameter.Organization
-            Body              = $PostBody
-            AdditionalQuery   = $AdditionalQuery
-            AdditionalHeaders = $AdditionalHeaders
-            AdditionalBody    = $AdditionalBody
-        }
-        $Response = Invoke-OpenAIAPIRequest @params
-
-        # error check
-        if ($null -eq $Response) {
-            return
-        }
-        #endregion
-
-        #region Parse response object
+        # Loop through each file to be added
         try {
-            $Response = $Response | ConvertFrom-Json -ErrorAction Stop
+            foreach ($_file in $File) {
+                #region Construct parameters for API request
+                $PostBody = [System.Collections.Specialized.OrderedDictionary]::new()
+
+                if ($_file -is [System.IO.FileInfo]) {
+                    $PostBody.file = $_file
+                    $OpenAIParameter.ContentType = 'multipart/form-data'
+                }
+                elseif (Test-Path -LiteralPath $_file -PathType Leaf) {
+                    $PostBody.file = Resolve-FileInfo $_file
+                    $OpenAIParameter.ContentType = 'multipart/form-data'
+                }
+                else {
+                    $PostBody.file_id = [string]$_file
+                    $OpenAIParameter.ContentType = 'application/json'
+                }
+                #endregion
+
+                #region Send API Request
+                $params = @{
+                    Method            = 'Post'
+                    Uri               = $QueryUri
+                    ContentType       = $OpenAIParameter.ContentType
+                    TimeoutSec        = $OpenAIParameter.TimeoutSec
+                    MaxRetryCount     = $OpenAIParameter.MaxRetryCount
+                    ApiKey            = $OpenAIParameter.ApiKey
+                    AuthType          = $OpenAIParameter.AuthType
+                    Organization      = $OpenAIParameter.Organization
+                    Body              = $PostBody
+                    AdditionalQuery   = $AdditionalQuery
+                    AdditionalHeaders = $AdditionalHeaders
+                    AdditionalBody    = $AdditionalBody
+                }
+                $Response = Invoke-OpenAIAPIRequest @params
+
+                # error check
+                if ($null -eq $Response) {
+                    return
+                }
+                #endregion
+
+                #region Parse response object
+                try {
+                    $Response = $Response | ConvertFrom-Json -ErrorAction Stop
+                }
+                catch {
+                    Write-Error -Exception $_.Exception
+                }
+                #endregion
+
+                #region Output
+                ParseContainerFileObject -InputObject $Response
+                #endregion
+
+                # Check cancellation
+                $Cancellation.Token.ThrowIfCancellationRequested()
+            }
+        }
+        catch [OperationCanceledException] {
+            Write-TimeoutError
+            return
         }
         catch {
             Write-Error -Exception $_.Exception
+            return
         }
-        #endregion
-
-        #region Output
-        ParseContainerFileObject -InputObject $Response
-        #endregion
+        finally {
+            if ($null -ne $Cancellation) {
+                $Cancellation.Dispose()
+            }
+        }
     }
 
     end {

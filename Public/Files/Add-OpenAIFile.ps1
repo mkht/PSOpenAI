@@ -16,7 +16,7 @@ function Add-OpenAIFile {
         [string]$Name,
 
         [Parameter(Mandatory)]
-        [Completions('assistants', 'vision', 'fine-tune', 'batch')]
+        [Completions('assistants', 'batch', 'evals', 'fine-tune', 'user_data', 'vision')]
         [ValidateNotNullOrEmpty()]
         [string][LowerCaseTransformation()]$Purpose,
 

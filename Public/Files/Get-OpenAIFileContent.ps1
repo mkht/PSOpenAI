@@ -2,7 +2,7 @@ function Get-OpenAIFileContent {
     [CmdletBinding(DefaultParameterSetName = 'Id')]
     [OutputType([byte[]])]
     param (
-        [Parameter(ParameterSetName = 'File', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Parameter(ParameterSetName = 'File', Mandatory, Position = 0, ValueFromPipeline)]
         [PSTypeName('PSOpenAI.File')]$File,
 
         [Parameter(ParameterSetName = 'Id', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]

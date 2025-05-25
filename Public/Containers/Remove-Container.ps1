@@ -2,12 +2,9 @@ function Remove-Container {
     [CmdletBinding()]
     [OutputType([void])]
     param (
-        [Parameter(ParameterSetName = 'Container', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
-        [Alias('InputObject')]
-        [PSTypeName('PSOpenAI.Container')]$Container,
-
-        [Parameter(ParameterSetName = 'Id', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Parameter( Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [ValidateNotNullOrEmpty()]
+        [Alias('Container')]
         [Alias('container_id')]
         [string][UrlEncodeTransformation()]$ContainerId,
 
@@ -54,16 +51,6 @@ function Remove-Container {
     }
 
     process {
-        # Get id
-        if ($PSCmdlet.ParameterSetName -ceq 'Container') {
-            $ContainerId = $Container.id
-        }
-
-        if (-not $ContainerId) {
-            Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve container id.'))
-            return
-        }
-
         #region Construct Query URI
         $UriBuilder = [System.UriBuilder]::new($OpenAIParameter.Uri)
         $UriBuilder.Path += "/$ContainerId"
