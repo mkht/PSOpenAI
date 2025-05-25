@@ -49,10 +49,12 @@
         'Clear-OpenAIContext',
         'Set-OpenAIContext',
         ### OpenAI ###
+        #### Assistant ####
         'Get-Assistant',
         'New-Assistant',
         'Remove-Assistant',
         'Set-Assistant',
+        #### Thread & Run ####
         'Get-Thread',
         'New-Thread',
         'Remove-Thread',
@@ -67,35 +69,51 @@
         'Receive-ThreadRun',
         'Submit-ToolOutput',
         'Get-ThreadRunStep',
-        'New-ChatCompletionFunction',
-        'Enter-ChatGPT',
+        #### Model ####
         'Get-OpenAIModels',
+        #### Audio ####
         'Request-AudioSpeech',
         'Request-AudioTranscription',
         'Request-AudioTranslation',
+        #### Completions ####
+        'Request-TextCompletion',
         'Request-ChatCompletion',
         'Get-ChatCompletion',
         'Set-ChatCompletion',
         'Remove-ChatCompletion',
+        #### Embedding ####
         'Request-Embeddings',
+        #### Image ####
         'Request-ImageEdit',
         'Request-ImageGeneration',
         'Request-ImageVariation',
+        #### Moderation ####
         'Request-Moderation',
+        #### Responses ####
         'Request-Response',
         'Get-Response',
         'Get-ResponseInputItem',
         'Remove-Response',
-        'Request-TextCompletion',
+        #### Files ####
         'Add-OpenAIFile',
         'Remove-OpenAIFile',
         'Get-OpenAIFile',
         'Get-OpenAIFileContent',
+        #### Containers ####
+        'New-Container',
+        'Get-Container',
+        'Remove-Container',
+        'Add-ContainerFile',
+        'Get-ContainerFile',
+        'Get-ContainerFileContent',
+        'Remove-ContainerFile',
+        #### Batch ####
         'Start-Batch',
         'Get-Batch',
         'Wait-Batch',
         'Stop-Batch',
         'Get-BatchOutput',
+        #### VectorStore ####
         'New-VectorStore',
         'Get-VectorStore',
         'Set-VectorStore',
@@ -108,7 +126,7 @@
         'Start-VectorStoreFileBatch',
         'Stop-VectorStoreFileBatch',
         'Wait-VectorStoreFileBatch',
-        ### Realtime ###
+        #### Realtime ####
         'Connect-RealtimeSession',
         'Connect-RealtimeTranscriptionSession',
         'Disconnect-RealtimeSession',
@@ -122,7 +140,10 @@
         'Start-RealtimeSessionAudioOutput',
         'Stop-RealtimeSessionAudioOutput',
         'Start-RealtimeSessionAudioInput',
-        'Stop-RealtimeSessionAudioInput'
+        'Stop-RealtimeSessionAudioInput',
+        #### Misc ####
+        'New-ChatCompletionFunction',
+        'Enter-ChatGPT'
     )
 
     # Aliases to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no aliases to export.

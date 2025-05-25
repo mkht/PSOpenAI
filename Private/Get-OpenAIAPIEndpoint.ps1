@@ -222,6 +222,26 @@ function Get-OpenAIAPIEndpoint {
             }
             continue
         }
+        'Containers' {
+            $UriBuilder.Path += 'containers'
+            @{
+                Name        = 'containers'
+                Method      = 'Post'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+            continue
+        }
+        'Container.Files' {
+            $UriBuilder.Path += 'containers/{0}/files'
+            @{
+                Name        = 'container_files'
+                Method      = 'Post'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+            continue
+        }
         'Realtime' {
             $UriBuilder.Path += 'realtime'
             if ($UriBuilder.Scheme -eq 'https') {

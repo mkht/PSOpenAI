@@ -469,3 +469,37 @@ function ParseChatCompletionMessageObject {
 
     Write-Output $OutputObject
 }
+
+function ParseContainerObject {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory, Position = 0, ValueFromPipeline)]
+        [PSCustomObject]$InputObject
+    )
+    # Add custom type name and properties to output object.
+    $InputObject.PSObject.TypeNames.Insert(0, 'PSOpenAI.Container')
+    ('created_at', 'last_active_at') | ForEach-Object {
+        if ($null -ne $InputObject.$_ -and ($unixtime = $InputObject.$_ -as [long])) {
+            # convert unixtime to [DateTime] for read suitable
+            $InputObject | Add-Member -MemberType NoteProperty -Name $_ -Value ([System.DateTimeOffset]::FromUnixTimeSeconds($unixtime).LocalDateTime) -Force
+        }
+    }
+    Write-Output $InputObject
+}
+
+function ParseContainerFileObject {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory, Position = 0, ValueFromPipeline)]
+        [PSCustomObject]$InputObject
+    )
+    # Add custom type name and properties to output object.
+    $InputObject.PSObject.TypeNames.Insert(0, 'PSOpenAI.Container.File')
+    ('created_at') | ForEach-Object {
+        if ($null -ne $InputObject.$_ -and ($unixtime = $InputObject.$_ -as [long])) {
+            # convert unixtime to [DateTime] for read suitable
+            $InputObject | Add-Member -MemberType NoteProperty -Name $_ -Value ([System.DateTimeOffset]::FromUnixTimeSeconds($unixtime).LocalDateTime) -Force
+        }
+    }
+    Write-Output $InputObject
+}
