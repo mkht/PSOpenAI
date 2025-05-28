@@ -7,7 +7,7 @@ function New-Container {
         [string]$Name,
 
         [Parameter()]
-        [uint]$ExpiresAfterMinutes,
+        [int]$ExpiresAfterMinutes,
 
         [Parameter()]
         [string][LowerCaseTransformation()]$ExpiresAfterAnchor = 'last_active_at',
