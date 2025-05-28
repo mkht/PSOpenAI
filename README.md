@@ -60,6 +60,9 @@ Install-Module -Name PSOpenAI
 [Guide: Migrate ChatCompletion to Response](/Guides/Migrate_ChatCompletion_to_Response.md)  
 
 + [Request-Response](/Docs/Request-Response.md)
++ [Get-Response](/Docs/Get-Response.md)
++ [Remove-Response](/Docs/Remove-Response.md)
++ [Get-ResponseInputItem](/Docs/Get-ResponseInputItem.md)
 
 #### Assistants
 [Guide: How to use Assistants](/Guides/How_to_use_Assistants.md)  
@@ -139,6 +142,15 @@ Install-Module -Name PSOpenAI
 + [Wait-Batch](/Docs/Wait-Batch.md)
 + [Stop-Batch](/Docs/Stop-Batch.md)
 + [Get-BatchOutput](/Docs/Get-BatchOutput.md)
+
+### Containers
++ [New-Container](/Docs/New-Container.md)
++ [Get-Container](/Docs/Get-Container.md)
++ [Remove-Container](/Docs/Remove-Container.md)
++ [Add-ContainerFile](/Docs/Add-ContainerFile.md)
++ [Get-ContainerFile](/Docs/Get-ContainerFile.md)
++ [Remove-ContainerFile](/Docs/Remove-ContainerFile.md)
++ [Get-ContainerFileContent](/Docs/Get-ContainerFileContent.md)
 
 #### Others
 + [Get-OpenAIModels](/Docs/Get-OpenAIModels.md)
