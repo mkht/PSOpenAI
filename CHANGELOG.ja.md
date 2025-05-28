@@ -1,4 +1,16 @@
 # 変更履歴
+### 4.26.0
+- Responses API用の新しい組み込みツール（Remote MCP、Code Interpreter、Image Generationなど）を追加しました
+- Responseオブジェクトの一覧表示を最適化しました
+- Containers用の新しい関数を追加しました
+    + [New-Container](/Docs/New-Container.md)
+    + [Get-Container](/Docs/Get-Container.md)
+    + [Remove-Container](/Docs/Remove-Container.md)
+    + [Add-ContainerFile](/Docs/Add-ContainerFile.md)
+    + [Get-ContainerFile](/Docs/Get-ContainerFile.md)
+    + [Get-ContainerFileContent](/Docs/Get-ContainerFileContent.md)
+    + [Remove-ContainerFile](/Docs/Remove-ContainerFile.md)
+
 ### 4.25.0
 - `codex-mini-latest`モデルを追加しました
 - 廃止予定モデルのリストを更新しました

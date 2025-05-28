@@ -1,4 +1,16 @@
 # Changelog
+### 4.26.0
+- Add new built-in tools for Responses API, such as Remote MCP, Code Interpreter, and Image Generation.
+- Optimize list view of Response object.
+- Add new functions for Containers.
+    + [New-Container](/Docs/New-Container.md)
+    + [Get-Container](/Docs/Get-Container.md)
+    + [Remove-Container](/Docs/Remove-Container.md)
+    + [Add-ContainerFile](/Docs/Add-ContainerFile.md)
+    + [Get-ContainerFile](/Docs/Get-ContainerFile.md)
+    + [Get-ContainerFileContent](/Docs/Get-ContainerFileContent.md)
+    + [Remove-ContainerFile](/Docs/Remove-ContainerFile.md)
+
 ### 4.25.0
 - Add `codex-mini-latest` model.
 - Update deprecation models list.

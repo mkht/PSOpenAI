@@ -14,7 +14,7 @@ function New-Container {
 
         [Parameter()]
         [Alias('file_ids')]
-        [object[]]$FileId,
+        [string[]]$FileId,
 
         [Parameter()]
         [int]$TimeoutSec = 0,
@@ -71,18 +71,7 @@ function New-Container {
         }
 
         if ($FileId.Count -gt 0) {
-            $list = [System.Collections.Generic.List[string]]::new($FileId.Count)
-            foreach ($item in $FileId) {
-                if ($item -is [string]) {
-                    $list.Add($item)
-                }
-                elseif ($item.psobject.TypeNames -contains 'PSOpenAI.File') {
-                    $list.Add($item.id)
-                }
-            }
-            if ($list.Count -gt 0) {
-                $PostBody.file_ids = $list.ToArray()
-            }
+            $PostBody.file_ids = $FileId
         }
         #endregion
 

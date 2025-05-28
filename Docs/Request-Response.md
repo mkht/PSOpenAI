@@ -43,6 +43,26 @@ Request-Response
     [-ComputerUseEnvironment <String>]
     [-ComputerUseDisplayHeight <Int32>]
     [-ComputerUseDisplayWidth <Int32>]
+    [-UseRemoteMCP]
+    [-RemoteMCPServerLabel <String>]
+    [-RemoteMCPServerUrl <String>]
+    [-RemoteMCPAllowedTools <Object>]
+    [-RemoteMCPRequireApproval <Object>]
+    [-RemoteMCPHeaders <IDictionary>]
+    [-UseCodeInterpreter]
+    [-ContainerId <String>]
+    [-ContainerFileIds <String[]>]
+    [-UseImageGeneration]
+    [-ImageGenerationModel <String>]
+    [-ImageGenerationBackGround <String>]
+    [-ImageGenerationInputImageMask <String>]
+    [-ImageGenerationModeration <String>]
+    [-ImageGenerationOutputCompression <Int32>]
+    [-ImageGenerationOutputFormat <String>]
+    [-ImageGenerationPartialImages <Int32>]
+    [-ImageGenerationQuality <String>]
+    [-ImageGenerationSize <String>]
+    [-UseLocalShell]
     [-Include <String[]>]
     [-Truncation <String>]
     [-Temperature <Double>] 
@@ -381,6 +401,192 @@ The width of the computer display.
 
 ```yaml
 Type: Int32
+Required: False
+Position: Named
+```
+
+### -UseRemoteMCP
+If you want to use the Remote MCP built-in tool, Should specify this switch as enabled.
+
+```yaml
+Type: SwitchParameter
+Required: False
+Position: Named
+```
+
+### -RemoteMCPServerLabel
+A label for this MCP server, used to identify it in tool calls.
+
+```yaml
+Type: String
+Required: False
+Position: Named
+```
+
+### -RemoteMCPServerUrl
+The URL for the MCP server.
+
+```yaml
+Type: String
+Required: False
+Position: Named
+```
+
+### -RemoteMCPAllowedTools
+List of allowed tool names or a filter object.
+
+```yaml
+Type: Object
+Required: False
+Position: Named
+```
+
+### -RemoteMCPRequireApproval
+Specify which of the MCP server's tools require approval. When you want to specify a single approval policy for all tools. One of `always` or `never`.
+
+```yaml
+Type: Object
+Required: False
+Position: Named
+```
+
+### -RemoteMCPHeaders
+Optional HTTP headers to send to the MCP server. Use for authentication or other purposes.
+
+```yaml
+Type: IDictionary
+Required: False
+Position: Named
+```
+
+### -UseCodeInterpreter
+If you want to use the Code Interpreter built-in tool, Should specify this switch as enabled.
+
+```yaml
+Type: SwitchParameter
+Required: False
+Position: Named
+```
+
+### -ContainerId
+The code interpreter container. Can be a container ID or `auto` to use the default container.
+
+```yaml
+Type: String
+Required: False
+Position: Named
+Default value: auto
+```
+
+### -ContainerFileIds
+An optional list of uploaded files to make available to your code.
+
+```yaml
+Type: String[]
+Required: False
+Position: Named
+```
+
+### -UseImageGeneration
+If you want to use the Imagae Generation built-in tool, Should specify this switch as enabled.
+
+```yaml
+Type: SwitchParameter
+Required: False
+Position: Named
+```
+
+### -ImageGenerationModel
+The image generation model to use. Default: `gpt-image-1`.
+
+```yaml
+Type: String
+Required: False
+Position: Named
+```
+
+### -ImageGenerationBackGround
+Background type for the generated image. One of `transparent`, `opaque`, or `auto`
+
+```yaml
+Type: String
+Required: False
+Position: Named
+Default value: auto
+```
+
+### -ImageGenerationInputImageMask
+Optional mask for inpainting. Contains image_url (string, optional) and file_id (string, optional).
+
+```yaml
+Type: String
+Required: False
+Position: Named
+```
+
+### -ImageGenerationModeration
+Moderation level for the generated image. Default: auto
+
+```yaml
+Type: String
+Required: False
+Position: Named
+Default value: auto
+```
+
+### -ImageGenerationOutputCompression
+Compression level for the output image. Default: 100.
+
+```yaml
+Type: Int32
+Required: False
+Position: Named
+```
+
+### -ImageGenerationOutputFormat
+The output format of the generated image. One of `png`, `webp`, or `jpeg`.
+
+```yaml
+Type: String
+Required: False
+Position: Named
+Default value: png
+```
+
+### -ImageGenerationPartialImages
+Number of partial images to generate in streaming mode, from 0 (default value) to 3.
+
+```yaml
+Type: Int32
+Required: False
+Position: Named
+```
+
+### -ImageGenerationQuality
+The quality of the generated image. One of `low`, `medium`, `high`, or `auto`. 
+
+```yaml
+Type: String
+Required: False
+Position: Named
+Default value: auto
+```
+
+### -ImageGenerationSize
+The size of the generated image. One of `1024x1024`, `1024x1536`, `1536x1024`, or `auto`. Default: `auto`.
+
+```yaml
+Type: String
+Required: False
+Position: Named
+Default value: auto
+```
+
+### -UseLocalShell
+If you want to use the Local Shell built-in tool, Should specify this switch as enabled.
+
+```yaml
+Type: SwitchParameter
 Required: False
 Position: Named
 ```
