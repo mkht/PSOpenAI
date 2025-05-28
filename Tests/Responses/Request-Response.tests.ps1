@@ -829,20 +829,20 @@ Ping Source Address Latency(ms) BufferSize(B) Status
         It 'Tools - Remote MCP' {
             {
                 $param = @{
-                    Message            = 'How does microsoft/markitdown convert pptx to markdown?'
-                    Model              = 'gpt-4.1-mini'
-                    UseMCP             = $true
-                    MCPServerLabel     = 'DeepWiki'
-                    MCPServerUrl       = 'https://mcp.deepwiki.com/mcp'
-                    MCPRequireApproval = 'always'
-                    MCPOptionalHeaders = @{ 'X-Debug-Key' = '1234567890' }  # Only for test, no meaning
-                    Store              = $false
-                    TimeoutSec         = 30
+                    Message                  = 'How does microsoft/markitdown convert pptx to markdown?'
+                    Model                    = 'gpt-4.1-mini'
+                    UseRemoteMCP             = $true
+                    RemoteMCPServerLabel     = 'DeepWiki'
+                    RemoteMCPServerUrl       = 'https://mcp.deepwiki.com/mcp'
+                    RemoteMCPRequireApproval = 'always'
+                    RemoteMCPHeaders         = @{ 'X-Debug-Key' = '1234567890' }  # Only for test, no meaning
+                    Store                    = $false
+                    TimeoutSec               = 30
                 }
 
                 $script:Result = Request-Response @param -ea Stop } | Should -Not -Throw
             $Result.object | Should -Be 'response'
-            $Result.LastUserMessage | Should -Be 'Check the latest OpenAI news on Google.'
+            $Result.LastUserMessage | Should -Be 'How does microsoft/markitdown convert pptx to markdown?'
             $Result.output[-1].type | Should -Be 'mcp_approval_request'
         }
 

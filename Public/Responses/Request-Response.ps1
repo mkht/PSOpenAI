@@ -159,28 +159,28 @@ function Request-Response {
 
         #region Remote MCP
         [Parameter()]
-        [switch]$UseMCP,
+        [switch]$UseRemoteMCP,
 
         [Parameter(DontShow)]
-        [string]$MCPType = 'mcp', # Always 'mcp'
+        [string]$RemoteMCPType = 'mcp', # Always 'mcp'
 
         [Parameter()]
         [ValidateNotNullOrEmpty()]
-        [string]$MCPServerLabel,
+        [string]$RemoteMCPServerLabel,
 
         [Parameter()]
         [ValidateNotNullOrEmpty()]
-        [string]$MCPServerUrl,
+        [string]$RemoteMCPServerUrl,
 
         [Parameter()]
-        [object]$MCPAllowedTools,
+        [object]$RemoteMCPAllowedTools,
 
         [Parameter()]
         [Completions('always', 'never')]
-        [object]$MCPRequireApproval,
+        [object]$RemoteMCPRequireApproval,
 
         [Parameter()]
-        [System.Collections.IDictionary]$MCPOptionalHeaders,
+        [System.Collections.IDictionary]$RemoteMCPHeaders,
         #endregion Remote MCP
 
         #region Code Interpreter
@@ -605,46 +605,46 @@ function Request-Response {
         }
 
         #region Remote MCP
-        if ($UseMCP) {
+        if ($UseRemoteMCP) {
             # Server label and URL are required.
-            if ([string]::IsNullOrWhiteSpace($MCPServerLabel)) {
-                Write-Error 'MCPServerLabel must be specified.'
+            if ([string]::IsNullOrWhiteSpace($RemoteMCPServerLabel)) {
+                Write-Error 'RemoteMCPServerLabel must be specified.'
             }
-            if ([string]::IsNullOrWhiteSpace($MCPServerUrl)) {
-                Write-Error 'MCPServerUrl must be specified.'
+            if ([string]::IsNullOrWhiteSpace($RemoteMCPServerUrl)) {
+                Write-Error 'RemoteMCPServerUrl must be specified.'
             }
 
             $MCPTool = @{
-                type         = $MCPType
-                server_label = $MCPServerLabel
-                server_url   = $MCPServerUrl
+                type         = $RemoteMCPType
+                server_label = $RemoteMCPServerLabel
+                server_url   = $RemoteMCPServerUrl
             }
 
-            if ($PSBoundParameters.ContainsKey('MCPAllowedTools')) {
-                if ($MCPAllowedTools.tool_names.Count -gt 0) {
-                    $MCPAllowedTools = $MCPAllowedTools.tool_names
+            if ($PSBoundParameters.ContainsKey('RemoteMCPAllowedTools')) {
+                if ($RemoteMCPAllowedTools.tool_names.Count -gt 0) {
+                    $RemoteMCPAllowedTools = $RemoteMCPAllowedTools.tool_names
                 }
-                $MCPTool.allowed_tools = [string[]]$MCPAllowedTools
+                $MCPTool.allowed_tools = [string[]]$RemoteMCPAllowedTools
             }
-            if ($PSBoundParameters.ContainsKey('MCPRequireApproval')) {
-                if ($MCPRequireApproval -is [string]) {
-                    $MCPTool.require_approval = $MCPRequireApproval.Trim()
+            if ($PSBoundParameters.ContainsKey('RemoteMCPRequireApproval')) {
+                if ($RemoteMCPRequireApproval -is [string]) {
+                    $MCPTool.require_approval = $RemoteMCPRequireApproval.Trim()
                 }
                 else {
                     $MCPApprovalFilter = @{}
-                    if ($MCPRequireApproval.always.tool_names.Count -gt 0) {
-                        $MCPApprovalFilter.always = @{tool_names = [string[]]$MCPRequireApproval.always.tool_names }
+                    if ($RemoteMCPRequireApproval.always.tool_names.Count -gt 0) {
+                        $MCPApprovalFilter.always = @{tool_names = [string[]]$RemoteMCPRequireApproval.always.tool_names }
                     }
-                    if ($MCPRequireApproval.never.tool_names.Count -gt 0) {
-                        $MCPApprovalFilter.never = @{tool_names = [string[]]$MCPRequireApproval.never.tool_names }
+                    if ($RemoteMCPRequireApproval.never.tool_names.Count -gt 0) {
+                        $MCPApprovalFilter.never = @{tool_names = [string[]]$RemoteMCPRequireApproval.never.tool_names }
                     }
                     if ($MCPApprovalFilter.Keys.Count -gt 0) {
                         $MCPTool.require_approval = $MCPApprovalFilter
                     }
                 }
             }
-            if ($MCPOptionalHeaders.Keys.Count -gt 0) {
-                $MCPTool.headers = $MCPOptionalHeaders
+            if ($RemoteMCPHeaders.Keys.Count -gt 0) {
+                $MCPTool.headers = $RemoteMCPHeaders
             }
 
             $Tools += $MCPTool
