@@ -1,14 +1,12 @@
 function Get-Response {
-    [CmdletBinding(DefaultParameterSetName = 'Get_Id')]
+    [CmdletBinding()]
     [OutputType([pscustomobject])]
     param (
-        [Parameter(ParameterSetName = 'Get_Response', Mandatory, Position = 0, ValueFromPipeline)]
-        [Alias('InputObject')]
-        [PSTypeName('PSOpenAI.Response')]$Response,
-
-        [Parameter(ParameterSetName = 'Get_Id', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Parameter(Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [ValidateNotNullOrEmpty()]
+        [Alias('InputObject')]
         [Alias('Id')]
+        [Alias('Response')]
         [Alias('response_id')]
         [string][UrlEncodeTransformation()]$ResponseId,
 
@@ -59,21 +57,9 @@ function Get-Response {
 
         # Parse Common params
         $CommonParams = ParseCommonParams $PSBoundParameters
-
-        # Iterator flag
-        [bool]$HasMore = $true
     }
 
     process {
-        # Get id
-        if ($PSCmdlet.ParameterSetName -ceq 'Get_Response') {
-            $ResponseId = $Response.id
-            if (-not $ResponseId) {
-                Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve response id.'))
-                return
-            }
-        }
-
         #region Construct Query URI
         $UriBuilder = [System.UriBuilder]::new($OpenAIParameter.Uri)
         $UriBuilder.Path += "/$ResponseId"

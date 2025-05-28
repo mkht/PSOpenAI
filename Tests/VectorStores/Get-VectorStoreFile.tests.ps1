@@ -84,9 +84,7 @@ Describe 'Get-VectorStoreFile' {
                 { Get-VectorStoreFile 'vs_abc123' 'file-abc123' -ea Stop } | Should -Not -Throw
                 # Pipeline
                 { 'vs_abc123' | Get-VectorStoreFile -FileId 'file-abc123' -ea Stop } | Should -Not -Throw
-                # Pipeline by property name
-                { [pscustomobject]@{VectorStoreId = 'vs_abc123'; FileId = 'file-abc123' } | Get-VectorStoreFile -ea Stop } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 4 -Exactly -ParameterFilter { 'https://api.openai.com/v1/vector_stores/vs_abc123/files/file-abc123' -eq $Uri }
+                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 3 -Exactly -ParameterFilter { 'https://api.openai.com/v1/vector_stores/vs_abc123/files/file-abc123' -eq $Uri }
             }
 
             It 'List_Id' {

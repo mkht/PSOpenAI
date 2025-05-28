@@ -2,12 +2,10 @@ function Get-Assistant {
     [CmdletBinding(DefaultParameterSetName = 'List')]
     [OutputType([pscustomobject])]
     param (
-        [Parameter(ParameterSetName = 'Get_Assistant', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
-        [Alias('InputObject')]  # for backword compatibility
-        [PSTypeName('PSOpenAI.Assistant')]$Assistant,
-
-        [Parameter(ParameterSetName = 'Get_Id', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Parameter(ParameterSetName = 'Get', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [ValidateNotNullOrEmpty()]
+        [Alias('InputObject')]  # for backword compatibility
+        [Alias('Assistant')]
         [Alias('assistant_id')]
         [string][UrlEncodeTransformation()]$AssistantId,
 
@@ -74,15 +72,6 @@ function Get-Assistant {
     }
 
     process {
-        # Get assistant_id
-        if ($PSCmdlet.ParameterSetName -like '*_Assistant') {
-            $AssistantId = $Assistant.id
-            if (-not $AssistantId) {
-                Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve assistant id.'))
-                return
-            }
-        }
-
         # Create cancellation token for timeout
         $Cancellation = [System.Threading.CancellationTokenSource]::new()
         if ($TimeoutSec -gt 0) {
@@ -94,7 +83,7 @@ function Get-Assistant {
             while ($HasMore) {
                 #region Construct Query URI
                 $UriBuilder = [System.UriBuilder]::new($OpenAIParameter.Uri)
-                if ($PSCmdlet.ParameterSetName -like 'Get_*') {
+                if ($PSCmdlet.ParameterSetName -eq 'Get') {
                     $UriBuilder.Path += "/$AssistantId"
                     $QueryUri = $UriBuilder.Uri
                 }

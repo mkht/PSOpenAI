@@ -1,18 +1,15 @@
 function Remove-VectorStoreFile {
-    [CmdletBinding()]
+    [CmdletBinding(DefaultParameterSetName = 'VectorStore')]
     [OutputType([pscustomobject])]
     param (
         [Parameter(ParameterSetName = 'VectorStore', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
-        [Alias('InputObject')]  # for backword compatibility
-        [PSTypeName('PSOpenAI.VectorStore')]$VectorStore,
-
-        [Parameter(ParameterSetName = 'Id', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [ValidateNotNullOrEmpty()]
+        [Alias('InputObject')]  # for backword compatibility
+        [Alias('VectorStore')]
         [Alias('vector_store_id')]
         [string][UrlEncodeTransformation()]$VectorStoreId,
 
         [Parameter(ParameterSetName = 'VectorStore', Mandatory, Position = 1, ValueFromPipelineByPropertyName)]
-        [Parameter(ParameterSetName = 'Id', Mandatory, Position = 1, ValueFromPipelineByPropertyName)]
         [ValidateNotNullOrEmpty()]
         [Alias('file_id')]
         [string][UrlEncodeTransformation()]$FileId,
@@ -64,10 +61,7 @@ function Remove-VectorStoreFile {
 
     process {
         # Get ids
-        if ($PSCmdlet.ParameterSetName -ceq 'VectorStore') {
-            $VectorStoreId = $VectorStore.id
-        }
-        elseif ($PSCmdlet.ParameterSetName -ceq 'VectorStoreFile') {
+        if ($PSCmdlet.ParameterSetName -ceq 'VectorStoreFile') {
             $VectorStoreId = $VectorStoreFile.vector_store_id
             $FileId = $VectorStoreFile.id
         }

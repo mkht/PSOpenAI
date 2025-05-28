@@ -101,17 +101,11 @@ function Get-OpenAIModels {
             if ($OpenAIParameter.ApiType -eq [OpenAIApiType]::OpenAI) {
                 $m.PSObject.TypeNames.Insert(0, 'PSOpenAI.Model')
             }
-            if ($unixtime = $m.created -as [long]) {
-                # convert unixtime to [DateTime] for read suitable
-                $m | Add-Member -MemberType NoteProperty -Name 'created' -Value ([System.DateTimeOffset]::FromUnixTimeSeconds($unixtime).LocalDateTime) -Force
-            }
-            if ($unixtime = $m.created_at -as [long]) {
-                # convert unixtime to [DateTime] for read suitable
-                $m | Add-Member -MemberType NoteProperty -Name 'created_at' -Value ([System.DateTimeOffset]::FromUnixTimeSeconds($unixtime).LocalDateTime) -Force
-            }
-            if ($unixtime = $m.updated_at -as [long]) {
-                # convert unixtime to [DateTime] for read suitable
-                $m | Add-Member -MemberType NoteProperty -Name 'updated_at' -Value ([System.DateTimeOffset]::FromUnixTimeSeconds($unixtime).LocalDateTime) -Force
+              ('created', 'created_at', 'updated_at') | ForEach-Object {
+                if ($null -ne $m.$_ -and ($unixtime = $m.$_ -as [long])) {
+                    # convert unixtime to [DateTime] for read suitable
+                    $m | Add-Member -MemberType NoteProperty -Name $_ -Value ([System.DateTimeOffset]::FromUnixTimeSeconds($unixtime).LocalDateTime) -Force
+                }
             }
             Write-Output $m
         }

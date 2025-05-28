@@ -1,14 +1,12 @@
 function Get-ResponseInputItem {
-    [CmdletBinding(DefaultParameterSetName = 'Id')]
+    [CmdletBinding()]
     [OutputType([pscustomobject])]
     param (
-        [Parameter(ParameterSetName = 'Response', Mandatory, Position = 0, ValueFromPipeline)]
-        [Alias('InputObject')]
-        [PSTypeName('PSOpenAI.Response')]$Response,
-
-        [Parameter(ParameterSetName = 'Id', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Parameter(Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [ValidateNotNullOrEmpty()]
+        [Alias('InputObject')]
         [Alias('Id')]
+        [Alias('Response')]
         [Alias('response_id')]
         [string][UrlEncodeTransformation()]$ResponseId,
 
@@ -25,7 +23,7 @@ function Get-ResponseInputItem {
         [Parameter(DontShow)]
         [string]$Before,
 
-        [Parameter(DontShow)]
+        [Parameter()]
         [ValidateSet('asc', 'desc')]
         [string][LowerCaseTransformation()]$Order = 'asc',
 
@@ -70,23 +68,11 @@ function Get-ResponseInputItem {
         # Get API context
         $OpenAIParameter = Get-OpenAIAPIParameter -EndpointName 'Responses.InputItems' -Parameters $PSBoundParameters -ErrorAction Stop
 
-        # Parse Common params
-        $CommonParams = ParseCommonParams $PSBoundParameters
-
         # Iterator flag
         [bool]$HasMore = $true
     }
 
     process {
-        # Get id
-        if ($PSCmdlet.ParameterSetName -ceq 'Response') {
-            $ResponseId = $Response.id
-            if (-not $ResponseId) {
-                Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve response id.'))
-                return
-            }
-        }
-
         # Create cancellation token for timeout
         $Cancellation = [System.Threading.CancellationTokenSource]::new()
         if ($TimeoutSec -gt 0) {
@@ -110,6 +96,9 @@ function Get-ResponseInputItem {
                 $QueryParam.Add('order', $Order)
                 if ($After) {
                     $QueryParam.Add('after', $After)
+                }
+                if ($Before) {
+                    $QueryParam.Add('before', $Before)
                 }
 
                 $UriBuilder.Query = $QueryParam.ToString()

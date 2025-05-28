@@ -2,11 +2,9 @@ function Get-Batch {
     [CmdletBinding(DefaultParameterSetName = 'List')]
     [OutputType([pscustomobject])]
     param (
-        [Parameter(ParameterSetName = 'Get_Batch', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
-        [PSTypeName('PSOpenAI.Batch')]$Batch,
-
-        [Parameter(ParameterSetName = 'Get_Id', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Parameter(ParameterSetName = 'Get', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [ValidateNotNullOrEmpty()]
+        [Alias('Batch')]
         [Alias('batch_id')]
         [Alias('Id')]   # for backword compatibility
         [string][UrlEncodeTransformation()]$BatchId,
@@ -20,14 +18,6 @@ function Get-Batch {
 
         [Parameter(ParameterSetName = 'List', DontShow)]
         [string]$After,
-
-        # [Parameter(ParameterSetName = 'ListAll', DontShow)]
-        # [string]$Before,
-
-        # [Parameter(ParameterSetName = 'List')]
-        # [Parameter(ParameterSetName = 'ListAll')]
-        # [ValidateSet('asc', 'desc')]
-        # [string][LowerCaseTransformation()]$Order = 'asc',
 
         [Parameter()]
         [int]$TimeoutSec = 0,
@@ -75,15 +65,6 @@ function Get-Batch {
     }
 
     process {
-        # Get id
-        if ($PSCmdlet.ParameterSetName -like '*_Batch') {
-            $BatchId = $Batch.id
-            if (-not $BatchId) {
-                Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve batch id.'))
-                return
-            }
-        }
-
         # Create cancellation token for timeout
         $Cancellation = [System.Threading.CancellationTokenSource]::new()
         if ($TimeoutSec -gt 0) {
@@ -95,7 +76,7 @@ function Get-Batch {
             while ($HasMore) {
                 #region Construct Query URI
                 $UriBuilder = [System.UriBuilder]::new($OpenAIParameter.Uri)
-                if ($PSCmdlet.ParameterSetName -like 'Get_*') {
+                if ($PSCmdlet.ParameterSetName -eq 'Get') {
                     $UriBuilder.Path += "/$BatchId"
                     $QueryUri = $UriBuilder.Uri
                 }
@@ -105,13 +86,9 @@ function Get-Batch {
                         $Limit = 100
                     }
                     $QueryParam.Add('limit', $Limit)
-                    # $QueryParam.Add('order', $Order)
                     if ($After) {
                         $QueryParam.Add('after', $After)
                     }
-                    # if ($Before) {
-                    #     $QueryParam.Add('before', $Before)
-                    # }
                     $UriBuilder.Query = $QueryParam.ToString()
                     $QueryUri = $UriBuilder.Uri
                 }

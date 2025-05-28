@@ -2,26 +2,24 @@ function Set-Thread {
     [CmdletBinding()]
     [OutputType([pscustomobject])]
     param (
-        [Parameter(ParameterSetName = 'Thread', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
-        [Alias('InputObject')]  # for backword compatibility
-        [PSTypeName('PSOpenAI.Thread')]$Thread,
-
-        [Parameter(ParameterSetName = 'Id', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Parameter( Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [ValidateNotNullOrEmpty()]
+        [Alias('InputObject')]  # for backword compatibility
+        [Alias('Thread')]
         [Alias('thread_id')]
         [string][UrlEncodeTransformation()]$ThreadId,
 
         [Parameter()]
         [ValidateCount(0, 20)]
-        [object[]]$FileIdsForCodeInterpreter,
+        [string[]]$FileIdsForCodeInterpreter,
 
         [Parameter()]
         [ValidateCount(1, 1)]
-        [object[]]$VectorStoresForFileSearch,
+        [string[]]$VectorStoresForFileSearch,
 
         [Parameter()]
         [ValidateCount(0, 10000)]
-        [object[]]$FileIdsForFileSearch,
+        [string[]]$FileIdsForFileSearch,
 
         [Parameter()]
         [System.Collections.IDictionary]$MetaData,

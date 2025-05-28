@@ -1,14 +1,12 @@
 function Remove-Response {
-    [CmdletBinding(DefaultParameterSetName = 'Id')]
+    [CmdletBinding()]
     [OutputType([pscustomobject])]
     param (
-        [Parameter(ParameterSetName = 'Response', Mandatory, Position = 0, ValueFromPipeline)]
-        [Alias('InputObject')]
-        [PSTypeName('PSOpenAI.Response')]$Response,
-
-        [Parameter(ParameterSetName = 'Id', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Parameter(Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [ValidateNotNullOrEmpty()]
+        [Alias('InputObject')]
         [Alias('Id')]
+        [Alias('Response')]
         [Alias('response_id')]
         [string][UrlEncodeTransformation()]$ResponseId,
 
@@ -55,15 +53,6 @@ function Remove-Response {
     }
 
     process {
-        # Get id
-        if ($PSCmdlet.ParameterSetName -ceq 'Response') {
-            $ResponseId = $Response.id
-            if (-not $ResponseId) {
-                Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve response id.'))
-                return
-            }
-        }
-
         #region Construct Query URI
         $UriBuilder = [System.UriBuilder]::new($OpenAIParameter.Uri)
         $UriBuilder.Path += "/$ResponseId"

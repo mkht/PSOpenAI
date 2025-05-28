@@ -31,11 +31,6 @@ Describe 'Remove-VectorStoreFile' {
             $Result | Should -BeNullOrEmpty
         }
 
-        It 'Invalid input' {
-            $vso = @{id = 'hoge_abc123'; object = 'invalid_object' }
-            { $script:Result = $vso | Remove-VectorStoreFile -ea Stop } | Should -Throw
-        }
-
         Context 'Parameter Sets' {
             It 'Id' {
                 # Named

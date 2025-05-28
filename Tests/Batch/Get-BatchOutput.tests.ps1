@@ -27,8 +27,7 @@ Describe 'Get-BatchOutput' {
                     output_file_id = 'file-abc123'
                     status         = 'completed'
                 }
-            } -ParameterFilter { $BatchId -eq 'batch_completed'
-            }
+            } -ParameterFilter { $BatchId -eq 'batch_completed' }
             Mock -Verifiable -ModuleName $script:ModuleName Wait-Batch {
                 [pscustomobject]@{
                     PSTypeName     = 'PSOpenAI.Batch'
@@ -57,7 +56,7 @@ Describe 'Get-BatchOutput' {
                 output_file_id = 'file-abc123'
                 status         = 'completed'
             }
-            { $script:Result = Get-BatchOutput -InputObject $In -ea Stop } | Should -Not -Throw
+            { $script:Result = Get-BatchOutput -Batch $In -ea Stop } | Should -Not -Throw
             Should -Invoke -CommandName Get-OpenAIFileContent -ModuleName $script:ModuleName -Times 1 -Exactly
             Should -Not -Invoke -CommandName Wait-Batch -ModuleName $script:ModuleName
             Should -Not -Invoke -CommandName Get-Batch -ModuleName $script:ModuleName
@@ -91,7 +90,7 @@ Describe 'Get-BatchOutput' {
                 output_file_id = 'file-abc123'
                 status         = 'completed'
             }
-            { $script:Result = Get-BatchOutput -InputObject $In -Wait -ea Stop } | Should -Not -Throw
+            { $script:Result = Get-BatchOutput -Batch $In -Wait -ea Stop } | Should -Not -Throw
             Should -Invoke -CommandName Get-OpenAIFileContent -ModuleName $script:ModuleName -Times 1 -Exactly
             Should -Not -Invoke -CommandName Wait-Batch -ModuleName $script:ModuleName
             Should -Not -Invoke -CommandName Get-Batch -ModuleName $script:ModuleName
@@ -108,7 +107,7 @@ Describe 'Get-BatchOutput' {
                 output_file_id = $null
                 status         = 'in_progress'
             }
-            { $script:Result = Get-BatchOutput -InputObject $In -ea Stop } | Should -Throw
+            { $script:Result = Get-BatchOutput -Batch $In -ea Stop } | Should -Throw
             Should -Not -Invoke -CommandName Get-OpenAIFileContent -ModuleName $script:ModuleName
             Should -Not -Invoke -CommandName Wait-Batch -ModuleName $script:ModuleName
             Should -Invoke -CommandName Get-Batch -ModuleName $script:ModuleName -Times 1 -Exactly -ParameterFilter { $BatchId -eq 'batch_incomplete' }
@@ -122,7 +121,7 @@ Describe 'Get-BatchOutput' {
                 output_file_id = $null
                 status         = 'in_progress'
             }
-            { $script:Result = Get-BatchOutput -InputObject $In -ea Stop } | Should -Not -Throw
+            { $script:Result = Get-BatchOutput -Batch $In -ea Stop } | Should -Not -Throw
             Should -Invoke -CommandName Get-OpenAIFileContent -ModuleName $script:ModuleName -Times 1 -Exactly
             Should -Not -Invoke -CommandName Wait-Batch -ModuleName $script:ModuleName
             Should -Invoke -CommandName Get-Batch -ModuleName $script:ModuleName -Times 1 -Exactly -ParameterFilter { $BatchId -eq 'batch_completed' }
@@ -139,7 +138,7 @@ Describe 'Get-BatchOutput' {
                 output_file_id = $null
                 status         = 'in_progress'
             }
-            { $script:Result = Get-BatchOutput -InputObject $In -Wait -ea Stop } | Should -Not -Throw
+            { $script:Result = Get-BatchOutput -Batch $In -Wait -ea Stop } | Should -Not -Throw
             Should -Invoke -CommandName Get-OpenAIFileContent -ModuleName $script:ModuleName -Times 1 -Exactly
             Should -Invoke -CommandName Wait-Batch -ModuleName $script:ModuleName -Times 1 -Exactly
             Should -Not -Invoke -CommandName Get-Batch -ModuleName $script:ModuleName

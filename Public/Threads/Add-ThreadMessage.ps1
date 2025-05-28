@@ -2,12 +2,10 @@ function Add-ThreadMessage {
     [CmdletBinding()]
     [OutputType([pscustomobject])]
     param (
-        [Parameter(ParameterSetName = 'Thread', Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]
-        [Alias('InputObject')]  # for backword compatibility
-        [PSTypeName('PSOpenAI.Thread')]$Thread,
-
-        [Parameter(ParameterSetName = 'Id', Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Parameter(Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [ValidateNotNullOrEmpty()]
+        [Alias('InputObject')]  # for backword compatibility
+        [Alias('Thread')]
         [Alias('thread_id')]
         [string][UrlEncodeTransformation()]$ThreadId,
 
@@ -31,11 +29,11 @@ function Add-ThreadMessage {
 
         [Parameter()]
         [ValidateCount(0, 20)]
-        [object[]]$FileIdsForCodeInterpreter,
+        [string[]]$FileIdsForCodeInterpreter,
 
         [Parameter()]
         [ValidateCount(0, 10000)]
-        [object[]]$FileIdsForFileSearch,
+        [string[]]$FileIdsForFileSearch,
 
         [Parameter()]
         [System.Collections.IDictionary]$MetaData,
@@ -92,15 +90,6 @@ function Add-ThreadMessage {
     }
 
     process {
-        # Get thread_id
-        if ($PSCmdlet.ParameterSetName -ceq 'Thread') {
-            $ThreadId = $Thread.id
-        }
-        if (-not $ThreadID) {
-            Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve Thread ID.'))
-            return
-        }
-
         #region Construct Query URI
         $UriBuilder = [System.UriBuilder]::new($OpenAIParameter.Uri)
         $UriBuilder.Path += "/$ThreadID/messages"
@@ -110,13 +99,7 @@ function Add-ThreadMessage {
         #region Construct parameters for API request
         $Attachments = @()
         if ($FileIdsForCodeInterpreter.Count -gt 0) {
-            foreach ($item in $FileIdsForCodeInterpreter) {
-                if ($item -is [string]) {
-                    $fileid = $item
-                }
-                elseif ($item.psobject.TypeNames -contains 'PSOpenAI.File') {
-                    $fileid = $item.id
-                }
+            foreach ($fileid in $FileIdsForCodeInterpreter) {
                 $Attachments += @{
                     'file_id' = $fileid
                     'tools'   = @(@{'type' = 'code_interpreter' })
@@ -124,13 +107,7 @@ function Add-ThreadMessage {
             }
         }
         if ($FileIdsForFileSearch.Count -gt 0) {
-            foreach ($item in $FileIdsForFileSearch) {
-                if ($item -is [string]) {
-                    $fileid = $item
-                }
-                elseif ($item.psobject.TypeNames -contains 'PSOpenAI.File') {
-                    $fileid = $item.id
-                }
+            foreach ($fileid in $FileIdsForFileSearch) {
                 $Attachments += @{
                     'file_id' = $fileid
                     'tools'   = @(@{'type' = 'file_search' })

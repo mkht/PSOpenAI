@@ -2,20 +2,18 @@ function Start-ThreadRun {
     [CmdletBinding(DefaultParameterSetName = 'ThreadAndRun')]
     [OutputType([pscustomobject])]
     param (
-        [Parameter(ParameterSetName = 'Run_Thread', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
-        [Alias('InputObject')]  # for backword compatibility
-        [PSTypeName('PSOpenAI.Thread')]$Thread,
-
         [Parameter(ParameterSetName = 'Run_ThreadId', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [ValidateNotNullOrEmpty()]
+        [Alias('InputObject')]  # for backword compatibility
+        [Alias('Thread')]
         [Alias('thread_id')]
         [string][UrlEncodeTransformation()]$ThreadId,
 
         [Parameter(Mandatory, Position = 1, ValueFromPipelineByPropertyName)]
-        [Alias('assistant_id')]
-        [Alias('AssistantId')]
         [ValidateNotNullOrEmpty()]
-        [Object]$Assistant,
+        [Alias('Assistant')]
+        [Alias('assistant_id')]
+        [string]$AssistantId,
 
         [Parameter()]
         [Completions(
@@ -48,18 +46,15 @@ function Start-ThreadRun {
         [Completions('low', 'medium', 'high')]
         [string]$ReasoningEffort = 'medium',
 
-        [Parameter(ParameterSetName = 'Run_Thread')]
         [Parameter(ParameterSetName = 'Run_ThreadId')]
         [Alias('additional_instructions')]
         [string]$AdditionalInstructions,
 
-        [Parameter(ParameterSetName = 'Run_Thread')]
         [Parameter(ParameterSetName = 'Run_ThreadId')]
         [Parameter(ParameterSetName = 'ThreadAndRun')]
         [Alias('additional_messages')]
         [object[]]$AdditionalMessages,
 
-        [Parameter(ParameterSetName = 'Run_Thread')]
         [Parameter(ParameterSetName = 'Run_ThreadId')]
         [Completions('step_details.tool_calls[*].file_search.results[*].content')]
         [string[]]$Include,
@@ -85,11 +80,11 @@ function Start-ThreadRun {
 
         [Parameter(ParameterSetName = 'ThreadAndRun')]
         [ValidateCount(0, 20)]
-        [object[]]$FileIdsForCodeInterpreter,
+        [string[]]$FileIdsForCodeInterpreter,
 
         [Parameter(ParameterSetName = 'ThreadAndRun')]
         [ValidateCount(1, 1)]
-        [object[]]$VectorStoresForFileSearch,
+        [string[]]$VectorStoresForFileSearch,
         #endregion
 
         [Parameter()]
@@ -209,29 +204,6 @@ function Start-ThreadRun {
         # Get API context
         $OpenAIParameter = Get-OpenAIAPIParameter -EndpointName $EndpointName -Parameters $PSBoundParameters -ErrorAction Stop
 
-        # Get thread_id
-        if ($PSCmdlet.ParameterSetName -like '*_Thread') {
-            $ThreadID = $Thread.id
-            if (-not $ThreadID) {
-                Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve Thread ID.'))
-                return
-            }
-        }
-
-        # Get assistant_id
-        [string]$AssistantId = ''
-        if ($Assistant -is [string]) {
-            $AssistantId = $Assistant
-        }
-        elseif ($Assistant.psobject.TypeNames -contains 'PSOpenAI.Assistant') {
-            $AssistantId = $Assistant.id
-        }
-
-        if (-not $AssistantId) {
-            Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve Assistant ID.'))
-            return
-        }
-
         #region Construct query url
         if ($PSCmdlet.ParameterSetName -like 'Run_*') {
             $QueryUri = ($OpenAIParameter.Uri.ToString() -f $ThreadID)
@@ -280,46 +252,13 @@ function Start-ThreadRun {
         #region Construct tools resources
         $ToolResources = @{}
         if ($FileIdsForCodeInterpreter.Count -gt 0) {
-            $list = [System.Collections.Generic.List[string]]::new($FileIdsForCodeInterpreter.Count)
-            foreach ($item in $FileIdsForCodeInterpreter) {
-                if ($item -is [string]) {
-                    $list.Add($item)
-                }
-                elseif ($item.psobject.TypeNames -contains 'PSOpenAI.File') {
-                    $list.Add($item.id)
-                }
-            }
-            if ($list.Count -gt 0) {
-                $ToolResources.code_interpreter = @{'file_ids' = $list.ToArray() }
-            }
+            $ToolResources.code_interpreter = @{'file_ids' = $FileIdsForCodeInterpreter }
         }
         if ($FileIdsForFileSearch.Count -gt 0) {
-            $list = [System.Collections.Generic.List[string]]::new($FileIdsForFileSearch.Count)
-            foreach ($item in $FileIdsForFileSearch) {
-                if ($item -is [string]) {
-                    $list.Add($item)
-                }
-                elseif ($item.psobject.TypeNames -contains 'PSOpenAI.File') {
-                    $list.Add($item.id)
-                }
-            }
-            if ($list.Count -gt 0) {
-                $ToolResources.file_search = @{'vector_stores' = @(@{'file_ids' = $list.ToArray() }) }
-            }
+            $ToolResources.file_search = @{'vector_stores' = @(@{'file_ids' = $FileIdsForFileSearch }) }
         }
         if ($VectorStoresForFileSearch.Count -gt 0) {
-            $list = [System.Collections.Generic.List[string]]::new($FileIdsForFileSearch.Count)
-            foreach ($item in $VectorStoresForFileSearch) {
-                if ($item -is [string]) {
-                    $list.Add($item)
-                }
-                elseif ($item.psobject.TypeNames -contains 'PSOpenAI.VectorStore') {
-                    $list.Add($item.id)
-                }
-            }
-            if ($list.Count -gt 0) {
-                $ToolResources.file_search = @{'vector_store_ids' = $list.ToArray() }
-            }
+            $ToolResources.file_search = @{'vector_store_ids' = $VectorStoresForFileSearch }
         }
         #endregion
 

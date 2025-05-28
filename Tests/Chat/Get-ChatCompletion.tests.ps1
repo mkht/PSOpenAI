@@ -14,9 +14,10 @@ Describe 'Get-ChatCompletion' {
             Mock -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $PesterBoundParameters }
             Mock -Verifiable -ModuleName $script:ModuleName Get-ChatCompletionMessage {
                 [ordered]@{
-                    id      = 'chatcmpl-abc123-0'
-                    role    = 'user'
-                    content = 'Hello.'
+                    PSTypeNames = 'PSOpenAI.Chat.Completion.Message'
+                    id          = 'chatcmpl-abc123-0'
+                    role        = 'user'
+                    content     = 'Hello.'
                 }
             }
         }
@@ -52,7 +53,7 @@ Describe 'Get-ChatCompletion' {
 '@
             }
 
-            { $script:Result = Get-ChatCompletion -ID 'chatcmpl-abc123' -ea Stop } | Should -Not -Throw
+            { $script:Result = Get-ChatCompletion -CompletionId 'chatcmpl-abc123' -ea Stop } | Should -Not -Throw
             Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly -Scope It
             Should -Invoke Get-ChatCompletionMessage -ModuleName $script:ModuleName -Times 1
             $Result.id | Should -BeExactly 'chatcmpl-abc123'

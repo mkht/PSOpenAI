@@ -2,26 +2,18 @@ function Add-VectorStoreFile {
     [CmdletBinding()]
     [OutputType([pscustomobject])]
     param (
-        [Parameter(ParameterSetName = 'VectorStore_FileId', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
-        [Parameter(ParameterSetName = 'VectorStore_File', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
-        [Alias('InputObject')]  # for backword compatibility
-        [PSTypeName('PSOpenAI.VectorStore')]$VectorStore,
-
-        [Parameter(ParameterSetName = 'VectorStoreId_FileId', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
-        [Parameter(ParameterSetName = 'VectorStoreId_File', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Parameter(Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [ValidateNotNullOrEmpty()]
+        [Alias('InputObject')]  # for backword compatibility
+        [Alias('VectorStore')]
         [Alias('vector_store_id')]
         [string][UrlEncodeTransformation()]$VectorStoreId,
 
-        [Parameter(ParameterSetName = 'VectorStore_FileId', Mandatory, Position = 1, ValueFromPipelineByPropertyName)]
-        [Parameter(ParameterSetName = 'VectorStoreId_FileId', Mandatory, Position = 1, ValueFromPipelineByPropertyName)]
+        [Parameter(Mandatory, Position = 1, ValueFromPipelineByPropertyName)]
         [ValidateNotNullOrEmpty()]
+        [Alias('File')]
         [Alias('file_id')]
         [string][UrlEncodeTransformation()]$FileId,
-
-        [Parameter(ParameterSetName = 'VectorStore_File', Mandatory, Position = 1, ValueFromPipelineByPropertyName)]
-        [Parameter(ParameterSetName = 'VectorStoreId_File', Mandatory, Position = 1, ValueFromPipelineByPropertyName)]
-        [PSTypeName('PSOpenAI.File')]$File,
 
         [Parameter()]
         [ValidateSet('auto', 'static')]
@@ -37,6 +29,9 @@ function Add-VectorStoreFile {
         [ValidateRange(0, 4096)]
         [Alias('chunk_overlap_tokens')]
         [int]$ChunkOverlapTokens = 400,
+
+        [Parameter()]
+        [System.Collections.IDictionary]$Attributes,
 
         [Parameter()]
         [switch]$PassThru,
@@ -87,23 +82,6 @@ function Add-VectorStoreFile {
     }
 
     process {
-        # Get ids
-        if ($PSCmdlet.ParameterSetName -like 'VectorStore_*') {
-            $VectorStoreId = $VectorStore.id
-        }
-        if ($PSCmdlet.ParameterSetName -like '*_File') {
-            $FileId = $File.id
-        }
-
-        if (-not $VectorStoreId) {
-            Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve vector store id.'))
-            return
-        }
-        if (-not $FileId) {
-            Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve file id.'))
-            return
-        }
-
         #region Construct parameters for API request
         $QueryUri = $OpenAIParameter.Uri.ToString() -f $VectorStoreId
 
@@ -123,6 +101,10 @@ function Add-VectorStoreFile {
                     chunk_overlap_tokens  = $ChunkOverlapTokens
                 }
             }
+        }
+
+        if ($PSBoundParameters.ContainsKey('Attributes')) {
+            $PostBody.attributes = $Attributes
         }
         #endregion
 

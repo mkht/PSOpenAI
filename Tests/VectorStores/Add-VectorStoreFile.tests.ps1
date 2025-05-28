@@ -53,12 +53,6 @@ Describe 'Add-VectorStoreFile' {
             $Result.psobject.TypeNames | Should -Contain 'PSOpenAI.VectorStore'
         }
 
-        It 'Invalid input' {
-            $vsid = [datetime]::Today
-            { $script:Result = Add-VectorStoreFile -VectorStore $vsid -FileId 'file-abc123' -ea Stop } | Should -Throw
-            Should -Not -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName
-        }
-
         Context 'Parameter Sets' {
             It 'VectorStore_FileId' {
                 $InObject = [pscustomobject]@{

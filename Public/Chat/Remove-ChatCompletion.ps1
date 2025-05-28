@@ -1,15 +1,13 @@
 function Remove-ChatCompletion {
-    [CmdletBinding(DefaultParameterSetName = 'Id')]
+    [CmdletBinding()]
     [OutputType([pscustomobject])]
     param (
-        [Parameter(ParameterSetName = 'Chat', Mandatory, Position = 0, ValueFromPipeline)]
-        [Alias('InputObject')]
-        [PSTypeName('PSOpenAI.Chat.Completion')]$Completion,
-
-        [Parameter(ParameterSetName = 'Id', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Parameter(Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [ValidateNotNullOrEmpty()]
-        [Alias('Id')]
+        [Alias('Completion')]
         [Alias('completion_id')]
+        [Alias('InputObject')]   # for backword compatibility
+        [Alias('Id')]   # for backword compatibility
         [string][UrlEncodeTransformation()]$CompletionId,
 
         [Parameter()]
@@ -55,15 +53,6 @@ function Remove-ChatCompletion {
     }
 
     process {
-        # Get id
-        if ($PSCmdlet.ParameterSetName -ceq 'Chat') {
-            $CompletionId = $Completion.id
-            if (-not $CompletionId) {
-                Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve completion id.'))
-                return
-            }
-        }
-
         #region Construct Query URI
         $UriBuilder = [System.UriBuilder]::new($OpenAIParameter.Uri)
         $UriBuilder.Path += "/$CompletionId"

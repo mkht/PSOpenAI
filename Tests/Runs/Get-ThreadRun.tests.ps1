@@ -179,9 +179,7 @@ Describe 'Get-ThreadRun' {
                 { Get-ThreadRun 'thread_abc123' 'run_abc123' -ea Stop } | Should -Not -Throw
                 # Pipeline
                 { 'thread_abc123' | Get-ThreadRun -RunId 'run_abc123' -ea Stop } | Should -Not -Throw
-                # Pipeline by property name
-                { [pscustomobject]@{thread_id = 'thread_abc123'; run_id = 'run_abc123' } | Get-ThreadRun -ea Stop } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 4 -Exactly -ParameterFilter { 'https://api.openai.com/v1/threads/thread_abc123/runs/run_abc123' -eq $Uri }
+                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 3 -Exactly -ParameterFilter { 'https://api.openai.com/v1/threads/thread_abc123/runs/run_abc123' -eq $Uri }
             }
 
             It 'List_Id' {

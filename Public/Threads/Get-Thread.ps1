@@ -2,12 +2,10 @@ function Get-Thread {
     [CmdletBinding()]
     [OutputType([pscustomobject])]
     param (
-        [Parameter(ParameterSetName = 'Get_Thread', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
-        [Alias('InputObject')]  # for backword compatibility
-        [PSTypeName('PSOpenAI.Thread')]$Thread,
-
-        [Parameter(ParameterSetName = 'Get_Id', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Parameter(Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [ValidateNotNullOrEmpty()]
+        [Alias('InputObject')]  # for backword compatibility
+        [Alias('Thread')]
         [Alias('thread_id')]
         [string][UrlEncodeTransformation()]$ThreadId,
 
@@ -60,15 +58,6 @@ function Get-Thread {
     }
 
     process {
-        # Get thread_id
-        if ($PSCmdlet.ParameterSetName -ceq 'Get_Thread') {
-            $ThreadId = $Thread.id
-            if (-not $ThreadId) {
-                Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve thread id.'))
-                return
-            }
-        }
-
         #region Construct Query URI
         $UriBuilder = [System.UriBuilder]::new($OpenAIParameter.Uri)
         $UriBuilder.Path += "/$ThreadID"

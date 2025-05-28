@@ -1,6 +1,171 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Types>
   <Type>
+    <Name>PSOpenAI.Assistant</Name>
+    <Members>
+      <ScriptMethod>
+        <Name>ToString</Name>
+        <Script>
+          $this.id -as [string]
+        </Script>
+      </ScriptMethod>
+    </Members>
+  </Type>
+  <Type>
+    <Name>PSOpenAI.Thread</Name>
+    <Members>
+      <ScriptMethod>
+        <Name>ToString</Name>
+        <Script>
+          $this.id -as [string]
+        </Script>
+      </ScriptMethod>
+    </Members>
+  </Type>
+  <Type>
+    <Name>PSOpenAI.Thread.Message</Name>
+    <Members>
+      <ScriptMethod>
+        <Name>ToString</Name>
+        <Script>
+          $this.id -as [string]
+        </Script>
+      </ScriptMethod>
+    </Members>
+  </Type>
+  <Type>
+    <Name>PSOpenAI.Thread.Run</Name>
+    <Members>
+      <ScriptMethod>
+        <Name>ToString</Name>
+        <Script>
+          $this.id -as [string]
+        </Script>
+      </ScriptMethod>
+    </Members>
+  </Type>
+  <Type>
+    <Name>PSOpenAI.Thread.Run.Step</Name>
+    <Members>
+      <ScriptMethod>
+        <Name>ToString</Name>
+        <Script>
+          $this.id -as [string]
+        </Script>
+      </ScriptMethod>
+    </Members>
+  </Type>
+  <Type>
+    <Name>PSOpenAI.Chat.Completion</Name>
+    <Members>
+      <ScriptMethod>
+        <Name>ToString</Name>
+        <Script>
+          $this.id -as [string]
+        </Script>
+      </ScriptMethod>
+    </Members>
+  </Type>
+  <Type>
+    <Name>PSOpenAI.Chat.Completion.Message</Name>
+    <Members>
+      <ScriptMethod>
+        <Name>ToString</Name>
+        <Script>
+          $this.id -as [string]
+        </Script>
+      </ScriptMethod>
+    </Members>
+  </Type>
+  <Type>
+    <Name>PSOpenAI.Response</Name>
+    <Members>
+      <ScriptMethod>
+        <Name>ToString</Name>
+        <Script>
+          $this.id -as [string]
+        </Script>
+      </ScriptMethod>
+    </Members>
+  </Type>
+  <Type>
+    <Name>PSOpenAI.Response.Message</Name>
+    <Members>
+      <ScriptMethod>
+        <Name>ToString</Name>
+        <Script>
+          $this.id -as [string]
+        </Script>
+      </ScriptMethod>
+    </Members>
+  </Type>
+  <Type>
+    <Name>PSOpenAI.VectorStore</Name>
+    <Members>
+      <ScriptMethod>
+        <Name>ToString</Name>
+        <Script>
+          $this.id -as [string]
+        </Script>
+      </ScriptMethod>
+    </Members>
+  </Type>
+  <Type>
+    <Name>PSOpenAI.VectorStore.File</Name>
+    <Members>
+      <ScriptMethod>
+        <Name>ToString</Name>
+        <Script>
+          $this.id -as [string]
+        </Script>
+      </ScriptMethod>
+    </Members>
+  </Type>
+  <Type>
+    <Name>PSOpenAI.VectorStore.FileBatch</Name>
+    <Members>
+      <ScriptMethod>
+        <Name>ToString</Name>
+        <Script>
+          $this.id -as [string]
+        </Script>
+      </ScriptMethod>
+    </Members>
+  </Type>
+  <Type>
+    <Name>PSOpenAI.Text.Completion</Name>
+    <Members>
+      <ScriptMethod>
+        <Name>ToString</Name>
+        <Script>
+          $this.id -as [string]
+        </Script>
+      </ScriptMethod>
+    </Members>
+  </Type>
+  <Type>
+    <Name>PSOpenAI.Moderation</Name>
+    <Members>
+      <ScriptMethod>
+        <Name>ToString</Name>
+        <Script>
+          $this.id -as [string]
+        </Script>
+      </ScriptMethod>
+    </Members>
+  </Type>
+  <Type>
+    <Name>PSOpenAI.Batch</Name>
+    <Members>
+      <ScriptMethod>
+        <Name>ToString</Name>
+        <Script>
+          $this.id -as [string]
+        </Script>
+      </ScriptMethod>
+    </Members>
+  </Type>
+  <Type>
     <Name>PSOpenAI.Container</Name>
     <Members>
       <ScriptMethod>

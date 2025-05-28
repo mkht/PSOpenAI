@@ -1,14 +1,12 @@
 function Get-ChatCompletionMessage {
-    [CmdletBinding(DefaultParameterSetName = 'Get_Id')]
+    [CmdletBinding()]
     [OutputType([pscustomobject])]
     param (
-        [Parameter(ParameterSetName = 'Get_Chat', Mandatory, Position = 0, ValueFromPipeline)]
-        [Alias('InputObject')]
-        [PSTypeName('PSOpenAI.Chat.Completion')]$Completion,
-
-        [Parameter(ParameterSetName = 'Get_Id', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Parameter(Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [ValidateNotNullOrEmpty()]
+        [Alias('InputObject')]
         [Alias('Id')]
+        [Alias('Completion')]
         [Alias('completion_id')]
         [string][UrlEncodeTransformation()]$CompletionId,
 
@@ -75,15 +73,6 @@ function Get-ChatCompletionMessage {
     }
 
     process {
-        # Get id
-        if ($PSCmdlet.ParameterSetName -ceq 'Get_Chat') {
-            $CompletionId = $Completion.id
-            if (-not $CompletionId) {
-                Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve completion id.'))
-                return
-            }
-        }
-
         # Create cancellation token for timeout
         $Cancellation = [System.Threading.CancellationTokenSource]::new()
         if ($TimeoutSec -gt 0) {

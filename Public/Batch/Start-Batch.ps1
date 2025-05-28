@@ -1,12 +1,10 @@
 function Start-Batch {
-    [CmdletBinding(DefaultParameterSetName = 'BatchObject')]
+    [CmdletBinding(DefaultParameterSetName = 'FileId')]
     [OutputType([pscustomobject])]
     param (
-        [Parameter(ParameterSetName = 'File', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
-        [PSTypeName('PSOpenAI.File')]$File,
-
         [Parameter(ParameterSetName = 'FileId', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [Alias('input_file_id')]
+        [Alias('File')]
         [string]$FileId,
 
         [Parameter(ParameterSetName = 'BatchObject', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
@@ -16,6 +14,7 @@ function Start-Batch {
         [Parameter()]
         [ValidateNotNullOrEmpty()]
         [Completions(
+            '/v1/responses',
             '/v1/chat/completions',
             '/v1/embeddings',
             '/v1/completions'
@@ -122,13 +121,6 @@ function Start-Batch {
                 $fileobject = Wait-OpenAIFileStatus -FileId $fileobject.id -StatusForWait ('pending', 'running') @CommonParams
             }
             $FileId = $fileobject.id
-        }
-        elseif ($PSCmdlet.ParameterSetName -ceq 'File') {
-            if ($File.Count -gt 1) {
-                Write-Error -Exception ([System.ArgumentException]::new('Multiple file objects cannot be input.'))
-                return
-            }
-            $FileId = $File.id
         }
 
         if (-not $FileId) {

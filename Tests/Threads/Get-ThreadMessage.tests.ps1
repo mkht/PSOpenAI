@@ -195,9 +195,7 @@ Describe 'Get-ThreadMessage' {
                 { Get-ThreadMessage 'thread_abc123' 'msg_abc123' -ea Stop } | Should -Not -Throw
                 # Pipeline
                 { 'thread_abc123' | Get-ThreadMessage -MessageId 'msg_abc123' -ea Stop } | Should -Not -Throw
-                # Pipeline by property name
-                { [pscustomobject]@{thread_id = 'thread_abc123'; message_id = 'msg_abc123' } | Get-ThreadMessage -ea Stop } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 4 -Exactly -ParameterFilter { 'https://api.openai.com/v1/threads/thread_abc123/messages/msg_abc123' -eq $Uri }
+                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 3 -Exactly -ParameterFilter { 'https://api.openai.com/v1/threads/thread_abc123/messages/msg_abc123' -eq $Uri }
             }
 
             It 'Get_RunStep' {

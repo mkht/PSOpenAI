@@ -3,11 +3,9 @@ function New-Assistant {
     [OutputType([pscustomobject])]
     param (
         # Hidden param, for Set-Assistant cmdlet
-        [Parameter(DontShow, ParameterSetName = 'Assistant', ValueFromPipeline, ValueFromPipelineByPropertyName)]
-        [PSTypeName('PSOpenAI.Assistant')]$Assistant,
-
         [Parameter(DontShow, ParameterSetName = 'AssistantId', ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [ValidateNotNullOrEmpty()]
+        [Alias('Assistant')]
         [string][UrlEncodeTransformation()]$AssistantId,
 
         [Parameter()]
@@ -64,15 +62,15 @@ function New-Assistant {
 
         [Parameter()]
         [ValidateCount(0, 20)]
-        [object[]]$FileIdsForCodeInterpreter,
+        [string[]]$FileIdsForCodeInterpreter,
 
         [Parameter()]
         [ValidateCount(1, 1)]   # Currently, allow only 1 vector store
-        [object[]]$VectorStoresForFileSearch,
+        [string[]]$VectorStoresForFileSearch,
 
         [Parameter()]
         [ValidateCount(0, 10000)]
-        [object[]]$FileIdsForFileSearch,
+        [string[]]$FileIdsForFileSearch,
 
         [Parameter()]
         [ValidateRange(1, 50)]
@@ -208,46 +206,13 @@ function New-Assistant {
         #region Construct tools resources
         $ToolResources = @{}
         if ($FileIdsForCodeInterpreter.Count -gt 0) {
-            $list = [System.Collections.Generic.List[string]]::new($FileIdsForCodeInterpreter.Count)
-            foreach ($item in $FileIdsForCodeInterpreter) {
-                if ($item -is [string]) {
-                    $list.Add($item)
-                }
-                elseif ($item.psobject.TypeNames -contains 'PSOpenAI.File') {
-                    $list.Add($item.id)
-                }
-            }
-            if ($list.Count -gt 0) {
-                $ToolResources.code_interpreter = @{'file_ids' = $list.ToArray() }
-            }
+            $ToolResources.code_interpreter = @{'file_ids' = $FileIdsForCodeInterpreter }
         }
         if ($FileIdsForFileSearch.Count -gt 0) {
-            $list = [System.Collections.Generic.List[string]]::new($FileIdsForFileSearch.Count)
-            foreach ($item in $FileIdsForFileSearch) {
-                if ($item -is [string]) {
-                    $list.Add($item)
-                }
-                elseif ($item.psobject.TypeNames -contains 'PSOpenAI.File') {
-                    $list.Add($item.id)
-                }
-            }
-            if ($list.Count -gt 0) {
-                $ToolResources.file_search = @{'vector_stores' = @(@{'file_ids' = $list.ToArray() }) }
-            }
+            $ToolResources.file_search = @{'vector_stores' = @(@{'file_ids' = $FileIdsForFileSearch }) }
         }
         if ($VectorStoresForFileSearch.Count -gt 0) {
-            $list = [System.Collections.Generic.List[string]]::new($FileIdsForFileSearch.Count)
-            foreach ($item in $VectorStoresForFileSearch) {
-                if ($item -is [string]) {
-                    $list.Add($item)
-                }
-                elseif ($item.psobject.TypeNames -contains 'PSOpenAI.VectorStore') {
-                    $list.Add($item.id)
-                }
-            }
-            if ($list.Count -gt 0) {
-                $ToolResources.file_search = @{'vector_store_ids' = $list.ToArray() }
-            }
+            $ToolResources.file_search = @{'vector_store_ids' = $VectorStoresForFileSearch }
         }
         #endregion
 

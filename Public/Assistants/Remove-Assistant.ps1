@@ -2,12 +2,10 @@ function Remove-Assistant {
     [CmdletBinding()]
     [OutputType([void])]
     param (
-        [Parameter(ParameterSetName = 'Assistant', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
-        [Alias('InputObject')]  # for backword compatibility
-        [PSTypeName('PSOpenAI.Assistant')]$Assistant,
-
-        [Parameter(ParameterSetName = 'Id', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Parameter(Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [ValidateNotNullOrEmpty()]
+        [Alias('InputObject')]  # for backword compatibility
+        [Alias('Assistant')]
         [Alias('assistant_id')]
         [string][UrlEncodeTransformation()]$AssistantId,
 
@@ -54,16 +52,6 @@ function Remove-Assistant {
     }
 
     process {
-        # Get assistant_id
-        if ($PSCmdlet.ParameterSetName -ceq 'Assistant') {
-            $AssistantId = $Assistant.id
-        }
-
-        if (-not $AssistantId) {
-            Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve assistant id.'))
-            return
-        }
-
         #region Construct Query URI
         $UriBuilder = [System.UriBuilder]::new($OpenAIParameter.Uri)
         $UriBuilder.Path += "/$AssistantId"

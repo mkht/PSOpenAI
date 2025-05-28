@@ -2,13 +2,11 @@ function Remove-ThreadMessage {
     [CmdletBinding()]
     [OutputType([void])]
     param (
-        [Parameter(ParameterSetName = 'Thread', Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]
-        [Alias('InputObject')]  # for backword compatibility
-        [PSTypeName('PSOpenAI.Thread')]$Thread,
-
-        [Parameter(ParameterSetName = 'Id', Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Parameter(Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [ValidateNotNullOrEmpty()]
+        [Alias('InputObject')]  # for backword compatibility
         [Alias('thread_id')]
+        [Alias('Thread')]
         [string][UrlEncodeTransformation()]$ThreadId,
 
         [Parameter(Mandatory, Position = 0, ValueFromPipelineByPropertyName)]
@@ -59,15 +57,6 @@ function Remove-ThreadMessage {
     }
 
     process {
-        # Get thread_id
-        if ($PSCmdlet.ParameterSetName -ceq 'Thread') {
-            $ThreadId = $Thread.id
-        }
-        if (-not $ThreadID) {
-            Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve Thread ID.'))
-            return
-        }
-
         #region Construct Query URI
         $UriBuilder = [System.UriBuilder]::new($OpenAIParameter.Uri)
         $UriBuilder.Path += "/$ThreadID/messages/$MessageId"

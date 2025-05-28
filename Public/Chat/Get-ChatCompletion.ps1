@@ -2,14 +2,11 @@ function Get-ChatCompletion {
     [CmdletBinding(DefaultParameterSetName = 'List')]
     [OutputType([pscustomobject])]
     param (
-        [Parameter(ParameterSetName = 'Get_Chat', Mandatory, Position = 0, ValueFromPipeline)]
-        [Alias('InputObject')]
-        [PSTypeName('PSOpenAI.Chat.Completion')]$Completion,
-
-        [Parameter(ParameterSetName = 'Get_Id', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Parameter(ParameterSetName = 'Get', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [ValidateNotNullOrEmpty()]
-        [Alias('Id')]
+        [Alias('Completion')]
         [Alias('completion_id')]
+        [Alias('Id')]   # for backword compatibility
         [string][UrlEncodeTransformation()]$CompletionId,
 
         [Parameter(ParameterSetName = 'List')]
@@ -82,15 +79,6 @@ function Get-ChatCompletion {
     }
 
     process {
-        # Get id
-        if ($PSCmdlet.ParameterSetName -ceq 'Get_Chat') {
-            $CompletionId = $Completion.id
-            if (-not $CompletionId) {
-                Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve completion id.'))
-                return
-            }
-        }
-
         # Create cancellation token for timeout
         $Cancellation = [System.Threading.CancellationTokenSource]::new()
         if ($TimeoutSec -gt 0) {
@@ -102,7 +90,7 @@ function Get-ChatCompletion {
             while ($HasMore) {
                 #region Construct Query URI
                 $UriBuilder = [System.UriBuilder]::new($OpenAIParameter.Uri)
-                if ($PSCmdlet.ParameterSetName -like 'Get_*') {
+                if ($PSCmdlet.ParameterSetName -eq 'Get') {
                     $UriBuilder.Path += "/$CompletionId"
                     $QueryUri = $UriBuilder.Uri
                 }

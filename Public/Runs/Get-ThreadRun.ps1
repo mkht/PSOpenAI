@@ -2,45 +2,35 @@ function Get-ThreadRun {
     [CmdletBinding(DefaultParameterSetName = 'List')]
     [OutputType([pscustomobject])]
     param (
-        [Parameter(ParameterSetName = 'Get_Thread', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
-        [Parameter(ParameterSetName = 'List_Thread', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
-        [Alias('InputObject')]  # for backword compatibility
-        [PSTypeName('PSOpenAI.Thread')]$Thread,
-
         [Parameter(ParameterSetName = 'Get_Id', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
-        [Parameter(ParameterSetName = 'List_Id', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Parameter(ParameterSetName = 'List', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [ValidateNotNullOrEmpty()]
+        [Alias('InputObject')]  # for backword compatibility
         [Alias('thread_id')]
         [string][UrlEncodeTransformation()]$ThreadId,
 
-        [Parameter(ParameterSetName = 'Get_Thread', Mandatory, Position = 1, ValueFromPipelineByPropertyName)]
         [Parameter(ParameterSetName = 'Get_Id', Mandatory, Position = 1, ValueFromPipelineByPropertyName)]
         [ValidateNotNullOrEmpty()]
         [Alias('run_id')]
         [string][UrlEncodeTransformation()]$RunId,
 
-        [Parameter(ParameterSetName = 'Get_ThreadRun', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Parameter(ParameterSetName = 'Get_ThreadRun', Mandatory, Position = 0, ValueFromPipeline)]
         [PSTypeName('PSOpenAI.Thread.Run')]$Run,
 
-        [Parameter(ParameterSetName = 'List_Thread')]
-        [Parameter(ParameterSetName = 'List_Id')]
+        [Parameter(ParameterSetName = 'List')]
         [ValidateRange(1, 100)]
         [int]$Limit = 20,
 
-        [Parameter(ParameterSetName = 'List_Thread')]
-        [Parameter(ParameterSetName = 'List_Id')]
+        [Parameter(ParameterSetName = 'List')]
         [switch]$All,
 
-        [Parameter(ParameterSetName = 'List_Thread', DontShow)]
-        [Parameter(ParameterSetName = 'List_Id', DontShow)]
+        [Parameter(ParameterSetName = 'List', DontShow)]
         [string]$After,
 
-        [Parameter(ParameterSetName = 'List_Thread', DontShow)]
-        [Parameter(ParameterSetName = 'List_Id', DontShow)]
+        [Parameter(ParameterSetName = 'List', DontShow)]
         [string]$Before,
 
-        [Parameter(ParameterSetName = 'List_Thread')]
-        [Parameter(ParameterSetName = 'List_Id')]
+        [Parameter(ParameterSetName = 'List')]
         [ValidateSet('asc', 'desc')]
         [string][LowerCaseTransformation()]$Order = 'asc',
 
@@ -94,10 +84,7 @@ function Get-ThreadRun {
 
     process {
         # Get ids
-        if ($PSCmdlet.ParameterSetName -like '*_Thread') {
-            $ThreadId = $Thread.id
-        }
-        elseif ($PSCmdlet.ParameterSetName -like '*_ThreadRun') {
+        if ($PSCmdlet.ParameterSetName -like '*_ThreadRun') {
             $ThreadId = $Run.thread_id
             $RunId = $Run.id
         }

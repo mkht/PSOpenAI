@@ -2,13 +2,11 @@ function Wait-Batch {
     [CmdletBinding()]
     [OutputType([pscustomobject])]
     param (
-        [Parameter(ParameterSetName = 'Batch', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
-        [Alias('InputObject')]  # for backword compatibility
-        [PSTypeName('PSOpenAI.Batch')]$Batch,
-
-        [Parameter(ParameterSetName = 'Id', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Parameter(Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [ValidateNotNullOrEmpty()]
+        [Alias('Batch')]
         [Alias('batch_id')]
+        [Alias('InputObject')]  # for backword compatibility
         [Alias('Id')]   # for backword compatibility
         [string][UrlEncodeTransformation()]$BatchId,
 
@@ -93,15 +91,6 @@ function Wait-Batch {
     }
 
     process {
-        # Get ids
-        if ($PSCmdlet.ParameterSetName -ceq 'Batch') {
-            $BatchId = $Batch.id
-        }
-        if (-not $BatchId) {
-            Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve batch id.'))
-            return
-        }
-
         # Create cancellation token for timeout
         $Cancellation = [System.Threading.CancellationTokenSource]::new()
         if ($TimeoutSec -gt 0) {

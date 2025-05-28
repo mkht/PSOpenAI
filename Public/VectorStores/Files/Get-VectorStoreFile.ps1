@@ -1,50 +1,40 @@
 function Get-VectorStoreFile {
-    [CmdletBinding(DefaultParameterSetName = 'List_VectorStore')]
+    [CmdletBinding(DefaultParameterSetName = 'List_Id')]
     [OutputType([pscustomobject])]
     param (
-        [Parameter(ParameterSetName = 'Get_VectorStore', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
-        [Parameter(ParameterSetName = 'List_VectorStore', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
-        [Alias('InputObject')]  # for backword compatibility
-        [PSTypeName('PSOpenAI.VectorStore')]$VectorStore,
-
         [Parameter(ParameterSetName = 'Get_Id', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [Parameter(ParameterSetName = 'List_Id', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [ValidateNotNullOrEmpty()]
+        [Alias('InputObject')]  # for backword compatibility
+        [Alias('VectorStore')]
         [Alias('vector_store_id')]
         [string][UrlEncodeTransformation()]$VectorStoreId,
 
-        [Parameter(ParameterSetName = 'Get_VectorStore', Mandatory, Position = 1, ValueFromPipelineByPropertyName)]
         [Parameter(ParameterSetName = 'Get_Id', Mandatory, Position = 1, ValueFromPipelineByPropertyName)]
         [ValidateNotNullOrEmpty()]
         [Alias('file_id')]
         [string][UrlEncodeTransformation()]$FileId,
 
-        [Parameter(ParameterSetName = 'Get_VectorStoreFile', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Parameter(ParameterSetName = 'Get_VectorStoreFile', Mandatory, Position = 0, ValueFromPipeline)]
         [PSTypeName('PSOpenAI.VectorStore.File')]$VectorStoreFile,
 
-        [Parameter(ParameterSetName = 'List_VectorStore')]
         [Parameter(ParameterSetName = 'List_Id')]
         [ValidateRange(1, 100)]
         [int]$Limit = 20,
 
-        [Parameter(ParameterSetName = 'List_VectorStore')]
         [Parameter(ParameterSetName = 'List_Id')]
         [switch]$All,
 
-        [Parameter(ParameterSetName = 'List_VectorStore', DontShow)]
         [Parameter(ParameterSetName = 'List_Id', DontShow)]
         [string]$After,
 
-        [Parameter(ParameterSetName = 'List_VectorStore', DontShow)]
         [Parameter(ParameterSetName = 'List_Id', DontShow)]
         [string]$Before,
 
-        [Parameter(ParameterSetName = 'List_VectorStore')]
         [Parameter(ParameterSetName = 'List_Id')]
         [ValidateSet('asc', 'desc')]
         [string][LowerCaseTransformation()]$Order = 'asc',
 
-        [Parameter(ParameterSetName = 'List_VectorStore')]
         [Parameter(ParameterSetName = 'List_Id')]
         [ValidateSet('in_progress', 'completed', 'failed', 'cancelled')]
         [string][LowerCaseTransformation()]$Filter,
@@ -96,10 +86,7 @@ function Get-VectorStoreFile {
 
     process {
         # Get ids
-        if ($PSCmdlet.ParameterSetName -like '*_VectorStore') {
-            $VectorStoreId = $VectorStore.id
-        }
-        elseif ($PSCmdlet.ParameterSetName -like '*_VectorStoreFile') {
+        if ($PSCmdlet.ParameterSetName -like '*_VectorStoreFile') {
             $VectorStoreId = $VectorStoreFile.vector_store_id
             $FileId = $VectorStoreFile.id
         }

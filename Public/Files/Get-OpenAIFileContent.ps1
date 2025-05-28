@@ -1,12 +1,10 @@
 function Get-OpenAIFileContent {
-    [CmdletBinding(DefaultParameterSetName = 'Id')]
+    [CmdletBinding()]
     [OutputType([byte[]])]
     param (
-        [Parameter(ParameterSetName = 'File', Mandatory, Position = 0, ValueFromPipeline)]
-        [PSTypeName('PSOpenAI.File')]$File,
-
-        [Parameter(ParameterSetName = 'Id', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Parameter(Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [ValidateNotNullOrEmpty()]
+        [Alias('File')]
         [Alias('file_id')]
         [Alias('Id')]   # for backword compatibility
         [string][UrlEncodeTransformation()]$FileId,
@@ -58,15 +56,6 @@ function Get-OpenAIFileContent {
     }
 
     process {
-        # Get file id
-        if ($PSCmdlet.ParameterSetName -ceq 'File') {
-            $FileId = $File.id
-        }
-        if (-not $FileId) {
-            Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve file id.'))
-            return
-        }
-
         #region Construct Query URI
         $UriBuilder = [System.UriBuilder]::new($OpenAIParameter.Uri)
         $UriBuilder.Path += "/$FileId/content"
