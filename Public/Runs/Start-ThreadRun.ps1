@@ -210,7 +210,9 @@ function Start-ThreadRun {
             $UriBuilder = [System.UriBuilder]::new($QueryUri)
             $QueryParam = [System.Web.HttpUtility]::ParseQueryString($UriBuilder.Query)
             if ($PSBoundParameters.ContainsKey('Include')) {
-                $QueryParam.Add('include[]', $Include)
+                foreach ($IncludeItem in $Include) {
+                    $QueryParam.Add('include[]', $IncludeItem)
+                }
             }
             $UriBuilder.Query = $QueryParam.ToString()
             $QueryUri = $UriBuilder.Uri

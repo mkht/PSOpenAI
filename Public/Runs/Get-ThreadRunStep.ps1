@@ -157,7 +157,9 @@ function Get-ThreadRunStep {
                 }
 
                 if ($PSBoundParameters.ContainsKey('Include')) {
-                    $QueryParam.Add('include[]', $Include)
+                    foreach ($IncludeItem in $Include) {
+                        $QueryParam.Add('include[]', $IncludeItem)
+                    }
                 }
 
                 $UriBuilder.Query = $QueryParam.ToString()
