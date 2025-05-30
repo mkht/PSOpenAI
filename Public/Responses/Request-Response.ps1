@@ -883,8 +883,7 @@ function Request-Response {
         #region Send API Request (Stream)
         if ($Stream) {
             # Stream output
-            $splat.Stream = $true
-            Invoke-OpenAIAPIRequest @splat |
+            Invoke-OpenAIAPIRequestSSE @splat |
                 Where-Object {
                     -not [string]::IsNullOrEmpty($_)
                 } | ForEach-Object {

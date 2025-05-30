@@ -54,7 +54,7 @@ Describe 'Request-TextCompletion' {
         }
 
         It 'Stream output' {
-            Mock -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest {
+            Mock -ModuleName $script:ModuleName Invoke-OpenAIAPIRequestSSE {
                 '{"id":"cmpl-sf547Pa","object":"text_completion","created":1679839328,"model":"text-davinci-003","choices":[{"text":"ECHO","index":0,"finish_reason":null}]}'
             }
             $Result = Request-TextCompletion -Prompt 'test' -Stream -InformationVariable StreamOut -ea Stop

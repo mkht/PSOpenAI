@@ -27,7 +27,7 @@ Describe 'Request-AudioTranscription' {
         }
 
         It 'Audio transcription (Stream text)' {
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest {
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequestSSE {
                 '{"type":"transcript.text.delta","delta":"ECHO","logprobs":[{"token":"ECHO","logprob":-0.0024760163,"bytes":[228,189,149]}]}'
             }
             $Result = Request-AudioTranscription -File ($script:TestData + '/voice_japanese.mp3') -Stream -ea Stop
@@ -36,7 +36,7 @@ Describe 'Request-AudioTranscription' {
         }
 
         It 'Audio transcription (Stream object)' {
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest {
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequestSSE {
                 '{"type":"transcript.text.delta","delta":"ECHO","logprobs":[{"token":"ECHO","logprob":-0.0024760163,"bytes":[228,189,149]}]}'
             }
             $Result = Request-AudioTranscription -File ($script:TestData + '/voice_japanese.mp3') -Stream -StreamOutputType object -ea Stop

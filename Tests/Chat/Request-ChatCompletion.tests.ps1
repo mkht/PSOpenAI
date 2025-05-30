@@ -216,7 +216,7 @@ Describe 'Request-ChatCompletion' {
         }
 
         It 'Stream output' {
-            Mock -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest {
+            Mock -ModuleName $script:ModuleName Invoke-OpenAIAPIRequestSSE {
                 '{"id":"chatcmpl-sf547Pa","object":"chat.completion.chunk","created":1679839328,"model":"gpt-3.5-turbo-0301","choices":[{"delta":{"content":"ECHO"},"index":0,"finish_reason":null}]}'
             }
             $Result = Request-ChatCompletion -Message 'test' -Stream -InformationVariable StreamOut -ea Stop

@@ -200,7 +200,7 @@ Describe 'Start-ThreadRun' {
             BeforeAll {
                 Mock -ModuleName $script:ModuleName Initialize-APIKey { [securestring]::new() }
                 Mock -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $PesterBoundParameters }
-                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequestSSE { @'
 {
     "id":"msg_123",
     "object":"thread.message.delta",
@@ -230,7 +230,7 @@ Describe 'Start-ThreadRun' {
     }
 }
 '@
-                } -ParameterFilter { $true -eq $Stream }
+                }
             }
 
             BeforeEach {
@@ -239,7 +239,7 @@ Describe 'Start-ThreadRun' {
 
             It 'Streaming' {
                 { $script:Result = Start-ThreadRun -ThreadId 'thread_abc123' -AssistantId 'asst_abc123' -Stream -ea Stop } | Should -Not -Throw
-                Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly -ParameterFilter { $true -eq $Stream }
+                Should -Invoke Invoke-OpenAIAPIRequestSSE -ModuleName $script:ModuleName -Times 1 -Exactly
                 $Result | Should -HaveCount 2
                 $Result[0] | Should -Be 'Hello'
                 $Result[1] | Should -Be 'How'
@@ -260,7 +260,7 @@ Describe 'Start-ThreadRun' {
                     Stream              = $true
                 }
                 { $script:Result = Start-ThreadRun @params -ea Stop } | Should -Not -Throw
-                Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly -ParameterFilter { $true -eq $Stream }
+                Should -Invoke Invoke-OpenAIAPIRequestSSE -ModuleName $script:ModuleName -Times 1 -Exactly
                 $Result | Should -HaveCount 2
                 $Result[0] | Should -Be 'Hello'
                 $Result[1] | Should -Be 'How'
@@ -268,7 +268,7 @@ Describe 'Start-ThreadRun' {
 
             It 'raw_response format' {
                 { $script:Result = Start-ThreadRun -Message 'Hello' -Assistant 'asst_abc123' -Format 'raw_response' -Stream -ea Stop } | Should -Not -Throw
-                Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
+                Should -Invoke Invoke-OpenAIAPIRequestSSE -ModuleName $script:ModuleName -Times 1 -Exactly
                 $Result | Should -HaveCount 2
                 $Result[0] | Should -Match '"id":"msg_123"'
                 $Result[0] | Should -Match '"id":"msg_123"'

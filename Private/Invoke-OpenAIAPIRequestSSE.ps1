@@ -31,13 +31,22 @@ function Invoke-OpenAIAPIRequestSSE {
         [securestring]$ApiKey,
 
         [Parameter()]
+        [IDictionary]$AdditionalQuery,
+
+        [Parameter()]
         [string]$Organization,
 
         [Parameter()]
         [object]$Body,
 
         [Parameter()]
+        [object]$AdditionalBody,
+
+        [Parameter()]
         [IDictionary]$Headers,
+
+        [Parameter()]
+        [IDictionary]$AdditionalHeaders,
 
         [Parameter()]
         [int]$TimeoutSec = 0,
@@ -50,15 +59,17 @@ function Invoke-OpenAIAPIRequestSSE {
 
         [Parameter()]
         # [ValidateSet('openai', 'azure', 'azure_ad')]
-        [string]$AuthType = 'openai'
+        [string]$AuthType = 'openai',
+
+        [Parameter()]
+        [bool]$ReturnRawResponse = $false
     )
 
+    $InternalParams = Initialize-OpenAIAPIRequestParam @PSBoundParameters
+
     #region Set variables
-    $IsDebug = Test-Debug
-    $ServiceName = switch -Wildcard ($AuthType) {
-        'openai*' { 'OpenAI' }
-        'azure*' { 'Azure OpenAI' }
-    }
+    $IsDebug = $InternalParams.IsDebug
+    $ServiceName = $InternalParams.ServiceName
     #endregion
 
     # Decrypt securestring
@@ -71,7 +82,7 @@ function Invoke-OpenAIAPIRequestSSE {
     }
 
     # Create HttpRequestMessage
-    $RequestMessage = [System.Net.Http.HttpRequestMessage]::new($Method, $Uri)
+    $RequestMessage = [System.Net.Http.HttpRequestMessage]::new($InternalParams.Method, $InternalParams.Uri)
 
     # Use HTTP/2
     if ($null -ne [System.Net.HttpVersion]::Version20) {
@@ -79,30 +90,22 @@ function Invoke-OpenAIAPIRequestSSE {
     }
 
     # Set Content
-    if ($null -ne $Body) {
+    if ($null -ne $InternalParams.Body) {
         if ($ContentType -eq 'application/json') {
-            $RequestMessage.Content = [System.Net.Http.StringContent]::new(($Body | ConvertTo-Json -Compress -Depth 100), [Encoding]::UTF8, $ContentType)
+            $RequestMessage.Content = [System.Net.Http.StringContent]::new(($InternalParams.Body | ConvertTo-Json -Compress -Depth 100), [Encoding]::UTF8, $InternalParams.ContentType)
         }
-        elseif ($Body -is [byte[]]) {
-            $RequestMessage.Content = [System.Net.Http.ByteArrayContent]::new($Body)
-            $null = $RequestMessage.Content.Headers.TryAddWithoutValidation('Content-Type', $ContentType)
+        elseif ($InternalParams.Body -is [byte[]]) {
+            $RequestMessage.Content = [System.Net.Http.ByteArrayContent]::new($InternalParams.Body)
+            $null = $RequestMessage.Content.Headers.TryAddWithoutValidation('Content-Type', $InternalParams.ContentType)
         }
     }
 
     # Set User-Agent
-    if (-not $script:UserAgent) {
-        $script:UserAgent = Get-UserAgent
-    }
-    $RequestMessage.Headers.Add('User-Agent', $script:UserAgent)
-
-    # Set debug header
-    if ($IsDebug) {
-        $RequestMessage.Headers.Add('OpenAI-Debug', 'true')
-    }
+    $RequestMessage.Headers.Add('User-Agent', $InternalParams.UserAgent)
 
     # Set other headers
-    if ($PSBoundParameters.ContainsKey('Headers') -and $null -ne $Headers) {
-        foreach ($h in $Headers.GetEnumerator()) {
+    if ($InternalParams.Headers.Keys.Count -ne 0) {
+        foreach ($h in $InternalParams.Headers.GetEnumerator()) {
             if (-not $RequestMessage.Headers.Contains($h.Key)) {
                 $RequestMessage.Headers.Add($h.Key, $h.Value)
             }
@@ -137,7 +140,7 @@ function Invoke-OpenAIAPIRequestSSE {
 
     # Verbose / Debug output
     Write-Verbose -Message "Request to $ServiceName API"
-    Write-Verbose -Message "Method = $Method, Path = $Uri"
+    Write-Verbose -Message "Method = $Method, Path = $($InternalParams.Uri), Streaming = True"
     Write-Verbose -Message ('Request HTTP/{0} {1} with {2}-byte payload' -f `
             $RequestMessage.Version, $RequestMessage.Method, `
         $($RequestMessage.Content.Headers.ContentLength -as [Int64]))
@@ -159,8 +162,8 @@ function Invoke-OpenAIAPIRequestSSE {
         if (-not $HttpResponse.IsSuccessStatusCode) {
             $ErrorCode = $HttpResponse.StatusCode.value__
             $ErrorReason = $HttpResponse.ReasonPhrase
-            $Body = $HttpResponse.Content.ReadAsStringAsync().GetAwaiter().GetResult()
-            $ErrorContent = try { ($Body | ConvertFrom-Json -ErrorAction Ignore) }catch {}
+            $ResponseBody = $HttpResponse.Content.ReadAsStringAsync().GetAwaiter().GetResult()
+            $ErrorContent = try { ($ResponseBody | ConvertFrom-Json -ErrorAction Ignore) }catch {}
             $ErrorObject = Parse-WebExceptionResponse -ErrorCode $ErrorCode -ErrorReason $ErrorReason -ErrorResponse $HttpResponse -ErrorContent $ErrorContent
 
             # Retry
@@ -217,6 +220,12 @@ function Invoke-OpenAIAPIRequestSSE {
                 # Debug output
                 if ($IsDebug) {
                     Write-Debug -Message ('API response body: ' + ($data | Out-String)).TrimEnd()
+                }
+
+                # Return raw response
+                if ($ReturnRawResponse) {
+                    Write-Output $data
+                    continue
                 }
 
                 # Event

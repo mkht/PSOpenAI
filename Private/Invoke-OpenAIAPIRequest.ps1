@@ -56,9 +56,6 @@ function Invoke-OpenAIAPIRequest {
         [int]$RetryCount = 0,
 
         [Parameter()]
-        [bool]$Stream = $false,
-
-        [Parameter()]
         # [ValidateSet('openai', 'azure', 'azure_ad')]
         [string]$AuthType = 'openai',
 
@@ -66,99 +63,21 @@ function Invoke-OpenAIAPIRequest {
         [bool]$ReturnRawResponse = $false
     )
 
+    $InternalParams = Initialize-OpenAIAPIRequestParam @PSBoundParameters
+
     #region Set variables
-    $IsDebug = Test-Debug
-    $ServiceName = switch -Wildcard ($AuthType) {
-        'openai*' { 'OpenAI' }
-        'azure*' { 'Azure OpenAI' }
-    }
-    #endregion
-
-    #region Assert selected model is discontinued
-    if ($null -ne $Body -and $null -ne $Body.model) {
-        Assert-DeprecationModel -Model $Body.model
-    }
-    #endregion
-
-    # Query string
-    if ($PSBoundParameters.ContainsKey('AdditionalQuery') -and $null -ne $AdditionalQuery) {
-        $UriBuilder = [System.UriBuilder]::new($Uri)
-        $QueryParam = [System.Web.HttpUtility]::ParseQueryString($UriBuilder.Query)
-        foreach ($s in $AdditionalQuery.GetEnumerator()) {
-            $QueryParam.Add($s.Key, $s.Value)
-        }
-        $UriBuilder.Query = $QueryParam.ToString()
-        $Uri = $UriBuilder.Uri
-    }
-
-    # Headers dictionary
-    $RequestHeaders = @{}
-    if ($PSBoundParameters.ContainsKey('Headers') -and $null -ne $Headers) {
-        $RequestHeaders = Merge-Dictionary $Headers $RequestHeaders
-    }
-    if ($PSBoundParameters.ContainsKey('AdditionalHeaders') -and $null -ne $AdditionalHeaders) {
-        $RequestHeaders = Merge-Dictionary $RequestHeaders $AdditionalHeaders
-    }
-
-    # Set debug header
-    if ($IsDebug) {
-        $RequestHeaders['OpenAI-Debug'] = 'true'
-    }
-
-    # Body object
-    if ($null -ne $Body) {
-        if ($ContentType -match 'multipart/form-data') {
-            $Boundary = New-MultipartFormBoundary
-            $Body = New-MultipartFormContent -FormData $Body -Boundary $Boundary
-            $ContentType = ('multipart/form-data; boundary="{0}"' -f $Boundary)
-        }
-        elseif ($ContentType -match 'application/json') {
-            if ($Body -is [pscustomobject]) {
-                $Body = ObjectToHashTable $Body
-            }
-            if ($PSBoundParameters.ContainsKey('AdditionalBody') -and $null -ne $AdditionalBody) {
-                if ($AdditionalBody -is [string]) {
-                    try {
-                        $AdditionalBody = ConvertFrom-Json $AdditionalBody -Depth 100
-                    }
-                    catch {
-                        Write-Error -Exception ([System.InvalidOperationException]::new('Failed to parse AdditionalBody as JSON.'))
-                    }
-                }
-                if ($AdditionalBody -is [pscustomobject]) {
-                    $AdditionalBody = ObjectToHashTable $AdditionalBody
-                }
-                $Body = Merge-Dictionary $Body $AdditionalBody
-            }
-        }
-    }
-
-    #region Server-Sent-Events
-    if ($Stream) {
-        $params = @{
-            Method        = $Method
-            Uri           = $Uri
-            ContentType   = $ContentType
-            ApiKey        = $ApiKey
-            Organization  = $Organization
-            AuthType      = $AuthType
-            Body          = $Body
-            Headers       = $RequestHeaders
-            TimeoutSec    = $TimeoutSec
-            MaxRetryCount = $MaxRetryCount
-        }
-        Invoke-OpenAIAPIRequestSSE @params
-        return
-    }
+    $IsDebug = $InternalParams.IsDebug
+    $ServiceName = $InternalParams.ServiceName
     #endregion
 
     #region API request
     # Construct parameter for Invoke-WebRequest
     $PlainToken = DecryptSecureString $ApiKey
     $IwrParam = @{
-        Method          = $Method
-        Uri             = $Uri
-        ContentType     = $ContentType
+        Method          = $InternalParams.Method
+        Uri             = $InternalParams.Uri
+        ContentType     = $InternalParams.ContentType
+        UserAgent       = $InternalParams.UserAgent
         TimeoutSec      = $TimeoutSec
         UseBasicParsing = $true
     }
@@ -188,12 +107,12 @@ function Invoke-OpenAIAPIRequest {
             $UseBearer = $true
             # Set Organization-ID
             if (-not [string]::IsNullOrWhiteSpace($Organization)) {
-                $RequestHeaders['OpenAI-Organization'] = $Organization.Trim()
+                $InternalParams.Headers['OpenAI-Organization'] = $Organization.Trim()
             }
         }
         'azure' {
             $UseBearer = $false
-            $RequestHeaders['api-key'] = $PlainToken
+            $InternalParams.Headers['api-key'] = $PlainToken
         }
         'azure_ad' {
             $UseBearer = $true
@@ -217,28 +136,28 @@ function Invoke-OpenAIAPIRequest {
     else {
         # Use Bearer Token Auth
         if ($UseBearer) {
-            $RequestHeaders['Authorization'] = "Bearer $PlainToken"
+            $InternalParams.Headers['Authorization'] = "Bearer $PlainToken"
         }
     }
 
-    if ($null -ne $Body) {
-        if ($ContentType -match 'application/json') {
-            try { $Body = ($Body | ConvertTo-Json -Compress -Depth 100) }catch { Write-Error -Exception $_.Exception }
-            $IwrParam.Body = ([System.Text.Encoding]::UTF8.GetBytes($Body))
+    if ($null -ne $InternalParams.Body) {
+        if ($InternalParams.ContentType -match 'application/json') {
+            try { $InternalParams.Body = ($InternalParams.Body | ConvertTo-Json -Compress -Depth 100) }catch { Write-Error -Exception $_.Exception }
+            $IwrParam.Body = ([System.Text.Encoding]::UTF8.GetBytes($InternalParams.Body))
         }
         else {
-            $IwrParam.Body = $Body
+            $IwrParam.Body = $InternalParams.Body
         }
     }
 
     # Set http request headers
-    if ($null -ne $RequestHeaders -and $RequestHeaders.Count -ne 0) {
-        $IwrParam.Headers = $RequestHeaders
+    if ($InternalParams.Headers.Keys.Count -ne 0) {
+        $IwrParam.Headers = $InternalParams.Headers
     }
 
     # Verbose / Debug output
     Write-Verbose -Message "Request to $ServiceName API"
-    Write-Verbose -Message "Method = $Method, Path = $Uri"
+    Write-Verbose -Message "Method = $Method, Path = $($InternalParams.Uri)"
     if ($IsDebug) {
         $startIdx = $lastIdx = 2
         if ($AuthType -eq 'openai') { $startIdx += 4 } # 'org-'
@@ -253,7 +172,7 @@ function Invoke-OpenAIAPIRequest {
         Write-Debug -Message $maskedString1
 
         $params2 = @{
-            Source               = 'Post body: ' + $Body
+            Source               = 'Post body: ' + $InternalParams.Body
             Target               = ($ApiKey, $Organization)
             First                = $startIdx
             Last                 = $lastIdx

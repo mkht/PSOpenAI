@@ -622,25 +622,25 @@ function Request-ChatCompletion {
             return $batchInputObject
         }
 
+        $splat = @{
+            Method            = $OpenAIParameter.Method
+            Uri               = $OpenAIParameter.Uri
+            ContentType       = $OpenAIParameter.ContentType
+            TimeoutSec        = $OpenAIParameter.TimeoutSec
+            MaxRetryCount     = $OpenAIParameter.MaxRetryCount
+            ApiKey            = $OpenAIParameter.ApiKey
+            AuthType          = $OpenAIParameter.AuthType
+            Organization      = $OpenAIParameter.Organization
+            Body              = $PostBody
+            AdditionalQuery   = $AdditionalQuery
+            AdditionalHeaders = $AdditionalHeaders
+            AdditionalBody    = $AdditionalBody
+        }
+
         #region Send API Request (Stream)
         if ($Stream) {
             # Stream output
-            $splat = @{
-                Method            = $OpenAIParameter.Method
-                Uri               = $OpenAIParameter.Uri
-                ContentType       = $OpenAIParameter.ContentType
-                TimeoutSec        = $OpenAIParameter.TimeoutSec
-                MaxRetryCount     = $OpenAIParameter.MaxRetryCount
-                ApiKey            = $OpenAIParameter.ApiKey
-                AuthType          = $OpenAIParameter.AuthType
-                Organization      = $OpenAIParameter.Organization
-                Body              = $PostBody
-                Stream            = $Stream
-                AdditionalQuery   = $AdditionalQuery
-                AdditionalHeaders = $AdditionalHeaders
-                AdditionalBody    = $AdditionalBody
-            }
-            Invoke-OpenAIAPIRequest @splat |
+            Invoke-OpenAIAPIRequestSSE @splat |
                 Where-Object {
                     -not [string]::IsNullOrEmpty($_)
                 } | ForEach-Object {
@@ -677,20 +677,6 @@ function Request-ChatCompletion {
 
         #region Send API Request (No Stream)
         else {
-            $splat = @{
-                Method            = $OpenAIParameter.Method
-                Uri               = $OpenAIParameter.Uri
-                ContentType       = $OpenAIParameter.ContentType
-                TimeoutSec        = $OpenAIParameter.TimeoutSec
-                MaxRetryCount     = $OpenAIParameter.MaxRetryCount
-                ApiKey            = $OpenAIParameter.ApiKey
-                AuthType          = $OpenAIParameter.AuthType
-                Organization      = $OpenAIParameter.Organization
-                Body              = $PostBody
-                AdditionalQuery   = $AdditionalQuery
-                AdditionalHeaders = $AdditionalHeaders
-                AdditionalBody    = $AdditionalBody
-            }
             $Response = Invoke-OpenAIAPIRequest @splat
 
             # error check

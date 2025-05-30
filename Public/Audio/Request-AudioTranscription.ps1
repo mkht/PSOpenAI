@@ -148,8 +148,7 @@ function Request-AudioTranscription {
         #region Send API Request (Stream)
         if ($Stream) {
             # Stream output
-            $splat.Stream = $true
-            Invoke-OpenAIAPIRequest @splat |
+            Invoke-OpenAIAPIRequestSSE @splat |
                 Where-Object {
                     -not [string]::IsNullOrEmpty($_)
                 } | ForEach-Object {
@@ -175,18 +174,20 @@ function Request-AudioTranscription {
         }
         #endregion
 
-        #region Send API Request
-        $Response = Invoke-OpenAIAPIRequest @splat
+        #region Send API Request (No Stream)
+        else {
+            $Response = Invoke-OpenAIAPIRequest @splat
 
-        # error check
-        if ($null -eq $Response) {
-            return
+            # error check
+            if ($null -eq $Response) {
+                return
+            }
+            #endregion
+
+            #region Output
+            Write-Output $Response
+            #endregion
         }
-        #endregion
-
-        #region Output
-        Write-Output $Response
-        #endregion
     }
 
     end {

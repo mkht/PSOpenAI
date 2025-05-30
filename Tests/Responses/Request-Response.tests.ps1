@@ -282,7 +282,7 @@ Describe 'Request-Response' {
         }
 
         It 'Stream output' {
-            Mock -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest {
+            Mock -ModuleName $script:ModuleName Invoke-OpenAIAPIRequestSSE {
                 '{"type":"response.output_text.delta","item_id":"msg_e83","output_index":0,"content_index":0,"delta":"Hello"}',
                 '{"type":"response.output_text.delta","item_id":"msg_e83","output_index":0,"content_index":0,"delta":"ECHO"}'
             }
@@ -294,7 +294,7 @@ Describe 'Request-Response' {
         }
 
         It 'Stream output as object' {
-            Mock -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest {
+            Mock -ModuleName $script:ModuleName Invoke-OpenAIAPIRequestSSE {
                 '{"type":"response.created","response":{"id":"resp_e83","object":"response","created_at":1743930702,"status":"in_progress","model":"gpt-4o-mini-2024-07-18","output":[]}}',
                 '{"type":"response.output_text.delta","item_id":"msg_e83","output_index":0,"content_index":0,"delta":"Hello"}',
                 '{"type":"response.output_text.delta","item_id":"msg_e83","output_index":0,"content_index":0,"delta":"ECHO"}',
