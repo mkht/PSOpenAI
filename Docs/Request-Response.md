@@ -68,6 +68,7 @@ Request-Response
     [-Temperature <Double>] 
     [-TopP <Double>] 
     [-Store <Boolean>]
+    [-Background]
     [-Stream]
     [-StreamOutputType <String>] 
     [-ReasoningEffort <String>] 
@@ -637,6 +638,15 @@ Type: Boolean
 Required: False
 Position: Named
 Default value: True
+```
+
+### -Background
+Whether to run the model response in the background. The default is `$false`.
+
+```yaml
+Type: SwitchParameter
+Required: False
+Position: Named
 ```
 
 ### -Stream

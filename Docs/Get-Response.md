@@ -15,6 +15,11 @@ Retrieves a model response with the given ID.
 ```
 Get-Response
     [-ResponseId] <String>
+    [-Include] <String[]>
+    [-Stream]
+    [-StreamOutputType <String>]
+    [-StartingAfter <Int32>]
+    [-OutputRawResponse]
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
     [-ApiBase <Uri>]
@@ -47,6 +52,55 @@ Aliases: response_id, Id
 Required: True
 Position: 0
 Accept pipeline input: True (ByPropertyName, ByValue)
+```
+
+### -Include
+Specify additional output data to include in the model response.
+
+```yaml
+Type: String[]
+Required: False
+Position: Named
+```
+
+### -Stream
+If set, the model response data will be streamed to the client.
+
+```yaml
+Type: SwitchParameter
+Required: False
+Position: Named
+```
+
+### -StreamOutputType
+Specifying the format that the function output. This parameter is only valid for the stream output. This parameter is only valid for the stream output.
+  - `text`   : Output only text deltas that the model generated. (Default)  
+  - `object` : Output all events that the API respond.  
+
+```yaml
+Type: String
+Accepted values: text, object
+Required: False
+Position: Named
+Default value: text
+```
+
+### -StartingAfter
+The sequence number of the event after which to start streaming. This parameter is only valid for the stream output.
+
+```yaml
+Type: Int32
+Required: False
+Position: Named
+```
+
+### -OutputRawResponse
+If specifies this switch, an output of this function to be a raw response value from the API. (Normally JSON formatted string.)
+
+```yaml
+Type: SwitchParameter
+Required: False
+Position: Named
 ```
 
 ### -TimeoutSec

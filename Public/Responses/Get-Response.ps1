@@ -10,6 +10,27 @@ function Get-Response {
         [Alias('response_id')]
         [string][UrlEncodeTransformation()]$ResponseId,
 
+        [Parameter()]
+        [Completions('file_search_call.results', 'message.input_image.image_url', 'computer_call_output.output.image_url', 'reasoning.encrypted_content')]
+        [AllowEmptyCollection()]
+        [string[]]$Include,
+
+        #region Stream
+        [Parameter()]
+        [switch]$Stream = $false,
+
+        [Parameter()]
+        [ValidateSet('text', 'object')]
+        [string]$StreamOutputType = 'text',
+
+        [Parameter()]
+        [Alias('starting_after')]
+        [int]$StartingAfter,
+        #endregion Stream
+
+        [Parameter()]
+        [switch]$OutputRawResponse,
+
         # For internal use
         [Parameter(DontShow)]
         [switch]$Primitive,
@@ -63,11 +84,26 @@ function Get-Response {
         #region Construct Query URI
         $UriBuilder = [System.UriBuilder]::new($OpenAIParameter.Uri)
         $UriBuilder.Path += "/$ResponseId"
+        $QueryParam = [System.Web.HttpUtility]::ParseQueryString($UriBuilder.Query)
+
+        if ($Stream) {
+            $QueryParam.Add('stream', ($Stream.ToString().ToLowerInvariant()))
+        }
+        if ($PSBoundParameters.ContainsKey('StartingAfter')) {
+            $QueryParam.Add('starting_after', $StartingAfter)
+        }
+        if ($PSBoundParameters.ContainsKey('Include')) {
+            foreach ($IncludeItem in $Include) {
+                $QueryParam.Add('include[]', $IncludeItem)
+            }
+        }
+
+        $UriBuilder.Query = $QueryParam.ToString()
         $QueryUri = $UriBuilder.Uri
         #endregion
 
         #region Send API Request
-        $params = @{
+        $splat = @{
             Method            = 'Get'
             Uri               = $QueryUri
             # ContentType       = $OpenAIParameter.ContentType
@@ -80,21 +116,65 @@ function Get-Response {
             AdditionalHeaders = $AdditionalHeaders
             AdditionalBody    = $AdditionalBody
         }
-        $Response = Invoke-OpenAIAPIRequest @params
 
-        # error check
-        if ($null -eq $Response) {
+        #region Send API Request (Stream)
+        if ($Stream) {
+            # Stream output
+            Invoke-OpenAIAPIRequestSSE @splat |
+                Where-Object {
+                    -not [string]::IsNullOrEmpty($_)
+                } | ForEach-Object -Process {
+                    if ($OutputRawResponse) {
+                        Write-Output $_
+                    }
+                    else {
+                        # Parse response object
+                        try {
+                            $Response = $_ | ConvertFrom-Json -ErrorAction Stop
+                        }
+                        catch {
+                            Write-Error -Exception $_.Exception
+                        }
+
+                        if ($StreamOutputType -eq 'text') {
+                            if ($Response.type -cne 'response.output_text.delta') {
+                                continue
+                            }
+                            Write-Output $Response.delta
+                        }
+                        else {
+                            Write-Output $Response
+                        }
+                    }
+                }
+
             return
         }
         #endregion
 
-        #region Parse response object
-        try {
-            $Response = $Response | ConvertFrom-Json -ErrorAction Stop
-        }
-        catch {
-            Write-Error -Exception $_.Exception
-            return
+        #region Send API Request (No Stream)
+        else {
+            $Response = Invoke-OpenAIAPIRequest @splat
+
+            # error check
+            if ($null -eq $Response) {
+                return
+            }
+            #endregion
+
+            #region Parse response object
+            if ($OutputRawResponse) {
+                Write-Output $Response
+                return
+            }
+            try {
+                $Response = $Response | ConvertFrom-Json -ErrorAction Stop
+            }
+            catch {
+                Write-Error -Exception $_.Exception
+                return
+            }
+            #endregion
         }
         #endregion
 

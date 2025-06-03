@@ -98,6 +98,36 @@ Describe 'Get-Response' {
             $Result.History[-1].id | Should -Be 'msg_abc123-3'
         }
 
+        Context 'Streaming' {
+            BeforeAll {
+                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequestSSE {
+                    '{"type":"response.output_text.delta","sequence_number":100,"delta":"Hello","item_id":"msg_123","content_index":0,"output_index":0}'
+                    '{"type":"response.output_text.delta","sequence_number":101,"delta":".","item_id":"msg_123","content_index":0,"output_index":0}'
+                    '{"type":"response.output_text.done","sequence_number":102,"text":"Hello.","item_id":"msg_123","content_index":0,"output_index":0}'
+                }
+            }
+
+            It 'Stream Response (text)' {
+                { $script:Result = Get-Response -ResponseId 'resp_abc123' -Stream -StreamOutputType text -ea Stop } | Should -Not -Throw
+                Should -Invoke Invoke-OpenAIAPIRequestSSE -ModuleName $script:ModuleName -Times 1 -Exactly
+                $Result | Should -HaveCount 2
+                $Result[0] | Should -Be 'Hello'
+                $Result[1] | Should -Be '.'
+            }
+
+            It 'Stream Response (object)' {
+                { $script:Result = Get-Response -ResponseId 'resp_abc123' -Stream -StreamOutputType object -ea Stop } | Should -Not -Throw
+                Should -Invoke Invoke-OpenAIAPIRequestSSE -ModuleName $script:ModuleName -Times 1 -Exactly
+                $Result | Should -HaveCount 3
+                $Result[0].type | Should -Be 'response.output_text.delta'
+                $Result[0].delta | Should -Be 'Hello'
+                $Result[1].type | Should -Be 'response.output_text.delta'
+                $Result[1].delta | Should -Be '.'
+                $Result[2].type | Should -Be 'response.output_text.done'
+                $Result[2].text | Should -Be 'Hello.'
+            }
+        }
+
         Context 'Parameter Sets' {
             BeforeAll {
                 Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
@@ -165,6 +195,7 @@ Describe 'Get-Response' {
                 { [pscustomobject]@{ID = 'resp_abc123' } | Get-Response -ea Stop } | Should -Not -Throw
                 Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 4 -Exactly
             }
+
         }
     }
 

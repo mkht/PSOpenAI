@@ -293,6 +293,35 @@ Describe 'Request-Response' {
             $Result[1] | Should -BeExactly 'ECHO'
         }
 
+        It 'Background Stream' {
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequestSSE {
+                @'
+{
+    "type": "response.created",
+    "sequence_number": 0,
+    "response": {
+        "id": "resp_abc123",
+        "object": "response",
+        "created_at": 1748915156,
+        "status": "queued",
+        "background": true,
+        "error": null,
+        "model": "gpt-4o-2024-08-06",
+        "output": [],
+        "previous_response_id": null,
+        "store": true,
+        "text": {"format": {"type": "text"}}
+    }
+}
+'@
+            }
+            { $script:Result = Request-Response -Message 'test' -Stream -Background -ea Stop } | Should -Not -Throw
+            Should -Invoke -CommandName Invoke-OpenAIAPIRequestSSE -ModuleName $script:ModuleName -Times 1 -Exactly
+            $Result.id | Should -Be 'resp_abc123'
+            $Result.output | Should -HaveCount 0
+            $Result.LastUserMessage | Should -BeExactly 'test'
+        }
+
         It 'Stream output as object' {
             Mock -ModuleName $script:ModuleName Invoke-OpenAIAPIRequestSSE {
                 '{"type":"response.created","response":{"id":"resp_e83","object":"response","created_at":1743930702,"status":"in_progress","model":"gpt-4o-mini-2024-07-18","output":[]}}',

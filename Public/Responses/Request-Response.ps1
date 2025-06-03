@@ -272,6 +272,9 @@ function Request-Response {
         [Parameter()]
         [bool]$Store,
 
+        [Parameter()]
+        [switch]$Background = $false,
+
         #region Stream
         [Parameter()]
         [switch]$Stream = $false,
@@ -441,6 +444,9 @@ function Request-Response {
         }
         if ($PSBoundParameters.ContainsKey('User')) {
             $PostBody.user = $User
+        }
+        if ($Background) {
+            $PostBody.background = [bool]$Background
         }
         if ($Stream) {
             $PostBody.stream = [bool]$Stream
@@ -882,41 +888,46 @@ function Request-Response {
 
         #region Send API Request (Stream)
         if ($Stream) {
+            if ($Background) {
+                $splat.First = 1
+            }
             # Stream output
             Invoke-OpenAIAPIRequestSSE @splat |
                 Where-Object {
                     -not [string]::IsNullOrEmpty($_)
-                } | ForEach-Object {
-                    if ($OutputRawResponse) {
-                        $_
-                    }
-                    else {
-                        try {
-                            $_ | ConvertFrom-Json -ErrorAction Stop
-                        }
-                        catch {
-                            Write-Error -Exception $_.Exception
-                        }
-                    }
                 } | ForEach-Object -Process {
                     if ($OutputRawResponse) {
                         Write-Output $_
                     }
-                    elseif ($StreamOutputType -eq 'text') {
-                        if ($_.type -cne 'response.output_text.delta') {
-                            continue
-                        }
-                        Write-Output $_.delta
-                    }
                     else {
-                        Write-Output $_
+                        # Parse response object
+                        try {
+                            $Response = $_ | ConvertFrom-Json -ErrorAction Stop
+                        }
+                        catch {
+                            Write-Error -Exception $_.Exception
+                        }
+
+                        if ($Background) {
+                            if ($null -ne $Response.response) {
+                                ParseResponseObject $Response.response -Messages $Messages -OutputType $OutputType
+                            }
+                        }
+                        if ($StreamOutputType -eq 'text') {
+                            if ($Response.type -cne 'response.output_text.delta') {
+                                continue
+                            }
+                            Write-Output $Response.delta
+                        }
+                        else {
+                            Write-Output $Response
+                        }
                     }
                 }
 
             return
         }
         #endregion
-
 
         #region Send API Request (No Stream)
         else {

@@ -62,7 +62,10 @@ function Invoke-OpenAIAPIRequestSSE {
         [string]$AuthType = 'openai',
 
         [Parameter()]
-        [bool]$ReturnRawResponse = $false
+        [bool]$ReturnRawResponse = $false,
+
+        [Parameter()]
+        [uint64]$First = [uint64]::MaxValue
     )
 
     $InternalParams = Initialize-OpenAIAPIRequestParam @PSBoundParameters
@@ -78,6 +81,9 @@ function Invoke-OpenAIAPIRequestSSE {
     # Create HttpClient that has 5 min lifetime to reuse
     if ($null -eq $script:HttpClientHandler.HttpClient -or $script:HttpClientHandler.Expires -lt [datetime]::Now) {
         $script:HttpClientHandler.HttpClient = [System.Net.Http.HttpClient]::new()
+        if ($TimeoutSec -gt 0) {
+            $script:HttpClientHandler.HttpClient.Timeout = [TimeSpan]::FromSeconds($TimeoutSec)
+        }
         $script:HttpClientHandler.Expires = [datetime]::Now.AddMinutes(5)
     }
 
@@ -208,14 +214,45 @@ function Invoke-OpenAIAPIRequestSSE {
                     -Target ($ApiKey, $Organization) -First $startIdx -Last $lastIdx -MaxNumberOfAsterisks 45)
         }
 
-        while (-not $StreamReader.EndOfStream) {
+        [uint64]$DataCounter = 0
+        while ($DataCounter -lt $First) {
             $data = $null
             #Timeout
             $CancelToken.ThrowIfCancellationRequested()
-            #Retrive response content
-            $data = [string]$StreamReader.ReadLine()
+
+            # Note:
+            # In some situations, the server may unilaterally close the connection without sending any data.
+            # To avoid long blocking waits that prevent user cancellation, we use a polling interval.
+            # We allow a maximum total wait of 30 seconds while checking for cancellation every 500 ms.
+            $timeoutMs = 30000
+            $pollInterval = 500  # milliseconds
+            $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
+
+            $readTask = $StreamReader.ReadLineAsync()
+            while (-not $CancelToken.IsCancellationRequested -and $stopwatch.ElapsedMilliseconds -lt $timeoutMs) {
+                if ($readTask.Wait($pollInterval, $CancelToken)) {
+                    break
+                }
+            }
+
+            if (-not $readTask.IsCompleted) {
+                Write-Warning 'Timeout while waiting for response. It seems that the server is not sending any data.'
+                $cts.Cancel()  # Cancel the request
+                $CancelToken.ThrowIfCancellationRequested()
+                break
+            }
+
+            # Read data
+            $data = $readTask.Result
+            # Check end of stream
+            if ($null -eq $data) {
+                Write-Verbose -Message ('End of stream signal received.')
+                break
+            }
             # Skip on empty
-            if ([string]::IsNullOrWhiteSpace($data)) { continue }
+            elseif ([string]::IsNullOrWhiteSpace($data)) {
+                continue
+            }
             else {
                 # Debug output
                 if ($IsDebug) {
@@ -237,17 +274,19 @@ function Invoke-OpenAIAPIRequestSSE {
                 elseif ($data.StartsWith('data: ', [StringComparison]::Ordinal)) {
                     # End of stream
                     if ($data -eq 'data: [DONE]') {
-                        Write-Verbose -Message ('Received the signal of the end of stream')
+                        Write-Verbose -Message ('End of data received.')
                         break
                     }
                     else {
+                        # Increment counter
+                        $DataCounter++
+
                         #Output
                         Write-Output $data.Substring(6)    # ("data: ").Length -> 6
                     }
                 }
             }
         }
-
     }
     catch [OperationCanceledException] {
         # Convert OperationCanceledException to TimeoutException
@@ -268,7 +307,7 @@ function Invoke-OpenAIAPIRequestSSE {
         try {
             if ($null -ne $cts) { $cts.Dispose() }
             if ($null -ne $HttpResponse) { $HttpResponse.Dispose() }
-            if ($null -ne $ResponseStream) { $ResponseStream.Dispose() }
+            if ($null -ne $StreamReader) { $StreamReader.Dispose() }
             if ($null -ne $RequestMessage) { $RequestMessage.Dispose() }
         }
         catch {}
