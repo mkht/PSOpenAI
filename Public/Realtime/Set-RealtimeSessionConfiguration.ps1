@@ -231,7 +231,6 @@ function Set-RealtimeSessionConfiguration {
             if ($Tracing) {
                 $MessageObject.session.tracing = $Tracing
             }
-            $MessageObject.session.tracing = $null
         }
 
         PSOpenAI\Send-RealtimeSessionEvent -Message ($MessageObject | ConvertTo-Json -Depth 10)
