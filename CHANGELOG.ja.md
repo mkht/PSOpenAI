@@ -1,4 +1,8 @@
 # 変更履歴
+### 4.27.0
+- `Get-Response`および`Request-Response`にストリーミングやバックグラウンド処理用の新しいパラメータを追加しました
+- 配列型クエリパラメータの処理に関する問題を修正しました
+
 ### 4.26.0
 - Responses API用の新しい組み込みツール（Remote MCP、Code Interpreter、Image Generationなど）を追加しました
 - Responseオブジェクトの一覧表示を最適化しました

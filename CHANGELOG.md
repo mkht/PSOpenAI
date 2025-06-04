@@ -1,4 +1,8 @@
 # Changelog
+### 4.27.0
+- Add new parameters to `Get-Response` and `Request-Response` for streaming and background processing.
+- Improve handling of array-type query parameters.
+
 ### 4.26.0
 - Add new built-in tools for Responses API, such as Remote MCP, Code Interpreter, and Image Generation.
 - Optimize list view of Response object.
