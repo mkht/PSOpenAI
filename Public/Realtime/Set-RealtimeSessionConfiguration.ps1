@@ -17,6 +17,10 @@ function Set-RealtimeSessionConfiguration {
         [string][LowerCaseTransformation()]$Voice,
 
         [Parameter()]
+        [ValidateRange(0.25, 1.5)]
+        [double]$Speed,
+
+        [Parameter()]
         [Completions(
             'pcm16',
             'g711_ulaw',
@@ -91,7 +95,21 @@ function Set-RealtimeSessionConfiguration {
 
         [Parameter()]
         [ValidateRange(-1, 4096)]
-        [int]$MaxResponseOutputTokens = -1
+        [int]$MaxResponseOutputTokens = -1,
+
+        [Parameter()]
+        [Completions('auto')]
+        [AllowEmptyString()]
+        [string]$Tracing,
+
+        [Parameter()]
+        [string]$TracingGroupId,
+
+        [Parameter()]
+        [System.Collections.IDictionary]$TracingMetadata,
+
+        [Parameter()]
+        [string]$TracingWorkflowName
     )
 
     begin {
@@ -110,6 +128,9 @@ function Set-RealtimeSessionConfiguration {
         }
         if ($PSBoundParameters.ContainsKey('Voice')) {
             $MessageObject.session.voice = $Voice
+        }
+        if ($PSBoundParameters.ContainsKey('Speed')) {
+            $MessageObject.session.speed = $Speed
         }
         if ($PSBoundParameters.ContainsKey('InputAudioFormat')) {
             $MessageObject.session.input_audio_format = $InputAudioFormat
@@ -190,6 +211,27 @@ function Set-RealtimeSessionConfiguration {
         }
         if ($PSBoundParameters.ContainsKey('ToolChoice')) {
             $MessageObject.session.tool_choice = $ToolChoice
+        }
+
+        $TracingObject = @{}
+        if ($PSBoundParameters.ContainsKey('TracingGroupId')) {
+            $TracingObject.group_id = $TracingGroupId
+        }
+        if ($PSBoundParameters.ContainsKey('TracingMetadata')) {
+            $TracingObject.metadata = $TracingMetadata
+        }
+        if ($PSBoundParameters.ContainsKey('TracingWorkflowName')) {
+            $TracingObject.workflow_name = $TracingWorkflowName
+        }
+
+        if ($TracingObject.Keys.Count -gt 0) {
+            $MessageObject.session.tracing = $TracingObject
+        }
+        else {
+            if ($Tracing) {
+                $MessageObject.session.tracing = $Tracing
+            }
+            $MessageObject.session.tracing = $null
         }
 
         PSOpenAI\Send-RealtimeSessionEvent -Message ($MessageObject | ConvertTo-Json -Depth 10)
