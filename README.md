@@ -104,7 +104,7 @@ Install-Module -Name PSOpenAI
 + [Connect-RealtimeSession](/Docs/Connect-RealtimeSession.md)
 + [Connect-RealtimeTranscriptionSession](/Docs/Connect-RealtimeTranscriptionSession.md)
 + [Disconnect-RealtimeSession](/Docs/Disconnect-RealtimeSession.md)
-+ [Set-RealtimeSessionCofiguration](/Docs/Set-RealtimeSessionCofiguration.md)
++ [Set-RealtimeSessionConfiguration](/Docs/Set-RealtimeSessionConfiguration.md)
 + [Set-RealtimeTranscriptionSessionConfiguration](/Docs/Set-RealtimeTranscriptionSessionConfiguration.md)
 + [Send-RealtimeSessionEvent](/Docs/Send-RealtimeSessionEvent.md)
 + [Add-RealtimeSessionItem](/Docs/Add-RealtimeSessionItem.md)
