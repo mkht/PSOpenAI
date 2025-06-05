@@ -288,7 +288,7 @@ function Request-ChatCompletion {
         }
         #endregion
 
-        #region Tools paramter validation
+        #region Tools parameter validation
         if ($PSBoundParameters.ContainsKey('Tools')) {
             $tmpTools = [System.Collections.IDictionary[]]::new($Tools.Count)
             for ($i = 0; $i -lt $Tools.Count; $i++) {
