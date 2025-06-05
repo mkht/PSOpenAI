@@ -4,7 +4,7 @@
 - When you create a new file, should use CRLF line endings and UTF-8 encoding.
 
 ## Testing
-- Run `Invoke-Pester -Tag Offilne`
+- Run `Invoke-Pester -Tag Offline` (All tests) or `Invoke-Pester -Tag Offline -Path <PathToTest>` (Specific test) to run the tests
 - Ignore warning messages in tests. it's normal to have some warnings
 - It will spend long time to run all tests, so run only the ones you need
 - When you edit only comments, readme, or other non-code files, you can skip the tests
