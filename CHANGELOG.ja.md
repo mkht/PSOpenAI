@@ -1,4 +1,8 @@
 # 変更履歴
+### 4.28.0
+- `Set-RealtimeSessionConfiguration` に `-Speed` および `-Tracing` パラメータを追加しました。
+- `Set-RealtimeSessionConfiguration` の `-TurnDetectionSilenceDuration` パラメータが正しく動作しない問題を修正しました
+
 ### 4.27.0
 - `Get-Response`および`Request-Response`にストリーミングやバックグラウンド処理用の新しいパラメータを追加しました
 - 配列型クエリパラメータの処理に関する問題を修正しました

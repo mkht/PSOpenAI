@@ -1,4 +1,8 @@
 # Changelog
+### 4.28.0
+- Add Speed and Tracing parameters to `Set-RealtimeSessionConfiguration`.
+- Fix issue that the `-TurnDetectionSilenceDuration` parameter of `Set-RealtimeSessionConfiguration` does not work properly.
+
 ### 4.27.0
 - Add new parameters to `Get-Response` and `Request-Response` for streaming and background processing.
 - Improve handling of array-type query parameters.

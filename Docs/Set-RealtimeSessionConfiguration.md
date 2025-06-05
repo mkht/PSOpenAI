@@ -18,6 +18,7 @@ Set-RealtimeSessionConfiguration
     [-Instructions <String>]
     [-Modalities <String[]>]
     [-Voice <String>] 
+    [-Speed <Double>] 
     [-InputAudioFormat <String>]
     [-OutputAudioFormat <String>]
     [-InputAudioNoiseReductionType <String>]
@@ -36,7 +37,10 @@ Set-RealtimeSessionConfiguration
     [-Tools <IDictionary[]>]
     [-ToolChoice <String>]
     [-Temperature <Single>]
-    [-MaxResponseOutputTokens <Int32>]
+    [-Tracing <String>]
+    [-TracingGroupId <String>]
+    [-TracingMetadata <IDictionary>]
+    [-TracingWorkflowName <String>]
 ```
 
 ## DESCRIPTION
@@ -263,6 +267,51 @@ Default value: True
 
 ### -Voice
 The voice the model uses to respond. Cannot be changed once the model has responded with audio at least once.
+
+```yaml
+Type: String
+Required: False
+Position: Named
+```
+
+### -Speed
+The speed of the model's spoken response. 1.0 is the default speed. 0.25 is the minimum speed. 1.5 is the maximum speed.
+
+```yaml
+Type: Double
+Required: False
+Position: Named
+```
+
+### -Tracing
+Configuration options for tracing. Set to null to disable tracing. Once tracing is enabled for a session, the configuration cannot be modified. `auto` will create a trace for the session with default settings.
+
+```yaml
+Type: String
+Required: False
+Position: Named
+```
+
+### -TracingGroupId
+The group id to attach to this trace to enable filtering and grouping in the traces dashboard.
+
+```yaml
+Type: String
+Required: False
+Position: Named
+```
+
+### -TracingMetadata
+The arbitrary metadata to attach to this trace to enable filtering in the traces dashboard.
+
+```yaml
+Type: IDictionary
+Required: False
+Position: Named
+```
+
+### -TracingWorkflowName
+The name of the workflow to attach to this trace. This is used to name the trace in the traces dashboard.
 
 ```yaml
 Type: String
