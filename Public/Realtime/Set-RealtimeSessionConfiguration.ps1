@@ -182,7 +182,7 @@ function Set-RealtimeSessionConfiguration {
                 if ($PSBoundParameters.ContainsKey('TurnDetectionPrefixPadding')) {
                     $MessageObject.session.turn_detection.prefix_padding_ms = $TurnDetectionPrefixPadding
                 }
-                if ($PSBoundParameters.ContainsKey('TurnDetectionThreshold')) {
+                if ($PSBoundParameters.ContainsKey('TurnDetectionSilenceDuration')) {
                     $MessageObject.session.turn_detection.silence_duration_ms = $TurnDetectionSilenceDuration
                 }
                 if ($PSBoundParameters.ContainsKey('CreateResponseOnTurnEnd')) {
