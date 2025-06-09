@@ -37,6 +37,7 @@ Set-RealtimeSessionConfiguration
     [-Tools <IDictionary[]>]
     [-ToolChoice <String>]
     [-Temperature <Single>]
+    [-MaxResponseOutputTokens <Int32>]
     [-Tracing <String>]
     [-TracingGroupId <String>]
     [-TracingMetadata <IDictionary>]
