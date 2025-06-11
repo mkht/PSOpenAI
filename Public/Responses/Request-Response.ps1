@@ -27,7 +27,7 @@ function Request-Response {
             'o1',
             'o1-pro',
             'o3',
-            'o3-pro'
+            'o3-pro',
             'o3-mini',
             'o4-mini',
             'codex-mini-latest',
