@@ -322,7 +322,7 @@ function Request-Response {
 
         [Parameter()]
         [Alias('service_tier')]
-        [Completions('auto', 'default', 'flex')]
+        [Completions('auto', 'default', 'flex', 'scale')]
         [string]$ServiceTier,
 
         [Parameter()]
