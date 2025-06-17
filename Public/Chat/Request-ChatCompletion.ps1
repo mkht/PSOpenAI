@@ -699,7 +699,7 @@ function Request-ChatCompletion {
         #endregion
 
         #region For history, add AI response to messages list.
-        if ($Response.choices.message.Count -ge 1) {
+        if (@($Response.choices.message).Count -ge 1) {
             $msg = @($Response.choices.message)[0]
             $rcm = [ordered]@{
                 role    = $msg.role
