@@ -20479,7 +20479,7 @@ Instructions that the model should follow.</maml:para>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>Instructions</maml:name>
           <maml:description>
-            <maml:para>Inserts a system (or developer) message as the first item in the model's context.</maml:para>
+            <maml:para>A system (or developer) message inserted into the model's context.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -20492,6 +20492,42 @@ Instructions that the model should follow.</maml:para>
           <maml:name>PreviousResponseId</maml:name>
           <maml:description>
             <maml:para>The unique ID of the previous response to the model. Use this to create multi-turn conversations.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>PromptId</maml:name>
+          <maml:description>
+            <maml:para>The unique identifier of the prompt template to use.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>PromptVariables</maml:name>
+          <maml:description>
+            <maml:para>Optional map of values to substitute in for variables in your prompt.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">IDictionary</command:parameterValue>
+          <dev:type>
+            <maml:name>IDictionary</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>PromptVersion</maml:name>
+          <maml:description>
+            <maml:para>Optional version of the prompt template.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -21435,7 +21471,7 @@ Instructions that the model should follow.</maml:para>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>Instructions</maml:name>
         <maml:description>
-          <maml:para>Inserts a system (or developer) message as the first item in the model's context.</maml:para>
+          <maml:para>A system (or developer) message inserted into the model's context.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -21448,6 +21484,42 @@ Instructions that the model should follow.</maml:para>
         <maml:name>PreviousResponseId</maml:name>
         <maml:description>
           <maml:para>The unique ID of the previous response to the model. Use this to create multi-turn conversations.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>PromptId</maml:name>
+        <maml:description>
+          <maml:para>The unique identifier of the prompt template to use.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>PromptVariables</maml:name>
+        <maml:description>
+          <maml:para>Optional map of values to substitute in for variables in your prompt.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">IDictionary</command:parameterValue>
+        <dev:type>
+          <maml:name>IDictionary</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>PromptVersion</maml:name>
+        <maml:description>
+          <maml:para>Optional version of the prompt template.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>

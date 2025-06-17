@@ -1,4 +1,9 @@
 # Changelog
+### 4.29.0
+- Add `o3-pro` model.
+- Add new parameters to `Request-Response` for reusable prompts.
+- Fix potential issues.
+
 ### 4.28.0
 - Add Speed and Tracing parameters to `Set-RealtimeSessionConfiguration`.
 - Fix issue that the `-TurnDetectionSilenceDuration` parameter of `Set-RealtimeSessionConfiguration` does not work properly.

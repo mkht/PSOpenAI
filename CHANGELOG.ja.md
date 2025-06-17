@@ -1,4 +1,9 @@
 # 変更履歴
+### 4.29.0
+- `03-pro`モデルを追加しました
+- `Request-Response`にプロンプトテンプレート用の新しいパラメータを追加しました
+- 潜在的なバグを修正しました
+
 ### 4.28.0
 - `Set-RealtimeSessionConfiguration` に `-Speed` および `-Tracing` パラメータを追加しました。
 - `Set-RealtimeSessionConfiguration` の `-TurnDetectionSilenceDuration` パラメータが正しく動作しない問題を修正しました
