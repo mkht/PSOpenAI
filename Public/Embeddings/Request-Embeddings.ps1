@@ -154,7 +154,7 @@ function Request-Embeddings {
 
         #region Output
         if ($null -ne $Response) {
-            for ($i = 0; $i -lt @($Response.data).Count; $i++) {
+            for ($i = 0; $i -lt $Response.data.Count; $i++) {
                 if ($Format -eq 'float') {
                     # Convert [Object[]] to [float[]]
                     @($Response.data)[$i].embedding = [float[]]@($Response.data)[$i].embedding

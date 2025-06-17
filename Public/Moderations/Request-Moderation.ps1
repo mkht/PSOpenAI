@@ -134,7 +134,7 @@ function Request-Moderation {
         if ($null -ne $Response) {
             # Add custom type name and properties to output object.
             $Response.PSObject.TypeNames.Insert(0, 'PSOpenAI.Moderation')
-            for ($i = 0; $i -lt @($Response.results).Count; $i++) {
+            for ($i = 0; $i -lt $Response.results.Count; $i++) {
                 @($Response.results)[$i] | Add-Member -MemberType NoteProperty -Name 'Input' -Value $InputArray[$i].raw_input
 
                 # Output a warning message when input text violates the content policy

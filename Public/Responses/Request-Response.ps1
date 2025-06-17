@@ -975,7 +975,7 @@ function Request-Response {
         #endregion
 
         #region For history, add model responses to messages list.
-        if (@($Response.output).Count -ge 1) {
+        if ($Response.output.Count -ge 1) {
             $Messages.AddRange(@($Response.output))
         }
         #endregion

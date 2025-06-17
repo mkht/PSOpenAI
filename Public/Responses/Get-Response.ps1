@@ -199,7 +199,7 @@ function Get-Response {
             }
 
             # Add assistant response to messages list.
-            if (@($res.output).Count -ge 1) {
+            if ($res.output.Count -ge 1) {
                 $Messages.AddRange(@($res.output))
             }
 
