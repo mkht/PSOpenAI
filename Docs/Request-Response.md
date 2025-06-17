@@ -21,6 +21,9 @@ Request-Response
     [-DeveloperMessage <String[]>]
     [-Instructions <String>]
     [-PreviousResponseId <String>]
+    [-PromptId <String>]
+    [-PromptVariables <IDictionary>]
+    [-PromptVersion <String>]
     [-Images <String[]>] 
     [-ImageDetail <String>]
     [-Files <String[]>] 
@@ -181,7 +184,7 @@ Position: Named
 ```
 
 ### -Instructions
-Inserts a system (or developer) message as the first item in the model's context.
+A system (or developer) message inserted into the model's context.
 
 ```yaml
 Type: String
@@ -198,6 +201,33 @@ Aliases: previous_response_id
 Required: False
 Position: Named
 Accept pipeline input: True (ByPropertyName)
+```
+
+### -PromptId
+The unique identifier of the prompt template to use.
+
+```yaml
+Type: String
+Required: False
+Position: Named
+```
+
+### -PromptVariables
+Optional map of values to substitute in for variables in your prompt. 
+
+```yaml
+Type: IDictionary
+Required: False
+Position: Named
+```
+
+### -PromptVersion
+Optional version of the prompt template.
+
+```yaml
+Type: String
+Required: False
+Position: Named
 ```
 
 ### -Images

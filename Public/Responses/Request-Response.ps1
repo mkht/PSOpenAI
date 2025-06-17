@@ -253,6 +253,15 @@ function Request-Response {
         [string]$PreviousResponseId,
 
         [Parameter()]
+        [string]$PromptId,
+
+        [Parameter()]
+        [System.Collections.IDictionary]$PromptVariables,
+
+        [Parameter()]
+        [string]$PromptVersion,
+
+        [Parameter()]
         [Completions('file_search_call.results', 'message.input_image.image_url', 'computer_call_output.output.image_url', 'reasoning.encrypted_content')]
         [AllowEmptyCollection()]
         [string[]]$Include,
@@ -451,6 +460,18 @@ function Request-Response {
         }
         if ($Stream) {
             $PostBody.stream = [bool]$Stream
+        }
+
+        # Reusable prompts
+        if ($PromptId) {
+            $PromptOptions = @{id = $PromptId }
+            if ($PSBoundParameters.ContainsKey('PromptVariables')) {
+                $PromptOptions.variables = $PromptVariables
+            }
+            if ($PSBoundParameters.ContainsKey('PromptVersion')) {
+                $PromptOptions.version = $PromptVersion
+            }
+            $PostBody.prompt = $PromptOptions
         }
 
         # Reasoning
