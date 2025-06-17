@@ -395,7 +395,27 @@ function Request-Response {
         #region Construct parameters for API request
         $Response = $null
         $PostBody = [System.Collections.Specialized.OrderedDictionary]::new()
-        $PostBody.model = $Model
+
+        # Reusable prompts
+        $IsReusablePromptSpecified = $false
+        if ($PromptId) {
+            $PromptOptions = @{id = $PromptId }
+            if ($PSBoundParameters.ContainsKey('PromptVariables')) {
+                $PromptOptions.variables = $PromptVariables
+            }
+            if ($PSBoundParameters.ContainsKey('PromptVersion')) {
+                $PromptOptions.version = $PromptVersion
+            }
+            $PostBody.prompt = $PromptOptions
+
+            ## When specifying a reusable prompt, normally required parameters such as model and input become optional.
+            $IsReusablePromptSpecified = $true
+        }
+
+        # Specify model
+        if (-not $IsReusablePromptSpecified -or $PSBoundParameters.ContainsKey('Model')) {
+            $PostBody.model = $Model
+        }
 
         if ($PreviousResponseId) {
             $PostBody.previous_response_id = $PreviousResponseId
@@ -460,18 +480,6 @@ function Request-Response {
         }
         if ($Stream) {
             $PostBody.stream = [bool]$Stream
-        }
-
-        # Reusable prompts
-        if ($PromptId) {
-            $PromptOptions = @{id = $PromptId }
-            if ($PSBoundParameters.ContainsKey('PromptVariables')) {
-                $PromptOptions.variables = $PromptVariables
-            }
-            if ($PSBoundParameters.ContainsKey('PromptVersion')) {
-                $PromptOptions.version = $PromptVersion
-            }
-            $PostBody.prompt = $PromptOptions
         }
 
         # Reasoning
@@ -870,7 +878,7 @@ function Request-Response {
         #endregion
 
         # Error if message is empty.
-        if ($Messages.Count -eq 0) {
+        if (-not $IsReusablePromptSpecified -and $Messages.Count -eq 0) {
             Write-Error 'No message is specified. You must specify one or more messages.'
             return
         }

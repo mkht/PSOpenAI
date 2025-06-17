@@ -606,6 +606,27 @@ Describe 'Request-Response' {
             $Result.body.model | Should -Be 'gpt-4o-mini'
             $Result.body.input[0].content[0].text | Should -Be 'Hello!'
         }
+
+        It 'Input Message is required' {
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest {}
+            { Request-Response -Model 'gpt-4o-mini' -ea Stop } | Should -Throw 'No message is specified. You must specify one or more messages.'
+            Should -Not -InvokeVerifiable
+        }
+
+        It 'When specifying a reusable prompt, input message is not required' {
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+{
+  "id": "resp_7e5a5",
+  "object": "response",
+  "created_at": 1743938395,
+  "status": "completed",
+  "model": "gpt-4o-mini-2024-07-18"
+}
+'@
+            }
+            { Request-Response -PromptId 'pmpt_123' -PromptVersion 4 -PromptVariables @{'city' = 'Tokyo' } -ea Stop } | Should -Not -Throw
+            Should -InvokeVerifiable
+        }
     }
 
     Context 'Integration tests (online)' -Tag 'Online' {
