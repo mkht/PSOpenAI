@@ -119,6 +119,7 @@ function Initialize-OpenAIAPIRequestParam {
         }
     }
     $InternalParams.Body = $Body
+    $InternalParams.ContentType = $ContentType
 
     return $InternalParams
 }
