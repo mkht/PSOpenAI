@@ -22418,7 +22418,7 @@ Making sauerkraut is a simple process that involves fermenting cabbage. ...</dev
       </command:example>
       <command:example>
         <maml:title>-------------------- Example 3: File input --------------------</maml:title>
-        <dev:code>PS C:\&gt; Request-Response "Summarize this document" -Images 'C:\recipient.pdf' -Model 'o3-mini'</dev:code>
+        <dev:code>PS C:\&gt; Request-Response "Summarize this document" -Files 'C:\recipient.pdf' -Model 'gpt-4.1'</dev:code>
         <dev:remarks>
           <maml:para></maml:para>
         </dev:remarks>

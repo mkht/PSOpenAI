@@ -117,7 +117,7 @@ PS C:\> Request-Response "What is this?" -Images 'C:\donut.png' -Model 'gpt-4o'
 
 ### Example 3: File input
 ```powershell
-PS C:\> Request-Response "Summarize this document" -Images 'C:\recipient.pdf' -Model 'o3-mini'
+PS C:\> Request-Response "Summarize this document" -Files 'C:\recipient.pdf' -Model 'gpt-4.1'
 ```
 
 ### Example 4: Web search
