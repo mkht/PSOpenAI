@@ -1,4 +1,7 @@
 # Changelog
+### 4.29.1
+- Fix file upload failures due to incorrectly set content headers. [#42](https://github.com/mkht/PSOpenAI/issues/42)
+
 ### 4.29.0
 - Add `o3-pro` model.
 - Add new parameters to `Request-Response` for reusable prompts.
