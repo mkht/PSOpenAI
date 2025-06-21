@@ -79,10 +79,14 @@ function Initialize-OpenAIAPIRequestParam {
     $InternalParams.Headers = $RequestHeaders
 
     # Set UserAgent
-    if (-not $script:UserAgent) {
-        $script:UserAgent = Get-UserAgent
+    if ($RequestHeaders.ContainsKey('User-Agent')) {
+        $UserAgent = $RequestHeaders.'User-Agent'
     }
-    $InternalParams.UserAgent = $script:UserAgent
+    elseif (-not $script:UserAgent) {
+        $UserAgent = Get-UserAgent
+        $script:UserAgent = $UserAgent
+    }
+    $InternalParams.UserAgent = $UserAgent
 
     # Set debug flag
     $InternalParams.IsDebug = Test-Debug
@@ -90,32 +94,30 @@ function Initialize-OpenAIAPIRequestParam {
         $InternalParams.Headers['OpenAI-Debug'] = 'true'
     }
 
-
     # Construct Body
     if ($null -ne $Body) {
+        if ($Body -is [pscustomobject]) {
+            $Body = ObjectToHashTable $Body
+        }
+        if ($PSBoundParameters.ContainsKey('AdditionalBody') -and $null -ne $AdditionalBody) {
+            if ($AdditionalBody -is [string]) {
+                try {
+                    $AdditionalBody = ConvertFrom-Json $AdditionalBody -Depth 100
+                }
+                catch {
+                    Write-Error -Exception ([System.InvalidOperationException]::new('Failed to parse AdditionalBody as JSON.'))
+                }
+            }
+            if ($AdditionalBody -is [pscustomobject]) {
+                $AdditionalBody = ObjectToHashTable $AdditionalBody
+            }
+            $Body = Merge-Dictionary $Body $AdditionalBody
+        }
+
         if ($ContentType -match 'multipart/form-data') {
             $Boundary = New-MultipartFormBoundary
             $Body = New-MultipartFormContent -FormData $Body -Boundary $Boundary
             $ContentType = ('multipart/form-data; boundary="{0}"' -f $Boundary)
-        }
-        elseif ($ContentType -match 'application/json') {
-            if ($Body -is [pscustomobject]) {
-                $Body = ObjectToHashTable $Body
-            }
-            if ($PSBoundParameters.ContainsKey('AdditionalBody') -and $null -ne $AdditionalBody) {
-                if ($AdditionalBody -is [string]) {
-                    try {
-                        $AdditionalBody = ConvertFrom-Json $AdditionalBody -Depth 100
-                    }
-                    catch {
-                        Write-Error -Exception ([System.InvalidOperationException]::new('Failed to parse AdditionalBody as JSON.'))
-                    }
-                }
-                if ($AdditionalBody -is [pscustomobject]) {
-                    $AdditionalBody = ObjectToHashTable $AdditionalBody
-                }
-                $Body = Merge-Dictionary $Body $AdditionalBody
-            }
         }
     }
     $InternalParams.Body = $Body
