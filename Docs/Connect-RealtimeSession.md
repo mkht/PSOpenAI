@@ -30,7 +30,7 @@ Once the session is opened, the connection will continue until it is disconnecte
 
 ### Example 1
 ```powershell
-PS C:\> Connect-RealtimeSession -Model 'gpt-4o-realtime-preview-2024-10-01'
+PS C:\> Connect-RealtimeSession -Model 'gpt-4o-realtime-preview'
 ```
 
 ## PARAMETERS
