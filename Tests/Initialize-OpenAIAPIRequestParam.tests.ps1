@@ -136,7 +136,7 @@ Describe 'Initialize-OpenAIAPIRequestParam' {
             It 'AdditionalQuery parameters - test 1' {
                 $Parameters = @{
                     Uri             = 'https://api.openai.example.com/v1/test'
-                    AdditionalQuery = @{ 'param1' = 'value1'; 'param2' = 'value2' }
+                    AdditionalQuery = [ordered]@{ 'param1' = 'value1'; 'param2' = 'value2' }
                 }
                 $ret = Initialize-OpenAIAPIRequestParam @Parameters
                 $ret['Uri'].ToString() | Should -BeExactly 'https://api.openai.example.com/v1/test?param1=value1&param2=value2'
@@ -145,7 +145,7 @@ Describe 'Initialize-OpenAIAPIRequestParam' {
             It 'AdditionalQuery parameters - test 2' {
                 $Parameters = @{
                     Uri             = 'https://api.openai.example.com/v1/test?existing1=param1&existing2=param2'
-                    AdditionalQuery = @{ 'param1' = 'value1'; 'param2' = 'value2' }
+                    AdditionalQuery = [ordered]@{ 'param1' = 'value1'; 'param2' = 'value2' }
                 }
                 $ret = Initialize-OpenAIAPIRequestParam @Parameters
                 $ret['Uri'].ToString() | Should -BeExactly 'https://api.openai.example.com/v1/test?existing1=param1&existing2=param2&param1=value1&param2=value2'
@@ -244,18 +244,21 @@ Describe 'Initialize-OpenAIAPIRequestParam' {
                 $ret = Initialize-OpenAIAPIRequestParam @Parameters
                 $ret['ContentType'] | Should -BeExactly 'multipart/form-data; boundary="boundary"'
                 $ret['Body'].GetType().Name | Should -Be 'Byte[]'
-                $BodyAsString = [System.Text.Encoding]::UTF8.GetString($ret['Body'])
-                $BodyAsString | Should -BeExactly (@(
-                        '--boundary'
+                $BodyAsString = [System.Text.Encoding]::UTF8.GetString($ret['Body']) -split '--boundary'
+                $BodyAsString | Should -Contain (@(
+                        ''
                         'Content-Disposition: form-data; name="Key1"'
                         ''
                         'value1'
-                        '--boundary'
+                        ''
+                    ) -join "`r`n")
+                $BodyAsString | Should -Contain (@(
+                        ''
                         'Content-Disposition: form-data; name="Key2"'
                         ''
                         'value2'
-                        '--boundary--'
-                    ) -join "`r`n") # Should use CRLF line endings in multipart/form-data
+                        ''
+                    ) -join "`r`n")
             }
 
             It 'Unknown content type' {

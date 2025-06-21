@@ -102,7 +102,12 @@ function Initialize-OpenAIAPIRequestParam {
         if ($PSBoundParameters.ContainsKey('AdditionalBody') -and $null -ne $AdditionalBody) {
             if ($AdditionalBody -is [string]) {
                 try {
-                    $AdditionalBody = ConvertFrom-Json $AdditionalBody -Depth 100
+                    $Depth = @{}
+                    # Depth param is supported only in PowerShell 6 and later
+                    if ($PSVersionTable.PSVersion.Major -ge 6) {
+                        $Depth.Depth = 100
+                    }
+                    $AdditionalBody = ConvertFrom-Json $AdditionalBody @Depth
                 }
                 catch {
                     Write-Error -Exception ([System.InvalidOperationException]::new('Failed to parse AdditionalBody as JSON.'))
