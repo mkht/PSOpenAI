@@ -264,11 +264,11 @@ Describe 'Initialize-OpenAIAPIRequestParam' {
             It 'Unknown content type' {
                 $Parameters = @{
                     Uri         = 'https://api.openai.example.com/v1/test'
-                    ContentType = 'application/uknown'
+                    ContentType = 'application/unknown'
                     Body        = 'Unknown Content'
                 }
                 $ret = Initialize-OpenAIAPIRequestParam @Parameters
-                $ret['ContentType'] | Should -BeExactly 'application/uknown'
+                $ret['ContentType'] | Should -BeExactly 'application/unknown'
                 $ret['Body'] | Should -BeExactly 'Unknown Content'
             }
 
