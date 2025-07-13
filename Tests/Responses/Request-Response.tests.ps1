@@ -817,6 +817,14 @@ Ping Source Address Latency(ms) BufferSize(B) Status
             $Result.output_text | Should -Not -BeNullOrEmpty
         }
 
+        It 'File input (url)' {
+            $RemoteFileUrl = 'https://www.berkshirehathaway.com/letters/2024ltr.pdf'
+            { $script:Result = Request-Response -Model 'gpt-4o-mini' -Message 'Analyze the letter and provide a summary of the key points.' -Files ($RemoteFileUrl) -TimeoutSec 30 -Store $false -ea Stop } | Should -Not -Throw
+            $Result.object | Should -Be 'response'
+            $Result.LastUserMessage | Should -Be 'Analyze the letter and provide a summary of the key points.'
+            $Result.output_text | Should -Not -BeNullOrEmpty
+        }
+
         It 'File input (local file)' {
             { $script:Result = Request-Response -Model 'gpt-4o-mini' -Message 'Summarize this text in Japanese' -Files ($script:TestData + '/日本語テキスト.txt') -TimeoutSec 30 -Store $false -ea Stop } | Should -Not -Throw
             $Result.object | Should -Be 'response'

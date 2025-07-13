@@ -49,6 +49,7 @@ Request-Response
     [-UseRemoteMCP]
     [-RemoteMCPServerLabel <String>]
     [-RemoteMCPServerUrl <String>]
+    [-RemoteMCPServerDescription <String>]
     [-RemoteMCPAllowedTools <Object>]
     [-RemoteMCPRequireApproval <Object>]
     [-RemoteMCPHeaders <IDictionary>]
@@ -252,7 +253,7 @@ Default value: auto
 
 ### -Files
 A file input to the model.  
-You can speciy a list of the local file path or the ID of the file to be uploaded.
+You can speciy a list of the local file path, the URL of the file or the ID of the file to be uploaded.
 
 ```yaml
 Type: String[]
@@ -456,6 +457,15 @@ Position: Named
 
 ### -RemoteMCPServerUrl
 The URL for the MCP server.
+
+```yaml
+Type: String
+Required: False
+Position: Named
+```
+
+### -RemoteMCPServerDescription
+Optional description of the MCP server, used to provide more context.
 
 ```yaml
 Type: String

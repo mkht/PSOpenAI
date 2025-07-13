@@ -176,6 +176,9 @@ function Request-Response {
         [string]$RemoteMCPServerUrl,
 
         [Parameter()]
+        [string]$RemoteMCPServerDescription,
+
+        [Parameter()]
         [object]$RemoteMCPAllowedTools,
 
         [Parameter()]
@@ -658,6 +661,9 @@ function Request-Response {
                 server_url   = $RemoteMCPServerUrl
             }
 
+            if ($PSBoundParameters.ContainsKey('RemoteMCPServerDescription')) {
+                $MCPTool.server_description = $RemoteMCPServerDescription
+            }
             if ($PSBoundParameters.ContainsKey('RemoteMCPAllowedTools')) {
                 if ($RemoteMCPAllowedTools.tool_names.Count -gt 0) {
                     $RemoteMCPAllowedTools = $RemoteMCPAllowedTools.tool_names
@@ -825,7 +831,15 @@ function Request-Response {
                         file_data = (Convert-FileToDataURL $file)
                     }
                 }
+                elseif ($file -match '^http[s]?://') {
+                    # URL
+                    $fileContent = [pscustomobject]@{
+                        type     = 'input_file'
+                        file_url = $file
+                    }
+                }
                 elseif ($file -match '[\\/]') {
+                    # Invalid file path
                     continue
                 }
                 else {
