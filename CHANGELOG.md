@@ -1,4 +1,12 @@
 # Changelog
+### 4.30.0
+- Add `o3-deep-research` and `o4-mini-deep-research`.
+- Improve handling of file inputs in `Request-Response`. You can now specify a URL of a file.
+- Update model deprecation list.
+- Don't send Content-Type header on GET requests.  
+- Fix documentation for `Request-Response` function. [#43](https://github.com/mkht/PSOpenAI/issues/43)
+- Fix User-Agent header handling.
+
 ### 4.29.1
 - Fix file upload failures due to incorrectly set content headers. [#42](https://github.com/mkht/PSOpenAI/issues/42)
 

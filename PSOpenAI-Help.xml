@@ -2042,7 +2042,7 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
     <command:examples>
       <command:example>
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; Connect-RealtimeSession -Model 'gpt-4o-realtime-preview-2024-10-01'</dev:code>
+        <dev:code>PS C:\&gt; Connect-RealtimeSession -Model 'gpt-4o-realtime-preview'</dev:code>
         <dev:remarks>
           <maml:para></maml:para>
         </dev:remarks>
@@ -20571,7 +20571,7 @@ Instructions that the model should follow.</maml:para>
           <maml:name>Files</maml:name>
           <maml:description>
             <maml:para>A file input to the model.
-You can speciy a list of the local file path or the ID of the file to be uploaded.</maml:para>
+You can speciy a list of the local file path, the URL of the file or the ID of the file to be uploaded.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
           <dev:type>
@@ -20838,6 +20838,18 @@ Possible values: `browser`, `mac`, `windows`, `ubuntu`.</maml:para>
           <maml:name>RemoteMCPServerUrl</maml:name>
           <maml:description>
             <maml:para>The URL for the MCP server.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>RemoteMCPServerDescription</maml:name>
+          <maml:description>
+            <maml:para>Optional description of the MCP server, used to provide more context.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -21558,7 +21570,7 @@ Instructions that the model should follow.</maml:para>
         <maml:name>Files</maml:name>
         <maml:description>
           <maml:para>A file input to the model.
-You can speciy a list of the local file path or the ID of the file to be uploaded.</maml:para>
+You can speciy a list of the local file path, the URL of the file or the ID of the file to be uploaded.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
         <dev:type>
@@ -21824,6 +21836,18 @@ Possible values: `browser`, `mac`, `windows`, `ubuntu`.</maml:para>
         <maml:name>RemoteMCPServerUrl</maml:name>
         <maml:description>
           <maml:para>The URL for the MCP server.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>RemoteMCPServerDescription</maml:name>
+        <maml:description>
+          <maml:para>Optional description of the MCP server, used to provide more context.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
