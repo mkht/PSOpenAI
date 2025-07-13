@@ -96,8 +96,11 @@ function Invoke-OpenAIAPIRequestSSE {
     }
 
     # Set Content
-    if ($null -ne $InternalParams.Body) {
-        if ($ContentType -eq 'application/json') {
+    ## Don't send Content-Type & body on GET requests
+    $IsBodyAllowed = $InternalParams.Method -ne 'Get'
+
+    if ($null -ne $InternalParams.Body -and $IsBodyAllowed) {
+        if ($InternalParams.ContentType -match 'application/json') {
             $RequestMessage.Content = [System.Net.Http.StringContent]::new(($InternalParams.Body | ConvertTo-Json -Compress -Depth 100), [Encoding]::UTF8, $InternalParams.ContentType)
         }
         elseif ($InternalParams.Body -is [byte[]]) {

@@ -82,6 +82,11 @@ function Invoke-OpenAIAPIRequest {
         UseBasicParsing = $true
     }
 
+    # Don't send Content-Type header on GET requests
+    if ($IwrParam.Method -eq 'Get') {
+        $IwrParam.Remove('ContentType')
+    }
+
     # Use HTTP/2 (if possible)
     if ($null -ne (Get-Command 'Microsoft.PowerShell.Utility\Invoke-WebRequest').Parameters.HttpVersion) {
         $IwrParam.HttpVersion = [version]::new(2, 0)
