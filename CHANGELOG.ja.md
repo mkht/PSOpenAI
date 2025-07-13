@@ -1,4 +1,12 @@
 # 変更履歴
+### 4.30.0
+- `o3-deep-research` と `o4-mini-deep-research` モデルを追加しました
+- `Request-Response` でファイル入力の扱いを改善しました。ファイルのURLを指定できるようになりました
+- 廃止予定モデルのリストを更新しました
+- GETリクエスト時に Content-Type ヘッダーを送信しないようにしました
+- `Request-Response` 関数のドキュメントを修正しました [#43](https://github.com/mkht/PSOpenAI/issues/43)
+- User-Agent ヘッダーの処理を修正しました
+
 ### 4.29.1
 - コンテンツヘッダーが正しく設定されていないことが原因でファイルアップロードに失敗する問題を修正しました [#42](https://github.com/mkht/PSOpenAI/issues/42)
 
