@@ -30,6 +30,8 @@ function Request-Response {
             'o3-pro',
             'o3-mini',
             'o4-mini',
+            'o3-deep-research',
+            'o4-mini-deep-research',
             'codex-mini-latest',
             'computer-use-preview'
         )]
