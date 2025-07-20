@@ -241,6 +241,77 @@ Describe 'Request-ImageGeneration' {
             $Result[1] | Should -Be 'https://dummyimage2.example.com'
         }
 
+        It 'gpt-image-1 model does not support response_format = url. Defaulting to object.' {
+            $TestResponse = @'
+{
+    "created": 1678359675,
+    "data": [
+        {
+        "url": "https://dummyimage.example.com"
+        }
+    ]
+}
+'@
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $TestResponse }
+            { $script:Result = Request-ImageGeneration -Model gpt-image-1 -Prompt 'sunflower' -ResponseFormat url -ea Stop } | Should -Not -Throw
+            Should -InvokeVerifiable
+            $Result.PSTypeNames | Should -Contain 'PSOpenAI.Image'
+            $Result.created | Should -BeOfType [datetime]
+        }
+
+        It 'Generate image. response_format = object' {
+            $TestResponse = @'
+{
+  "created": 1713833628,
+  "data": [
+    {
+      "b64_json": "SEVMTE8="
+    }
+  ],
+  "usage": {
+    "input_tokens": 50,
+    "output_tokens": 50
+  }
+}
+'@
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $TestResponse }
+            { $script:Result = Request-ImageGeneration -Prompt 'sunflower' -ResponseFormat object -ea Stop } | Should -Not -Throw
+            Should -InvokeVerifiable
+            $Result.PSTypeNames | Should -Contain 'PSOpenAI.Image'
+            $Result.created | Should -BeOfType [datetime]
+            $Result.data | Should -HaveCount 1
+            $Result.data[0].b64_json | Should -Be 'SEVMTE8='
+        }
+
+        It 'Generate multiple image. response_format = object' {
+            $TestResponse = @'
+{
+  "created": 1713833628,
+  "data": [
+    {
+      "b64_json": "RklSU1Q="
+    },
+    {
+      "b64_json": "U0VDT05E"
+    }
+  ],
+  "usage": {
+    "input_tokens": 50,
+    "output_tokens": 50
+  }
+}
+'@
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $TestResponse }
+            { $script:Result = Request-ImageGeneration -Prompt 'sunflower' -NumberOfImages 2 -ResponseFormat object -ea Stop } | Should -Not -Throw
+            Should -InvokeVerifiable
+            $Result | Should -HaveCount 1
+            $Result.PSTypeNames | Should -Contain 'PSOpenAI.Image'
+            $Result.created | Should -BeOfType [datetime]
+            $Result.data | Should -HaveCount 2
+            $Result.data[0].b64_json | Should -Be 'RklSU1Q='
+            $Result.data[1].b64_json | Should -Be 'U0VDT05E'
+        }
+
         It 'Generate image. returns raw response' {
             $TestResponse = @'
 {
@@ -257,6 +328,211 @@ Describe 'Request-ImageGeneration' {
             Should -InvokeVerifiable
             $Result | Should -BeOfType [string]
             $Result | Should -BeExactly $TestResponse
+        }
+
+        Context 'Streaming' {
+            It 'Generate image. OutFile.' {
+                $TestResponse = @'
+{
+  "type": "image_generation.completed",
+  "b64_json": "VEVTVF9JTUFHRV8x",
+  "created_at": 1620000000,
+  "size": "1024x1024",
+  "quality": "high",
+  "background": "transparent",
+  "output_format": "png",
+  "usage": {
+    "total_tokens": 100,
+    "input_tokens": 50
+  }
+}
+'@
+                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequestSSE { $TestResponse }
+                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { }
+                { $splat = @{
+                        Prompt      = 'Hello'
+                        Model       = 'gpt-image-1'
+                        Size        = '1024x1024'
+                        OutFile     = Join-Path $TestDrive 'file.png'
+                        ErrorAction = 'Stop'
+                    }
+                    $script:Result = Request-ImageGeneration @splat -Stream
+                } | Should -Not -Throw
+                Should -Invoke -CommandName Invoke-OpenAIAPIRequestSSE -ModuleName $script:ModuleName -Times 1 -Exactly
+                Should -Not -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName
+                $Result | Should -BeNullOrEmpty
+                (Join-Path $TestDrive 'file.png') | Should -Exist
+                (Join-Path $TestDrive 'file.png') | Should -FileContentMatchExactly 'TEST_IMAGE_1'
+            }
+
+            It 'Generate image. OutFile. Partial images.' {
+                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequestSSE {
+                    '{"type":"image_generation.partial_image","b64_json":"VEVTVF9JTUFHRV8yX1BBUlRJQUxfMA==","created_at":1620000000,"partial_image_index": 0}'
+                    '{"type":"image_generation.partial_image","b64_json":"VEVTVF9JTUFHRV8yX1BBUlRJQUxfMQ==","created_at":1620000000,"partial_image_index": 1}'
+                    '{"type":"image_generation.partial_image","b64_json":"VEVTVF9JTUFHRV8yX1BBUlRJQUxfMg==","created_at":1620000000,"partial_image_index": 2}'
+                    '{"type":"image_generation.completed","b64_json":"VEVTVF9JTUFHRV8y","created_at":1620000000}'
+                }
+                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { }
+                { $splat = @{
+                        Prompt        = 'Hello'
+                        Model         = 'gpt-image-1'
+                        Size          = '1024x1024'
+                        OutFile       = Join-Path $TestDrive 'file.png'
+                        PartialImages = 3
+                        ErrorAction   = 'Stop'
+                    }
+                    $script:Result = Request-ImageGeneration @splat -Stream
+                } | Should -Not -Throw
+                Should -Invoke -CommandName Invoke-OpenAIAPIRequestSSE -ModuleName $script:ModuleName -Times 1 -Exactly
+                Should -Not -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName
+                $Result | Should -BeNullOrEmpty
+                (Join-Path $TestDrive 'file-0.png') | Should -FileContentMatchExactly 'TEST_IMAGE_2_PARTIAL_0'
+                (Join-Path $TestDrive 'file-1.png') | Should -FileContentMatchExactly 'TEST_IMAGE_2_PARTIAL_1'
+                (Join-Path $TestDrive 'file-2.png') | Should -FileContentMatchExactly 'TEST_IMAGE_2_PARTIAL_2'
+                (Join-Path $TestDrive 'file.png') | Should -FileContentMatchExactly 'TEST_IMAGE_2'
+            }
+
+            It 'Generate image. ResponseFormat = object' {
+                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequestSSE {
+                    '{"type":"image_generation.partial_image","b64_json":"VEVTVF9JTUFHRV8zX1BBUlRJQUxfMA==","created_at":1620000000,"partial_image_index": 0}'
+                    '{"type":"image_generation.completed","b64_json":"VEVTVF9JTUFHRV8z","created_at":1620000000}'
+                }
+                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { }
+                { $splat = @{
+                        Prompt         = 'Hello'
+                        Model          = 'gpt-image-1'
+                        Size           = '1024x1024'
+                        ResponseFormat = 'object'
+                        PartialImages  = 1
+                        ErrorAction    = 'Stop'
+                    }
+                    $script:Result = Request-ImageGeneration @splat -Stream
+                } | Should -Not -Throw
+                Should -Invoke -CommandName Invoke-OpenAIAPIRequestSSE -ModuleName $script:ModuleName -Times 1 -Exactly
+                Should -Not -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName
+                $Result | Should -HaveCount 2
+                $Result[0].PSTypeNames | Should -Contain 'PSOpenAI.Image'
+                $Result[0].type | Should -Be 'image_generation.partial_image'
+                $Result[0].created_at | Should -BeOfType [datetime]
+                $Result[0].b64_json | Should -Be 'VEVTVF9JTUFHRV8zX1BBUlRJQUxfMA=='
+                $Result[1].PSTypeNames | Should -Contain 'PSOpenAI.Image'
+                $Result[1].type | Should -Be 'image_generation.completed'
+                $Result[1].created_at | Should -BeOfType [datetime]
+                $Result[1].b64_json | Should -Be 'VEVTVF9JTUFHRV8z'
+            }
+
+            It 'Generate image. ResponseFormat = base64' {
+                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequestSSE {
+                    '{"type":"image_generation.partial_image","b64_json":"VEVTVF9JTUFHRV8zX1BBUlRJQUxfMA==","created_at":1620000000,"partial_image_index": 0}'
+                    '{"type":"image_generation.completed","b64_json":"VEVTVF9JTUFHRV8z","created_at":1620000000}'
+                }
+                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { }
+                { $splat = @{
+                        Prompt         = 'Hello'
+                        Model          = 'gpt-image-1'
+                        Size           = '1024x1024'
+                        ResponseFormat = 'base64'
+                        PartialImages  = 1
+                        ErrorAction    = 'Stop'
+                    }
+                    $script:Result = Request-ImageGeneration @splat -Stream
+                } | Should -Not -Throw
+                Should -Invoke -CommandName Invoke-OpenAIAPIRequestSSE -ModuleName $script:ModuleName -Times 1 -Exactly
+                Should -Not -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName
+                $Result | Should -HaveCount 2
+                $Result[0] | Should -BeExactly 'VEVTVF9JTUFHRV8zX1BBUlRJQUxfMA=='
+                $Result[1] | Should -BeExactly 'VEVTVF9JTUFHRV8z'
+            }
+
+            It 'Generate image. ResponseFormat = byte. Single image.' {
+                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequestSSE {
+                    '{"type":"image_generation.completed","b64_json":"VEVTVF9JTUFHRV8z","created_at":1620000000}'
+                }
+                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { }
+                { $splat = @{
+                        Prompt         = 'Hello'
+                        Model          = 'gpt-image-1'
+                        Size           = '1024x1024'
+                        ResponseFormat = 'byte'
+                        PartialImages  = 0
+                        ErrorAction    = 'Stop'
+                    }
+                    $script:Result = Request-ImageGeneration @splat -Stream
+                } | Should -Not -Throw
+                Should -Invoke -CommandName Invoke-OpenAIAPIRequestSSE -ModuleName $script:ModuleName -Times 1 -Exactly
+                Should -Not -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName
+                $Result | Should -HaveCount 12
+                $Result[0] | Should -Be 84
+                $Result[-1] | Should -Be 51
+            }
+
+            It 'Generate image. ResponseFormat = byte. Partial image.' {
+                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequestSSE {
+                    '{"type":"image_generation.partial_image","b64_json":"VEVTVF9JTUFHRV8zX1BBUlRJQUxfMA==","created_at":1620000000,"partial_image_index": 0}'
+                    '{"type":"image_generation.completed","b64_json":"VEVTVF9JTUFHRV8z","created_at":1620000000}'
+                }
+                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { }
+                { $splat = @{
+                        Prompt         = 'Hello'
+                        Model          = 'gpt-image-1'
+                        Size           = '1024x1024'
+                        ResponseFormat = 'byte'
+                        PartialImages  = 1
+                        ErrorAction    = 'Stop'
+                    }
+                    $script:Result = Request-ImageGeneration @splat -Stream
+                } | Should -Not -Throw
+                Should -Invoke -CommandName Invoke-OpenAIAPIRequestSSE -ModuleName $script:ModuleName -Times 1 -Exactly
+                Should -Not -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName
+                $Result | Should -HaveCount 2
+                $Result[0] | Should -HaveCount 22
+                $Result[1] | Should -HaveCount 12
+                $Result[0][0] | Should -BeOfType [byte]
+                $Result[1][0] | Should -BeOfType [byte]
+            }
+
+            It 'Generate image. ResponseFormat = byte. Partial image.' {
+                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequestSSE {
+                    '{"type":"image_generation.partial_image","b64_json":"VEVTVF9JTUFHRV8zX1BBUlRJQUxfMA==","created_at":1620000000,"partial_image_index": 0}'
+                    '{"type":"image_generation.completed","b64_json":"VEVTVF9JTUFHRV8z","created_at":1620000000}'
+                }
+                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { }
+                { $splat = @{
+                        Prompt         = 'Hello'
+                        Model          = 'gpt-image-1'
+                        Size           = '1024x1024'
+                        ResponseFormat = 'byte'
+                        PartialImages  = 1
+                        ErrorAction    = 'Stop'
+                    }
+                    $script:Result = Request-ImageGeneration @splat -Stream
+                } | Should -Not -Throw
+                Should -Invoke -CommandName Invoke-OpenAIAPIRequestSSE -ModuleName $script:ModuleName -Times 1 -Exactly
+                Should -Not -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName
+                $Result | Should -HaveCount 2
+                $Result[0] | Should -HaveCount 22
+                $Result[1] | Should -HaveCount 12
+                $Result[0][0] | Should -BeOfType [byte]
+                $Result[1][0] | Should -BeOfType [byte]
+            }
+
+            It 'Unknwon event type, Just ignore.' {
+                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequestSSE {
+                    '{"type":"unknown.event","b64_json":"VU5LTldPTg==","created_at":1620000000}'
+                }
+                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { }
+                { $splat = @{
+                        Prompt      = 'Hello'
+                        Model       = 'gpt-image-1'
+                        Size        = '1024x1024'
+                        ErrorAction = 'Stop'
+                    }
+                    $script:Result = Request-ImageGeneration @splat -Stream
+                } | Should -Not -Throw
+                Should -Invoke -CommandName Invoke-OpenAIAPIRequestSSE -ModuleName $script:ModuleName -Times 1 -Exactly
+                Should -Not -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName
+                $Result | Should -BeNullOrEmpty
+            }
         }
     }
 
@@ -305,6 +581,25 @@ Describe 'Request-ImageGeneration' {
             $Result | Should -HaveCount 2
             $Result[0] | Should -BeOfType [string]
             $Result[1] | Should -BeOfType [string]
+        }
+
+        It 'Stream image generation. OutFile' {
+            { $splat = @{
+                    Prompt        = 'A cute baby lion'
+                    Model         = 'gpt-image-1'
+                    OutFile       = Join-Path $TestDrive 'file3.png'
+                    Size          = '1024x1024'
+                    Stream        = $true
+                    PartialImages = 2
+                    TimeoutSec    = 60
+                    ErrorAction   = 'Stop'
+                }
+                $script:Result = Request-ImageGeneration @splat -Stream
+            } | Should -Not -Throw
+            $Result | Should -BeNullOrEmpty
+            (Join-Path $TestDrive 'file3-0.png') | Should -Exist
+            (Join-Path $TestDrive 'file3-1.png') | Should -Exist
+            (Join-Path $TestDrive 'file3.png') | Should -Exist
         }
     }
 

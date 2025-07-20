@@ -50,7 +50,7 @@ function Request-ImageGeneration {
 
         [Parameter(ParameterSetName = 'Format')]
         [Alias('response_format')]
-        [ValidateSet('url', 'base64', 'byte')]
+        [ValidateSet('url', 'base64', 'byte', 'object')]
         [string]$ResponseFormat = 'url',
 
         [Parameter(ParameterSetName = 'Format')]
@@ -59,6 +59,16 @@ function Request-ImageGeneration {
         [Parameter(ParameterSetName = 'OutFile', Mandatory)]
         [ValidateNotNullOrEmpty()]
         [string]$OutFile,
+
+        #region Stream
+        [Parameter()]
+        [switch]$Stream = $false,
+
+        [Parameter()]
+        [Alias('partial_images')]
+        [ValidateRange(0, 3)]
+        [uint16]$PartialImages = 0,
+        #endregion Stream
 
         [Parameter()]
         [string]$User,
@@ -140,14 +150,25 @@ function Request-ImageGeneration {
         if ($PSBoundParameters.ContainsKey('User')) {
             $PostBody.user = $User
         }
+        if ($PartialImages -gt 0) {
+            $Stream = $true
+            $PostBody.partial_images = $PartialImages
+        }
+        if ($Stream) {
+            $PostBody.stream = [bool]$Stream
+        }
+
+        # GPT-Image model does not support response_format parameter
+        if ($Model -like 'gpt-image-*') {
+            if ($PSBoundParameters.ContainsKey('ResponseFormat') -and $ResponseFormat -eq 'url') {
+                Write-Warning 'Your specified model does not support response_format=url. Defaulting to object.'
+                $ResponseFormat = 'object'
+            }
+        }
 
         switch ($ResponseFormat) {
-            { $Model -like 'gpt-image-*' } {
-                # GPT-Image model does not support response_format parameter
-                break
-            }
             { $PSCmdlet.ParameterSetName -eq 'OutFile' } {
-                $PostBody.response_format = 'b64_json'
+                $ResponseFormat = 'base64'
                 break
             }
             'url' {
@@ -187,7 +208,6 @@ function Request-ImageGeneration {
         }
         #endregion
 
-        #region Send API Request
         $splat = @{
             Method            = $OpenAIParameter.Method
             Uri               = $OpenAIParameter.Uri
@@ -202,80 +222,140 @@ function Request-ImageGeneration {
             AdditionalHeaders = $AdditionalHeaders
             AdditionalBody    = $AdditionalBody
         }
-        $Response = Invoke-OpenAIAPIRequest @splat
 
-        # error check
-        if ($null -eq $Response) {
+        #region Send API Request (Stream)
+        if ($Stream) {
+            # Stream output
+            Invoke-OpenAIAPIRequestSSE @splat |
+                Where-Object {
+                    -not [string]::IsNullOrEmpty($_)
+                } | ForEach-Object -Process {
+                    if ($OutputRawResponse) {
+                        Write-Output $_
+                    }
+                    else {
+                        # Parse response object
+                        try {
+                            $Response = $_ | ConvertFrom-Json -ErrorAction Stop
+                        }
+                        catch {
+                            Write-Error -Exception $_.Exception
+                        }
+
+                        if ($Response.type -in ('image_generation.partial_image', 'image_generation.completed') -and $Response.b64_json) {
+
+                            if ($null -ne $Response.partial_image_index) {
+                                $pidx = $Response.partial_image_index
+                                Write-Verbose ('Partial image generated. Index:{0}' -f $pidx)
+                            }
+                            else {
+                                $pidx = $null
+                                Write-Verbose 'Final image generated.'
+                            }
+
+                            #region Output
+                            if ($PSCmdlet.ParameterSetName -eq 'OutFile') {
+                                # Save image
+                                $AbsoluteFilePath = $PSCmdlet.GetUnresolvedProviderPathFromPSPath($OutFile)
+                                $Ext = [System.IO.Path]::GetExtension($AbsoluteFilePath)
+                                $BaseName = [System.IO.Path]::GetFileNameWithoutExtension($AbsoluteFilePath)
+                                if ($null -ne $pidx) {
+                                    $FileName = '{0}-{1}{2}' -f $BaseName, $pidx, $Ext
+                                }
+                                else {
+                                    $FileName = '{0}{1}' -f $BaseName, $Ext
+                                }
+                                $SaveToPath = Join-Path (Split-Path $AbsoluteFilePath -Parent) $FileName
+
+                                Write-Verbose ('Save image to {0}' -f $SaveToPath)
+                                Write-ByteContent -OutFile $SaveToPath -Bytes ([Convert]::FromBase64String($Response.b64_json))
+                            }
+                            elseif ($ResponseFormat -eq 'object') {
+                                ParseImageGenerationObject $Response
+                            }
+                            elseif ($ResponseFormat -eq 'base64') {
+                                Write-Output ($Response.b64_json)
+                            }
+                            elseif ($ResponseFormat -eq 'byte') {
+                                Write-Output (, ([Convert]::FromBase64String(($Response.b64_json))))
+                            }
+                            #endregion
+                        }
+                        else {
+                            continue
+                        }
+                    }
+                }
             return
         }
         #endregion
 
-        #region Parse response object
-        if ($OutputRawResponse) {
-            Write-Output $Response
-            return
-        }
-        try {
-            $Response = $Response | ConvertFrom-Json -ErrorAction Stop
-            if ($null -ne $Response.error.message) {
-                Write-Error -Message ('API returned error: ({0}) {1}' -f $Response.error.code, $Response.error.message)
+        #region Send API Request
+        else {
+            $Response = Invoke-OpenAIAPIRequest @splat
+
+            # error check
+            if ($null -eq $Response) {
                 return
             }
-        }
-        catch {
-            Write-Error -Exception $_.Exception
-        }
-        if ($null -ne $Response.data) {
-            $ResponseContent = $Response.data
-        }
-        #endregion
+            #endregion
 
-        #region Output
-        if ($PSCmdlet.ParameterSetName -eq 'OutFile') {
-            $AbsoluteFilePath = New-ParentFolder -File $OutFile
-
-            # Save image
-            $ResponseContent | Select-Object -ExpandProperty 'b64_json' | ForEach-Object -Begin { $Suffix = 0 } -Process {
-                if ( $Suffix -gt 0) {
-                    $Ext = [System.IO.Path]::GetExtension($AbsoluteFilePath)
-                    $BaseName = [System.IO.Path]::GetFileNameWithoutExtension($AbsoluteFilePath)
-                    $FileName = '{0}-{1}{2}' -f $BaseName, $Suffix, $Ext
-                    $SaveToPath = Join-Path (Split-Path $AbsoluteFilePath -Parent) $FileName
-                }
-                else {
-                    $SaveToPath = $AbsoluteFilePath
-                }
-
-                Write-Verbose ('Save image to {0}' -f $SaveToPath)
-                try {
-                    [System.IO.File]::WriteAllBytes($SaveToPath, [Convert]::FromBase64String($_))
-                }
-                catch {
-                    Write-Error -Exception $_.Exception
-                }
-                $Suffix++
+            #region Parse response object
+            if ($OutputRawResponse) {
+                Write-Output $Response
+                return
             }
-        }
-        elseif ($ResponseFormat -eq 'url') {
-            Write-Output ($ResponseContent | Select-Object -ExpandProperty 'url')
-        }
-        elseif ($ResponseFormat -eq 'base64') {
-            Write-Output ($ResponseContent | Select-Object -ExpandProperty 'b64_json')
-        }
-        elseif ($ResponseFormat -eq 'byte') {
-            $ByteArrayList = [System.Collections.Generic.List[byte[]]]::new()
-            $ResponseContent | Select-Object -ExpandProperty 'b64_json' | ForEach-Object {
-                $ByteArrayList.Add([Convert]::FromBase64String($_))
+            try {
+                $Response = $Response | ConvertFrom-Json -ErrorAction Stop
+                if ($null -ne $Response.error.message) {
+                    Write-Error -Message ('API returned error: ({0}) {1}' -f $Response.error.code, $Response.error.message)
+                    return
+                }
             }
+            catch {
+                Write-Error -Exception $_.Exception
+            }
+            #endregion
 
-            if ( $ByteArrayList.Count -eq 1) {
-                Write-Output ($ByteArrayList[0])
+            #region Output
+            if ($ResponseFormat -eq 'object') {
+                ParseImageGenerationObject $Response
+                return
             }
             else {
-                Write-Output ($ByteArrayList.ToArray())
+                $Suffix = 0
+                foreach ($content in $Response.data) {
+                    if ($PSCmdlet.ParameterSetName -eq 'OutFile') {
+                        $AbsoluteFilePath = $PSCmdlet.GetUnresolvedProviderPathFromPSPath($OutFile)
+
+                        # Save image
+                        if ($Suffix -gt 0) {
+                            $Ext = [System.IO.Path]::GetExtension($AbsoluteFilePath)
+                            $BaseName = [System.IO.Path]::GetFileNameWithoutExtension($AbsoluteFilePath)
+                            $FileName = '{0}-{1}{2}' -f $BaseName, $Suffix, $Ext
+                            $SaveToPath = Join-Path (Split-Path $AbsoluteFilePath -Parent) $FileName
+                        }
+                        else {
+                            $SaveToPath = $AbsoluteFilePath
+                        }
+
+                        Write-Verbose ('Save image to {0}' -f $SaveToPath)
+                        Write-ByteContent -OutFile $SaveToPath -Bytes ([Convert]::FromBase64String($content.b64_json))
+                        $Suffix++
+                    }
+                    elseif ($ResponseFormat -eq 'url') {
+                        Write-Output ($content | Select-Object -ExpandProperty 'url')
+                    }
+                    elseif ($ResponseFormat -eq 'base64') {
+                        Write-Output ($content | Select-Object -ExpandProperty 'b64_json')
+                    }
+                    elseif ($ResponseFormat -eq 'byte') {
+                        Write-Output (, ([Convert]::FromBase64String(($content.b64_json))))
+                    }
+                }
             }
+            #endregion
         }
-        #endregion
     }
 
     end {
