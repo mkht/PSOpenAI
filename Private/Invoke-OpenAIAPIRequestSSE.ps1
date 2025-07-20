@@ -225,14 +225,10 @@ function Invoke-OpenAIAPIRequestSSE {
 
             # Note:
             # In some situations, the server may unilaterally close the connection without sending any data.
-            # To avoid long blocking waits that prevent user cancellation, we use a polling interval.
-            # We allow a maximum total wait of 30 seconds while checking for cancellation every 500 ms.
-            $timeoutMs = 30000
+            # To avoid long blocking waits that prevent user cancellation, check for cancellation every 500 ms.
             $pollInterval = 500  # milliseconds
-            $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
-
             $readTask = $StreamReader.ReadLineAsync()
-            while (-not $CancelToken.IsCancellationRequested -and $stopwatch.ElapsedMilliseconds -lt $timeoutMs) {
+            while (-not $CancelToken.IsCancellationRequested) {
                 if ($readTask.Wait($pollInterval, $CancelToken)) {
                     break
                 }
