@@ -45,7 +45,8 @@ function Add-RealtimeSessionItem {
             'input_text',
             'input_audio',
             'item_reference',
-            'text'
+            'text',
+            'audio'
         )]
         [ValidateNotNullOrEmpty()]
         [string]$ContentType = 'input_text',

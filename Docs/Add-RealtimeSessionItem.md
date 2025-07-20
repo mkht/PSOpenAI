@@ -58,7 +58,7 @@ Position: 0
 ```
 
 ### -ContentTranscript
-The transcript of the audio, used for `input_audio` content type.
+The transcript of the audio, used for `input_audio` and `audio` content types.
 
 ```yaml
 Type: String
@@ -67,7 +67,7 @@ Position: Named
 ```
 
 ### -ContentType
-The content type (`input_text`, `input_audio`, `item_reference`, `text`).  
+The content type (`input_text`, `input_audio`, `item_reference`, `text`, `audio`).  
 The default value is `input_text`.
 
 ```yaml
