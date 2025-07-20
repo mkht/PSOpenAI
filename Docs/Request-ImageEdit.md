@@ -56,14 +56,14 @@ https://platform.openai.com/docs/guides/image-generation
 
 ## EXAMPLES
 
-### Example 1: Restore masked image.
+### Example 1: Edit an image with a prompt.
 ```PowerShell
-Request-ImageEdit -Model 'gpt-image-1' -Image C:\sunflower_mask.png -Prompt "sunflower" -OutFile C:\edit.png
+Request-ImageEdit -Model 'gpt-image-1' -Prompt 'A bird on the desert' -Image 'C:\sand_with_fether.png' -OutFile 'C:\bird_on_desert.png' -Size 1024x1024
 ```
 
-| Source (sunflower_mask.png)                  | Generated (edit.png)                             |
-| -------------------------------------------- | ------------------------------------------------ |
-| ![masked](/Docs/images/sunflower_masked.png) | ![restored](/Docs/images/sunflower_restored.png) |
+| Original                                        | Generated                                  |
+| ----------------------------------------------- | ------------------------------------------ |
+| ![original](/Docs/images/sand_with_feather.png) | ![edited](/Docs/images/bird_on_desert.png) |
 
 
 ### Example 2: Create variation image from source and mask.

@@ -39,7 +39,7 @@ Describe 'Request-ImageEdit' {
             Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $TestResponse }
             { $splat = @{
                     Prompt      = 'Hello'
-                    Image       = $script:TestImageData + '/sunflower_masked.png'
+                    Image       = $script:TestImageData + '/fether_mask.png'
                     OutFile     = Join-Path $TestDrive 'out.png'
                     Model       = 'dall-e-2'
                     Size        = '256x256'
@@ -76,7 +76,7 @@ Describe 'Request-ImageEdit' {
             Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $TestResponse }
             { $splat = @{
                     Prompt         = 'Hello'
-                    Image          = @(($script:TestImageData + '/sunflower_masked.png'), ($script:TestImageData + '/cupcake.png'))
+                    Image          = @(($script:TestImageData + '/fether_mask.png'), ($script:TestImageData + '/cupcake.png'))
                     NumberOfImages = 3
                     OutFile        = Join-Path $TestDrive 'fileA.png'
                     Model          = 'gpt-image-1'
@@ -110,7 +110,7 @@ Describe 'Request-ImageEdit' {
             Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $TestResponse }
             { $splat = @{
                     Prompt         = 'Hello'
-                    Image          = ($script:TestImageData + '/sunflower_masked.png')
+                    Image          = ($script:TestImageData + '/fether_mask.png')
                     Mask           = ($script:TestImageData + '/fether_mask.png')
                     NumberOfImages = 1
                     OutFile        = Join-Path $TestDrive 'fileB.png'
@@ -136,7 +136,7 @@ Describe 'Request-ImageEdit' {
     ]
 }
 '@ }
-            { $script:Result = Request-ImageEdit -Image ($script:TestImageData + '/sunflower_masked.png') -Prompt 'sunflower' -ResponseFormat url -ea Stop } | Should -Not -Throw
+            { $script:Result = Request-ImageEdit -Image ($script:TestImageData + '/fether_mask.png') -Prompt 'sunflower' -ResponseFormat url -ea Stop } | Should -Not -Throw
             Should -InvokeVerifiable
             $Result | Should -BeOfType [string]
             $Result | Should -Be 'https://dummyimage.example.com'
@@ -154,7 +154,7 @@ Describe 'Request-ImageEdit' {
 }
 '@
             Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $TestResponse }
-            { $script:Result = Request-ImageEdit -Image ($script:TestImageData + '/sunflower_masked.png') -Model gpt-image-1 -Prompt 'sunflower' -ResponseFormat url -ea Stop } | Should -Not -Throw
+            { $script:Result = Request-ImageEdit -Image ($script:TestImageData + '/fether_mask.png') -Model gpt-image-1 -Prompt 'sunflower' -ResponseFormat url -ea Stop } | Should -Not -Throw
             Should -InvokeVerifiable
             $Result.PSTypeNames | Should -Contain 'PSOpenAI.Image'
             $Result.created | Should -BeOfType [datetime]
@@ -187,7 +187,7 @@ Describe 'Request-ImageEdit' {
                 Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { }
                 { $splat = @{
                         Prompt      = 'Hello'
-                        Image       = ($script:TestImageData + '/sunflower_masked.png')
+                        Image       = ($script:TestImageData + '/fether_mask.png')
                         Model       = 'gpt-image-1'
                         Size        = '1024x1024'
                         OutFile     = Join-Path $TestDrive 'file.png'
@@ -212,7 +212,7 @@ Describe 'Request-ImageEdit' {
                 Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { }
                 { $splat = @{
                         Prompt        = 'Hello'
-                        Image         = ($script:TestImageData + '/sunflower_masked.png')
+                        Image         = ($script:TestImageData + '/fether_mask.png')
                         Model         = 'gpt-image-1'
                         Size          = '1024x1024'
                         OutFile       = Join-Path $TestDrive 'file.png'
@@ -238,7 +238,7 @@ Describe 'Request-ImageEdit' {
                 Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { }
                 { $splat = @{
                         Prompt         = 'Hello'
-                        Image          = ($script:TestImageData + '/sunflower_masked.png')
+                        Image          = ($script:TestImageData + '/fether_mask.png')
                         Model          = 'gpt-image-1'
                         Size           = '1024x1024'
                         ResponseFormat = 'object'
@@ -268,7 +268,7 @@ Describe 'Request-ImageEdit' {
                 Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { }
                 { $splat = @{
                         Prompt         = 'Hello'
-                        Image          = ($script:TestImageData + '/sunflower_masked.png')
+                        Image          = ($script:TestImageData + '/fether_mask.png')
                         Model          = 'gpt-image-1'
                         Size           = '1024x1024'
                         ResponseFormat = 'base64'
@@ -291,7 +291,7 @@ Describe 'Request-ImageEdit' {
                 Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { }
                 { $splat = @{
                         Prompt         = 'Hello'
-                        Image          = ($script:TestImageData + '/sunflower_masked.png')
+                        Image          = ($script:TestImageData + '/fether_mask.png')
                         Model          = 'gpt-image-1'
                         Size           = '1024x1024'
                         ResponseFormat = 'byte'
@@ -315,7 +315,7 @@ Describe 'Request-ImageEdit' {
                 Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { }
                 { $splat = @{
                         Prompt         = 'Hello'
-                        Image          = ($script:TestImageData + '/sunflower_masked.png')
+                        Image          = ($script:TestImageData + '/fether_mask.png')
                         Model          = 'gpt-image-1'
                         Size           = '1024x1024'
                         ResponseFormat = 'byte'
@@ -341,7 +341,7 @@ Describe 'Request-ImageEdit' {
                 Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { }
                 { $splat = @{
                         Prompt         = 'Hello'
-                        Image          = ($script:TestImageData + '/sunflower_masked.png')
+                        Image          = ($script:TestImageData + '/fether_mask.png')
                         Model          = 'gpt-image-1'
                         Size           = '1024x1024'
                         ResponseFormat = 'byte'
@@ -366,7 +366,7 @@ Describe 'Request-ImageEdit' {
                 Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { }
                 { $splat = @{
                         Prompt      = 'Hello'
-                        Image       = ($script:TestImageData + '/sunflower_masked.png')
+                        Image       = ($script:TestImageData + '/fether_mask.png')
                         Model       = 'gpt-image-1'
                         Size        = '1024x1024'
                         ErrorAction = 'Stop'
@@ -388,7 +388,7 @@ Describe 'Request-ImageEdit' {
 
         It 'Image edit. OutFile' {
             { $params = @{
-                    Image       = $script:TestImageData + '/sunflower_masked.png'
+                    Image       = $script:TestImageData + '/fether_mask.png'
                     Prompt      = 'sunflower'
                     OutFile     = Join-Path $TestDrive 'file1.png'
                     Size        = '256x256'
@@ -403,7 +403,7 @@ Describe 'Request-ImageEdit' {
 
         It 'Image edit. Full parameters' {
             { $params = @{
-                    Image          = @(($script:TestImageData + '/sunflower_masked.png'), ($script:TestImageData + '/sand_with_feather.png'))
+                    Image          = @(($script:TestImageData + '/fether_mask.png'), ($script:TestImageData + '/sand_with_feather.png'))
                     Prompt         = 'sunflower'
                     ResponseFormat = 'base64'
                     Model          = 'gpt-image-1'

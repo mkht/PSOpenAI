@@ -223,22 +223,21 @@ $global:OPENAI_API_KEY = '<Put your API key here.>'
 Request-ImageGeneration -Model 'gpt-image-1' -Prompt 'A cute baby lion' -Size 1024x1024 -OutFile 'C:\output\babylion.png'
 ```
 
-This sample code saves image to `C:\output\babylion.png`.
-The saved image like this.
+This sample code saves image to `C:\output\babylion.png`. The saved image like this.
 
 ![Generated image](/Docs/images/babylion.png)
 
-### Restore masked images
+### Image edit
 
 ```PowerShell
-Request-ImageEdit -Image 'C:\sunflower_masked.png' -Prompt 'sunflower' -OutFile 'C:\sunflower_restored.png' -Size 256x256
+Request-ImageEdit -Model 'gpt-image-1' -Prompt 'A bird on the desert' -Image 'C:\sand_with_fether.png' -OutFile 'C:\bird_on_desert.png' -Size 1024x1024
 ```
 
-Masked image is restored to full images by AI models.
+The edited image like this.
 
-| Source                                       | Generated                                        |
-| -------------------------------------------- | ------------------------------------------------ |
-| ![masked](/Docs/images/sunflower_masked.png) | ![restored](/Docs/images/sunflower_restored.png) |
+| Original                                        | Generated                                  |
+| ----------------------------------------------- | ------------------------------------------ |
+| ![original](/Docs/images/sand_with_feather.png) | ![edited](/Docs/images/bird_on_desert.png) |
 
 
 ### Moderation
