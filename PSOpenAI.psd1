@@ -1,6 +1,6 @@
 @{
     # Version number of this module.
-    ModuleVersion        = '4.30.0'
+    ModuleVersion        = '4.31.0'
 
     # Supported PSEditions
     CompatiblePSEditions = 'Core', 'Desktop'

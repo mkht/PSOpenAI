@@ -1,4 +1,9 @@
 # Changelog
+### 4.31.0
+- Add support for streaming image generation.
+- Reduce size of sample images.
+- Fix an issue that API requests does not follow the specified timeout value.
+
 ### 4.30.0
 - Add `o3-deep-research` and `o4-mini-deep-research`.
 - Improve handling of file inputs in `Request-Response`. You can now specify a URL of a file.

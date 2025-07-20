@@ -663,7 +663,7 @@ PS C:\&gt; Add-OpenAIFile -Content $ByteArray -Name 'filename.txt' -Purpose assi
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>ContentTranscript</maml:name>
           <maml:description>
-            <maml:para>The transcript of the audio, used for `input_audio` content type.</maml:para>
+            <maml:para>The transcript of the audio, used for `input_audio` and `audio` content types.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -675,7 +675,7 @@ PS C:\&gt; Add-OpenAIFile -Content $ByteArray -Name 'filename.txt' -Purpose assi
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>ContentType</maml:name>
           <maml:description>
-            <maml:para>The content type (`input_text`, `input_audio`, `item_reference`, `text`).
+            <maml:para>The content type (`input_text`, `input_audio`, `item_reference`, `text`, `audio`).
 The default value is `input_text`.</maml:para>
           </maml:description>
           <command:parameterValueGroup>
@@ -856,7 +856,7 @@ The default is `message`.</maml:para>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>ContentTranscript</maml:name>
         <maml:description>
-          <maml:para>The transcript of the audio, used for `input_audio` content type.</maml:para>
+          <maml:para>The transcript of the audio, used for `input_audio` and `audio` content types.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -868,7 +868,7 @@ The default is `message`.</maml:para>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>ContentType</maml:name>
         <maml:description>
-          <maml:para>The content type (`input_text`, `input_audio`, `item_reference`, `text`).
+          <maml:para>The content type (`input_text`, `input_audio`, `item_reference`, `text`, `audio`).
 The default value is `input_text`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -18618,10 +18618,10 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
     </maml:alertSet>
     <command:examples>
       <command:example>
-        <maml:title>--------------- Example 1: Restore masked image. ---------------</maml:title>
-        <dev:code>Request-ImageEdit -Model 'gpt-image-1' -Image C:\sunflower_mask.png -Prompt "sunflower" -OutFile C:\edit.png</dev:code>
+        <maml:title>----------- Example 1: Edit an image with a prompt. -----------</maml:title>
+        <dev:code>Request-ImageEdit -Model 'gpt-image-1' -Prompt 'A bird on the desert' -Image 'C:\sand_with_fether.png' -OutFile 'C:\bird_on_desert.png' -Size 1024x1024</dev:code>
         <dev:remarks>
-          <maml:para>| Source (sunflower_mask.png)                  | Generated (edit.png)                             | | -------------------------------------------- | ------------------------------------------------ | | ! masked (/Docs/images/sunflower_masked.png) | ![restored](/Docs/images/sunflower_restored.png)|</maml:para>
+          <maml:para>| Original                                        | Generated                                  | | ----------------------------------------------- | ------------------------------------------ | | ! original (/Docs/images/sand_with_feather.png) | ![edited](/Docs/images/bird_on_desert.png)|</maml:para>
         </dev:remarks>
       </command:example>
       <command:example>
