@@ -16773,10 +16773,34 @@ Required if `json_schema` is specified for `-Format`. Otherwise, it is ignored.<
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="prompt_cache_key">
+          <maml:name>PromptCacheKey</maml:name>
+          <maml:description>
+            <maml:para>Used by OpenAI to cache responses for similar requests to optimize your cache hit rates.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="safety_identifier">
+          <maml:name>SafetyIdentifier</maml:name>
+          <maml:description>
+            <maml:para>A stable identifier used to help detect users of your application that may be violating OpenAI's usage policies. The IDs should be a string that uniquely identifies each user.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>User</maml:name>
           <maml:description>
-            <maml:para>A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse.</maml:para>
+            <maml:para>(deprecated) This field is being replaced by `SafetyIdentifier` and `PromptCacheKey`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -17437,10 +17461,34 @@ Required if `json_schema` is specified for `-Format`. Otherwise, it is ignored.<
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="prompt_cache_key">
+        <maml:name>PromptCacheKey</maml:name>
+        <maml:description>
+          <maml:para>Used by OpenAI to cache responses for similar requests to optimize your cache hit rates.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="safety_identifier">
+        <maml:name>SafetyIdentifier</maml:name>
+        <maml:description>
+          <maml:para>A stable identifier used to help detect users of your application that may be violating OpenAI's usage policies. The IDs should be a string that uniquely identifies each user.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>User</maml:name>
         <maml:description>
-          <maml:para>A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse.</maml:para>
+          <maml:para>(deprecated) This field is being replaced by `SafetyIdentifier` and `PromptCacheKey`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -21296,10 +21344,34 @@ Constrains effort on reasoning for reasoning models. Currently supported values 
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="prompt_cache_key">
+          <maml:name>PromptCacheKey</maml:name>
+          <maml:description>
+            <maml:para>Used by OpenAI to cache responses for similar requests to optimize your cache hit rates.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="safety_identifier">
+          <maml:name>SafetyIdentifier</maml:name>
+          <maml:description>
+            <maml:para>A stable identifier used to help detect users of your application that may be violating OpenAI's usage policies. The IDs should be a string that uniquely identifies each user.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>User</maml:name>
           <maml:description>
-            <maml:para>A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse.</maml:para>
+            <maml:para>(deprecated) This field is being replaced by `SafetyIdentifier` and `PromptCacheKey`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -22296,10 +22368,34 @@ Constrains effort on reasoning for reasoning models. Currently supported values 
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="prompt_cache_key">
+        <maml:name>PromptCacheKey</maml:name>
+        <maml:description>
+          <maml:para>Used by OpenAI to cache responses for similar requests to optimize your cache hit rates.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="safety_identifier">
+        <maml:name>SafetyIdentifier</maml:name>
+        <maml:description>
+          <maml:para>A stable identifier used to help detect users of your application that may be violating OpenAI's usage policies. The IDs should be a string that uniquely identifies each user.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>User</maml:name>
         <maml:description>
-          <maml:para>A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse.</maml:para>
+          <maml:para>(deprecated) This field is being replaced by `SafetyIdentifier` and `PromptCacheKey`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>

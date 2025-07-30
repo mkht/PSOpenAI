@@ -1,4 +1,7 @@
 # Changelog
+### 4.32.0
+- Add `-PromptCacheKey` and `-SafetyIdentifier` parameters to `Request-ChatCompletion` and `Request-Response`.
+
 ### 4.31.0
 - Add support for streaming image generation.
 - Reduce size of sample images.
