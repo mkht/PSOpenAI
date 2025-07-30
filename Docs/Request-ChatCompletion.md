@@ -57,6 +57,8 @@ Request-ChatCompletion
     [-JsonSchema <String>]
     [-Seed <Int64>]
     [-ServiceTier <String>]
+    [-PromptCacheKey <String>]
+    [-SafetyIdentifier <String>]
     [-User <String>]
     [-AsBatch]
     [-CustomBatchId <String>]
@@ -562,8 +564,28 @@ Required: False
 Position: Named
 ```
 
+### -PromptCacheKey
+Used by OpenAI to cache responses for similar requests to optimize your cache hit rates.
+
+```yaml
+Type: String
+Aliases: prompt_cache_key
+Required: False
+Position: Named
+```
+
+### -SafetyIdentifier
+A stable identifier used to help detect users of your application that may be violating OpenAI's usage policies. The IDs should be a string that uniquely identifies each user.
+
+```yaml
+Type: String
+Aliases: safety_identifier
+Required: False
+Position: Named
+```
+
 ### -User
-A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse.
+(deprecated) This field is being replaced by `SafetyIdentifier` and `PromptCacheKey`.
 
 ```yaml
 Type: String

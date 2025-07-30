@@ -214,6 +214,14 @@ function Request-ChatCompletion {
         [string]$ServiceTier,
 
         [Parameter()]
+        [Alias('prompt_cache_key')]
+        [string]$PromptCacheKey,
+
+        [Parameter()]
+        [Alias('safety_identifier')]
+        [string]$SafetyIdentifier,
+
+        [Parameter()]
         [string]$User,
 
         [Parameter()]
@@ -421,6 +429,12 @@ function Request-ChatCompletion {
         }
         if ($PSBoundParameters.ContainsKey('ServiceTier')) {
             $PostBody.service_tier = $ServiceTier
+        }
+        if ($PSBoundParameters.ContainsKey('PromptCacheKey')) {
+            $PostBody.prompt_cache_key = $PromptCacheKey
+        }
+        if ($PSBoundParameters.ContainsKey('SafetyIdentifier')) {
+            $PostBody.safety_identifier = $SafetyIdentifier
         }
         if ($PSBoundParameters.ContainsKey('User')) {
             $PostBody.user = $User
