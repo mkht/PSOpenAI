@@ -1,0 +1,170 @@
+function Search-VectorStore {
+    [CmdletBinding()]
+    [OutputType([pscustomobject])]
+    param (
+        [Parameter(ParameterSetName = 'VectorStore', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Alias('InputObject')]  # for backword compatibility
+        [PSTypeName('PSOpenAI.VectorStore')]$VectorStore,
+
+        [Parameter(ParameterSetName = 'Id', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
+        [Alias('vector_store_id')]
+        [string][UrlEncodeTransformation()]$VectorStoreId,
+
+        [Parameter(Mandatory)]
+        [string]$Query,
+
+        # Not yet implemented
+        # [Parameter()]
+        # [object]$Filters,
+
+        [Parameter()]
+        [ValidateRange(1, 50)]
+        [Alias('max_num_results')]
+        [uint16]$MaxNumResults = 10,
+
+        [Parameter()]
+        [ValidateSet('auto', 'none')]
+        [Alias('ranker')]
+        [string]$Ranker = 'auto',
+
+        [Parameter()]
+        [Alias('rewrite_query')]
+        [bool]$RewriteQuery = $false,
+
+        [Parameter()]
+        [int]$TimeoutSec = 0,
+
+        [Parameter()]
+        [ValidateRange(0, 100)]
+        [int]$MaxRetryCount = 0,
+
+        [Parameter()]
+        [OpenAIApiType]$ApiType = [OpenAIApiType]::OpenAI,
+
+        [Parameter()]
+        [System.Uri]$ApiBase,
+
+        [Parameter(DontShow)]
+        [string]$ApiVersion,
+
+        [Parameter()]
+        [ValidateSet('openai', 'azure', 'azure_ad')]
+        [string]$AuthType = 'openai',
+
+        [Parameter()]
+        [securestring][SecureStringTransformation()]$ApiKey,
+
+        [Parameter()]
+        [Alias('OrgId')]
+        [string]$Organization,
+
+        [Parameter()]
+        [System.Collections.IDictionary]$AdditionalQuery,
+
+        [Parameter()]
+        [System.Collections.IDictionary]$AdditionalHeaders,
+
+        [Parameter()]
+        [object]$AdditionalBody
+    )
+
+    begin {
+        # Get API context
+        $OpenAIParameter = Get-OpenAIAPIParameter -EndpointName 'VectorStores' -Parameters $PSBoundParameters -ErrorAction Stop
+    }
+
+    process {
+        # Get id
+        if ($PSCmdlet.ParameterSetName -ceq 'VectorStore') {
+            $VectorStoreId = $VectorStore.id
+        }
+
+        if (-not $VectorStoreId) {
+            Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve vector store id.'))
+            return
+        }
+
+        # Construct Query URI
+        $QueryUri = $OpenAIParameter.Uri.ToString() + "/$VectorStoreId/search"
+
+        #region Construct parameters for API request
+        $PostBody = [System.Collections.Specialized.OrderedDictionary]::new()
+
+        $PostBody.query = $Query
+
+        if ($PSBoundParameters.ContainsKey('Filters')) {
+            $PostBody.filters = $Filters
+        }
+        if ($PSBoundParameters.ContainsKey('MaxNumResults')) {
+            $PostBody.max_num_results = $MaxNumResults
+        }
+        if ($PSBoundParameters.ContainsKey('RewriteQuery')) {
+            $PostBody.rewrite_query = $RewriteQuery
+        }
+
+        $RankingOptions = @{}
+        if ($PSBoundParameters.ContainsKey('Ranker')) {
+            $RankingOptions.ranker = $Ranker
+        }
+        if ($PSBoundParameters.ContainsKey('ScoreThreshold')) {
+            $RankingOptions.score_threshold = $ScoreThreshold
+        }
+        if ($RankingOptions.Keys.Count -gt 0) {
+            $PostBody.ranking_options = $RankingOptions
+        }
+        #endregion
+
+        #region Send API Request
+        $params = @{
+            Method            = 'Post'
+            Uri               = $QueryUri
+            ContentType       = $OpenAIParameter.ContentType
+            TimeoutSec        = $OpenAIParameter.TimeoutSec
+            MaxRetryCount     = $OpenAIParameter.MaxRetryCount
+            ApiKey            = $OpenAIParameter.ApiKey
+            AuthType          = $OpenAIParameter.AuthType
+            Organization      = $OpenAIParameter.Organization
+            Headers           = @{'OpenAI-Beta' = 'assistants=v2' }
+            Body              = $PostBody
+            AdditionalQuery   = $AdditionalQuery
+            AdditionalHeaders = $AdditionalHeaders
+            AdditionalBody    = $AdditionalBody
+        }
+        $Response = Invoke-OpenAIAPIRequest @params
+
+        # error check
+        if ($null -eq $Response) {
+            return
+        }
+        #endregion
+
+        #region Parse response object
+        try {
+            $Response = $Response | ConvertFrom-Json -ErrorAction Stop
+        }
+        catch {
+            Write-Error -Exception $_.Exception
+        }
+        #endregion
+
+        #region Output
+        if ($null -ne $Response.data) {
+            # List of object
+            $Responses = @($Response.data)
+        }
+        else {
+            # Single object
+            $Responses = @($Response)
+        }
+        # parse objects
+        foreach ($res in $Responses) {
+            Write-Output $res
+        }
+        #endregion
+    }
+
+    end {
+
+    }
+}

@@ -1,6 +1,6 @@
 #Requires -Modules Microsoft.PowerShell.PSResourceGet
 
-Param (
+param (
     [Parameter(Mandatory)]
     [ValidateNotNullOrEmpty()]
     [string]$NugetApiKey,
@@ -11,7 +11,7 @@ Param (
 
     [Parameter(Mandatory = $false)]
     [ValidateNotNullOrEmpty()]
-    [string[]]$ExcludeFiles = @('.gitignore', '.gitmodules', '.gitattributes', 'PSScriptAnalyzerRules.psd1', 'AGENTS.md'),
+    [string[]]$ExcludeFiles = @('.gitignore', '.gitmodules', '.gitattributes', 'PSScriptAnalyzerRules.psd1', 'AGENTS.md', '*.tmp'),
 
     [switch]$WhatIf
 )
