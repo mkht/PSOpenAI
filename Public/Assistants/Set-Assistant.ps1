@@ -30,6 +30,9 @@ function Set-Assistant {
             'gpt-4.1',
             'gpt-4.1-mini',
             'gpt-4.1-nano',
+            'gpt-5',
+            'gpt-5-mini',
+            'gpt-5-nano',
             'o1',
             'o3-mini'
         )]
@@ -45,7 +48,7 @@ function Set-Assistant {
 
         [Parameter()]
         [Alias('reasoning_effort')]
-        [Completions('low', 'medium', 'high')]
+        [Completions('minimal', 'low', 'medium', 'high')]
         [string]$ReasoningEffort = 'medium',
 
         [Parameter()]

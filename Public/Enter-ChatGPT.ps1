@@ -19,6 +19,10 @@ function Enter-ChatGPT {
             'gpt-4.1',
             'gpt-4.1-mini',
             'gpt-4.1-nano',
+            'gpt-5',
+            'gpt-5-mini',
+            'gpt-5-nano',
+            'gpt-5-chat-latest',
             'o3',
             'o3-mini',
             'o4-mini'
@@ -91,7 +95,7 @@ function Enter-ChatGPT {
         [switch]$NoHeader
     )
 
-    Begin {
+    begin {
         $script:Status = $null
         $script:Model = $Model
         $ConvasationList = [System.Collections.Generic.List[HashTable]]::new()
@@ -106,7 +110,7 @@ function Enter-ChatGPT {
         #region Display header
         $ConsoleWidth = [Math]::Min(46, ($Host.UI.RawUI.WindowSize.Width - 4))
         if (-not $NoHeader) {
-    (1..$ConsoleWidth) | ForEach-Object { Write-Host '/' -NoNewline }
+            (1..$ConsoleWidth) | ForEach-Object { Write-Host '/' -NoNewline }
             Write-Host ''
             Write-Host @'
    ________          __  __________ ______
@@ -116,14 +120,14 @@ function Enter-ChatGPT {
 \____/_/ /_/\__,_/\__/\____/_/    /_/
 
 '@
-    (1..$ConsoleWidth) | ForEach-Object { Write-Host '/' -NoNewline }
+            (1..$ConsoleWidth) | ForEach-Object { Write-Host '/' -NoNewline }
             Write-Host ''
             Write-Host ''
         }
         #endregion
     }
 
-    Process {
+    process {
         while ($true) {
             #User prompt
             Write-Host "$($PSStyle.Background.BrightBlack)$($PSStyle.Bold)User:$($PSStyle.Reset)>>>"
@@ -154,7 +158,7 @@ function Enter-ChatGPT {
         }
     }
 
-    End {}
+    end {}
 
 }
 

@@ -39,6 +39,10 @@ function Request-ChatCompletion {
             'gpt-4.1',
             'gpt-4.1-mini',
             'gpt-4.1-nano',
+            'gpt-5',
+            'gpt-5-mini',
+            'gpt-5-nano',
+            'gpt-5-chat-latest',
             'o1',
             'o3',
             'o3-mini',
@@ -154,8 +158,12 @@ function Request-ChatCompletion {
         [switch]$Store = $false,
 
         [Parameter()]
-        [Alias('reasoning_effort')]
         [Completions('low', 'medium', 'high')]
+        [string]$Verbosity = 'medium',
+
+        [Parameter()]
+        [Alias('reasoning_effort')]
+        [Completions('minimal', 'low', 'medium', 'high')]
         [string]$ReasoningEffort = 'medium',
 
         [Parameter()]
@@ -368,6 +376,9 @@ function Request-ChatCompletion {
         }
         if ($PSBoundParameters.ContainsKey('ReasoningEffort')) {
             $PostBody.reasoning_effort = $ReasoningEffort
+        }
+        if ($PSBoundParameters.ContainsKey('Verbosity')) {
+            $PostBody.verbosity = $Verbosity
         }
         if ($PSBoundParameters.ContainsKey('MetaData')) {
             $PostBody.metadata = $MetaData

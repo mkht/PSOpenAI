@@ -75,6 +75,7 @@ Request-Response
     [-Background]
     [-Stream]
     [-StreamOutputType <String>] 
+    [-Verbosity <String>]
     [-ReasoningEffort <String>] 
     [-ReasoningSummary <String>]
     [-MetaData <IDictionary>]
@@ -713,8 +714,18 @@ Position: Named
 Default value: text
 ```
 
+### -Verbosity
+Controls the verbosity level of the response.  
+Valid values are `low`, `medium`, or `high`.  
+
+```yaml
+Type: String
+Required: False
+Position: Named
+Default value: medium
+```
+
 ### -ReasoningEffort
-**o-series models only**  
 Constrains effort on reasoning for reasoning models. Currently supported values are low, medium, and high.
 
 ```yaml

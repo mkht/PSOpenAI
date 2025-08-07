@@ -43,6 +43,7 @@ Request-ChatCompletion
     [-NumberOfAnswers <UInt16>]
     [-Stream]
     [-Store]
+    [-Verbosity <String>]
     [-ReasoningEffort <String>]
     [-MetaData <IDictionary>]
     [-StopSequence <String[]>]
@@ -416,8 +417,18 @@ Position: Named
 Default value: False
 ```
 
+### -Verbosity
+Controls the verbosity level of the response.  
+Valid values are `low`, `medium`, or `high`.  
+
+```yaml
+Type: String
+Required: False
+Position: Named
+Default value: medium
+```
+
 ### -ReasoningEffort
-**o-series models only**  
 Constrains effort on reasoning for reasoning models. Currently supported values are low, medium, and high.  
 Reducing reasoning effort can result in faster responses and fewer tokens used on reasoning in a response.
 

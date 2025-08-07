@@ -27,7 +27,7 @@ function Request-Response {
             'gpt-5',
             'gpt-5-mini',
             'gpt-5-nano',
-            'gpt-5-chat',
+            'gpt-5-chat-latest',
             'o1',
             'o1-pro',
             'o3',
@@ -303,9 +303,13 @@ function Request-Response {
         [string]$StreamOutputType = 'text',
         #endregion Stream
 
+        [Parameter()]
+        [ValidateSet('low', 'medium', 'high')]
+        [string]$Verbosity = 'medium',
+
         #region Reasoning
         [Parameter()]
-        [Completions('low', 'medium', 'high')]
+        [Completions('minimal', 'low', 'medium', 'high')]
         [string]$ReasoningEffort = 'medium',
 
         [Parameter()]
@@ -503,6 +507,10 @@ function Request-Response {
         }
         if ($Stream) {
             $PostBody.stream = [bool]$Stream
+        }
+
+        if ($PSBoundParameters.ContainsKey('Verbosity')) {
+            $PostBody.verbosity = $Verbosity
         }
 
         # Reasoning

@@ -15,6 +15,10 @@ function Get-Response {
         [AllowEmptyCollection()]
         [string[]]$Include,
 
+        [Parameter()]
+        [Alias('include_obfuscation')]
+        [bool]$IncludeObfuscation,
+
         #region Stream
         [Parameter()]
         [switch]$Stream = $false,
@@ -96,6 +100,9 @@ function Get-Response {
             foreach ($IncludeItem in $Include) {
                 $QueryParam.Add('include[]', $IncludeItem)
             }
+        }
+        if ($PSBoundParameters.ContainsKey('IncludeObfuscation')) {
+            $QueryParam.Add('include_obfuscation', $IncludeObfuscation.ToString().ToLowerInvariant())
         }
 
         $UriBuilder.Query = $QueryParam.ToString()

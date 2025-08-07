@@ -16,6 +16,7 @@ Retrieves a model response with the given ID.
 Get-Response
     [-ResponseId] <String>
     [-Include] <String[]>
+    [-IncludeObfuscation <Boolean>]
     [-Stream]
     [-StreamOutputType <String>]
     [-StartingAfter <Int32>]
@@ -59,6 +60,16 @@ Specify additional output data to include in the model response.
 
 ```yaml
 Type: String[]
+Required: False
+Position: Named
+```
+
+### -IncludeObfuscation
+When true, stream obfuscation will be enabled. Stream obfuscation adds random characters to an obfuscation field on streaming delta events to normalize payload sizes as a mitigation to certain side-channel attacks.
+
+```yaml
+Type: Boolean
+Aliases: include_obfuscation
 Required: False
 Position: Named
 ```
