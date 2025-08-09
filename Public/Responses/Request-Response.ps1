@@ -509,10 +509,6 @@ function Request-Response {
             $PostBody.stream = [bool]$Stream
         }
 
-        if ($PSBoundParameters.ContainsKey('Verbosity')) {
-            $PostBody.verbosity = $Verbosity
-        }
-
         # Reasoning
         $ReasoningOptions = @{}
         if ($PSBoundParameters.ContainsKey('ReasoningEffort')) {
@@ -527,6 +523,9 @@ function Request-Response {
 
         # Text Output options
         $TextOutputOptions = @{}
+        if ($PSBoundParameters.ContainsKey('Verbosity')) {
+            $TextOutputOptions.verbosity = $Verbosity
+        }
         if ($PSBoundParameters.ContainsKey('OutputType')) {
             if ($OutputType -is [type]) {
                 # Structured Outputs

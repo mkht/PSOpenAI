@@ -661,7 +661,7 @@ Describe 'Request-Response' {
                 $param = @{
                     Message          = 'What a defference between C# and C++? Please explain briefly.'
                     DeveloperMessage = 'You are a senior developer.'
-                    Model            = 'o3-mini'
+                    Model            = 'o4-mini'
                     Truncation       = 'auto'
                     MaxOutputTokens  = 1024
                     User             = 'Kevin'
@@ -669,6 +669,7 @@ Describe 'Request-Response' {
                     MetaData         = @{'key1' = 'value1' }
                     ReasoningEffort  = 'low'
                     ReasoningSummary = 'detailed'
+                    Verbosity        = 'medium'
                     Store            = $false
                     TimeoutSec       = 30
                     MaxRetryCount    = 3
