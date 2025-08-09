@@ -6656,6 +6656,18 @@ created    : 2023/02/28 18:56:42</dev:code>
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="include_obfuscation">
+          <maml:name>IncludeObfuscation</maml:name>
+          <maml:description>
+            <maml:para>When true, stream obfuscation will be enabled. Stream obfuscation adds random characters to an obfuscation field on streaming delta events to normalize payload sizes as a mitigation to certain side-channel attacks.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Boolean</command:parameterValue>
+          <dev:type>
+            <maml:name>Boolean</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>Stream</maml:name>
           <maml:description>
@@ -6800,6 +6812,18 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
         <dev:type>
           <maml:name>String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="include_obfuscation">
+        <maml:name>IncludeObfuscation</maml:name>
+        <maml:description>
+          <maml:para>When true, stream obfuscation will be enabled. Stream obfuscation adds random characters to an obfuscation field on streaming delta events to normalize payload sizes as a mitigation to certain side-channel attacks.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Boolean</command:parameterValue>
+        <dev:type>
+          <maml:name>Boolean</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -16593,11 +16617,24 @@ The default value is `1`.</maml:para>
           </dev:type>
           <dev:defaultValue>False</dev:defaultValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Verbosity</maml:name>
+          <maml:description>
+            <maml:para>Controls the verbosity level of the response.
+Valid values are `low`, `medium`, or `high`.
+</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>medium</dev:defaultValue>
+        </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="reasoning_effort">
           <maml:name>ReasoningEffort</maml:name>
           <maml:description>
-            <maml:para>o-series models only 
-Constrains effort on reasoning for reasoning models. Currently supported values are low, medium, and high.
+            <maml:para>Constrains effort on reasoning for reasoning models. Currently supported values are low, medium, and high.
 Reducing reasoning effort can result in faster responses and fewer tokens used on reasoning in a response.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -17281,11 +17318,24 @@ The default value is `1`.</maml:para>
         </dev:type>
         <dev:defaultValue>False</dev:defaultValue>
       </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Verbosity</maml:name>
+        <maml:description>
+          <maml:para>Controls the verbosity level of the response.
+Valid values are `low`, `medium`, or `high`.
+</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>medium</dev:defaultValue>
+      </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="reasoning_effort">
         <maml:name>ReasoningEffort</maml:name>
         <maml:description>
-          <maml:para>o-series models only 
-Constrains effort on reasoning for reasoning models. Currently supported values are low, medium, and high.
+          <maml:para>Constrains effort on reasoning for reasoning models. Currently supported values are low, medium, and high.
 Reducing reasoning effort can result in faster responses and fewer tokens used on reasoning in a response.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -20665,6 +20715,18 @@ You can speciy a list of the local file path, the URL of the file or the ID of t
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>CustomTools</maml:name>
+          <maml:description>
+            <maml:para>A list of custom tools the model may call.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">IDictionary[]</command:parameterValue>
+          <dev:type>
+            <maml:name>IDictionary[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>UseFileSearch</maml:name>
           <maml:description>
             <maml:para>If you want to use the File search built-in tool, Should specify this switch as enabled.</maml:para>
@@ -21209,10 +21271,23 @@ Possible values: `browser`, `mac`, `windows`, `ubuntu`.</maml:para>
           <dev:defaultValue>text</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Verbosity</maml:name>
+          <maml:description>
+            <maml:para>Controls the verbosity level of the response.
+Valid values are `low`, `medium`, or `high`.
+</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>medium</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>ReasoningEffort</maml:name>
           <maml:description>
-            <maml:para>o-series models only 
-Constrains effort on reasoning for reasoning models. Currently supported values are low, medium, and high.</maml:para>
+            <maml:para>Constrains effort on reasoning for reasoning models. Currently supported values are low, medium, and high.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -21679,6 +21754,18 @@ You can speciy a list of the local file path, the URL of the file or the ID of t
         <maml:name>Functions</maml:name>
         <maml:description>
           <maml:para>A list of functions the model may call.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">IDictionary[]</command:parameterValue>
+        <dev:type>
+          <maml:name>IDictionary[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>CustomTools</maml:name>
+        <maml:description>
+          <maml:para>A list of custom tools the model may call.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">IDictionary[]</command:parameterValue>
         <dev:type>
@@ -22232,10 +22319,23 @@ Possible values: `browser`, `mac`, `windows`, `ubuntu`.</maml:para>
         <dev:defaultValue>text</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Verbosity</maml:name>
+        <maml:description>
+          <maml:para>Controls the verbosity level of the response.
+Valid values are `low`, `medium`, or `high`.
+</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>medium</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>ReasoningEffort</maml:name>
         <maml:description>
-          <maml:para>o-series models only 
-Constrains effort on reasoning for reasoning models. Currently supported values are low, medium, and high.</maml:para>
+          <maml:para>Constrains effort on reasoning for reasoning models. Currently supported values are low, medium, and high.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
