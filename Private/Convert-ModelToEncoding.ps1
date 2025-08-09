@@ -24,6 +24,8 @@ function Convert-ModelToEncoding {
         'gpt-4.1' { 'o200k_base'; continue }
         'gpt-4.1-*' { 'o200k_base'; continue }
         'gpt-4.5-*' { 'o200k_base'; continue }
+        'gpt-5' { 'o200k_base'; continue }
+        'gpt-5-*' { 'o200k_base'; continue }
         'chatgpt-4o-*' { 'o200k_base'; continue }
         'gpt-4o' { 'o200k_base'; continue }
         # base

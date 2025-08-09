@@ -40,6 +40,8 @@ Describe 'ConvertTo-Token' {
             @{Model = 'gpt-4-unknown'; Expected = 5584 }
             @{Model = 'gpt-4o'; Expected = 5609 }
             @{Model = 'gpt-4o-2999-12-31'; Expected = 5609 }
+            @{Model = 'gpt-5'; Expected = 5609 }
+            @{Model = 'gpt-5-nano'; Expected = 5609 }
             @{Model = 'o3-mini'; Expected = 5609 }
             @{Model = 'text-embedding-3-small'; Expected = 5584 }
         ) {
