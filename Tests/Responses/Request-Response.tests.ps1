@@ -789,6 +789,60 @@ Ping Source Address Latency(ms) BufferSize(B) Status
             $Result2.History[3].Role | Should -Be 'assistant'
         }
 
+        It 'Custom Tools' {
+            $ToolOutput1 = '2025-08-03 20:30'
+            $ExpectedPattern = '^(January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d{1,2})(?:st|nd|rd|th)?\s+(\d{4})\s+at\s+(0?[1-9]|1[0-2])(AM|PM)$'
+
+            $CustomTools = @(
+                @{
+                    'type'        = 'custom'
+                    'name'        = 'get_n-days_from_now'
+                    'description' = 'Returns the date and time n days from now. The returned format is "YYYY-MM-DD HH:MM".'
+                },
+                @{
+                    'type'        = 'custom'
+                    'name'        = 'timestamp'
+                    'description' = 'Saves a timestamp in date + time in 24-hr format.'
+                    'format'      = @{
+                        'type'       = 'grammar'
+                        'syntax'     = 'regex'
+                        'definition' = $ExpectedPattern
+                    }
+                }
+            )
+
+            $Message = @'
+Follow the instructions below and return the result.
+STEP1. Use the get_n-days_from_now tool to get the date and time 3 days from now.
+STEP2. Use the timestamp tool to save the resulting timestamp in date and time, using 24-hour format.
+'@
+            { $param = @{
+                    Model       = 'gpt-5-mini'
+                    CustomTools = $CustomTools
+                    ToolChoice  = 'required'
+                    Store       = $false
+                    TimeoutSec  = 60
+                }
+                $script:Result1 = Request-Response @param -Message $Message -ea Stop
+            } | Should -Not -Throw
+            $Result1.output[-1].type | Should -Be 'custom_tool_call'
+            $Result1.output[-1].name | Should -Be 'get_n-days_from_now'
+
+            $ToolCallId = $Result1.output[1].call_id
+            $Result1.History += [pscustomobject]@{
+                type    = 'custom_tool_call_output'
+                call_id = $ToolCallId
+                output  = $ToolOutput1
+            }
+            $Result1.History = $Result1.History | ? { $_.type -ne 'reasoning' }
+
+            { $script:Result2 = $script:Result1 | Request-Response @param -ea Stop } | Should -Not -Throw
+            $Result2.LastUserMessage | Should -BeExactly $Message
+            $Result2.output[-1].type | Should -Be 'custom_tool_call'
+            $Result2.output[-1].name | Should -Be 'timestamp'
+            $Result2.output[-1].input | Should -Match $ExpectedPattern
+        }
+
         It 'Stream output' {
             $params = @{
                 Message         = 'Please describe about ChatGPT'

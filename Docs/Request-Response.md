@@ -30,6 +30,7 @@ Request-Response
     [-ToolChoice <Object>] 
     [-ParallelToolCalls <Boolean>]
     [-Functions <IDictionary[]>]
+    [-CustomTools <IDictionary[]>]
     [-UseFileSearch] 
     [-FileSearchVectorStoreIds <String[]>]
     [-FileSearchMaxNumberOfResults <Int32>]
@@ -286,6 +287,15 @@ Position: Named
 
 ### -Functions
 A list of functions the model may call.
+
+```yaml
+Type: IDictionary[]
+Required: False
+Position: Named
+```
+
+### -CustomTools
+A list of custom tools the model may call.
 
 ```yaml
 Type: IDictionary[]

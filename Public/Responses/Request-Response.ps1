@@ -90,6 +90,12 @@ function Request-Response {
         # [string]$InvokeFunction = 'None',
         #endregion Function calling
 
+        #region Custom tool
+        [Parameter()]
+        [ValidateNotNullOrEmpty()]
+        [System.Collections.IDictionary[]]$CustomTools,
+        #endregion Custom tool
+
         # Built-in tools
         #region File Search
         [Parameter()]
@@ -255,6 +261,7 @@ function Request-Response {
 
         [Parameter(DontShow)]
         [string]$LocalShellType = 'local_shell', # Always 'local_shell'
+        #endregion Local shell
         #endregion Tools
 
         [Parameter()]
@@ -574,8 +581,14 @@ function Request-Response {
 
         #region Tools
         $Tools = @()
+        # Function calling
         if ($PSBoundParameters.ContainsKey('Functions')) {
             $Tools += $Functions
+        }
+
+        # Custom tools
+        if ($PSBoundParameters.ContainsKey('CustomTools')) {
+            $Tools += $CustomTools
         }
 
         #region File Search
