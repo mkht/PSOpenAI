@@ -1,4 +1,9 @@
 # Changelog
+### 4.33.0
+- GPT-5 models support.
+- Add `-Verbosity` parameter to `Request-Response` and `Request-ChatCompletion`.  
+- Add `-CustomTools` parameter to `Request-Response` function.  
+
 ### 4.32.0
 - Add `-PromptCacheKey` and `-SafetyIdentifier` parameters to `Request-ChatCompletion` and `Request-Response`.
 
