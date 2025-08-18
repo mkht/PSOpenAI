@@ -1,4 +1,7 @@
 # Changelog
+## 4.34.0
+- API updates.
+
 ### 4.33.0
 - GPT-5 models support.
 - Add `-Verbosity` parameter to `Request-Response` and `Request-ChatCompletion`.  

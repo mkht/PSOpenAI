@@ -290,6 +290,30 @@ You can specify `fine-tune`, `assistants` or `batch`.</maml:para>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>ExpiresAfterSeconds</maml:name>
+          <maml:description>
+            <maml:para>The number of seconds after the anchor time that the file will expire. Must be between 3600 (1 hour) and 2592000 (30 days).</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>ExpiresAfterAnchor</maml:name>
+          <maml:description>
+            <maml:para>Anchor timestamp after which the expiration policy applies. Supported anchors: `created_at`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>TimeoutSec</maml:name>
           <maml:description>
             <maml:para>Specifies how long the request can be pending before it times out.
@@ -390,6 +414,30 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
           <maml:description>
             <maml:para>The intended purpose of the uploaded file.
 You can specify `fine-tune`, `assistants` or `batch`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>ExpiresAfterSeconds</maml:name>
+          <maml:description>
+            <maml:para>The number of seconds after the anchor time that the file will expire. Must be between 3600 (1 hour) and 2592000 (30 days).</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>ExpiresAfterAnchor</maml:name>
+          <maml:description>
+            <maml:para>Anchor timestamp after which the expiration policy applies. Supported anchors: `created_at`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -511,6 +559,30 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <maml:description>
           <maml:para>The intended purpose of the uploaded file.
 You can specify `fine-tune`, `assistants` or `batch`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>ExpiresAfterSeconds</maml:name>
+        <maml:description>
+          <maml:para>The number of seconds after the anchor time that the file will expire. Must be between 3600 (1 hour) and 2592000 (30 days).</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>ExpiresAfterAnchor</maml:name>
+        <maml:description>
+          <maml:para>Anchor timestamp after which the expiration policy applies. Supported anchors: `created_at`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -26368,6 +26440,30 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
           <dev:defaultValue>/v1/chat/completions</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>OutputExpiresAfterSeconds</maml:name>
+          <maml:description>
+            <maml:para>The number of seconds after the anchor time that the file will expire. Must be between 3600 (1 hour) and 2592000 (30 days).</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>OutputExpiresAfterAnchor</maml:name>
+          <maml:description>
+            <maml:para>Anchor timestamp after which the expiration policy applies. Supported anchors: `created_at`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>MetaData</maml:name>
           <maml:description>
             <maml:para>Set of 16 key-value pairs that can be attached to an object. This can be useful for storing additional information about the object in a structured format.</maml:para>
@@ -26486,6 +26582,30 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
             <maml:uri />
           </dev:type>
           <dev:defaultValue>/v1/chat/completions</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>OutputExpiresAfterSeconds</maml:name>
+          <maml:description>
+            <maml:para>The number of seconds after the anchor time that the file will expire. Must be between 3600 (1 hour) and 2592000 (30 days).</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>OutputExpiresAfterAnchor</maml:name>
+          <maml:description>
+            <maml:para>Anchor timestamp after which the expiration policy applies. Supported anchors: `created_at`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>MetaData</maml:name>
@@ -26618,6 +26738,30 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
           <maml:uri />
         </dev:type>
         <dev:defaultValue>/v1/chat/completions</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>OutputExpiresAfterSeconds</maml:name>
+        <maml:description>
+          <maml:para>The number of seconds after the anchor time that the file will expire. Must be between 3600 (1 hour) and 2592000 (30 days).</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>OutputExpiresAfterAnchor</maml:name>
+        <maml:description>
+          <maml:para>Anchor timestamp after which the expiration policy applies. Supported anchors: `created_at`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>MetaData</maml:name>
