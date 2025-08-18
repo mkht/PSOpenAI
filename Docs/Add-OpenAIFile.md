@@ -17,6 +17,8 @@ Upload a file that can be used across various endpoints.
 Add-OpenAIFile
     [-File] <String>
     -Purpose <String>
+    [-ExpiresAfterSeconds <Int32>]
+    [-ExpiresAfterAnchor <String>]
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
     [-ApiBase <Uri>]
@@ -31,6 +33,8 @@ Add-OpenAIFile
     [-Content] <byte[]>
     -Name <String>
     -Purpose <String>
+    [-ExpiresAfterSeconds <Int32>]
+    [-ExpiresAfterAnchor <String>]
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
     [-ApiBase <Uri>]
@@ -99,6 +103,24 @@ You can specify `fine-tune`, `assistants` or `batch`.
 ```yaml
 Type: String
 Required: True
+Position: Named
+```
+
+### -ExpiresAfterSeconds
+The number of seconds after the anchor time that the file will expire. Must be between 3600 (1 hour) and 2592000 (30 days).
+
+```yaml
+Type: Int32
+Required: False
+Position: Named
+```
+
+### -ExpiresAfterAnchor
+Anchor timestamp after which the expiration policy applies. Supported anchors: `created_at`.
+
+```yaml
+Type: String
+Required: False
 Position: Named
 ```
 

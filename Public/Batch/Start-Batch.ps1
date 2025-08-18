@@ -26,6 +26,13 @@ function Start-Batch {
         [string]$CompletionWindow = '24h', #Currently only 24h is supported.
 
         [Parameter()]
+        [ValidateRange(3600, 2592000)]
+        [int]$OutputExpiresAfterSeconds,
+
+        [Parameter()]
+        [string][LowerCaseTransformation()]$OutputExpiresAfterAnchor = 'created_at',
+
+        [Parameter()]
         [System.Collections.IDictionary]$MetaData,
 
         [Parameter()]
@@ -135,6 +142,13 @@ function Start-Batch {
         $PostBody.completion_window = $CompletionWindow
         if ($PSBoundParameters.ContainsKey('Metadata')) {
             $PostBody.metadata = $Metadata
+        }
+        $OutputExpiresAfter = @{
+            anchor = $OutputExpiresAfterAnchor
+        }
+        if ($PSBoundParameters.ContainsKey('OutputExpiresAfterSeconds')) {
+            $OutputExpiresAfter.seconds = $OutputExpiresAfterSeconds
+            $PostBody.output_expires_after = $OutputExpiresAfter
         }
         #endregion
 

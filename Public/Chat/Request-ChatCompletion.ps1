@@ -378,6 +378,9 @@ function Request-ChatCompletion {
             $PostBody.reasoning_effort = $ReasoningEffort
         }
         if ($PSBoundParameters.ContainsKey('Verbosity')) {
+            # OpenAI API docs say that the vetbosity is inside the text object.
+            # But it seems incorrect. API returns an error "400 (Bad Request) Error: Unknown parameter: 'text'."
+            # $PostBody.text = @{verbosity = $Verbosity }
             $PostBody.verbosity = $Verbosity
         }
         if ($PSBoundParameters.ContainsKey('MetaData')) {

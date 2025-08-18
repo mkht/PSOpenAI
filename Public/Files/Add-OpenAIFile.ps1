@@ -21,6 +21,13 @@ function Add-OpenAIFile {
         [string][LowerCaseTransformation()]$Purpose,
 
         [Parameter()]
+        [ValidateRange(3600, 2592000)]
+        [int]$ExpiresAfterSeconds,
+
+        [Parameter()]
+        [string][LowerCaseTransformation()]$ExpiresAfterAnchor = 'created_at',
+
+        [Parameter()]
         [int]$TimeoutSec = 0,
 
         [Parameter()]
@@ -75,6 +82,14 @@ function Add-OpenAIFile {
                 FileName = $Name
                 Content  = $Content
             }
+        }
+
+        $ExpiresAfter = @{
+            anchor = $ExpiresAfterAnchor
+        }
+        if ($PSBoundParameters.ContainsKey('ExpiresAfterSeconds')) {
+            $ExpiresAfterAnchor.seconds = $ExpiresAfterSeconds
+            $PostBody.expires_after = $ExpiresAfter
         }
         #endregion
 

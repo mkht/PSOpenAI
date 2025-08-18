@@ -18,6 +18,8 @@ Start-Batch
     -BatchInput <Object[]>
     [-Endpoint <String>]
     [-CompletionWindow <String>]
+    [-OutputExpiresAfterSeconds <Int32>]
+    [-OutputExpiresAfterAnchor <String>]
     [-MetaData <IDictionary>]
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
@@ -33,6 +35,8 @@ Start-Batch
     -FileId <String>
     [-Endpoint <String>]
     [-CompletionWindow <String>]
+    [-OutputExpiresAfterSeconds <Int32>]
+    [-OutputExpiresAfterAnchor <String>]
     [-MetaData <IDictionary>]
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
@@ -110,6 +114,24 @@ Type: String
 Required: False
 Position: Named
 Default value: /v1/chat/completions
+```
+
+### -OutputExpiresAfterSeconds
+The number of seconds after the anchor time that the file will expire. Must be between 3600 (1 hour) and 2592000 (30 days).
+
+```yaml
+Type: Int32
+Required: False
+Position: Named
+```
+
+### -OutputExpiresAfterAnchor
+Anchor timestamp after which the expiration policy applies. Supported anchors: `created_at`.
+
+```yaml
+Type: String
+Required: False
+Position: Named
 ```
 
 ### -MetaData
