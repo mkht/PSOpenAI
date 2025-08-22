@@ -279,7 +279,18 @@ function Get-OpenAIAPIEndpoint {
             }
             continue
         }
-        Default {
+        'Conversations' {
+            $UriBuilder.Path += 'conversations'
+            @{
+                Name          = 'conversations'
+                Method        = 'Post'
+                Uri           = $UriBuilder.Uri
+                ContentType   = 'application/json'
+                BatchEndpoint = '/v1/conversations'
+            }
+            continue
+        }
+        default {
             Write-Error -Message ('{0} API endpoint is not provided by OpenAI' -f $_)
         }
     }

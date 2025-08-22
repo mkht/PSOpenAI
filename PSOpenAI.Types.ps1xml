@@ -100,6 +100,28 @@
     </Members>
   </Type>
   <Type>
+    <Name>PSOpenAI.Conversation</Name>
+    <Members>
+      <ScriptMethod>
+        <Name>ToString</Name>
+        <Script>
+          $this.id -as [string]
+        </Script>
+      </ScriptMethod>
+    </Members>
+  </Type>
+  <Type>
+    <Name>PSOpenAI.Conversation.Item</Name>
+    <Members>
+      <ScriptMethod>
+        <Name>ToString</Name>
+        <Script>
+          $this.id -as [string]
+        </Script>
+      </ScriptMethod>
+    </Members>
+  </Type>
+  <Type>
     <Name>PSOpenAI.VectorStore</Name>
     <Members>
       <ScriptMethod>

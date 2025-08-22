@@ -94,6 +94,14 @@
         'Get-Response',
         'Get-ResponseInputItem',
         'Remove-Response',
+        #### Conversations ####
+        'New-Conversation',
+        'Set-Conversation',
+        'Get-Conversation',
+        'Remove-Conversation',
+        'Get-ConversationItem',
+        'Add-ConversationItem',
+        'Remove-ConversationItem',
         #### Files ####
         'Add-OpenAIFile',
         'Remove-OpenAIFile',

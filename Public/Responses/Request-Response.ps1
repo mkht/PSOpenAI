@@ -67,7 +67,7 @@ function Request-Response {
         #region File input
         [Parameter()]
         [string[]]$Files,
-        #endregion Image input
+        #endregion File input
 
         #region Tools
         [Parameter()]
@@ -265,6 +265,10 @@ function Request-Response {
         #endregion Tools
 
         [Parameter()]
+        [Alias('conversation_id')]
+        [string]$Conversation,
+
+        [Parameter()]
         [Alias('previous_response_id')]
         [string]$PreviousResponseId,
 
@@ -278,7 +282,14 @@ function Request-Response {
         [string]$PromptVersion,
 
         [Parameter()]
-        [Completions('file_search_call.results', 'message.input_image.image_url', 'computer_call_output.output.image_url', 'reasoning.encrypted_content')]
+        [Completions(
+            'code_interpreter_call.outputs',
+            'computer_call_output.output.image_url',
+            'file_search_call.results',
+            'message.input_image.image_url',
+            'message.output_text.logprobs',
+            'reasoning.encrypted_content'
+        )]
         [AllowEmptyCollection()]
         [string[]]$Include,
 
@@ -443,6 +454,11 @@ function Request-Response {
         # Specify model
         if (-not $IsReusablePromptSpecified -or $PSBoundParameters.ContainsKey('Model')) {
             $PostBody.model = $Model
+        }
+
+        if ($Conversation) {
+            $IsConversationIdSpecified = $true
+            $PostBody.conversation = $Conversation
         }
 
         if ($PreviousResponseId) {
@@ -932,7 +948,9 @@ function Request-Response {
         #endregion
 
         # Error if message is empty.
-        if (-not $IsReusablePromptSpecified -and $Messages.Count -eq 0) {
+        if (-not $IsConversationIdSpecified -and `
+                -not $IsReusablePromptSpecified -and `
+                $Messages.Count -eq 0) {
             Write-Error 'No message is specified. You must specify one or more messages.'
             return
         }
