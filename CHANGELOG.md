@@ -1,4 +1,14 @@
 # Changelog
+### Unreleased
+- Add new functions for Conversations API.
+    + [New-Conversation](/Docs/New-Conversation.md)
+    + [Get-Conversation](/Docs/Get-Conversation.md)
+    + [Set-Conversation](/Docs/Set-Conversation.md)
+    + [Remove-Conversation](/Docs/Remove-Conversation.md)
+    + [Add-ConversationItem](/Docs/Add-ConversationItem.md)
+    + [Get-ConversationItem](/Docs/Get-ConversationItem.md)
+    + [Remove-ConversationItem](/Docs/Remove-ConversationItem.md)
+
 ### 4.34.0
 - API updates.
 

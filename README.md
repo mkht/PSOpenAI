@@ -64,6 +64,15 @@ Install-Module -Name PSOpenAI
 + [Remove-Response](/Docs/Remove-Response.md)
 + [Get-ResponseInputItem](/Docs/Get-ResponseInputItem.md)
 
+#### Conversations
++ [New-Conversation](/Docs/New-Conversation.md)
++ [Get-Conversation](/Docs/Get-Conversation.md)
++ [Set-Conversation](/Docs/Set-Conversation.md)
++ [Remove-Conversation](/Docs/Remove-Conversation.md)
++ [Add-ConversationItem](/Docs/Add-ConversationItem.md)
++ [Get-ConversationItem](/Docs/Get-ConversationItem.md)
++ [Remove-ConversationItem](/Docs/Remove-ConversationItem.md)
+
 #### Assistants
 [Guide: How to use Assistants](/Guides/How_to_use_Assistants.md)  
 [Guide: How to use File search with Assistants and Vector Store](/Guides/How_to_use_FileSearch_with_VectorStore.md)

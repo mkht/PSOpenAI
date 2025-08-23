@@ -20,6 +20,7 @@ Request-Response
     [-SystemMessage <String[]>]
     [-DeveloperMessage <String[]>]
     [-Instructions <String>]
+    [-Conversation <String>]
     [-PreviousResponseId <String>]
     [-PromptId <String>]
     [-PromptVariables <IDictionary>]
@@ -193,6 +194,16 @@ A system (or developer) message inserted into the model's context.
 
 ```yaml
 Type: String
+Required: False
+Position: Named
+```
+
+### -Conversation
+The conversation that this response belongs to. Input items and output items from this response are automatically added to this conversation after this response completes.
+
+```yaml
+Type: String
+Aliases: conversation_id
 Required: False
 Position: Named
 ```
