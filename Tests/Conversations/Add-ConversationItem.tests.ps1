@@ -1,4 +1,4 @@
-#Requires -Modules @{ ModuleName="Pester"; ModuleVersion="5.3.0" }
+﻿#Requires -Modules @{ ModuleName="Pester"; ModuleVersion="5.3.0" }
 
 BeforeAll {
     $script:ModuleRoot = Split-Path (Split-Path $PSScriptRoot -Parent) -Parent
