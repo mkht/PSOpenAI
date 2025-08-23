@@ -8,7 +8,7 @@ function Add-ConversationItem {
         [Alias('conversation_id')]
         [string][UrlEncodeTransformation()]$ConversationId,
 
-        [Parameter(Mandatory, Position = 0, ValueFromPipelineByPropertyName)]
+        [Parameter(Position = 0, ValueFromPipelineByPropertyName)]
         [ValidateNotNullOrEmpty()]
         [string]$Message,
 
@@ -236,6 +236,12 @@ function Add-ConversationItem {
 
         if ($usermsg.content.Count -ge 1) {
             $Messages.Add($usermsg)
+        }
+
+        # Error if message is empty.
+        if ($Messages.Count -eq 0) {
+            Write-Error 'No message is specified. You must specify one or more messages.'
+            return
         }
         #endregion
 

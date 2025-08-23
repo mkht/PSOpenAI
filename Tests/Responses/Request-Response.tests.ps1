@@ -629,6 +629,21 @@ Describe 'Request-Response' {
         }
     }
 
+    It 'When specifying conversation id, input message is not required' {
+        Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+{
+  "id": "resp_7e5a5",
+  "object": "response",
+  "created_at": 1743938395,
+  "status": "completed",
+  "model": "gpt-4o-mini-2024-07-18"
+}
+'@
+        }
+        { Request-Response -Conversation 'conv_abc123' -ea Stop } | Should -Not -Throw
+        Should -InvokeVerifiable
+    }
+
     Context 'Integration tests (online)' -Tag 'Online' {
 
         BeforeAll {
