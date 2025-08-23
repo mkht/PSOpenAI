@@ -1,6 +1,9 @@
 #Requires -Modules @{ ModuleName="Pester"; ModuleVersion="5.3.0" }
 
 $ModuleName = 'PSOpenAI'
+$ModuleRoot = Split-Path $PSScriptRoot -Parent
+$ModuleName = 'PSOpenAI'
+Import-Module (Join-Path $ModuleRoot "$ModuleName.psd1") -Force
 
 BeforeAll {
     $script:ModuleRoot = Split-Path $PSScriptRoot -Parent
