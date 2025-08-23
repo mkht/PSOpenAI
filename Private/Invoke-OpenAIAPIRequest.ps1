@@ -60,7 +60,10 @@ function Invoke-OpenAIAPIRequest {
         [string]$AuthType = 'openai',
 
         [Parameter()]
-        [bool]$ReturnRawResponse = $false
+        [bool]$ReturnRawResponse = $false,
+
+        [Parameter()]
+        [Generic.List[Tuple[regex, string]]]$MaskPatterns = @()
     )
 
     $InternalParams = Initialize-OpenAIAPIRequestParam @PSBoundParameters
@@ -130,7 +133,6 @@ function Invoke-OpenAIAPIRequest {
 
     # Absorb differences in PowerShell version
     if ($PSVersionTable.PSVersion.Major -ge 6) {
-        $PlainToken = $null
         $IwrParam.AllowUnencryptedAuthentication = $true
         # Use Bearer Token Auth
         if ($UseBearer) {
@@ -147,8 +149,8 @@ function Invoke-OpenAIAPIRequest {
 
     if ($null -ne $InternalParams.Body) {
         if ($InternalParams.ContentType -match 'application/json') {
-            try { $InternalParams.Body = ($InternalParams.Body | ConvertTo-Json -Compress -Depth 100) }catch { Write-Error -Exception $_.Exception }
-            $IwrParam.Body = ([System.Text.Encoding]::UTF8.GetBytes($InternalParams.Body))
+            try { $JsonBody = ($InternalParams.Body | ConvertTo-Json -Compress -Depth 100) }catch { Write-Error -Exception $_.Exception }
+            $IwrParam.Body = ([System.Text.Encoding]::UTF8.GetBytes($JsonBody))
         }
         else {
             $IwrParam.Body = $InternalParams.Body
@@ -161,30 +163,21 @@ function Invoke-OpenAIAPIRequest {
     }
 
     # Verbose / Debug output
-    Write-Verbose -Message "Request to $ServiceName API"
-    Write-Verbose -Message "Method = $Method, Path = $($InternalParams.Uri)"
-    if ($IsDebug) {
-        $startIdx = $lastIdx = 2
-        if ($AuthType -eq 'openai') { $startIdx += 4 } # 'org-'
-        $params1 = @{
-            Source               = 'Request parameters: ' + (([pscustomobject]$IwrParam) | Format-List Method, Uri, ContentType, Headers, Authentication | Out-String).TrimEnd()
-            Target               = ($ApiKey, $Organization)
-            First                = $startIdx
-            Last                 = $lastIdx
-            MaxNumberOfAsterisks = 45
-        }
-        $maskedString1 = Get-MaskedString @params1
-        Write-Debug -Message $maskedString1
+    ## Set up masking patterns
+    $MaskPatterns.Add([Tuple[regex, string]]::new('(sk-proj-.{3})[a-z0-9\-_.~+/]+([^\s]{2})', '$1***************$2')) # OpenAI API Key (sk-proj-...)
+    $MaskPatterns.Add([Tuple[regex, string]]::new('(Authorization:\s*Bearer\s+)[a-zA-Z0-9\-_.~+/]+', '$1********')) # Bearer token
+    if (-not [string]::IsNullOrWhiteSpace($PlainToken)) {
+        $MaskPatterns.Add([Tuple[regex, string]]::new([regex]::Escape($PlainToken), '<OpenAI API Key>'))
+    }
+    if (-not [string]::IsNullOrWhiteSpace($Organization)) {
+        $MaskPatterns.Add([Tuple[regex, string]]::new([regex]::Escape($Organization), '<OpenAI Organization ID>'))
+    }
 
-        $params2 = @{
-            Source               = 'Post body: ' + $InternalParams.Body
-            Target               = ($ApiKey, $Organization)
-            First                = $startIdx
-            Last                 = $lastIdx
-            MaxNumberOfAsterisks = 45
-        }
-        $maskedString2 = Get-MaskedString @params2
-        Write-Debug -Message $maskedString2
+    Write-Verbose -Message "Request to $ServiceName API"
+    Write-Verbose -Message ("Method = $Method, Path = $($InternalParams.Uri)" | Get-MaskedString -MaskPatterns $MaskPatterns)
+    if ($IsDebug) {
+        Write-Debug -Message ('Request parameters: ' + (([pscustomobject]$IwrParam) | Format-List Method, Uri, ContentType, Headers, Authentication | Out-String | Get-MaskedString -MaskPatterns $MaskPatterns)).TrimEnd()
+        Write-Debug -Message (('Post body: ' + $JsonBody) | Get-MaskedString -MaskPatterns $MaskPatterns)
     }
 
     #region Send API Request
@@ -239,41 +232,22 @@ function Invoke-OpenAIAPIRequest {
     }
 
     # Verbose / Debug output
-    $verboseMessage = "$ServiceName API response: " + ($Response |
-            Format-List StatusCode,
-            @{
-                name       = 'processing_ms'
-                expression = { $_.Headers['openai-processing-ms'] }
-            },
-            @{
-                name       = 'request_id'
-                expression = { $_.Headers['X-Request-Id'] }
-            } | Out-String).TrimEnd()
+    $verboseMessage = ("$ServiceName API response: " + ($Response |
+                Format-List StatusCode,
+                @{
+                    name       = 'processing_ms'
+                    expression = { $_.Headers['openai-processing-ms'] }
+                },
+                @{
+                    name       = 'request_id'
+                    expression = { $_.Headers['X-Request-Id'] }
+                } | Out-String | Get-MaskedString -MaskPatterns $MaskPatterns).TrimEnd())
     Write-Verbose -Message $verboseMessage
 
     # Don't read the whole stream for debug logging unless necessary.
     if ($IsDebug) {
-        $startIdx = $lastIdx = 2
-        if ($AuthType -eq 'openai') { $startIdx += 4 } # 'org-'
-        $params1 = @{
-            Source               = 'API response header: ' + ($Response.Headers | Format-Table -HideTableHeaders | Out-String).TrimEnd()
-            Target               = ($ApiKey, $Organization)
-            First                = $startIdx
-            Last                 = $lastIdx
-            MaxNumberOfAsterisks = 45
-        }
-        $maskedString1 = Get-MaskedString @params1
-        Write-Debug -Message $maskedString1
-
-        $params2 = @{
-            Source               = 'API response body: ' + ($Response.Content | Out-String).TrimEnd()
-            Target               = ($ApiKey, $Organization)
-            First                = $startIdx
-            Last                 = $lastIdx
-            MaxNumberOfAsterisks = 45
-        }
-        $maskedString2 = Get-MaskedString @params2
-        Write-Debug -Message $maskedString2
+        Write-Debug -Message ('API response header: ' + ($Response.Headers | Format-Table -HideTableHeaders | Out-String | Get-MaskedString -MaskPatterns $MaskPatterns)).TrimEnd()
+        Write-Debug -Message ('API response body: ' + ($Response.Content | Out-String | Get-MaskedString -MaskPatterns $MaskPatterns)).TrimEnd()
     }
 
     # Save WebSession

@@ -1,4 +1,5 @@
-using namespace System.Runtime.InteropServices
+using namespace System.Text.RegularExpressions
+using namespace System.Collections.Generic
 
 function Get-MaskedString {
     [CmdletBinding()]
@@ -6,62 +7,43 @@ function Get-MaskedString {
     param (
         [Parameter(Mandatory, Position = 0, ValueFromPipeline)]
         [AllowEmptyString()]
-        [string]$Source,
-
-        [Parameter(Mandatory, Position = 1)]
-        [AllowNull()]
-        [securestring[]][SecureStringTransformation()]$Target,
+        [string]$InputString,
 
         [Parameter()]
-        [uint32]$First = 0,
+        [int]$MaxLength = 8192,
 
         [Parameter()]
-        [uint32]$Last = 0,
-
-        [Parameter()]
-        [uint32]$MaxNumberOfAsterisks = [int]::MaxValue,
-
-        [Parameter()]
-        [uint32]$MinNumberOfAsterisks = 0
+        [List[Tuple[regex, string]]]$MaskPatterns = @()
     )
 
     begin {
-        # decrypt securestring
-        [string[]]$PlainTarget = @()
-        foreach ($t in $Target) {
-            if ($null -ne $t) {
-                $PlainTarget += DecryptSecureString $t
-            }
-        }
+        #Regex options
+        $RegexOptions = [RegexOptions]::IgnoreCase -bor `
+            [RegexOptions]::Multiline -bor `
+            [RegexOptions]::CultureInvariant
+
+        $RegexMatchTimeout = [TimeSpan]::FromSeconds(3)
     }
 
     process {
-        if ([string]::IsNullOrEmpty($Source)) {
-            [string]::Empty
-            return
+        if ([string]::IsNullOrWhiteSpace($InputString)) {
+            return $InputString
         }
 
-        foreach ($pt in $PlainTarget) {
-            if ([string]::IsNullOrEmpty($pt)) {
-                continue
+        foreach ($pattern in $MaskPatterns) {
+            try {
+                $InputString = [regex]::Replace($InputString, $pattern.Item1, $pattern.Item2, $RegexOptions, $RegexMatchTimeout)
             }
-            if ($First + $Last -gt $pt.Length) {
-                continue
+            catch {
+                $InputString = '...<some error occurred during processing>...'
             }
-            [int]$numberOfAsterisks = $pt.Length - $First - $Last
-            if ($numberOfAsterisks -lt $MinNumberOfAsterisks) { $numberOfAsterisks = $MinNumberOfAsterisks }
-            if ($numberOfAsterisks -gt $MaxNumberOfAsterisks) { $numberOfAsterisks = $MaxNumberOfAsterisks }
-
-            [string]$Masked = [string]::Concat(
-                $pt.Substring(0, $First),
-                ''.PadLeft($numberOfAsterisks, '*'),
-                $pt.Substring($pt.Length - $Last, $Last)
-            )
-
-            $Source = [regex]::Replace($Source, $pt, $Masked, [System.Text.RegularExpressions.RegexOptions]::IgnoreCase)
         }
 
-        $Source
+        if ($InputString.Length -gt $MaxLength) {
+            $InputString = $InputString.Substring(0, $MaxLength) + ' ...<truncated>'
+        }
+
+        $InputString
     }
 
     end {}

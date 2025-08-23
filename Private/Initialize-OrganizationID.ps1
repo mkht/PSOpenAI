@@ -1,7 +1,7 @@
 function Initialize-OrganizationID {
     [CmdletBinding()]
     [OutputType([string])]
-    Param(
+    param(
         [Parameter(Mandatory, Position = 0)]
         [AllowEmptyString()]
         [string]$OrgId,
@@ -34,8 +34,17 @@ function Initialize-OrganizationID {
         # Write-Verbose -Message ('Organization-ID was not found. Not to be used.')
     }
     else {
-        if ($OrgId.StartsWith('org-', [StringComparison]::Ordinal)) { $first = 6 }else { $first = 3 }
-        Write-Verbose -Message (('Organization-ID to be used is {0}' -f $OrgId) | Get-MaskedString -Target $OrgId -First $first -Last 2 -MaxNumberOfAsterisks 45)
+        $pattern = switch -CaseSensitive -Wildcard ($OrgId) {
+            'org-*' { '^(.{6})[a-z0-9\-_.~+/]+([^\s]{2})'; continue }
+            default { '^(.{3})[a-z0-9\-_.~+/]+([^\s]{2})' }
+        }
+
+        ## Set up masking patterns
+        $MaskPatterns = [System.Collections.Generic.List[Tuple[regex, string]]]::new()
+        $MaskPatterns.Add([Tuple[regex, string]]::new($pattern, '$1***************$2'))
+        $MaskPatterns.Add([Tuple[regex, string]]::new([regex]::Escape($OrgId), '<OpenAI Organization ID>'))
+
+        Write-Verbose -Message ('Organization-ID to be used is ' + (Get-MaskedString -Input $OrgId -MaskPatterns $MaskPatterns))
     }
     $OrgId
 }

@@ -1,9 +1,6 @@
 #Requires -Modules @{ ModuleName="Pester"; ModuleVersion="5.3.0" }
 
 $ModuleName = 'PSOpenAI'
-$script:ModuleRoot = Split-Path $PSScriptRoot -Parent
-$script:ModuleName = 'PSOpenAI'
-Import-Module (Join-Path $script:ModuleRoot "$script:ModuleName.psd1") -Force
 
 BeforeAll {
     $script:ModuleRoot = Split-Path $PSScriptRoot -Parent
@@ -19,127 +16,37 @@ Describe 'Get-MaskedString' {
                 $script:Result = $null
             }
 
-            It 'Source is null or empty -> return empty' {
-                $TestSource = ''
-                Get-MaskedString $TestSource -Target 'x' | Should -Be ''
+            It 'By default, input is returned as-is' {
+                $TestInput = 'Hello, World!'
+                Get-MaskedString $TestInput | Should -BeExactly $TestInput
             }
 
-            It 'Target is null or empty -> return source' {
-                $TestSource = 'test'
-                $Target = ''
-                Get-MaskedString $TestSource -Target $Target | Should -BeExactly $TestSource
+            It 'Input is null or empty -> return empty' {
+                $TestInput = ''
+                Get-MaskedString $TestInput | Should -BeExactly $TestInput
             }
 
-            It 'Mask target (1)' {
-                $TestSource = 'Token test : stk-yDYabcdefgfBqD6IPNTukJsABCDEFG8l02ksb4X : Token test'
-                $TestOutput = 'Token test : ******************************************* : Token test'
-                $Target = 'stk-yDYabcdefgfBqD6IPNTukJsABCDEFG8l02ksb4X'
-                Get-MaskedString -Source $TestSource -Target $Target | Should -BeExactly $TestOutput
+            It 'Input is whitespaces -> return whitespaces' {
+                $TestInput = '       '
+                Get-MaskedString $TestInput | Should -BeExactly $TestInput
             }
 
-            It 'Mask target (2)' {
-                $TestSource = 'Token test : stk-yDYabcdefgfBqD6IPNTukJsABCDEFG8l02ksb4X : Token test'
-                $TestOutput = 'Token test : stk-yD************************************* : Token test'
-                $Target = 'stk-yDYabcdefgfBqD6IPNTukJsABCDEFG8l02ksb4X'
-                $First = 6
-                Get-MaskedString -Source $TestSource -Target $Target -First $First | Should -BeExactly $TestOutput
+            It 'Input is too long -> return truncated' {
+                $TestInput = 'a' * 200
+                Get-MaskedString $TestInput -MaxLength 10 | Should -BeExactly 'aaaaaaaaaa ...<truncated>'
             }
 
-            It 'Mask target (3)' {
-                $TestSource = 'Token test : stk-yDYabcdefgfBqD6IPNTukJsABCDEFG8l02ksb4X : Token test'
-                $TestOutput = 'Token test : stk-yD***********************************4X : Token test'
-                $Target = 'stk-yDYabcdefgfBqD6IPNTukJsABCDEFG8l02ksb4X'
-                $First = 6
-                $Last = 2
-                Get-MaskedString -Source $TestSource -Target $Target -First $First -Last $Last | Should -BeExactly $TestOutput
-            }
-
-            It 'Mask target (4)' {
-                $TestSource = 'Token test : stk-yDYabcdefgfBqD6IPNTukJsABCDEFG8l02ksb4X : Token test'
-                $TestOutput = 'Token test : stk-yD*****4X : Token test'
-                $Target = 'stk-yDYabcdefgfBqD6IPNTukJsABCDEFG8l02ksb4X'
-                $First = 6
-                $Last = 2
-                $MaxAsterisks = 5
-                Get-MaskedString -Source $TestSource -Target $Target -First $First -Last $Last -MaxNumberOfAsterisks $MaxAsterisks | Should -BeExactly $TestOutput
-            }
-
-            It 'Mask target (5)' {
-                $TestSource = 'Token test : stk-yDYabcdefgfBqD6IPNTukJsABCDEFG8l02ksb4X : Token test'
-                $TestOutput = 'Token test : stk-yD****************************************4X : Token test'
-                $Target = 'stk-yDYabcdefgfBqD6IPNTukJsABCDEFG8l02ksb4X'
-                $First = 6
-                $Last = 2
-                $MinAsterisks = 40
-                Get-MaskedString -Source $TestSource -Target $Target -First $First -Last $Last -MinNumberOfAsterisks $MinAsterisks | Should -BeExactly $TestOutput
-            }
-
-            It 'Mask target (6)' {
-                $TestSource = 'Token test : stk-yDYabcdefgfBqD6IPNTukJsABCDEFG8l02ksb4X : Token test'
-                $TestOutput = 'Token test : stk-yD****4X : Token test'
-                $Target = 'stk-yDYabcdefgfBqD6IPNTukJsABCDEFG8l02ksb4X'
-                $First = 6
-                $Last = 2
-                $MaxAsterisks = 4
-                $MinAsterisks = 40
-                Get-MaskedString -Source $TestSource -Target $Target -First $First -Last $Last -MaxNumberOfAsterisks $MaxAsterisks -MinNumberOfAsterisks $MinAsterisks | Should -BeExactly $TestOutput
-            }
-
-            It 'Mask target (7)' {
-                $TestSource = 'Token test : stk-yDYabcdefgfBqD6IPNTukJsABCDEFG8l02ksb4X : Token test'
-                $TestOutput = 'Token test : stk-yDYabcdefgfBqD6IPNTukJsABCDEFG8l02ksb4X : Token test'
-                $Target = 'stk-yDYabcdefgfBqD6IPNTukJsABCDEFG8l02ksb4X'
-                $First = 1000
-                $Last = 2
-                Get-MaskedString -Source $TestSource -Target $Target -First $First -Last $Last | Should -BeExactly $TestOutput
-            }
-
-            It 'Mask target (8)' {
-                $TestSource = 'Token test : stk-yDYabcdefgfBqD6IPNTukJsABCDEFG8l02ksb4X : Token test'
-                $TestOutput = 'Token test : stk-yDYabcdefgfBqD6IPNTukJsABCDEFG8l02ksb4X : Token test'
-                $Target = 'stk-yDYabcdefgfBqD6IPNTukJsABCDEFG8l02ksb4X'
-                $First = 6
-                $Last = 1000
-                Get-MaskedString -Source $TestSource -Target $Target -First $First -Last $Last | Should -BeExactly $TestOutput
-            }
-
-            It 'Mask target (9)' {
-                $TestSource = 'Token test : stk-yDYabcdefgfBqD6IPNTukJsABCDEFG8l02ksb4X : Token test'
-                $TestOutput = 'Token test : stk-yDYabcdefgfBqD6IPNTukJsABCDEFG8l02ksb4X : Token test'
-                $Target = 'stk-yDYabcdefgfBqD6IPNTukJsABCDEFG8l02ksb4X'
-                $First = 43
-                $Last = 43
-                Get-MaskedString -Source $TestSource -Target $Target -First $First -Last $Last | Should -BeExactly $TestOutput
-            }
-
-            It 'Mask target (9)' {
-                $TestSource = 'Token test : stk-yDYabcdefgfBqD6IPNTukJsABCDEFG8l02ksb4X : Token test'
-                $TestOutput = 'Token test : ******************************************* : Token test'
-                $Target = 'stk-yDYabcdefgfBqD6IPNTukJsABCDEFG8l02ksb4X'
-                $First = 0
-                $Last = 0
-                Get-MaskedString -Source $TestSource -Target $Target -First $First -Last $Last | Should -BeExactly $TestOutput
-            }
-
-            It 'Mask target (10)' {
-                $TestSource = 'Token test : stk-yDYabcdefgfBqD6IPNTukJsABCDEFG8l02ksb4X : Token test'
-                $TestOutput = 'Token test : ******************************************* : Token test'
-                $Target = ConvertTo-SecureString 'stk-yDYabcdefgfBqD6IPNTukJsABCDEFG8l02ksb4X' -AsPlainText -Force
-                Get-MaskedString -Source $TestSource -Target $Target | Should -BeExactly $TestOutput
-            }
-
-            It 'Mask target (11)' {
-                $TestSource = 'Token1: ABCDEFG / Token2:  01234567'
-                $TestOutput = 'Token1: ******* / Token2:  ********'
-                $Target = ('ABCDEFG', '01234567')
-                Get-MaskedString -Source $TestSource -Target $Target | Should -BeExactly $TestOutput
-            }
-
-            It 'Mask target (12)' {
-                $TestSource = 'Token1: ABCDEFG / Token2:  01234567'
-                $TestOutput = 'Token1: ******* / Token2:  01234567'
-                $Target = ('ABCDEFG', $null)
-                Get-MaskedString -Source $TestSource -Target $Target | Should -BeExactly $TestOutput
+            It 'Mask Test : (<Idx>)' -ForEach @(
+                @{ Idx = 1; InputString = 'test : NOMATCH : test'; Expect = 'test : NOMATCH : test' }
+                @{ Idx = 2; InputString = 'test : stk-abcdEFGH0123 : test'; Expect = 'test : stk-ab***23 : test' }
+                @{ Idx = 3; InputString = 'test : SeCReT : test'; Expect = 'test : <MASKED> : test' }
+                @{ Idx = 4; InputString = "abc`ndef`nSECRET`nend"; Expect = "abc`ndef`n<MASKED>`nend" }
+                @{ Idx = 5; InputString = "abc`ndef`nSEC`nRET`nend"; Expect = "abc`ndef`nSEC`nRET`nend" }
+            ) {
+                $MaskPatterns = [System.Collections.Generic.List[Tuple[regex, string]]]::new()
+                $MaskPatterns.Add([Tuple[regex, string]]::new('(stk-.{2})[a-z0-9\-_.~+/]+([^\s]{2})', '$1***$2'))
+                $MaskPatterns.Add([Tuple[regex, string]]::new('SECRET', '<MASKED>'))
+                Get-MaskedString -InputString $InputString -MaskPatterns $MaskPatterns | Should -BeExactly $Expect
             }
         }
     }

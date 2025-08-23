@@ -3,7 +3,7 @@ using namespace System.Runtime.InteropServices
 function Initialize-APIKey {
     [CmdletBinding()]
     [OutputType([securestring])]
-    Param(
+    param(
         [Parameter(Mandatory, Position = 0)]
         [AllowNull()]
         [securestring][SecureStringTransformation()]$ApiKey,
@@ -39,12 +39,18 @@ function Initialize-APIKey {
         }
     }
 
-    $first = switch -CaseSensitive -Wildcard ($p) {
-        'sk-proj-*' { 11; continue }
-        'sk-*' { 6; continue }
-        default { 3 }
+    $pattern = switch -CaseSensitive -Wildcard ($p) {
+        'sk-proj-*' { '(sk-proj-.{3})[a-z0-9\-_.~+/]+([^\s]{2})'; continue }
+        'sk-*' { '(sk-.{3})[a-z0-9\-_.~+/]+([^\s]{2})'; continue }
+        default { '^(.{3})[a-z0-9\-_.~+/]+([^\s]{2})' }
     }
-    Write-Verbose -Message (Get-MaskedString -Source ("API key to be used is $p") -Target $p -First $first -Last 2 -MaxNumberOfAsterisks 45)
+
+    ## Set up masking patterns
+    $MaskPatterns = [System.Collections.Generic.List[Tuple[regex, string]]]::new()
+    $MaskPatterns.Add([Tuple[regex, string]]::new($pattern, '$1***************$2'))
+    $MaskPatterns.Add([Tuple[regex, string]]::new([regex]::Escape($p), '<OpenAI API Key>'))
+
+    Write-Verbose -Message ('API key to be used is ' + (Get-MaskedString -Input $p -MaskPatterns $MaskPatterns))
     $p = $null
     $ApiKey
 }

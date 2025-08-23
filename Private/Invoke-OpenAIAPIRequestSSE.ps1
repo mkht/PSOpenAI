@@ -65,7 +65,10 @@ function Invoke-OpenAIAPIRequestSSE {
         [bool]$ReturnRawResponse = $false,
 
         [Parameter()]
-        [uint64]$First = [uint64]::MaxValue
+        [uint64]$First = [uint64]::MaxValue,
+
+        [Parameter()]
+        [Generic.List[Tuple[regex, string]]]$MaskPatterns = @()
     )
 
     $InternalParams = Initialize-OpenAIAPIRequestParam @PSBoundParameters
@@ -148,19 +151,25 @@ function Invoke-OpenAIAPIRequestSSE {
     $CancelToken = $cts.Token
 
     # Verbose / Debug output
+    ## Set up masking patterns
+    $MaskPatterns.Add([Tuple[regex, string]]::new('(sk-proj-.{3})[a-z0-9\-_.~+/]+([^\s]{2})', '$1***************$2')) # OpenAI API Key (sk-proj-...)
+    $MaskPatterns.Add([Tuple[regex, string]]::new('(Authorization:\s*Bearer\s+)[a-zA-Z0-9\-_.~+/]+', '$1********')) # Bearer token
+    if (-not [string]::IsNullOrWhiteSpace($PlainToken)) {
+        $MaskPatterns.Add([Tuple[regex, string]]::new([regex]::Escape($PlainToken), '<OpenAI API Key>'))
+    }
+    if (-not [string]::IsNullOrWhiteSpace($Organization)) {
+        $MaskPatterns.Add([Tuple[regex, string]]::new([regex]::Escape($Organization), '<OpenAI Organization ID>'))
+    }
+
     Write-Verbose -Message "Request to $ServiceName API"
-    Write-Verbose -Message "Method = $Method, Path = $($InternalParams.Uri), Streaming = True"
-    Write-Verbose -Message ('Request HTTP/{0} {1} with {2}-byte payload' -f `
-            $RequestMessage.Version, $RequestMessage.Method, `
-        $($RequestMessage.Content.Headers.ContentLength -as [Int64]))
+    Write-Verbose -Message ("Method = $Method, Path = $($InternalParams.Uri), Streaming = True" | Get-MaskedString -MaskPatterns $MaskPatterns)
+    Write-Verbose -Message (('Request HTTP/{0} {1} with {2}-byte payload' -f `
+                $RequestMessage.Version, $RequestMessage.Method, `
+            $($RequestMessage.Content.Headers.ContentLength -as [Int64])) | `
+                Get-MaskedString -MaskPatterns $MaskPatterns)
+
     if ($IsDebug) {
-        $startIdx = $lastIdx = 2
-        if ($AuthType -eq 'openai') { $startIdx += 4 } # 'org-'
-        $MaskedMessage = Get-MaskedString `
-        ('Request parameters: ' + ($RequestMessage | Format-List  Method, RequestUri, @{name = 'Headers'; expression = { $_.Headers.ToString() } } | Out-String)).TrimEnd() `
-            -Target ($ApiKey, $Organization) -First $startIdx -Last $lastIdx -MaxNumberOfAsterisks 45
-        Write-Debug -Message $MaskedMessage
-        $MaskedMessage = $null
+        Write-Debug -Message ('Request parameters: ' + ($RequestMessage | Format-List  Method, RequestUri, @{name = 'Headers'; expression = { $_.Headers.ToString() } } | Out-String | Get-MaskedString -MaskPatterns $MaskPatterns)).TrimEnd()
     }
 
     # Send API Request
@@ -208,13 +217,10 @@ function Invoke-OpenAIAPIRequestSSE {
                     StatusCode, `
                 @{name = 'processing_ms'; expression = { $_.Headers.GetValues('openai-processing-ms')[0] } }, `
                 @{name = 'request_id'; expression = { $_.Headers.GetValues('X-Request-Id')[0] } } | Out-String)).TrimEnd()
+
         # Don't read the whole stream for debug logging unless necessary.
         if ($IsDebug) {
-            $startIdx = $lastIdx = 2
-            if ($AuthType -eq 'openai') { $startIdx += 4 } # 'org-'
-            Write-Debug -Message (Get-MaskedString `
-                ('API response header: ' + ($HttpResponse.Headers | Format-Table -Hide | Out-String)).TrimEnd() `
-                    -Target ($ApiKey, $Organization) -First $startIdx -Last $lastIdx -MaxNumberOfAsterisks 45)
+            Write-Debug -Message ('API response header: ' + ($HttpResponse.Headers | Format-Table -Hide | Out-String | Get-MaskedString -MaskPatterns $MaskPatterns)).TrimEnd()
         }
 
         [uint64]$DataCounter = 0
