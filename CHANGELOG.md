@@ -1,5 +1,6 @@
 # Changelog
 ### Unreleased
+- Add connectors support for MCP tool.
 - Add new functions for Conversations API.
     + [New-Conversation](/Docs/New-Conversation.md)
     + [Get-Conversation](/Docs/Get-Conversation.md)
@@ -8,6 +9,8 @@
     + [Add-ConversationItem](/Docs/Add-ConversationItem.md)
     + [Get-ConversationItem](/Docs/Get-ConversationItem.md)
     + [Remove-ConversationItem](/Docs/Remove-ConversationItem.md)
+- Fix an issue that `Request-ImageGeneration` and `Request-ImageEdit` does not work properly with `gpt-image-1` model.
+- Improve to prevent excessively long debug messages.
 
 ### 4.34.0
 - API updates.
