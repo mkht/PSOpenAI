@@ -197,7 +197,40 @@ function Request-Response {
 
         [Parameter()]
         [System.Collections.IDictionary]$RemoteMCPHeaders,
+
+        [Parameter()]
+        [string]$RemoteMCPAuthorization,
         #endregion Remote MCP
+
+        #region Connectors
+        [Parameter()]
+        [switch]$UseConnector,
+
+        [Parameter()]
+        [ValidateNotNullOrEmpty()]
+        [string]$ConnectorLabel,
+
+        [Parameter()]
+        [Completions(
+            'connector_dropbox',
+            'connector_gmail',
+            'connector_googlecalendar',
+            'connector_googledrive',
+            'connector_microfotteams',
+            'connector_outlookcalendar',
+            'connector_outlookemail',
+            'connector_sharepoint'
+        )]
+        [ValidateNotNullOrEmpty()]
+        [string]$ConnectorId,
+
+        [Parameter()]
+        [Completions('always', 'never')]
+        [string]$ConnectorRequireApproval,
+
+        [Parameter()]
+        [string]$ConnectorAuthorization,
+        #endregion Connectors
 
         #region Code Interpreter
         [Parameter()]
@@ -428,6 +461,9 @@ function Request-Response {
     begin {
         # Get API context
         $OpenAIParameter = Get-OpenAIAPIParameter -EndpointName 'Responses' -Parameters $PSBoundParameters -Engine $Model -ErrorAction Stop
+
+        ## Set up masking patterns
+        $MaskPatterns = [System.Collections.Generic.List[Tuple[regex, string]]]::new()
     }
 
     process {
@@ -718,6 +754,10 @@ function Request-Response {
             if ($PSBoundParameters.ContainsKey('RemoteMCPServerDescription')) {
                 $MCPTool.server_description = $RemoteMCPServerDescription
             }
+            if ($PSBoundParameters.ContainsKey('RemoteMCPAuthorization')) {
+                $MCPTool.authorization = $RemoteMCPAuthorization
+                $MaskPatterns.Add([Tuple[regex, string]]::new([regex]::Escape($RemoteMCPAuthorization), '<OAuth Access Token>'))
+            }
             if ($PSBoundParameters.ContainsKey('RemoteMCPAllowedTools')) {
                 if ($RemoteMCPAllowedTools.tool_names.Count -gt 0) {
                     $RemoteMCPAllowedTools = $RemoteMCPAllowedTools.tool_names
@@ -746,6 +786,33 @@ function Request-Response {
             }
 
             $Tools += $MCPTool
+        }
+
+        #region Connectors
+        if ($UseConnector) {
+            # Server label and connector_id are required.
+            if ([string]::IsNullOrWhiteSpace($ConnectorLabel)) {
+                Write-Error 'ConnectorLabel must be specified.'
+            }
+            if ([string]::IsNullOrWhiteSpace($ConnectorId)) {
+                Write-Error 'ConnectorId must be specified.'
+            }
+
+            $ConnectorTool = @{
+                type         = 'mcp'
+                server_label = $ConnectorLabel
+                connector_id = $ConnectorId
+            }
+
+            if ($PSBoundParameters.ContainsKey('ConnectorAuthorization')) {
+                $ConnectorTool.authorization = $ConnectorAuthorization
+                $MaskPatterns.Add([Tuple[regex, string]]::new([regex]::Escape($ConnectorAuthorization), '<OAuth Access Token>'))
+            }
+            if ($PSBoundParameters.ContainsKey('ConnectorRequireApproval')) {
+                $ConnectorTool.require_approval = $ConnectorRequireApproval.Trim()
+            }
+
+            $Tools += $ConnectorTool
         }
 
         #region Code Interpreter
@@ -986,6 +1053,7 @@ function Request-Response {
             AdditionalQuery   = $AdditionalQuery
             AdditionalHeaders = $AdditionalHeaders
             AdditionalBody    = $AdditionalBody
+            MaskPatterns      = $MaskPatterns
         }
 
         #region Send API Request (Stream)

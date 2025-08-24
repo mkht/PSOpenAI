@@ -55,6 +55,12 @@ Request-Response
     [-RemoteMCPAllowedTools <Object>]
     [-RemoteMCPRequireApproval <Object>]
     [-RemoteMCPHeaders <IDictionary>]
+    [-RemoteMCPAuthorization <String>]
+    [-UseConnector]
+    [-ConnectorLabel <String>]
+    [-ConnectorId <String>]
+    [-ConnectorRequireApproval <String>]
+    [-ConnectorAuthorization <String>]
     [-UseCodeInterpreter]
     [-ContainerId <String>]
     [-ContainerFileIds <String[]>]
@@ -520,6 +526,68 @@ Optional HTTP headers to send to the MCP server. Use for authentication or other
 
 ```yaml
 Type: IDictionary
+Required: False
+Position: Named
+```
+
+### -RemoteMCPAuthorization
+An OAuth access token that can be used with a remote MCP server.
+
+```yaml
+Type: String
+Required: False
+Position: Named
+```
+
+### -UseConnector
+If you want to use the service connector, Should specify this switch as enabled.
+
+```yaml
+Type: SwitchParameter
+Required: False
+Position: Named
+```
+
+### -ConnectorLabel
+A label for this connector, used to identify it in tool calls.
+
+```yaml
+Type: String
+Required: False
+Position: Named
+```
+
+### -ConnectorId
+The ID of the connector. Supported connector id values are:  
+- Dropbox: `connector_dropbox`
+- Gmail: `connector_gmail`
+- Google Calendar: `connector_googlecalendar`
+- Google Drive: `connector_googledrive`
+- Microsoft Teams: `connector_microsoftteams`
+- Outlook Calendar: `connector_outlookcalendar`
+- Outlook Email: `connector_outlookemail`
+- SharePoint: `connector_sharepoint`
+
+```yaml
+Type: String
+Required: False
+Position: Named
+```
+
+### -ConnectorRequireApproval
+Specify whether the connector requires approval. One of `always` or `never`.
+
+```yaml
+Type: String
+Required: False
+Position: Named
+```
+
+### -ConnectorAuthorization
+An OAuth access token that can be used with a service connector.
+
+```yaml
+Type: String
 Required: False
 Position: Named
 ```
