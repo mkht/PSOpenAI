@@ -1,5 +1,5 @@
 # Changelog
-### Unreleased
+### 4.35.0
 - Add connectors support for MCP tool.
 - Add new functions for Conversations API.
     + [New-Conversation](/Docs/New-Conversation.md)

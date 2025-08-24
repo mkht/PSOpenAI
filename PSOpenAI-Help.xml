@@ -22637,6 +22637,85 @@ Possible values: `browser`, `mac`, `windows`, `ubuntu`.</maml:para>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>RemoteMCPAuthorization</maml:name>
+          <maml:description>
+            <maml:para>An OAuth access token that can be used with a remote MCP server.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>UseConnector</maml:name>
+          <maml:description>
+            <maml:para>If you want to use the service connector, Should specify this switch as enabled.</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>ConnectorLabel</maml:name>
+          <maml:description>
+            <maml:para>A label for this connector, used to identify it in tool calls.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>ConnectorId</maml:name>
+          <maml:description>
+            <maml:para>The ID of the connector. Supported connector id values are:
+- Dropbox: `connector_dropbox`</maml:para>
+            <maml:para>- Gmail: `connector_gmail`</maml:para>
+            <maml:para>- Google Calendar: `connector_googlecalendar`</maml:para>
+            <maml:para>- Google Drive: `connector_googledrive`</maml:para>
+            <maml:para>- Microsoft Teams: `connector_microsoftteams`</maml:para>
+            <maml:para>- Outlook Calendar: `connector_outlookcalendar`</maml:para>
+            <maml:para>- Outlook Email: `connector_outlookemail`</maml:para>
+            <maml:para>- SharePoint: `connector_sharepoint`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>ConnectorRequireApproval</maml:name>
+          <maml:description>
+            <maml:para>Specify whether the connector requires approval. One of `always` or `never`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>ConnectorAuthorization</maml:name>
+          <maml:description>
+            <maml:para>An OAuth access token that can be used with a service connector.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>UseCodeInterpreter</maml:name>
           <maml:description>
             <maml:para>If you want to use the Code Interpreter built-in tool, Should specify this switch as enabled.</maml:para>
@@ -23691,6 +23770,86 @@ Possible values: `browser`, `mac`, `windows`, `ubuntu`.</maml:para>
         <command:parameterValue required="true" variableLength="false">IDictionary</command:parameterValue>
         <dev:type>
           <maml:name>IDictionary</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>RemoteMCPAuthorization</maml:name>
+        <maml:description>
+          <maml:para>An OAuth access token that can be used with a remote MCP server.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>UseConnector</maml:name>
+        <maml:description>
+          <maml:para>If you want to use the service connector, Should specify this switch as enabled.</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>ConnectorLabel</maml:name>
+        <maml:description>
+          <maml:para>A label for this connector, used to identify it in tool calls.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>ConnectorId</maml:name>
+        <maml:description>
+          <maml:para>The ID of the connector. Supported connector id values are:
+- Dropbox: `connector_dropbox`</maml:para>
+          <maml:para>- Gmail: `connector_gmail`</maml:para>
+          <maml:para>- Google Calendar: `connector_googlecalendar`</maml:para>
+          <maml:para>- Google Drive: `connector_googledrive`</maml:para>
+          <maml:para>- Microsoft Teams: `connector_microsoftteams`</maml:para>
+          <maml:para>- Outlook Calendar: `connector_outlookcalendar`</maml:para>
+          <maml:para>- Outlook Email: `connector_outlookemail`</maml:para>
+          <maml:para>- SharePoint: `connector_sharepoint`</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>ConnectorRequireApproval</maml:name>
+        <maml:description>
+          <maml:para>Specify whether the connector requires approval. One of `always` or `never`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>ConnectorAuthorization</maml:name>
+        <maml:description>
+          <maml:para>An OAuth access token that can be used with a service connector.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
