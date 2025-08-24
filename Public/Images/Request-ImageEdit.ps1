@@ -118,6 +118,10 @@ function Request-ImageEdit {
     begin {
         # Get API endpoint
         $OpenAIParameter = Get-OpenAIAPIParameter -EndpointName 'Image.Edit' -Parameters $PSBoundParameters -Engine $Model -ErrorAction Stop
+
+        ## Set up masking patterns
+        $MaskPatterns = [System.Collections.Generic.List[Tuple[regex, string]]]::new()
+        $MaskPatterns.Add([Tuple[regex, string]]::new('("b64_json":\s")[^\s"]+', '$1<base64-image-data>'))
     }
 
     process {
@@ -197,11 +201,15 @@ function Request-ImageEdit {
                 Write-Warning 'Your specified model does not support response_format=url. Defaulting to object.'
                 $ResponseFormat = 'object'
             }
+            elseif ($ResponseFormat -eq 'url') {
+                $ResponseFormat = 'object'
+            }
         }
 
         switch ($ResponseFormat) {
             { $PSCmdlet.ParameterSetName -eq 'OutFile' } {
                 $ResponseFormat = 'base64'
+                $PostBody.response_format = 'b64_json'
                 break
             }
             'url' {
@@ -238,6 +246,11 @@ function Request-ImageEdit {
                     $PostBody.output_format = 'png'
                 }
             }
+
+            # reponse_formart parameter is not supported for gpt-image-1.
+            if ($PostBody.Contains('response_format')) {
+                $PostBody.Remove('response_format')
+            }
         }
         #endregion
 
@@ -253,6 +266,7 @@ function Request-ImageEdit {
             AdditionalQuery   = $AdditionalQuery
             AdditionalHeaders = $AdditionalHeaders
             AdditionalBody    = $AdditionalBody
+            MaskPatterns      = $MaskPatterns
         }
 
         #region Send API Request (Stream)
@@ -374,6 +388,9 @@ function Request-ImageEdit {
                         Write-Verbose ('Save image to {0}' -f $SaveToPath)
                         Write-ByteContent -OutFile $SaveToPath -Bytes ([Convert]::FromBase64String($content.b64_json))
                         $Suffix++
+                    }
+                    elseif ($ResponseFormat -eq 'object') {
+                        ParseImageGenerationObject $Response
                     }
                     elseif ($ResponseFormat -eq 'url') {
                         Write-Output ($content | Select-Object -ExpandProperty 'url')
