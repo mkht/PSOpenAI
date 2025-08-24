@@ -10,7 +10,7 @@ function Get-MaskedString {
         [string]$InputString,
 
         [Parameter()]
-        [int]$MaxLength = 8192,
+        [int]$MaxLength = 32768,
 
         [Parameter()]
         [List[Tuple[regex, string]]]$MaskPatterns = @()

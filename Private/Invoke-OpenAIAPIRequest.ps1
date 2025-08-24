@@ -247,7 +247,12 @@ function Invoke-OpenAIAPIRequest {
     # Don't read the whole stream for debug logging unless necessary.
     if ($IsDebug) {
         Write-Debug -Message ('API response header: ' + ($Response.Headers | Format-Table -HideTableHeaders | Out-String | Get-MaskedString -MaskPatterns $MaskPatterns)).TrimEnd()
-        Write-Debug -Message ('API response body: ' + ($Response.Content | Out-String | Get-MaskedString -MaskPatterns $MaskPatterns)).TrimEnd()
+        if ( $Response.Headers.'Content-Type' -match '^(image/|audio/|video/|application/octet-stream)') {
+            Write-Debug -Message ('API response body: <binary data> (content-type: ' + $Response.Headers.'Content-Type' + ', length: ' + $Response.Content.Length + ' bytes)')
+        }
+        else {
+            Write-Debug -Message ('API response body: ' + ($Response.Content | Out-String | Get-MaskedString -MaskPatterns $MaskPatterns)).TrimEnd()
+        }
     }
 
     # Save WebSession
