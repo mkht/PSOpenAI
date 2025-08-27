@@ -22458,6 +22458,18 @@ You can speciy a list of the local file path, the URL of the file or the ID of t
           <dev:defaultValue>medium</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>WebSearchAllowedDomains</maml:name>
+          <maml:description>
+            <maml:para>Allowed domains for the search. If not provided, all domains are allowed. Subdomains of the provided domains are allowed as well.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>WebSearchUserLocationCity</maml:name>
           <maml:description>
             <maml:para>Free text input for the city of the user, e.g. `San Francisco`.</maml:para>
@@ -23592,6 +23604,18 @@ You can speciy a list of the local file path, the URL of the file or the ID of t
           <maml:uri />
         </dev:type>
         <dev:defaultValue>medium</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>WebSearchAllowedDomains</maml:name>
+        <maml:description>
+          <maml:para>Allowed domains for the search. If not provided, all domains are allowed. Subdomains of the provided domains are allowed as well.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+        <dev:type>
+          <maml:name>String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>WebSearchUserLocationCity</maml:name>

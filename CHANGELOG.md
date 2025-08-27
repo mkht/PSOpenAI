@@ -1,4 +1,7 @@
 # Changelog
+### 4.36.0
+- Add `-WebSearchAllowedDomains` parameter to `Request-Response` function.
+
 ### 4.35.0
 - Add connectors support for MCP tool.
 - Add new functions for Conversations API.
