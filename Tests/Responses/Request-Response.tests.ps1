@@ -530,6 +530,7 @@ Describe 'Request-Response' {
                     -Message 'List recent top 3 tech news.' `
                     -UseWebSearch `
                     -WebSearchContextSize low `
+                    -WebSearchAllowedDomains @('techradar.com', 'theguardian.com', 'theregister.com') `
                     -WebSearchUserLocationCountry 'GB' `
                     -WebSearchUserLocationCity 'London' `
                     -WebSearchUserLocationRegion 'London' `
@@ -921,10 +922,11 @@ STEP2. Use the timestamp tool to save the resulting timestamp in date and time, 
 
         It 'Tools - Web Search' {
             { $script:Result = Request-Response -Model 'gpt-4o-mini' `
-                    -Message 'List recent top 3 tech news.' `
+                    -Message 'Please tell me some interesting recent tech stories.' `
                     -UseWebSearch `
+                    -WebSearchAllowedDomains @('techradar.com', 'theguardian.com', 'theregister.com') `
                     -WebSearchContextSize 'low' `
-                    -TimeoutSec 30 -Store $false -ea Stop } | Should -Not -Throw
+                    -TimeoutSec 60 -Store $false -ea Stop } | Should -Not -Throw
             $Result.object | Should -Be 'response'
             $Result.LastUserMessage | Should -Not -BeNullOrEmpty
             $Result.output_text | Should -Not -BeNullOrEmpty

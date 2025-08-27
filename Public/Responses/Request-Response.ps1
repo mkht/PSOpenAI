@@ -129,12 +129,16 @@ function Request-Response {
         [switch]$UseWebSearch,
 
         [Parameter()]
-        [Completions('web_search_preview')]
-        [string]$WebSearchType = 'web_search_preview',
+        [Completions('web_search')]
+        [string]$WebSearchType = 'web_search',
 
         [Parameter()]
         [ValidateSet('low', 'medium', 'high')]
         [string][LowerCaseTransformation()]$WebSearchContextSize,
+
+        [Parameter()]
+        [AllowEmptyCollection()]
+        [string[]]$WebSearchAllowedDomains,
 
         [Parameter(DontShow)]
         [string]$WebSearchUserLocationType = 'approximate', # Currently, only 'approximate' is acceptable.
@@ -684,6 +688,9 @@ function Request-Response {
 
             if ($PSBoundParameters.ContainsKey('WebSearchContextSize')) {
                 $WebSearchTool.search_context_size = $WebSearchContextSize
+            }
+            if ($PSBoundParameters.ContainsKey('WebSearchAllowedDomains')) {
+                $WebSearchTool.filters = @{allowed_domains = $WebSearchAllowedDomains }
             }
             if ($PSBoundParameters.ContainsKey('WebSearchUserLocationCity')) {
                 $UserLocation.city = $WebSearchUserLocationCity

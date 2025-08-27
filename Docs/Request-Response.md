@@ -40,6 +40,7 @@ Request-Response
     [-UseWebSearch]
     [-WebSearchType <String>]
     [-WebSearchContextSize <String>]
+    [-WebSearchAllowedDomains <String[]>]
     [-WebSearchUserLocationCity <String>]
     [-WebSearchUserLocationCountry <String>]
     [-WebSearchUserLocationRegion <String>]
@@ -392,6 +393,15 @@ Accepted values: low, medium, high
 Required: False
 Position: Named
 Default value: medium
+```
+
+### -WebSearchAllowedDomains
+Allowed domains for the search. If not provided, all domains are allowed. Subdomains of the provided domains are allowed as well.
+
+```yaml
+Type: String[]
+Required: False
+Position: Named
 ```
 
 ### -WebSearchUserLocationCity
