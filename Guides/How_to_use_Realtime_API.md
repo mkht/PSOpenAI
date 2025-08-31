@@ -1,6 +1,6 @@
 # How to use Realtime API
 
-The Realtime API enables you to communicate with a GPT  odel live, in real time experiences.  
+The Realtime API enables you to communicate with a GPT model live, in real time experiences.  
 
 OpenAI's official guide is here.  
 https://platform.openai.com/docs/guides/realtime
