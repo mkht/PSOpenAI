@@ -43,10 +43,9 @@ function Add-RealtimeSessionItem {
         [Parameter()]
         [ValidateSet(
             'input_text',
+            'input_image',
             'input_audio',
-            'item_reference',
-            'text',
-            'audio'
+            'item_reference'
         )]
         [ValidateNotNullOrEmpty()]
         [string]$ContentType = 'input_text',
@@ -96,6 +95,17 @@ function Add-RealtimeSessionItem {
         $MessageObject.item.content = @(@{type = $ContentType })
         if ($ContentType -in ('input_text', 'text')) {
             $MessageObject.item.content[0].text = $Content
+        }
+        elseif ($ContentType -eq 'input_image') {
+            if (Test-Path -LiteralPath $Content -PathType Leaf) {
+                # local file
+                $imageContent = (Convert-ImageToDataURL $Content)
+            }
+            elseif ($image -match 'http[s]?://') {
+                # URL
+                $imageContent = $Content
+            }
+            $MessageObject.item.content[0].image_url = $imageContent
         }
         elseif ($ContentType -eq 'input_audio') {
             $MessageObject.item.content[0].audio = $Content

@@ -24,7 +24,13 @@ Describe 'Realtime E2E Test' {
 
                 # Register event handler
                 $null = Register-EngineEvent -SourceIdentifier $script:ReceiveEventSource -Action {
-                    $global:ReceiveStack.Push($Event.SourceArgs[0])
+                    $eventItem = $Event.SourceArgs[0]
+                    if ($eventItem.type -eq 'rate_limits.updated') {
+                        return # Ignore rate limit updates
+                    }
+                    elseif ( $null -ne $eventItem ) {
+                        $global:ReceiveStack.Push($eventItem)
+                    }
                 }
                 $null = Register-EngineEvent -SourceIdentifier $script:SendEventSource -Action {
                     $global:SendStack.Push($Event.SourceArgs[0])
@@ -44,11 +50,11 @@ Describe 'Realtime E2E Test' {
             }
 
             It 'STEP1: Connect to session' {
-                { Connect-RealtimeSession -Model 'gpt-4o-mini-realtime-preview-2024-12-17' -ea Stop } | Should -Not -Throw
+                { Connect-RealtimeSession -Model 'gpt-realtime' -ea Stop } | Should -Not -Throw
             }
 
             It 'STEP1-1: Only one session is allowed' {
-                { Connect-RealtimeSession -Model 'gpt-4o-mini-realtime-preview-2024-12-17' -ea Stop } | Should -Throw
+                { Connect-RealtimeSession -Model 'gpt-realtime' -ea Stop } | Should -Throw
             }
 
             It 'STEP2: Configure session' {
@@ -56,8 +62,7 @@ Describe 'Realtime E2E Test' {
                 { Set-RealtimeSessionConfiguration `
                         -Instructions $script:Instructions `
                         -Modalities 'text' `
-                        -Temperature 0.6 `
-                        -MaxResponseOutputTokens 32 `
+                        -MaxOutputTokens 32 `
                         -ea Stop } | Should -Not -Throw
                 Start-Sleep -Seconds 1
 
@@ -81,7 +86,7 @@ Describe 'Realtime E2E Test' {
                 $item.type | Should -BeExactly 'conversation.item.create'
 
                 $null = $global:ReceiveStack.TryPeek([ref]$item)
-                $item.type | Should -BeExactly 'conversation.item.created'
+                $item.type | Should -BeExactly 'conversation.item.done'
             }
 
             It 'STEP4: Trigger response' {
@@ -93,16 +98,13 @@ Describe 'Realtime E2E Test' {
                 $item = $item | ConvertFrom-Json
                 $item.type | Should -BeExactly 'response.create'
 
-                $null = $global:ReceiveStack.TryPeek([ref]$item)
-                $item.type | Should -BeExactly 'response.done'
-                $item.response.output.role | Should -Be 'assistant'
-
                 $items = $global:ReceiveStack.ToArray() | select -ExpandProperty type
                 $items | Should -Not -Contain 'error'
                 $items | Should -Contain 'response.content_part.added'
-                $items | Should -Contain 'response.text.delta'
+                $items | Should -Contain 'response.output_text.delta'
                 $items | Should -Contain 'response.content_part.done'
                 $items | Should -Contain 'response.output_item.done'
+                $items | Should -Contain 'response.done'
             }
 
             It 'STEP5: Input a next message (with trigger response)' {

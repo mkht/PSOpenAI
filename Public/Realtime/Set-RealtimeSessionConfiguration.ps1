@@ -9,11 +9,20 @@ function Set-RealtimeSessionConfiguration {
         [string]$Instructions,
 
         [Parameter()]
+        [string]$PromptId,
+
+        [Parameter()]
+        [System.Collections.IDictionary]$PromptVariables,
+
+        [Parameter()]
+        [string]$PromptVersion,
+
+        [Parameter()]
         [ValidateSet('text', 'audio')]
         [string[]]$Modalities = @('text'),
 
         [Parameter()]
-        [Completions('alloy', 'ash', 'ballad', 'coral', 'echo', 'fable', 'nova', 'onyx', 'sage', 'shimmer', 'verse')]
+        [Completions('alloy', 'ash', 'ballad', 'coral', 'echo', 'sage', 'shimmer', 'verse', 'marin', 'cedar')]
         [string][LowerCaseTransformation()]$Voice,
 
         [Parameter()]
@@ -45,7 +54,7 @@ function Set-RealtimeSessionConfiguration {
         [bool]$EnableInputAudioTranscription,
 
         [Parameter()]
-        [Completions('gpt-4o-transcribe', 'gpt-4o-mini-transcribe', 'whisper-1')]
+        [Completions('whisper-1', 'gpt-4o-transcribe-latest', 'gpt-4o-transcribe', 'gpt-4o-transcribe-diarize', 'gpt-4o-mini-transcribe')]
         [string][LowerCaseTransformation()]$InputAudioTranscriptionModel = 'whisper-1',
 
         [Parameter()]
@@ -76,6 +85,9 @@ function Set-RealtimeSessionConfiguration {
         [uint16]$TurnDetectionSilenceDuration,
 
         [Parameter()]
+        [uint16]$TurnDetectionIdleTimeout,
+
+        [Parameter()]
         [bool]$CreateResponseOnTurnEnd = $true,
 
         [Parameter()]
@@ -95,7 +107,7 @@ function Set-RealtimeSessionConfiguration {
 
         [Parameter()]
         [ValidateRange(-1, 4096)]
-        [int]$MaxResponseOutputTokens = -1,
+        [int]$MaxOutputTokens = -1,
 
         [Parameter()]
         [Completions('auto')]
@@ -113,7 +125,7 @@ function Set-RealtimeSessionConfiguration {
     )
 
     begin {
-        $MessageObject = @{type = 'session.update'; session = @{} }
+        $MessageObject = @{type = 'session.update'; session = @{type = 'realtime' } }
     }
 
     process {
@@ -124,85 +136,27 @@ function Set-RealtimeSessionConfiguration {
             $MessageObject.session.instructions = $Instructions
         }
         if ($PSBoundParameters.ContainsKey('Modalities')) {
-            $MessageObject.session.modalities = $Modalities
+            $MessageObject.session.output_modalities = $Modalities
         }
-        if ($PSBoundParameters.ContainsKey('Voice')) {
-            $MessageObject.session.voice = $Voice
-        }
-        if ($PSBoundParameters.ContainsKey('Speed')) {
-            $MessageObject.session.speed = $Speed
-        }
-        if ($PSBoundParameters.ContainsKey('InputAudioFormat')) {
-            $MessageObject.session.input_audio_format = $InputAudioFormat
-        }
-        if ($PSBoundParameters.ContainsKey('OutputAudioFormat')) {
-            $MessageObject.session.output_audio_format = $OutputAudioFormat
-        }
-
-        if ($PSBoundParameters.ContainsKey('InputAudioNoiseReductionType')) {
-            if ([string]::IsNullOrWhiteSpace($InputAudioNoiseReductionType) `
-                    -or $InputAudioNoiseReductionType -eq 'none') {
-                $MessageObject.session.input_audio_noise_reduction = $null
-            }
-            else {
-                $MessageObject.session.input_audio_noise_reduction = @{type = $InputAudioNoiseReductionType }
-            }
-        }
-
-        if ($PSBoundParameters.ContainsKey('EnableInputAudioTranscription')) {
-            if (-not $EnableInputAudioTranscription) {
-                $MessageObject.session.input_audio_transcription = $null
-            }
-            else {
-                $InputAudioTranscriptionParam = @{
-                    model = $InputAudioTranscriptionModel
-                }
-                if ($PSBoundParameters.ContainsKey('InputAudioTranscriptionLanguage')) {
-                    $InputAudioTranscriptionParam.language = $InputAudioTranscriptionLanguage
-                }
-                if ($PSBoundParameters.ContainsKey('InputAudioTranscriptionPrompt')) {
-                    $InputAudioTranscriptionParam.prompt = $InputAudioTranscriptionPrompt
-                }
-                $MessageObject.session.input_audio_transcription = $InputAudioTranscriptionParam
-            }
-        }
-
-        if ($PSBoundParameters.ContainsKey('EnableTurnDetection')) {
-            if (-not $EnableTurnDetection) {
-                $MessageObject.session.turn_detection = $null
-            }
-            else {
-                $MessageObject.session.turn_detection = @{type = $TurnDetectionType }
-                if ($PSBoundParameters.ContainsKey('TurnDetectionEagerness')) {
-                    $MessageObject.session.turn_detection.eagerness = $TurnDetectionEagerness
-                }
-                if ($PSBoundParameters.ContainsKey('TurnDetectionThreshold')) {
-                    $MessageObject.session.turn_detection.threshold = $TurnDetectionThreshold
-                }
-                if ($PSBoundParameters.ContainsKey('TurnDetectionPrefixPadding')) {
-                    $MessageObject.session.turn_detection.prefix_padding_ms = $TurnDetectionPrefixPadding
-                }
-                if ($PSBoundParameters.ContainsKey('TurnDetectionSilenceDuration')) {
-                    $MessageObject.session.turn_detection.silence_duration_ms = $TurnDetectionSilenceDuration
-                }
-                if ($PSBoundParameters.ContainsKey('CreateResponseOnTurnEnd')) {
-                    $MessageObject.session.turn_detection.create_response = $CreateResponseOnTurnEnd
-                }
-                if ($PSBoundParameters.ContainsKey('InterruptResponse')) {
-                    $MessageObject.session.turn_detection.interrupt_response = $InterruptResponse
-                }
-            }
-        }
-
         if ($PSBoundParameters.ContainsKey('Temperature')) {
             $MessageObject.session.temperature = $Temperature
         }
-        if ($PSBoundParameters.ContainsKey('MaxResponseOutputTokens')) {
-            if ($MaxResponseOutputTokens -lt 0) {
-                $MessageObject.session.max_response_output_tokens = 'inf'
+        if ($PSBoundParameters.ContainsKey('MaxOutputTokens')) {
+            if ($MaxOutputTokens -lt 0) {
+                $MessageObject.session.max_output_tokens = 'inf'
             }
             else {
-                $MessageObject.session.max_response_output_tokens = $MaxResponseOutputTokens
+                $MessageObject.session.max_output_tokens = $MaxOutputTokens
+            }
+        }
+
+        if ($PSBoundParameters.ContainsKey('PromptId')) {
+            $MessageObject.session.prompt = @{id = $PromptId }
+            if ($PSBoundParameters.ContainsKey('PromptVariables')) {
+                $MessageObject.session.prompt.variables = $PromptVariables
+            }
+            if ($PSBoundParameters.ContainsKey('PromptVersion')) {
+                $MessageObject.session.prompt.version = $PromptVersion
             }
         }
 
@@ -231,6 +185,98 @@ function Set-RealtimeSessionConfiguration {
             if ($Tracing) {
                 $MessageObject.session.tracing = $Tracing
             }
+        }
+
+        # Input audio settings
+        $InputAudioSettings = @{}
+        if ($PSBoundParameters.ContainsKey('InputAudioFormat')) {
+            $InputAudioSettings.format = $InputAudioFormat
+        }
+
+        if ($PSBoundParameters.ContainsKey('InputAudioNoiseReductionType')) {
+            if ([string]::IsNullOrWhiteSpace($InputAudioNoiseReductionType) `
+                    -or $InputAudioNoiseReductionType -eq 'none') {
+                $InputAudioSettings.noise_reduction = $null
+            }
+            else {
+                $InputAudioSettings.noise_reduction = @{type = $InputAudioNoiseReductionType }
+            }
+        }
+
+        if ($PSBoundParameters.ContainsKey('EnableInputAudioTranscription')) {
+            if (-not $EnableInputAudioTranscription) {
+                $InputAudioSettings.transcription = $null
+            }
+            else {
+                $InputAudioTranscriptionParam = @{
+                    model = $InputAudioTranscriptionModel
+                }
+                if ($PSBoundParameters.ContainsKey('InputAudioTranscriptionLanguage')) {
+                    $InputAudioTranscriptionParam.language = $InputAudioTranscriptionLanguage
+                }
+                if ($PSBoundParameters.ContainsKey('InputAudioTranscriptionPrompt')) {
+                    $InputAudioTranscriptionParam.prompt = $InputAudioTranscriptionPrompt
+                }
+                $InputAudioSettings.transcription = $InputAudioTranscriptionParam
+            }
+        }
+
+        if ($PSBoundParameters.ContainsKey('EnableTurnDetection')) {
+            if (-not $EnableTurnDetection) {
+                $InputAudioSettings.turn_detection = $null
+            }
+            else {
+                $InputAudioTurnDetectionParam = @{
+                    type = $TurnDetectionType
+                }
+                if ($PSBoundParameters.ContainsKey('TurnDetectionEagerness')) {
+                    $InputAudioTurnDetectionParam.eagerness = $TurnDetectionEagerness
+                }
+                if ($PSBoundParameters.ContainsKey('TurnDetectionIdleTimeout')) {
+                    $InputAudioTurnDetectionParam.idle_timeout_ms = $TurnDetectionIdleTimeout
+                }
+                if ($PSBoundParameters.ContainsKey('TurnDetectionThreshold')) {
+                    $InputAudioTurnDetectionParam.threshold = $TurnDetectionThreshold
+                }
+                if ($PSBoundParameters.ContainsKey('TurnDetectionPrefixPadding')) {
+                    $InputAudioTurnDetectionParam.prefix_padding_ms = $TurnDetectionPrefixPadding
+                }
+                if ($PSBoundParameters.ContainsKey('TurnDetectionSilenceDuration')) {
+                    $InputAudioTurnDetectionParam.silence_duration_ms = $TurnDetectionSilenceDuration
+                }
+                if ($PSBoundParameters.ContainsKey('CreateResponseOnTurnEnd')) {
+                    $InputAudioTurnDetectionParam.create_response = $CreateResponseOnTurnEnd
+                }
+                if ($PSBoundParameters.ContainsKey('InterruptResponse')) {
+                    $InputAudioTurnDetectionParam.interrupt_response = $InterruptResponse
+                }
+            }
+        }
+
+        if ($InputAudioSettings.Keys.Count -gt 0) {
+            if (-not $MessageObject.session.ContainsKey('audio')) {
+                $MessageObject.session.audio = @{}
+            }
+            $MessageObject.session.audio.input = $InputAudioSettings
+        }
+
+        # Output audio settings
+        $OutputAudioSettings = @{}
+        if ($PSBoundParameters.ContainsKey('OutputAudioFormat')) {
+            $OutputAudioSettings.format = $OutputAudioFormat
+        }
+        if ($PSBoundParameters.ContainsKey('Speed')) {
+            $OutputAudioSettings.speed = $Speed
+        }
+        if ($PSBoundParameters.ContainsKey('Voice')) {
+            $OutputAudioSettings.voice = $Voice
+        }
+
+        if ($OutputAudioSettings.Keys.Count -gt 0) {
+            if (-not $MessageObject.session.ContainsKey('audio')) {
+                $MessageObject.session.audio = @{}
+            }
+            $MessageObject.session.audio.output = $OutputAudioSettings
         }
 
         PSOpenAI\Send-RealtimeSessionEvent -Message ($MessageObject | ConvertTo-Json -Depth 10)

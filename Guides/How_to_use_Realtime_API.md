@@ -1,14 +1,11 @@
 # How to use Realtime API
 
-The Realtime API enables you to communicate with a GPT-4o class model live, in real time experiences.  
+The Realtime API enables you to communicate with a GPT  odel live, in real time experiences.  
 
 OpenAI's official guide is here.  
 https://platform.openai.com/docs/guides/realtime
 
 PSOpenAI provides the ability to use the Realtime API in an event-based style through PowerShell.
-
-> [!WARNING]  
-> The Realtime API is still in Beta. Specifications, usage, and parameters are subject to change without announcement.
 
 ## Basics
 
@@ -29,7 +26,7 @@ Register-EngineEvent -SourceIdentifier "PSOpenAI.Realtime.ReceiveMessage" -Actio
             Write-Host "`r"
             ('Connected. (SessionID = "{0}")' -f $eventItem.session.id) | Write-Host -ForegroundColor Green
         }
-        'response.text.delta'
+        'response.output_text.delta'
         {
             # Display text responses from the AI to the console
             $eventItem.delta | Write-Host -NoNewline -ForegroundColor Blue
@@ -50,8 +47,8 @@ There are various types that can be received. All are listed in the [OpenAI refe
 - `session.created`
 - `session.updated`
 - `response.done`
-- `response.text.delta`
-- `response.text.done`
+- `response.output_text.delta`
+- `response.output_text.done`
 
 
 ### Step 2: Connect & configure session

@@ -40,7 +40,16 @@ Add a new Item to the Conversation's context, including messages, function calls
 PS C:\> Add-RealtimeSessionItem 'Hello. Why is the sun so bright?'
 ```
 
+This example adds a text message as an input to the conversation.
+
 ### Example 2
+```powershell
+PS C:\> Add-RealtimeSessionItem -ContentType 'input_image' -Content 'C:\path\to\image.png'
+```
+
+This example adds an image as an input to the conversation.
+
+### Example 3
 ```powershell
 PS C:\> Add-RealtimeSessionItem 'This is a great question!' -Role assistant
 ```
@@ -48,7 +57,10 @@ PS C:\> Add-RealtimeSessionItem 'This is a great question!' -Role assistant
 ## PARAMETERS
 
 ### -Content
-The content of the message.
+The content of the message.  
+For `input_text` and `text` content types, this is the text of the message.  
+For `input_image`, this is the path to the image file.  
+For `input_audio`, this is the base64-encoded audio bytes.
 
 ```yaml
 Type: String
@@ -58,7 +70,7 @@ Position: 0
 ```
 
 ### -ContentTranscript
-The transcript of the audio, used for `input_audio` and `audio` content types.
+The transcript of the audio, used for `input_audio` content type.
 
 ```yaml
 Type: String
@@ -67,12 +79,12 @@ Position: Named
 ```
 
 ### -ContentType
-The content type (`input_text`, `input_audio`, `item_reference`, `text`, `audio`).  
+The content type (`input_text`, `input_image`, `input_audio`, `item_reference`, `text`).  
 The default value is `input_text`.
 
 ```yaml
 Type: String
-Accepted values: input_text, input_audio, item_reference, text
+Accepted values: input_text, input_image, input_audio, item_reference
 Required: False
 Position: Named
 Default value: input_text

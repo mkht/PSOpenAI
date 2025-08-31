@@ -1,4 +1,12 @@
 # Changelog
+### Unreleased
+- Realtime API generally available.
+  + Now default model for realtime session is `gpt-realtime`.
+  + Add new voices `marin` and `cedar`.
+  + Add `-PromptId`, `-PromptVariables` and `-PromptVersion` parameters to `Set-RealtimeSessionConfiguration`.
+  + Add `-TurnDetectionIdleTimeout` parameter to `Set-RealtimeSessionConfiguration`.
+  + Rename `-MaxResponseOutputTokens` parameter to `-MaxOutputTokens` in `Set-RealtimeSessionConfiguration`.
+
 ### 4.36.0
 - Add `-WebSearchAllowedDomains` parameter to `Request-Response` function.
 

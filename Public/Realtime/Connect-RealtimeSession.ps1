@@ -3,10 +3,9 @@ function Connect-RealtimeSession {
     param (
         [Parameter()]
         [Completions(
-            'gpt-4o-realtime-preview',
-            'gpt-4o-mini-realtime-preview'
+            'gpt-realtime'
         )]
-        [string]$Model = 'gpt-4o-realtime-preview',
+        [string]$Model = 'gpt-realtime',
 
         [Parameter()]
         [OpenAIApiType]$ApiType = [OpenAIApiType]::OpenAI,
@@ -63,9 +62,6 @@ function Connect-RealtimeSession {
         try {
             # Init websocket client
             $script:WebSocketClient = [System.Net.WebSockets.ClientWebSocket]::new()
-
-            # Set Beta header
-            $WebSocketClient.Options.SetRequestHeader('OpenAI-Beta', 'realtime=v1')
 
             # Set Authorization header
             if ($OpenAIParameter.AuthType -eq 'azure') {

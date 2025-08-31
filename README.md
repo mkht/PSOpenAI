@@ -277,7 +277,7 @@ Get a list of available models.
 $Models = Get-OpenAIModels
 ```
 
-### Realtime (Beta)
+### Realtime
 
 The Realtime API enables you to communicate with AI models live, in real time experiences.
 
@@ -291,14 +291,14 @@ $env:OPENAI_API_KEY = '<Put your API key here>'
 Register-EngineEvent -SourceIdentifier 'PSOpenAI.Realtime.ReceiveMessage' -Action {
     $eventItem = $Event.SourceArgs[0]
     switch ($eventItem.type) {
-        'response.text.delta' {
+        'response.output_text.delta' {
             $eventItem.delta | Write-Host -NoNewLine -ForegroundColor Blue
         }
     }
 }
 
 # Connect to the Realtime session
-Connect-RealtimeSession -Model 'gpt-4o-realtime-preview'
+Connect-RealtimeSession -Model 'gpt-realtime'
 Set-RealtimeSessionConfiguration -Modalities 'text' -Instructions 'You are a science tutor.'
 
 # Send messages to the AI model

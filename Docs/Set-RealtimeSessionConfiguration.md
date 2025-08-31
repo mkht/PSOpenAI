@@ -16,6 +16,9 @@ Set the realtime session's configuration.
 Set-RealtimeSessionConfiguration
     [-EventId <String>]
     [-Instructions <String>]
+    [-PromptId <String>]
+    [-PromptVariables <IDictionary>]
+    [-PromptVersion <String>]
     [-Modalities <String[]>]
     [-Voice <String>] 
     [-Speed <Double>] 
@@ -32,12 +35,13 @@ Set-RealtimeSessionConfiguration
     [-TurnDetectionThreshold <Single>]
     [-TurnDetectionPrefixPadding <UInt16>]
     [-TurnDetectionSilenceDuration <UInt16>]
+    [-TurnDetectionIdleTimeout <UInt16>]
     [-CreateResponseOnTurnEnd <Boolean>]
     [-InterruptResponse <Boolean>]
     [-Tools <IDictionary[]>]
     [-ToolChoice <String>]
     [-Temperature <Single>]
-    [-MaxResponseOutputTokens <Int32>]
+    [-MaxOutputTokens <Int32>]
     [-Tracing <String>]
     [-TracingGroupId <String>]
     [-TracingMetadata <IDictionary>]
@@ -52,11 +56,10 @@ Set the realtime session's configuration.
 ### Example 1
 ```powershell
 PS C:\> Set-RealtimeSessionConfiguration `
-    -Modalities 'text','audio' `
-    -Voice 'shimmer' `
+    -Modalities 'audio' `
+    -Voice 'marin' `
     -EnableInputAudioTranscription $true `
     -EnableTurnDetection $true
-    -Temperature 1.0
 ```
 
 ## PARAMETERS
@@ -143,7 +146,34 @@ Required: False
 Position: Named
 ```
 
-### -MaxResponseOutputTokens
+### -PromptId
+The unique identifier of the prompt template to use.
+
+```yaml
+Type: String
+Required: False
+Position: Named
+```
+
+### -PromptVariables
+Optional map of values to substitute in for variables in your prompt. The substitution values can either be strings, or other Response input types like images or files.
+
+```yaml
+Type: IDictionary
+Required: False
+Position: Named
+```
+
+### -PromptVersion
+Optional version of the prompt template.
+
+```yaml
+Type: String
+Required: False
+Position: Named
+```
+
+### -MaxOutputTokens
 Maximum number of output tokens for a single assistant response. Provide an integer between 1 and 4096 to limit output tokens, or -1 for no limitations.
 
 ```yaml

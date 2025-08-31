@@ -77,7 +77,7 @@ function Start-RealtimeSessionAudioOutput {
         $script:PSOpenAISpeakerOutputEventHandlerJob = `
             Register-EngineEvent -SourceIdentifier 'PSOpenAI.Realtime.ReceiveMessage' -Action {
             $o = $Event.SourceArgs[0]
-            if ($o.type -eq 'response.audio.delta') {
+            if ($o.type -eq 'response.output_audio.delta') {
                 [string]$currentResponseId = $o.response_id
                 if ($currentResponseId -cne $stoppedResponseId) {
                     $buffer = [Convert]::FromBase64String($o.delta)
