@@ -79,6 +79,10 @@ function Request-Response {
         [Alias('parallel_tool_calls')]
         [bool]$ParallelToolCalls,
 
+        [Parameter()]
+        [Alias('max_tool_calls')]
+        [int]$MaxToolCalls,
+
         #region Function calling
         [Parameter()]
         [ValidateNotNullOrEmpty()]
@@ -339,6 +343,11 @@ function Request-Response {
         [double]$Temperature,
 
         [Parameter()]
+        [ValidateRange(0, 20)]
+        [Alias('top_logprobs')]
+        [int]$TopLogprobs,
+
+        [Parameter()]
         [ValidateRange(0.0, 1.0)]
         [Alias('top_p')]
         [double]$TopP,
@@ -541,8 +550,14 @@ function Request-Response {
             }
             $PostBody.tool_choice = $ToolChoice
         }
+        if ($PSBoundParameters.ContainsKey('MaxToolCalls')) {
+            $PostBody.max_tool_calls = $MaxToolCalls
+        }
         if ($PSBoundParameters.ContainsKey('ParallelToolCalls')) {
             $PostBody.parallel_tool_calls = $ParallelToolCalls
+        }
+        if ($PSBoundParameters.ContainsKey('TopLogprobs')) {
+            $PostBody.top_logprobs = $TopLogprobs
         }
         if ($PSBoundParameters.ContainsKey('TopP')) {
             $PostBody.top_p = $TopP

@@ -6,6 +6,7 @@
   + Add `-PromptId`, `-PromptVariables` and `-PromptVersion` parameters to `Set-RealtimeSessionConfiguration`.
   + Add `-TurnDetectionIdleTimeout` parameter to `Set-RealtimeSessionConfiguration`.
   + Rename `-MaxResponseOutputTokens` parameter to `-MaxOutputTokens` in `Set-RealtimeSessionConfiguration`.
+- Add missing parameters to `Request-Response` function.
 
 ### 4.36.0
 - Add `-WebSearchAllowedDomains` parameter to `Request-Response` function.

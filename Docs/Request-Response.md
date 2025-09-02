@@ -25,10 +25,11 @@ Request-Response
     [-PromptId <String>]
     [-PromptVariables <IDictionary>]
     [-PromptVersion <String>]
-    [-Images <String[]>] 
+    [-Images <String[]>]
     [-ImageDetail <String>]
-    [-Files <String[]>] 
-    [-ToolChoice <Object>] 
+    [-Files <String[]>]
+    [-ToolChoice <Object>]
+    [-MaxToolCalls <Int32>]
     [-ParallelToolCalls <Boolean>]
     [-Functions <IDictionary[]>]
     [-CustomTools <IDictionary[]>]
@@ -79,6 +80,7 @@ Request-Response
     [-Include <String[]>]
     [-Truncation <String>]
     [-Temperature <Double>] 
+    [-TopLogprobs <Int32>]
     [-TopP <Double>] 
     [-Store <Boolean>]
     [-Background]
@@ -289,6 +291,16 @@ How the model should select which tool (or tools) to use when generating a respo
 ```yaml
 Type: String
 Aliases: tool_choice
+Required: False
+Position: Named
+```
+
+### -MaxToolCalls
+The maximum number of total calls to built-in tools that can be processed in a response.
+
+```yaml
+Type: Int32
+Aliases: max_tool_calls
 Required: False
 Position: Named
 ```
@@ -758,6 +770,16 @@ What sampling temperature to use, between 0 and 2. Higher values like 0.8 will m
 
 ```yaml
 Type: Double
+Required: False
+Position: Named
+```
+
+### -TopLogprobs
+An integer between 0 and 20 specifying the number of most likely tokens to return at each token position, each with an associated log probability.
+
+```yaml
+Type: Int32
+Aliases: top_logprobs
 Required: False
 Position: Named
 ```
