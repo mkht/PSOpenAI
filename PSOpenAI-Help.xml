@@ -1149,7 +1149,10 @@ PS C:\&gt; Add-OpenAIFile -Content $ByteArray -Name 'filename.txt' -Purpose assi
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="0" aliases="Message, Text">
           <maml:name>Content</maml:name>
           <maml:description>
-            <maml:para>The content of the message.</maml:para>
+            <maml:para>The content of the message.
+For `input_text` and `text` content types, this is the text of the message.
+For `input_image`, this is the path to the image file.
+For `input_audio`, this is the base64-encoded audio bytes.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1161,7 +1164,7 @@ PS C:\&gt; Add-OpenAIFile -Content $ByteArray -Name 'filename.txt' -Purpose assi
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>ContentTranscript</maml:name>
           <maml:description>
-            <maml:para>The transcript of the audio, used for `input_audio` and `audio` content types.</maml:para>
+            <maml:para>The transcript of the audio, used for `input_audio` content type.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1173,14 +1176,14 @@ PS C:\&gt; Add-OpenAIFile -Content $ByteArray -Name 'filename.txt' -Purpose assi
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>ContentType</maml:name>
           <maml:description>
-            <maml:para>The content type (`input_text`, `input_audio`, `item_reference`, `text`, `audio`).
+            <maml:para>The content type (`input_text`, `input_image`, `input_audio`, `item_reference`, `text`).
 The default value is `input_text`.</maml:para>
           </maml:description>
           <command:parameterValueGroup>
             <command:parameterValue required="false" command:variableLength="false">input_text</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">input_image</command:parameterValue>
             <command:parameterValue required="false" command:variableLength="false">input_audio</command:parameterValue>
             <command:parameterValue required="false" command:variableLength="false">item_reference</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">text</command:parameterValue>
           </command:parameterValueGroup>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1342,7 +1345,10 @@ The default is `message`.</maml:para>
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="0" aliases="Message, Text">
         <maml:name>Content</maml:name>
         <maml:description>
-          <maml:para>The content of the message.</maml:para>
+          <maml:para>The content of the message.
+For `input_text` and `text` content types, this is the text of the message.
+For `input_image`, this is the path to the image file.
+For `input_audio`, this is the base64-encoded audio bytes.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1354,7 +1360,7 @@ The default is `message`.</maml:para>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>ContentTranscript</maml:name>
         <maml:description>
-          <maml:para>The transcript of the audio, used for `input_audio` and `audio` content types.</maml:para>
+          <maml:para>The transcript of the audio, used for `input_audio` content type.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1366,7 +1372,7 @@ The default is `message`.</maml:para>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>ContentType</maml:name>
         <maml:description>
-          <maml:para>The content type (`input_text`, `input_audio`, `item_reference`, `text`, `audio`).
+          <maml:para>The content type (`input_text`, `input_image`, `input_audio`, `item_reference`, `text`).
 The default value is `input_text`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -1522,11 +1528,18 @@ The default is `message`.</maml:para>
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
         <dev:code>PS C:\&gt; Add-RealtimeSessionItem 'Hello. Why is the sun so bright?'</dev:code>
         <dev:remarks>
-          <maml:para></maml:para>
+          <maml:para>This example adds a text message as an input to the conversation.</maml:para>
         </dev:remarks>
       </command:example>
       <command:example>
         <maml:title>-------------------------- Example 2 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; Add-RealtimeSessionItem -ContentType 'input_image' -Content 'C:\path\to\image.png'</dev:code>
+        <dev:remarks>
+          <maml:para>This example adds an image as an input to the conversation.</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------------------------- Example 3 --------------------------</maml:title>
         <dev:code>PS C:\&gt; Add-RealtimeSessionItem 'This is a great question!' -Role assistant</dev:code>
         <dev:remarks>
           <maml:para></maml:para>
@@ -2540,7 +2553,7 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
     <command:examples>
       <command:example>
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; Connect-RealtimeSession -Model 'gpt-4o-realtime-preview'</dev:code>
+        <dev:code>PS C:\&gt; Connect-RealtimeSession -Model 'gpt-realtime'</dev:code>
         <dev:remarks>
           <maml:para></maml:para>
         </dev:remarks>
@@ -22322,6 +22335,18 @@ You can speciy a list of the local file path, the URL of the file or the ID of t
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="max_tool_calls">
+          <maml:name>MaxToolCalls</maml:name>
+          <maml:description>
+            <maml:para>The maximum number of total calls to built-in tools that can be processed in a response.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="parallel_tool_calls">
           <maml:name>ParallelToolCalls</maml:name>
           <maml:description>
@@ -22928,6 +22953,18 @@ Possible values: `browser`, `mac`, `windows`, `ubuntu`.</maml:para>
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="top_logprobs">
+          <maml:name>TopLogprobs</maml:name>
+          <maml:description>
+            <maml:para>An integer between 0 and 20 specifying the number of most likely tokens to return at each token position, each with an associated log probability.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="top_p">
           <maml:name>TopP</maml:name>
           <maml:description>
@@ -23469,6 +23506,18 @@ You can speciy a list of the local file path, the URL of the file or the ID of t
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
           <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="max_tool_calls">
+        <maml:name>MaxToolCalls</maml:name>
+        <maml:description>
+          <maml:para>The maximum number of total calls to built-in tools that can be processed in a response.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -24078,6 +24127,18 @@ Possible values: `browser`, `mac`, `windows`, `ubuntu`.</maml:para>
         <command:parameterValue required="true" variableLength="false">Double</command:parameterValue>
         <dev:type>
           <maml:name>Double</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="top_logprobs">
+        <maml:name>TopLogprobs</maml:name>
+        <maml:description>
+          <maml:para>An integer between 0 and 20 specifying the number of most likely tokens to return at each token position, each with an associated log probability.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -26712,7 +26773,43 @@ PS C:\&gt; Request-ChatCompletion -Message 'Hello Azure OpenAI'</dev:code>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>MaxResponseOutputTokens</maml:name>
+          <maml:name>PromptId</maml:name>
+          <maml:description>
+            <maml:para>The unique identifier of the prompt template to use.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>PromptVariables</maml:name>
+          <maml:description>
+            <maml:para>Optional map of values to substitute in for variables in your prompt. The substitution values can either be strings, or other Response input types like images or files.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">IDictionary</command:parameterValue>
+          <dev:type>
+            <maml:name>IDictionary</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>PromptVersion</maml:name>
+          <maml:description>
+            <maml:para>Optional version of the prompt template.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>MaxOutputTokens</maml:name>
           <maml:description>
             <maml:para>Maximum number of output tokens for a single assistant response. Provide an integer between 1 and 4096 to limit output tokens, or -1 for no limitations.</maml:para>
           </maml:description>
@@ -27055,7 +27152,43 @@ PS C:\&gt; Request-ChatCompletion -Message 'Hello Azure OpenAI'</dev:code>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-        <maml:name>MaxResponseOutputTokens</maml:name>
+        <maml:name>PromptId</maml:name>
+        <maml:description>
+          <maml:para>The unique identifier of the prompt template to use.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>PromptVariables</maml:name>
+        <maml:description>
+          <maml:para>Optional map of values to substitute in for variables in your prompt. The substitution values can either be strings, or other Response input types like images or files.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">IDictionary</command:parameterValue>
+        <dev:type>
+          <maml:name>IDictionary</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>PromptVersion</maml:name>
+        <maml:description>
+          <maml:para>Optional version of the prompt template.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>MaxOutputTokens</maml:name>
         <maml:description>
           <maml:para>Maximum number of output tokens for a single assistant response. Provide an integer between 1 and 4096 to limit output tokens, or -1 for no limitations.</maml:para>
         </maml:description>
@@ -27294,11 +27427,10 @@ PS C:\&gt; Request-ChatCompletion -Message 'Hello Azure OpenAI'</dev:code>
       <command:example>
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
         <dev:code>PS C:\&gt; Set-RealtimeSessionConfiguration `
-    -Modalities 'text','audio' `
-    -Voice 'shimmer' `
+    -Modalities 'audio' `
+    -Voice 'marin' `
     -EnableInputAudioTranscription $true `
-    -EnableTurnDetection $true
-    -Temperature 1.0</dev:code>
+    -EnableTurnDetection $true</dev:code>
         <dev:remarks>
           <maml:para></maml:para>
         </dev:remarks>

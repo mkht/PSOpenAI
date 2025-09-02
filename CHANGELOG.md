@@ -1,5 +1,5 @@
 # Changelog
-### Unreleased
+### 4.37.0
 - Realtime API generally available.
   + Now default model for realtime session is `gpt-realtime`.
   + Add new voices `marin` and `cedar`.
