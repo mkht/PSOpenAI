@@ -1,6 +1,11 @@
 function Connect-RealtimeSession {
     [CmdletBinding()]
     param (
+        # Hidden parameter to select session type
+        [Parameter(DontShow)]
+        [ValidateSet('realtime', 'transcription')]
+        [string]$SessionType = 'realtime',
+
         [Parameter()]
         [Completions(
             'gpt-realtime'
@@ -47,12 +52,16 @@ function Connect-RealtimeSession {
         #region Construct Query URI
         $UriBuilder = [System.UriBuilder]::new($OpenAIParameter.Uri)
         $QueryParam = [System.Web.HttpUtility]::ParseQueryString($UriBuilder.Query)
-        if ($OpenAIParameter.ApiType -eq [OpenAIApiType]::Azure) {
-            $QueryParam.Add('deployment', $Model)
+
+        switch ($SessionType) {
+            'realtime' {
+                $QueryParam.Add('model', $Model)
+            }
+            'transcription' {
+                $QueryParam.Add('intent', 'transcription')
+            }
         }
-        else {
-            $QueryParam.Add('model', $Model)
-        }
+
         $UriBuilder.Query = $QueryParam.ToString()
         $SessionUri = $UriBuilder.Uri
         $private:PlainToken = DecryptSecureString $OpenAIParameter.ApiKey

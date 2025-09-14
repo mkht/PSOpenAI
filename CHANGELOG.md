@@ -1,4 +1,8 @@
 # Changelog
+### 4.38.0
+- Realtime transcript session now uses GA version of the API instead of beta.
+- Fix audio format handling in Realtime API.
+
 ### 4.37.0
 - Realtime API generally available.
   + Now default model for realtime session is `gpt-realtime`.

@@ -190,7 +190,27 @@ function Set-RealtimeSessionConfiguration {
         # Input audio settings
         $InputAudioSettings = @{}
         if ($PSBoundParameters.ContainsKey('InputAudioFormat')) {
-            $InputAudioSettings.format = $InputAudioFormat
+            switch ($InputAudioFormat) {
+                'pcm16' {
+                    $InputAudioSettings.format = @{
+                        type = 'audio/pcm'
+                        rate = 24000
+                    }
+                }
+                'g711_ulaw' {
+                    $InputAudioSettings.format = @{
+                        type = 'audio/pcmu'
+                    }
+                }
+                'g711_alaw' {
+                    $InputAudioSettings.format = @{
+                        type = 'audio/pcma'
+                    }
+                }
+                default {
+                    $InputAudioSettings.format = $InputAudioFormat
+                }
+            }
         }
 
         if ($PSBoundParameters.ContainsKey('InputAudioNoiseReductionType')) {
@@ -263,7 +283,27 @@ function Set-RealtimeSessionConfiguration {
         # Output audio settings
         $OutputAudioSettings = @{}
         if ($PSBoundParameters.ContainsKey('OutputAudioFormat')) {
-            $OutputAudioSettings.format = $OutputAudioFormat
+            switch ($OutputAudioFormat) {
+                'pcm16' {
+                    $OutputAudioSettings.format = @{
+                        type = 'audio/pcm'
+                        rate = 24000
+                    }
+                }
+                'g711_ulaw' {
+                    $OutputAudioSettings.format = @{
+                        type = 'audio/pcmu'
+                    }
+                }
+                'g711_alaw' {
+                    $OutputAudioSettings.format = @{
+                        type = 'audio/pcma'
+                    }
+                }
+                default {
+                    $OutputAudioSettings.format = $OutputAudioFormat
+                }
+            }
         }
         if ($PSBoundParameters.ContainsKey('Speed')) {
             $OutputAudioSettings.speed = $Speed

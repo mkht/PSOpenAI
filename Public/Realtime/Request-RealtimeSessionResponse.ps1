@@ -70,13 +70,7 @@ function Request-RealtimeSessionResponse {
             $MessageObject.response.instructions = $Instructions
         }
         if ($PSBoundParameters.ContainsKey('Modalities')) {
-            $MessageObject.response.modalities = $Modalities
-        }
-        if ($PSBoundParameters.ContainsKey('Voice')) {
-            $MessageObject.response.voice = $Voice
-        }
-        if ($PSBoundParameters.ContainsKey('OutputAudioFormat')) {
-            $MessageObject.response.output_audio_format = $OutputAudioFormat
+            $MessageObject.response.output_modalities = $Modalities
         }
         if ($PSBoundParameters.ContainsKey('Tools')) {
             $MessageObject.response.tools = $Tools
@@ -103,6 +97,41 @@ function Request-RealtimeSessionResponse {
         }
         if ($PSBoundParameters.ContainsKey('InputObject')) {
             $MessageObject.response.input = $InputObject
+        }
+
+        #Output audio settings
+        $OutputAudioSettings = @{}
+        if ($PSBoundParameters.ContainsKey('Voice')) {
+            $OutputAudioSettings.voice = $Voice
+        }
+        if ($PSBoundParameters.ContainsKey('OutputAudioFormat')) {
+            switch ($OutputAudioFormat) {
+                'pcm16' {
+                    $OutputAudioSettings.format = @{
+                        type = 'audio/pcm'
+                        rate = 24000
+                    }
+                }
+                'g711_ulaw' {
+                    $OutputAudioSettings.format = @{
+                        type = 'audio/pcmu'
+                    }
+                }
+                'g711_alaw' {
+                    $OutputAudioSettings.format = @{
+                        type = 'audio/pcma'
+                    }
+                }
+                default {
+                    $OutputAudioSettings.format = $OutputAudioFormat
+                }
+            }
+        }
+        if ($OutputAudioSettings.Keys.Count -gt 0) {
+            if (-not $MessageObject.response.ContainsKey('audio')) {
+                $MessageObject.response.audio = @{}
+            }
+            $MessageObject.response.audio.output = $OutputAudioSettings
         }
 
         PSOpenAI\Send-RealtimeSessionEvent -Message ($MessageObject | ConvertTo-Json -Depth 10)
