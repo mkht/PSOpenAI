@@ -42,6 +42,17 @@ function Add-ConversationItem {
         [string[]]$Files,
         #endregion File input
 
+        ### Audio input is documented in the API reference, but seems not implemented in the backend. ###
+        #region Audio input
+        # [Parameter()]
+        # [ValidateNotNullOrEmpty()]
+        # [string[]]$InputAudioFiles,
+
+        # [Parameter()]
+        # [ValidateSet('mp3', 'wav')]
+        # [string][LowerCaseTransformation()]$InputAudioFormat,
+        #endregion Audio input
+
         [Parameter()]
         [Completions(
             'code_interpreter_call.outputs',
@@ -233,6 +244,33 @@ function Add-ConversationItem {
                 $usermsg.content += $imageContent
             }
         }
+
+        # Audio input
+        # if ($PSBoundParameters.ContainsKey('InputAudioFiles')) {
+        #     foreach ($InputAudio in $InputAudioFiles) {
+        #         if ([string]::IsNullOrWhiteSpace($InputAudio)) { continue }
+        #         $audiocontent = $null
+
+        #         if (Test-Path -LiteralPath $InputAudio -PathType Leaf) {
+        #             $audioItem = Get-Item -LiteralPath $InputAudio
+        #             if ($InputAudioFormat) {
+        #                 $audioformat = $InputAudioFormat
+        #             }
+        #             else {
+        #                 $audioformat = $audioItem.Extension.ToLower().TrimStart([char]'.')
+        #             }
+        #             $audioContent = [pscustomobject]@{
+        #                 type        = 'input_audio'
+        #                 input_audio = @{
+        #                     data   = ([System.Convert]::ToBase64String([System.IO.File]::ReadAllBytes($audioItem.FullName)))
+        #                     format = $audioformat
+        #                 }
+        #             }
+        #         }
+
+        #         $usermsg.content += $audiocontent
+        #     }
+        # }
 
         if ($usermsg.content.Count -ge 1) {
             $Messages.Add($usermsg)

@@ -131,6 +131,21 @@ Describe 'Add-ConversationItem' {
             $script:Result | Should -Not -BeNullOrEmpty
         }
 
+        # Skip because it seems not implemented in the backend.
+        It 'Audio input' -Skip {
+            { $splat = @{
+                    ConversationId  = 'conv_abc123'
+                    InputAudioFiles = ($script:TestData + '/voice_japanese.mp3')
+                    PassThru        = $true
+                    ErrorAction     = 'Stop'
+                }
+                $script:Result = Add-ConversationItem @splat
+            } | Should -Not -Throw
+            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
+            Should -Invoke Get-Conversation -ModuleName $script:ModuleName -Times 1 -Exactly
+            $script:Result | Should -Not -BeNullOrEmpty
+        }
+
         It 'All parameters' {
             { $splat = @{
                     ConversationId   = 'conv_abc123'
@@ -141,6 +156,8 @@ Describe 'Add-ConversationItem' {
                     Images           = @('https://example.com/image.jpg', 'fileid_img12345', (Join-Path $script:TestData 'sweets_donut.png'))
                     ImageDetail      = 'high'
                     Files            = @('https://example.com/file.pdf', 'fileid_file12345', (Join-Path $script:TestData '日本語テキスト.txtf'))
+                    # InputAudioFiles  = @(($script:TestData + '/voice_japanese.mp3'))
+                    # InputAudioFormat = 'mp3'
                     Include          = @('message.input_image.image_url', 'file_search_call.results')
                     PassThru         = $true
                     ErrorAction      = 'Stop'
@@ -239,6 +256,22 @@ Describe 'Add-ConversationItem' {
             $Result.Items[0].content[0].text | Should -BeExactly 'Please summarize the content of this file.'
             $Result.Items[0].content[1].type | Should -Be 'input_file'
             $Result.Items[0].content[1].file_url | Should -Be 'https://upload.wikimedia.org/wikipedia/commons/5/57/ApiterapiaWiki.pdf'
+        }
+
+        # Skip because it seems not implemented in the backend.
+        It 'Add Audio Item' -Skip {
+            { $splat = @{
+                    ConversationId  = $Conversation
+                    Message         = 'Transcribe this audio.'
+                    InputAudioFiles = @(($script:TestData + '/voice_japanese.mp3'))
+                    PassThru        = $true
+                    ErrorAction     = 'Stop'
+                }
+                $script:Result = Add-ConversationItem @splat
+            } | Should -Not -Throw
+            $Result.id | Should -Be $Conversation.id
+            $Result.Items | Should -HaveCount 1
+            $Result.Items[0].role | Should -Be 'user'
         }
     }
 }
