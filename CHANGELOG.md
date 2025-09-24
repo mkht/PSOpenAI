@@ -1,4 +1,7 @@
 # Changelog
+### 4.39.0
+- Add `gpt-5-codex` model.
+
 ### 4.38.0
 - Realtime transcript session now uses GA version of the API instead of beta.
 - Fix audio format handling in Realtime API.
