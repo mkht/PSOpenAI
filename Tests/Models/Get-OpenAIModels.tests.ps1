@@ -29,18 +29,18 @@ Describe 'Get-OpenAIModels' {
         It 'Get a specific AI model.' {
             Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
 {
-    "id": "gpt-3.5-turbo-instruct",
+    "id": "gpt-5",
     "object": "model",
     "created": 1692901427,
     "owned_by": "system"
 }
 '@ }
 
-            $Models = Get-OpenAIModels -Name 'gpt-3.5-turbo-instruct'
+            $Models = Get-OpenAIModels -Name 'gpt-5'
             Should -InvokeVerifiable
             $Models.GetType().Name | Should -Be 'PSCustomObject'
             @($Models).Count | Should -Be 1
-            $Models.id | Should -Be 'gpt-3.5-turbo-instruct'
+            $Models.id | Should -Be 'gpt-5'
             $Models.created | Should -BeOfType [datetime]
         }
     }

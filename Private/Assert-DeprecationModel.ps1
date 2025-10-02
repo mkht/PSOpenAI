@@ -48,6 +48,13 @@ class OpenAIDepricationModels {
         'text-moderation-007'                = [datetime]::new(2025, 10, 27)
         'text-moderation-stable'             = [datetime]::new(2025, 10, 27)
         'text-moderation-latest'             = [datetime]::new(2025, 10, 27)
+        'gpt-4-0314'                         = [datetime]::new(2026, 03, 26)
+        'gpt-4-1106-preview'                 = [datetime]::new(2026, 03, 26)
+        'gpt-4-0125-preview'                 = [datetime]::new(2026, 03, 26)
+        'gpt-3.5-turbo-instruct'             = [datetime]::new(2026, 09, 28)
+        'babbage-002'                        = [datetime]::new(2026, 09, 28)
+        'davinci-002'                        = [datetime]::new(2026, 09, 28)
+        'gpt-3.5-turbo-1106'                 = [datetime]::new(2026, 09, 28)
     }
 }
 
@@ -59,9 +66,9 @@ function Assert-DeprecationModel {
         [string]$Model
     )
 
-    Begin {}
+    begin {}
 
-    Process {
+    process {
         if (-not [OpenAIDepricationModels]::Expired.ContainsKey($Model)) {
             return
         }
@@ -83,5 +90,5 @@ function Assert-DeprecationModel {
         }
     }
 
-    End {}
+    end {}
 }
