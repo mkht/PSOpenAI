@@ -1,6 +1,6 @@
 # Changelog
 ### 4.39.1
-- Fix bug where API requests fail when json_schema is specified as the OutputFormat in Request-Response functions. [#44](https://github.com/mkht/PSOpenAI/issues/44)
+- Fix bug where API requests fail when json_schema is specified as the OutputType in Request-Response functions. [#44](https://github.com/mkht/PSOpenAI/issues/44)
 - Update deprecation models list.
 
 ### 4.39.0
