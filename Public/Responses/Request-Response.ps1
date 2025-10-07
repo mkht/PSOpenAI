@@ -624,26 +624,22 @@ function Request-Response {
             }
             elseif ($OutputType -eq 'json_schema') {
                 # Structured Outputs
-                $PostBody.response_format = @{'type' = $Format }
-                if ($Format -eq 'json_schema') {
-                    if (-not $JsonSchema) {
-                        Write-Error -Exception ([System.ArgumentException]::new('JsonSchema must be specified.'))
-                    }
-                    else {
-                        $TextOutputOptions.format = @{
-                            'type'   = 'json_schema'
-                            'schema' = (ConvertFrom-Json $JsonSchema)
-                        }
-                        if ($PSBoundParameters.ContainsKey('JsonSchemaName')) {
-                            $TextOutputOptions.format.name = $JsonSchemaName
-                        }
-                        if ($PSBoundParameters.ContainsKey('JsonSchemaDescription')) {
-                            $TextOutputOptions.format.description = $JsonSchemaDescription
-                        }
-                        if ($PSBoundParameters.ContainsKey('JsonSchemaStrict')) {
-                            $TextOutputOptions.format.strict = $JsonSchemaStrict
-                        }
-                    }
+                if (-not $JsonSchema) {
+                    Write-Error -Exception ([System.ArgumentException]::new('JsonSchema must be specified.'))
+                }
+                if (-not $JsonSchemaName) {
+                    Write-Error -Exception ([System.ArgumentException]::new('JsonSchemaName must be specified.'))
+                }
+                $TextOutputOptions.format = @{
+                    'type'   = 'json_schema'
+                    'schema' = (ConvertFrom-Json $JsonSchema)
+                    'name'   = $JsonSchemaName
+                }
+                if ($PSBoundParameters.ContainsKey('JsonSchemaDescription')) {
+                    $TextOutputOptions.format.description = $JsonSchemaDescription
+                }
+                if ($PSBoundParameters.ContainsKey('JsonSchemaStrict')) {
+                    $TextOutputOptions.format.strict = $JsonSchemaStrict
                 }
             }
         }

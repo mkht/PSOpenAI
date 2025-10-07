@@ -109,7 +109,7 @@ Describe 'Request-Response' {
             $Result.History[2].Content.text | Should -BeExactly 'I can help with a variety of things!'
         }
 
-        It 'Structured Outputs' {
+        It 'Structured Outputs (PowerShell Class)' {
             Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
 {
   "id": "resp_abc1234",
@@ -201,6 +201,71 @@ Describe 'Request-Response' {
             $Result.StructuredOutputs[0].FinalAnswer | Should -Be 'x = 3'
             $Result.output[0].content[0].parsed.GetType().Name | Should -Be 'MathReasoning'
             $Result.output[0].content[0].text | Should -BeOfType ([string])
+        }
+
+        It 'Structured Outputs (Json Schema)' {
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+{
+  "id": "resp_abc123",
+  "object": "response",
+  "created_at": 1759836515,
+  "status": "completed",
+  "model": "gpt-4o-2024-08-06",
+  "output": [
+    {
+      "id": "msg_b86c5",
+      "type": "message",
+      "content": [
+        {
+          "type": "output_text",
+          "annotations": [],
+          "logprobs": [],
+          "text": "{\"name\":\"Alex Morgan\",\"age\":30,\"gender\":\"male\"}"
+        }
+      ],
+      "role": "assistant"
+    }
+  ],
+  "previous_response_id": null
+}
+'@ }
+            $JsonSchema = @'
+{
+  "$id": "https://example.com/user-info.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "Basic personal infomation",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["name", "age", "gender"],
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "age": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "gender": {
+      "type": "string",
+      "enum": ["male", "female"]
+    }
+  }
+}
+'@
+            { $script:Result = Request-Response 'Tell me about you.' -OutputType 'json_schema' -JsonSchema $JsonSchema -JsonSchemaName 'user-info' -ea Stop } | Should -Not -Throw
+            Should -InvokeVerifiable
+            $Result.output[0].content[0].text | Should -BeExactly '{"name":"Alex Morgan","age":30,"gender":"male"}'
+        }
+
+        It 'Structured Outputs (Json Schema) - JsonSchema is must be specified' {
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { }
+            { $script:Result = Request-Response 'Tell me about you.' -OutputType 'json_schema' -JsonSchemaName 'user-info' -ea Stop } | Should -Throw -ExpectedMessage 'JsonSchema must be specified.'
+        }
+
+        It 'Structured Outputs (Json Schema) - JsonSchemaName is must be specified' {
+            $JsonSchema = '{}'
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { }
+            { $script:Result = Request-Response 'Tell me about you.' -OutputType 'json_schema' -JsonSchema $JsonSchema -ea Stop } | Should -Throw -ExpectedMessage 'JsonSchemaName must be specified.'
         }
 
         It 'The model stops to output in half way' {
@@ -698,7 +763,7 @@ Describe 'Request-Response' {
             $Result.output_text | Should -Not -BeNullOrEmpty
         }
 
-        It 'Structured Outputs' {
+        It 'Structured Outputs (PowerShell Class)' {
             $SystemMsg = 'You are a helpful math tutor. Guide the user through the solution step by step.'
             $Prompt = 'how can I solve 8x + 7 = -23'
             {
@@ -716,6 +781,47 @@ Describe 'Request-Response' {
             $Result.StructuredOutputs | Should -HaveCount 1
             $Result.StructuredOutputs[0].GetType().Name | Should -Be 'MathReasoning'
             $Result.output[0].content[0].parsed.GetType().Name | Should -Be 'MathReasoning'
+            $Result.output[0].content[0].text | Should -BeOfType ([string])
+        }
+
+        It 'Structured Outputs (Json Schema)' {
+            $JsonSchema = @'
+{
+  "$id": "https://example.com/user-info.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "Basic personal infomation",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["name", "age", "gender"],
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "age": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "gender": {
+      "type": "string",
+      "enum": ["male", "female"]
+    }
+  }
+}
+'@
+
+            {
+                $param = @{
+                    Message        = "Create a fictitious person's info"
+                    Model          = 'gpt-4o-mini'
+                    OutputType     = 'json_schema'
+                    JsonSchema     = $JsonSchema
+                    JsonSchemaName = 'user-info'
+                    Store          = $false
+                    TimeoutSec     = 30
+                    MaxRetryCount  = 1
+                }
+                $script:Result = Request-Response @param -ea Stop
+            } | Should -Not -Throw
             $Result.output[0].content[0].text | Should -BeOfType ([string])
         }
 
