@@ -290,6 +290,26 @@ function Get-OpenAIAPIEndpoint {
             }
             continue
         }
+        'Videos' {
+            $UriBuilder.Path += 'videos'
+            @{
+                Name        = 'videos'
+                Method      = 'Post'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'multipart/form-data'
+            }
+            continue
+        }
+        'Videos.Remix' {
+            $UriBuilder.Path += 'videos/{0}/remix'
+            @{
+                Name        = 'videos_remix'
+                Method      = 'Post'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+            continue
+        }
         default {
             Write-Error -Message ('{0} API endpoint is not provided by OpenAI' -f $_)
         }

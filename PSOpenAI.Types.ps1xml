@@ -221,6 +221,17 @@
     </Members>
   </Type>
   <Type>
+    <Name>PSOpenAI.Video.Job</Name>
+    <Members>
+      <ScriptMethod>
+        <Name>ToString</Name>
+        <Script>
+          $this.id -as [string]
+        </Script>
+      </ScriptMethod>
+    </Members>
+  </Type>
+  <Type>
     <Name>PSOpenAI.Model</Name>
     <Members>
       <ScriptMethod>

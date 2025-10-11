@@ -548,3 +548,28 @@ function ParseImageGenerationObject {
     }
     Write-Output $InputObject
 }
+
+function ParseVideoJobObject {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory, Position = 0, ValueFromPipeline)]
+        [PSCustomObject]$InputObject
+    )
+
+    # Add custom type name and properties to output object.
+    $InputObject.PSObject.TypeNames.Insert(0, 'PSOpenAI.Video.Job')
+    ('created_at', 'expires_at', 'started_at', 'cancelled_at', 'failed_at', 'completed_at') | ForEach-Object {
+        if ($null -ne $InputObject.$_ -and ($unixtime = $InputObject.$_ -as [long])) {
+            # convert unixtime to [DateTime] for read suitable
+            $InputObject | Add-Member -MemberType NoteProperty -Name $_ -Value ([System.DateTimeOffset]::FromUnixTimeSeconds($unixtime).LocalDateTime) -Force
+        }
+    }
+    Write-Output $InputObject
+
+    # Output warning message if the status is not success.
+    if ($null -ne $InputObject.error -or $InputObject.status -eq 'failed') {
+        $WarnMessage = ('The status of job with id "{0}" is "{1}". Error: "{2}" ({3})' -f `
+                $InputObject.id, $InputObject.status, $InputObject.error.message, $InputObject.error.code)
+        Write-Warning -Message $WarnMessage
+    }
+}
