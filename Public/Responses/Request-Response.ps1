@@ -27,6 +27,7 @@ function Request-Response {
             'gpt-5',
             'gpt-5-mini',
             'gpt-5-nano',
+            'gpt-5-pro',
             'gpt-5-chat-latest',
             'gpt-5-codex',
             'o1',
@@ -263,7 +264,7 @@ function Request-Response {
         [string]$ImageGenerationType = 'image_generation', # Always 'image_generation'
 
         [Parameter()]
-        [Completions('gpt-image-1')]
+        [Completions('gpt-image-1', 'gpt-image-1-mini')]
         [string]$ImageGenerationModel,
 
         [Parameter()]

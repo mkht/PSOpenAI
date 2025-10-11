@@ -8,6 +8,7 @@ function Request-ImageGeneration {
         [Parameter()]
         [Completions(
             'gpt-image-1',
+            'gpt-image-1-mini',
             'dall-e-3',
             'dall-e-2'
         )]

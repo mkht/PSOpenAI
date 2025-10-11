@@ -50,11 +50,11 @@ Describe 'Realtime E2E Test' {
             }
 
             It 'STEP1: Connect to session' {
-                { Connect-RealtimeSession -Model 'gpt-realtime' -ea Stop } | Should -Not -Throw
+                { Connect-RealtimeSession -Model 'gpt-realtime-mini' -ea Stop } | Should -Not -Throw
             }
 
             It 'STEP1-1: Only one session is allowed' {
-                { Connect-RealtimeSession -Model 'gpt-realtime' -ea Stop } | Should -Throw
+                { Connect-RealtimeSession -Model 'gpt-realtime-mini' -ea Stop } | Should -Throw
             }
 
             It 'STEP2: Configure session' {

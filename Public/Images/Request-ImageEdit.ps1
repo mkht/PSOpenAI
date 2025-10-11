@@ -17,6 +17,7 @@ function Request-ImageEdit {
         [Parameter()]
         [Completions(
             'gpt-image-1',
+            'gpt-image-1-mini',
             'dall-e-2'
         )]
         [string]$Model = 'dall-e-2',

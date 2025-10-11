@@ -43,6 +43,8 @@ function Request-ChatCompletion {
             'gpt-5-mini',
             'gpt-5-nano',
             'gpt-5-chat-latest',
+            'gpt-audio',
+            'gpt-audio-mini',
             'o1',
             'o3',
             'o3-mini',
