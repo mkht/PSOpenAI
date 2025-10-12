@@ -2,7 +2,8 @@
 ### 4.40.0
 - Add new models that was announced at OpenAI DevDay 2025.
   + `sora-2`, `sora-2-pro`, `gpt-5-pro`, `gpt-audio`, `gpt-audio-mini`, `gpt-image-1-mini`, `gpt-realtime`, `gpt-realtime-mini`
-- Add New functions for Video generation.
+- Add New functions for Video generation.  
+  Guide: [How to use Video generation](/Guides/How_to_use_Video_generation.md)
     + [New-Video](/Docs/New-Video.md)
     + [New-VideoRemix](/Docs/New-VideoRemix.md)
     + [Get-Video](/Docs/Get-Video.md)

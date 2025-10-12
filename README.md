@@ -47,7 +47,7 @@ Install-Module -Name PSOpenAI
 
 ### OpenAI
 #### Chat
-[Guide: How to use Chat](/Guides/How_to_use_Chat.md)
+Guide: [How to use Chat](/Guides/How_to_use_Chat.md)
 
 + [Enter-ChatGPT](/Docs/Enter-ChatGPT.md)
 + [Request-ChatCompletion](/Docs/Request-ChatCompletion.md)
@@ -57,7 +57,7 @@ Install-Module -Name PSOpenAI
 + [New-ChatCompletionFunction](/Docs/New-ChatCompletionFunction.md)
 
 #### Responses
-[Guide: Migrate ChatCompletion to Response](/Guides/Migrate_ChatCompletion_to_Response.md)  
+Guide: [Migrate ChatCompletion to Response](/Guides/Migrate_ChatCompletion_to_Response.md)  
 
 + [Request-Response](/Docs/Request-Response.md)
 + [Get-Response](/Docs/Get-Response.md)
@@ -74,8 +74,8 @@ Install-Module -Name PSOpenAI
 + [Remove-ConversationItem](/Docs/Remove-ConversationItem.md)
 
 #### Assistants
-[Guide: How to use Assistants](/Guides/How_to_use_Assistants.md)  
-[Guide: How to use File search with Assistants and Vector Store](/Guides/How_to_use_FileSearch_with_VectorStore.md)
+Guide: [How to use Assistants](/Guides/How_to_use_Assistants.md)  
+Guide: [How to use File search with Assistants and Vector Store](/Guides/How_to_use_FileSearch_with_VectorStore.md)
 
 + [Get-Assistant](/Docs/Get-Assistant.md)
 + [New-Assistant](/Docs/New-Assistant.md)
@@ -108,7 +108,7 @@ Install-Module -Name PSOpenAI
 + [Get-VectorStoreFileInBatch](/Docs/Get-VectorStoreFileInBatch.md)
 
 #### Realtime
-[Guide: How to use Realtime API](/Guides/How_to_use_Realtime_API.md)  
+Guide: [How to use Realtime API](/Guides/How_to_use_Realtime_API.md)  
 
 + [Connect-RealtimeSession](/Docs/Connect-RealtimeSession.md)
 + [Connect-RealtimeTranscriptionSession](/Docs/Connect-RealtimeTranscriptionSession.md)
@@ -138,6 +138,8 @@ Install-Module -Name PSOpenAI
 + [Request-AudioTranslation](/Docs/Request-AudioTranslation.md)
 
 #### Videos
+Guide: [How to use Video generation](/Guides/How_to_use_Video_generation.md)
+
 + [New-Video](/Docs/New-Video.md)
 + [New-VideoRemix](/Docs/New-VideoRemix.md)
 + [Get-Video](/Docs/Get-Video.md)
@@ -151,7 +153,7 @@ Install-Module -Name PSOpenAI
 + [Get-OpenAIFileContent](/Docs/Get-OpenAIFileContent.md)
 
 #### Batch
-[Guide: How to use Batch](/Guides/How_to_use_Batch.md)
+Guide: [How to use Batch](/Guides/How_to_use_Batch.md)
 
 + [Start-Batch](/Docs/Start-Batch.md)
 + [Get-Batch](/Docs/Get-Batch.md)
@@ -168,7 +170,7 @@ Install-Module -Name PSOpenAI
 + [Remove-ContainerFile](/Docs/Remove-ContainerFile.md)
 + [Get-ContainerFileContent](/Docs/Get-ContainerFileContent.md)
 
-#### Others
+### Others
 + [Get-OpenAIModels](/Docs/Get-OpenAIModels.md)
 + [Request-Embeddings](/Docs/Request-Embeddings.md)
 + [Request-Moderation](/Docs/Request-Moderation.md)
