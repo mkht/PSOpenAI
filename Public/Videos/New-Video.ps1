@@ -2,7 +2,7 @@ function New-Video {
     [CmdletBinding()]
     [OutputType([pscustomobject])]
     param (
-        [Parameter(Mandatory = $false, Position = 0)]
+        [Parameter(Mandatory, Position = 0)]
         [ValidateNotNullOrEmpty()]
         [string]$Prompt,
 
