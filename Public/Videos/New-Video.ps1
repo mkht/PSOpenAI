@@ -9,7 +9,7 @@ function New-Video {
         [Parameter()]
         [ValidateNotNullOrEmpty()]
         [Alias('input_reference')]
-        [string[]]$InputReference,
+        [string]$InputReference,
 
         [Parameter(ValueFromPipelineByPropertyName)]
         [Completions(
@@ -99,20 +99,8 @@ function New-Video {
         }
 
         if ($PSBoundParameters.ContainsKey('InputReference')) {
-            if ($ApiType -eq [OpenAIApiType]::Azure) {
-                $PostBody.files = @()
-                foreach ($ref in $InputReference) {
-                    $FileInfo = Resolve-FileInfo $ref
-                    $PostBody.files += $FileInfo
-                }
-            }
-            else {
-                if ($InputReference.Count -gt 1) {
-                    Write-Warning 'Only one input_reference is supported in OpenAI API. The first one will be used.'
-                }
-                $FileInfo = Resolve-FileInfo $InputReference[0]
-                $PostBody.input_reference = $FileInfo
-            }
+            $FileInfo = Resolve-FileInfo $InputReference[0]
+            $PostBody.input_reference = $FileInfo
         }
         #endregion
 
