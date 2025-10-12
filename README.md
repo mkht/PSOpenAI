@@ -263,6 +263,8 @@ $VideoJob = New-Video -Model 'sora-2' -Prompt "A cat playing piano" -Size 1280x7
 $VideoJob | Get-VideoContent -OutFile "C:\output\cat_piano.mp4" -WaitForCompletion
 ```
 
+![video](/Docs/images/cat_piano.gif)
+
 ### Moderation
 
 Test whether text complies with OpenAI's content policies.
