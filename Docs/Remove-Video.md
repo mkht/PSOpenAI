@@ -20,9 +20,6 @@ Remove-Video
     [-ApiBase <Uri>]
     [-ApiKey <SecureString>]
     [-Organization <String>]
-    [-AdditionalQuery <IDictionary>]
-    [-AdditionalHeaders <IDictionary>]
-    [-AdditionalBody <Object>]
     [<CommonParameters>]
 ```
 
@@ -41,7 +38,7 @@ Deletes the specified video job.
 ## PARAMETERS
 
 ### -VideoId
-The ID of the video job to delete.
+The identifier of the video to delete.
 
 ```yaml
 Type: String
@@ -108,36 +105,6 @@ Required: False
 Position: Named
 ```
 
-### -AdditionalQuery
-If you want to explicitly send an extra query params, you can do so.
-
-```yaml
-Type: IDictionary
-Required: False
-Position: Named
-```
-
-### -AdditionalHeaders
-If you want to explicitly send an extra headers, you can do so.
-
-```yaml
-Type: IDictionary
-Required: False
-Position: Named
-```
-
-### -AdditionalBody
-If you want to explicitly send an extra body, you can do so.
-
-```yaml
-Type: Object
-Required: False
-Position: Named
-```
-
-### CommonParameters
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
-
 ## INPUTS
 
 ## OUTPUTS
@@ -147,4 +114,3 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## RELATED LINKS
 
 [https://platform.openai.com/docs/api-reference/videos/delete](https://platform.openai.com/docs/api-reference/videos/delete)
-

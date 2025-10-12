@@ -1,20 +1,20 @@
 ---
 external help file: PSOpenAI-help.xml
 Module Name: PSOpenAI
-online version: https://github.com/mkht/PSOpenAI/blob/main/Docs/Get-Video.md
+online version: https://github.com/mkht/PSOpenAI/blob/main/Docs/New-VideoRemix.md
 schema: 2.0.0
 ---
 
-# Get-Video
+# New-Video
 
 ## SYNOPSIS
-Retrieves one or more video generation jobs.
+Creates a new video remix job.
 
 ## SYNTAX
 
-### Get
 ```
-Get-Video
+New-Video
+    [-Prompt] <String>
     [-VideoId] <String>
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
@@ -24,91 +24,39 @@ Get-Video
     [<CommonParameters>]
 ```
 
-### List
-```
-Get-Video
-    [-All]
-    [-Limit <Int32>]
-    [-Order <String>]
-    [-TimeoutSec <Int32>]
-    [-MaxRetryCount <Int32>]
-    [-ApiBase <Uri>]
-    [-ApiKey <SecureString>]
-    [-Organization <String>]
-    [<CommonParameters>]
-```
-
 ## DESCRIPTION
-Retrieves a specific video generation job or lists recent jobs. Use the job metadata to track progress or to download video content once processing finishes.
+Remix lets you take an existing video and make targeted adjustments without regenerating everything from scratch. You can provide a text prompt to guide the changes you want to make, and the model will generate a new version of the video that incorporates those changes while preserving the original content as much as possible.
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> Get-Video -VideoId 'video_fb4e'
+PS C:\> New-VideoRemix -Prompt 'Change the background to a sunny beach' -VideoId 'video_abc123'
 ```
 
-Gets the job details for the specified video ID.
+Creates a new video remix job using the specified prompt and video ID.
 
-### Example 2
-```powershell
-PS C:\> Get-Video -Limit 5 -Order desc
-```
-
-Lists the five most recent video jobs.
-
-### Example 3
-```powershell
-PS C:\> Get-Video -All
-```
-
-Lists all available video jobs by paging through the API.
 
 ## PARAMETERS
 
-### -VideoId
-The identifier of the video to retrieve.
+### -Prompt
+Updated text prompt that directs the remix generation.
 
 ```yaml
 Type: String
-Parameter Sets: Get
-Aliases: video_id, Id
 Required: True
 Position: 0
-Accept pipeline input: True (ByPropertyName, ByValue)
 ```
 
-### -Limit
-A number of items to retrieve. Limit can range between 1 and 100, and the default is 20.
-
-```yaml
-Type: Int32
-Parameter Sets: List
-Required: False
-Position: Named
-Default value: 20
-```
-
-### -Order
-Sort order by the created timestamp of the objects. `asc` for ascending order and `desc` for descending order. The default is `asc`.
+### -VideoId
+The identifier of the video to delete.
 
 ```yaml
 Type: String
-Parameter Sets: List
-Accepted values: asc, desc
-Required: False
-Position: Named
-Default value: asc
-```
-
-### -All
-When this switch is specified, all video jobs will be retrieved.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: List
-Required: False
-Position: Named
+Aliases: video_id, Id
+Required: True
+Position: 1
+Accept pipeline input: True (ByPropertyName, ByValue)
 ```
 
 ### -TimeoutSec
@@ -178,5 +126,5 @@ Position: Named
 
 ## RELATED LINKS
 
-[https://platform.openai.com/docs/api-reference/videos/retrieve](https://platform.openai.com/docs/api-reference/videos/retrieve)
-[https://platform.openai.com/docs/api-reference/videos/list](https://platform.openai.com/docs/api-reference/videos/list)
+[https://platform.openai.com/docs/api-reference/videos/remix](https://platform.openai.com/docs/api-reference/videos/remix)
+

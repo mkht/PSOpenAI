@@ -23,9 +23,6 @@ Get-VideoContent
     [-ApiBase <Uri>]
     [-ApiKey <SecureString>]
     [-Organization <String>]
-    [-AdditionalQuery <IDictionary>]
-    [-AdditionalHeaders <IDictionary>]
-    [-AdditionalBody <Object>]
     [<CommonParameters>]
 ```
 
@@ -50,7 +47,7 @@ Returns the video bytes for further processing.
 
 ### Example 3
 ```powershell
-PS C:\> Get-VideoContent -VideoId 'video_abc123' -Variant thumbnail -WaitForCompletion -OutFile C:\videos\demo.jpg
+PS C:\> Get-VideoContent -VideoId 'video_abc123' -Variant thumbnail -WaitForCompletion -OutFile C:\videos\demo.webp
 ```
 
 Waits for the job to finish and then downloads the thumbnail asset.
@@ -58,7 +55,7 @@ Waits for the job to finish and then downloads the thumbnail asset.
 ## PARAMETERS
 
 ### -VideoId
-The ID of the video job to download.
+The identifier of the video whose media to download.
 
 ```yaml
 Type: String
@@ -78,7 +75,7 @@ Position: Named
 ```
 
 ### -Variant
-Specifies which asset to download. Supported values are `video`, `thumbnail`, and `spritesheet`. The default value is `video`.
+Which downloadable asset to return. Supported values are `video`, `thumbnail`, and `spritesheet`. The default value is `video`.
 
 ```yaml
 Type: String
@@ -153,36 +150,6 @@ Required: False
 Position: Named
 ```
 
-### -AdditionalQuery
-If you want to explicitly send an extra query params, you can do so.
-
-```yaml
-Type: IDictionary
-Required: False
-Position: Named
-```
-
-### -AdditionalHeaders
-If you want to explicitly send an extra headers, you can do so.
-
-```yaml
-Type: IDictionary
-Required: False
-Position: Named
-```
-
-### -AdditionalBody
-If you want to explicitly send an extra body, you can do so.
-
-```yaml
-Type: Object
-Required: False
-Position: Named
-```
-
-### CommonParameters
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
-
 ## INPUTS
 
 ## OUTPUTS
@@ -193,5 +160,4 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## RELATED LINKS
 
-[https://platform.openai.com/docs/api-reference/videos/retrieve-content](https://platform.openai.com/docs/api-reference/videos/retrieve-content)
-
+[https://platform.openai.com/docs/api-reference/videos/content](https://platform.openai.com/docs/api-reference/videos/content)

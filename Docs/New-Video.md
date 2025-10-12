@@ -14,7 +14,7 @@ Creates a new video generation job.
 
 ```
 New-Video
-    [-Prompt <String>]
+    [-Prompt] <String>
     [-InputReference <String>]
     [-Model <String>]
     [-Seconds <String>]
@@ -24,9 +24,6 @@ New-Video
     [-ApiBase <Uri>]
     [-ApiKey <SecureString>]
     [-Organization <String>]
-    [-AdditionalQuery <IDictionary>]
-    [-AdditionalHeaders <IDictionary>]
-    [-AdditionalBody <Object>]
     [<CommonParameters>]
 ```
 
@@ -44,24 +41,24 @@ Creates a new video job using the default model, duration, and resolution.
 
 ### Example 2
 ```powershell
-PS C:\> New-Video -Prompt 'Dancing Donuts' -Model sora-2-pro -Seconds 12 -Size 1280x720
+PS C:\> New-Video -Prompt 'Dancing Donuts' -Model 'sora-2-pro' -Seconds 12 -Size 1280x720
 ```
 
-Creates a 12-second landscape video with the sora-2-pro model.
+Creates a 12-second landscape video with the `sora-2-pro` model.
 
 ## PARAMETERS
 
 ### -Prompt
-The text prompt describing the video to generate.
+Text prompt that describes the video to generate.
 
 ```yaml
 Type: String
-Required: False
+Required: True
 Position: 0
 ```
 
 ### -InputReference
-Path to an input reference file that should be uploaded with the request.
+Path to an optional image reference that guides generation.
 
 ```yaml
 Type: String
@@ -71,7 +68,7 @@ Position: Named
 ```
 
 ### -Model
-ID of the model to use. The default value is `sora-2`.
+The video generation model to use. The default value is `sora-2`.
 
 ```yaml
 Type: String
@@ -156,36 +153,6 @@ Aliases: OrgId
 Required: False
 Position: Named
 ```
-
-### -AdditionalQuery
-If you want to explicitly send an extra query params, you can do so.
-
-```yaml
-Type: IDictionary
-Required: False
-Position: Named
-```
-
-### -AdditionalHeaders
-If you want to explicitly send an extra headers, you can do so.
-
-```yaml
-Type: IDictionary
-Required: False
-Position: Named
-```
-
-### -AdditionalBody
-If you want to explicitly send an extra body, you can do so.
-
-```yaml
-Type: Object
-Required: False
-Position: Named
-```
-
-### CommonParameters
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
