@@ -99,7 +99,7 @@ function New-Video {
         }
 
         if ($PSBoundParameters.ContainsKey('InputReference')) {
-            $FileInfo = Resolve-FileInfo $InputReference[0]
+            $FileInfo = Resolve-FileInfo $InputReference
             $PostBody.input_reference = $FileInfo
         }
         #endregion
