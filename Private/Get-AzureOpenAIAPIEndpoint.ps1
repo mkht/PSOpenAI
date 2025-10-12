@@ -299,7 +299,33 @@ function Get-AzureOpenAIAPIEndpoint {
             }
             continue
         }
-        Default {
+        'Videos' {
+            $DefaultApiVersion = 'preview'
+            $InnerApiVersion = if ($ApiVersion) { $ApiVersion }else { $DefaultApiVersion }
+            $UriBuilder.Path += 'openai/v1/video/generations/jobs'
+            $UriBuilder.Query = ('api-version={0}' -f $InnerApiVersion)
+            @{
+                Name        = 'videos'
+                Method      = 'Post'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'multipart/form-data'
+            }
+            continue
+        }
+        'Videos.Content' {
+            $DefaultApiVersion = 'preview'
+            $InnerApiVersion = if ($ApiVersion) { $ApiVersion }else { $DefaultApiVersion }
+            $UriBuilder.Path += 'openai/v1/video/generations/{0}/content'
+            $UriBuilder.Query = ('api-version={0}' -f $InnerApiVersion)
+            @{
+                Name        = 'videos_content'
+                Method      = 'Get'
+                Uri         = $UriBuilder.Uri
+                ContentType = ''
+            }
+            continue
+        }
+        default {
             Write-Error -Message ('{0} API endpoint is not provided by Azure OpenAI Service' -f $_)
         }
     }

@@ -310,6 +310,16 @@ function Get-OpenAIAPIEndpoint {
             }
             continue
         }
+        'Videos.Content' {
+            $UriBuilder.Path += 'videos/{0}/content'
+            @{
+                Name        = 'videos_content'
+                Method      = 'Get'
+                Uri         = $UriBuilder.Uri
+                ContentType = ''
+            }
+            continue
+        }
         default {
             Write-Error -Message ('{0} API endpoint is not provided by OpenAI' -f $_)
         }

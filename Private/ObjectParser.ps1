@@ -568,8 +568,14 @@ function ParseVideoJobObject {
 
     # Output warning message if the status is not success.
     if ($null -ne $InputObject.error -or $InputObject.status -eq 'failed') {
-        $WarnMessage = ('The status of job with id "{0}" is "{1}". Error: "{2}" ({3})' -f `
-                $InputObject.id, $InputObject.status, $InputObject.error.message, $InputObject.error.code)
+        if ($null -ne $InputObject.failure_reason) {
+            $WarnMessage = ('The status of job with id "{0}" is "{1}". Reason: "{2}"' -f `
+                    $InputObject.id, $InputObject.status, $InputObject.failure_reason)
+        }
+        else {
+            $WarnMessage = ('The status of job with id "{0}" is "{1}". Error: "{2}" ({3})' -f `
+                    $InputObject.id, $InputObject.status, $InputObject.error.message, $InputObject.error.code)
+        }
         Write-Warning -Message $WarnMessage
     }
 }

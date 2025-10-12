@@ -14,7 +14,7 @@ function Get-VideoContent {
 
         [Parameter()]
         [Completions('video', 'thumbnail', 'spritesheet')]
-        [string][LowerCaseTransformation()]$Variant,
+        [string][LowerCaseTransformation()]$Variant = 'video',
 
         [Parameter()]
         [switch]$WaitForCompletion,
@@ -58,7 +58,8 @@ function Get-VideoContent {
 
     begin {
         # Get API context
-        $OpenAIParameter = Get-OpenAIAPIParameter -EndpointName 'Videos' -Parameters $PSBoundParameters -ErrorAction Stop
+        $OpenAIParameter = Get-OpenAIAPIParameter -EndpointName 'Videos.Content' -Parameters $PSBoundParameters -ErrorAction Stop
+        $ApiType = $OpenAIParameter.ApiType
 
         # Parse Common params
         $CommonParams = ParseCommonParams $PSBoundParameters
@@ -67,21 +68,46 @@ function Get-VideoContent {
     process {
         # region Wait for completion
         if ($WaitForCompletion) {
-            $null = $VideoId | PSOpenAI\Wait-Video @CommonParams
+            Write-Verbose -Message "Waiting for the job with id '$VideoId' to be completed..."
+            $FinishedJob = $VideoId | PSOpenAI\Wait-Video @CommonParams
+            if ($FinishedJob.status -in ('completed', 'succeeded')) {
+                Write-Verbose -Message "The job with id '$VideoId' is completed."
+            }
+            else {
+                Write-Error -Message "The job with id '$VideoId' was not completed. The status is '$($FinishedJob.status)'."
+                return
+            }
         }
         # endregion
 
-        #region Construct Query URI
-        $UriBuilder = [System.UriBuilder]::new($OpenAIParameter.Uri)
-        $UriBuilder.Path += "/$VideoId/content"
-        $QueryUri = $UriBuilder.Uri
-
-        if ($PSBoundParameters.ContainsKey('Variant')) {
-            $QueryParam = [System.Web.HttpUtility]::ParseQueryString($UriBuilder.Query)
-            $QueryParam.Add('variant', $Variant)
-            $UriBuilder.Query = $QueryParam.ToString()
-            $QueryUri = $UriBuilder.Uri
+        # For Azure OpenAI, the job id is not equal to the video id.
+        # video id is required to get from the finished job object.
+        if ($ApiType -eq [OpenAIApiType]::Azure) {
+            $JobObject = PSOpenAI\Get-Video -VideoId $VideoId @CommonParams
+            if ($null -eq $JobObject) {
+                Write-Error -Message "The job with id '$VideoId' was not found."
+            }
+            else {
+                $VideoId = $JobObject.generations[0].id
+            }
         }
+
+        #region Construct Query URI
+        $QueryUri = $OpenAIParameter.Uri.ToString() -f $VideoId
+        $UriBuilder = [System.UriBuilder]::new($QueryUri)
+        if ($ApiType -eq [OpenAIApiType]::Azure) {
+            $UriBuilder.Path += "/$Variant"
+        }
+
+        if ($ApiType -eq [OpenAIApiType]::OpenAI) {
+            if ($PSBoundParameters.ContainsKey('Variant')) {
+                $QueryParam = [System.Web.HttpUtility]::ParseQueryString($UriBuilder.Query)
+                $QueryParam.Add('variant', $Variant)
+                $UriBuilder.Query = $QueryParam.ToString()
+            }
+        }
+
+        $QueryUri = $UriBuilder.Uri
         #endregion
 
         #region Send API Request

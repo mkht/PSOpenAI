@@ -52,6 +52,7 @@ function New-VideoRemix {
     begin {
         # Get API context
         $OpenAIParameter = Get-OpenAIAPIParameter -EndpointName 'Videos.Remix' -Parameters $PSBoundParameters -ErrorAction Stop
+        $ApiType = $OpenAIParameter.ApiType
     }
 
     process {

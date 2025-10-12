@@ -48,6 +48,7 @@ function Remove-Video {
     begin {
         # Get API context
         $OpenAIParameter = Get-OpenAIAPIParameter -EndpointName 'Videos' -Parameters $PSBoundParameters -ErrorAction Stop
+        $ApiType = $OpenAIParameter.ApiType
     }
 
     process {

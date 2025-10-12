@@ -9,7 +9,7 @@ function New-Video {
         [Parameter()]
         [ValidateNotNullOrEmpty()]
         [Alias('input_reference')]
-        [string]$InputReference,
+        [string[]]$InputReference,
 
         [Parameter(ValueFromPipelineByPropertyName)]
         [Completions(
@@ -29,7 +29,7 @@ function New-Video {
             '1024x1792',
             '1792x1024'
         )]
-        [string]$Size = '720x1280',
+        [string][LowerCaseTransformation()]$Size = '720x1280',
 
         [Parameter()]
         [int]$TimeoutSec = 0,
@@ -71,6 +71,7 @@ function New-Video {
     begin {
         # Get API context
         $OpenAIParameter = Get-OpenAIAPIParameter -EndpointName 'Videos' -Parameters $PSBoundParameters -ErrorAction Stop
+        $ApiType = $OpenAIParameter.ApiType
     }
 
     process {
@@ -80,22 +81,38 @@ function New-Video {
         $PostBody.model = $Model
 
         if ($PSBoundParameters.ContainsKey('Seconds')) {
-            $PostBody.seconds = $Seconds
+            if ($ApiType -eq [OpenAIApiType]::Azure) {
+                $PostBody.n_seconds = [int]$Seconds
+            }
+            else {
+                $PostBody.seconds = $Seconds.Trim()
+            }
         }
         if ($PSBoundParameters.ContainsKey('Size')) {
-            $PostBody.size = $Size
-        }
-
-        if ($ToolResources.Count -gt 0) {
-            $PostBody.tool_resources = $ToolResources
-        }
-        if ($PSBoundParameters.ContainsKey('Metadata')) {
-            $PostBody.metadata = $Metadata
+            if ($ApiType -eq [OpenAIApiType]::Azure) {
+                $PostBody.width = $Size.Split('x')[0].Trim()
+                $PostBody.height = $Size.Split('x')[1].Trim()
+            }
+            else {
+                $PostBody.size = $Size.Trim()
+            }
         }
 
         if ($PSBoundParameters.ContainsKey('InputReference')) {
-            $FileInfo = Resolve-FileInfo $InputReference
-            $PostBody.input_reference = $FileInfo
+            if ($ApiType -eq [OpenAIApiType]::Azure) {
+                $PostBody.files = @()
+                foreach ($ref in $InputReference) {
+                    $FileInfo = Resolve-FileInfo $ref
+                    $PostBody.files += $FileInfo
+                }
+            }
+            else {
+                if ($InputReference.Count -gt 1) {
+                    Write-Warning 'Only one input_reference is supported in OpenAI API. The first one will be used.'
+                }
+                $FileInfo = Resolve-FileInfo $InputReference[0]
+                $PostBody.input_reference = $FileInfo
+            }
         }
         #endregion
 

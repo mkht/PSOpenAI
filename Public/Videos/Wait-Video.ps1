@@ -41,21 +41,31 @@ function Wait-Video {
 
         [Parameter()]
         [ValidateNotNullOrEmpty()]
-        [ValidateSet(
+        [Completions(
             'queued',
             'in_progress',
             'completed',
-            'failed'
+            'failed',
+            'preprocessing',
+            'running',
+            'processing',
+            'cancelled',
+            'succeeded'
         )]
-        [string[]]$StatusForWait = @('queued', 'in_progress'),
+        [string[]]$StatusForWait = @('queued', 'in_progress', 'preprocessing', 'running', 'processing'),
 
         [Parameter()]
         [ValidateNotNullOrEmpty()]
-        [ValidateSet(
+        [Completions(
             'queued',
             'in_progress',
             'completed',
-            'failed'
+            'failed',
+            'preprocessing',
+            'running',
+            'processing',
+            'cancelled',
+            'succeeded'
         )]
         [string[]]$StatusForExit,
 
@@ -98,7 +108,15 @@ function Wait-Video {
                 Start-CancelableWait -Milliseconds $WaitMilliSec -CancellationToken $Cancellation.Token -ea Stop
                 $innerJobObject = PSOpenAI\Get-Video -VideoId $VideoId @CommonParams
                 $ProgressTitle = ("Waiting for completion... : Job ID '{0}'" -f $innerJobObject.id)
-                Write-Progress -Activity $ProgressTitle -CurrentOperation $innerJobObject.status -Status ('Progress {0}%' -f $innerJobObject.progress) -PercentComplete $innerJobObject.progress
+                if ($innerJobObject.progress) {
+                    $PercentComplete = $innerJobObject.progress
+                    $StatusMessage = ('Progress {0}%' -f $innerJobObject.progress)
+                }
+                else {
+                    $PercentComplete = -1
+                    $StatusMessage = ('Status: {0}' -f $innerJobObject.status)
+                }
+                Write-Progress -Activity $ProgressTitle -CurrentOperation $innerJobObject.status -Status $StatusMessage -PercentComplete $PercentComplete
             } while ($innerJobObject.status -and $innerJobObject.status -in $innerStatusForWait)
         }
         catch [OperationCanceledException] {
@@ -110,7 +128,7 @@ function Wait-Video {
             return
         }
         finally {
-            Write-Progress -Activity ("The job with id '{0}' has completed." -f $innerJobObject.id) -Completed
+            Write-Progress -Activity ("The job with id '{0}' has {1}." -f $innerJobObject.id, $innerJobObject.status) -Completed
             if ($null -ne $Cancellation) {
                 $Cancellation.Dispose()
             }
