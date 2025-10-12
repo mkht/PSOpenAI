@@ -1,4 +1,19 @@
 # Changelog
+### 4.40.0
+- Add new models that was announced at OpenAI DevDay 2025.
+  + `sora-2`, `sora-2-pro`, `gpt-5-pro`, `gpt-audio`, `gpt-audio-mini`, `gpt-image-1-mini`, `gpt-realtime`, `gpt-realtime-mini`
+- Add New functions for Video generation.
+    + [New-Video](/Docs/New-Video.md)
+    + [New-VideoRemix](/Docs/New-VideoRemix.md)
+    + [Get-Video](/Docs/Get-Video.md)
+    + [Get-VideoContent](/Docs/Get-VideoContent.md)
+    + [Remove-Video](/Docs/Remove-Video.md)
+  ```PowerShell
+  $VideoJob = New-Video -Model 'sora-2' -Prompt "A cat playing piano" -Size 1280x720
+  $VideoJob | Get-VideoContent -OutFile "C:\output\cat_piano.mp4" -WaitForCompletion
+  ```
+- **[Experimental]** Add video generation support for Azure OpenAI Service.
+
 ### 4.39.1
 - Fix bug where API requests fail when json_schema is specified as the OutputType in Request-Response functions. [#44](https://github.com/mkht/PSOpenAI/issues/44)
 - Update deprecation models list.
