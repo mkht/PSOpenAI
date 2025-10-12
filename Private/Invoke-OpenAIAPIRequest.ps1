@@ -153,6 +153,7 @@ function Invoke-OpenAIAPIRequest {
             $IwrParam.Body = ([System.Text.Encoding]::UTF8.GetBytes($JsonBody))
         }
         else {
+            if ($IsDebug) { try { $JsonBody = ($Body | ConvertTo-Json -Compress -Depth 0) }catch {} } # Only for debug output
             $IwrParam.Body = $InternalParams.Body
         }
     }
