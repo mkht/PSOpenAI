@@ -3,7 +3,7 @@ function Submit-ToolOutput {
     [OutputType([pscustomobject])]
     param (
         [Parameter(ParameterSetName = 'Run', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
-        [Alias('InputObject')]  # for backword compatibility
+        [Alias('InputObject')]  # for backward compatibility
         [PSTypeName('PSOpenAI.Thread.Run')]$Run,
 
         [Parameter(ParameterSetName = 'Id', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]

@@ -3,7 +3,7 @@ function Stop-VectorStoreFileBatch {
     [OutputType([pscustomobject])]
     param (
         [Parameter(ParameterSetName = 'VectorStore', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
-        [Alias('InputObject')]  # for backword compatibility
+        [Alias('InputObject')]  # for backward compatibility
         [PSTypeName('PSOpenAI.VectorStore')]$VectorStore,
 
         [Parameter(ParameterSetName = 'VectorStoreId', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]

@@ -3,7 +3,7 @@ function Get-VectorStoreFileInBatch {
     [OutputType([pscustomobject])]
     param (
         [Parameter(ParameterSetName = 'List_VectorStore', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
-        [Alias('InputObject')]  # for backword compatibility
+        [Alias('InputObject')]  # for backward compatibility
         [PSTypeName('PSOpenAI.VectorStore')]$VectorStore,
 
         [Parameter(ParameterSetName = 'List_Id', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]

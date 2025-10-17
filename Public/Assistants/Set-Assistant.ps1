@@ -4,7 +4,7 @@ function Set-Assistant {
     param (
         [Parameter(Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [ValidateNotNullOrEmpty()]
-        [Alias('InputObject')]  # for backword compatibility
+        [Alias('InputObject')]  # for backward compatibility
         [Alias('Assistant')]
         [Alias('assistant_id')]
         [string][UrlEncodeTransformation()]$AssistantId,

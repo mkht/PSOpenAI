@@ -6,7 +6,7 @@ function Get-ChatCompletion {
         [ValidateNotNullOrEmpty()]
         [Alias('Completion')]
         [Alias('completion_id')]
-        [Alias('Id')]   # for backword compatibility
+        [Alias('Id')]   # for backward compatibility
         [string][UrlEncodeTransformation()]$CompletionId,
 
         [Parameter(ParameterSetName = 'List')]

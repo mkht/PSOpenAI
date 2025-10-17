@@ -4,7 +4,7 @@ function Get-ThreadRunStep {
     param (
         [Parameter(ParameterSetName = 'Get_Run', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [Parameter(ParameterSetName = 'List_Run', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
-        [Alias('InputObject')]  # for backword compatibility
+        [Alias('InputObject')]  # for backward compatibility
         [PSTypeName('PSOpenAI.Thread.Run')]$Run,
 
         [Parameter(ParameterSetName = 'Get_RunId', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]

@@ -1,7 +1,7 @@
 function Add-OpenAIFile {
     [CmdletBinding(DefaultParameterSetName = 'File')]
     [OutputType([pscustomobject])]
-    [Alias('Register-OpenAIFile')] # for backword compatibility
+    [Alias('Register-OpenAIFile')] # for backward compatibility
     param (
         [Parameter(ParameterSetName = 'File', Mandatory, Position = 0, ValueFromPipeline)]
         [ValidateNotNullOrEmpty()]

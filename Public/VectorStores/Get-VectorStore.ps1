@@ -3,7 +3,7 @@ function Get-VectorStore {
     [OutputType([pscustomobject])]
     param (
         [Parameter(ParameterSetName = 'Get_VectorStore', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
-        [Alias('InputObject')]  # for backword compatibility
+        [Alias('InputObject')]  # for backward compatibility
         [PSTypeName('PSOpenAI.VectorStore')]$VectorStore,
 
         [Parameter(ParameterSetName = 'Get_Id', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]

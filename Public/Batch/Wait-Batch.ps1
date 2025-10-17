@@ -6,8 +6,8 @@ function Wait-Batch {
         [ValidateNotNullOrEmpty()]
         [Alias('Batch')]
         [Alias('batch_id')]
-        [Alias('InputObject')]  # for backword compatibility
-        [Alias('Id')]   # for backword compatibility
+        [Alias('InputObject')]  # for backward compatibility
+        [Alias('Id')]   # for backward compatibility
         [string][UrlEncodeTransformation()]$BatchId,
 
         [Parameter()]

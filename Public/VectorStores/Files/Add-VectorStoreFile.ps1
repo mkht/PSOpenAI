@@ -4,7 +4,7 @@ function Add-VectorStoreFile {
     param (
         [Parameter(Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [ValidateNotNullOrEmpty()]
-        [Alias('InputObject')]  # for backword compatibility
+        [Alias('InputObject')]  # for backward compatibility
         [Alias('VectorStore')]
         [Alias('vector_store_id')]
         [string][UrlEncodeTransformation()]$VectorStoreId,

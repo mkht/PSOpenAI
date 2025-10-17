@@ -8,7 +8,7 @@ function Start-Batch {
         [string]$FileId,
 
         [Parameter(ParameterSetName = 'BatchObject', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
-        [Alias('InputObject')]  # for backword compatibility
+        [Alias('InputObject')]  # for backward compatibility
         [PSTypeName('PSOpenAI.Batch.Input')]$BatchInput,
 
         [Parameter()]

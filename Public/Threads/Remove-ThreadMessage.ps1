@@ -4,7 +4,7 @@ function Remove-ThreadMessage {
     param (
         [Parameter(Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [ValidateNotNullOrEmpty()]
-        [Alias('InputObject')]  # for backword compatibility
+        [Alias('InputObject')]  # for backward compatibility
         [Alias('thread_id')]
         [Alias('Thread')]
         [string][UrlEncodeTransformation()]$ThreadId,

@@ -6,8 +6,8 @@ function Remove-ChatCompletion {
         [ValidateNotNullOrEmpty()]
         [Alias('Completion')]
         [Alias('completion_id')]
-        [Alias('InputObject')]   # for backword compatibility
-        [Alias('Id')]   # for backword compatibility
+        [Alias('InputObject')]   # for backward compatibility
+        [Alias('Id')]   # for backward compatibility
         [string][UrlEncodeTransformation()]$CompletionId,
 
         [Parameter()]

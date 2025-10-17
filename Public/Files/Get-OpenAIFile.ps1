@@ -6,7 +6,7 @@ function Get-OpenAIFile {
         [ValidateNotNullOrEmpty()]
         [Alias('File')]
         [Alias('file_id')]
-        [Alias('Id')]   # for backword compatibility
+        [Alias('Id')]   # for backward compatibility
         [string][UrlEncodeTransformation()]$FileId,
 
         [Parameter(ParameterSetName = 'List', Mandatory = $false)]

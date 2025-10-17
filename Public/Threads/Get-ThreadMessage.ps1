@@ -5,7 +5,7 @@ function Get-ThreadMessage {
         [Parameter(ParameterSetName = 'Get_ThreadId', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [Parameter(ParameterSetName = 'List_ThreadId', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [ValidateNotNullOrEmpty()]
-        [Alias('InputObject')]  # for backword compatibility
+        [Alias('InputObject')]  # for backward compatibility
         [Alias('Thread')]
         [Alias('thread_id')]
         [string][UrlEncodeTransformation()]$ThreadId,

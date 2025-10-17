@@ -3,13 +3,13 @@ function Stop-Batch {
     [OutputType([pscustomobject])]
     param (
         [Parameter(ParameterSetName = 'Batch', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
-        [Alias('InputObject')]  # for backword compatibility
+        [Alias('InputObject')]  # for backward compatibility
         [PSTypeName('PSOpenAI.Batch')]$Batch,
 
         [Parameter(ParameterSetName = 'Id', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [ValidateNotNullOrEmpty()]
         [Alias('batch_id')]
-        [Alias('Id')]   # for backword compatibility
+        [Alias('Id')]   # for backward compatibility
         [string][UrlEncodeTransformation()]$BatchId,
 
         [Parameter()]

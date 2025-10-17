@@ -6,7 +6,7 @@ function Get-Batch {
         [ValidateNotNullOrEmpty()]
         [Alias('Batch')]
         [Alias('batch_id')]
-        [Alias('Id')]   # for backword compatibility
+        [Alias('Id')]   # for backward compatibility
         [string][UrlEncodeTransformation()]$BatchId,
 
         [Parameter(ParameterSetName = 'List')]
