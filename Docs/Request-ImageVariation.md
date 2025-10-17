@@ -17,7 +17,7 @@ Request-ImageVariation
     [-Image] <String>
     [-NumberOfImages <UInt16>]
     [-Size <String>]
-    [-Format <String>]
+    [-ResponseFormat <String>]
     [-User <String>]
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
@@ -61,7 +61,7 @@ Request-ImageVariation -Image C:\cupcake.png -OutFile C:\cupcake2.png -Size 256x
 
 ### Example 2: Creates a variation of a given image, then output as base64 string.
 ```PowerShell
-Request-ImageVariation -Image C:\cupcake.png -Format "base64"
+Request-ImageVariation -Image C:\cupcake.png -ResponseFormat "base64"
 ```
 ```
 iVBORw0KGgoAAAANSUhEUgAABAAAAAQACAIAAADwf7zUAAAAaGV......
@@ -107,7 +107,7 @@ Position: Named
 Default value: 1024x1024
 ```
 
-### -Format
+### -ResponseFormat
 The format in which the generated images are returned.  
 Must be one of `url`, `base64` or `byte`.
 
@@ -202,9 +202,9 @@ Position: Named
 
 ## OUTPUTS
 
-### Format = url    : string or array of string
-### Format = base64 : Generated image data represented in base64 string.
-### Format = byte   : Byte array of generated image.
+### ResponseFormat = url    : string or array of string
+### ResponseFormat = base64 : Generated image data represented in base64 string.
+### ResponseFormat = byte   : Byte array of generated image.
 ### OutFile         : Nothing.
 ## NOTES
 

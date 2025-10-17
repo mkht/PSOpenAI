@@ -18,7 +18,7 @@ Request-AudioTranscription
     [[-File] <String>]
     [-Model <String>]
     [-Prompt <String>]
-    [-Format <String>]
+    [-ResponseFormat <String>]
     [-Temperature <Double>]
     [-Include <String[]>]
     [-TimestampGranularities <String[]>]
@@ -42,7 +42,7 @@ https://platform.openai.com/docs/guides/speech-to-text/speech-to-text
 
 ### Example 1: Audio-to-Text
 ```PowerShell
-PS C:\> Request-AudioTranscription -File C:\sample\audio.mp3 -Format text
+PS C:\> Request-AudioTranscription -File C:\sample\audio.mp3 -ResponseFormat text
 ```
 ```
 Hello, I am david.
@@ -82,7 +82,7 @@ Required: False
 Position: Named
 ```
 
-### -Format
+### -ResponseFormat
 The format of the transcript output, in one of these options: `json`, `text`, `srt`, `verbose_json`, or `vtt`.  
 The default value is `text`.
 
@@ -106,7 +106,7 @@ Position: Named
 
 ### -Include
 Additional information to include in the transcription response.  
-`logprobs` only works with `-Format` set to `json` and only with the models `gpt-4o-transcribe` and `gpt-4o-mini-transcribe`
+`logprobs` only works with `-ResponseFormat` set to `json` and only with the models `gpt-4o-transcribe` and `gpt-4o-mini-transcribe`
 
 ```yaml
 Type: String[]

@@ -150,8 +150,9 @@ function Start-ThreadRun {
 
         [Parameter()]
         [Alias('response_format')]
+        [Alias('Format')]  # for backward compatibility
         [ValidateSet('default', 'auto', 'text', 'json_object', 'json_schema', 'raw_response')]
-        [object]$Format = 'default',
+        [object]$ResponseFormat = 'default',
 
         [Parameter()]
         [string]$JsonSchema,
@@ -328,27 +329,27 @@ function Start-ThreadRun {
             }
         }
         if ($PSBoundParameters.ContainsKey('Format')) {
-            if ($Format -is [type]) {
+            if ($ResponseFormat -is [type]) {
                 # Structured Outputs
-                $typeSchema = ConvertTo-JsonSchema $Format
+                $typeSchema = ConvertTo-JsonSchema $ResponseFormat
                 $PostBody.response_format = @{
                     'type'        = 'json_schema'
                     'json_schema' = @{
-                        'name'   = $Format.Name
+                        'name'   = $ResponseFormat.Name
                         'strict' = $true
                         'schema' = $typeSchema
                     }
                 }
             }
-            elseif ($Format -in ('default', 'raw_response')) {
+            elseif ($ResponseFormat -in ('default', 'raw_response')) {
                 # Nothing to do
             }
-            elseif ($Format -eq 'auto') {
+            elseif ($ResponseFormat -eq 'auto') {
                 $PostBody.response_format = 'auto'
             }
             else {
-                $PostBody.response_format = @{'type' = $Format }
-                if ($Format -eq 'json_schema') {
+                $PostBody.response_format = @{'type' = $ResponseFormat }
+                if ($ResponseFormat -eq 'json_schema') {
                     if (-not $JsonSchema) {
                         Write-Error -Exception ([System.ArgumentException]::new('JsonSchema must be specified.'))
                     }
@@ -490,7 +491,7 @@ function Start-ThreadRun {
                 Where-Object {
                     -not [string]::IsNullOrEmpty($_)
                 } | ForEach-Object {
-                    if ($Format -eq 'raw_response') {
+                    if ($ResponseFormat -eq 'raw_response') {
                         $_
                     }
                     elseif ($_.Contains('"object":"thread.message.delta"')) {
@@ -503,9 +504,9 @@ function Start-ThreadRun {
                         @($deltaObj.delta.content.Where({ $_.type -eq 'text' }))[0]
                     }
                 } | Where-Object {
-                    $Format -eq 'raw_response' -or ($null -ne $_.text)
+                    $ResponseFormat -eq 'raw_response' -or ($null -ne $_.text)
                 } | ForEach-Object -Process {
-                    if ($Format -eq 'raw_response') {
+                    if ($ResponseFormat -eq 'raw_response') {
                         Write-Output $_
                     }
                     else {
@@ -532,7 +533,7 @@ function Start-ThreadRun {
             }
             #endregion
 
-            if ($Format -eq 'raw_response') {
+            if ($ResponseFormat -eq 'raw_response') {
                 Write-Output $Response
                 return
             }

@@ -31,7 +31,7 @@ New-Assistant
     [-Temperature <Double>]
     [-TopP <Double>]
     [-MetaData <IDictionary>]
-    [-Format <Object>]
+    [-ResponseFormat <Object>]
     [-JsonSchema <String>]
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
@@ -216,7 +216,7 @@ Required: False
 Position: Named
 ```
 
-### -Format
+### -ResponseFormat
 Specifies the format that the model must output.  
 - `auto` is default.  
 - `json_object` enables JSON mode, which ensures the message the model generates is valid JSON.  
@@ -232,7 +232,7 @@ Position: Named
 
 ### -JsonSchema
 Specifies an object or data structure to represent the JSON Schema that the model should be constrained to follow.  
-Required if `json_schema` is specified for `-Format`. Otherwise, it is ignored.
+Required if `json_schema` is specified for `-ResponseFormat`. Otherwise, it is ignored.
 
 ```yaml
 Type: String

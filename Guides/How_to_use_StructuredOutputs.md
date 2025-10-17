@@ -35,10 +35,10 @@ $Result = Request-ChatCompletion `
             -Model "gpt-4o-2024-08-06" `
             -SystemMessage "You are a helpful math tutor. Guide the user through the solution step by step." `
             -Message "How can I solve 8x + 7 = 31" `
-            -Format ([MathReasoning])
+            -ResponseFormat ([MathReasoning])
 ```
 
-The point is that the `-Format` parameter specifies the defined PowerShell class type `[MathReasoning]`.  
+The point is that the `-ResponseFormat` parameter specifies the defined PowerShell class type `[MathReasoning]`.  
 This instructs the AI model to return an object of this type using Structured Ouputs mode.
 
 PSOpenAI deserialize the response and sets the `Answer` property to an object of the specified type.
@@ -153,7 +153,7 @@ $Result = Request-ChatCompletion `
             -Model "gpt-4o-2024-08-06" `
             -SystemMessage "You are an assistant who reads the meeting information from messages." `
             -Message $TextMessage `
-            -Format ([MeetingEvent])
+            -ResponseFormat ([MeetingEvent])
 
 $Result.Answer[0]
 #> Topics      : {Details of the contract, Potential changes and price adjustments}
@@ -174,7 +174,7 @@ $Result.Answer[0].Attendees
 ## Use Structured Outputs with own JSON schema
 
 If using the built-in parser is not suitable, you can specify your own JSON schema directly.  
-Specify `"json_schema"` to `-Format` and a JSON schema string to `-JsonSchema`.
+Specify `"json_schema"` to `-ResponseFormat` and a JSON schema string to `-JsonSchema`.
 
 Please refer to the official OpenAI guide to creating your own JSON schema.  
 https://platform.openai.com/docs/guides/structured-outputs/supported-schemas
@@ -212,7 +212,7 @@ $ownJsonSchema = @'
 $Result = Request-ChatCompletion `
             -Model "gpt-4o-mini" `
             -Message "9.11 and 9.9 -- which is bigger?" `
-            -Format "json_schema" `
+            -ResponseFormat "json_schema" `
             -JsonSchema $ownJsonSchema
 ```
 

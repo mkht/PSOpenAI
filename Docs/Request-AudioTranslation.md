@@ -17,7 +17,7 @@ Request-AudioTranslation
     [[-File] <String>]
     [-Model <String>]
     [-Prompt <String>]
-    [-Format <String>]
+    [-ResponseFormat <String>]
     [-Temperature <Double>]
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
@@ -35,7 +35,7 @@ https://platform.openai.com/docs/guides/speech-to-text/speech-to-text
 
 ### Example 1: Japanese speech to English text.
 ```PowerShell
-Request-AudioTranslation -File C:\sample\japanese.mp3 -Format text
+Request-AudioTranslation -File C:\sample\japanese.mp3 -ResponseFormat text
 ```
 ```
 Hello, My name is tanaka yoshio.
@@ -75,7 +75,7 @@ Required: False
 Position: Named
 ```
 
-### -Format
+### -ResponseFormat
 The format of the transcript output, in one of these options: `json`, `text`, `srt`, `verbose_json`, or `vtt`.  
 The default value is `text`.
 

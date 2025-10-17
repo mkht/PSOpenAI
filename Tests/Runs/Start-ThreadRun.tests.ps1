@@ -109,7 +109,7 @@ Describe 'Start-ThreadRun' {
             }
 
             It 'raw_response format' {
-                { $script:Result = Start-ThreadRun -ThreadId 'thread_abc123' -Assistant 'asst_abc123' -Format 'raw_response' -ea Stop } | Should -Not -Throw
+                { $script:Result = Start-ThreadRun -ThreadId 'thread_abc123' -Assistant 'asst_abc123' -ResponseFormat 'raw_response' -ea Stop } | Should -Not -Throw
                 Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly -ParameterFilter { 'https://api.openai.com/v1/threads/thread_abc123/runs' -eq $uri }
                 $Result | Should -BeOfType [string]
             }
@@ -189,7 +189,7 @@ Describe 'Start-ThreadRun' {
             }
 
             It 'raw_response format' {
-                { $script:Result = Start-ThreadRun -Message 'Hello' -Assistant 'asst_abc123' -Format 'raw_response' -ea Stop } | Should -Not -Throw
+                { $script:Result = Start-ThreadRun -Message 'Hello' -Assistant 'asst_abc123' -ResponseFormat 'raw_response' -ea Stop } | Should -Not -Throw
                 Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly -ParameterFilter { 'https://api.openai.com/v1/threads/runs' -eq $uri }
                 $Result | Should -BeOfType [string]
             }
@@ -267,7 +267,7 @@ Describe 'Start-ThreadRun' {
             }
 
             It 'raw_response format' {
-                { $script:Result = Start-ThreadRun -Message 'Hello' -Assistant 'asst_abc123' -Format 'raw_response' -Stream -ea Stop } | Should -Not -Throw
+                { $script:Result = Start-ThreadRun -Message 'Hello' -Assistant 'asst_abc123' -ResponseFormat 'raw_response' -Stream -ea Stop } | Should -Not -Throw
                 Should -Invoke Invoke-OpenAIAPIRequestSSE -ModuleName $script:ModuleName -Times 1 -Exactly
                 $Result | Should -HaveCount 2
                 $Result[0] | Should -Match '"id":"msg_123"'

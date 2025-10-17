@@ -102,8 +102,9 @@ function Set-Assistant {
 
         [Parameter()]
         [Alias('response_format')]
+        [Alias('Format')]  # for backward compatibility
         [ValidateSet('default', 'auto', 'text', 'json_object', 'json_schema', 'raw_response')]
-        [object]$Format = 'default',
+        [object]$ResponseFormat = 'default',
 
         [Parameter()]
         [string]$JsonSchema,

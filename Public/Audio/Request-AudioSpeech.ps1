@@ -25,6 +25,7 @@ function Request-AudioSpeech {
 
         [Parameter()]
         [Alias('response_format')]
+        [Alias('Format')]  # for backward compatibility
         [Completions(
             'mp3',
             'opus',
@@ -33,7 +34,7 @@ function Request-AudioSpeech {
             'wav',
             'pcm'
         )]
-        [string][LowerCaseTransformation()]$Format,
+        [string][LowerCaseTransformation()]$ResponseFormat,
 
         [Parameter(Mandatory)]
         [ValidateNotNullOrEmpty()]
@@ -104,8 +105,8 @@ function Request-AudioSpeech {
         $PostBody.model = $Model
         $PostBody.input = $Text
         $PostBody.voice = $Voice
-        if ($PSBoundParameters.ContainsKey('Format')) {
-            $PostBody.response_format = $Format
+        if ($PSBoundParameters.ContainsKey('ResponseFormat')) {
+            $PostBody.response_format = $ResponseFormat
         }
         else {
             $PostBody.response_format =
@@ -115,7 +116,7 @@ function Request-AudioSpeech {
                 '*.aac' { 'aac'; break }
                 '*.flac' { 'flac'; break }
                 '*.wav' { 'wav'; break }
-                Default { 'mp3' }
+                default { 'mp3' }
             }
         }
         if ($PSBoundParameters.ContainsKey('Speed')) {

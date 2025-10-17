@@ -17,8 +17,9 @@ function Request-ImageVariation {
 
         [Parameter(ParameterSetName = 'Format')]
         [Alias('response_format')]
+        [Alias('Format')]  # for backward compatibility
         [ValidateSet('url', 'base64', 'byte')]
-        [string]$Format = 'url',
+        [string]$ResponseFormat = 'url',
 
         [Parameter(ParameterSetName = 'OutFile', Mandatory)]
         [ValidateNotNullOrEmpty()]
@@ -75,8 +76,8 @@ function Request-ImageVariation {
             if ($PSCmdlet.ParameterSetName -eq 'OutFile') {
                 $NumberOfImages = 1
             }
-            elseif ($Format -eq 'byte') {
-                Write-Error -Message "When the format is specified as $Format, NumberOfImages should be 1."
+            elseif ($ResponseFormat -eq 'byte') {
+                Write-Error -Message "When the format is specified as $ResponseFormat, NumberOfImages should be 1."
                 return
             }
         }
@@ -95,7 +96,7 @@ function Request-ImageVariation {
         if ($null -ne $Size) {
             $PostBody.size = $Size
         }
-        switch ($Format) {
+        switch ($ResponseFormat) {
             { $PSCmdlet.ParameterSetName -eq 'OutFile' } {
                 $PostBody.response_format = 'url'
                 break
@@ -167,13 +168,13 @@ function Request-ImageVariation {
                 Microsoft.PowerShell.Utility\Invoke-WebRequest @splat
             }
         }
-        elseif ($Format -eq 'url') {
+        elseif ($ResponseFormat -eq 'url') {
             Write-Output ($ResponseContent | Select-Object -ExpandProperty 'url')
         }
-        elseif ($Format -eq 'base64') {
+        elseif ($ResponseFormat -eq 'base64') {
             Write-Output ($ResponseContent | Select-Object -ExpandProperty 'b64_json')
         }
-        elseif ($Format -eq 'byte') {
+        elseif ($ResponseFormat -eq 'byte') {
             [byte[]]$b = [Convert]::FromBase64String(($ResponseContent | Select-Object -ExpandProperty 'b64_json' | Select-Object -First 1))
             Write-Output (, $b)
         }

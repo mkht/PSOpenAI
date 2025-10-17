@@ -39,7 +39,7 @@ Start-ThreadRun
     [-MetaData <IDictionary>]
     [-Temperature <Double>]
     [-Stream]
-    [-Format <Object>]
+    [-ResponseFormat <Object>]
     [-JsonSchema <String>]
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
@@ -76,7 +76,7 @@ Start-ThreadRun
     [-MetaData <IDictionary>]
     [-Temperature <Double>]
     [-Stream]
-    [-Format <String>]
+    [-ResponseFormat <String>]
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
     [-ApiBase <Uri>]
@@ -278,7 +278,7 @@ Position: Named
 Default value: False
 ```
 
-### -Format
+### -ResponseFormat
 Specifies the format that the model must output.  
 - `default` will only outputs text message.
 - `json_object` enables JSON mode, which ensures the message the model generates is valid JSON.  
@@ -294,7 +294,7 @@ Position: Named
 
 ### -JsonSchema
 Specifies an object or data structure to represent the JSON Schema that the model should be constrained to follow.  
-Required if `json_schema` is specified for `-Format`. Otherwise, it is ignored.
+Required if `json_schema` is specified for `-ResponseFormat`. Otherwise, it is ignored.
 
 ```yaml
 Type: String

@@ -32,7 +32,7 @@ Describe 'Request-ImageVariation' {
     ]
 }
 '@ }
-            { $script:Result = Request-ImageVariation -Image ($script:TestImageData + '/cupcake.png') -Format url -ea Stop } | Should -Not -Throw
+            { $script:Result = Request-ImageVariation -Image ($script:TestImageData + '/cupcake.png') -ResponseFormat url -ea Stop } | Should -Not -Throw
             Should -InvokeVerifiable
             $Result | Should -BeOfType [string]
             $Result | Should -Be 'https://dummyimage.example.com'
@@ -65,13 +65,13 @@ Describe 'Request-ImageVariation' {
             (Join-Path $TestDrive 'file1.png') | Should -Exist
         }
 
-        It 'Image edit. Format = url' {
+        It 'Image edit. ResponseFormat = url' {
             { $splat = @{
-                    Image       = $script:TestImageData + '/cupcake.png'
-                    Format      = 'url'
-                    Size        = 256
-                    TimeoutSec  = 30
-                    ErrorAction = 'Stop'
+                    Image          = $script:TestImageData + '/cupcake.png'
+                    ResponseFormat = 'url'
+                    Size           = 256
+                    TimeoutSec     = 30
+                    ErrorAction    = 'Stop'
                 }
                 $script:Result = Request-ImageVariation @splat
             } | Should -Not -Throw
@@ -79,13 +79,13 @@ Describe 'Request-ImageVariation' {
             $Result | Should -Match '^https://'
         }
 
-        It 'Image edit. Format = base64' {
+        It 'Image edit. ResponseFormat = base64' {
             { $splat = @{
-                    Image       = $script:TestImageData + '/cupcake.png'
-                    Format      = 'base64'
-                    Size        = 256
-                    TimeoutSec  = 30
-                    ErrorAction = 'Stop'
+                    Image          = $script:TestImageData + '/cupcake.png'
+                    ResponseFormat = 'base64'
+                    Size           = 256
+                    TimeoutSec     = 30
+                    ErrorAction    = 'Stop'
                 }
                 $script:Result = Request-ImageVariation @splat
             } | Should -Not -Throw
@@ -93,13 +93,13 @@ Describe 'Request-ImageVariation' {
             { [Convert]::FromBase64String($script:Result) } | Should -Not -Throw
         }
 
-        It 'Image edit. Format = byte' {
+        It 'Image edit. ResponseFormat = byte' {
             { $splat = @{
-                    Image       = $script:TestImageData + '/cupcake.png'
-                    Format      = 'byte'
-                    Size        = 256
-                    TimeoutSec  = 30
-                    ErrorAction = 'Stop'
+                    Image          = $script:TestImageData + '/cupcake.png'
+                    ResponseFormat = 'byte'
+                    Size           = 256
+                    TimeoutSec     = 30
+                    ErrorAction    = 'Stop'
                 }
                 $script:Result = Request-ImageVariation @splat
             } | Should -Not -Throw

@@ -101,8 +101,9 @@ function New-Assistant {
 
         [Parameter()]
         [Alias('response_format')]
+        [Alias('Format')]  # for backward compatibility
         [ValidateSet('default', 'auto', 'text', 'json_object', 'json_schema', 'raw_response')]
-        [object]$Format = 'default',
+        [object]$ResponseFormat = 'default',
 
         [Parameter()]
         [string]$JsonSchema,
@@ -250,27 +251,27 @@ function New-Assistant {
             $PostBody.top_p = $TopP
         }
         if ($PSBoundParameters.ContainsKey('Format')) {
-            if ($Format -is [type]) {
+            if ($ResponseFormat -is [type]) {
                 # Structured Outputs
-                $typeSchema = ConvertTo-JsonSchema $Format
+                $typeSchema = ConvertTo-JsonSchema $ResponseFormat
                 $PostBody.response_format = @{
                     'type'        = 'json_schema'
                     'json_schema' = @{
-                        'name'   = $Format.Name
+                        'name'   = $ResponseFormat.Name
                         'strict' = $true
                         'schema' = $typeSchema
                     }
                 }
             }
-            elseif ($Format -in ('default', 'raw_response')) {
+            elseif ($ResponseFormat -in ('default', 'raw_response')) {
                 # Nothing to do
             }
-            elseif ($Format -eq 'auto') {
+            elseif ($ResponseFormat -eq 'auto') {
                 $PostBody.response_format = 'auto'
             }
             else {
-                $PostBody.response_format = @{'type' = $Format }
-                if ($Format -eq 'json_schema') {
+                $PostBody.response_format = @{'type' = $ResponseFormat }
+                if ($ResponseFormat -eq 'json_schema') {
                     if (-not $JsonSchema) {
                         Write-Error -Exception ([System.ArgumentException]::new('JsonSchema must be specified.'))
                     }
@@ -307,7 +308,7 @@ function New-Assistant {
         #endregion
 
         #region Parse response object
-        if ($Format -eq 'raw_response') {
+        if ($ResponseFormat -eq 'raw_response') {
             Write-Output $Response
             return
         }

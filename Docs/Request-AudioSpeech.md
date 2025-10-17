@@ -19,7 +19,7 @@ Request-AudioSpeech
     [-Model <String>]
     [-Voice <String>]
     [-Instructions <String>]
-    [-Format <String>]
+    [-ResponseFormat <String>]
     -OutFile <String>
     [-Speed <Double>]
     [-TimeoutSec <Int32>]
@@ -97,7 +97,7 @@ Required: True
 Position: Named
 ```
 
-### -Format
+### -ResponseFormat
 The format of audio. Supported formats are `mp3`, `opus`, `aac`, `flac`, `wav`, and `pcm`
 
 ```yaml

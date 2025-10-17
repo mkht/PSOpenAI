@@ -209,8 +209,9 @@ function Request-ChatCompletion {
 
         [Parameter()]
         [Alias('response_format')]
+        [Alias('Format')]  # for backward compatibility
         [Completions('text', 'json_object', 'json_schema', 'raw_response')]
-        [object]$Format = 'text',
+        [object]$ResponseFormat = 'text',
 
         [Parameter()]
         [string]$JsonSchema,
@@ -413,24 +414,24 @@ function Request-ChatCompletion {
             }
         }
         if ($PSBoundParameters.ContainsKey('Format')) {
-            if ($Format -is [type]) {
+            if ($ResponseFormat -is [type]) {
                 # Structured Outputs
-                $typeSchema = ConvertTo-JsonSchema $Format
+                $typeSchema = ConvertTo-JsonSchema $ResponseFormat
                 $PostBody.response_format = @{
                     'type'        = 'json_schema'
                     'json_schema' = @{
-                        'name'   = $Format.Name
+                        'name'   = $ResponseFormat.Name
                         'strict' = $true
                         'schema' = $typeSchema
                     }
                 }
             }
-            elseif ($Format -eq 'raw_response') {
+            elseif ($ResponseFormat -eq 'raw_response') {
                 # Nothing to do
             }
             else {
-                $PostBody.response_format = @{'type' = $Format }
-                if ($Format -eq 'json_schema') {
+                $PostBody.response_format = @{'type' = $ResponseFormat }
+                if ($ResponseFormat -eq 'json_schema') {
                     if (-not $JsonSchema) {
                         Write-Error -Exception ([System.ArgumentException]::new('JsonSchema must be specified.'))
                     }
@@ -674,7 +675,7 @@ function Request-ChatCompletion {
                 Where-Object {
                     -not [string]::IsNullOrEmpty($_)
                 } | ForEach-Object {
-                    if ($Format -eq 'raw_response') {
+                    if ($ResponseFormat -eq 'raw_response') {
                         $_
                     }
                     else {
@@ -686,9 +687,9 @@ function Request-ChatCompletion {
                         }
                     }
                 } | Where-Object {
-                    $Format -eq 'raw_response' -or ($null -ne $_.choices -and ($_.choices[0].delta.content -is [string]))
+                    $ResponseFormat -eq 'raw_response' -or ($null -ne $_.choices -and ($_.choices[0].delta.content -is [string]))
                 } | ForEach-Object -Process {
-                    if ($Format -eq 'raw_response') {
+                    if ($ResponseFormat -eq 'raw_response') {
                         Write-Output $_
                     }
                     else {
@@ -714,7 +715,7 @@ function Request-ChatCompletion {
                 return
             }
             # Parse response object
-            if ($Format -eq 'raw_response') {
+            if ($ResponseFormat -eq 'raw_response') {
                 Write-Output $Response
                 return
             }
@@ -821,7 +822,7 @@ function Request-ChatCompletion {
             }
         }
 
-        ParseChatCompletionObject $Response -Messages $Messages -OutputType $Format
+        ParseChatCompletionObject $Response -Messages $Messages -OutputType $ResponseFormat
         #endregion
     }
 

@@ -18,8 +18,9 @@ function Request-Embeddings {
 
         [Parameter()]
         [Alias('encoding_format')]
+        [Alias('Format')]  # for backward compatibility
         [ValidateSet('float', 'base64')]
-        [string]$Format = 'float',
+        [string]$EncodingFormat = 'float',
 
         [Parameter()]
         [ValidateRange(1, 2147483647)]
@@ -97,8 +98,8 @@ function Request-Embeddings {
         if ($PSBoundParameters.ContainsKey('User')) {
             $PostBody.user = $User
         }
-        if ($PSBoundParameters.ContainsKey('Format')) {
-            $PostBody.encoding_format = $Format
+        if ($PSBoundParameters.ContainsKey('EncodingFormat')) {
+            $PostBody.encoding_format = $EncodingFormat
         }
         if ($PSBoundParameters.ContainsKey('Dimensions')) {
             $PostBody.dimensions = $Dimensions
@@ -155,7 +156,7 @@ function Request-Embeddings {
         #region Output
         if ($null -ne $Response) {
             for ($i = 0; $i -lt $Response.data.Count; $i++) {
-                if ($Format -eq 'float') {
+                if ($EncodingFormat -eq 'float') {
                     # Convert [Object[]] to [float[]]
                     @($Response.data)[$i].embedding = [float[]]@($Response.data)[$i].embedding
                 }

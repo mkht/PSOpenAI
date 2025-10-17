@@ -15,8 +15,9 @@ function Request-AudioTranslation {
 
         [Parameter()]
         [Alias('response_format')]
+        [Alias('Format')]  # for backward compatibility
         [ValidateSet('json', 'text', 'srt', 'verbose_json', 'vtt')]
-        [string]$Format = 'text',
+        [string]$ResponseFormat = 'text',
 
         [Parameter()]
         [ValidateRange(0.0, 1.0)]
@@ -71,8 +72,8 @@ function Request-AudioTranslation {
         $PostBody = [System.Collections.Specialized.OrderedDictionary]::new()
         $PostBody.model = $Model
         $PostBody.file = $FileInfo
-        if ($Format) {
-            $PostBody.response_format = $Format
+        if ($ResponseFormat) {
+            $PostBody.response_format = $ResponseFormat
         }
         if ($PSBoundParameters.ContainsKey('Prompt')) {
             $PostBody.prompt = $Prompt
