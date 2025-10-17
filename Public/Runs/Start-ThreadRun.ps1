@@ -328,7 +328,7 @@ function Start-ThreadRun {
                 $PostBody.tool_choice = @{type = $ToolChoice }
             }
         }
-        if ($PSBoundParameters.ContainsKey('Format')) {
+        if ($PSBoundParameters.ContainsKey('ResponseFormat')) {
             if ($ResponseFormat -is [type]) {
                 # Structured Outputs
                 $typeSchema = ConvertTo-JsonSchema $ResponseFormat

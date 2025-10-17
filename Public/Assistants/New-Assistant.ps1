@@ -250,7 +250,7 @@ function New-Assistant {
         if ($PSBoundParameters.ContainsKey('TopP')) {
             $PostBody.top_p = $TopP
         }
-        if ($PSBoundParameters.ContainsKey('Format')) {
+        if ($PSBoundParameters.ContainsKey('ResponseFormat')) {
             if ($ResponseFormat -is [type]) {
                 # Structured Outputs
                 $typeSchema = ConvertTo-JsonSchema $ResponseFormat

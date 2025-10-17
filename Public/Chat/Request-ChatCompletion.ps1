@@ -413,7 +413,7 @@ function Request-ChatCompletion {
                 $PostBody.top_logprobs = $TopLogProbs
             }
         }
-        if ($PSBoundParameters.ContainsKey('Format')) {
+        if ($PSBoundParameters.ContainsKey('ResponseFormat')) {
             if ($ResponseFormat -is [type]) {
                 # Structured Outputs
                 $typeSchema = ConvertTo-JsonSchema $ResponseFormat
