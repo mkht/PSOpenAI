@@ -152,12 +152,13 @@ function Request-AudioTranscription {
             $PostBody.'known_speaker_names[]' = $KnownSpeakerNames
         }
         if ($PSBoundParameters.ContainsKey('KnownSpeakerReferences')) {
-            $KnownSpeakerReferencesFileInfoList = @()
+            $KnownSpeakerReferencesDataList = @()
             foreach ($ref in $KnownSpeakerReferences) {
-                $KnownSpeakerReferencesFileInfoList += Resolve-FileInfo $ref
+                $KnownSpeakerReferencesDataList += Convert-FileToDataURL $ref
             }
-            if ($KnownSpeakerReferencesFileInfoList.Count -gt 0) {
-                $PostBody.'known_speaker_references[]' = $KnownSpeakerReferencesFileInfoList
+            if ($KnownSpeakerReferencesDataList.Count -gt 0) {
+                $PostBody.'known_speaker_references[]' = $KnownSpeakerReferencesDataList
+                $KnownSpeakerReferencesDataList = $null
             }
         }
 

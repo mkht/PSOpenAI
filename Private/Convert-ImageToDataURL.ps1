@@ -73,6 +73,17 @@ function Get-MimeTypeFromFile {
         '.tex' { 'text/x-tex'; continue }
         '.ts' { 'application/typescript'; continue }
         '.txt' { 'text/plain'; continue }
-        Default { $DefaultMimeType }
+        '.xml' { 'application/xml'; continue }
+        '.aac' { 'audio/aac'; continue }
+        '.mp3' { 'audio/mpeg'; continue }
+        '.m4a' { 'audio/mp4'; continue }
+        '.flac' { 'audio/flac'; continue }
+        '.wav' { 'audio/wav'; continue }
+        '.oga' { 'audio/ogg'; continue }
+        '.ogg' { 'audio/ogg'; continue }
+        '.opus' { 'audio/opus'; continue }
+        '.weba' { 'audio/webm'; continue }
+        '.mp4' { 'application/mp4'; continue }
+        default { $DefaultMimeType }
     }
 }

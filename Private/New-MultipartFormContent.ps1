@@ -22,37 +22,45 @@ function New-MultipartFormContent {
         $Boundary = New-MultipartFormBoundary
     }
     $Boundary = '--' + $Boundary
+    $script:InternalBoundary = $Utf8Enc.GetBytes($Boundary)
 
     #Contents
     foreach ($formEntry in $FormData.GetEnumerator()) {
-        $script:FormContent.AddRange($Utf8Enc.GetBytes($Boundary))
-        $script:FormContent.AddRange($Utf8Enc.GetBytes("`r`n"))
         AddMultipartContent -fieldName $formEntry.Key -fieldValue $formEntry.Value -enumerate $true
     }
 
     #End boundary
-    $script:FormContent.AddRange($Utf8Enc.GetBytes(($Boundary + '--')))
+    $script:FormContent.AddRange($script:InternalBoundary)
+    $script:FormContent.AddRange([byte[]](45, 45))  # '--'
 
     #Output as [byte[]]
     Write-Output (, $script:FormContent.ToArray())
 }
 
+function AddMultipartBoundary {
+    $script:FormContent.AddRange($script:InternalBoundary)
+    $script:FormContent.AddRange([byte[]](13, 10))  # "`r`n"
+}
+
 function AddMultipartContent {
     [OutputType([void])]
-    Param(
+    param(
         [object]$fieldName,
         [object]$fieldValue,
         [bool]$enumerate
     )
 
     if ($fieldValue -is [FileInfo]) {
+        AddMultipartBoundary
         $script:FormContent.AddRange((GetMultipartFileContent -fieldName $fieldName -file $fieldValue))
     }
     elseif (-not $enumerate -or $fieldValue -is [string] -or $fieldValue -isnot [IEnumerable]) {
+        AddMultipartBoundary
         $script:FormContent.AddRange((GetMultipartStringContent -fieldName $fieldName -fieldValue $fieldValue))
         return
     }
     elseif ($fieldValue -is [IDictionary] -and $fieldValue.Type -eq 'bytes') {
+        AddMultipartBoundary
         $script:FormContent.AddRange((GetMultipartBytesContent -fieldName $fieldName -content $fieldValue.Content -fileName $fieldValue.FileName))
     }
     elseif ($enumerate -and $fieldValue -is [IEnumerable]) {
@@ -92,7 +100,7 @@ function GetMultipartStringContent {
     [List[byte]]$result = [List[byte]]::new()
     $result.AddRange($Utf8Enc.GetBytes($header))
     $result.AddRange($Utf8Enc.GetBytes($fieldValue))
-    $result.AddRange($Utf8Enc.GetBytes("`r`n"))
+    $result.AddRange([byte[]](13, 10))  # "`r`n"
     return , $result
 }
 
@@ -119,6 +127,6 @@ function GetMultipartBytesContent {
     [List[byte]]$result = [List[byte]]::new()
     $result.AddRange($Utf8Enc.GetBytes($header))
     $result.AddRange($content)
-    $result.AddRange($Utf8Enc.GetBytes("`r`n"))
+    $result.AddRange([byte[]](13, 10))  # "`r`n"
     return , $result
 }
