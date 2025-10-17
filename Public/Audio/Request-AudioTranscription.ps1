@@ -7,7 +7,7 @@ function Request-AudioTranscription {
         [string]$File,
 
         [Parameter()]
-        [Completions('whisper-1', 'gpt-4o-transcribe', 'gpt-4o-mini-transcribe')]
+        [Completions('whisper-1', 'gpt-4o-transcribe', 'gpt-4o-mini-transcribe', 'gpt-4o-transcribe-diarize')]
         [string]$Model = 'whisper-1',
 
         [Parameter()]
@@ -15,8 +15,9 @@ function Request-AudioTranscription {
 
         [Parameter()]
         [Alias('response_format')]
-        [ValidateSet('json', 'text', 'srt', 'verbose_json', 'vtt')]
-        [string]$Format = 'text',
+        [Alias('Format')]  # for backward compatibility
+        [ValidateSet('json', 'text', 'srt', 'verbose_json', 'vtt', 'diarized_json')]
+        [string]$ResponseFormat = 'text',
 
         [Parameter()]
         [ValidateRange(0.0, 1.0)]
@@ -25,6 +26,29 @@ function Request-AudioTranscription {
         [Parameter()]
         [Completions('logprobs')]
         [string[]]$Include,
+
+        [Parameter()]
+        [Alias('known_speaker_names')]
+        [string[]]$KnownSpeakerNames,
+
+        [Parameter()]
+        [Alias('known_speaker_references')]
+        [string[]]$KnownSpeakerReferences,
+
+        [Parameter()]
+        [ValidateSet('auto', 'server_vad')]
+        [Alias('chunking_strategy')]
+        [string]$ChunkingStrategy = 'auto',
+
+        [Parameter()]
+        [ValidateRange(0.0, 1.0)]
+        [float]$ChunkingStrategyThreshold,
+
+        [Parameter()]
+        [uint16]$ChunkingStrategyPrefixPadding,
+
+        [Parameter()]
+        [uint16]$ChunkingStrategySilenceDuration,
 
         [Parameter()]
         [ValidateSet('word', 'segment')]
@@ -108,8 +132,8 @@ function Request-AudioTranscription {
             $PostBody.model = $Model
         }
         $PostBody.file = $FileInfo
-        if ($Format) {
-            $PostBody.response_format = $Format
+        if ($ResponseFormat) {
+            $PostBody.response_format = $ResponseFormat
         }
         if ($PSBoundParameters.ContainsKey('Prompt')) {
             $PostBody.prompt = $Prompt
@@ -123,6 +147,51 @@ function Request-AudioTranscription {
         if ($PSBoundParameters.ContainsKey('Include')) {
             $PostBody.'include[]' = $Include
         }
+
+        if ($PSBoundParameters.ContainsKey('KnownSpeakerNames')) {
+            $PostBody.'known_speaker_names[]' = $KnownSpeakerNames
+        }
+        if ($PSBoundParameters.ContainsKey('KnownSpeakerReferences')) {
+            $KnownSpeakerReferencesFileInfoList = @()
+            foreach ($ref in $KnownSpeakerReferences) {
+                $KnownSpeakerReferencesFileInfoList += Resolve-FileInfo $ref
+            }
+            if ($KnownSpeakerReferencesFileInfoList.Count -gt 0) {
+                $PostBody.'known_speaker_references[]' = $KnownSpeakerReferencesFileInfoList
+            }
+        }
+
+        #region Chunking Strategy
+        $ChunkingStrategyOptions = @{}
+        if ($PSBoundParameters.ContainsKey('ChunkingStrategy')) {
+            if ($ChunkingStrategy -eq 'auto') {
+                $PostBody.chunking_strategy = 'auto'
+            }
+            else {
+                $ChunkingStrategyOptions.type = 'server_vad'
+            }
+        }
+        else {
+            if ($PSBoundParameters.ContainsKey('ChunkingStrategyThreshold')) {
+                $ChunkingStrategyOptions.threshold = $ChunkingStrategyThreshold
+            }
+            if ($PSBoundParameters.ContainsKey('ChunkingStrategyPrefixPadding')) {
+                $ChunkingStrategyOptions.prefix_padding_ms = $ChunkingStrategyPrefixPadding
+            }
+            if ($PSBoundParameters.ContainsKey('ChunkingStrategySilenceDuration')) {
+                $ChunkingStrategyOptions.silence_duration_ms = $ChunkingStrategySilenceDuration
+            }
+        }
+        if ( $ChunkingStrategyOptions.Keys.Count -gt 0) {
+            $ChunkingStrategyOptions.type = 'server_vad'
+            $PostBody.chunking_strategy = ConvertTo-Json $ChunkingStrategyOptions -Compress
+        }
+        elseif ($Model -like '*diarize*') {
+            # chunking_strategy parameter is required when using diarization models
+            $PostBody.chunking_strategy = 'auto'
+        }
+        #endregion Chunking Strategy
+
         if ($Language) {
             $PostBody.language = $Language
         }
