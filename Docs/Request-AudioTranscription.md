@@ -15,12 +15,18 @@ Transcribes audio into the input language.
 ### Language (Default)
 ```
 Request-AudioTranscription
-    [[-File] <String>]
+    [-File] <String>
     [-Model <String>]
     [-Prompt <String>]
     [-ResponseFormat <String>]
     [-Temperature <Double>]
     [-Include <String[]>]
+    [-KnownSpeakerNames <String[]>]
+    [-KnownSpeakerReferences <String[]>]
+    [-ChunkingStrategy <String>]
+    [-ChunkingStrategyThreshold <Float>]
+    [-ChunkingStrategyPrefixPadding <UInt16>]
+    [-ChunkingStrategySilenceDuration <UInt16>]
     [-TimestampGranularities <String[]>]
     [-Language <String>]
     [-Stream]
@@ -48,6 +54,12 @@ PS C:\> Request-AudioTranscription -File C:\sample\audio.mp3 -ResponseFormat tex
 Hello, I am david.
 ```
 
+### Example 2: Speaker diarization
+```PowerShell
+PS C:\> $JsonResult = Request-AudioTranscription -File C:\sample\meeting.mp3 -Model gpt-4o-transcribe-diarize -ResponseFormat diarized_json
+PS C:\> $JsonResult | ConvertFrom-Json
+```
+
 ## PARAMETERS
 
 ### -File
@@ -57,7 +69,7 @@ The audio file to transcribe, in one of these formats: `flac`, `mp3`, `mp4`, `mp
 ```yaml
 Type: String
 Required: True
-Position: 1
+Position: 0
 Accept pipeline input: True (ByValue)
 ```
 
@@ -83,7 +95,7 @@ Position: Named
 ```
 
 ### -ResponseFormat
-The format of the transcript output, in one of these options: `json`, `text`, `srt`, `verbose_json`, or `vtt`.  
+The format of the transcript output, in one of these options: `json`, `text`, `srt`, `verbose_json`, `vtt`  or `diarized_json`.  
 The default value is `text`.
 
 ```yaml
@@ -110,6 +122,61 @@ Additional information to include in the transcription response.
 
 ```yaml
 Type: String[]
+Required: False
+Position: Named
+```
+
+### -KnownSpeakerNames
+Optional list of speaker names that correspond to the audio samples provided in `-KnownSpeakerReferences`. Each entry should be a short identifier (for example customer or agent). Up to 4 speakers are supported.
+
+```yaml
+Type: String[]
+Required: False
+Position: Named
+```
+
+### -KnownSpeakerReferences
+Optional list of audio samples that contain known speaker references matching `-KnownSpeakerNames`. Each sample must be between 2 and 10 seconds, and can use any of the same input audio formats supported by file.
+
+```yaml
+Type: String[]
+Required: False
+Position: Named
+```
+
+### -ChunkingStrategy
+Controls how the audio is cut into chunks. Options are: `auto`, `server_vad`.
+The default value is `auto`.
+
+```yaml
+Type: String
+Required: False
+Position: Named
+```
+
+### -ChunkingStrategyThreshold
+Sensitivity threshold (0.0 to 1.0) for voice activity detection.
+
+```yaml
+Type: Float
+Required: False
+Position: Named
+```
+
+### -ChunkingStrategyPrefixPadding
+Amount of audio to include before the VAD detected speech (in milliseconds).
+
+```yaml
+Type: UInt16
+Required: False
+Position: Named
+```
+
+### -ChunkingStrategySilenceDuration
+Duration of silence to detect speech stop (in milliseconds).
+
+```yaml
+Type: UInt16
 Required: False
 Position: Named
 ```
