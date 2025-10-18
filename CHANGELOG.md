@@ -1,4 +1,11 @@
 # Changelog
+### 4.41.0
+- Support `gpt-4o-transcribe-diarize` model in `Request-AudioTranscription`.
+- Add `-Description` parameter to `New-VectorStore`.
+- Rename `-Format` parameter to `-ResponseFormat` for consistency across cmdlets.  
+    You can still use `-Format` as an alias, but it will be removed in future releases.
+- Remove default value for ReasoningEffort parameter in `Request-Response`. (For better compatibility with `gpt-5-pro` model.)
+
 ### 4.40.0
 - Add new models that was announced at OpenAI DevDay 2025.
   + `sora-2`, `sora-2-pro`, `gpt-5-pro`, `gpt-audio`, `gpt-audio-mini`, `gpt-image-1-mini`, `gpt-realtime`, `gpt-realtime-mini`

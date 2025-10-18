@@ -12398,7 +12398,7 @@ Reducing reasoning effort can result in faster responses and fewer tokens used o
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="response_format">
-          <maml:name>Format</maml:name>
+          <maml:name>ResponseFormat</maml:name>
           <maml:description>
             <maml:para>Specifies the format that the model must output.
 - `auto` is default.
@@ -12417,7 +12417,7 @@ Reducing reasoning effort can result in faster responses and fewer tokens used o
           <maml:name>JsonSchema</maml:name>
           <maml:description>
             <maml:para>Specifies an object or data structure to represent the JSON Schema that the model should be constrained to follow.
-Required if `json_schema` is specified for `-Format`. Otherwise, it is ignored.</maml:para>
+Required if `json_schema` is specified for `-ResponseFormat`. Otherwise, it is ignored.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -12707,7 +12707,7 @@ Reducing reasoning effort can result in faster responses and fewer tokens used o
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="response_format">
-        <maml:name>Format</maml:name>
+        <maml:name>ResponseFormat</maml:name>
         <maml:description>
           <maml:para>Specifies the format that the model must output.
 - `auto` is default.
@@ -12726,7 +12726,7 @@ Reducing reasoning effort can result in faster responses and fewer tokens used o
         <maml:name>JsonSchema</maml:name>
         <maml:description>
           <maml:para>Specifies an object or data structure to represent the JSON Schema that the model should be constrained to follow.
-Required if `json_schema` is specified for `-Format`. Otherwise, it is ignored.</maml:para>
+Required if `json_schema` is specified for `-ResponseFormat`. Otherwise, it is ignored.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -13846,6 +13846,18 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Description</maml:name>
+          <maml:description>
+            <maml:para>A description for the vector store. Can be used to describe the vector store's purpose.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="file_ids">
           <maml:name>FileId</maml:name>
           <maml:description>
@@ -14008,6 +14020,18 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <maml:name>Name</maml:name>
         <maml:description>
           <maml:para>The name of the vector store.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Description</maml:name>
+        <maml:description>
+          <maml:para>A description for the vector store. Can be used to describe the vector store's purpose.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -18131,7 +18155,7 @@ The default value is `alloy`.</maml:para>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="response_format">
-          <maml:name>Format</maml:name>
+          <maml:name>ResponseFormat</maml:name>
           <maml:description>
             <maml:para>The format of audio. Supported formats are `mp3`, `opus`, `aac`, `flac`, `wav`, and `pcm`</maml:para>
           </maml:description>
@@ -18290,7 +18314,7 @@ The default value is `alloy`.</maml:para>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="response_format">
-        <maml:name>Format</maml:name>
+        <maml:name>ResponseFormat</maml:name>
         <maml:description>
           <maml:para>The format of audio. Supported formats are `mp3`, `opus`, `aac`, `flac`, `wav`, and `pcm`</maml:para>
         </maml:description>
@@ -18463,7 +18487,7 @@ https://platform.openai.com/docs/guides/speech-to-text/speech-to-text</maml:para
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Request-AudioTranscription</maml:name>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="0" aliases="none">
           <maml:name>File</maml:name>
           <maml:description>
             <maml:para>(Required) The audio file to transcribe, in one of these formats: `flac`, `mp3`, `mp4`, `mpeg`, `mpga`, `m4a`, `ogg`, `wav`, or `webm`.
@@ -18502,9 +18526,9 @@ The prompt should match the audio language.</maml:para>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="response_format">
-          <maml:name>Format</maml:name>
+          <maml:name>ResponseFormat</maml:name>
           <maml:description>
-            <maml:para>The format of the transcript output, in one of these options: `json`, `text`, `srt`, `verbose_json`, or `vtt`.
+            <maml:para>The format of the transcript output, in one of these options: `json`, `text`, `srt`, `verbose_json`, `vtt`  or `diarized_json`.
 The default value is `text`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -18531,11 +18555,83 @@ Higher values like `0.8` will make the output more random, while lower values li
           <maml:name>Include</maml:name>
           <maml:description>
             <maml:para>Additional information to include in the transcription response.
-`logprobs` only works with `-Format` set to `json` and only with the models `gpt-4o-transcribe` and `gpt-4o-mini-transcribe`</maml:para>
+`logprobs` only works with `-ResponseFormat` set to `json` and only with the models `gpt-4o-transcribe` and `gpt-4o-mini-transcribe`</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
           <dev:type>
             <maml:name>String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>KnownSpeakerNames</maml:name>
+          <maml:description>
+            <maml:para>Optional list of speaker names that correspond to the audio samples provided in `-KnownSpeakerReferences`. Each entry should be a short identifier (for example customer or agent). Up to 4 speakers are supported.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>KnownSpeakerReferences</maml:name>
+          <maml:description>
+            <maml:para>Optional list of audio samples that contain known speaker references matching `-KnownSpeakerNames`. Each sample must be between 2 and 10 seconds, and can use any of the same input audio formats supported by file.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>ChunkingStrategy</maml:name>
+          <maml:description>
+            <maml:para>Controls how the audio is cut into chunks. Options are: `auto`, `server_vad`. The default value is `auto`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>ChunkingStrategyThreshold</maml:name>
+          <maml:description>
+            <maml:para>Sensitivity threshold (0.0 to 1.0) for voice activity detection.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Float</command:parameterValue>
+          <dev:type>
+            <maml:name>Float</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>ChunkingStrategyPrefixPadding</maml:name>
+          <maml:description>
+            <maml:para>Amount of audio to include before the VAD detected speech (in milliseconds).</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">UInt16</command:parameterValue>
+          <dev:type>
+            <maml:name>UInt16</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>ChunkingStrategySilenceDuration</maml:name>
+          <maml:description>
+            <maml:para>Duration of silence to detect speech stop (in milliseconds).</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">UInt16</command:parameterValue>
+          <dev:type>
+            <maml:name>UInt16</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -18661,7 +18757,7 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="0" aliases="none">
         <maml:name>File</maml:name>
         <maml:description>
           <maml:para>(Required) The audio file to transcribe, in one of these formats: `flac`, `mp3`, `mp4`, `mpeg`, `mpga`, `m4a`, `ogg`, `wav`, or `webm`.
@@ -18700,9 +18796,9 @@ The prompt should match the audio language.</maml:para>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="response_format">
-        <maml:name>Format</maml:name>
+        <maml:name>ResponseFormat</maml:name>
         <maml:description>
-          <maml:para>The format of the transcript output, in one of these options: `json`, `text`, `srt`, `verbose_json`, or `vtt`.
+          <maml:para>The format of the transcript output, in one of these options: `json`, `text`, `srt`, `verbose_json`, `vtt`  or `diarized_json`.
 The default value is `text`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -18729,11 +18825,83 @@ Higher values like `0.8` will make the output more random, while lower values li
         <maml:name>Include</maml:name>
         <maml:description>
           <maml:para>Additional information to include in the transcription response.
-`logprobs` only works with `-Format` set to `json` and only with the models `gpt-4o-transcribe` and `gpt-4o-mini-transcribe`</maml:para>
+`logprobs` only works with `-ResponseFormat` set to `json` and only with the models `gpt-4o-transcribe` and `gpt-4o-mini-transcribe`</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
         <dev:type>
           <maml:name>String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>KnownSpeakerNames</maml:name>
+        <maml:description>
+          <maml:para>Optional list of speaker names that correspond to the audio samples provided in `-KnownSpeakerReferences`. Each entry should be a short identifier (for example customer or agent). Up to 4 speakers are supported.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+        <dev:type>
+          <maml:name>String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>KnownSpeakerReferences</maml:name>
+        <maml:description>
+          <maml:para>Optional list of audio samples that contain known speaker references matching `-KnownSpeakerNames`. Each sample must be between 2 and 10 seconds, and can use any of the same input audio formats supported by file.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+        <dev:type>
+          <maml:name>String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>ChunkingStrategy</maml:name>
+        <maml:description>
+          <maml:para>Controls how the audio is cut into chunks. Options are: `auto`, `server_vad`. The default value is `auto`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>ChunkingStrategyThreshold</maml:name>
+        <maml:description>
+          <maml:para>Sensitivity threshold (0.0 to 1.0) for voice activity detection.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Float</command:parameterValue>
+        <dev:type>
+          <maml:name>Float</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>ChunkingStrategyPrefixPadding</maml:name>
+        <maml:description>
+          <maml:para>Amount of audio to include before the VAD detected speech (in milliseconds).</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">UInt16</command:parameterValue>
+        <dev:type>
+          <maml:name>UInt16</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>ChunkingStrategySilenceDuration</maml:name>
+        <maml:description>
+          <maml:para>Duration of silence to detect speech stop (in milliseconds).</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">UInt16</command:parameterValue>
+        <dev:type>
+          <maml:name>UInt16</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -18877,9 +19045,17 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
     <command:examples>
       <command:example>
         <maml:title>------------------- Example 1: Audio-to-Text -------------------</maml:title>
-        <dev:code>PS C:\&gt; Request-AudioTranscription -File C:\sample\audio.mp3 -Format text
+        <dev:code>PS C:\&gt; Request-AudioTranscription -File C:\sample\audio.mp3 -ResponseFormat text
 
 Hello, I am david.</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>---------------- Example 2: Speaker diarization ----------------</maml:title>
+        <dev:code>PS C:\&gt; $JsonResult = Request-AudioTranscription -File C:\sample\meeting.mp3 -Model gpt-4o-transcribe-diarize -ResponseFormat diarized_json
+PS C:\&gt; $JsonResult | ConvertFrom-Json</dev:code>
         <dev:remarks>
           <maml:para></maml:para>
         </dev:remarks>
@@ -18916,7 +19092,7 @@ https://platform.openai.com/docs/guides/speech-to-text/speech-to-text</maml:para
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Request-AudioTranslation</maml:name>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="0" aliases="none">
           <maml:name>File</maml:name>
           <maml:description>
             <maml:para>(Required) The audio file to translate, in one of these formats: `flac`, `mp3`, `mp4`, `mpeg`, `mpga`, `m4a`, `ogg`, `wav`, or `webm`.
@@ -18955,7 +19131,7 @@ The prompt should be in English.</maml:para>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="response_format">
-          <maml:name>Format</maml:name>
+          <maml:name>ResponseFormat</maml:name>
           <maml:description>
             <maml:para>The format of the transcript output, in one of these options: `json`, `text`, `srt`, `verbose_json`, or `vtt`.
 The default value is `text`.</maml:para>
@@ -19052,7 +19228,7 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="0" aliases="none">
         <maml:name>File</maml:name>
         <maml:description>
           <maml:para>(Required) The audio file to translate, in one of these formats: `flac`, `mp3`, `mp4`, `mpeg`, `mpga`, `m4a`, `ogg`, `wav`, or `webm`.
@@ -19091,7 +19267,7 @@ The prompt should be in English.</maml:para>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="response_format">
-        <maml:name>Format</maml:name>
+        <maml:name>ResponseFormat</maml:name>
         <maml:description>
           <maml:para>The format of the transcript output, in one of these options: `json`, `text`, `srt`, `verbose_json`, or `vtt`.
 The default value is `text`.</maml:para>
@@ -19205,7 +19381,7 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
     <command:examples>
       <command:example>
         <maml:title>--------- Example 1: Japanese speech to English text. ---------</maml:title>
-        <dev:code>Request-AudioTranslation -File C:\sample\japanese.mp3 -Format text
+        <dev:code>Request-AudioTranslation -File C:\sample\japanese.mp3 -ResponseFormat text
 
 Hello, My name is tanaka yoshio.</dev:code>
         <dev:remarks>
@@ -19745,7 +19921,7 @@ ID 23182 maps to "apple" and ID 88847 maps to "banana". Thus, this example incre
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="response_format">
-          <maml:name>Format</maml:name>
+          <maml:name>ResponseFormat</maml:name>
           <maml:description>
             <maml:para>Specifies the format that the model must output.
 - `text` is default.
@@ -19764,7 +19940,7 @@ ID 23182 maps to "apple" and ID 88847 maps to "banana". Thus, this example incre
           <maml:name>JsonSchema</maml:name>
           <maml:description>
             <maml:para>Specifies an object or data structure to represent the JSON Schema that the model should be constrained to follow.
-Required if `json_schema` is specified for `-Format`. Otherwise, it is ignored.</maml:para>
+Required if `json_schema` is specified for `-ResponseFormat`. Otherwise, it is ignored.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -20446,7 +20622,7 @@ ID 23182 maps to "apple" and ID 88847 maps to "banana". Thus, this example incre
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="response_format">
-        <maml:name>Format</maml:name>
+        <maml:name>ResponseFormat</maml:name>
         <maml:description>
           <maml:para>Specifies the format that the model must output.
 - `text` is default.
@@ -20465,7 +20641,7 @@ ID 23182 maps to "apple" and ID 88847 maps to "banana". Thus, this example incre
         <maml:name>JsonSchema</maml:name>
         <maml:description>
           <maml:para>Specifies an object or data structure to represent the JSON Schema that the model should be constrained to follow.
-Required if `json_schema` is specified for `-Format`. Otherwise, it is ignored.</maml:para>
+Required if `json_schema` is specified for `-ResponseFormat`. Otherwise, it is ignored.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -20770,8 +20946,8 @@ https://platform.openai.com/docs/guides/embeddings</maml:para>
           </dev:type>
           <dev:defaultValue>text-embedding-ada-002</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>Format</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="encoding_format">
+          <maml:name>EncodingFormat</maml:name>
           <maml:description>
             <maml:para>The format to return the embeddings in. Can be either `float` or `base64` The default value is `float`.</maml:para>
           </maml:description>
@@ -20926,8 +21102,8 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         </dev:type>
         <dev:defaultValue>text-embedding-ada-002</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-        <maml:name>Format</maml:name>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="encoding_format">
+        <maml:name>EncodingFormat</maml:name>
         <maml:description>
           <maml:para>The format to return the embeddings in. Can be either `float` or `base64` The default value is `float`.</maml:para>
         </maml:description>
@@ -22536,7 +22712,7 @@ Must be one of `256x256`, `512x512`, or `1024x1024`. The default value is `1024x
           <dev:defaultValue>1024x1024</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="response_format">
-          <maml:name>Format</maml:name>
+          <maml:name>ResponseFormat</maml:name>
           <maml:description>
             <maml:para>The format in which the generated images are returned.
 Must be one of `url`, `base64` or `byte`.</maml:para>
@@ -22806,7 +22982,7 @@ Must be one of `256x256`, `512x512`, or `1024x1024`. The default value is `1024x
         <dev:defaultValue>1024x1024</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="response_format">
-        <maml:name>Format</maml:name>
+        <maml:name>ResponseFormat</maml:name>
         <maml:description>
           <maml:para>The format in which the generated images are returned.
 Must be one of `url`, `base64` or `byte`.</maml:para>
@@ -22916,7 +23092,7 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>Format = url    : string or array of string</maml:name>
+          <maml:name>ResponseFormat = url    : string or array of string</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -22924,7 +23100,7 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
       </command:returnValue>
       <command:returnValue>
         <dev:type>
-          <maml:name>Format = base64 : Generated image data represented in base64 string.</maml:name>
+          <maml:name>ResponseFormat = base64 : Generated image data represented in base64 string.</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -22932,7 +23108,7 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
       </command:returnValue>
       <command:returnValue>
         <dev:type>
-          <maml:name>Format = byte   : Byte array of generated image.</maml:name>
+          <maml:name>ResponseFormat = byte   : Byte array of generated image.</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -22962,7 +23138,7 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
       </command:example>
       <command:example>
         <maml:title>Example 2: Creates a variation of a given image, then output as base64 string.</maml:title>
-        <dev:code>Request-ImageVariation -Image C:\cupcake.png -Format "base64"
+        <dev:code>Request-ImageVariation -Image C:\cupcake.png -ResponseFormat "base64"
 
 iVBORw0KGgoAAAANSUhEUgAABAAAAAQACAIAAADwf7zUAAAAaGV......</dev:code>
         <dev:remarks>
@@ -26841,7 +27017,7 @@ Reducing reasoning effort can result in faster responses and fewer tokens used o
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="response_format">
-          <maml:name>Format</maml:name>
+          <maml:name>ResponseFormat</maml:name>
           <maml:description>
             <maml:para>Specifies the format that the model must output.
 - `auto` is default.
@@ -26860,7 +27036,7 @@ Reducing reasoning effort can result in faster responses and fewer tokens used o
           <maml:name>JsonSchema</maml:name>
           <maml:description>
             <maml:para>Specifies an object or data structure to represent the JSON Schema that the model should be constrained to follow.
-Required if `json_schema` is specified for `-Format`. Otherwise, it is ignored.</maml:para>
+Required if `json_schema` is specified for `-ResponseFormat`. Otherwise, it is ignored.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -27162,7 +27338,7 @@ Reducing reasoning effort can result in faster responses and fewer tokens used o
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="response_format">
-        <maml:name>Format</maml:name>
+        <maml:name>ResponseFormat</maml:name>
         <maml:description>
           <maml:para>Specifies the format that the model must output.
 - `auto` is default.
@@ -27181,7 +27357,7 @@ Reducing reasoning effort can result in faster responses and fewer tokens used o
         <maml:name>JsonSchema</maml:name>
         <maml:description>
           <maml:para>Specifies an object or data structure to represent the JSON Schema that the model should be constrained to follow.
-Required if `json_schema` is specified for `-Format`. Otherwise, it is ignored.</maml:para>
+Required if `json_schema` is specified for `-ResponseFormat`. Otherwise, it is ignored.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -30663,7 +30839,7 @@ Reducing reasoning effort can result in faster responses and fewer tokens used o
           <dev:defaultValue>False</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="response_format">
-          <maml:name>Format</maml:name>
+          <maml:name>ResponseFormat</maml:name>
           <maml:description>
             <maml:para>Specifies the format that the model must output.
 - `default` will only outputs text message.</maml:para>
@@ -30682,7 +30858,7 @@ Reducing reasoning effort can result in faster responses and fewer tokens used o
           <maml:name>JsonSchema</maml:name>
           <maml:description>
             <maml:para>Specifies an object or data structure to represent the JSON Schema that the model should be constrained to follow.
-Required if `json_schema` is specified for `-Format`. Otherwise, it is ignored.</maml:para>
+Required if `json_schema` is specified for `-ResponseFormat`. Otherwise, it is ignored.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -31147,7 +31323,7 @@ Reducing reasoning effort can result in faster responses and fewer tokens used o
         <dev:defaultValue>False</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="response_format">
-        <maml:name>Format</maml:name>
+        <maml:name>ResponseFormat</maml:name>
         <maml:description>
           <maml:para>Specifies the format that the model must output.
 - `default` will only outputs text message.</maml:para>
@@ -31166,7 +31342,7 @@ Reducing reasoning effort can result in faster responses and fewer tokens used o
         <maml:name>JsonSchema</maml:name>
         <maml:description>
           <maml:para>Specifies an object or data structure to represent the JSON Schema that the model should be constrained to follow.
-Required if `json_schema` is specified for `-Format`. Otherwise, it is ignored.</maml:para>
+Required if `json_schema` is specified for `-ResponseFormat`. Otherwise, it is ignored.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
