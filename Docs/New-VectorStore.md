@@ -15,6 +15,7 @@ Create a vector store.
 ```
 New-VectorStore
     [-Name <String>]
+    [-Description <String>]
     [-FileId <Object[]>]
     [-ExpiresAfterDays <UInt16>]
     [-ExpiresAfterAnchor <String>]
@@ -53,6 +54,15 @@ Creates a new vector store with attached 3 files.
 
 ### -Name
 The name of the vector store.
+
+```yaml
+Type: String
+Required: False
+Position: Named
+```
+
+### -Description
+A description for the vector store. Can be used to describe the vector store's purpose.
 
 ```yaml
 Type: String

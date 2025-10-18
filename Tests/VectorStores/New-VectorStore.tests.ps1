@@ -20,6 +20,7 @@ Describe 'New-VectorStore' {
     "usage_bytes": 123456,
     "last_active_at": 1698107661,
     "name": "my_vector_store",
+    "description": "This is my vector store.",
     "status": "completed",
     "file_counts": {
         "in_progress": 0,
@@ -52,6 +53,7 @@ Describe 'New-VectorStore' {
             $Params = @{
                 FileId           = 'file-abc123', 'file-abc456'
                 Name             = 'My Store'
+                Description      = 'This is my vector store.'
                 ExpiresAfterDays = 7
                 MetaData         = @{ meta_id = 'id-0000' }
             }

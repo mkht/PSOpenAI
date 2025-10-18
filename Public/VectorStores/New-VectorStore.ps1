@@ -19,6 +19,9 @@ function New-VectorStore {
         [string]$Name,
 
         [Parameter()]
+        [string]$Description,
+
+        [Parameter()]
         [ValidateRange(1, 365)]
         [uint16]$ExpiresAfterDays,
 
@@ -132,6 +135,9 @@ function New-VectorStore {
         }
         if ($PSBoundParameters.ContainsKey('Name')) {
             $PostBody.name = $Name
+        }
+        if ($PSBoundParameters.ContainsKey('Description')) {
+            $PostBody.description = $Description
         }
         if ($PSBoundParameters.ContainsKey('ExpiresAfterDays')) {
             $PostBody.expires_after = @{
