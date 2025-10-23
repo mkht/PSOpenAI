@@ -62,4 +62,35 @@ Describe 'Get-VideoContent' {
             $OutFile | Should -FileContentMatchExactly 'ABC'
         }
     }
+
+    Context 'Wait for completion with timeout' -Tag 'Offline' {
+        BeforeAll {
+            Mock -ModuleName $script:ModuleName Initialize-APIKey { [securestring]::new() }
+            Mock -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $PesterBoundParameters }
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest {
+                [System.Text.Encoding]::UTF8.GetBytes('ABC')
+            }
+        }
+
+        It 'Wait for completion - timeout' {
+            Mock -Verifiable -ModuleName $script:ModuleName Get-Video {
+                Start-Sleep -Seconds 2
+                [PSCustomObject]@{
+                    PSTypeName   = 'PSOpenAI.Video.Job'
+                    object       = 'video'
+                    id           = 'video_abc123'
+                    status       = 'in_progress' # Never completes
+                    created_at   = $null
+                    completed_at = $null
+                    expires_at   = $null
+                    model        = 'sora-2'
+                    progress     = 40
+                }
+            }
+            $OutFile = (Join-Path $TestDrive 'abc123.mp4')
+            { $script:Result = Get-VideoContent -VideoId 'video_abc123' -OutFile $OutFile -WaitForCompletion -TimeoutSec 5 -ea Stop } | Should -Throw -ExceptionType ([System.TimeoutException])
+            Should -Invoke Get-Video -ModuleName $script:ModuleName -Times 1
+            $Result | Should -BeNullOrEmpty
+        }
+    }
 }
