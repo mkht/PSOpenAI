@@ -19,7 +19,7 @@ Set-RealtimeSessionConfiguration
     [-PromptId <String>]
     [-PromptVariables <IDictionary>]
     [-PromptVersion <String>]
-    [-Modalities <String[]>]
+    [-OutputModalities <String[]>]
     [-Voice <String>] 
     [-Speed <Double>] 
     [-InputAudioFormat <String>]
@@ -46,6 +46,9 @@ Set-RealtimeSessionConfiguration
     [-TracingGroupId <String>]
     [-TracingMetadata <IDictionary>]
     [-TracingWorkflowName <String>]
+    [-Truncation <String>]
+    [-TruncationRetentionRatio <Float>]
+    [-TruncationTokenLimitsPostInstructions <Int32>]
 ```
 
 ## DESCRIPTION
@@ -56,7 +59,7 @@ Set the realtime session's configuration.
 ### Example 1
 ```powershell
 PS C:\> Set-RealtimeSessionConfiguration `
-    -Modalities 'audio' `
+    -OutputModalities 'audio' `
     -Voice 'marin' `
     -EnableInputAudioTranscription $true `
     -EnableTurnDetection $true
@@ -183,7 +186,7 @@ Position: Named
 Default value: -1
 ```
 
-### -Modalities
+### -OutputModalities
 The set of modalities the model can respond with.
 
 ```yaml
@@ -346,6 +349,33 @@ The name of the workflow to attach to this trace. This is used to name the trace
 
 ```yaml
 Type: String
+Required: False
+Position: Named
+```
+
+### -Truncation
+The truncation strategy to use for the session. `auto` is the default truncation strategy. `disabled` will disable truncation and emit errors when the conversation exceeds the input token limit.
+
+```yaml
+Type: String
+Required: False
+Position: Named
+```
+
+### -TruncationRetentionRatio
+Fraction of post-instruction conversation tokens to retain (`0.0` - `1.0`) when the conversation exceeds the input token limit.
+
+```yaml
+Type: Float
+Required: False
+Position: Named
+```
+
+### -TruncationTokenLimitsPostInstructions
+Maximum tokens allowed in the conversation after instructions (which including tool definitions).
+
+```yaml
+Type: Int32
 Required: False
 Position: Named
 ```

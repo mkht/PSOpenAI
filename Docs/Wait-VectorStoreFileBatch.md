@@ -34,7 +34,7 @@ Waits until the vector store file batch is completed.
 
 ### Example 1
 ```powershell
-PS C:\> Start-VectorStoreFileBatch -VectorStoreId 'vs_abc123' -FileId ('file-abc123', 'file-def456', 'file-ghi789') | Wait-VectorStoreFileBatch
+PS C:\> Start-VectorStoreFileBatch -VectorStoreId 'vs_abc123' -Files ('file-abc123', 'file-def456', 'file-ghi789') | Wait-VectorStoreFileBatch
 ```
 
 Start a batch and wait for completes.

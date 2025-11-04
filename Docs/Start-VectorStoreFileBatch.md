@@ -15,7 +15,8 @@ Create and run vector store file batch.
 ```
 Start-VectorStoreFileBatch
     [-VectorStoreId] <String>
-    [-FileId] <Object[]>
+    [-Attributes <Hashtable>]
+    [-Files] <Object[]>
     [-ChunkingStrategy <String>]
     [-MaxChunkSizeTokens <Int32>]
     [-ChunkOverlapTokens <Int32>]
@@ -34,7 +35,7 @@ Create and run vector store file batch.
 
 ### Example 1
 ```powershell
-PS C:\> Start-VectorStoreFileBatch -VectorStoreId 'vs_abc123' -FileId ('file-abc123', 'file-def456', 'file-ghi789')
+PS C:\> Start-VectorStoreFileBatch -VectorStoreId 'vs_abc123' -Files ('file-abc123', 'file-def456', 'file-ghi789')
 ```
 
 Start a batch for adding 3 files to the vector store with ID `vs_abc123`
@@ -52,12 +53,21 @@ Position: 0
 Accept pipeline input: True (ByValue, ByPropertyName)
 ```
 
-### -FileId
+### -Attributes
+Set of 16 key-value pairs that can be attached to an object. 
+
+```yaml
+Type: Hashtable
+Required: False
+Position: Named
+```
+
+### -Files
 A list of File IDs that the vector store should use.
 
 ```yaml
 Type: object[]
-Aliases: file_ids
+Aliases: file_ids, FileId
 Required: True
 Position: 1
 ```

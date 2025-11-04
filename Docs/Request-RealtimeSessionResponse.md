@@ -16,7 +16,7 @@ Instruct the server to generate a response.
 Request-RealtimeSessionResponse
     [-EventId <String>]
     [-Instructions <String>]
-    [-Modalities <String[]>]
+    [-OutputModalities <String[]>]
     [-Voice <String>]
     [-OutputAudioFormat <String>]
     [-Temperature <Single>]
@@ -63,7 +63,7 @@ Position: Named
 Default value: -1
 ```
 
-### -Modalities
+### -OutputModalities
 The set of modalities the model can respond with.
 
 ```yaml

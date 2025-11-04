@@ -317,7 +317,7 @@ Register-EngineEvent -SourceIdentifier 'PSOpenAI.Realtime.ReceiveMessage' -Actio
 
 # Connect to the Realtime session
 Connect-RealtimeSession -Model 'gpt-realtime'
-Set-RealtimeSessionConfiguration -Modalities 'text' -Instructions 'You are a science tutor.'
+Set-RealtimeSessionConfiguration -OutputModalities 'text' -Instructions 'You are a science tutor.'
 
 # Send messages to the AI model
 Add-RealtimeSessionItem -Message 'Why does the sun rise in the east and set in the west?' -TriggerResponse

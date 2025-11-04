@@ -68,7 +68,7 @@ Then, configure session settings as needed.
 ```powershell
 # Configure system message, output type, etc.
 Set-RealtimeSessionConfiguration `
-    -Modalities 'text' `
+    -OutputModalities 'text' `
     -Instructions 'You are a assistant for children. Always choose words that are easy for the child to understand.' `
     -Temperature 0.6
 ```
@@ -150,7 +150,7 @@ $env:OPENAI_API_KEY = '<Put your API key here>'
 Connect-RealtimeSession
 
 # Enables audio response with automatic turn detection.
-Set-RealtimeSessionConfiguration -Modalities audio -EnableTurnDetection $true
+Set-RealtimeSessionConfiguration -OutputModalities audio -EnableTurnDetection $true
 
 # Activates speaker output.
 Start-RealtimeSessionAudioOutput

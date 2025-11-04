@@ -15,7 +15,6 @@ Set the realtime transcription session's configuration.
 ```
 Set-RealtimeTranscriptionSessionConfiguration
     [-EventId <String>]
-    [-Modalities <String[]>]
     [-InputAudioFormat <String>]
     [-InputAudioNoiseReductionType <String>]
     [-InputAudioTranscriptionModel <String>]
@@ -109,16 +108,6 @@ An optional text to guide the model's style or continue a previous audio segment
 
 ```yaml
 Type: String
-Required: False
-Position: Named
-```
-
-### -Modalities
-The set of modalities the model can respond with.
-
-```yaml
-Type: String[]
-Accepted values: text, audio
 Required: False
 Position: Named
 ```

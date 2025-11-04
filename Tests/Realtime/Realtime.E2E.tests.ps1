@@ -61,7 +61,7 @@ Describe 'Realtime E2E Test' {
                 $item = $null
                 { Set-RealtimeSessionConfiguration `
                         -Instructions $script:Instructions `
-                        -Modalities 'text' `
+                        -OutputModalities 'text' `
                         -MaxOutputTokens 32 `
                         -ea Stop } | Should -Not -Throw
                 Start-Sleep -Seconds 1

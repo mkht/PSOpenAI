@@ -71,18 +71,64 @@ Describe 'Start-VectorStoreFileBatch' {
                             Start-VectorStoreFileBatch -ea Stop } | Should -Not -Throw
                 Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 4 -Exactly
             }
+        }
 
-            It 'FileId' {
-                $InObject1 = [pscustomobject]@{
+        Context 'Files parameter variations' {
+            BeforeAll {
+                Mock -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { ConvertTo-Json -InputObject $PesterBoundParameters -Depth 10 }
+            }
+
+            It 'Files parameter - file IDs as strings' {
+                $Files = @('file-abc123', 'file-abc456')
+                { $script:Result = Start-VectorStoreFileBatch -VectorStoreId 'vs_abc123' -Files $Files -ea Stop } | Should -Not -Throw
+                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
+                $Result.Body.file_ids | Should -Be $Files
+                $Result.Body.files | Should -BeNullOrEmpty
+            }
+
+            It 'Files parameter - PSOpenAI.File objects' {
+                $Files = @(
+                    [pscustomobject]@{
+                        PSTypeName = 'PSOpenAI.File'
+                        id         = 'file-abc123'
+                    },
+                    [pscustomobject]@{
+                        PSTypeName = 'PSOpenAI.File'
+                        id         = 'file-abc456'
+                    }
+                )
+                { $script:Result = Start-VectorStoreFileBatch -VectorStoreId 'vs_abc123' -Files $Files -ea Stop } | Should -Not -Throw
+                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
+                $Result.Body.file_ids | Should -Be @('file-abc123', 'file-abc456')
+                $Result.Body.files | Should -BeNullOrEmpty
+            }
+
+            It 'Files parameter - hash objects with file_id' {
+                $Files = @(
+                    @{file_id = 'file-abc456' },
+                    @{file_id = 'file-abc123'; attributes = @{ key1 = 'value1' } },
+                    @{file_id = 'file-abc789'; attributes = @{ key2 = 'value2' }; chunking_strategy = @{ type = 'static'; max_chunk_size_tokens = 1200; chunk_overlap_tokens = 200 } }
+                )
+                { $script:Result = Start-VectorStoreFileBatch -VectorStoreId 'vs_abc123' -Files $Files -ea Stop } | Should -Not -Throw
+                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
+                $Result.Body.file_ids | Should -BeNullOrEmpty
+                $Result.Body.files | Should -HaveCount 3
+            }
+
+            It 'Files parameter - mixed types' {
+                $InObject = [pscustomobject]@{
                     PSTypeName = 'PSOpenAI.File'
                     id         = 'file-abc123'
                 }
-                $InObject2 = [pscustomobject]@{
-                    PSTypeName = 'PSOpenAI.File'
-                    id         = 'file-abc456'
-                }
-                { New-VectorStore -VectorStoreId 'vs_abc123' -FileId 'file-abc123', $InObject1, 'file-abc456', $InObject2 -ea Stop } | Should -Not -Throw
+                $Files = @(
+                    'file-abc456',
+                    $InObject,
+                    @{file_id = 'file-abc789'; attributes = @{ key1 = 'value1' } }
+                )
+                { $script:Result = Start-VectorStoreFileBatch -VectorStoreId 'vs_abc123' -Files $Files -ea Stop } | Should -Not -Throw
                 Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
+                $Result.Body.file_ids | Should -BeNullOrEmpty
+                $Result.Body.files | Should -HaveCount 3
             }
         }
     }

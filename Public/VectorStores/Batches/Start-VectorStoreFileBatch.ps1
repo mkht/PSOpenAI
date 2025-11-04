@@ -11,10 +11,14 @@ function Start-VectorStoreFileBatch {
         [Alias('vector_store_id')]
         [string][UrlEncodeTransformation()]$VectorStoreId,
 
+        [Parameter()]
+        [System.Collections.IDictionary]$Attributes,
+
         [Parameter(Mandatory, Position = 1, ValueFromPipelineByPropertyName)]
         [Alias('file_ids')]
+        [Alias('FileId')]
         [ValidateCount(0, 500)]
-        [object[]]$FileId,
+        [object[]]$Files,
 
         [Parameter()]
         [ValidateSet('auto', 'static')]
@@ -72,21 +76,54 @@ function Start-VectorStoreFileBatch {
         # Get API context
         $OpenAIParameter = Get-OpenAIAPIParameter -EndpointName 'VectorStore.FileBatches' -Parameters $PSBoundParameters -ErrorAction Stop
 
-        $BatchBag = [System.Collections.Generic.List[string]]::new()
+        $listFiles = [System.Collections.Generic.List[hashtable]]::new()
+        $useFileIdsParam = $true
     }
 
     process {
-        foreach ($item in $FileId) {
-            # Add an object to queue
-            if ($null -eq $item) {
+        foreach ($file in $Files) {
+            if ($null -eq $file) {
                 continue
             }
-            elseif ($item.psobject.TypeNames -contains 'PSOpenAI.File') {
-                $BatchBag.Add($item.id)
+
+            $fileObject = @{}
+            if ($file -is [string]) {
+                $fileObject.file_id = [string]$file
+            }
+            elseif ($file.psobject.TypeNames -contains 'PSOpenAI.File') {
+                $fileObject.file_id = [string]$file.id
+            }
+            elseif ($file -is [System.Collections.IDictionary]) {
+                if ( $file.Contains('file_id')) {
+                    $fileObject.file_id = $file['file_id']
+                }
+                elseif ( $file.Contains('id')) {
+                    $fileObject.file_id = $file['id']
+                }
+                else {
+                    Write-Error -Exception ([System.ArgumentException]::new('Hashtable item in Files parameter must contain file_id or id key.'))
+                    continue
+                }
+                if ( $file.Contains('attributes')) {
+                    $fileObject.attributes = $file['attributes']
+                }
+                if ($file.Contains('chunking_strategy')) {
+                    $ChunkingStrategyObject = $file['chunking_strategy']
+                    if ($ChunkingStrategyObject -is [System.Collections.IDictionary]) {
+                        $fileObject.chunking_strategy = $ChunkingStrategyObject
+                    }
+                    else {
+                        $fileObject.chunking_strategy = @{ type = 'auto' }
+                    }
+                }
+                $useFileIdsParam = $false
             }
             else {
-                $BatchBag.Add($item)
+                Write-Error -Exception ([System.ArgumentException]::new('Each item in Files parameter must be a string (file ID), PSOpenAI.File object, or hashtable with file_id key.'))
+                continue
             }
+
+            $listFiles.Add($fileObject)
         }
     }
 
@@ -102,16 +139,21 @@ function Start-VectorStoreFileBatch {
 
         #region Construct parameters for API request
         $QueryUri = ($OpenAIParameter.Uri.ToString() -f $VectorStoreId)
-        #endregion
+        $PostBody = [System.Collections.Specialized.OrderedDictionary]::new()
 
-        if ($BatchBag.Count -eq 0) {
-            return
+        if ($listFiles.Count -gt 0) {
+            if ($useFileIdsParam) {
+                # If all items are simple file IDs, use file_ids parameter
+                $PostBody.file_ids = [string[]]$listFiles.ToArray().ForEach( { $_.file_id } )
+            }
+            else {
+                $PostBody.files = $listFiles.ToArray()
+            }
         }
 
-        #region Construct parameters for API request
-        $PostBody = [System.Collections.Specialized.OrderedDictionary]::new()
-        $PostBody.file_ids = $BatchBag.ToArray()
-
+        if ($PSBoundParameters.ContainsKey('Attributes')) {
+            $PostBody.attributes = $Attributes
+        }
         if ($PSBoundParameters.ContainsKey('ChunkingStrategy')) {
             $PostBody.chunking_strategy = @{type = $ChunkingStrategy }
             if ($ChunkingStrategy -eq 'static') {

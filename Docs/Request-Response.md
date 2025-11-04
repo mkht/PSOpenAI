@@ -37,7 +37,9 @@ Request-Response
     [-FileSearchVectorStoreIds <String[]>]
     [-FileSearchMaxNumberOfResults <Int32>]
     [-FileSearchRanker <String>]
-    [-FileSearchScoreThreshold <Double>]
+    [-FileSearchScoreThreshold <Float>]
+    [-FileSearchHybridSearchEmbeddingWeight <Float>]
+    [-FileSearchHybridSearchTextWeight <Float>]
     [-UseWebSearch]
     [-WebSearchType <String>]
     [-WebSearchContextSize <String>]
@@ -64,6 +66,7 @@ Request-Response
     [-ConnectorRequireApproval <String>]
     [-ConnectorAuthorization <String>]
     [-UseCodeInterpreter]
+    [-CodeInterpreterMemoryLimit <String>]
     [-ContainerId <String>]
     [-ContainerFileIds <String[]>]
     [-UseImageGeneration]
@@ -79,9 +82,9 @@ Request-Response
     [-UseLocalShell]
     [-Include <String[]>]
     [-Truncation <String>]
-    [-Temperature <Double>] 
+    [-Temperature <Float>] 
     [-TopLogprobs <Int32>]
-    [-TopP <Double>] 
+    [-TopP <Float>] 
     [-Store <Boolean>]
     [-Background]
     [-Stream]
@@ -373,7 +376,25 @@ Position: Named
 The score threshold for the file search, a number between 0 and 1. Numbers closer to 1 will attempt to return only the most relevant results, but may return fewer results.
 
 ```yaml
-Type: Double
+Type: Float
+Required: False
+Position: Named
+```
+
+### -FileSearchHybridSearchEmbeddingWeight
+The weight of the embedding in the reciprocal ranking fusion.
+
+```yaml
+Type: Float
+Required: False
+Position: Named
+```
+
+### -FileSearchHybridSearchTextWeight
+The weight of the text in the reciprocal ranking fusion.
+
+```yaml
+Type: Float
 Required: False
 Position: Named
 ```
@@ -623,6 +644,15 @@ Required: False
 Position: Named
 ```
 
+### -CodeInterpreterMemoryLimit
+{{No description provided}}
+
+```yaml
+Type: String
+Required: False
+Position: Named
+```
+
 ### -ContainerId
 The code interpreter container. Can be a container ID or `auto` to use the default container.
 
@@ -769,7 +799,7 @@ Default value: disabled
 What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random.
 
 ```yaml
-Type: Double
+Type: Float
 Required: False
 Position: Named
 ```
@@ -788,7 +818,7 @@ Position: Named
 An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top_p probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered.
 
 ```yaml
-Type: Double
+Type: Float
 Aliases: top_p
 Required: False
 Position: Named

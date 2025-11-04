@@ -9,8 +9,9 @@ function Request-RealtimeSessionResponse {
         [string]$Instructions,
 
         [Parameter()]
+        [Alias('Modalities')] # for backward compatibility
         [ValidateSet('text', 'audio')]
-        [string[]]$Modalities = @('text'),
+        [string[]]$OutputModalities = @('text'),
 
         [Parameter()]
         [Completions('alloy', 'ash', 'ballad', 'coral', 'echo', 'sage', 'shimmer', 'verse', 'marin', 'cedar')]
@@ -69,8 +70,8 @@ function Request-RealtimeSessionResponse {
         if ($PSBoundParameters.ContainsKey('Instructions')) {
             $MessageObject.response.instructions = $Instructions
         }
-        if ($PSBoundParameters.ContainsKey('Modalities')) {
-            $MessageObject.response.output_modalities = $Modalities
+        if ($PSBoundParameters.ContainsKey('OutputModalities')) {
+            $MessageObject.response.output_modalities = $OutputModalities
         }
         if ($PSBoundParameters.ContainsKey('Tools')) {
             $MessageObject.response.tools = $Tools

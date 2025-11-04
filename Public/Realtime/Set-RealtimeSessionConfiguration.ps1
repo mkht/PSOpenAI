@@ -18,8 +18,9 @@ function Set-RealtimeSessionConfiguration {
         [string]$PromptVersion,
 
         [Parameter()]
+        [Alias('Modalities')] # for backward compatibility
         [ValidateSet('text', 'audio')]
-        [string[]]$Modalities = @('text'),
+        [string[]]$OutputModalities = @('text'),
 
         [Parameter()]
         [Completions('alloy', 'ash', 'ballad', 'coral', 'echo', 'sage', 'shimmer', 'verse', 'marin', 'cedar')]
@@ -121,7 +122,22 @@ function Set-RealtimeSessionConfiguration {
         [System.Collections.IDictionary]$TracingMetadata,
 
         [Parameter()]
-        [string]$TracingWorkflowName
+        [string]$TracingWorkflowName,
+
+        [Parameter()]
+        [Completions('auto', 'disabled')]
+        [string]$Truncation = 'auto',
+
+        [Parameter()]
+        [ValidateRange(0.0, 1.0)]
+        [float]$TruncationRetentionRatio,
+
+        [Parameter(DontShow)]
+        [string]$TruncationRetentionRatioType = 'retention_ratio',
+
+        [Parameter()]
+        [int]$TruncationTokenLimitsPostInstructions
+
     )
 
     begin {
@@ -135,8 +151,8 @@ function Set-RealtimeSessionConfiguration {
         if ($PSBoundParameters.ContainsKey('Instructions')) {
             $MessageObject.session.instructions = $Instructions
         }
-        if ($PSBoundParameters.ContainsKey('Modalities')) {
-            $MessageObject.session.output_modalities = $Modalities
+        if ($PSBoundParameters.ContainsKey('OutputModalities')) {
+            $MessageObject.session.output_modalities = $OutputModalities
         }
         if ($PSBoundParameters.ContainsKey('Temperature')) {
             $MessageObject.session.temperature = $Temperature
@@ -184,6 +200,25 @@ function Set-RealtimeSessionConfiguration {
         else {
             if ($Tracing) {
                 $MessageObject.session.tracing = $Tracing
+            }
+        }
+
+        $TruncationObject = @{'type' = $TruncationRetentionRatioType }
+        if ($PSBoundParameters.ContainsKey('TruncationRetentionRatio')) {
+            $TruncationObject.TruncationRetentionRatio = $TruncationRetentionRatio
+        }
+        if ($PSBoundParameters.ContainsKey('TruncationTokenLimitsPostInstructions')) {
+            $TruncationObject.token_limits = @{
+                'post_instructions' = $TruncationTokenLimitsPostInstructions
+            }
+        }
+
+        if ($TruncationObject.Keys.Count -gt 1) {
+            $MessageObject.session.truncation = $TruncationObject
+        }
+        else {
+            if ($Truncation) {
+                $MessageObject.session.truncation = $Truncation
             }
         }
 

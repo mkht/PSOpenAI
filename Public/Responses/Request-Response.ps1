@@ -127,7 +127,13 @@ function Request-Response {
 
         [Parameter()]
         [ValidateRange(0.0, 1.0)]
-        [double]$FileSearchScoreThreshold = 0.0,
+        [float]$FileSearchScoreThreshold = 0.0,
+
+        [Parameter()]
+        [float]$FileSearchHybridSearchEmbeddingWeight,
+
+        [Parameter()]
+        [float]$FileSearchHybridSearchTextWeight,
         #endregion File Search
 
         #region Web Search
@@ -250,6 +256,10 @@ function Request-Response {
         [string]$CodeInterpreterType = 'code_interpreter', # Always 'code_interpreter'
 
         [Parameter()]
+        [ValidateSet('1g', '4g', '16g', '64g')]
+        [string]$CodeInterpreterMemoryLimit,
+
+        [Parameter()]
         [string]$ContainerId = 'auto',
 
         [Parameter()]
@@ -342,7 +352,7 @@ function Request-Response {
 
         [Parameter()]
         [ValidateRange(0.0, 2.0)]
-        [double]$Temperature,
+        [float]$Temperature,
 
         [Parameter()]
         [ValidateRange(0, 20)]
@@ -352,7 +362,7 @@ function Request-Response {
         [Parameter()]
         [ValidateRange(0.0, 1.0)]
         [Alias('top_p')]
-        [double]$TopP,
+        [float]$TopP,
 
         [Parameter()]
         [bool]$Store,
@@ -667,6 +677,7 @@ function Request-Response {
             }
             else {
                 $RankingOptions = @{}
+                $HybridSearchOptions = @{}
                 $FileSearchTool = @{
                     type             = $FileSearchType
                     vector_store_ids = $FileSearchVectorStoreIds
@@ -683,6 +694,16 @@ function Request-Response {
                 }
                 if ($PSBoundParameters.ContainsKey('FileSearchScoreThreshold')) {
                     $RankingOptions.score_threshold = $FileSearchScoreThreshold
+                }
+                if ($PSBoundParameters.ContainsKey('FileSearchHybridSearchEmbeddingWeight')) {
+                    $HybridSearchOptions.embedding_weight = $FileSearchHybridSearchEmbeddingWeight
+                }
+                if ($PSBoundParameters.ContainsKey('FileSearchHybridSearchTextWeight')) {
+                    $HybridSearchOptions.text_weight = $FileSearchHybridSearchTextWeight
+                }
+
+                if ($HybridSearchOptions.Keys.Count -gt 0) {
+                    $RankingOptions.hybrid_search_options = $HybridSearchOptions
                 }
 
                 if ($RankingOptions.Keys.Count -gt 0) {
@@ -846,6 +867,9 @@ function Request-Response {
                 $CodeInterpreterTool.container = @{type = 'auto' }
                 if ($PSBoundParameters.ContainsKey('ContainerFileIds')) {
                     $CodeInterpreterTool.container.file_ids = $ContainerFileIds
+                }
+                if ($PSBoundParameters.ContainsKey('CodeInterpreterMemoryLimit')) {
+                    $CodeInterpreterTool.container.memory_limit = $CodeInterpreterMemoryLimit
                 }
             }
             $Tools += $CodeInterpreterTool
