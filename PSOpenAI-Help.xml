@@ -23493,7 +23493,7 @@ violence/graphic : False</dev:code>
           <dev:defaultValue>-1</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>Modalities</maml:name>
+          <maml:name>OutputModalities</maml:name>
           <maml:description>
             <maml:para>The set of modalities the model can respond with.</maml:para>
           </maml:description>
@@ -23584,7 +23584,7 @@ violence/graphic : False</dev:code>
         <dev:defaultValue>-1</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-        <maml:name>Modalities</maml:name>
+        <maml:name>OutputModalities</maml:name>
         <maml:description>
           <maml:para>The set of modalities the model can respond with.</maml:para>
         </maml:description>
@@ -23965,9 +23965,33 @@ You can speciy a list of the local file path, the URL of the file or the ID of t
           <maml:description>
             <maml:para>The score threshold for the file search, a number between 0 and 1. Numbers closer to 1 will attempt to return only the most relevant results, but may return fewer results.</maml:para>
           </maml:description>
-          <command:parameterValue required="true" variableLength="false">Double</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Float</command:parameterValue>
           <dev:type>
-            <maml:name>Double</maml:name>
+            <maml:name>Float</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>FileSearchHybridSearchEmbeddingWeight</maml:name>
+          <maml:description>
+            <maml:para>The weight of the embedding in the reciprocal ranking fusion.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Float</command:parameterValue>
+          <dev:type>
+            <maml:name>Float</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>FileSearchHybridSearchTextWeight</maml:name>
+          <maml:description>
+            <maml:para>The weight of the text in the reciprocal ranking fusion.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Float</command:parameterValue>
+          <dev:type>
+            <maml:name>Float</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -24294,6 +24318,18 @@ Possible values: `browser`, `mac`, `windows`, `ubuntu`.</maml:para>
           <dev:defaultValue>False</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>CodeInterpreterMemoryLimit</maml:name>
+          <maml:description>
+            <maml:para>{{No description provided}}</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>ContainerId</maml:name>
           <maml:description>
             <maml:para>The code interpreter container. Can be a container ID or `auto` to use the default container.</maml:para>
@@ -24476,9 +24512,9 @@ Possible values: `browser`, `mac`, `windows`, `ubuntu`.</maml:para>
           <maml:description>
             <maml:para>What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random.</maml:para>
           </maml:description>
-          <command:parameterValue required="true" variableLength="false">Double</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Float</command:parameterValue>
           <dev:type>
-            <maml:name>Double</maml:name>
+            <maml:name>Float</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -24500,9 +24536,9 @@ Possible values: `browser`, `mac`, `windows`, `ubuntu`.</maml:para>
           <maml:description>
             <maml:para>An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top_p probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered.</maml:para>
           </maml:description>
-          <command:parameterValue required="true" variableLength="false">Double</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Float</command:parameterValue>
           <dev:type>
-            <maml:name>Double</maml:name>
+            <maml:name>Float</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -25141,9 +25177,33 @@ You can speciy a list of the local file path, the URL of the file or the ID of t
         <maml:description>
           <maml:para>The score threshold for the file search, a number between 0 and 1. Numbers closer to 1 will attempt to return only the most relevant results, but may return fewer results.</maml:para>
         </maml:description>
-        <command:parameterValue required="true" variableLength="false">Double</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">Float</command:parameterValue>
         <dev:type>
-          <maml:name>Double</maml:name>
+          <maml:name>Float</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>FileSearchHybridSearchEmbeddingWeight</maml:name>
+        <maml:description>
+          <maml:para>The weight of the embedding in the reciprocal ranking fusion.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Float</command:parameterValue>
+        <dev:type>
+          <maml:name>Float</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>FileSearchHybridSearchTextWeight</maml:name>
+        <maml:description>
+          <maml:para>The weight of the text in the reciprocal ranking fusion.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Float</command:parameterValue>
+        <dev:type>
+          <maml:name>Float</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -25470,6 +25530,18 @@ Possible values: `browser`, `mac`, `windows`, `ubuntu`.</maml:para>
         <dev:defaultValue>False</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>CodeInterpreterMemoryLimit</maml:name>
+        <maml:description>
+          <maml:para>{{No description provided}}</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>ContainerId</maml:name>
         <maml:description>
           <maml:para>The code interpreter container. Can be a container ID or `auto` to use the default container.</maml:para>
@@ -25654,9 +25726,9 @@ Possible values: `browser`, `mac`, `windows`, `ubuntu`.</maml:para>
         <maml:description>
           <maml:para>What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random.</maml:para>
         </maml:description>
-        <command:parameterValue required="true" variableLength="false">Double</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">Float</command:parameterValue>
         <dev:type>
-          <maml:name>Double</maml:name>
+          <maml:name>Float</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -25678,9 +25750,9 @@ Possible values: `browser`, `mac`, `windows`, `ubuntu`.</maml:para>
         <maml:description>
           <maml:para>An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top_p probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered.</maml:para>
         </maml:description>
-        <command:parameterValue required="true" variableLength="false">Double</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">Float</command:parameterValue>
         <dev:type>
-          <maml:name>Double</maml:name>
+          <maml:name>Float</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -28351,7 +28423,7 @@ PS C:\&gt; Request-ChatCompletion -Message 'Hello Azure OpenAI'</dev:code>
           <dev:defaultValue>-1</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>Modalities</maml:name>
+          <maml:name>OutputModalities</maml:name>
           <maml:description>
             <maml:para>The set of modalities the model can respond with.</maml:para>
           </maml:description>
@@ -28570,6 +28642,42 @@ PS C:\&gt; Request-ChatCompletion -Message 'Hello Azure OpenAI'</dev:code>
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Truncation</maml:name>
+          <maml:description>
+            <maml:para>The truncation strategy to use for the session. `auto` is the default truncation strategy. `disabled` will disable truncation and emit errors when the conversation exceeds the input token limit.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>TruncationRetentionRatio</maml:name>
+          <maml:description>
+            <maml:para>Fraction of post-instruction conversation tokens to retain (`0.0` - `1.0`) when the conversation exceeds the input token limit.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Float</command:parameterValue>
+          <dev:type>
+            <maml:name>Float</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>TruncationTokenLimitsPostInstructions</maml:name>
+          <maml:description>
+            <maml:para>Maximum tokens allowed in the conversation after instructions (which including tool definitions).</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
@@ -28730,7 +28838,7 @@ PS C:\&gt; Request-ChatCompletion -Message 'Hello Azure OpenAI'</dev:code>
         <dev:defaultValue>-1</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-        <maml:name>Modalities</maml:name>
+        <maml:name>OutputModalities</maml:name>
         <maml:description>
           <maml:para>The set of modalities the model can respond with.</maml:para>
         </maml:description>
@@ -28945,6 +29053,42 @@ PS C:\&gt; Request-ChatCompletion -Message 'Hello Azure OpenAI'</dev:code>
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Truncation</maml:name>
+        <maml:description>
+          <maml:para>The truncation strategy to use for the session. `auto` is the default truncation strategy. `disabled` will disable truncation and emit errors when the conversation exceeds the input token limit.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>TruncationRetentionRatio</maml:name>
+        <maml:description>
+          <maml:para>Fraction of post-instruction conversation tokens to retain (`0.0` - `1.0`) when the conversation exceeds the input token limit.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Float</command:parameterValue>
+        <dev:type>
+          <maml:name>Float</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>TruncationTokenLimitsPostInstructions</maml:name>
+        <maml:description>
+          <maml:para>Maximum tokens allowed in the conversation after instructions (which including tool definitions).</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
     </command:parameters>
     <command:inputTypes />
     <command:returnValues />
@@ -28957,7 +29101,7 @@ PS C:\&gt; Request-ChatCompletion -Message 'Hello Azure OpenAI'</dev:code>
       <command:example>
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
         <dev:code>PS C:\&gt; Set-RealtimeSessionConfiguration `
-    -Modalities 'audio' `
+    -OutputModalities 'audio' `
     -Voice 'marin' `
     -EnableInputAudioTranscription $true `
     -EnableTurnDetection $true</dev:code>
@@ -29072,22 +29216,6 @@ PS C:\&gt; Request-ChatCompletion -Message 'Hello Azure OpenAI'</dev:code>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
             <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>Modalities</maml:name>
-          <maml:description>
-            <maml:para>The set of modalities the model can respond with.</maml:para>
-          </maml:description>
-          <command:parameterValueGroup>
-            <command:parameterValue required="false" command:variableLength="false">text</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">audio</command:parameterValue>
-          </command:parameterValueGroup>
-          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
-          <dev:type>
-            <maml:name>String[]</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -29259,18 +29387,6 @@ PS C:\&gt; Request-ChatCompletion -Message 'Hello Azure OpenAI'</dev:code>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
           <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-        <maml:name>Modalities</maml:name>
-        <maml:description>
-          <maml:para>The set of modalities the model can respond with.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
-        <dev:type>
-          <maml:name>String[]</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -31647,14 +31763,26 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="1" aliases="file_ids">
-          <maml:name>FileId</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="1" aliases="file_ids, FileId">
+          <maml:name>Files</maml:name>
           <maml:description>
             <maml:para>A list of File IDs that the vector store should use.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">object[]</command:parameterValue>
           <dev:type>
             <maml:name>object[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Attributes</maml:name>
+          <maml:description>
+            <maml:para>Set of 16 key-value pairs that can be attached to an object.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Hashtable</command:parameterValue>
+          <dev:type>
+            <maml:name>Hashtable</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -31781,8 +31909,20 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="1" aliases="file_ids">
-        <maml:name>FileId</maml:name>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Attributes</maml:name>
+        <maml:description>
+          <maml:para>Set of 16 key-value pairs that can be attached to an object.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Hashtable</command:parameterValue>
+        <dev:type>
+          <maml:name>Hashtable</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="1" aliases="file_ids, FileId">
+        <maml:name>Files</maml:name>
         <maml:description>
           <maml:para>A list of File IDs that the vector store should use.</maml:para>
         </maml:description>
@@ -31920,7 +32060,7 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
     <command:examples>
       <command:example>
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; Start-VectorStoreFileBatch -VectorStoreId 'vs_abc123' -FileId ('file-abc123', 'file-def456', 'file-ghi789')</dev:code>
+        <dev:code>PS C:\&gt; Start-VectorStoreFileBatch -VectorStoreId 'vs_abc123' -Files ('file-abc123', 'file-def456', 'file-ghi789')</dev:code>
         <dev:remarks>
           <maml:para>Start a batch for adding 3 files to the vector store with ID `vs_abc123`</maml:para>
         </dev:remarks>
@@ -34076,7 +34216,7 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
     <command:examples>
       <command:example>
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; Start-VectorStoreFileBatch -VectorStoreId 'vs_abc123' -FileId ('file-abc123', 'file-def456', 'file-ghi789') | Wait-VectorStoreFileBatch</dev:code>
+        <dev:code>PS C:\&gt; Start-VectorStoreFileBatch -VectorStoreId 'vs_abc123' -Files ('file-abc123', 'file-def456', 'file-ghi789') | Wait-VectorStoreFileBatch</dev:code>
         <dev:remarks>
           <maml:para>Start a batch and wait for completes.</maml:para>
         </dev:remarks>
