@@ -1,4 +1,8 @@
 # Changelog
+### 4.42.0
+- API updates.
+- Minor fixes / improvements.
+
 ### 4.41.0
 - Support `gpt-4o-transcribe-diarize` model in `Request-AudioTranscription`.
 - Add `-Description` parameter to `New-VectorStore`.
