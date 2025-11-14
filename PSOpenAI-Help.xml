@@ -12242,9 +12242,8 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="reasoning_effort">
           <maml:name>ReasoningEffort</maml:name>
           <maml:description>
-            <maml:para>o1 and o3-mini models only 
-Constrains effort on reasoning for reasoning models.
-Currently supported values are `low`, `medium`, and `high`.
+            <maml:para>Constrains effort on reasoning for reasoning models.
+Supported values are `none`, `low`, `medium`, and `high`.
 Reducing reasoning effort can result in faster responses and fewer tokens used on reasoning in a response.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -12549,9 +12548,8 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="reasoning_effort">
         <maml:name>ReasoningEffort</maml:name>
         <maml:description>
-          <maml:para>o1 and o3-mini models only 
-Constrains effort on reasoning for reasoning models.
-Currently supported values are `low`, `medium`, and `high`.
+          <maml:para>Constrains effort on reasoning for reasoning models.
+Supported values are `none`, `low`, `medium`, and `high`.
 Reducing reasoning effort can result in faster responses and fewer tokens used on reasoning in a response.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -19797,7 +19795,7 @@ Valid values are `low`, `medium`, or `high`.
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="reasoning_effort">
           <maml:name>ReasoningEffort</maml:name>
           <maml:description>
-            <maml:para>Constrains effort on reasoning for reasoning models. Currently supported values are low, medium, and high.
+            <maml:para>Constrains effort on reasoning for reasoning models. Currently supported values are `none`, `low`, `medium`, and `high`.
 Reducing reasoning effort can result in faster responses and fewer tokens used on reasoning in a response.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -19977,6 +19975,18 @@ Required if `json_schema` is specified for `-ResponseFormat`. Otherwise, it is i
           <maml:name>PromptCacheKey</maml:name>
           <maml:description>
             <maml:para>Used by OpenAI to cache responses for similar requests to optimize your cache hit rates.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="prompt_cache_retention">
+          <maml:name>PromptCacheRetention</maml:name>
+          <maml:description>
+            <maml:para>The retention policy for the prompt cache. Set to `24h` to enable extended prompt caching, which keeps cached prefixes active for longer, up to a maximum of 24 hours.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -20498,7 +20508,7 @@ Valid values are `low`, `medium`, or `high`.
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="reasoning_effort">
         <maml:name>ReasoningEffort</maml:name>
         <maml:description>
-          <maml:para>Constrains effort on reasoning for reasoning models. Currently supported values are low, medium, and high.
+          <maml:para>Constrains effort on reasoning for reasoning models. Currently supported values are `none`, `low`, `medium`, and `high`.
 Reducing reasoning effort can result in faster responses and fewer tokens used on reasoning in a response.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -20678,6 +20688,18 @@ Required if `json_schema` is specified for `-ResponseFormat`. Otherwise, it is i
         <maml:name>PromptCacheKey</maml:name>
         <maml:description>
           <maml:para>Used by OpenAI to cache responses for similar requests to optimize your cache hit rates.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="prompt_cache_retention">
+        <maml:name>PromptCacheRetention</maml:name>
+        <maml:description>
+          <maml:para>The retention policy for the prompt cache. Set to `24h` to enable extended prompt caching, which keeps cached prefixes active for longer, up to a maximum of 24 hours.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -23914,7 +23936,7 @@ You can speciy a list of the local file path, the URL of the file or the ID of t
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>UseFileSearch</maml:name>
+          <maml:name>UseFileSearchTool</maml:name>
           <maml:description>
             <maml:para>If you want to use the File search built-in tool, Should specify this switch as enabled.</maml:para>
           </maml:description>
@@ -23997,7 +24019,7 @@ You can speciy a list of the local file path, the URL of the file or the ID of t
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>UseWebSearch</maml:name>
+          <maml:name>UseWebSearchTool</maml:name>
           <maml:description>
             <maml:para>If you want to use the Web search built-in tool, Should specify this switch as enabled.</maml:para>
           </maml:description>
@@ -24097,7 +24119,7 @@ You can speciy a list of the local file path, the URL of the file or the ID of t
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>UseComputerUse</maml:name>
+          <maml:name>UseComputerUseTool</maml:name>
           <maml:description>
             <maml:para>If you want to use the Computer-use built-in tool, Should specify this switch as enabled.</maml:para>
           </maml:description>
@@ -24145,7 +24167,7 @@ Possible values: `browser`, `mac`, `windows`, `ubuntu`.</maml:para>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>UseRemoteMCP</maml:name>
+          <maml:name>UseRemoteMCPTool</maml:name>
           <maml:description>
             <maml:para>If you want to use the Remote MCP built-in tool, Should specify this switch as enabled.</maml:para>
           </maml:description>
@@ -24240,7 +24262,7 @@ Possible values: `browser`, `mac`, `windows`, `ubuntu`.</maml:para>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>UseConnector</maml:name>
+          <maml:name>UseConnectorTool</maml:name>
           <maml:description>
             <maml:para>If you want to use the service connector, Should specify this switch as enabled.</maml:para>
           </maml:description>
@@ -24307,7 +24329,7 @@ Possible values: `browser`, `mac`, `windows`, `ubuntu`.</maml:para>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>UseCodeInterpreter</maml:name>
+          <maml:name>UseCodeInterpreterTool</maml:name>
           <maml:description>
             <maml:para>If you want to use the Code Interpreter built-in tool, Should specify this switch as enabled.</maml:para>
           </maml:description>
@@ -24354,7 +24376,7 @@ Possible values: `browser`, `mac`, `windows`, `ubuntu`.</maml:para>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>UseImageGeneration</maml:name>
+          <maml:name>UseImageGenerationTool</maml:name>
           <maml:description>
             <maml:para>If you want to use the Imagae Generation built-in tool, Should specify this switch as enabled.</maml:para>
           </maml:description>
@@ -24473,9 +24495,31 @@ Possible values: `browser`, `mac`, `windows`, `ubuntu`.</maml:para>
           <dev:defaultValue>auto</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>UseLocalShell</maml:name>
+          <maml:name>UseLocalShellTool</maml:name>
           <maml:description>
             <maml:para>If you want to use the Local Shell built-in tool, Should specify this switch as enabled.</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>UseShellTool</maml:name>
+          <maml:description>
+            <maml:para>If you want to use the Shell built-in tool, Should specify this switch as enabled.</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>UseApplyPatchTool</maml:name>
+          <maml:description>
+            <maml:para>If you want to use the Apply Patch built-in tool, Should specify this switch as enabled.</maml:para>
           </maml:description>
           <dev:type>
             <maml:name>SwitchParameter</maml:name>
@@ -24613,7 +24657,7 @@ Valid values are `low`, `medium`, or `high`.
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>ReasoningEffort</maml:name>
           <maml:description>
-            <maml:para>Constrains effort on reasoning for reasoning models. Currently supported values are low, medium, and high.</maml:para>
+            <maml:para>Constrains effort on reasoning for reasoning models. Currently supported values are `none`, `low`, `medium`, and `high`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -24749,6 +24793,18 @@ Valid values are `low`, `medium`, or `high`.
           <maml:name>PromptCacheKey</maml:name>
           <maml:description>
             <maml:para>Used by OpenAI to cache responses for similar requests to optimize your cache hit rates.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="prompt_cache_retention">
+          <maml:name>PromptCacheRetention</maml:name>
+          <maml:description>
+            <maml:para>The retention policy for the prompt cache. Set to `24h` to enable extended prompt caching, which keeps cached prefixes active for longer, up to a maximum of 24 hours.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -25125,7 +25181,7 @@ You can speciy a list of the local file path, the URL of the file or the ID of t
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-        <maml:name>UseFileSearch</maml:name>
+        <maml:name>UseFileSearchTool</maml:name>
         <maml:description>
           <maml:para>If you want to use the File search built-in tool, Should specify this switch as enabled.</maml:para>
         </maml:description>
@@ -25209,7 +25265,7 @@ You can speciy a list of the local file path, the URL of the file or the ID of t
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-        <maml:name>UseWebSearch</maml:name>
+        <maml:name>UseWebSearchTool</maml:name>
         <maml:description>
           <maml:para>If you want to use the Web search built-in tool, Should specify this switch as enabled.</maml:para>
         </maml:description>
@@ -25305,7 +25361,7 @@ You can speciy a list of the local file path, the URL of the file or the ID of t
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-        <maml:name>UseComputerUse</maml:name>
+        <maml:name>UseComputerUseTool</maml:name>
         <maml:description>
           <maml:para>If you want to use the Computer-use built-in tool, Should specify this switch as enabled.</maml:para>
         </maml:description>
@@ -25354,7 +25410,7 @@ Possible values: `browser`, `mac`, `windows`, `ubuntu`.</maml:para>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-        <maml:name>UseRemoteMCP</maml:name>
+        <maml:name>UseRemoteMCPTool</maml:name>
         <maml:description>
           <maml:para>If you want to use the Remote MCP built-in tool, Should specify this switch as enabled.</maml:para>
         </maml:description>
@@ -25450,7 +25506,7 @@ Possible values: `browser`, `mac`, `windows`, `ubuntu`.</maml:para>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-        <maml:name>UseConnector</maml:name>
+        <maml:name>UseConnectorTool</maml:name>
         <maml:description>
           <maml:para>If you want to use the service connector, Should specify this switch as enabled.</maml:para>
         </maml:description>
@@ -25518,7 +25574,7 @@ Possible values: `browser`, `mac`, `windows`, `ubuntu`.</maml:para>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-        <maml:name>UseCodeInterpreter</maml:name>
+        <maml:name>UseCodeInterpreterTool</maml:name>
         <maml:description>
           <maml:para>If you want to use the Code Interpreter built-in tool, Should specify this switch as enabled.</maml:para>
         </maml:description>
@@ -25566,7 +25622,7 @@ Possible values: `browser`, `mac`, `windows`, `ubuntu`.</maml:para>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-        <maml:name>UseImageGeneration</maml:name>
+        <maml:name>UseImageGenerationTool</maml:name>
         <maml:description>
           <maml:para>If you want to use the Imagae Generation built-in tool, Should specify this switch as enabled.</maml:para>
         </maml:description>
@@ -25686,9 +25742,33 @@ Possible values: `browser`, `mac`, `windows`, `ubuntu`.</maml:para>
         <dev:defaultValue>auto</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-        <maml:name>UseLocalShell</maml:name>
+        <maml:name>UseLocalShellTool</maml:name>
         <maml:description>
           <maml:para>If you want to use the Local Shell built-in tool, Should specify this switch as enabled.</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>UseShellTool</maml:name>
+        <maml:description>
+          <maml:para>If you want to use the Shell built-in tool, Should specify this switch as enabled.</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>UseApplyPatchTool</maml:name>
+        <maml:description>
+          <maml:para>If you want to use the Apply Patch built-in tool, Should specify this switch as enabled.</maml:para>
         </maml:description>
         <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
         <dev:type>
@@ -25825,7 +25905,7 @@ Valid values are `low`, `medium`, or `high`.
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>ReasoningEffort</maml:name>
         <maml:description>
-          <maml:para>Constrains effort on reasoning for reasoning models. Currently supported values are low, medium, and high.</maml:para>
+          <maml:para>Constrains effort on reasoning for reasoning models. Currently supported values are `none`, `low`, `medium`, and `high`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -25962,6 +26042,18 @@ Valid values are `low`, `medium`, or `high`.
         <maml:name>PromptCacheKey</maml:name>
         <maml:description>
           <maml:para>Used by OpenAI to cache responses for similar requests to optimize your cache hit rates.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="prompt_cache_retention">
+        <maml:name>PromptCacheRetention</maml:name>
+        <maml:description>
+          <maml:para>The retention policy for the prompt cache. Set to `24h` to enable extended prompt caching, which keeps cached prefixes active for longer, up to a maximum of 24 hours.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -26135,7 +26227,7 @@ Making sauerkraut is a simple process that involves fermenting cabbage. ...</dev
       </command:example>
       <command:example>
         <maml:title>-------------------- Example 4: Web search --------------------</maml:title>
-        <dev:code>PS C:\&gt; Request-Response "Tell me a recent top 3 tech news." -UseWebSearch -Model 'gpt-4o'</dev:code>
+        <dev:code>PS C:\&gt; Request-Response "Tell me a recent top 3 tech news." -UseWebSearchTool -Model 'gpt-4o'</dev:code>
         <dev:remarks>
           <maml:para></maml:para>
         </dev:remarks>
@@ -26933,10 +27025,8 @@ We serves
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="reasoning_effort">
           <maml:name>ReasoningEffort</maml:name>
           <maml:description>
-            <maml:para>o1 and o3-mini models only 
-Constrains effort on reasoning for reasoning models.
-Currently supported values are `low`, `medium`, and `high`.
-Reducing reasoning effort can result in faster responses and fewer tokens used on reasoning in a response.</maml:para>
+            <maml:para>Constrains effort on reasoning for reasoning models.
+Supported values are `none`, `low`, `medium`, and `high`. Reducing reasoning effort can result in faster responses and fewer tokens used on reasoning in a response.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -27252,10 +27342,8 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="reasoning_effort">
         <maml:name>ReasoningEffort</maml:name>
         <maml:description>
-          <maml:para>o1 and o3-mini models only 
-Constrains effort on reasoning for reasoning models.
-Currently supported values are `low`, `medium`, and `high`.
-Reducing reasoning effort can result in faster responses and fewer tokens used on reasoning in a response.</maml:para>
+          <maml:para>Constrains effort on reasoning for reasoning models.
+Supported values are `none`, `low`, `medium`, and `high`. Reducing reasoning effort can result in faster responses and fewer tokens used on reasoning in a response.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -30789,10 +30877,8 @@ You can create a batch input item by using the Request-ChatCompletion cmdlet wit
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="reasoning_effort">
           <maml:name>ReasoningEffort</maml:name>
           <maml:description>
-            <maml:para>o1 and o3-mini models only 
-Constrains effort on reasoning for reasoning models.
-Currently supported values are `low`, `medium`, and `high`.
-Reducing reasoning effort can result in faster responses and fewer tokens used on reasoning in a response.</maml:para>
+            <maml:para>Constrains effort on reasoning for reasoning models.
+Supported values are `none`, `low`, `medium`, and `high`. Reducing reasoning effort can result in faster responses and fewer tokens used on reasoning in a response.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -31269,10 +31355,8 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="reasoning_effort">
         <maml:name>ReasoningEffort</maml:name>
         <maml:description>
-          <maml:para>o1 and o3-mini models only 
-Constrains effort on reasoning for reasoning models.
-Currently supported values are `low`, `medium`, and `high`.
-Reducing reasoning effort can result in faster responses and fewer tokens used on reasoning in a response.</maml:para>
+          <maml:para>Constrains effort on reasoning for reasoning models.
+Supported values are `none`, `low`, `medium`, and `high`. Reducing reasoning effort can result in faster responses and fewer tokens used on reasoning in a response.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>

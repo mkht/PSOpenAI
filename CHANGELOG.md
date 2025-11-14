@@ -1,4 +1,8 @@
 # Changelog
+### 4.43.0
+- Add new `gpt-5.1` models.
+- API updates.
+
 ### 4.42.0
 - API updates.
 - Minor fixes / improvements.
