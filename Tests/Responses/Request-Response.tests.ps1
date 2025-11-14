@@ -593,7 +593,7 @@ Describe 'Request-Response' {
 
             { $script:Result = Request-Response `
                     -Message 'List recent top 3 tech news.' `
-                    -UseWebSearch `
+                    -UseWebSearchTool `
                     -WebSearchContextSize low `
                     -WebSearchAllowedDomains @('techradar.com', 'theguardian.com', 'theregister.com') `
                     -WebSearchUserLocationCountry 'GB' `
@@ -1012,7 +1012,7 @@ STEP2. Use the timestamp tool to save the resulting timestamp in date and time, 
         It 'Tools - File search (vector store)' {
             { $script:Result = Request-Response -Model 'gpt-4o-mini' `
                     -Message 'Please breifly describe the flow of setup an Azure Stack HCI demo environment.' `
-                    -UseFileSearch `
+                    -UseFileSearchTool `
                     -FileSearchVectorStoreIds 'vs_67f3ca64998c81919ab49ba98a827810' `
                     -FileSearchMaxNumberOfResults 10 `
                     -FileSearchRanker 'auto' `
@@ -1029,7 +1029,7 @@ STEP2. Use the timestamp tool to save the resulting timestamp in date and time, 
         It 'Tools - Web Search' {
             { $script:Result = Request-Response -Model 'gpt-4o-mini' `
                     -Message 'Please tell me some interesting recent tech stories.' `
-                    -UseWebSearch `
+                    -UseWebSearchTool `
                     -WebSearchAllowedDomains @('techradar.com', 'theguardian.com', 'theregister.com') `
                     -WebSearchContextSize 'low' `
                     -TimeoutSec 60 -Store $false -ea Stop } | Should -Not -Throw
@@ -1046,7 +1046,7 @@ STEP2. Use the timestamp tool to save the resulting timestamp in date and time, 
                 $param = @{
                     Message                  = 'Check the latest OpenAI news on Google.'
                     Model                    = 'computer-use-preview'
-                    UseComputerUse           = $true
+                    UseComputerUseTool       = $true
                     ComputerUseEnvironment   = 'browser'
                     ComputerUseDisplayHeight = 1024
                     ComputerUseDisplayWidth  = 768
@@ -1067,7 +1067,7 @@ STEP2. Use the timestamp tool to save the resulting timestamp in date and time, 
                 $param = @{
                     Message                  = 'How does microsoft/markitdown convert pptx to markdown?'
                     Model                    = 'gpt-4.1-mini'
-                    UseRemoteMCP             = $true
+                    UseRemoteMCPTool         = $true
                     RemoteMCPServerLabel     = 'DeepWiki'
                     RemoteMCPServerUrl       = 'https://mcp.deepwiki.com/mcp'
                     RemoteMCPRequireApproval = 'always'
@@ -1085,12 +1085,12 @@ STEP2. Use the timestamp tool to save the resulting timestamp in date and time, 
         It 'Tools - Code Interpreter' {
             {
                 $param = @{
-                    Message            = "How Many R's in 'Strawberry'? Solve it use with Python tools."
-                    Model              = 'gpt-4.1-mini'
-                    UseCodeInterpreter = $true
-                    ToolChoice         = 'required'
-                    Store              = $false
-                    TimeoutSec         = 30
+                    Message                = "How Many R's in 'Strawberry'? Solve it use with Python tools."
+                    Model                  = 'gpt-4.1-mini'
+                    UseCodeInterpreterTool = $true
+                    ToolChoice             = 'required'
+                    Store                  = $false
+                    TimeoutSec             = 30
                 }
 
                 $script:Result = Request-Response @param -ea Stop } | Should -Not -Throw
@@ -1103,7 +1103,7 @@ STEP2. Use the timestamp tool to save the resulting timestamp in date and time, 
                 $param = @{
                     Message                          = 'Create an illustration of a young man wearing a brown bucket hat, holding a cola in his left hand and chicken in his right hand.'
                     Model                            = 'gpt-4.1-mini'
-                    UseImageGeneration               = $true
+                    UseImageGenerationTool           = $true
                     ImageGenerationOutputFormat      = 'jpeg'
                     ImageGenerationQuality           = 'low'
                     ImageGenerationSize              = '1024x1024'
@@ -1120,11 +1120,11 @@ STEP2. Use the timestamp tool to save the resulting timestamp in date and time, 
         It 'Tools - Local Shell' {
             {
                 $param = @{
-                    Message       = 'List all files that the size is larger than 100MB in /var/logs'
-                    Model         = 'codex-mini-latest'
-                    UseLocalShell = $true
-                    Store         = $false
-                    TimeoutSec    = 30
+                    Message           = 'List all files that the size is larger than 100MB in /var/logs'
+                    Model             = 'codex-mini-latest'
+                    UseLocalShellTool = $true
+                    Store             = $false
+                    TimeoutSec        = 30
                 }
 
                 $script:Result = Request-Response @param -ea Stop } | Should -Not -Throw

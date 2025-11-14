@@ -33,14 +33,14 @@ Request-Response
     [-ParallelToolCalls <Boolean>]
     [-Functions <IDictionary[]>]
     [-CustomTools <IDictionary[]>]
-    [-UseFileSearch] 
+    [-UseFileSearchTool] 
     [-FileSearchVectorStoreIds <String[]>]
     [-FileSearchMaxNumberOfResults <Int32>]
     [-FileSearchRanker <String>]
     [-FileSearchScoreThreshold <Float>]
     [-FileSearchHybridSearchEmbeddingWeight <Float>]
     [-FileSearchHybridSearchTextWeight <Float>]
-    [-UseWebSearch]
+    [-UseWebSearchTool]
     [-WebSearchType <String>]
     [-WebSearchContextSize <String>]
     [-WebSearchAllowedDomains <String[]>]
@@ -48,11 +48,11 @@ Request-Response
     [-WebSearchUserLocationCountry <String>]
     [-WebSearchUserLocationRegion <String>]
     [-WebSearchUserLocationTimeZone <String>]
-    [-UseComputerUse]
+    [-UseComputerUseTool]
     [-ComputerUseEnvironment <String>]
     [-ComputerUseDisplayHeight <Int32>]
     [-ComputerUseDisplayWidth <Int32>]
-    [-UseRemoteMCP]
+    [-UseRemoteMCPTool]
     [-RemoteMCPServerLabel <String>]
     [-RemoteMCPServerUrl <String>]
     [-RemoteMCPServerDescription <String>]
@@ -60,16 +60,16 @@ Request-Response
     [-RemoteMCPRequireApproval <Object>]
     [-RemoteMCPHeaders <IDictionary>]
     [-RemoteMCPAuthorization <String>]
-    [-UseConnector]
+    [-UseConnectorTool]
     [-ConnectorLabel <String>]
     [-ConnectorId <String>]
     [-ConnectorRequireApproval <String>]
     [-ConnectorAuthorization <String>]
-    [-UseCodeInterpreter]
+    [-UseCodeInterpreterTool]
     [-CodeInterpreterMemoryLimit <String>]
     [-ContainerId <String>]
     [-ContainerFileIds <String[]>]
-    [-UseImageGeneration]
+    [-UseImageGenerationTool]
     [-ImageGenerationModel <String>]
     [-ImageGenerationBackGround <String>]
     [-ImageGenerationInputImageMask <String>]
@@ -79,7 +79,9 @@ Request-Response
     [-ImageGenerationPartialImages <Int32>]
     [-ImageGenerationQuality <String>]
     [-ImageGenerationSize <String>]
-    [-UseLocalShell]
+    [-UseLocalShellTool]
+    [-UseShellTool]
+    [-UseApplyPatchTool]
     [-Include <String[]>]
     [-Truncation <String>]
     [-Temperature <Float>] 
@@ -141,7 +143,7 @@ PS C:\> Request-Response "Summarize this document" -Files 'C:\recipient.pdf' -Mo
 
 ### Example 4: Web search
 ```powershell
-PS C:\> Request-Response "Tell me a recent top 3 tech news." -UseWebSearch -Model 'gpt-4o'
+PS C:\> Request-Response "Tell me a recent top 3 tech news." -UseWebSearchTool -Model 'gpt-4o'
 ```
 
 ### Example 5: Streaming output
@@ -337,7 +339,7 @@ Required: False
 Position: Named
 ```
 
-### -UseFileSearch
+### -UseFileSearchTool
 If you want to use the File search built-in tool, Should specify this switch as enabled.
 
 ```yaml
@@ -400,7 +402,7 @@ Required: False
 Position: Named
 ```
 
-### -UseWebSearch
+### -UseWebSearchTool
 If you want to use the Web search built-in tool, Should specify this switch as enabled.
 
 ```yaml
@@ -474,7 +476,7 @@ Required: False
 Position: Named
 ```
 
-### -UseComputerUse
+### -UseComputerUseTool
 If you want to use the Computer-use built-in tool, Should specify this switch as enabled.
 
 ```yaml
@@ -511,7 +513,7 @@ Required: False
 Position: Named
 ```
 
-### -UseRemoteMCP
+### -UseRemoteMCPTool
 If you want to use the Remote MCP built-in tool, Should specify this switch as enabled.
 
 ```yaml
@@ -583,7 +585,7 @@ Required: False
 Position: Named
 ```
 
-### -UseConnector
+### -UseConnectorTool
 If you want to use the service connector, Should specify this switch as enabled.
 
 ```yaml
@@ -636,7 +638,7 @@ Required: False
 Position: Named
 ```
 
-### -UseCodeInterpreter
+### -UseCodeInterpreterTool
 If you want to use the Code Interpreter built-in tool, Should specify this switch as enabled.
 
 ```yaml
@@ -673,7 +675,7 @@ Required: False
 Position: Named
 ```
 
-### -UseImageGeneration
+### -UseImageGenerationTool
 If you want to use the Imagae Generation built-in tool, Should specify this switch as enabled.
 
 ```yaml
@@ -768,8 +770,26 @@ Position: Named
 Default value: auto
 ```
 
-### -UseLocalShell
+### -UseLocalShellTool
 If you want to use the Local Shell built-in tool, Should specify this switch as enabled.
+
+```yaml
+Type: SwitchParameter
+Required: False
+Position: Named
+```
+
+### -UseShellTool
+If you want to use the Shell built-in tool, Should specify this switch as enabled.
+
+```yaml
+Type: SwitchParameter
+Required: False
+Position: Named
+```
+
+### -UseApplyPatchTool
+If you want to use the Apply Patch built-in tool, Should specify this switch as enabled.
 
 ```yaml
 Type: SwitchParameter

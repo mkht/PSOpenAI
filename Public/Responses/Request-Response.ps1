@@ -105,7 +105,7 @@ function Request-Response {
         # Built-in tools
         #region File Search
         [Parameter()]
-        [switch]$UseFileSearch,
+        [switch]$UseFileSearchTool,
 
         [Parameter(DontShow)]
         [string]$FileSearchType = 'file_search', # Currently, only 'file_search' is acceptable.
@@ -138,7 +138,7 @@ function Request-Response {
 
         #region Web Search
         [Parameter()]
-        [switch]$UseWebSearch,
+        [switch]$UseWebSearchTool,
 
         [Parameter()]
         [Completions('web_search')]
@@ -170,7 +170,7 @@ function Request-Response {
 
         #region Computer use
         [Parameter()]
-        [switch]$UseComputerUse,
+        [switch]$UseComputerUseTool,
 
         [Parameter(DontShow)]
         [string]$ComputerUseType = 'computer_use_preview', # Currently, only 'computer_use_preview' is acceptable.
@@ -188,7 +188,7 @@ function Request-Response {
 
         #region Remote MCP
         [Parameter()]
-        [switch]$UseRemoteMCP,
+        [switch]$UseRemoteMCPTool,
 
         [Parameter(DontShow)]
         [string]$RemoteMCPType = 'mcp', # Always 'mcp'
@@ -220,7 +220,7 @@ function Request-Response {
 
         #region Connectors
         [Parameter()]
-        [switch]$UseConnector,
+        [switch]$UseConnectorTool,
 
         [Parameter()]
         [ValidateNotNullOrEmpty()]
@@ -250,7 +250,7 @@ function Request-Response {
 
         #region Code Interpreter
         [Parameter()]
-        [switch]$UseCodeInterpreter,
+        [switch]$UseCodeInterpreterTool,
 
         [Parameter(DontShow)]
         [string]$CodeInterpreterType = 'code_interpreter', # Always 'code_interpreter'
@@ -268,7 +268,7 @@ function Request-Response {
 
         #region Image Generation
         [Parameter()]
-        [switch]$UseImageGeneration,
+        [switch]$UseImageGenerationTool,
 
         [Parameter(DontShow)]
         [string]$ImageGenerationType = 'image_generation', # Always 'image_generation'
@@ -310,11 +310,21 @@ function Request-Response {
 
         #region Local shell
         [Parameter()]
-        [switch]$UseLocalShell,
+        [switch]$UseLocalShellTool,
 
         [Parameter(DontShow)]
         [string]$LocalShellType = 'local_shell', # Always 'local_shell'
         #endregion Local shell
+
+        #region shell
+        [Parameter()]
+        [switch]$UseShellTool,
+        #endregion shell
+
+        #region Apply patch
+        [Parameter()]
+        [switch]$UseApplyPatchTool,
+        #endregion Apply patch
         #endregion Tools
 
         [Parameter()]
@@ -679,7 +689,7 @@ function Request-Response {
         }
 
         #region File Search
-        if ($UseFileSearch) {
+        if ($UseFileSearchTool) {
             if ($FileSearchVectorStoreIds.Count -eq 0) {
                 Write-Error 'VectorStore Ids must be specified.'
             }
@@ -722,7 +732,7 @@ function Request-Response {
         }
 
         #region Web Search
-        if ($UseWebSearch) {
+        if ($UseWebSearchTool) {
             $UserLocation = @{}
             $WebSearchTool = @{
                 type = $WebSearchType
@@ -756,7 +766,7 @@ function Request-Response {
         }
 
         #region Computer Use
-        if ($UseComputerUse) {
+        if ($UseComputerUseTool) {
             # Computer Use should be used with 'truncation=auto'
             $PostBody.truncation = 'auto'
 
@@ -785,7 +795,7 @@ function Request-Response {
         }
 
         #region Remote MCP
-        if ($UseRemoteMCP) {
+        if ($UseRemoteMCPTool) {
             # Server label and URL are required.
             if ([string]::IsNullOrWhiteSpace($RemoteMCPServerLabel)) {
                 Write-Error 'RemoteMCPServerLabel must be specified.'
@@ -838,7 +848,7 @@ function Request-Response {
         }
 
         #region Connectors
-        if ($UseConnector) {
+        if ($UseConnectorTool) {
             # Server label and connector_id are required.
             if ([string]::IsNullOrWhiteSpace($ConnectorLabel)) {
                 Write-Error 'ConnectorLabel must be specified.'
@@ -865,7 +875,7 @@ function Request-Response {
         }
 
         #region Code Interpreter
-        if ($UseCodeInterpreter) {
+        if ($UseCodeInterpreterTool) {
             $CodeInterpreterTool = @{
                 type      = $CodeInterpreterType
                 container = $ContainerId
@@ -884,7 +894,7 @@ function Request-Response {
         }
 
         #region Image Generation
-        if ($UseImageGeneration) {
+        if ($UseImageGenerationTool) {
             $ImageGenerationTool = @{
                 type = $ImageGenerationType
             }
@@ -928,11 +938,27 @@ function Request-Response {
         }
 
         #region Local Shell
-        if ($UseLocalShell) {
+        if ($UseLocalShellTool) {
             $LocalShellTool = @{
                 type = $LocalShellType
             }
             $Tools += $LocalShellTool
+        }
+
+        #region shell
+        if ($UseShellTool) {
+            $ShellTool = @{
+                type = 'shell'
+            }
+            $Tools += $ShellTool
+        }
+
+        #region Apply Patch
+        if ($UseApplyPatchTool) {
+            $ApplyPatchTool = @{
+                type = 'apply_patch'
+            }
+            $Tools += $ApplyPatchTool
         }
 
         if ($Tools.Count -gt 0) {
