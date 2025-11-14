@@ -51,6 +51,8 @@ class OpenAIDepricationModels {
         'gpt-4-0314'                         = [datetime]::new(2026, 03, 26)
         'gpt-4-1106-preview'                 = [datetime]::new(2026, 03, 26)
         'gpt-4-0125-preview'                 = [datetime]::new(2026, 03, 26)
+        'dall-e-2'                           = [datetime]::new(2026, 05, 12)
+        'dall-e-3'                           = [datetime]::new(2026, 05, 12)
         'gpt-3.5-turbo-instruct'             = [datetime]::new(2026, 09, 28)
         'babbage-002'                        = [datetime]::new(2026, 09, 28)
         'davinci-002'                        = [datetime]::new(2026, 09, 28)
