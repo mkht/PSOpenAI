@@ -17,7 +17,8 @@ function Start-Batch {
             '/v1/responses',
             '/v1/chat/completions',
             '/v1/embeddings',
-            '/v1/completions'
+            '/v1/completions',
+            '/v1/moderations'
         )]
         [string][LowerCaseTransformation()]$Endpoint = '/v1/chat/completions',
 

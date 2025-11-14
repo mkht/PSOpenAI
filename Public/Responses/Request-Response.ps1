@@ -385,7 +385,7 @@ function Request-Response {
 
         #region Reasoning
         [Parameter()]
-        [Completions('minimal', 'low', 'medium', 'high')]
+        [Completions('none', 'minimal', 'low', 'medium', 'high')]
         [string]$ReasoningEffort,
 
         [Parameter()]

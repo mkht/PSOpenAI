@@ -47,8 +47,8 @@ function New-Assistant {
 
         [Parameter()]
         [Alias('reasoning_effort')]
-        [Completions('minimal', 'low', 'medium', 'high')]
-        [string]$ReasoningEffort = 'medium',
+        [Completions('none', 'minimal', 'low', 'medium', 'high')]
+        [string]$ReasoningEffort,
 
         [Parameter()]
         [switch]$UseCodeInterpreter,
