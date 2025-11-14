@@ -102,6 +102,7 @@ Request-Response
     [-JsonSchemaStrict <Boolean>] 
     [-ServiceTier <String>]
     [-PromptCacheKey <String>]
+    [-PromptCacheRetention <String>]
     [-SafetyIdentifier <String>]
     [-User <String>]
     [-Organization <String>]
@@ -986,6 +987,15 @@ Used by OpenAI to cache responses for similar requests to optimize your cache hi
 ```yaml
 Type: String
 Aliases: prompt_cache_key
+Required: False
+Position: Named
+```
+
+### -PromptCacheRetention
+The retention policy for the prompt cache. Set to `24h` to enable extended prompt caching, which keeps cached prefixes active for longer, up to a maximum of 24 hours.
+```yaml
+Type: String
+Aliases: prompt_cache_retention
 Required: False
 Position: Named
 ```

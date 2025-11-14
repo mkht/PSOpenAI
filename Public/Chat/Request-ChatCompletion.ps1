@@ -229,6 +229,11 @@ function Request-ChatCompletion {
         [string]$PromptCacheKey,
 
         [Parameter()]
+        [Alias('prompt_cache_retention')]
+        [Completions('in_memory', '24h')]
+        [string]$PromptCacheRetention,
+
+        [Parameter()]
         [Alias('safety_identifier')]
         [string]$SafetyIdentifier,
 
@@ -449,6 +454,9 @@ function Request-ChatCompletion {
         }
         if ($PSBoundParameters.ContainsKey('PromptCacheKey')) {
             $PostBody.prompt_cache_key = $PromptCacheKey
+        }
+        if ($PSBoundParameters.ContainsKey('PromptCacheRetention')) {
+            $PostBody.prompt_cache_retention = $PromptCacheRetention
         }
         if ($PSBoundParameters.ContainsKey('SafetyIdentifier')) {
             $PostBody.safety_identifier = $SafetyIdentifier
