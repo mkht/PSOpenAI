@@ -410,6 +410,44 @@ function ParseResponseObject {
     Write-Output $InputObject
 }
 
+function ParseResponseCompactionObject {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory, Position = 0, ValueFromPipeline)]
+        [PSCustomObject]$InputObject,
+
+        [Parameter()]
+        [System.Collections.Generic.List[object]]$Messages,
+
+        [Parameter()]
+        [System.Collections.IDictionary]$CommonParams = @{}
+    )
+
+    # Add custom type name and properties to output object.
+    $InputObject.PSObject.TypeNames.Insert(0, 'PSOpenAI.Response.Compaction')
+
+    # Date and times
+    @('created_at') | ForEach-Object {
+        if ($null -ne $InputObject.$_ -and ($unixtime = $InputObject.$_ -as [long])) {
+            # convert unixtime to [DateTime] for read suitable
+            $InputObject | Add-Member -MemberType NoteProperty -Name $_ -Value ([System.DateTimeOffset]::FromUnixTimeSeconds($unixtime).LocalDateTime) -Force
+        }
+    }
+
+    # Add History
+    if ($Messages.Count -gt 0) {
+        $Messages | ForEach-Object { $_.PSObject.TypeNames.Insert(0, 'PSOpenAI.Response.Message') }
+        $InputObject | Add-Member -MemberType NoteProperty -Name 'History' -Value $Messages.ToArray()
+    }
+    else {
+        $InputObject | Add-Member -MemberType NoteProperty -Name 'History' -Value @()
+    }
+
+    # Return
+    Write-Output $InputObject
+}
+
+
 
 function ParseVectorStoreObject {
     [CmdletBinding()]

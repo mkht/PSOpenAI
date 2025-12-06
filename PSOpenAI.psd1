@@ -101,6 +101,7 @@
         'Get-Response',
         'Get-ResponseInputItem',
         'Remove-Response',
+        'Request-ResponseCompaction',
         #### Conversations ####
         'New-Conversation',
         'Set-Conversation',

@@ -279,6 +279,16 @@ function Get-OpenAIAPIEndpoint {
             }
             continue
         }
+        'Responses.Compact' {
+            $UriBuilder.Path += 'responses/compact'
+            @{
+                Name        = 'responses_compact'
+                Method      = 'Post'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+            continue
+        }
         'Conversations' {
             $UriBuilder.Path += 'conversations'
             @{
