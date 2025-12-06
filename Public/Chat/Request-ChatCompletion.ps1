@@ -23,7 +23,6 @@ function Request-ChatCompletion {
             'gpt-4',
             'gpt-4o',
             'gpt-4o-mini',
-            'chatgpt-4o-latest',
             'gpt-4o-audio-preview',
             'gpt-4o-mini-audio-preview',
             'gpt-4o-search-preview',

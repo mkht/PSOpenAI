@@ -48,6 +48,8 @@ class OpenAIDepricationModels {
         'text-moderation-007'                = [datetime]::new(2025, 10, 27)
         'text-moderation-stable'             = [datetime]::new(2025, 10, 27)
         'text-moderation-latest'             = [datetime]::new(2025, 10, 27)
+        'codex-mini-latest'                  = [datetime]::new(2026, 01, 16)
+        'chatgpt-4o-latest'                  = [datetime]::new(2026, 02, 17)
         'gpt-4-0314'                         = [datetime]::new(2026, 03, 26)
         'gpt-4-1106-preview'                 = [datetime]::new(2026, 03, 26)
         'gpt-4-0125-preview'                 = [datetime]::new(2026, 03, 26)

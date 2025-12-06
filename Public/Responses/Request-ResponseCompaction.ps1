@@ -43,7 +43,6 @@ function Request-ResponseCompaction {
             'o4-mini',
             'o3-deep-research',
             'o4-mini-deep-research',
-            'codex-mini-latest',
             'computer-use-preview'
         )]
         [string]$Model = 'gpt-4o-mini',

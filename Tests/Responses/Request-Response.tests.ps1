@@ -1121,7 +1121,7 @@ STEP2. Use the timestamp tool to save the resulting timestamp in date and time, 
             {
                 $param = @{
                     Message           = 'List all files that the size is larger than 100MB in /var/logs'
-                    Model             = 'codex-mini-latest'
+                    Model             = 'gpt-5-codex-mini'
                     UseLocalShellTool = $true
                     Store             = $false
                     TimeoutSec        = 30
