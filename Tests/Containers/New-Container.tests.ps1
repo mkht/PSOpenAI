@@ -48,6 +48,7 @@ Describe 'New-Container' {
                 ExpiresAfterMinutes = 120
                 ExpiresAfterAnchor  = 'last_active_at'
                 FileId              = 'file-abc123', 'file-abc456'
+                MemoryLimit         = '4g'
             }
             { $script:Result = New-Container @Params -ea Stop } | Should -Not -Throw
             Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly

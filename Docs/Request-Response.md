@@ -898,7 +898,7 @@ Default value: medium
 ```
 
 ### -ReasoningEffort
-Constrains effort on reasoning for reasoning models. Currently supported values are `none`, `low`, `medium`, and `high`.
+Constrains effort on reasoning for reasoning models. Supported values are `none`, `minimal`, `low`, `medium`, `high`, and `xhigh`.
 
 ```yaml
 Type: String

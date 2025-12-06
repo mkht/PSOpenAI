@@ -17,6 +17,11 @@ function New-Container {
         [string[]]$FileId,
 
         [Parameter()]
+        [Completions('1g', '4g', '16g', '64g')]
+        [Alias('memory_limit')]
+        [string]$MemoryLimit,
+
+        [Parameter()]
         [int]$TimeoutSec = 0,
 
         [Parameter()]

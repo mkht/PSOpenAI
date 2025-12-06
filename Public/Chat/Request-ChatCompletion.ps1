@@ -167,7 +167,7 @@ function Request-ChatCompletion {
 
         [Parameter()]
         [Alias('reasoning_effort')]
-        [Completions('none', 'minimal', 'low', 'medium', 'high')]
+        [Completions('none', 'minimal', 'low', 'medium', 'high', 'xhigh')]
         [string]$ReasoningEffort,
 
         [Parameter()]

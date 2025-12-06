@@ -18,6 +18,7 @@ New-Container
     [-ExpiresAfterMinutes <UInt32>]
     [-ExpiresAfterAnchor <String>]
     [-FileId <String[]>]
+    [-MemoryLimit <String>]
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
     [-ApiBase <Uri>]
@@ -79,6 +80,15 @@ IDs of files to copy to the container.
 ```yaml
 Type: String[]
 Aliases: file_ids
+Required: False
+Position: Named
+```
+
+### -MemoryLimit
+Optional memory limit for the container. Defaults to `1g`. Supported values are `1g`, `4g`, `16g`, and `64g`.
+```yaml
+Type: String
+Aliases: memory_limit
 Required: False
 Position: Named
 ```

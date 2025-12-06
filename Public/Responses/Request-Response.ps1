@@ -34,6 +34,7 @@ function Request-Response {
             'gpt-5.1-chat-latest',
             'gpt-5.1-codex',
             'gpt-5.1-codex-mini',
+            'gpt-5.1-codex-max',
             'o1',
             'o1-pro',
             'o3',
@@ -399,7 +400,7 @@ function Request-Response {
 
         #region Reasoning
         [Parameter()]
-        [Completions('none', 'minimal', 'low', 'medium', 'high')]
+        [Completions('none', 'minimal', 'low', 'medium', 'high', 'xhigh')]
         [string]$ReasoningEffort,
 
         [Parameter()]
