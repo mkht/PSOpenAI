@@ -13108,6 +13108,18 @@ If you want to use a non-default parameter set, specify the set name in this par
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="memory_limit">
+          <maml:name>MemoryLimit</maml:name>
+          <maml:description>
+            <maml:para>Optional memory limit for the container. Defaults to `1g`. Supported values are `1g`, `4g`, `16g`, and `64g`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>TimeoutSec</maml:name>
           <maml:description>
@@ -13224,6 +13236,18 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
         <dev:type>
           <maml:name>String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="memory_limit">
+        <maml:name>MemoryLimit</maml:name>
+        <maml:description>
+          <maml:para>Optional memory limit for the container. Defaults to `1g`. Supported values are `1g`, `4g`, `16g`, and `64g`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -19795,7 +19819,7 @@ Valid values are `low`, `medium`, or `high`.
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="reasoning_effort">
           <maml:name>ReasoningEffort</maml:name>
           <maml:description>
-            <maml:para>Constrains effort on reasoning for reasoning models. Currently supported values are `none`, `low`, `medium`, and `high`.
+            <maml:para>Constrains effort on reasoning for reasoning models. Supported values are `none`, `minimal`, `low`, `medium`, `high`, and `xhigh`.
 Reducing reasoning effort can result in faster responses and fewer tokens used on reasoning in a response.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -20508,7 +20532,7 @@ Valid values are `low`, `medium`, or `high`.
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="reasoning_effort">
         <maml:name>ReasoningEffort</maml:name>
         <maml:description>
-          <maml:para>Constrains effort on reasoning for reasoning models. Currently supported values are `none`, `low`, `medium`, and `high`.
+          <maml:para>Constrains effort on reasoning for reasoning models. Supported values are `none`, `minimal`, `low`, `medium`, `high`, and `xhigh`.
 Reducing reasoning effort can result in faster responses and fewer tokens used on reasoning in a response.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -24657,7 +24681,7 @@ Valid values are `low`, `medium`, or `high`.
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>ReasoningEffort</maml:name>
           <maml:description>
-            <maml:para>Constrains effort on reasoning for reasoning models. Currently supported values are `none`, `low`, `medium`, and `high`.</maml:para>
+            <maml:para>Constrains effort on reasoning for reasoning models. Supported values are `none`, `minimal`, `low`, `medium`, `high`, and `xhigh`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -25905,7 +25929,7 @@ Valid values are `low`, `medium`, or `high`.
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>ReasoningEffort</maml:name>
         <maml:description>
-          <maml:para>Constrains effort on reasoning for reasoning models. Currently supported values are `none`, `low`, `medium`, and `high`.</maml:para>
+          <maml:para>Constrains effort on reasoning for reasoning models. Supported values are `none`, `minimal`, `low`, `medium`, `high`, and `xhigh`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -26248,6 +26272,467 @@ Making sauerkraut is a simple process that involves fermenting cabbage. ...</dev
       <maml:navigationLink>
         <maml:linkText>https://platform.openai.com/docs/api-reference/responses</maml:linkText>
         <maml:uri>https://platform.openai.com/docs/api-reference/responses</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Request-ResponseCompaction</command:name>
+      <command:verb>Request</command:verb>
+      <command:noun>ResponseCompaction</command:noun>
+      <maml:description>
+        <maml:para>Runs a compaction pass over a conversation. Compaction returns encrypted, opaque items and the underlying logic may evolve over time.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>Runs a compaction pass over a conversation. Compaction returns encrypted, opaque items and the underlying logic may evolve over time.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Request-ResponseCompaction</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="0" aliases="UserMessage, input">
+          <maml:name>Message</maml:name>
+          <maml:description>
+            <maml:para>A text input to the model.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Role</maml:name>
+          <maml:description>
+            <maml:para>The role of the message input. One of `user`, `system`, or `developer`. The default is `user`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
+          <maml:name>Model</maml:name>
+          <maml:description>
+            <maml:para>The name of model to use. The default value is `gpt-4o-mini`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>gpt-4o-mini</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>SystemMessage</maml:name>
+          <maml:description>
+            <maml:para>(Instead of this parameter, the use of the `-Instructions` parameter is recommended.)
+Instructions that the model should follow.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>DeveloperMessage</maml:name>
+          <maml:description>
+            <maml:para>(Instead of this parameter, the use of the `-Instructions` parameter is recommended.)
+Instructions that the model should follow.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Instructions</maml:name>
+          <maml:description>
+            <maml:para>A system (or developer) message inserted into the model's context.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="previous_response_id">
+          <maml:name>PreviousResponseId</maml:name>
+          <maml:description>
+            <maml:para>The unique ID of the previous response to the model. Use this to create multi-turn conversations.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Images</maml:name>
+          <maml:description>
+            <maml:para>A list of images to passing the model. You can specify local image file or remote url.
+</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>ImageDetail</maml:name>
+          <maml:description>
+            <maml:para>Controls how the model processes the image and generates its textual understanding. You can select from `Low` or `High`.
+</maml:para>
+          </maml:description>
+          <command:parameterValueGroup>
+            <command:parameterValue required="false" command:variableLength="false">auto</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">low</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">high</command:parameterValue>
+          </command:parameterValueGroup>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>auto</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Files</maml:name>
+          <maml:description>
+            <maml:para>A file input to the model.
+You can speciy a list of the local file path, the URL of the file or the ID of the file to be uploaded.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>OutputRawResponse</maml:name>
+          <maml:description>
+            <maml:para>If specifies this switch, an output of this function to be a raw response value from the API. (Normally JSON formatted string.)</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>TimeoutSec</maml:name>
+          <maml:description>
+            <maml:para>Specifies how long the request can be pending before it times out.
+The default value is `0` (infinite).</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>0</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>MaxRetryCount</maml:name>
+          <maml:description>
+            <maml:para>Number between `0` and `100`.
+Specifies the maximum number of retries if the request fails.
+The default value is `0` (No retry).
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>0</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>ApiBase</maml:name>
+          <maml:description>
+            <maml:para>Specifies an API endpoint URL such like: `https://your-api-endpoint.test/v1`
+If not specified, it will use `https://api.openai.com/v1`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Uri</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>https://api.openai.com/v1</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>ApiKey</maml:name>
+          <maml:description>
+            <maml:para>Specifies API key for authentication.
+The type of data should `[string]` or `[securestring]`.
+If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_API_KEY`</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
+          <dev:type>
+            <maml:name>Object</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
+          <maml:name>History</maml:name>
+          <maml:description>
+            <maml:para>An object for keeping the conversation history.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Object[]</command:parameterValue>
+          <dev:type>
+            <maml:name>Object[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="0" aliases="UserMessage, input">
+        <maml:name>Message</maml:name>
+        <maml:description>
+          <maml:para>A text input to the model.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Role</maml:name>
+        <maml:description>
+          <maml:para>The role of the message input. One of `user`, `system`, or `developer`. The default is `user`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
+        <maml:name>Model</maml:name>
+        <maml:description>
+          <maml:para>The name of model to use. The default value is `gpt-4o-mini`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>gpt-4o-mini</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>SystemMessage</maml:name>
+        <maml:description>
+          <maml:para>(Instead of this parameter, the use of the `-Instructions` parameter is recommended.)
+Instructions that the model should follow.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+        <dev:type>
+          <maml:name>String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>DeveloperMessage</maml:name>
+        <maml:description>
+          <maml:para>(Instead of this parameter, the use of the `-Instructions` parameter is recommended.)
+Instructions that the model should follow.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+        <dev:type>
+          <maml:name>String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Instructions</maml:name>
+        <maml:description>
+          <maml:para>A system (or developer) message inserted into the model's context.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="previous_response_id">
+        <maml:name>PreviousResponseId</maml:name>
+        <maml:description>
+          <maml:para>The unique ID of the previous response to the model. Use this to create multi-turn conversations.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Images</maml:name>
+        <maml:description>
+          <maml:para>A list of images to passing the model. You can specify local image file or remote url.
+</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+        <dev:type>
+          <maml:name>String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>ImageDetail</maml:name>
+        <maml:description>
+          <maml:para>Controls how the model processes the image and generates its textual understanding. You can select from `Low` or `High`.
+</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>auto</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Files</maml:name>
+        <maml:description>
+          <maml:para>A file input to the model.
+You can speciy a list of the local file path, the URL of the file or the ID of the file to be uploaded.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+        <dev:type>
+          <maml:name>String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>OutputRawResponse</maml:name>
+        <maml:description>
+          <maml:para>If specifies this switch, an output of this function to be a raw response value from the API. (Normally JSON formatted string.)</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>TimeoutSec</maml:name>
+        <maml:description>
+          <maml:para>Specifies how long the request can be pending before it times out.
+The default value is `0` (infinite).</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>0</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>MaxRetryCount</maml:name>
+        <maml:description>
+          <maml:para>Number between `0` and `100`.
+Specifies the maximum number of retries if the request fails.
+The default value is `0` (No retry).
+Note : Retries will only be performed if the request fails with a `429 (Rate limit reached)` or `5xx (Server side errors)` error. Other errors (e.g., authentication failure) will not be performed.
+</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>0</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>ApiBase</maml:name>
+        <maml:description>
+          <maml:para>Specifies an API endpoint URL such like: `https://your-api-endpoint.test/v1`
+If not specified, it will use `https://api.openai.com/v1`</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
+        <dev:type>
+          <maml:name>System.Uri</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>https://api.openai.com/v1</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>ApiKey</maml:name>
+        <maml:description>
+          <maml:para>Specifies API key for authentication.
+The type of data should `[string]` or `[securestring]`.
+If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_API_KEY`</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
+        <dev:type>
+          <maml:name>Object</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
+        <maml:name>History</maml:name>
+        <maml:description>
+          <maml:para>An object for keeping the conversation history.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Object[]</command:parameterValue>
+        <dev:type>
+          <maml:name>Object[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes />
+    <command:returnValues />
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>--------------------------- Example ---------------------------</maml:title>
+        <dev:code>PS C:\&gt; $Response = Request-Response 'Tell me about traditional Japanese cuisine.' -Model 'gpt-5.1'
+PS C:\&gt; $CompactedRespomse = $Response | Request-ResponseCompaction -Model 'gpt-5.1'</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Request-ResponseCompaction.md</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>https://platform.openai.com/docs/api-reference/responses/compact</maml:linkText>
+        <maml:uri>https://platform.openai.com/docs/api-reference/responses/compact</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
