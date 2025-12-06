@@ -18,7 +18,7 @@ Describe 'Request-ResponseCompaction' {
             $script:Result = ''
         }
 
-        It 'Simple chat response' {
+        It 'Simple response compaction' {
             Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
 {
   "id": "resp_abcd1234",
@@ -40,7 +40,7 @@ Describe 'Request-ResponseCompaction' {
     {
       "id": "cmp_hijk9012",
       "type": "compaction",
-      "encrypted_content": "encrypted-data",
+      "encrypted_content": "encrypted-data"
     }
   ],
   "usage": {
@@ -95,7 +95,7 @@ Describe 'Request-ResponseCompaction' {
     {
       "id": "cmp_hijk9012",
       "type": "compaction",
-      "encrypted_content": "encrypted-data",
+      "encrypted_content": "encrypted-data"
     }
   ],
   "usage": {}
@@ -118,7 +118,7 @@ Describe 'Request-ResponseCompaction' {
     {
       "id": "cmp_hijk9012",
       "type": "compaction",
-      "encrypted_content": "encrypted-data",
+      "encrypted_content": "encrypted-data"
     }
   ],
   "usage": {}
@@ -163,7 +163,7 @@ Describe 'Request-ResponseCompaction' {
     {
       "id": "cmp_hijk9012",
       "type": "compaction",
-      "encrypted_content": "encrypted-data",
+      "encrypted_content": "encrypted-data"
     }
   ],
   "usage": {}
@@ -187,7 +187,7 @@ Describe 'Request-ResponseCompaction' {
     {
       "id": "cmp_hijk9012",
       "type": "compaction",
-      "encrypted_content": "encrypted-data",
+      "encrypted_content": "encrypted-data"
     }
   ],
   "usage": {}
@@ -218,7 +218,7 @@ Describe 'Request-ResponseCompaction' {
     {
       "id": "cmp_hijk9012",
       "type": "compaction",
-      "encrypted_content": "encrypted-data",
+      "encrypted_content": "encrypted-data"
     }
   ],
   "usage": {}
