@@ -1,4 +1,10 @@
 # Changelog
+### 4.44.0
+- Add `gpt-5.1-codex-max`.
+- API updates.
+- Add new function for compacting responses.
+    + [Request-ResponseCompaction](/Docs/Request-ResponseCompaction.md)
+
 ### 4.43.0
 - Add new `gpt-5.1` models.
 - API updates.

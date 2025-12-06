@@ -63,6 +63,7 @@ Guide: [Migrate ChatCompletion to Response](/Guides/Migrate_ChatCompletion_to_Re
 + [Get-Response](/Docs/Get-Response.md)
 + [Remove-Response](/Docs/Remove-Response.md)
 + [Get-ResponseInputItem](/Docs/Get-ResponseInputItem.md)
++ [Request-ResponseCompaction](/Docs/Request-ResponseCompaction.md)
 
 #### Conversations
 + [New-Conversation](/Docs/New-Conversation.md)
