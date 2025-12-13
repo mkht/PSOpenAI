@@ -26718,8 +26718,8 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
     <command:examples>
       <command:example>
         <maml:title>--------------------------- Example ---------------------------</maml:title>
-        <dev:code>PS C:\&gt; $Response = Request-Response 'Tell me about traditional Japanese cuisine.' -Model 'gpt-5.1'
-PS C:\&gt; $CompactedRespomse = $Response | Request-ResponseCompaction -Model 'gpt-5.1'</dev:code>
+        <dev:code>PS C:\&gt; $Response = Request-Response 'Tell me about traditional Japanese cuisine.' -Model 'gpt-5.2'
+PS C:\&gt; $CompactedRespomse = $Response | Request-ResponseCompaction -Model 'gpt-5.2'</dev:code>
         <dev:remarks>
           <maml:para></maml:para>
         </dev:remarks>

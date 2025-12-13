@@ -1,4 +1,7 @@
 # Changelog
+### 4.45.0
+- Add `gpt-5.2` models.
+
 ### 4.44.0
 - Add `gpt-5.1-codex-max`.
 - API updates.
