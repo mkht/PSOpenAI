@@ -149,7 +149,7 @@ Describe 'Request-ResponseCompaction' {
             }
 
             { $script:Result = $HistoryObject | Request-ResponseCompaction `
-                    -Model gpt-5.1 -ea Stop } | Should -Not -Throw
+                    -Model gpt-5.2 -ea Stop } | Should -Not -Throw
             Should -InvokeVerifiable
         }
 
@@ -173,7 +173,7 @@ Describe 'Request-ResponseCompaction' {
             { $script:Result = Request-ResponseCompaction `
                     -Message 'What is this?' `
                     -Images ($script:TestData + '/sweets_donut.png') `
-                    -Model gpt-5.1 -ea Stop } | Should -Not -Throw
+                    -Model gpt-5.2 -ea Stop } | Should -Not -Throw
             Should -InvokeVerifiable
         }
 
@@ -197,13 +197,13 @@ Describe 'Request-ResponseCompaction' {
             { $script:Result = Request-ResponseCompaction `
                     -Message 'Summarize this text in Japanese' `
                     -Files ($script:TestData + '/日本語テキスト.txt') `
-                    -Model gpt-5.1 -ea Stop } | Should -Not -Throw
+                    -Model gpt-5.2 -ea Stop } | Should -Not -Throw
             Should -InvokeVerifiable
         }
 
         It 'Input Message is required' {
             Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest {}
-            { Request-ResponseCompaction -Model 'gpt-5.1' -ea Stop } | Should -Throw 'No message is specified. You must specify one or more messages.'
+            { Request-ResponseCompaction -Model 'gpt-5.2' -ea Stop } | Should -Throw 'No message is specified. You must specify one or more messages.'
             Should -Not -InvokeVerifiable
         }
 

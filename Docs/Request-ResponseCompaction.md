@@ -41,8 +41,8 @@ Runs a compaction pass over a conversation. Compaction returns encrypted, opaque
 
 ### Example
 ```powershell
-PS C:\> $Response = Request-Response 'Tell me about traditional Japanese cuisine.' -Model 'gpt-5.1'
-PS C:\> $CompactedRespomse = $Response | Request-ResponseCompaction -Model 'gpt-5.1'
+PS C:\> $Response = Request-Response 'Tell me about traditional Japanese cuisine.' -Model 'gpt-5.2'
+PS C:\> $CompactedRespomse = $Response | Request-ResponseCompaction -Model 'gpt-5.2'
 ```
 
 ## PARAMETERS
