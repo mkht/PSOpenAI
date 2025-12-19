@@ -239,7 +239,7 @@ Creating images from scratch based on a text prompt.
 
 ```PowerShell
 $global:OPENAI_API_KEY = '<Put your API key here.>'
-Request-ImageGeneration -Model 'gpt-image-1' -Prompt 'A cute baby lion' -Size 1024x1024 -OutFile 'C:\output\babylion.png'
+Request-ImageGeneration -Model 'gpt-image-1.5' -Prompt 'A cute baby lion' -Size 1024x1024 -OutFile 'C:\output\babylion.png'
 ```
 
 This sample code saves image to `C:\output\babylion.png`. The saved image like this.
@@ -249,7 +249,7 @@ This sample code saves image to `C:\output\babylion.png`. The saved image like t
 ### Image edit
 
 ```PowerShell
-Request-ImageEdit -Model 'gpt-image-1' -Prompt 'A bird on the desert' -Image 'C:\sand_with_fether.png' -OutFile 'C:\bird_on_desert.png' -Size 1024x1024
+Request-ImageEdit -Model 'gpt-image-1.5' -Prompt 'A bird on the desert' -Image 'C:\sand_with_fether.png' -OutFile 'C:\bird_on_desert.png' -Size 1024x1024
 ```
 
 The edited image like this.
