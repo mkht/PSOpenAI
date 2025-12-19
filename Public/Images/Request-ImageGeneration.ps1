@@ -7,6 +7,7 @@ function Request-ImageGeneration {
 
         [Parameter()]
         [Completions(
+            'gpt-image-1.5',
             'gpt-image-1',
             'gpt-image-1-mini',
             'dall-e-3',
@@ -195,7 +196,7 @@ function Request-ImageGeneration {
         }
 
         if ($Model -like 'gpt-image-*') {
-            # The output_format parameter is only supported for gpt-image-1.
+            # The output_format parameter is only supported for the GPT image models.
             if ($PSBoundParameters.ContainsKey('OutputFormat')) {
                 $PostBody.output_format = $OutputFormat
             }
@@ -215,7 +216,7 @@ function Request-ImageGeneration {
                 }
             }
 
-            # reponse_formart parameter is not supported for gpt-image-1.
+            # reponse_formart parameter is not supported for the GPT image models.
             if ($PostBody.Contains('response_format')) {
                 $PostBody.Remove('response_format')
             }

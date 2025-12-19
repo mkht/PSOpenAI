@@ -58,7 +58,7 @@ https://platform.openai.com/docs/guides/image-generation
 
 ### Example 1: Edit an image with a prompt.
 ```PowerShell
-Request-ImageEdit -Model 'gpt-image-1' -Prompt 'A bird on the desert' -Image 'C:\sand_with_fether.png' -OutFile 'C:\bird_on_desert.png' -Size 1024x1024
+Request-ImageEdit -Model 'gpt-image-1.5' -Prompt 'A bird on the desert' -Image 'C:\sand_with_fether.png' -OutFile 'C:\bird_on_desert.png' -Size 1024x1024
 ```
 
 | Original                                        | Generated                                  |
@@ -68,7 +68,7 @@ Request-ImageEdit -Model 'gpt-image-1' -Prompt 'A bird on the desert' -Image 'C:
 
 ### Example 2: Create variation image from source and mask.
 ```PowerShell
-Request-ImageEdit -Model 'gpt-image-1' -Image C:\sand_with_feather.png -Mask C:\fether_mask.png -Prompt "A bird on the desert" -OutFile C:\edit2.png
+Request-ImageEdit -Model 'gpt-image-1.5' -Image C:\sand_with_feather.png -Mask C:\fether_mask.png -Prompt "A bird on the desert" -OutFile C:\edit2.png
 ```
 
 | Source (sand_with_feather.png)                | Mask (fether_mask.png)                | Generated (edit2.png)               |
@@ -81,7 +81,7 @@ Request-ImageEdit -Model 'gpt-image-1' -Image C:\sand_with_feather.png -Mask C:\
 
 ### -Image
 (Required)
-The image(s) to edit. Must be a supported image file or an array of images. For gpt-image-1, each image should be a png, webp, or jpg file less than 25MB. For dall-e-2, you can only provide one image, and it should be a square png file less than 4MB.
+The image(s) to edit. Must be a supported image file or an array of images. For the GPT image models, each image should be a `png`, `webp`, or `jpg` file less than 50MB. You can provide up to 16 images. For dall-e-2, you can only provide one image, and it should be a square png file less than 4MB.
 
 ```yaml
 Type: String[]
@@ -92,7 +92,7 @@ Position: Named
 
 ### -Prompt
 (Required)
-A text description of the desired image(s). The maximum length is 1000 characters for dall-e-2, and 32000 characters for gpt-image-1.
+A text description of the desired image(s). The maximum length is 32000 characters for the GPT image models, 1000 characters for `dall-e-2` and 4000 characters for `dall-e-3`.
 
 ```yaml
 Type: String
@@ -110,7 +110,7 @@ Position: Named
 ```
 
 ### -Model
-The model to use for image generation. Only dall-e-2 and gpt-image-1 are supported. Defaults to dall-e-2 unless a parameter specific to gpt-image-1 is used.
+The model to use for image generation. Only `dall-e-2` and the GPT image models are supported. Defaults to `dall-e-2` unless a parameter specific to the GPT image models is used.
 
 ```yaml
 Type: String
@@ -130,7 +130,11 @@ Default value: 1
 ```
 
 ### -Quality
-The quality of the image that will be generated. high, medium and low are only supported for gpt-image-1. dall-e-2 only supports standard quality. Defaults to auto.
+The quality of the image that will be generated.  
+- `auto` (default value) will automatically select the best quality for the given model.
+- `high`, `medium` and `low` are supported for the GPT image models.
+- `hd` and `standard` are supported for `dall-e-3`.
+- `standard` is the only option for `dall-e-2`.
 
 ```yaml
 Type: String
@@ -140,7 +144,7 @@ Default value: auto
 ```
 
 ### -Size
-The size of the generated images. Must be one of `1024x1024`, `1536x1024` (landscape), `1024x1536` (portrait), or `auto` (default value) for gpt-image-1, and one of `256x256`, `512x512`, or `1024x1024` for dall-e-2.
+The size of the generated images. Must be one of `1024x1024`, `1536x1024` (landscape), `1024x1536` (portrait), or `auto` (default value) for the GPT image models, and one of `256x256`, `512x512`, or `1024x1024` for dall-e-2, and one of `1024x1024`, `1792x1024`, or `1024x1792` for `dall-e-3`.
 
 ```yaml
 Type: String
@@ -150,7 +154,7 @@ Default value: auto
 ```
 
 ### -ResponseFormat
-The format in which the generated images are returned. Must be one of `url`, `base64` or `byte`. gpt-image-1 only supports `base64`.
+The format in which the generated images are returned. Must be one of `url`, `base64` or `byte`. This parameter is only supported for `dall-e-2`, as the GPT image models always return images in `base64` format.
 
 ```yaml
 Type: String

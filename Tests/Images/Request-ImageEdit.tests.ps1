@@ -79,7 +79,7 @@ Describe 'Request-ImageEdit' {
                     Image          = @(($script:TestImageData + '/fether_mask.png'), ($script:TestImageData + '/cupcake.png'))
                     NumberOfImages = 3
                     OutFile        = Join-Path $TestDrive 'fileA.png'
-                    Model          = 'gpt-image-1'
+                    Model          = 'gpt-image-1.5'
                     Size           = 'auto'
                     ErrorAction    = 'Stop'
                 }
@@ -114,7 +114,7 @@ Describe 'Request-ImageEdit' {
                     Mask           = ($script:TestImageData + '/fether_mask.png')
                     NumberOfImages = 1
                     OutFile        = Join-Path $TestDrive 'fileB.png'
-                    Model          = 'gpt-image-1'
+                    Model          = 'gpt-image-1.5'
                     Size           = 'auto'
                     ErrorAction    = 'Stop'
                 }
@@ -142,7 +142,7 @@ Describe 'Request-ImageEdit' {
             $Result | Should -Be 'https://dummyimage.example.com'
         }
 
-        It 'gpt-image-1 model does not support response_format = url. Defaulting to object.' {
+        It 'The GPT image models are not support response_format = url. Defaulting to object.' {
             $TestResponse = @'
 {
     "created": 1678359675,
@@ -188,7 +188,7 @@ Describe 'Request-ImageEdit' {
                 { $splat = @{
                         Prompt      = 'Hello'
                         Image       = ($script:TestImageData + '/fether_mask.png')
-                        Model       = 'gpt-image-1'
+                        Model       = 'gpt-image-1.5'
                         Size        = '1024x1024'
                         OutFile     = Join-Path $TestDrive 'file.png'
                         ErrorAction = 'Stop'
@@ -213,7 +213,7 @@ Describe 'Request-ImageEdit' {
                 { $splat = @{
                         Prompt        = 'Hello'
                         Image         = ($script:TestImageData + '/fether_mask.png')
-                        Model         = 'gpt-image-1'
+                        Model         = 'gpt-image-1.5'
                         Size          = '1024x1024'
                         OutFile       = Join-Path $TestDrive 'file.png'
                         PartialImages = 3
@@ -239,7 +239,7 @@ Describe 'Request-ImageEdit' {
                 { $splat = @{
                         Prompt         = 'Hello'
                         Image          = ($script:TestImageData + '/fether_mask.png')
-                        Model          = 'gpt-image-1'
+                        Model          = 'gpt-image-1.5'
                         Size           = '1024x1024'
                         ResponseFormat = 'object'
                         PartialImages  = 1
@@ -269,7 +269,7 @@ Describe 'Request-ImageEdit' {
                 { $splat = @{
                         Prompt         = 'Hello'
                         Image          = ($script:TestImageData + '/fether_mask.png')
-                        Model          = 'gpt-image-1'
+                        Model          = 'gpt-image-1.5'
                         Size           = '1024x1024'
                         ResponseFormat = 'base64'
                         PartialImages  = 1
@@ -292,7 +292,7 @@ Describe 'Request-ImageEdit' {
                 { $splat = @{
                         Prompt         = 'Hello'
                         Image          = ($script:TestImageData + '/fether_mask.png')
-                        Model          = 'gpt-image-1'
+                        Model          = 'gpt-image-1.5'
                         Size           = '1024x1024'
                         ResponseFormat = 'byte'
                         PartialImages  = 0
@@ -316,7 +316,7 @@ Describe 'Request-ImageEdit' {
                 { $splat = @{
                         Prompt         = 'Hello'
                         Image          = ($script:TestImageData + '/fether_mask.png')
-                        Model          = 'gpt-image-1'
+                        Model          = 'gpt-image-1.5'
                         Size           = '1024x1024'
                         ResponseFormat = 'byte'
                         PartialImages  = 1
@@ -342,7 +342,7 @@ Describe 'Request-ImageEdit' {
                 { $splat = @{
                         Prompt         = 'Hello'
                         Image          = ($script:TestImageData + '/fether_mask.png')
-                        Model          = 'gpt-image-1'
+                        Model          = 'gpt-image-1.5'
                         Size           = '1024x1024'
                         ResponseFormat = 'byte'
                         PartialImages  = 1
@@ -367,7 +367,7 @@ Describe 'Request-ImageEdit' {
                 { $splat = @{
                         Prompt      = 'Hello'
                         Image       = ($script:TestImageData + '/fether_mask.png')
-                        Model       = 'gpt-image-1'
+                        Model       = 'gpt-image-1.5'
                         Size        = '1024x1024'
                         ErrorAction = 'Stop'
                     }
@@ -406,7 +406,7 @@ Describe 'Request-ImageEdit' {
                     Image          = @(($script:TestImageData + '/fether_mask.png'), ($script:TestImageData + '/sand_with_feather.png'))
                     Prompt         = 'sunflower'
                     ResponseFormat = 'base64'
-                    Model          = 'gpt-image-1'
+                    Model          = 'gpt-image-1.5'
                     NumberOfImages = 2
                     Size           = '1024x1024'
                     Quality        = 'low'
@@ -439,7 +439,7 @@ Describe 'Request-ImageEdit' {
             { $splat = @{
                     Image         = $script:TestImageData + '/sand_with_feather.png'
                     Prompt        = 'A bird on the desert'
-                    Model         = 'gpt-image-1'
+                    Model         = 'gpt-image-1.5'
                     OutFile       = Join-Path $TestDrive 'file4.png'
                     Size          = '1024x1024'
                     Stream        = $true

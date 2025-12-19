@@ -1,4 +1,7 @@
 # Changelog
+### 4.46.0
+- Add `gpt-image-1.5`.
+
 ### 4.45.0
 - Add `gpt-5.2` models.
 

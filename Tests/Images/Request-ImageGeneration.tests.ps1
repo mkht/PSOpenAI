@@ -241,7 +241,7 @@ Describe 'Request-ImageGeneration' {
             $Result[1] | Should -Be 'https://dummyimage2.example.com'
         }
 
-        It 'gpt-image-1 model does not support response_format = url. Defaulting to object.' {
+        It 'The GPT image models are not support response_format = url. Defaulting to object.' {
             $TestResponse = @'
 {
     "created": 1678359675,
@@ -253,7 +253,7 @@ Describe 'Request-ImageGeneration' {
 }
 '@
             Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $TestResponse }
-            { $script:Result = Request-ImageGeneration -Model gpt-image-1 -Prompt 'sunflower' -ResponseFormat url -ea Stop } | Should -Not -Throw
+            { $script:Result = Request-ImageGeneration -Model gpt-image-1.5 -Prompt 'sunflower' -ResponseFormat url -ea Stop } | Should -Not -Throw
             Should -InvokeVerifiable
             $Result.PSTypeNames | Should -Contain 'PSOpenAI.Image'
             $Result.created | Should -BeOfType [datetime]
@@ -351,7 +351,7 @@ Describe 'Request-ImageGeneration' {
                 Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { }
                 { $splat = @{
                         Prompt      = 'Hello'
-                        Model       = 'gpt-image-1'
+                        Model       = 'gpt-image-1.5'
                         Size        = '1024x1024'
                         OutFile     = Join-Path $TestDrive 'file.png'
                         ErrorAction = 'Stop'
@@ -375,7 +375,7 @@ Describe 'Request-ImageGeneration' {
                 Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { }
                 { $splat = @{
                         Prompt        = 'Hello'
-                        Model         = 'gpt-image-1'
+                        Model         = 'gpt-image-1.5'
                         Size          = '1024x1024'
                         OutFile       = Join-Path $TestDrive 'file.png'
                         PartialImages = 3
@@ -400,7 +400,7 @@ Describe 'Request-ImageGeneration' {
                 Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { }
                 { $splat = @{
                         Prompt         = 'Hello'
-                        Model          = 'gpt-image-1'
+                        Model          = 'gpt-image-1.5'
                         Size           = '1024x1024'
                         ResponseFormat = 'object'
                         PartialImages  = 1
@@ -429,7 +429,7 @@ Describe 'Request-ImageGeneration' {
                 Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { }
                 { $splat = @{
                         Prompt         = 'Hello'
-                        Model          = 'gpt-image-1'
+                        Model          = 'gpt-image-1.5'
                         Size           = '1024x1024'
                         ResponseFormat = 'base64'
                         PartialImages  = 1
@@ -451,7 +451,7 @@ Describe 'Request-ImageGeneration' {
                 Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { }
                 { $splat = @{
                         Prompt         = 'Hello'
-                        Model          = 'gpt-image-1'
+                        Model          = 'gpt-image-1.5'
                         Size           = '1024x1024'
                         ResponseFormat = 'byte'
                         PartialImages  = 0
@@ -474,7 +474,7 @@ Describe 'Request-ImageGeneration' {
                 Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { }
                 { $splat = @{
                         Prompt         = 'Hello'
-                        Model          = 'gpt-image-1'
+                        Model          = 'gpt-image-1.5'
                         Size           = '1024x1024'
                         ResponseFormat = 'byte'
                         PartialImages  = 1
@@ -499,7 +499,7 @@ Describe 'Request-ImageGeneration' {
                 Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { }
                 { $splat = @{
                         Prompt         = 'Hello'
-                        Model          = 'gpt-image-1'
+                        Model          = 'gpt-image-1.5'
                         Size           = '1024x1024'
                         ResponseFormat = 'byte'
                         PartialImages  = 1
@@ -523,7 +523,7 @@ Describe 'Request-ImageGeneration' {
                 Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { }
                 { $splat = @{
                         Prompt      = 'Hello'
-                        Model       = 'gpt-image-1'
+                        Model       = 'gpt-image-1.5'
                         Size        = '1024x1024'
                         ErrorAction = 'Stop'
                     }
@@ -563,7 +563,7 @@ Describe 'Request-ImageGeneration' {
         It 'Generate image. Full parameters' {
             { $params = @{
                     Prompt            = 'A cute baby lion'
-                    Model             = 'gpt-image-1'
+                    Model             = 'gpt-image-1.5'
                     ResponseFormat    = 'base64'
                     Moderation        = 'low'
                     NumberOfImages    = 2
@@ -586,7 +586,7 @@ Describe 'Request-ImageGeneration' {
         It 'Stream image generation. OutFile' {
             { $splat = @{
                     Prompt        = 'A cute baby lion'
-                    Model         = 'gpt-image-1'
+                    Model         = 'gpt-image-1.5'
                     OutFile       = Join-Path $TestDrive 'file3.png'
                     Size          = '1024x1024'
                     Stream        = $true
