@@ -1,4 +1,8 @@
 # Changelog
+### 4.47.0
+- Add `gpt-5.2-codex` model to `Request-Response`.
+- Update documents.
+
 ### 4.46.0
 - Add `gpt-image-1.5`.
 
