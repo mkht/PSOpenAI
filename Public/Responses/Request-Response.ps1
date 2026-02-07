@@ -282,8 +282,12 @@ function Request-Response {
         [string]$ImageGenerationType = 'image_generation', # Always 'image_generation'
 
         [Parameter()]
-        [Completions('gpt-image-1', 'gpt-image-1-mini')]
+        [Completions('gpt-image-1', 'gpt-image-1-mini', 'gpt-image-1.5')]
         [string]$ImageGenerationModel,
+
+        [Parameter()]
+        [Completions('generate', 'edit', 'auto')]
+        [string]$ImageGenerationAction = 'auto',
 
         [Parameter()]
         [Completions('transparent', 'opaque', 'auto')]
@@ -908,6 +912,9 @@ function Request-Response {
             }
             if ($PSBoundParameters.ContainsKey('ImageGenerationModel')) {
                 $ImageGenerationTool.model = $ImageGenerationModel
+            }
+            if ($PSBoundParameters.ContainsKey('ImageGenerationAction')) {
+                $ImageGenerationTool.action = $ImageGenerationAction
             }
             if ($PSBoundParameters.ContainsKey('ImageGenerationBackGround')) {
                 $ImageGenerationTool.background = $ImageGenerationBackGround

@@ -693,6 +693,16 @@ Required: False
 Position: Named
 ```
 
+### -ImageGenerationAction
+Whether to generate a new image or edit an existing image. Default: `auto`.
+
+```yaml
+Type: String
+Required: False
+Position: Named
+Default value: auto
+```
+
 ### -ImageGenerationBackGround
 Background type for the generated image. One of `transparent`, `opaque`, or `auto`
 
