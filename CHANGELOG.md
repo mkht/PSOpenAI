@@ -1,4 +1,7 @@
 # Changelog
+### 4.48.0
+- Add `-ImageGenerationAction` parameter to `Request-Response`.
+
 ### 4.47.0
 - Add `gpt-5.2-codex` model to `Request-Response`.
 - Update documents.

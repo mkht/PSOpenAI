@@ -24447,6 +24447,18 @@ Possible values: `browser`, `mac`, `windows`, `ubuntu`.</maml:para>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>ImageGenerationAction</maml:name>
+          <maml:description>
+            <maml:para>Whether to generate a new image or edit an existing image. Default: `auto`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>auto</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>ImageGenerationBackGround</maml:name>
           <maml:description>
             <maml:para>Background type for the generated image. One of `transparent`, `opaque`, or `auto`</maml:para>
@@ -25692,6 +25704,18 @@ Possible values: `browser`, `mac`, `windows`, `ubuntu`.</maml:para>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>ImageGenerationAction</maml:name>
+        <maml:description>
+          <maml:para>Whether to generate a new image or edit an existing image. Default: `auto`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>auto</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>ImageGenerationBackGround</maml:name>

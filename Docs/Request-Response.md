@@ -71,6 +71,7 @@ Request-Response
     [-ContainerFileIds <String[]>]
     [-UseImageGenerationTool]
     [-ImageGenerationModel <String>]
+    [-ImageGenerationAction <String>]
     [-ImageGenerationBackGround <String>]
     [-ImageGenerationInputImageMask <String>]
     [-ImageGenerationModeration <String>]
