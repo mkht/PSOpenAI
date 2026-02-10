@@ -1,4 +1,8 @@
 # Changelog
+### Unreleased
+- Update documents.
+- Add `chatgpt-image-latest` to `Request-ImageGeneration` and `Request-ImageEdit`.
+
 ### 4.48.0
 - Add `-ImageGenerationAction` parameter to `Request-Response`.
 
