@@ -15,3 +15,6 @@
 
 ## References
 - This project is PowerShell wrapper for OpenAI API, so you can refer to the [OpenAI API documentation](https://platform.openai.com/docs/api-reference) for details on how the API works.
+
+## Environment
+- When you execute any command, ALWAYS use PowerShell commands. DO NOT use bash commands like `rg`, `grep`, `sed` etc.
