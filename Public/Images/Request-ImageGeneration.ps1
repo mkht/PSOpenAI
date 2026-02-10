@@ -10,6 +10,7 @@ function Request-ImageGeneration {
             'gpt-image-1.5',
             'gpt-image-1',
             'gpt-image-1-mini',
+            'chatgpt-image-latest',
             'dall-e-3',
             'dall-e-2'
         )]

@@ -19,6 +19,7 @@ function Request-ImageEdit {
             'gpt-image-1.5',
             'gpt-image-1',
             'gpt-image-1-mini',
+            'chatgpt-image-latest',
             'dall-e-2'
         )]
         [string]$Model = 'dall-e-2',
