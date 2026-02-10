@@ -108,4 +108,4 @@ Position: Named
 
 ## RELATED LINKS
 
-[https://platform.openai.com/docs/api-reference/realtime-client-events/response/create](https://platform.openai.com/docs/api-reference/realtime-client-events/response/create)
+[https://developers.openai.com/api/docs/guides/realtime-conversations/](https://developers.openai.com/api/docs/guides/realtime-conversations/)

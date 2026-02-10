@@ -113,4 +113,4 @@ Position: Named
 
 ## RELATED LINKS
 
-[https://platform.openai.com/docs/api-reference/vector-stores/delete](https://platform.openai.com/docs/api-reference/vector-stores/delete)
+[https://developers.openai.com/api/reference/resources/vector_stores/methods/delete/](https://developers.openai.com/api/reference/resources/vector_stores/methods/delete/)

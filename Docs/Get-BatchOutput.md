@@ -128,4 +128,4 @@ Batch output items are stored on OpenAI storage as JSONL files. This cmdlet does
 
 ## RELATED LINKS
 
-[https://platform.openai.com/docs/api-reference/batch/requestOutput](https://platform.openai.com/docs/api-reference/batch/requestOutput)
+[https://developers.openai.com/api/reference/resources/batches/methods/retrieve/](https://developers.openai.com/api/reference/resources/batches/methods/retrieve/)

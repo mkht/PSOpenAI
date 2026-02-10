@@ -21,8 +21,14 @@ Request-ImageEdit
     [-NumberOfImages <UInt16>]
     [-Size <String>]
     [-Quality <String>]
+    [-Background <String>]
+    [-InputFidelity <String>]
+    [-OutputCompression <UInt16>]
+    [-OutputFormat <String>]
     [-ResponseFormat <String>]
     [-OutputRawResponse]
+    [-Stream]
+    [-PartialImages <UInt16>]
     [-User <String>]
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
@@ -42,6 +48,12 @@ Request-ImageEdit
     [-NumberOfImages <UInt16>]
     [-Size <String>]
     [-Quality <String>]
+    [-Background <String>]
+    [-InputFidelity <String>]
+    [-OutputCompression <UInt16>]
+    [-OutputFormat <String>]
+    [-Stream]
+    [-PartialImages <UInt16>]
     [-User <String>]
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
@@ -52,7 +64,7 @@ Request-ImageEdit
 
 ## DESCRIPTION
 Creates an edited or extended image given an original image and a prompt.  
-https://platform.openai.com/docs/guides/image-generation
+https://developers.openai.com/api/reference/resources/images/methods/edit
 
 ## EXAMPLES
 
@@ -153,6 +165,47 @@ Position: Named
 Default value: auto
 ```
 
+### -Background
+Background behavior for generated image output.  
+Accepts one of the following: `transparent`, `opaque`, and `auto` (default).
+```yaml
+Type: String
+Required: False
+Position: Named
+Default value: auto
+```
+
+### -InputFidelity
+Controls fidelity to the original input image(s).
+This parameter is only supported for `gpt-image-1` and `gpt-image-1.5` and later models, unsupported for `gpt-image-1-mini`. Supports `high` and `low`. Defaults to `low`.
+```yaml
+Type: String
+Aliases: input_fidelity
+Required: False
+Position: Named
+Default value: low
+```
+
+### -OutputCompression
+The compression level (0-100%) for the generated images. This parameter is only supported for the GPT image models with the `webp` or `jpeg` output formats, and defaults to 100.
+```yaml
+Type: UInt16
+Aliases: output_compression
+Required: False
+Position: Named
+Default value: 100
+```
+
+### -OutputFormat
+The format in which the generated images are returned. This parameter is only supported for the GPT image models. Must be one of `png`, `jpeg`, or `webp`. The default value is `png`.
+```yaml
+Type: String
+Aliases: output_format
+Required: False
+Position: Named
+Default value: png
+```
+
 ### -ResponseFormat
 The format in which the generated images are returned. Must be one of `url`, `base64` or `byte`. This parameter is only supported for `dall-e-2`, as the GPT image models always return images in `base64` format.
 
@@ -183,6 +236,23 @@ Type: String
 Parameter Sets: OutFile
 Required: True
 Position: Named
+```
+
+### -Stream
+Edit the image in streaming mode. Defaults to `false`.
+```yaml
+Type: SwitchParameter
+Required: False
+Position: Named
+```
+
+### -PartialImages
+The number of partial images to generate. This parameter is used for streaming responses that return partial images. Value must be between 0 and 3. When set to 0, the response will be a single image sent in one streaming event.
+```yaml
+Type: UInt16
+Required: False
+Position: Named
+Default value: 0
 ```
 
 ### -User
@@ -259,6 +329,6 @@ Position: Named
 
 ## RELATED LINKS
 
-[https://platform.openai.com/docs/guides/image-generation](https://platform.openai.com/docs/guides/image-generation)
+[https://developers.openai.com/api/docs/guides/image-generation/](https://developers.openai.com/api/docs/guides/image-generation/)
 
-[https://platform.openai.com/docs/api-reference/images/createEdit](https://platform.openai.com/docs/api-reference/images/createEdit)
+[https://developers.openai.com/api/reference/resources/images/methods/edit](https://developers.openai.com/api/reference/resources/images/methods/edit)

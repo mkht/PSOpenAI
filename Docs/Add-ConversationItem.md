@@ -212,4 +212,4 @@ Position: Named
 
 ## RELATED LINKS
 
-[https://platform.openai.com/docs/api-reference/conversations/create-items](https://platform.openai.com/docs/api-reference/conversations/create-items)
+[https://developers.openai.com/api/reference/resources/conversations/subresources/items/methods/create](https://developers.openai.com/api/reference/resources/conversations/subresources/items/methods/create)

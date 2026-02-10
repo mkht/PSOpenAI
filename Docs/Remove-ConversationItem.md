@@ -111,4 +111,4 @@ Position: Named
 
 ## RELATED LINKS
 
-[https://platform.openai.com/docs/api-reference/conversations/delete-item](https://platform.openai.com/docs/api-reference/conversations/delete-item)
+[https://developers.openai.com/api/reference/resources/conversations/subresources/items/methods/delete/](https://developers.openai.com/api/reference/resources/conversations/subresources/items/methods/delete/)

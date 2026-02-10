@@ -178,5 +178,5 @@ Position: Named
 
 ## RELATED LINKS
 
-[https://platform.openai.com/docs/api-reference/assistants/getAssistant](https://platform.openai.com/docs/api-reference/assistants/getAssistant)
-[https://platform.openai.com/docs/api-reference/assistants/listAssistants](https://platform.openai.com/docs/api-reference/assistants/listAssistants)
+[https://developers.openai.com/api/reference/resources/beta/subresources/assistants/methods/retrieve/](https://developers.openai.com/api/reference/resources/beta/subresources/assistants/methods/retrieve/)
+[https://developers.openai.com/api/reference/resources/beta/subresources/assistants/methods/list/](https://developers.openai.com/api/reference/resources/beta/subresources/assistants/methods/list/)

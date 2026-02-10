@@ -164,5 +164,6 @@ Position: Named
 
 ## RELATED LINKS
 
-[https://platform.openai.com/docs/api-reference/videos/create](https://platform.openai.com/docs/api-reference/videos/create)
+[https://developers.openai.com/api/docs/guides/video-generation](https://developers.openai.com/api/docs/guides/video-generation)
+[https://developers.openai.com/api/reference/resources/videos/methods/create/](https://developers.openai.com/api/reference/resources/videos/methods/create/)
 

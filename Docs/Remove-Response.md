@@ -125,4 +125,4 @@ Position: Named
 
 ## RELATED LINKS
 
-[https://platform.openai.com/docs/api-reference/responses/delete](https://platform.openai.com/docs/api-reference/responses/delete)
+[https://developers.openai.com/api/reference/resources/responses/methods/delete/](https://developers.openai.com/api/reference/resources/responses/methods/delete/)

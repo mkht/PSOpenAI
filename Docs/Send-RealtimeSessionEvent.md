@@ -47,4 +47,4 @@ Accept pipeline input: True (ByValue)
 
 ## RELATED LINKS
 
-[https://platform.openai.com/docs/api-reference/realtime-client-events](https://platform.openai.com/docs/api-reference/realtime-client-events)
+[https://developers.openai.com/api/reference/resources/realtime/](https://developers.openai.com/api/reference/resources/realtime/)

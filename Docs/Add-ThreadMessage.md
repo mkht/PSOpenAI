@@ -214,4 +214,4 @@ Position: Named
 
 ## RELATED LINKS
 
-[https://platform.openai.com/docs/api-reference/messages/createMessage](https://platform.openai.com/docs/api-reference/messages/createMessage)
+[https://developers.openai.com/api/reference/resources/beta/subresources/threads/subresources/messages/methods/create/](https://developers.openai.com/api/reference/resources/beta/subresources/threads/subresources/messages/methods/create/)

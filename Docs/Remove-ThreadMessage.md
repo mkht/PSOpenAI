@@ -127,3 +127,5 @@ Position: Named
 ## NOTES
 
 ## RELATED LINKS
+
+[https://developers.openai.com/api/reference/resources/beta/subresources/threads/subresources/messages/methods/delete](https://developers.openai.com/api/reference/resources/beta/subresources/threads/subresources/messages/methods/delete)

@@ -124,4 +124,4 @@ Position: Named
 
 ## RELATED LINKS
 
-[https://platform.openai.com/docs/api-reference/vector-stores-files/deleteFile](https://platform.openai.com/docs/api-reference/vector-stores-files/deleteFile)
+[https://developers.openai.com/api/reference/resources/vector_stores/subresources/files/methods/delete/](https://developers.openai.com/api/reference/resources/vector_stores/subresources/files/methods/delete/)

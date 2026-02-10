@@ -213,4 +213,4 @@ This cmdlet will upload Batch input items to the OpenAI storage as a JSONL file 
 
 ## RELATED LINKS
 
-[https://platform.openai.com/docs/api-reference/batch/create](https://platform.openai.com/docs/api-reference/batch/create)
+[https://developers.openai.com/api/reference/resources/batches/methods/create/](https://developers.openai.com/api/reference/resources/batches/methods/create/)

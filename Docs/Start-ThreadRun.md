@@ -501,5 +501,5 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## RELATED LINKS
 
-[https://platform.openai.com/docs/api-reference/runs/createRun](https://platform.openai.com/docs/api-reference/runs/createRun)
+[https://developers.openai.com/api/reference/resources/beta/subresources/threads/subresources/runs/methods/create/](https://developers.openai.com/api/reference/resources/beta/subresources/threads/subresources/runs/methods/create/)
 

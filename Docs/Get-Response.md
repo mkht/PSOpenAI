@@ -181,4 +181,4 @@ Position: Named
 
 ## RELATED LINKS
 
-[https://platform.openai.com/docs/api-reference/responses/get](https://platform.openai.com/docs/api-reference/responses/get)
+[https://developers.openai.com/api/reference/resources/responses/methods/retrieve/](https://developers.openai.com/api/reference/resources/responses/methods/retrieve/)

@@ -25,7 +25,7 @@ New-ChatCompletionFunction
 ## DESCRIPTION
 Generate function spcifications for ChatGPT Function calling from PowerShell commands  
 The generated function spcification is a hash table that can be converted to a JSON string following JSON Schema.  
-https://platform.openai.com/docs/guides/gpt/function-calling
+https://developers.openai.com/api/docs/guides/function-calling/
 
 ## EXAMPLES
 
@@ -113,4 +113,4 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## RELATED LINKS
 
-[https://platform.openai.com/docs/guides/gpt/function-calling](https://platform.openai.com/docs/guides/gpt/function-calling)
+[https://developers.openai.com/api/docs/guides/function-calling/](https://developers.openai.com/api/docs/guides/function-calling/)

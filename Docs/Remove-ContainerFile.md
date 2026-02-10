@@ -146,4 +146,4 @@ Position: Named
 
 ## RELATED LINKS
 
-[https://platform.openai.com/docs/api-reference/container-files/deleteContainerFile](https://platform.openai.com/docs/api-reference/container-files/deleteContainerFile)
+[https://developers.openai.com/api/reference/resources/containers/subresources/files/methods/delete/](https://developers.openai.com/api/reference/resources/containers/subresources/files/methods/delete/)

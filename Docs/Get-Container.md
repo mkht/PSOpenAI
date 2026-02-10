@@ -175,5 +175,5 @@ Position: Named
 
 ## RELATED LINKS
 
-[https://platform.openai.com/docs/api-reference/containers/retrieveContainer](https://platform.openai.com/docs/api-reference/containers/retrieveContainer)
-[https://platform.openai.com/docs/api-reference/containers/listContainer](https://platform.openai.com/docs/api-reference/containers/listContainer)
+[https://developers.openai.com/api/reference/resources/containers/methods/retrieve/](https://developers.openai.com/api/reference/resources/containers/methods/retrieve/)
+[https://developers.openai.com/api/reference/resources/containers/methods/list/](https://developers.openai.com/api/reference/resources/containers/methods/list/)

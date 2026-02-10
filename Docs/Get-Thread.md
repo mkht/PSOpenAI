@@ -116,4 +116,4 @@ Position: Named
 
 ## RELATED LINKS
 
-[https://platform.openai.com/docs/api-reference/threads/getThread](https://platform.openai.com/docs/api-reference/threads/getThread)
+[https://developers.openai.com/api/reference/resources/beta/subresources/threads/methods/retrieve/](https://developers.openai.com/api/reference/resources/beta/subresources/threads/methods/retrieve/)

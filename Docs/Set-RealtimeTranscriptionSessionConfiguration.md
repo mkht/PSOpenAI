@@ -187,4 +187,4 @@ Default value: True
 
 ## RELATED LINKS
 
-[https://platform.openai.com/docs/api-reference/realtime-client-events/transcription_session/update](https://platform.openai.com/docs/api-reference/realtime-client-events/transcription_session/update)
+[https://developers.openai.com/api/reference/resources/realtime/subresources/transcription_sessions/methods/create/](https://developers.openai.com/api/reference/resources/realtime/subresources/transcription_sessions/methods/create/)

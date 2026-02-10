@@ -186,5 +186,5 @@ Position: Named
 
 ## RELATED LINKS
 
-[https://platform.openai.com/docs/api-reference/runs/getRun](https://platform.openai.com/docs/api-reference/runs/getRun)
-[https://platform.openai.com/docs/api-reference/runs/listRuns](https://platform.openai.com/docs/api-reference/runs/listRuns)
+[https://developers.openai.com/api/reference/resources/beta/subresources/threads/subresources/runs/methods/retrieve/](https://developers.openai.com/api/reference/resources/beta/subresources/threads/subresources/runs/methods/retrieve/)
+[https://developers.openai.com/api/reference/resources/beta/subresources/threads/subresources/runs/methods/list/](https://developers.openai.com/api/reference/resources/beta/subresources/threads/subresources/runs/methods/list/)

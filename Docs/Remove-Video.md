@@ -113,4 +113,4 @@ Position: Named
 
 ## RELATED LINKS
 
-[https://platform.openai.com/docs/api-reference/videos/delete](https://platform.openai.com/docs/api-reference/videos/delete)
+[https://developers.openai.com/api/reference/resources/videos/methods/delete/](https://developers.openai.com/api/reference/resources/videos/methods/delete/)

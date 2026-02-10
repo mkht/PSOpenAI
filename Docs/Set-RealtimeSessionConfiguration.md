@@ -388,4 +388,4 @@ Position: Named
 
 ## RELATED LINKS
 
-[https://platform.openai.com/docs/api-reference/realtime-client-events/session/update](https://platform.openai.com/docs/api-reference/realtime-client-events/session/update)
+[https://developers.openai.com/api/reference/resources/realtime/subresources/sessions/methods/create/](https://developers.openai.com/api/reference/resources/realtime/subresources/sessions/methods/create/)

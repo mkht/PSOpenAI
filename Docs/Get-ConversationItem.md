@@ -189,4 +189,5 @@ Position: Named
 
 ## RELATED LINKS
 
-[https://platform.openai.com/docs/api-reference/conversations/list-items](https://platform.openai.com/docs/api-reference/conversations/list-items)
+[https://developers.openai.com/api/reference/resources/conversations/subresources/items/methods/retrieve](https://developers.openai.com/api/reference/resources/conversations/subresources/items/methods/retrieve)
+[https://developers.openai.com/api/reference/resources/conversations/subresources/items/methods/list](https://developers.openai.com/api/reference/resources/conversations/subresources/items/methods/list)

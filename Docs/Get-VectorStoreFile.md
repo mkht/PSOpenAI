@@ -196,5 +196,5 @@ Position: Named
 
 ## RELATED LINKS
 
-[https://platform.openai.com/docs/api-reference/vector-stores-files/getFile](https://platform.openai.com/docs/api-reference/vector-stores-files/getFile)
-[https://platform.openai.com/docs/api-reference/vector-stores-files/listFiles](https://platform.openai.com/docs/api-reference/vector-stores-files/listFiles)
+[https://developers.openai.com/api/reference/resources/vector_stores/subresources/files/methods/retrieve/](https://developers.openai.com/api/reference/resources/vector_stores/subresources/files/methods/retrieve/)
+[https://developers.openai.com/api/reference/resources/vector_stores/subresources/files/methods/list/](https://developers.openai.com/api/reference/resources/vector_stores/subresources/files/methods/list/)

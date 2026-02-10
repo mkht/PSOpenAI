@@ -100,4 +100,4 @@ Position: Named
 
 ## RELATED LINKS
 
-[https://platform.openai.com/docs/api-reference/conversations/delete](https://platform.openai.com/docs/api-reference/conversations/delete)
+[https://developers.openai.com/api/reference/resources/conversations/methods/delete/](https://developers.openai.com/api/reference/resources/conversations/methods/delete/)

@@ -42,7 +42,7 @@ Request-AudioTranscription
 
 ## DESCRIPTION
 Transcribes audio into the input language.  
-https://platform.openai.com/docs/guides/speech-to-text/speech-to-text
+https://developers.openai.com/api/docs/guides/speech-to-text/
 
 ## EXAMPLES
 
@@ -288,7 +288,7 @@ Position: Named
 
 ## RELATED LINKS
 
-[https://platform.openai.com/docs/guides/speech-to-text/speech-to-text](https://platform.openai.com/docs/guides/speech-to-text/speech-to-text)
+[https://developers.openai.com/api/docs/guides/speech-to-text/](https://developers.openai.com/api/docs/guides/speech-to-text/)
 
-[https://platform.openai.com/docs/api-reference/audio/create](https://platform.openai.com/docs/api-reference/audio/create)
+[https://developers.openai.com/api/reference/resources/audio/subresources/transcriptions/methods/create/](https://developers.openai.com/api/reference/resources/audio/subresources/transcriptions/methods/create/)
 

@@ -182,5 +182,5 @@ Position: Named
 
 ## RELATED LINKS
 
-[https://platform.openai.com/docs/api-reference/files/list](https://platform.openai.com/docs/api-reference/files/list)
-[https://platform.openai.com/docs/api-reference/files/retrieve](https://platform.openai.com/docs/api-reference/files/retrieve)
+[https://developers.openai.com/api/reference/resources/files/methods/list/](https://developers.openai.com/api/reference/resources/files/methods/list/)
+[https://developers.openai.com/api/reference/resources/files/methods/retrieve/](https://developers.openai.com/api/reference/resources/files/methods/retrieve/)

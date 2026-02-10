@@ -59,7 +59,7 @@ Request-ImageGeneration
 
 ## DESCRIPTION
 Creates an image given a prompt.  
-https://platform.openai.com/docs/guides/image-generation
+https://developers.openai.com/api/reference/resources/images/methods/generate
 
 ## EXAMPLES
 
@@ -293,6 +293,6 @@ Position: Named
 
 ## RELATED LINKS
 
-[https://platform.openai.com/docs/guides/image-generation](https://platform.openai.com/docs/guides/image-generation)
+[https://developers.openai.com/api/docs/guides/image-generation/](https://developers.openai.com/api/docs/guides/image-generation/)
 
-[https://platform.openai.com/docs/api-reference/images/create](https://platform.openai.com/docs/api-reference/images/create)
+[https://developers.openai.com/api/reference/resources/images/methods/generate](https://developers.openai.com/api/reference/resources/images/methods/generate)

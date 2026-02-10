@@ -155,4 +155,4 @@ Position: Named
 
 ## RELATED LINKS
 
-[https://platform.openai.com/docs/api-reference/threads/modifyThread](https://platform.openai.com/docs/api-reference/threads/modifyThread)
+[https://developers.openai.com/api/reference/resources/beta/subresources/threads/methods/update/](https://developers.openai.com/api/reference/resources/beta/subresources/threads/methods/update/)

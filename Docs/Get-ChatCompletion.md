@@ -171,5 +171,5 @@ Position: Named
 
 ## RELATED LINKS
 
-[https://platform.openai.com/docs/api-reference/chat/list](https://platform.openai.com/docs/api-reference/chat/list)
-[https://platform.openai.com/docs/api-reference/chat/get](https://platform.openai.com/docs/api-reference/chat/get)
+[https://developers.openai.com/api/reference/resources/chat/subresources/completions/methods/list/](https://developers.openai.com/api/reference/resources/chat/subresources/completions/methods/list/)
+[https://developers.openai.com/api/reference/resources/chat/subresources/completions/methods/retrieve/](https://developers.openai.com/api/reference/resources/chat/subresources/completions/methods/retrieve/)

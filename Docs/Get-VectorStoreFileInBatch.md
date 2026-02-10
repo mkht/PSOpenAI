@@ -177,4 +177,4 @@ Position: Named
 
 ## RELATED LINKS
 
-[https://platform.openai.com/docs/api-reference/vector-stores-file-batches/listBatchFiles](https://platform.openai.com/docs/api-reference/vector-stores-file-batches/listBatchFiles)
+[https://developers.openai.com/api/reference/resources/vector_stores/subresources/file_batches/methods/list_files/](https://developers.openai.com/api/reference/resources/vector_stores/subresources/file_batches/methods/list_files/)

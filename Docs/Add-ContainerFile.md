@@ -134,4 +134,4 @@ Position: Named
 
 ## RELATED LINKS
 
-[https://platform.openai.com/docs/api-reference/container-files/createContainerFile](https://platform.openai.com/docs/api-reference/container-files/createContainerFile)
+[https://developers.openai.com/api/reference/resources/containers/subresources/files/methods/create](https://developers.openai.com/api/reference/resources/containers/subresources/files/methods/create)

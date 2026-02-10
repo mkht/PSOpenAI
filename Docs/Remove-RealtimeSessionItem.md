@@ -57,4 +57,4 @@ Position: Named
 
 ## RELATED LINKS
 
-[https://platform.openai.com/docs/api-reference/realtime-client-events/conversation/item/delete](https://platform.openai.com/docs/api-reference/realtime-client-events/conversation/item/delete)
+[https://developers.openai.com/api/docs/guides/realtime-conversations/](https://developers.openai.com/api/docs/guides/realtime-conversations/)

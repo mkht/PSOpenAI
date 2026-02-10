@@ -306,6 +306,6 @@ Position: Named
 
 ## RELATED LINKS
 
-[https://platform.openai.com/docs/api-reference/assistants/createAssistant](https://platform.openai.com/docs/api-reference/assistants/createAssistant)
-[https://platform.openai.com/docs/assistants/overview/](https://platform.openai.com/docs/assistants/overview/)
+[https://developers.openai.com/api/reference/resources/beta/subresources/assistants/methods/create/](https://developers.openai.com/api/reference/resources/beta/subresources/assistants/methods/create/)
+[https://developers.openai.com/api/docs/assistants/deep-dive/](https://developers.openai.com/api/docs/assistants/deep-dive/)
 

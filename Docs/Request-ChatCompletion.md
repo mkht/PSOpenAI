@@ -75,7 +75,7 @@ Request-ChatCompletion
 
 ## DESCRIPTION
 Creates a completion for the chat message.  
-https://platform.openai.com/docs/guides/chat/chat-completions
+https://developers.openai.com/api/reference/chat-completions/overview/
 
 ## EXAMPLES
 
@@ -256,7 +256,7 @@ Position: Named
 
 ### -ImageDetail
 Controls how the model processes the image and generates its textual understanding. You can select from `Low` or `High`.  
-See more details : https://platform.openai.com/docs/guides/vision/low-or-high-fidelity-image-understanding
+See more details : https://developers.openai.com/api/docs/guides/images-vision/
 
 ```yaml
 Type: String
@@ -711,7 +711,7 @@ Accept pipeline input: True (ByPropertyName)
 
 ## RELATED LINKS
 
-[https://platform.openai.com/docs/guides/chat/chat-completions](https://platform.openai.com/docs/guides/chat/chat-completions)
+[https://developers.openai.com/api/reference/chat-completions/overview/](https://developers.openai.com/api/reference/chat-completions/overview/)
 
-[https://platform.openai.com/docs/api-reference/chat/create](https://platform.openai.com/docs/api-reference/chat/create)
+[https://developers.openai.com/api/reference/resources/chat/subresources/completions/methods/create/](https://developers.openai.com/api/reference/resources/chat/subresources/completions/methods/create/)
 

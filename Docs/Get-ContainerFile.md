@@ -187,5 +187,5 @@ Position: Named
 ## NOTES
 
 ## RELATED LINKS
-[https://platform.openai.com/docs/api-reference/container-files/retrieveContainerFile](https://platform.openai.com/docs/api-reference/container-files/retrieveContainerFile)
-[https://platform.openai.com/docs/api-reference/container-files/listContainerFiles](https://platform.openai.com/docs/api-reference/container-files/listContainerFiles)
+[https://developers.openai.com/api/reference/resources/containers/subresources/files/methods/retrieve/](https://developers.openai.com/api/reference/resources/containers/subresources/files/methods/retrieve/)
+[https://developers.openai.com/api/reference/resources/containers/subresources/files/methods/list/](https://developers.openai.com/api/reference/resources/containers/subresources/files/methods/list/)

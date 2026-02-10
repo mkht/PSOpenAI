@@ -191,5 +191,5 @@ Position: Named
 
 ## RELATED LINKS
 
-[https://platform.openai.com/docs/api-reference/files/create](https://platform.openai.com/docs/api-reference/files/create)
+[https://developers.openai.com/api/reference/resources/files/methods/create/](https://developers.openai.com/api/reference/resources/files/methods/create/)
 

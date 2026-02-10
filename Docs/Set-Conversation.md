@@ -113,4 +113,4 @@ Position: Named
 
 ## RELATED LINKS
 
-[https://platform.openai.com/docs/api-reference/conversations/update](https://platform.openai.com/docs/api-reference/conversations/update)
+[https://developers.openai.com/api/reference/resources/conversations/methods/update/](https://developers.openai.com/api/reference/resources/conversations/methods/update/)

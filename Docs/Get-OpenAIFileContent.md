@@ -126,4 +126,4 @@ Position: Named
 
 ## RELATED LINKS
 
-[https://platform.openai.com/docs/api-reference/files/retrieve-contents](https://platform.openai.com/docs/api-reference/files/retrieve-contents)
+[https://developers.openai.com/api/reference/resources/files/methods/content](https://developers.openai.com/api/reference/resources/files/methods/content)

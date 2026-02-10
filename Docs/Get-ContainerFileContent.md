@@ -166,4 +166,4 @@ If `-OutFile` is not specified, outputs the file content as a byte array.
 
 ## RELATED LINKS
 
-[https://platform.openai.com/docs/api-reference/container-files/retrieveContainerFileContent](https://platform.openai.com/docs/api-reference/container-files/retrieveContainerFileContent)
+[https://developers.openai.com/api/reference/resources/containers/subresources/files/subresources/content/methods/retrieve/](https://developers.openai.com/api/reference/resources/containers/subresources/files/subresources/content/methods/retrieve/)

@@ -100,4 +100,4 @@ Position: Named
 
 ## RELATED LINKS
 
-[https://platform.openai.com/docs/api-reference/conversations/create](https://platform.openai.com/docs/api-reference/conversations/create)
+[https://developers.openai.com/api/reference/resources/conversations/methods/create/](https://developers.openai.com/api/reference/resources/conversations/methods/create/)

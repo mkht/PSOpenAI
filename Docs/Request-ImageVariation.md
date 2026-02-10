@@ -44,7 +44,7 @@ Request-ImageVariation
 
 ## DESCRIPTION
 Creates a variation of a given image.  
-https://platform.openai.com/docs/guides/images/image-generation
+https://developers.openai.com/api/docs/guides/image-generation/
 
 ## EXAMPLES
 
@@ -210,7 +210,7 @@ Position: Named
 
 ## RELATED LINKS
 
-[https://platform.openai.com/docs/guides/images/image-generation](https://platform.openai.com/docs/guides/images/image-generation)
+[https://developers.openai.com/api/docs/guides/image-generation/](https://developers.openai.com/api/docs/guides/image-generation/)
 
-[https://platform.openai.com/docs/api-reference/images/create-variation](https://platform.openai.com/docs/api-reference/images/create-variation)
+[https://developers.openai.com/api/reference/resources/images/methods/create_variation/](https://developers.openai.com/api/reference/resources/images/methods/create_variation/)
 

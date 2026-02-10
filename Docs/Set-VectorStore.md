@@ -156,4 +156,4 @@ Position: Named
 
 ## RELATED LINKS
 
-[https://platform.openai.com/docs/api-reference/vector-stores/modify](https://platform.openai.com/docs/api-reference/vector-stores/modify)
+[https://developers.openai.com/api/reference/resources/vector_stores/methods/update/](https://developers.openai.com/api/reference/resources/vector_stores/methods/update/)

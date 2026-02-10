@@ -178,5 +178,5 @@ Position: Named
 
 ## RELATED LINKS
 
-[https://platform.openai.com/docs/api-reference/vector-stores/retrieve](https://platform.openai.com/docs/api-reference/vector-stores/retrieve)
-[https://platform.openai.com/docs/api-reference/vector-stores/list](https://platform.openai.com/docs/api-reference/vector-stores/list)
+[https://developers.openai.com/api/reference/resources/vector_stores/methods/retrieve/](https://developers.openai.com/api/reference/resources/vector_stores/methods/retrieve/)
+[https://developers.openai.com/api/reference/resources/vector_stores/methods/list/](https://developers.openai.com/api/reference/resources/vector_stores/methods/list/)

@@ -41,7 +41,7 @@ Request-TextCompletion
 
 ## DESCRIPTION
 Given a prompt, the AI model will return one or more predicted completions.  
-https://platform.openai.com/docs/guides/completion/text-completion
+https://developers.openai.com/api/docs/guides/completions/
 
 ## EXAMPLES
 
@@ -305,7 +305,7 @@ Position: Named
 
 ## RELATED LINKS
 
-[https://platform.openai.com/docs/guides/completion/text-completion](https://platform.openai.com/docs/guides/completion/text-completion)
+[https://developers.openai.com/api/docs/guides/completions/](https://developers.openai.com/api/docs/guides/completions/)
 
-[https://platform.openai.com/docs/api-reference/completions/create](https://platform.openai.com/docs/api-reference/completions/create)
+[https://developers.openai.com/api/reference/resources/completions/methods/create/](https://developers.openai.com/api/reference/resources/completions/methods/create/)
 

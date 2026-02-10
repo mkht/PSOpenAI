@@ -126,5 +126,5 @@ Position: Named
 
 ## RELATED LINKS
 
-[https://platform.openai.com/docs/api-reference/videos/remix](https://platform.openai.com/docs/api-reference/videos/remix)
+[https://developers.openai.com/api/reference/resources/videos/methods/remix/](https://developers.openai.com/api/reference/resources/videos/methods/remix/)
 

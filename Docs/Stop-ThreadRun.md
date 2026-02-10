@@ -158,5 +158,5 @@ Position: Named
 
 ## RELATED LINKS
 
-[https://platform.openai.com/docs/api-reference/runs/cancelRun](https://platform.openai.com/docs/api-reference/runs/cancelRun)
+[https://developers.openai.com/api/reference/resources/beta/subresources/threads/subresources/runs/methods/cancel/](https://developers.openai.com/api/reference/resources/beta/subresources/threads/subresources/runs/methods/cancel/)
 

@@ -125,4 +125,4 @@ Position: Named
 
 ## RELATED LINKS
 
-[https://platform.openai.com/docs/api-reference/chat/delete](https://platform.openai.com/docs/api-reference/chat/delete)
+[https://developers.openai.com/api/reference/resources/chat/subresources/completions/methods/delete/](https://developers.openai.com/api/reference/resources/chat/subresources/completions/methods/delete/)

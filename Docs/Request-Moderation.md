@@ -28,7 +28,7 @@ Request-Moderation
 ## DESCRIPTION
 Given a input text, outputs if the model classifies it as violating OpenAI's content policy.  
 The moderation endpoint is free to use when monitoring the inputs and outputs of OpenAI APIs.  
-https://platform.openai.com/docs/guides/moderation/overview
+https://developers.openai.com/api/docs/guides/moderation/
 
 ## EXAMPLES
 
@@ -144,7 +144,7 @@ Position: Named
 
 ## RELATED LINKS
 
-[https://platform.openai.com/docs/guides/moderation/overview](https://platform.openai.com/docs/guides/moderation/overview)
+[https://developers.openai.com/api/docs/guides/moderation/](https://developers.openai.com/api/docs/guides/moderation/)
 
-[https://platform.openai.com/docs/api-reference/moderations](https://platform.openai.com/docs/api-reference/moderations)
+[https://developers.openai.com/api/reference/resources/moderations/](https://developers.openai.com/api/reference/resources/moderations/)
 

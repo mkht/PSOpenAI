@@ -114,4 +114,4 @@ Position: Named
 
 ## RELATED LINKS
 
-[https://platform.openai.com/docs/api-reference/threads/deleteThread](https://platform.openai.com/docs/api-reference/threads/deleteThread)
+[https://developers.openai.com/api/reference/resources/beta/subresources/threads/methods/delete/](https://developers.openai.com/api/reference/resources/beta/subresources/threads/methods/delete/)

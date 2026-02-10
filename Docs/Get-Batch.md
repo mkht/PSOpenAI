@@ -165,5 +165,5 @@ Position: Named
 
 ## RELATED LINKS
 
-[https://platform.openai.com/docs/api-reference/batch/list](https://platform.openai.com/docs/api-reference/batch/list)
-[https://platform.openai.com/docs/api-reference/batch/retrieve](https://platform.openai.com/docs/api-reference/batch/retrieve)
+[https://developers.openai.com/api/reference/resources/batches/methods/list/](https://developers.openai.com/api/reference/resources/batches/methods/list/)
+[https://developers.openai.com/api/reference/resources/batches/methods/retrieve/](https://developers.openai.com/api/reference/resources/batches/methods/retrieve/)

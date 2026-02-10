@@ -26,7 +26,7 @@ Get-OpenAIModels
 ## DESCRIPTION
 Lists the currently available models, and provides basic information about each one such as the owner and availability.  
 You can refer to the Models documentation to understand what models are available and the differences between them.  
-https://platform.openai.com/docs/api-reference/models/list
+https://developers.openai.com/api/reference/resources/models/methods/list/
 
 ## EXAMPLES
 
@@ -141,5 +141,6 @@ Position: Named
 
 ## RELATED LINKS
 
-[https://platform.openai.com/docs/api-reference/models/list](https://platform.openai.com/docs/api-reference/models/list)
+[https://developers.openai.com/api/docs/models](https://developers.openai.com/api/docs/models)
 
+[https://developers.openai.com/api/reference/resources/models/methods/list/](https://developers.openai.com/api/reference/resources/models/methods/list/)

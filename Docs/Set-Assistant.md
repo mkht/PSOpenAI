@@ -318,6 +318,6 @@ Position: Named
 
 ## RELATED LINKS
 
-[https://platform.openai.com/docs/api-reference/assistants/modifyAssistant](https://platform.openai.com/docs/api-reference/assistants/modifyAssistant)
-[https://platform.openai.com/docs/assistants/overview/](https://platform.openai.com/docs/assistants/overview/)
+[https://developers.openai.com/api/reference/resources/beta/subresources/assistants/methods/update/](https://developers.openai.com/api/reference/resources/beta/subresources/assistants/methods/update/)
+[https://developers.openai.com/api/docs/assistants/deep-dive/](https://developers.openai.com/api/docs/assistants/deep-dive/)
 

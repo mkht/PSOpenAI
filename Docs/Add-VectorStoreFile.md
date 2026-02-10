@@ -182,4 +182,4 @@ Position: Named
 
 ## RELATED LINKS
 
-[https://platform.openai.com/docs/api-reference/vector-stores-files/createFile](https://platform.openai.com/docs/api-reference/vector-stores-files/createFile)
+[https://developers.openai.com/api/reference/resources/vector_stores/subresources/files/methods/create/](https://developers.openai.com/api/reference/resources/vector_stores/subresources/files/methods/create/)

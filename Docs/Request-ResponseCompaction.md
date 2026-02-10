@@ -222,4 +222,4 @@ Accept pipeline input: True (ByPropertyName)
 
 ## RELATED LINKS
 
-[https://platform.openai.com/docs/api-reference/responses/compact](https://platform.openai.com/docs/api-reference/responses/compact)
+[https://developers.openai.com/api/reference/resources/responses/methods/compact/](https://developers.openai.com/api/reference/resources/responses/methods/compact/)

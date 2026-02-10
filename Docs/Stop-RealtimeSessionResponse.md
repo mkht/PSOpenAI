@@ -46,4 +46,4 @@ Position: Named
 
 ## RELATED LINKS
 
-[https://platform.openai.com/docs/api-reference/realtime-client-events/response/cancel](https://platform.openai.com/docs/api-reference/realtime-client-events/response/cancel)
+[https://developers.openai.com/api/docs/guides/realtime-conversations/](https://developers.openai.com/api/docs/guides/realtime-conversations/)

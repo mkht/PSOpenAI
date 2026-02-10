@@ -160,4 +160,4 @@ Position: Named
 
 ## RELATED LINKS
 
-[https://platform.openai.com/docs/api-reference/videos/content](https://platform.openai.com/docs/api-reference/videos/content)
+[https://developers.openai.com/api/reference/resources/videos/methods/download_content/](https://developers.openai.com/api/reference/resources/videos/methods/download_content/)

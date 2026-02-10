@@ -31,7 +31,7 @@ Request-Embeddings
 
 ## DESCRIPTION
 Creates an embedding vector representing the input text.  
-https://platform.openai.com/docs/guides/embeddings
+https://developers.openai.com/api/docs/guides/embeddings/
 
 ## EXAMPLES
 
@@ -191,6 +191,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## RELATED LINKS
 
-[https://platform.openai.com/docs/guides/embeddings](https://platform.openai.com/docs/guides/embeddings)
+[https://developers.openai.com/api/docs/guides/embeddings/](https://developers.openai.com/api/docs/guides/embeddings/)
 
-[https://platform.openai.com/docs/api-reference/embeddings](https://platform.openai.com/docs/api-reference/embeddings)
+[https://developers.openai.com/api/reference/resources/embeddings/](https://developers.openai.com/api/reference/resources/embeddings/)

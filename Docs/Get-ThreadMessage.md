@@ -197,5 +197,5 @@ Position: Named
 
 ## RELATED LINKS
 
-[https://platform.openai.com/docs/api-reference/messages/getMessage](https://platform.openai.com/docs/api-reference/messages/getMessage)
-[https://platform.openai.com/docs/api-reference/messages/listMessages](https://platform.openai.com/docs/api-reference/messages/listMessages)
+[https://developers.openai.com/api/reference/resources/beta/subresources/threads/subresources/messages/methods/retrieve/](https://developers.openai.com/api/reference/resources/beta/subresources/threads/subresources/messages/methods/retrieve/)
+[https://developers.openai.com/api/reference/resources/beta/subresources/threads/subresources/messages/methods/list/](https://developers.openai.com/api/reference/resources/beta/subresources/threads/subresources/messages/methods/list/)

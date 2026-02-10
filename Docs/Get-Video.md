@@ -178,5 +178,5 @@ Position: Named
 
 ## RELATED LINKS
 
-[https://platform.openai.com/docs/api-reference/videos/retrieve](https://platform.openai.com/docs/api-reference/videos/retrieve)
-[https://platform.openai.com/docs/api-reference/videos/list](https://platform.openai.com/docs/api-reference/videos/list)
+[https://developers.openai.com/api/reference/resources/videos/methods/retrieve/](https://developers.openai.com/api/reference/resources/videos/methods/retrieve/)
+[https://developers.openai.com/api/reference/resources/videos/methods/list/](https://developers.openai.com/api/reference/resources/videos/methods/list/)

@@ -149,4 +149,4 @@ Position: Named
 
 ## RELATED LINKS
 
-[https://platform.openai.com/docs/api-reference/responses/input-itemss](https://platform.openai.com/docs/api-reference/responses/input-itemss)
+[https://developers.openai.com/api/reference/resources/responses/subresources/input_items/methods/list/](https://developers.openai.com/api/reference/resources/responses/subresources/input_items/methods/list/)

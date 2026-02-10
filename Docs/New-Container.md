@@ -160,4 +160,4 @@ Position: Named
 
 ## RELATED LINKS
 
-[https://platform.openai.com/docs/api-reference/containers/createContainers](https://platform.openai.com/docs/api-reference/containers/createContainers)
+[https://developers.openai.com/api/reference/resources/containers/methods/create/](https://developers.openai.com/api/reference/resources/containers/methods/create/)

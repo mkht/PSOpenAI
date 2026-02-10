@@ -33,7 +33,7 @@ Request-AudioSpeech
 
 ## DESCRIPTION
 Generates audio from the input text.  
-https://platform.openai.com/docs/guides/text-to-speech
+https://developers.openai.com/api/docs/guides/text-to-speech/
 
 ## EXAMPLES
 
@@ -191,6 +191,6 @@ Position: Named
 ## NOTES
 
 ## RELATED LINKS
-[https://platform.openai.com/docs/guides/text-to-speech](https://platform.openai.com/docs/guides/text-to-speech)
+[https://developers.openai.com/api/docs/guides/text-to-speech/](https://developers.openai.com/api/docs/guides/text-to-speech/)
 
-[https://platform.openai.com/docs/api-reference/audio/createSpeech](https://platform.openai.com/docs/api-reference/audio/createSpeech)
+[https://developers.openai.com/api/reference/resources/audio/subresources/speech/methods/create/](https://developers.openai.com/api/reference/resources/audio/subresources/speech/methods/create/)

@@ -85,4 +85,4 @@ Position: Named
 
 ## RELATED LINKS
 
-[https://platform.openai.com/docs/guides/realtime-transcription](https://platform.openai.com/docs/guides/realtime-transcription)
+[https://developers.openai.com/api/docs/guides/realtime-transcription](https://developers.openai.com/api/docs/guides/realtime-transcription)

@@ -143,5 +143,5 @@ Position: Named
 
 ## RELATED LINKS
 
-[https://platform.openai.com/docs/api-reference/threads/createThread](https://platform.openai.com/docs/api-reference/threads/createThread)
+[https://developers.openai.com/api/reference/resources/beta/subresources/threads/methods/create/](https://developers.openai.com/api/reference/resources/beta/subresources/threads/methods/create/)
 

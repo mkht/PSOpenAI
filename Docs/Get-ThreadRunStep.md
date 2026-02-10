@@ -203,5 +203,5 @@ Position: Named
 
 ## RELATED LINKS
 
-[https://platform.openai.com/docs/api-reference/runs/getRunStep](https://platform.openai.com/docs/api-reference/runs/getRunStep)
-[https://platform.openai.com/docs/api-reference/runs/listRunSteps](https://platform.openai.com/docs/api-reference/runs/listRunSteps)
+[https://developers.openai.com/api/reference/resources/beta/subresources/threads/subresources/runs/subresources/steps/methods/retrieve/](https://developers.openai.com/api/reference/resources/beta/subresources/threads/subresources/runs/subresources/steps/methods/retrieve/)
+[https://developers.openai.com/api/reference/resources/beta/subresources/threads/subresources/runs/subresources/steps/methods/list/](https://developers.openai.com/api/reference/resources/beta/subresources/threads/subresources/runs/subresources/steps/methods/list/)

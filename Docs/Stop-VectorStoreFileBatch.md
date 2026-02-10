@@ -147,4 +147,4 @@ Position: Named
 
 ## RELATED LINKS
 
-[https://platform.openai.com/docs/api-reference/vector-stores-file-batches/cancelBatch](https://platform.openai.com/docs/api-reference/vector-stores-file-batches/cancelBatch)
+[https://developers.openai.com/api/reference/resources/vector_stores/subresources/file_batches/methods/cancel/](https://developers.openai.com/api/reference/resources/vector_stores/subresources/file_batches/methods/cancel/)

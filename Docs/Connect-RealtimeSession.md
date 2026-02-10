@@ -94,4 +94,4 @@ Position: Named
 
 ## RELATED LINKS
 
-[https://platform.openai.com/docs/guides/realtime](https://platform.openai.com/docs/guides/realtime)
+[https://developers.openai.com/api/docs/guides/realtime/](https://developers.openai.com/api/docs/guides/realtime/)

@@ -161,4 +161,4 @@ Position: Named
 
 ## RELATED LINKS
 
-[https://platform.openai.com/docs/api-reference/batch/cancel](https://platform.openai.com/docs/api-reference/batch/cancel)
+[https://developers.openai.com/api/reference/resources/batches/methods/cancel/](https://developers.openai.com/api/reference/resources/batches/methods/cancel/)

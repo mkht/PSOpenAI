@@ -1146,4 +1146,4 @@ Accept pipeline input: True (ByPropertyName)
 
 ## RELATED LINKS
 
-[https://platform.openai.com/docs/api-reference/responses](https://platform.openai.com/docs/api-reference/responses)
+[https://developers.openai.com/api/reference/resources/responses/](https://developers.openai.com/api/reference/resources/responses/)

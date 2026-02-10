@@ -123,4 +123,4 @@ Position: Named
 
 ## RELATED LINKS
 
-[https://platform.openai.com/docs/api-reference/chat/update](https://platform.openai.com/docs/api-reference/chat/update)
+[https://developers.openai.com/api/reference/resources/chat/subresources/completions/methods/update/](https://developers.openai.com/api/reference/resources/chat/subresources/completions/methods/update/)

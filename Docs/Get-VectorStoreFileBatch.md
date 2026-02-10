@@ -127,4 +127,4 @@ Position: Named
 
 ## RELATED LINKS
 
-[https://platform.openai.com/docs/api-reference/vector-stores-file-batches/getBatch](https://platform.openai.com/docs/api-reference/vector-stores-file-batches/getBatch)
+[https://developers.openai.com/api/reference/resources/vector_stores/subresources/file_batches/methods/retrieve/](https://developers.openai.com/api/reference/resources/vector_stores/subresources/file_batches/methods/retrieve/)

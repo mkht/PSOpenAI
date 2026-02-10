@@ -209,4 +209,4 @@ Position: Named
 
 ## RELATED LINKS
 
-[https://platform.openai.com/docs/api-reference/vector-stores/create](https://platform.openai.com/docs/api-reference/vector-stores/create)
+[https://developers.openai.com/api/reference/resources/vector_stores/methods/create/](https://developers.openai.com/api/reference/resources/vector_stores/methods/create/)

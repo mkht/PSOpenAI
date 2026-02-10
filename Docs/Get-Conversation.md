@@ -102,4 +102,4 @@ Position: Named
 
 ## RELATED LINKS
 
-[https://platform.openai.com/docs/api-reference/conversations/retrieve](https://platform.openai.com/docs/api-reference/conversations/retrieve)
+[https://developers.openai.com/api/reference/resources/conversations/methods/retrieve/](https://developers.openai.com/api/reference/resources/conversations/methods/retrieve/)
