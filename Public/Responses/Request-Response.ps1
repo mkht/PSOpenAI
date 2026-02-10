@@ -392,6 +392,9 @@ function Request-Response {
         [Parameter()]
         [switch]$Background = $false,
 
+        # [Parameter(DontShow)]
+        # [System.Collections.IDictionary[]]$ContextManagement,
+
         #region Stream
         [Parameter()]
         [switch]$Stream = $false,
@@ -628,6 +631,11 @@ function Request-Response {
         if ($Stream) {
             $PostBody.stream = [bool]$Stream
         }
+
+        # Context Management
+        # if ($ContextManagement.Count -gt 0) {
+        #     $PostBody.context_management = $ContextManagement
+        # }
 
         # Reasoning
         $ReasoningOptions = @{}
