@@ -12,7 +12,7 @@ function Request-ImageVariation {
         [uint16]$NumberOfImages = 1,
 
         [Parameter()]
-        [ValidateSet('256', '512', '1024', '256x256', '512x512', '1024x1024')]
+        [Completions('256', '512', '1024', '256x256', '512x512', '1024x1024')]
         [string]$Size = '1024x1024',
 
         [Parameter(ParameterSetName = 'Format')]

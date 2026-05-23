@@ -129,8 +129,6 @@ Default value: auto
 The quality of the image that will be generated.  
 - `auto` (default value) will automatically select the best quality for the given model.
 - `high`, `medium` and `low` are supported for the GPT image models.
-- `hd` and `standard` are supported for `dall-e-3`.
-- `standard` is the only option for `dall-e-2`.
 
 ```yaml
 Type: String

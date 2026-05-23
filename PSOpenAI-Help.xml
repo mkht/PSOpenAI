@@ -244,8 +244,8 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Add-ContainerFile.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/container-files/createContainerFile</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/container-files/createContainerFile</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/containers/subresources/files/methods/create</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/containers/subresources/files/methods/create</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -670,8 +670,8 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Add-ConversationItem.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/conversations/create-items</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/conversations/create-items</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/conversations/subresources/items/methods/create</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/conversations/subresources/items/methods/create</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -1126,8 +1126,8 @@ PS C:\&gt; Add-OpenAIFile -Content $ByteArray -Name 'filename.txt' -Purpose assi
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Add-OpenAIFile.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/files/create</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/files/create</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/files/methods/create/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/files/methods/create/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -1552,8 +1552,8 @@ The default is `message`.</maml:para>
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Add-RealtimeSessionItem.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/realtime-client-events/conversation/item/create</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/realtime-client-events/conversation/item/create</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/docs/guides/realtime-conversations/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/docs/guides/realtime-conversations/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -1983,8 +1983,8 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Add-ThreadMessage.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/messages/createMessage</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/messages/createMessage</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/beta/subresources/threads/subresources/messages/methods/create/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/beta/subresources/threads/subresources/messages/methods/create/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -2331,8 +2331,8 @@ PS C:\&gt; $Store = $Store | Add-VectorStoreFile -FileId 'file-abc123' -PassThru
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Add-VectorStoreFile.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/vector-stores-files/createFile</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/vector-stores-files/createFile</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/vector_stores/subresources/files/methods/create/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/vector_stores/subresources/files/methods/create/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -2565,8 +2565,8 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Connect-RealtimeSession.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/guides/realtime</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/guides/realtime</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/docs/guides/realtime/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/docs/guides/realtime/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -2723,8 +2723,8 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Connect-RealtimeTranscriptionSession.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/guides/realtime-transcription</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/guides/realtime-transcription</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/docs/guides/realtime-transcription</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/docs/guides/realtime-transcription</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -3930,12 +3930,12 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Get-Assistant.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/assistants/getAssistant</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/assistants/getAssistant</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/beta/subresources/assistants/methods/retrieve/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/beta/subresources/assistants/methods/retrieve/</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/assistants/listAssistants</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/assistants/listAssistants</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/beta/subresources/assistants/methods/list/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/beta/subresources/assistants/methods/list/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -4284,12 +4284,12 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Get-Batch.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/batch/list</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/batch/list</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/batches/methods/list/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/batches/methods/list/</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/batch/retrieve</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/batch/retrieve</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/batches/methods/retrieve/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/batches/methods/retrieve/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -4528,8 +4528,8 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Get-BatchOutput.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/batch/requestOutput</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/batch/requestOutput</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/batches/methods/retrieve/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/batches/methods/retrieve/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -4899,12 +4899,12 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Get-ChatCompletion.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/chat/list</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/chat/list</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/chat/subresources/completions/methods/list/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/chat/subresources/completions/methods/list/</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/chat/get</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/chat/get</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/chat/subresources/completions/methods/retrieve/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/chat/subresources/completions/methods/retrieve/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -5278,12 +5278,12 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Get-Container.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/containers/retrieveContainer</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/containers/retrieveContainer</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/containers/methods/retrieve/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/containers/methods/retrieve/</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/containers/listContainer</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/containers/listContainer</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/containers/methods/list/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/containers/methods/list/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -5693,12 +5693,12 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Get-ContainerFile.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/container-files/retrieveContainerFile</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/container-files/retrieveContainerFile</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/containers/subresources/files/methods/retrieve/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/containers/subresources/files/methods/retrieve/</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/container-files/listContainerFiles</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/container-files/listContainerFiles</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/containers/subresources/files/methods/list/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/containers/subresources/files/methods/list/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -6087,8 +6087,8 @@ PS C:\&gt; Get-ContainerFileContent -ContainerFile $File -OutFile 'C:\data\sampl
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Get-ContainerFileContent.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/container-files/retrieveContainerFileContent</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/container-files/retrieveContainerFileContent</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/containers/subresources/files/subresources/content/methods/retrieve/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/containers/subresources/files/subresources/content/methods/retrieve/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -6276,8 +6276,8 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Get-Conversation.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/conversations/retrieve</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/conversations/retrieve</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/conversations/methods/retrieve/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/conversations/methods/retrieve/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -6624,8 +6624,12 @@ Default is `0` (No retry).</maml:para>
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Get-ConversationItem.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/conversations/list-items</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/conversations/list-items</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/conversations/subresources/items/methods/retrieve</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/conversations/subresources/items/methods/retrieve</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/conversations/subresources/items/methods/list</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/conversations/subresources/items/methods/list</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -7172,12 +7176,12 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Get-OpenAIFile.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/files/list</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/files/list</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/files/methods/list/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/files/methods/list/</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/files/retrieve</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/files/retrieve</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/files/methods/retrieve/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/files/methods/retrieve/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -7418,8 +7422,8 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Get-OpenAIFileContent.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/files/retrieve-contents</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/files/retrieve-contents</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/files/methods/content</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/files/methods/content</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -7435,7 +7439,7 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
     <maml:description>
       <maml:para>Lists the currently available models, and provides basic information about each one such as the owner and availability.
 You can refer to the Models documentation to understand what models are available and the differences between them.
-https://platform.openai.com/docs/api-reference/models/list</maml:para>
+https://developers.openai.com/api/reference/resources/models/methods/list/</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -7660,8 +7664,12 @@ created    : 2023/02/28 18:56:42</dev:code>
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Get-OpenAIModels.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/models/list</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/models/list</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/docs/models</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/docs/models</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/models/methods/list/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/models/methods/list/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -8027,8 +8035,8 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Get-Response.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/responses/get</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/responses/get</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/responses/methods/retrieve/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/responses/methods/retrieve/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -8319,8 +8327,8 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Get-ResponseInputItem.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/responses/input-itemss</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/responses/input-itemss</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/responses/subresources/input_items/methods/list/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/responses/subresources/input_items/methods/list/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -8536,8 +8544,8 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Get-Thread.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/threads/getThread</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/threads/getThread</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/beta/subresources/threads/methods/retrieve/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/beta/subresources/threads/methods/retrieve/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -8967,12 +8975,12 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Get-ThreadMessage.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/messages/getMessage</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/messages/getMessage</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/beta/subresources/threads/subresources/messages/methods/retrieve/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/beta/subresources/threads/subresources/messages/methods/retrieve/</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/messages/listMessages</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/messages/listMessages</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/beta/subresources/threads/subresources/messages/methods/list/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/beta/subresources/threads/subresources/messages/methods/list/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -9378,12 +9386,12 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Get-ThreadRun.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/runs/getRun</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/runs/getRun</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/beta/subresources/threads/subresources/runs/methods/retrieve/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/beta/subresources/threads/subresources/runs/methods/retrieve/</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/runs/listRuns</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/runs/listRuns</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/beta/subresources/threads/subresources/runs/methods/list/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/beta/subresources/threads/subresources/runs/methods/list/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -9954,12 +9962,12 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Get-ThreadRunStep.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/runs/getRunStep</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/runs/getRunStep</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/beta/subresources/threads/subresources/runs/subresources/steps/methods/retrieve/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/beta/subresources/threads/subresources/runs/subresources/steps/methods/retrieve/</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/runs/listRunSteps</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/runs/listRunSteps</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/beta/subresources/threads/subresources/runs/subresources/steps/methods/list/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/beta/subresources/threads/subresources/runs/subresources/steps/methods/list/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -10424,12 +10432,12 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Get-VectorStore.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/vector-stores/retrieve</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/vector-stores/retrieve</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/vector_stores/methods/retrieve/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/vector_stores/methods/retrieve/</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/vector-stores/list</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/vector-stores/list</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/vector_stores/methods/list/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/vector_stores/methods/list/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -10947,12 +10955,12 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Get-VectorStoreFile.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/vector-stores-files/getFile</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/vector-stores-files/getFile</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/vector_stores/subresources/files/methods/retrieve/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/vector_stores/subresources/files/methods/retrieve/</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/vector-stores-files/listFiles</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/vector-stores-files/listFiles</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/vector_stores/subresources/files/methods/list/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/vector_stores/subresources/files/methods/list/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -11192,8 +11200,8 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Get-VectorStoreFileBatch.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/vector-stores-file-batches/getBatch</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/vector-stores-file-batches/getBatch</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/vector_stores/subresources/file_batches/methods/retrieve/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/vector_stores/subresources/file_batches/methods/retrieve/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -11532,8 +11540,8 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Get-VectorStoreFileInBatch.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/vector-stores-file-batches/listBatchFiles</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/vector-stores-file-batches/listBatchFiles</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/vector_stores/subresources/file_batches/methods/list_files/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/vector_stores/subresources/file_batches/methods/list_files/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -11883,12 +11891,12 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Get-Video.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/videos/retrieve</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/videos/retrieve</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/videos/methods/retrieve/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/videos/methods/retrieve/</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/videos/list</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/videos/list</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/videos/methods/list/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/videos/methods/list/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -12171,8 +12179,8 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Get-VideoContent.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/videos/content</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/videos/content</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/videos/methods/download_content/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/videos/methods/download_content/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -12834,12 +12842,12 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/New-Assistant.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/assistants/createAssistant</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/assistants/createAssistant</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/beta/subresources/assistants/methods/create/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/beta/subresources/assistants/methods/create/</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/assistants/overview/</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/assistants/overview/</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/docs/assistants/deep-dive/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/docs/assistants/deep-dive/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -12855,7 +12863,7 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
     <maml:description>
       <maml:para>Generate function spcifications for ChatGPT Function calling from PowerShell commands
 The generated function spcification is a hash table that can be converted to a JSON string following JSON Schema.
-https://platform.openai.com/docs/guides/gpt/function-calling</maml:para>
+https://developers.openai.com/api/docs/guides/function-calling/</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -13040,8 +13048,8 @@ If you want to use a non-default parameter set, specify the set name in this par
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/New-ChatCompletionFunction.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/guides/gpt/function-calling</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/guides/gpt/function-calling</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/docs/guides/function-calling/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/docs/guides/function-calling/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -13360,8 +13368,8 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/New-Container.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/containers/createContainers</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/containers/createContainers</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/containers/methods/create/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/containers/methods/create/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -13547,8 +13555,8 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/New-Conversation.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/conversations/create</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/conversations/create</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/conversations/methods/create/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/conversations/methods/create/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -13836,8 +13844,8 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/New-Thread.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/threads/createThread</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/threads/createThread</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/beta/subresources/threads/methods/create/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/beta/subresources/threads/methods/create/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -14256,8 +14264,8 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/New-VectorStore.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/vector-stores/create</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/vector-stores/create</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/vector_stores/methods/create/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/vector_stores/methods/create/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -14558,8 +14566,12 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/New-Video.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/videos/create</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/videos/create</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/docs/guides/video-generation</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/docs/guides/video-generation</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/videos/methods/create/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/videos/methods/create/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -14781,8 +14793,8 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/New-VideoRemix.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/videos/remix</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/videos/remix</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/videos/methods/remix/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/videos/methods/remix/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -15286,8 +15298,8 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Remove-Assistant.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/assistants/deleteAssistant</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/assistants/deleteAssistant</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/beta/subresources/assistants/methods/delete/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/beta/subresources/assistants/methods/delete/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -15520,8 +15532,8 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Remove-ChatCompletion.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/chat/delete</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/chat/delete</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/chat/subresources/completions/methods/delete/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/chat/subresources/completions/methods/delete/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -15726,8 +15738,8 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Remove-Container.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/containers/deleteContainer</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/containers/deleteContainer</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/containers/methods/delete/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/containers/methods/delete/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -16069,8 +16081,8 @@ PS C:\&gt; Remove-ContainerFile -ContainerFile $File</dev:code>
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Remove-ContainerFile.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/container-files/deleteContainerFile</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/container-files/deleteContainerFile</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/containers/subresources/files/methods/delete/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/containers/subresources/files/methods/delete/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -16256,8 +16268,8 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Remove-Conversation.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/conversations/delete</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/conversations/delete</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/conversations/methods/delete/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/conversations/methods/delete/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -16467,8 +16479,8 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Remove-ConversationItem.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/conversations/delete-item</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/conversations/delete-item</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/conversations/subresources/items/methods/delete/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/conversations/subresources/items/methods/delete/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -16701,8 +16713,8 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Remove-OpenAIFile.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/files/delete</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/files/delete</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/files/methods/delete/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/files/methods/delete/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -16795,8 +16807,8 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Remove-RealtimeSessionItem.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/realtime-client-events/conversation/item/delete</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/realtime-client-events/conversation/item/delete</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/docs/guides/realtime-conversations/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/docs/guides/realtime-conversations/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -17029,8 +17041,8 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Remove-Response.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/responses/delete</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/responses/delete</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/responses/methods/delete/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/responses/methods/delete/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -17237,8 +17249,8 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Remove-Thread.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/threads/deleteThread</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/threads/deleteThread</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/beta/subresources/threads/methods/delete/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/beta/subresources/threads/methods/delete/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -17477,6 +17489,10 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <maml:linkText>Online Version:</maml:linkText>
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Remove-ThreadMessage.md</maml:uri>
       </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/beta/subresources/threads/subresources/messages/methods/delete</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/beta/subresources/threads/subresources/messages/methods/delete</maml:uri>
+      </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
@@ -17682,8 +17698,8 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Remove-VectorStore.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/vector-stores/delete</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/vector-stores/delete</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/vector_stores/methods/delete/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/vector_stores/methods/delete/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -17914,8 +17930,8 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Remove-VectorStoreFile.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/vector-stores-files/deleteFile</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/vector-stores-files/deleteFile</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/vector_stores/subresources/files/methods/delete/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/vector_stores/subresources/files/methods/delete/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -18104,8 +18120,8 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Remove-Video.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/videos/delete</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/videos/delete</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/videos/methods/delete/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/videos/methods/delete/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -18120,7 +18136,7 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
     </command:details>
     <maml:description>
       <maml:para>Generates audio from the input text.
-https://platform.openai.com/docs/guides/text-to-speech</maml:para>
+https://developers.openai.com/api/docs/guides/text-to-speech/</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -18484,12 +18500,12 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Request-AudioSpeech.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/guides/text-to-speech</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/guides/text-to-speech</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/docs/guides/text-to-speech/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/docs/guides/text-to-speech/</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/audio/createSpeech</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/audio/createSpeech</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/audio/subresources/speech/methods/create/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/audio/subresources/speech/methods/create/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -18504,7 +18520,7 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
     </command:details>
     <maml:description>
       <maml:para>Transcribes audio into the input language.
-https://platform.openai.com/docs/guides/speech-to-text/speech-to-text</maml:para>
+https://developers.openai.com/api/docs/guides/speech-to-text/</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -19089,12 +19105,12 @@ PS C:\&gt; $JsonResult | ConvertFrom-Json</dev:code>
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Request-AudioTranscription.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/guides/speech-to-text/speech-to-text</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/guides/speech-to-text/speech-to-text</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/docs/guides/speech-to-text/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/docs/guides/speech-to-text/</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/audio/create</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/audio/create</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/audio/subresources/transcriptions/methods/create/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/audio/subresources/transcriptions/methods/create/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -19109,7 +19125,7 @@ PS C:\&gt; $JsonResult | ConvertFrom-Json</dev:code>
     </command:details>
     <maml:description>
       <maml:para>Translates audio into English.
-https://platform.openai.com/docs/guides/speech-to-text/speech-to-text</maml:para>
+https://developers.openai.com/api/docs/guides/speech-to-text/</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -19417,12 +19433,12 @@ Hello, My name is tanaka yoshio.</dev:code>
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Request-AudioTranslation.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/guides/speech-to-text/speech-to-text</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/guides/speech-to-text/speech-to-text</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/docs/guides/speech-to-text/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/docs/guides/speech-to-text/</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/audio/create</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/audio/create</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/audio/subresources/transcriptions/methods/create/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/audio/subresources/transcriptions/methods/create/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -19437,7 +19453,7 @@ Hello, My name is tanaka yoshio.</dev:code>
     </command:details>
     <maml:description>
       <maml:para>Creates a completion for the chat message.
-https://platform.openai.com/docs/guides/chat/chat-completions</maml:para>
+https://developers.openai.com/api/reference/chat-completions/overview/</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -19606,7 +19622,7 @@ Some models can generate both text and audio. To request that responses, you can
           <maml:name>ImageDetail</maml:name>
           <maml:description>
             <maml:para>Controls how the model processes the image and generates its textual understanding. You can select from `Low` or `High`.
-See more details : https://platform.openai.com/docs/guides/vision/low-or-high-fidelity-image-understanding</maml:para>
+See more details : https://developers.openai.com/api/docs/guides/images-vision/</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -20316,7 +20332,7 @@ Some models can generate both text and audio. To request that responses, you can
         <maml:name>ImageDetail</maml:name>
         <maml:description>
           <maml:para>Controls how the model processes the image and generates its textual understanding. You can select from `Low` or `High`.
-See more details : https://platform.openai.com/docs/guides/vision/low-or-high-fidelity-image-understanding</maml:para>
+See more details : https://developers.openai.com/api/docs/guides/images-vision/</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -20931,7 +20947,7 @@ PS C:\&gt; $GPTPingAnswer | select Answer</dev:code>
       </command:example>
       <command:example>
         <maml:title>--------------- Example 6: Audio input / output ---------------</maml:title>
-        <dev:code>PS C:\&gt; Request-ChatCompletion -Modalities text, audio -InputAudio 'C:\hello.mp3' -AudioOutFile 'C:\response.mp3' -Model gpt-4o-audio-preview</dev:code>
+        <dev:code>PS C:\&gt; Request-ChatCompletion -Modalities text, audio -InputAudio 'C:\hello.mp3' -AudioOutFile 'C:\response.mp3' -Model gpt-audio-1.5</dev:code>
         <dev:remarks>
           <maml:para></maml:para>
         </dev:remarks>
@@ -20943,12 +20959,12 @@ PS C:\&gt; $GPTPingAnswer | select Answer</dev:code>
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Request-ChatCompletion.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/guides/chat/chat-completions</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/guides/chat/chat-completions</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/chat-completions/overview/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/chat-completions/overview/</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/chat/create</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/chat/create</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/chat/subresources/completions/methods/create/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/chat/subresources/completions/methods/create/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -20963,7 +20979,7 @@ PS C:\&gt; $GPTPingAnswer | select Answer</dev:code>
     </command:details>
     <maml:description>
       <maml:para>Creates an embedding vector representing the input text.
-https://platform.openai.com/docs/guides/embeddings</maml:para>
+https://developers.openai.com/api/docs/guides/embeddings/</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -21315,12 +21331,12 @@ Text      : Waiter, the food was delicious...</dev:code>
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Request-Embeddings.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/guides/embeddings</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/guides/embeddings</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/docs/guides/embeddings/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/docs/guides/embeddings/</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/embeddings</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/embeddings</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/embeddings/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/embeddings/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -21335,7 +21351,7 @@ Text      : Waiter, the food was delicious...</dev:code>
     </command:details>
     <maml:description>
       <maml:para>Creates an edited or extended image given an original image and a prompt.
-https://platform.openai.com/docs/guides/image-generation</maml:para>
+https://developers.openai.com/api/reference/resources/images/methods/edit</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -21349,7 +21365,7 @@ https://platform.openai.com/docs/guides/image-generation</maml:para>
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="File">
           <maml:name>Image</maml:name>
           <maml:description>
-            <maml:para>(Required) The image(s) to edit. Must be a supported image file or an array of images. For the GPT image models, each image should be a `png`, `webp`, or `jpg` file less than 50MB. You can provide up to 16 images. For dall-e-2, you can only provide one image, and it should be a square png file less than 4MB.</maml:para>
+            <maml:para>(Required) The image(s) to edit. Must be a supported image file or an array of images. For the GPT image models, each image should be a `png`, `webp`, or `jpg` file less than 50MB. You can provide up to 16 images.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
           <dev:type>
@@ -21361,7 +21377,7 @@ https://platform.openai.com/docs/guides/image-generation</maml:para>
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>Prompt</maml:name>
           <maml:description>
-            <maml:para>(Required) A text description of the desired image(s). The maximum length is 32000 characters for the GPT image models, 1000 characters for `dall-e-2` and 4000 characters for `dall-e-3`.</maml:para>
+            <maml:para>(Required) A text description of the desired image(s). The maximum length is 32000 characters for the GPT image models.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -21385,7 +21401,7 @@ https://platform.openai.com/docs/guides/image-generation</maml:para>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>Model</maml:name>
           <maml:description>
-            <maml:para>The model to use for image generation. Only `dall-e-2` and the GPT image models are supported. Defaults to `dall-e-2` unless a parameter specific to the GPT image models is used.</maml:para>
+            <maml:para>The model to use for image generation. Defaults to `gpt-image-2`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -21412,8 +21428,6 @@ https://platform.openai.com/docs/guides/image-generation</maml:para>
             <maml:para>The quality of the image that will be generated.
 - `auto` (default value) will automatically select the best quality for the given model.</maml:para>
             <maml:para>- `high`, `medium` and `low` are supported for the GPT image models.</maml:para>
-            <maml:para>- `hd` and `standard` are supported for `dall-e-3`.</maml:para>
-            <maml:para>- `standard` is the only option for `dall-e-2`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -21433,6 +21447,55 @@ https://platform.openai.com/docs/guides/image-generation</maml:para>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>auto</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Background</maml:name>
+          <maml:description>
+            <maml:para>Background behavior for generated image output.
+Accepts one of the following: `transparent`, `opaque`, and `auto` (default).</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>auto</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="input_fidelity">
+          <maml:name>InputFidelity</maml:name>
+          <maml:description>
+            <maml:para>Controls fidelity to the original input image(s). This parameter is only supported for `gpt-image-1` and `gpt-image-2` and later models, unsupported for `gpt-image-1-mini`. Supports `high` and `low`. Defaults to `low`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>low</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="output_compression">
+          <maml:name>OutputCompression</maml:name>
+          <maml:description>
+            <maml:para>The compression level (0-100%) for the generated images. This parameter is only supported for the GPT image models with the `webp` or `jpeg` output formats, and defaults to 100.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">UInt16</command:parameterValue>
+          <dev:type>
+            <maml:name>UInt16</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>100</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="output_format">
+          <maml:name>OutputFormat</maml:name>
+          <maml:description>
+            <maml:para>The format in which the generated images are returned. This parameter is only supported for the GPT image models. Must be one of `png`, `jpeg`, or `webp`. The default value is `png`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>png</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="response_format">
           <maml:name>ResponseFormat</maml:name>
@@ -21456,6 +21519,29 @@ https://platform.openai.com/docs/guides/image-generation</maml:para>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Stream</maml:name>
+          <maml:description>
+            <maml:para>Edit the image in streaming mode. Defaults to `false`.</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>PartialImages</maml:name>
+          <maml:description>
+            <maml:para>The number of partial images to generate. This parameter is used for streaming responses that return partial images. Value must be between 0 and 3. When set to 0, the response will be a single image sent in one streaming event.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">UInt16</command:parameterValue>
+          <dev:type>
+            <maml:name>UInt16</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>0</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>User</maml:name>
@@ -21543,7 +21629,7 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="File">
           <maml:name>Image</maml:name>
           <maml:description>
-            <maml:para>(Required) The image(s) to edit. Must be a supported image file or an array of images. For the GPT image models, each image should be a `png`, `webp`, or `jpg` file less than 50MB. You can provide up to 16 images. For dall-e-2, you can only provide one image, and it should be a square png file less than 4MB.</maml:para>
+            <maml:para>(Required) The image(s) to edit. Must be a supported image file or an array of images. For the GPT image models, each image should be a `png`, `webp`, or `jpg` file less than 50MB. You can provide up to 16 images.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
           <dev:type>
@@ -21555,7 +21641,7 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>Prompt</maml:name>
           <maml:description>
-            <maml:para>(Required) A text description of the desired image(s). The maximum length is 32000 characters for the GPT image models, 1000 characters for `dall-e-2` and 4000 characters for `dall-e-3`.</maml:para>
+            <maml:para>(Required) A text description of the desired image(s). The maximum length is 32000 characters for the GPT image models.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -21579,7 +21665,7 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>Model</maml:name>
           <maml:description>
-            <maml:para>The model to use for image generation. Only `dall-e-2` and the GPT image models are supported. Defaults to `dall-e-2` unless a parameter specific to the GPT image models is used.</maml:para>
+            <maml:para>The model to use for image generation. Defaults to `gpt-image-2`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -21606,8 +21692,6 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
             <maml:para>The quality of the image that will be generated.
 - `auto` (default value) will automatically select the best quality for the given model.</maml:para>
             <maml:para>- `high`, `medium` and `low` are supported for the GPT image models.</maml:para>
-            <maml:para>- `hd` and `standard` are supported for `dall-e-3`.</maml:para>
-            <maml:para>- `standard` is the only option for `dall-e-2`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -21628,6 +21712,55 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
           </dev:type>
           <dev:defaultValue>auto</dev:defaultValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Background</maml:name>
+          <maml:description>
+            <maml:para>Background behavior for generated image output.
+Accepts one of the following: `transparent`, `opaque`, and `auto` (default).</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>auto</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="input_fidelity">
+          <maml:name>InputFidelity</maml:name>
+          <maml:description>
+            <maml:para>Controls fidelity to the original input image(s). This parameter is only supported for `gpt-image-1` and `gpt-image-2` and later models, unsupported for `gpt-image-1-mini`. Supports `high` and `low`. Defaults to `low`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>low</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="output_compression">
+          <maml:name>OutputCompression</maml:name>
+          <maml:description>
+            <maml:para>The compression level (0-100%) for the generated images. This parameter is only supported for the GPT image models with the `webp` or `jpeg` output formats, and defaults to 100.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">UInt16</command:parameterValue>
+          <dev:type>
+            <maml:name>UInt16</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>100</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="output_format">
+          <maml:name>OutputFormat</maml:name>
+          <maml:description>
+            <maml:para>The format in which the generated images are returned. This parameter is only supported for the GPT image models. Must be one of `png`, `jpeg`, or `webp`. The default value is `png`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>png</dev:defaultValue>
+        </command:parameter>
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>OutFile</maml:name>
           <maml:description>
@@ -21639,6 +21772,29 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Stream</maml:name>
+          <maml:description>
+            <maml:para>Edit the image in streaming mode. Defaults to `false`.</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>PartialImages</maml:name>
+          <maml:description>
+            <maml:para>The number of partial images to generate. This parameter is used for streaming responses that return partial images. Value must be between 0 and 3. When set to 0, the response will be a single image sent in one streaming event.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">UInt16</command:parameterValue>
+          <dev:type>
+            <maml:name>UInt16</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>0</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>User</maml:name>
@@ -21726,7 +21882,7 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="File">
         <maml:name>Image</maml:name>
         <maml:description>
-          <maml:para>(Required) The image(s) to edit. Must be a supported image file or an array of images. For the GPT image models, each image should be a `png`, `webp`, or `jpg` file less than 50MB. You can provide up to 16 images. For dall-e-2, you can only provide one image, and it should be a square png file less than 4MB.</maml:para>
+          <maml:para>(Required) The image(s) to edit. Must be a supported image file or an array of images. For the GPT image models, each image should be a `png`, `webp`, or `jpg` file less than 50MB. You can provide up to 16 images.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
         <dev:type>
@@ -21738,7 +21894,7 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>Prompt</maml:name>
         <maml:description>
-          <maml:para>(Required) A text description of the desired image(s). The maximum length is 32000 characters for the GPT image models, 1000 characters for `dall-e-2` and 4000 characters for `dall-e-3`.</maml:para>
+          <maml:para>(Required) A text description of the desired image(s). The maximum length is 32000 characters for the GPT image models.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -21762,7 +21918,7 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>Model</maml:name>
         <maml:description>
-          <maml:para>The model to use for image generation. Only `dall-e-2` and the GPT image models are supported. Defaults to `dall-e-2` unless a parameter specific to the GPT image models is used.</maml:para>
+          <maml:para>The model to use for image generation. Defaults to `gpt-image-2`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -21789,8 +21945,6 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
           <maml:para>The quality of the image that will be generated.
 - `auto` (default value) will automatically select the best quality for the given model.</maml:para>
           <maml:para>- `high`, `medium` and `low` are supported for the GPT image models.</maml:para>
-          <maml:para>- `hd` and `standard` are supported for `dall-e-3`.</maml:para>
-          <maml:para>- `standard` is the only option for `dall-e-2`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -21810,6 +21964,55 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
           <maml:uri />
         </dev:type>
         <dev:defaultValue>auto</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Background</maml:name>
+        <maml:description>
+          <maml:para>Background behavior for generated image output.
+Accepts one of the following: `transparent`, `opaque`, and `auto` (default).</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>auto</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="input_fidelity">
+        <maml:name>InputFidelity</maml:name>
+        <maml:description>
+          <maml:para>Controls fidelity to the original input image(s). This parameter is only supported for `gpt-image-1` and `gpt-image-2` and later models, unsupported for `gpt-image-1-mini`. Supports `high` and `low`. Defaults to `low`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>low</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="output_compression">
+        <maml:name>OutputCompression</maml:name>
+        <maml:description>
+          <maml:para>The compression level (0-100%) for the generated images. This parameter is only supported for the GPT image models with the `webp` or `jpeg` output formats, and defaults to 100.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">UInt16</command:parameterValue>
+        <dev:type>
+          <maml:name>UInt16</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>100</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="output_format">
+        <maml:name>OutputFormat</maml:name>
+        <maml:description>
+          <maml:para>The format in which the generated images are returned. This parameter is only supported for the GPT image models. Must be one of `png`, `jpeg`, or `webp`. The default value is `png`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>png</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="response_format">
         <maml:name>ResponseFormat</maml:name>
@@ -21846,6 +22049,30 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Stream</maml:name>
+        <maml:description>
+          <maml:para>Edit the image in streaming mode. Defaults to `false`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>PartialImages</maml:name>
+        <maml:description>
+          <maml:para>The number of partial images to generate. This parameter is used for streaming responses that return partial images. Value must be between 0 and 3. When set to 0, the response will be a single image sent in one streaming event.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">UInt16</command:parameterValue>
+        <dev:type>
+          <maml:name>UInt16</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>0</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>User</maml:name>
@@ -21938,14 +22165,14 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
     <command:examples>
       <command:example>
         <maml:title>----------- Example 1: Edit an image with a prompt. -----------</maml:title>
-        <dev:code>Request-ImageEdit -Model 'gpt-image-1.5' -Prompt 'A bird on the desert' -Image 'C:\sand_with_fether.png' -OutFile 'C:\bird_on_desert.png' -Size 1024x1024</dev:code>
+        <dev:code>Request-ImageEdit -Model 'gpt-image-2' -Prompt 'A bird on the desert' -Image 'C:\sand_with_fether.png' -OutFile 'C:\bird_on_desert.png' -Size 1024x1024</dev:code>
         <dev:remarks>
           <maml:para>| Original                                        | Generated                                  | | ----------------------------------------------- | ------------------------------------------ | | ! original (/Docs/images/sand_with_feather.png) | ![edited](/Docs/images/bird_on_desert.png)|</maml:para>
         </dev:remarks>
       </command:example>
       <command:example>
         <maml:title>--- Example 2: Create variation image from source and mask. ---</maml:title>
-        <dev:code>Request-ImageEdit -Model 'gpt-image-1.5' -Image C:\sand_with_feather.png -Mask C:\fether_mask.png -Prompt "A bird on the desert" -OutFile C:\edit2.png</dev:code>
+        <dev:code>Request-ImageEdit -Model 'gpt-image-2' -Image C:\sand_with_feather.png -Mask C:\fether_mask.png -Prompt "A bird on the desert" -OutFile C:\edit2.png</dev:code>
         <dev:remarks>
           <maml:para>| Source (sand_with_feather.png)                | Mask (fether_mask.png)                | Generated (edit2.png)               | | --------------------------------------------- | ------------------------------------- | ----------------------------------- | | ! masked (/Docs/images/sand_with_feather.png) | ![mask](/Docs/images/fether_mask.png) | ![restored](/Docs/images/edit2.png)|</maml:para>
         </dev:remarks>
@@ -21957,12 +22184,12 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Request-ImageEdit.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/guides/image-generation</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/guides/image-generation</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/docs/guides/image-generation/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/docs/guides/image-generation/</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/images/createEdit</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/images/createEdit</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/images/methods/edit</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/images/methods/edit</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -21977,7 +22204,7 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
     </command:details>
     <maml:description>
       <maml:para>Creates an image given a prompt.
-https://platform.openai.com/docs/guides/image-generation</maml:para>
+https://developers.openai.com/api/reference/resources/images/methods/generate</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -22042,8 +22269,6 @@ https://platform.openai.com/docs/guides/image-generation</maml:para>
             <maml:para>The quality of the image that will be generated.
 - `auto` (default value) will automatically select the best quality for the given model.</maml:para>
             <maml:para>- `high`, `medium` and `low` are supported for the GPT image models.</maml:para>
-            <maml:para>- `hd` and `standard` are supported for `dall-e-3`.</maml:para>
-            <maml:para>- `standard` is the only option for `dall-e-2`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -22272,8 +22497,6 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
             <maml:para>The quality of the image that will be generated.
 - `auto` (default value) will automatically select the best quality for the given model.</maml:para>
             <maml:para>- `high`, `medium` and `low` are supported for the GPT image models.</maml:para>
-            <maml:para>- `hd` and `standard` are supported for `dall-e-3`.</maml:para>
-            <maml:para>- `standard` is the only option for `dall-e-2`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -22491,8 +22714,6 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
           <maml:para>The quality of the image that will be generated.
 - `auto` (default value) will automatically select the best quality for the given model.</maml:para>
           <maml:para>- `high`, `medium` and `low` are supported for the GPT image models.</maml:para>
-          <maml:para>- `hd` and `standard` are supported for `dall-e-3`.</maml:para>
-          <maml:para>- `standard` is the only option for `dall-e-2`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -22688,7 +22909,7 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
     <command:examples>
       <command:example>
         <maml:title>------ Example 1: Creates and save an image from prompt. ------</maml:title>
-        <dev:code>Request-ImageGeneration -Model 'gpt-image-1' -Prompt 'A cute baby lion' -OutFile C:\babylion.png</dev:code>
+        <dev:code>Request-ImageGeneration -Model 'gpt-image-2' -Prompt 'A cute baby lion' -OutFile C:\babylion.png</dev:code>
         <dev:remarks>
           <maml:para>! lion (/Docs/images/babylion.png)</maml:para>
         </dev:remarks>
@@ -22711,12 +22932,12 @@ https://oaidalleapiprodscus.blob.core.windows.net/private/org-BXLtGIt0xglP9if8FV
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Request-ImageGeneration.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/guides/image-generation</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/guides/image-generation</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/docs/guides/image-generation/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/docs/guides/image-generation/</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/images/create</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/images/create</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/images/methods/generate</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/images/methods/generate</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -22731,7 +22952,7 @@ https://oaidalleapiprodscus.blob.core.windows.net/private/org-BXLtGIt0xglP9if8FV
     </command:details>
     <maml:description>
       <maml:para>Creates a variation of a given image.
-https://platform.openai.com/docs/guides/images/image-generation</maml:para>
+https://developers.openai.com/api/docs/guides/image-generation/</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -23222,12 +23443,12 @@ iVBORw0KGgoAAAANSUhEUgAABAAAAAQACAIAAADwf7zUAAAAaGV......</dev:code>
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Request-ImageVariation.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/guides/images/image-generation</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/guides/images/image-generation</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/docs/guides/image-generation/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/docs/guides/image-generation/</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/images/create-variation</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/images/create-variation</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/images/methods/create_variation/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/images/methods/create_variation/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -23243,7 +23464,7 @@ iVBORw0KGgoAAAANSUhEUgAABAAAAAQACAIAAADwf7zUAAAAaGV......</dev:code>
     <maml:description>
       <maml:para>Given a input text, outputs if the model classifies it as violating OpenAI's content policy.
 The moderation endpoint is free to use when monitoring the inputs and outputs of OpenAI APIs.
-https://platform.openai.com/docs/guides/moderation/overview</maml:para>
+https://developers.openai.com/api/docs/guides/moderation/</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -23502,12 +23723,12 @@ violence/graphic : False</dev:code>
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Request-Moderation.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/guides/moderation/overview</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/guides/moderation/overview</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/docs/guides/moderation/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/docs/guides/moderation/</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/moderations</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/moderations</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/moderations/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/moderations/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -23724,8 +23945,8 @@ violence/graphic : False</dev:code>
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Request-RealtimeSessionResponse.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/realtime-client-events/response/create</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/realtime-client-events/response/create</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/docs/guides/realtime-conversations/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/docs/guides/realtime-conversations/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -26318,8 +26539,8 @@ Making sauerkraut is a simple process that involves fermenting cabbage. ...</dev
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Request-Response.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/responses</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/responses</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/responses/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/responses/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -26779,8 +27000,8 @@ PS C:\&gt; $CompactedRespomse = $Response | Request-ResponseCompaction -Model 'g
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Request-ResponseCompaction.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/responses/compact</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/responses/compact</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/responses/methods/compact/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/responses/methods/compact/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -26795,7 +27016,7 @@ PS C:\&gt; $CompactedRespomse = $Response | Request-ResponseCompaction -Model 'g
     </command:details>
     <maml:description>
       <maml:para>Given a prompt, the AI model will return one or more predicted completions.
-https://platform.openai.com/docs/guides/completion/text-completion</maml:para>
+https://developers.openai.com/api/docs/guides/completions/</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -27401,12 +27622,12 @@ We serves
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Request-TextCompletion.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/guides/completion/text-completion</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/guides/completion/text-completion</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/docs/guides/completions/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/docs/guides/completions/</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/completions/create</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/completions/create</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/completions/methods/create/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/completions/methods/create/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -27475,8 +27696,8 @@ We serves
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Send-RealtimeSessionEvent.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/realtime-client-events</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/realtime-client-events</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/realtime/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/realtime/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -28160,12 +28381,12 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Set-Assistant.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/assistants/modifyAssistant</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/assistants/modifyAssistant</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/beta/subresources/assistants/methods/update/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/beta/subresources/assistants/methods/update/</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/assistants/overview/</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/assistants/overview/</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/docs/assistants/deep-dive/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/docs/assistants/deep-dive/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -28405,8 +28626,8 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Set-ChatCompletion.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/chat/update</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/chat/update</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/chat/subresources/completions/methods/update/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/chat/subresources/completions/methods/update/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -28618,8 +28839,8 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Set-Conversation.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/conversations/update</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/conversations/update</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/conversations/methods/update/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/conversations/methods/update/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -29737,8 +29958,8 @@ PS C:\&gt; Request-ChatCompletion -Message 'Hello Azure OpenAI'</dev:code>
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Set-RealtimeSessionConfiguration.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/realtime-client-events/session/update</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/realtime-client-events/session/update</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/realtime/subresources/sessions/methods/create/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/realtime/subresources/sessions/methods/create/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -30124,8 +30345,8 @@ PS C:\&gt; Request-ChatCompletion -Message 'Hello Azure OpenAI'</dev:code>
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Set-RealtimeTranscriptionSessionConfiguration.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/realtime-client-events/transcription_session/update</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/realtime-client-events/transcription_session/update</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/realtime/subresources/transcription_sessions/methods/create/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/realtime/subresources/transcription_sessions/methods/create/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -30437,8 +30658,8 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Set-Thread.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/threads/modifyThread</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/threads/modifyThread</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/beta/subresources/threads/methods/update/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/beta/subresources/threads/methods/update/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -30750,8 +30971,8 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Set-VectorStore.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/vector-stores/modify</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/vector-stores/modify</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/vector_stores/methods/update/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/vector_stores/methods/update/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -31255,8 +31476,8 @@ You can create a batch input item by using the Request-ChatCompletion cmdlet wit
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Start-Batch.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/batch/create</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/batch/create</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/batches/methods/create/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/batches/methods/create/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -32348,8 +32569,8 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Start-ThreadRun.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/runs/createRun</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/runs/createRun</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/beta/subresources/threads/subresources/runs/methods/create/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/beta/subresources/threads/subresources/runs/methods/create/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -32689,8 +32910,8 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Start-VectorStoreFileBatch.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/vector-stores-file-batches/createBatch</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/vector-stores-file-batches/createBatch</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/vector_stores/subresources/file_batches/methods/create/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/vector_stores/subresources/file_batches/methods/create/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -32990,8 +33211,8 @@ PS C:\&gt; $Batch.status    # cancelled</dev:code>
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Stop-Batch.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/batch/cancel</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/batch/cancel</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/batches/methods/cancel/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/batches/methods/cancel/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -33142,8 +33363,8 @@ PS C:\&gt; $Batch.status    # cancelled</dev:code>
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Stop-RealtimeSessionResponse.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/realtime-client-events/response/cancel</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/realtime-client-events/response/cancel</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/docs/guides/realtime-conversations/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/docs/guides/realtime-conversations/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -33447,8 +33668,8 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Stop-ThreadRun.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/runs/cancelRun</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/runs/cancelRun</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/beta/subresources/threads/subresources/runs/methods/cancel/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/beta/subresources/threads/subresources/runs/methods/cancel/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -33736,8 +33957,8 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Stop-VectorStoreFileBatch.md</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>https://platform.openai.com/docs/api-reference/vector-stores-file-batches/cancelBatch</maml:linkText>
-        <maml:uri>https://platform.openai.com/docs/api-reference/vector-stores-file-batches/cancelBatch</maml:uri>
+        <maml:linkText>https://developers.openai.com/api/reference/resources/vector_stores/subresources/file_batches/methods/cancel/</maml:linkText>
+        <maml:uri>https://developers.openai.com/api/reference/resources/vector_stores/subresources/file_batches/methods/cancel/</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>

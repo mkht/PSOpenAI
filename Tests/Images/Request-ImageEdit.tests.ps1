@@ -41,8 +41,8 @@ Describe 'Request-ImageEdit' {
                     Prompt      = 'Hello'
                     Image       = $script:TestImageData + '/fether_mask.png'
                     OutFile     = Join-Path $TestDrive 'out.png'
-                    Model       = 'dall-e-2'
-                    Size        = '256x256'
+                    Model       = 'gpt-image-1.5'
+                    Size        = '1024x1024'
                     ErrorAction = 'Stop'
                 }
                 $script:Result = Request-ImageEdit @splat
@@ -123,23 +123,6 @@ Describe 'Request-ImageEdit' {
             Should -InvokeVerifiable
             $Result | Should -BeNullOrEmpty
             (Join-Path $TestDrive 'fileB.png') | Should -FileContentMatchExactly 'HELLO'
-        }
-
-        It 'Image edit. response_format = url' {
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
-{
-    "created": 1678359675,
-    "data": [
-        {
-        "url": "https://dummyimage.example.com"
-        }
-    ]
-}
-'@ }
-            { $script:Result = Request-ImageEdit -Image ($script:TestImageData + '/fether_mask.png') -Prompt 'sunflower' -ResponseFormat url -ea Stop } | Should -Not -Throw
-            Should -InvokeVerifiable
-            $Result | Should -BeOfType [string]
-            $Result | Should -Be 'https://dummyimage.example.com'
         }
 
         It 'The GPT image models are not support response_format = url. Defaulting to object.' {
@@ -426,8 +409,8 @@ Describe 'Request-ImageEdit' {
                     Image       = $script:TestImageData + '/sand_with_feather.png'
                     Mask        = $script:TestImageData + '/fether_mask.png'
                     Prompt      = 'A bird on the desert'
-                    Model       = 'dall-e-2'
-                    Size        = '256x256'
+                    Model       = 'gpt-image-2'
+                    Size        = '1024x1024'
                     TimeoutSec  = 30
                     ErrorAction = 'Stop'
                 }

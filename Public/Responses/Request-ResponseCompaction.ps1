@@ -38,6 +38,10 @@ function Request-ResponseCompaction {
             'gpt-5.2',
             'gpt-5.2-chat-latest',
             'gpt-5.2-pro',
+            'gpt-5.3-chat-latest',
+            'gpt-5.4',
+            'gpt-5.4-mini',
+            'gpt-5.4-nano',
             'o1',
             'o1-pro',
             'o3',
@@ -45,8 +49,7 @@ function Request-ResponseCompaction {
             'o3-mini',
             'o4-mini',
             'o3-deep-research',
-            'o4-mini-deep-research',
-            'computer-use-preview'
+            'o4-mini-deep-research'
         )]
         [string]$Model = 'gpt-4o-mini',
 

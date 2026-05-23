@@ -193,7 +193,7 @@ The primary method for interacting with OpenAI models. You can generate text fro
 
 ```PowerShell
 $env:OPENAI_API_KEY = '<Put your API key here.>'
-$Response = Request-Response -Model 'gpt-4o' -Message 'Explain quantum physics in simple terms.'
+$Response = Request-Response -Model 'gpt-5.4' -Message 'Explain quantum physics in simple terms.'
 Write-Output $Response.output_text
 ```
 
@@ -211,7 +211,7 @@ Chat Completions API is compatible with other AI services besides OpenAI, such a
 
 ```PowerShell
 $env:OPENAI_API_KEY = '<Put your API key here.>'
-$Completion = Request-ChatCompletion -Model 'gpt-4o' -Message 'Give me a recipe for chocolate cake.'
+$Completion = Request-ChatCompletion -Model 'gpt-5.4' -Message 'Give me a recipe for chocolate cake.'
 Write-Output $Completion.Answer[0]
 ```
 
@@ -335,20 +335,20 @@ Disconnect-RealtimeSession
 `Request-Response` and `Request-ChatCompletion` accepts past dialogs from pipeline. Additional questions can be asked while maintaining context.
 
 ```PowerShell
-PS C:\> $FirstQA = Request-ChatCompletion -Model 'gpt-4.1-nano' -Message 'What is the population of the United States?'
+PS C:\> $FirstQA = Request-ChatCompletion -Model 'gpt-5.4-nano' -Message 'What is the population of the United States?'
 PS C:\> Write-Output $FirstQA.Answer
 
-As of October 2023, the estimated population of the United States is approximately 336 million people.
+As of **2024**, the estimated population of the **United States** is about **333 million people**.
 
 PS C:\> $SecondQA = $FirstQA | Request-ChatCompletion -Message 'Translate the previous answer into French.'
 PS C:\> Write-Output $SecondQA.Answer
 
-En octobre 2023, la population estimée des États-Unis est d'environ 336 millions de personnes.
+En **2024**, la population estimée des **États-Unis** est d’environ **333 millions d’habitants**.
 
 PS C:\> $ThirdQA = $SecondQA | Request-ChatCompletion -Message 'Just tell me the number.'
 PS C:\> Write-Output $ThirdQA.Answer
 
-336 millions
+333 million
 ```
 
 ### Streaming responses
@@ -368,10 +368,10 @@ You can input images to the model and get answers.
 
 ```PowerShell
 # Local file
-$Response = Request-Response -Model 'o4-mini' -Images 'C:\SampleData\donut.png' -Message 'How many donuts are there?'
+$Response = Request-Response -Model 'gpt-5.4-mini' -Images 'C:\SampleData\donut.png' -Message 'How many donuts are there?'
 
 # Remote URL
-$Response = Request-Response -Model 'o4-mini' -Images 'https://upload.wikimedia.org/wikipedia/commons/5/5f/Cerro_El_%C3%81vila_desde_El_Bosque_-_Caracas.jpg' -Message 'Where is this?'
+$Response = Request-Response -Model 'gpt-5.4-mini' -Images 'https://upload.wikimedia.org/wikipedia/commons/5/5f/Cerro_El_%C3%81vila_desde_El_Bosque_-_Caracas.jpg' -Message 'Where is this?'
 ```
 
 ### Web Search
@@ -379,7 +379,7 @@ $Response = Request-Response -Model 'o4-mini' -Images 'https://upload.wikimedia.
 Allow models to search the web for the latest information before generating a response.
 
 ```PowerShell
-$Response = Request-Response -Model 'gpt-4.1' -Message 'What was a tech news in Merch 2025?' -UseWebSearch
+$Response = Request-Response -Model 'gpt-5.4' -Message 'What was a tech news in December 2025?' -UseWebSearch
 ```
 
 ### Azure OpenAI Service

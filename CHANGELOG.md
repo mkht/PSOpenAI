@@ -1,5 +1,9 @@
 # Changelog
-### Unreleased
+### 4.49.0
+- **IMPORTANT:** The default model for `Request-ChatCompletion` & `Request-Response` is changed to `gpt-5.4-mini`.
+- **IMPORTANT:** The default model for Images endpoints is changed to `gpt-image-2`. It because the dall-e models are shut down by OpenAI.
+- API misc updates.
+- Add gpt-5.3, gpt-5.4, gpt-5.5, gpt-image-2
 - Update documents.
 - Add `chatgpt-image-latest` to `Request-ImageGeneration` and `Request-ImageEdit`.
 

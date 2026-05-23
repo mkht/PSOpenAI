@@ -11,11 +11,9 @@ function Request-ImageGeneration {
             'gpt-image-1.5',
             'gpt-image-1',
             'gpt-image-1-mini',
-            'chatgpt-image-latest',
-            'dall-e-3',
-            'dall-e-2'
+            'chatgpt-image-latest'
         )]
-        [string]$Model = 'dall-e-2',
+        [string]$Model = 'gpt-image-2',
 
         [Parameter()]
         [ValidateRange(1, 10)]
@@ -23,11 +21,11 @@ function Request-ImageGeneration {
         [uint16]$NumberOfImages = 1,
 
         [Parameter()]
-        [ValidateSet('auto', '1024x1024', '1536x1024', '1024x1536', '256x256', '512x512', '1792x1024', '1024x1792')]
+        [Completions('auto', '1024x1024', '1536x1024', '1024x1536', '256x256', '512x512', '1792x1024', '1024x1792')]
         [string]$Size = 'auto',
 
         [Parameter()]
-        [ValidateSet('standard', 'hd', 'low', 'medium', 'high', 'auto')]
+        [ValidateSet('low', 'medium', 'high', 'auto')]
         [string][LowerCaseTransformation()]$Quality = 'auto',
 
         [Parameter()]
@@ -129,9 +127,7 @@ function Request-ImageGeneration {
         $PostBody.prompt = $Prompt
 
         if ($OpenAIParameter.ApiType -eq [OpenAIApiType]::OpenAI) {
-            if ($PSBoundParameters.ContainsKey('Model')) {
-                $PostBody.model = $Model
-            }
+            $PostBody.model = $Model
         }
 
         if ($PSBoundParameters.ContainsKey('NumberOfImages')) {
@@ -167,7 +163,7 @@ function Request-ImageGeneration {
         }
 
         # GPT-Image model does not support response_format parameter
-        if ($Model -like 'gpt-image-*') {
+        if ($Model -like '*gpt-image-*') {
             if ($PSBoundParameters.ContainsKey('ResponseFormat') -and $ResponseFormat -eq 'url') {
                 Write-Warning 'Your specified model does not support response_format=url. Defaulting to object.'
                 $ResponseFormat = 'object'
@@ -197,7 +193,7 @@ function Request-ImageGeneration {
             }
         }
 
-        if ($Model -like 'gpt-image-*') {
+        if ($Model -like '*gpt-image-*') {
             # The output_format parameter is only supported for the GPT image models.
             if ($PSBoundParameters.ContainsKey('OutputFormat')) {
                 $PostBody.output_format = $OutputFormat

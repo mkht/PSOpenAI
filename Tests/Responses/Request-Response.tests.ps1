@@ -669,7 +669,7 @@ Describe 'Request-Response' {
             Should -Not -InvokeVerifiable
             $Result.method | Should -Be 'POST'
             $Result.url | Should -Be '/v1/responses'
-            $Result.body.model | Should -Be 'gpt-4o-mini'
+            $Result.body.model | Should -Be 'gpt-5.4-mini'
             $Result.body.input[0].content[0].text | Should -Be 'Hello!'
         }
 
@@ -1044,21 +1044,17 @@ STEP2. Use the timestamp tool to save the resulting timestamp in date and time, 
         It 'Tools - Computer Use' {
             {
                 $param = @{
-                    Message                  = 'Check the latest OpenAI news on Google.'
-                    Model                    = 'computer-use-preview'
-                    UseComputerUseTool       = $true
-                    ComputerUseEnvironment   = 'browser'
-                    ComputerUseDisplayHeight = 1024
-                    ComputerUseDisplayWidth  = 768
-                    Images                   = ($script:TestData + '/google.png')
-                    ReasoningSummary         = 'concise'
-                    Store                    = $false
-                    TimeoutSec               = 30
+                    Message            = 'Check whether the Filters panel is open. If it is not open, click Show filters. Then type penguin in the search box. Use the computer tool for UI interaction.'
+                    Model              = 'gpt-5.5'
+                    UseComputerUseTool = $true
+                    ComputerUseType    = 'computer'
+                    Store              = $false
+                    TimeoutSec         = 30
                 }
 
                 $script:Result = Request-Response @param -ea Stop } | Should -Not -Throw
             $Result.object | Should -Be 'response'
-            $Result.LastUserMessage | Should -Be 'Check the latest OpenAI news on Google.'
+            $Result.LastUserMessage | Should -Be 'Check whether the Filters panel is open. If it is not open, click Show filters. Then type penguin in the search box. Use the computer tool for UI interaction.'
             $Result.output.type | Should -Contain 'computer_call'
         }
 

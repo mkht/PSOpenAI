@@ -21,8 +21,12 @@ function Set-RealtimeTranscriptionSessionConfiguration {
         [bool]$EnableInputAudioTranscription = $true,
 
         [Parameter()]
-        [Completions('whisper-1', 'gpt-4o-transcribe', 'gpt-4o-mini-transcribe', 'gpt-4o-transcribe-diarize')]
+        [Completions('whisper-1', 'gpt-4o-transcribe', 'gpt-4o-mini-transcribe', 'gpt-4o-transcribe-diarize', 'gpt-realtime-whisper')]
         [string][LowerCaseTransformation()]$InputAudioTranscriptionModel = 'whisper-1',
+
+        [Parameter()]
+        [Completions('minimal', 'low', 'medium', 'high', 'xhigh')]
+        [string]$InputAudioTranscriptionDelay,
 
         [Parameter()]
         [string]$InputAudioTranscriptionLanguage,
@@ -120,6 +124,9 @@ function Set-RealtimeTranscriptionSessionConfiguration {
         else {
             $InputAudioTranscriptionParam = @{
                 model = $InputAudioTranscriptionModel
+            }
+            if ($PSBoundParameters.ContainsKey('InputAudioTranscriptionDelay')) {
+                $InputAudioTranscriptionParam.delay = $InputAudioTranscriptionDelay
             }
             if ($PSBoundParameters.ContainsKey('InputAudioTranscriptionLanguage')) {
                 $InputAudioTranscriptionParam.language = $InputAudioTranscriptionLanguage

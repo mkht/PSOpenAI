@@ -311,7 +311,7 @@ Describe 'Request-ChatCompletion' {
     "id": "chatcmpl-abc123",
     "object": "chat.completion",
     "created": 1699458335,
-    "model": "gpt-4o-audio-preview-2024-10-01",
+    "model": "gpt-audio-1.5",
     "choices": [
         {
         "index": 0,
@@ -339,7 +339,7 @@ Describe 'Request-ChatCompletion' {
 '@ }
 
             { $script:Result = Request-ChatCompletion `
-                    -Modalities ('text', 'audio') -Voice 'shimmer' -Model gpt-4o-audio-preview `
+                    -Modalities ('text', 'audio') -Voice 'shimmer' -Model gpt-audio-1.5 `
                     -InputAudio ($script:TestData + '/voice_japanese.mp3') `
                     -AudioOutFile (Join-Path $TestDrive 'audio_out.mp3') -ea Stop } | Should -Not -Throw
             Should -InvokeVerifiable
@@ -880,7 +880,7 @@ Ping Source Address Latency(ms) BufferSize(B) Status
 
         It 'Audio In/Out' {
             { $script:Result = Request-ChatCompletion `
-                    -Modalities ('text', 'audio') -Voice 'shimmer' -Model gpt-4o-audio-preview `
+                    -Modalities ('text', 'audio') -Voice 'shimmer' -Model gpt-audio-1.5 `
                     -InputAudio ($script:TestData + '/voice_japanese.mp3') `
                     -AudioOutFile (Join-Path $TestDrive 'audio_out1.mp3') `
                     -TimeoutSec 30 -ea Stop } | Should -Not -Throw

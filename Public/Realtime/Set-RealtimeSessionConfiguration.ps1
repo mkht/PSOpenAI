@@ -103,12 +103,19 @@ function Set-RealtimeSessionConfiguration {
         [string]$ToolChoice,
 
         [Parameter()]
+        [bool]$ParallelToolCalls,
+
+        [Parameter()]
         [ValidateRange(0.6, 1.2)]
         [float]$Temperature,
 
         [Parameter()]
         [ValidateRange(-1, 4096)]
         [int]$MaxOutputTokens = -1,
+
+        [Parameter()]
+        [Completions('minimal', 'low', 'medium', 'high', 'xhigh')]
+        [string]$ReasoningEffort,
 
         [Parameter()]
         [Completions('auto')]
@@ -165,6 +172,9 @@ function Set-RealtimeSessionConfiguration {
                 $MessageObject.session.max_output_tokens = $MaxOutputTokens
             }
         }
+        if ($PSBoundParameters.ContainsKey('ReasoningEffort')) {
+            $MessageObject.session.reasoning = @{ effort = $ReasoningEffort }
+        }
 
         if ($PSBoundParameters.ContainsKey('PromptId')) {
             $MessageObject.session.prompt = @{id = $PromptId }
@@ -181,6 +191,9 @@ function Set-RealtimeSessionConfiguration {
         }
         if ($PSBoundParameters.ContainsKey('ToolChoice')) {
             $MessageObject.session.tool_choice = $ToolChoice
+        }
+        if ($PSBoundParameters.ContainsKey('ParallelToolCalls')) {
+            $MessageObject.session.parallel_tool_calls = $ParallelToolCalls
         }
 
         $TracingObject = @{}

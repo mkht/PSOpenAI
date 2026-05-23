@@ -20,10 +20,9 @@ function Request-ImageEdit {
             'gpt-image-1.5',
             'gpt-image-1',
             'gpt-image-1-mini',
-            'chatgpt-image-latest',
-            'dall-e-2'
+            'chatgpt-image-latest'
         )]
-        [string]$Model = 'dall-e-2',
+        [string]$Model = 'gpt-image-2',
 
         [Parameter()]
         [ValidateRange(1, 10)]
@@ -31,11 +30,11 @@ function Request-ImageEdit {
         [uint16]$NumberOfImages = 1,
 
         [Parameter()]
-        [ValidateSet('auto', '1024x1024', '1536x1024', '1024x1536', '256x256', '512x512')]
+        [Completions('auto', '1024x1024', '1536x1024', '1024x1536', '256x256', '512x512')]
         [string]$Size = 'auto',
 
         [Parameter()]
-        [ValidateSet('standard', 'low', 'medium', 'high', 'auto')]
+        [ValidateSet('low', 'medium', 'high', 'auto')]
         [string][LowerCaseTransformation()]$Quality = 'auto',
 
         [Parameter()]
@@ -57,6 +56,7 @@ function Request-ImageEdit {
         [ValidateSet('png', 'jpeg', 'webp')]
         [string][LowerCaseTransformation()]$OutputFormat = 'png',
 
+        # Obsolete
         [Parameter(ParameterSetName = 'Format')]
         [Alias('response_format')]
         [ValidateSet('url', 'base64', 'byte', 'object')]
@@ -200,7 +200,7 @@ function Request-ImageEdit {
         }
 
         # GPT-Image model does not support response_format parameter
-        if ($Model -like 'gpt-image-*') {
+        if ($Model -like '*gpt-image-*') {
             if ($PSBoundParameters.ContainsKey('ResponseFormat') -and $ResponseFormat -eq 'url') {
                 Write-Warning 'Your specified model does not support response_format=url. Defaulting to object.'
                 $ResponseFormat = 'object'
@@ -230,7 +230,7 @@ function Request-ImageEdit {
             }
         }
 
-        if ($Model -like 'gpt-image-*') {
+        if ($Model -like '*gpt-image-*') {
             # The output_format parameter is only supported for the GPT image models.
             if ($PSBoundParameters.ContainsKey('OutputFormat')) {
                 $PostBody.output_format = $OutputFormat

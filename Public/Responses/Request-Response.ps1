@@ -39,6 +39,13 @@ function Request-Response {
             'gpt-5.2-chat-latest',
             'gpt-5.2-codex',
             'gpt-5.2-pro',
+            'gpt-5.3-chat-latest',
+            'gpt-5.4',
+            'gpt-5.4-mini',
+            'gpt-5.4-nano',
+            'gpt-5.4-pro',
+            'gpt-5.5',
+            'gpt-5.5-pro',
             'o1',
             'o1-pro',
             'o3',
@@ -47,9 +54,9 @@ function Request-Response {
             'o4-mini',
             'o3-deep-research',
             'o4-mini-deep-research',
-            'computer-use-preview'
+            'chat-latest'
         )]
-        [string]$Model = 'gpt-4o-mini',
+        [string]$Model = 'gpt-5.4-mini',
 
         #region System messages
         [Parameter()]
@@ -180,16 +187,20 @@ function Request-Response {
         [Parameter()]
         [switch]$UseComputerUseTool,
 
-        [Parameter(DontShow)]
-        [string]$ComputerUseType = 'computer_use_preview', # Currently, only 'computer_use_preview' is acceptable.
+        [Parameter()]
+        [Completions('computer', 'computer_use_preview')]
+        [string]$ComputerUseType = 'computer',
 
+        ## Only for computer_use_preview
         [Parameter()]
         [Completions('browser', 'windows', 'mac', 'linux', 'ubuntu')]
         [string]$ComputerUseEnvironment,
 
+        ## Only for computer_use_preview
         [Parameter()]
         [int]$ComputerUseDisplayHeight,
 
+        ## Only for computer_use_preview
         [Parameter()]
         [int]$ComputerUseDisplayWidth,
         #endregion Computer use
@@ -445,7 +456,7 @@ function Request-Response {
 
         [Parameter()]
         [Alias('service_tier')]
-        [Completions('auto', 'default', 'flex', 'scale')]
+        [Completions('auto', 'default', 'flex', 'scale', 'priority')]
         [string]$ServiceTier,
 
         [Parameter()]
@@ -796,20 +807,11 @@ function Request-Response {
             if ($PSBoundParameters.ContainsKey('ComputerUseEnvironment')) {
                 $ComputerUseTool.environment = $ComputerUseEnvironment
             }
-            else {
-                Write-Error 'ComputerUseEnvironment must be specified.'
-            }
             if ($PSBoundParameters.ContainsKey('ComputerUseDisplayHeight')) {
                 $ComputerUseTool.display_height = $ComputerUseDisplayHeight
             }
-            else {
-                Write-Error 'ComputerUseDisplayHeight must be specified.'
-            }
             if ($PSBoundParameters.ContainsKey('ComputerUseDisplayWidth')) {
                 $ComputerUseTool.display_width = $ComputerUseDisplayWidth
-            }
-            else {
-                Write-Error 'ComputerUseDisplayWidth must be specified.'
             }
             $Tools += $ComputerUseTool
         }

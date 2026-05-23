@@ -122,7 +122,7 @@ PS C:\> Request-ChatCompletion -Message $Message -Model gpt-4o -Images "C:\image
 
 ### Example 6: Audio input / output
 ```PowerShell
-PS C:\> Request-ChatCompletion -Modalities text, audio -InputAudio 'C:\hello.mp3' -AudioOutFile 'C:\response.mp3' -Model gpt-4o-audio-preview
+PS C:\> Request-ChatCompletion -Modalities text, audio -InputAudio 'C:\hello.mp3' -AudioOutFile 'C:\response.mp3' -Model gpt-audio-1.5
 ```
 
 ## PARAMETERS

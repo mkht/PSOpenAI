@@ -21,6 +21,41 @@ Describe 'Request-ImageGeneration' {
             $script:Result = ''
         }
 
+        It 'Generate image. No options.' {
+            $TestResponse = @'
+{
+  "created": 1713833628,
+  "data": [
+    {
+      "b64_json": "SEVMTE8="
+    }
+  ],
+  "usage": {
+    "input_tokens": 50,
+    "output_tokens": 50
+  },
+  output_format: "png",
+  quality: "low",
+  size: "1122x1402",
+  background: "opaque"
+}
+'@
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $TestResponse }
+            { $splat = @{
+                    Prompt      = 'A cute baby sea otter'
+                    TimeoutSec  = 30
+                    ErrorAction = 'Stop'
+                }
+                $script:Result = Request-ImageGeneration @splat
+            } | Should -Not -Throw
+            Should -InvokeVerifiable
+            $Result.size | Should -Be '1122x1402'
+            $Result.output_format | Should -Be 'png'
+            $Result.quality | Should -Be 'low'
+            $Result.background | Should -Be 'opaque'
+            $Result.data[0].b64_json | Should -Be 'SEVMTE8='
+        }
+
         It 'Generate image. Save to file.' {
             $TestResponse = @'
 {
@@ -33,15 +68,19 @@ Describe 'Request-ImageGeneration' {
   "usage": {
     "input_tokens": 50,
     "output_tokens": 50
-  }
+  },
+  output_format: "png",
+  quality: "low",
+  size: "123x456",
+  background: "opaque"
 }
 '@
             Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $TestResponse }
             { $splat = @{
-                    Prompt      = 'Hello'
+                    Prompt      = 'A cute baby sea otter'
                     OutFile     = Join-Path $TestDrive 'file.png'
-                    Model       = 'dall-e-2'
-                    Size        = '256x256'
+                    Model       = 'gpt-image-2'
+                    Size        = '123x456'
                     TimeoutSec  = 30
                     ErrorAction = 'Stop'
                 }
@@ -78,10 +117,9 @@ Describe 'Request-ImageGeneration' {
                     Prompt         = 'Hello'
                     OutFile        = Join-Path $TestDrive 'fileA.png'
                     NumberOfImages = 3
-                    Model          = 'dall-e-3'
-                    Size           = '1792x1024'
-                    Style          = 'vivid'
-                    Quality        = 'hd'
+                    Model          = 'gpt-image-2'
+                    Size           = '1024x1024'
+                    Quality        = 'low'
                     TimeoutSec     = 30
                     ErrorAction    = 'Stop'
                 }
@@ -199,46 +237,6 @@ Describe 'Request-ImageGeneration' {
             $Result[1][0] | Should -BeOfType [byte]
             $Result[1][0] | Should -Be 83
             $Result[1][1] | Should -Be 69
-        }
-
-        It 'Generate image. response_format = url' {
-            $TestResponse = @'
-{
-    "created": 1678359675,
-    "data": [
-        {
-        "url": "https://dummyimage.example.com"
-        }
-    ]
-}
-'@
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $TestResponse }
-            { $script:Result = Request-ImageGeneration -Prompt 'sunflower' -ResponseFormat url -ea Stop } | Should -Not -Throw
-            Should -InvokeVerifiable
-            $Result | Should -BeOfType [string]
-            $Result | Should -Be 'https://dummyimage.example.com'
-        }
-
-        It 'Generate multiple image. response_format = url' {
-            $TestResponse = @'
-{
-    "created": 1678359675,
-    "data": [
-        {
-        "url": "https://dummyimage1.example.com"
-        },
-        {
-        "url": "https://dummyimage2.example.com"
-        }
-    ]
-}
-'@
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $TestResponse }
-            { $script:Result = Request-ImageGeneration -Prompt 'sunflower' -NumberOfImages 2 -ResponseFormat url -ea Stop } | Should -Not -Throw
-            Should -InvokeVerifiable
-            $Result | Should -HaveCount 2
-            $Result[0] | Should -Be 'https://dummyimage1.example.com'
-            $Result[1] | Should -Be 'https://dummyimage2.example.com'
         }
 
         It 'The GPT image models are not support response_format = url. Defaulting to object.' {
@@ -550,7 +548,7 @@ Describe 'Request-ImageGeneration' {
             { $splat = @{
                     Prompt      = 'Lion'
                     OutFile     = Join-Path $TestDrive 'file1.png'
-                    Size        = '256x256'
+                    Size        = '1024x1024'
                     TimeoutSec  = 30
                     ErrorAction = 'Stop'
                 }
@@ -626,7 +624,7 @@ Describe 'Request-ImageGeneration' {
 
         It 'Image generation. Save to file.' {
             { $splat = @{
-                    Model       = 'dall-e-3'
+                    Model       = 'gpt-image-2'
                     Prompt      = 'A polar bear on an ice block'
                     OutFile     = Join-Path $TestDrive 'file1.png'
                     Size        = '1024x1024'
@@ -637,20 +635,6 @@ Describe 'Request-ImageGeneration' {
             } | Should -Not -Throw
             $Result | Should -BeNullOrEmpty
             (Join-Path $TestDrive 'file1.png') | Should -Exist
-        }
-
-        It 'Image generation. response_format = url' {
-            { $splat = @{
-                    Model          = 'dall-e-3'
-                    Prompt         = 'A polar bear on an ice block'
-                    ResponseFormat = 'url'
-                    Size           = '1024x1024'
-                    ErrorAction    = 'Stop'
-                }
-                $script:Result = Request-ImageGeneration @splat
-            } | Should -Not -Throw
-            $Result | Should -BeOfType [string]
-            $Result | Should -Match '^https://'
         }
     }
 }

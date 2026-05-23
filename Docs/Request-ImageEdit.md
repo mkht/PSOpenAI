@@ -93,7 +93,7 @@ Request-ImageEdit -Model 'gpt-image-2' -Image C:\sand_with_feather.png -Mask C:\
 
 ### -Image
 (Required)
-The image(s) to edit. Must be a supported image file or an array of images. For the GPT image models, each image should be a `png`, `webp`, or `jpg` file less than 50MB. You can provide up to 16 images. For dall-e-2, you can only provide one image, and it should be a square png file less than 4MB.
+The image(s) to edit. Must be a supported image file or an array of images. For the GPT image models, each image should be a `png`, `webp`, or `jpg` file less than 50MB. You can provide up to 16 images.
 
 ```yaml
 Type: String[]
@@ -104,7 +104,7 @@ Position: Named
 
 ### -Prompt
 (Required)
-A text description of the desired image(s). The maximum length is 32000 characters for the GPT image models, 1000 characters for `dall-e-2` and 4000 characters for `dall-e-3`.
+A text description of the desired image(s). The maximum length is 32000 characters for the GPT image models.
 
 ```yaml
 Type: String
@@ -122,7 +122,7 @@ Position: Named
 ```
 
 ### -Model
-The model to use for image generation. Only `dall-e-2` and the GPT image models are supported. Defaults to `dall-e-2` unless a parameter specific to the GPT image models is used.
+The model to use for image generation. Defaults to `gpt-image-2`.
 
 ```yaml
 Type: String
@@ -145,8 +145,6 @@ Default value: 1
 The quality of the image that will be generated.  
 - `auto` (default value) will automatically select the best quality for the given model.
 - `high`, `medium` and `low` are supported for the GPT image models.
-- `hd` and `standard` are supported for `dall-e-3`.
-- `standard` is the only option for `dall-e-2`.
 
 ```yaml
 Type: String

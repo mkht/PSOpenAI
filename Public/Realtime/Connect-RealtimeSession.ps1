@@ -9,7 +9,9 @@ function Connect-RealtimeSession {
         [Parameter()]
         [Completions(
             'gpt-realtime',
-            'gpt-realtime-mini'
+            'gpt-realtime-mini',
+            'gpt-realtime-1.5',
+            'gpt-realtime-2'
         )]
         [string]$Model = 'gpt-realtime',
 

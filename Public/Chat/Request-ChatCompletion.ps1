@@ -23,8 +23,6 @@ function Request-ChatCompletion {
             'gpt-4',
             'gpt-4o',
             'gpt-4o-mini',
-            'gpt-4o-audio-preview',
-            'gpt-4o-mini-audio-preview',
             'gpt-4o-search-preview',
             'gpt-4o-mini-search-preview',
             'gpt-3.5-turbo-16k',
@@ -47,14 +45,21 @@ function Request-ChatCompletion {
             'gpt-5.2',
             'gpt-5.2-chat-latest',
             'gpt-5.2-pro',
+            'gpt-5.3-chat-latest',
+            'gpt-5.4',
+            'gpt-5.4-mini',
+            'gpt-5.4-nano',
+            'gpt-5.5',
             'gpt-audio',
             'gpt-audio-mini',
+            'gpt-audio-1.5',
             'o1',
             'o3',
             'o3-mini',
-            'o4-mini'
+            'o4-mini',
+            'chat-latest'
         )]
-        [string]$Model = 'gpt-3.5-turbo',
+        [string]$Model = 'gpt-5.4-mini',
 
         [Parameter()]
         [AllowEmptyString()]
@@ -225,7 +230,7 @@ function Request-ChatCompletion {
 
         [Parameter()]
         [Alias('service_tier')]
-        [Completions('auto', 'default', 'flex', 'scale')]
+        [Completions('auto', 'default', 'flex', 'scale', 'priority')]
         [string]$ServiceTier,
 
         [Parameter()]
