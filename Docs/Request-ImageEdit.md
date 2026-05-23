@@ -70,7 +70,7 @@ https://developers.openai.com/api/reference/resources/images/methods/edit
 
 ### Example 1: Edit an image with a prompt.
 ```PowerShell
-Request-ImageEdit -Model 'gpt-image-1.5' -Prompt 'A bird on the desert' -Image 'C:\sand_with_fether.png' -OutFile 'C:\bird_on_desert.png' -Size 1024x1024
+Request-ImageEdit -Model 'gpt-image-2' -Prompt 'A bird on the desert' -Image 'C:\sand_with_fether.png' -OutFile 'C:\bird_on_desert.png' -Size 1024x1024
 ```
 
 | Original                                        | Generated                                  |
@@ -80,7 +80,7 @@ Request-ImageEdit -Model 'gpt-image-1.5' -Prompt 'A bird on the desert' -Image '
 
 ### Example 2: Create variation image from source and mask.
 ```PowerShell
-Request-ImageEdit -Model 'gpt-image-1.5' -Image C:\sand_with_feather.png -Mask C:\fether_mask.png -Prompt "A bird on the desert" -OutFile C:\edit2.png
+Request-ImageEdit -Model 'gpt-image-2' -Image C:\sand_with_feather.png -Mask C:\fether_mask.png -Prompt "A bird on the desert" -OutFile C:\edit2.png
 ```
 
 | Source (sand_with_feather.png)                | Mask (fether_mask.png)                | Generated (edit2.png)               |
@@ -177,7 +177,7 @@ Default value: auto
 
 ### -InputFidelity
 Controls fidelity to the original input image(s).
-This parameter is only supported for `gpt-image-1` and `gpt-image-1.5` and later models, unsupported for `gpt-image-1-mini`. Supports `high` and `low`. Defaults to `low`.
+This parameter is only supported for `gpt-image-1` and `gpt-image-2` and later models, unsupported for `gpt-image-1-mini`. Supports `high` and `low`. Defaults to `low`.
 ```yaml
 Type: String
 Aliases: input_fidelity

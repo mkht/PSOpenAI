@@ -7,6 +7,7 @@ function Request-ImageGeneration {
 
         [Parameter()]
         [Completions(
+            'gpt-image-2',
             'gpt-image-1.5',
             'gpt-image-1',
             'gpt-image-1-mini',

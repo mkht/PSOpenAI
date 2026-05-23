@@ -282,7 +282,7 @@ function Request-Response {
         [string]$ImageGenerationType = 'image_generation', # Always 'image_generation'
 
         [Parameter()]
-        [Completions('gpt-image-1', 'gpt-image-1-mini', 'gpt-image-1.5')]
+        [Completions('gpt-image-1', 'gpt-image-1-mini', 'gpt-image-1.5', 'gpt-image-2', 'chatgpt-image-latest')]
         [string]$ImageGenerationModel,
 
         [Parameter()]

@@ -65,7 +65,7 @@ https://developers.openai.com/api/reference/resources/images/methods/generate
 
 ### Example 1: Creates and save an image from prompt. 
 ```PowerShell
-Request-ImageGeneration -Model 'gpt-image-1' -Prompt 'A cute baby lion' -OutFile C:\babylion.png
+Request-ImageGeneration -Model 'gpt-image-2' -Prompt 'A cute baby lion' -OutFile C:\babylion.png
 ```
 
 ![lion](/Docs/images/babylion.png)
