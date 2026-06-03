@@ -85,6 +85,9 @@ class OpenAIDepricationModels {
         'o1-pro'                             = [datetime]::new(2026, 10, 23)
         'o3-mini'                            = [datetime]::new(2026, 10, 23)
         'o4-mini'                            = [datetime]::new(2026, 10, 23)
+        'gpt-image-1-mini'                   = [datetime]::new(2026, 12, 1)
+        'gpt-image-1.5'                      = [datetime]::new(2026, 12, 1)
+        'chatgpt-image-latest'               = [datetime]::new(2026, 12, 1)
     }
 }
 

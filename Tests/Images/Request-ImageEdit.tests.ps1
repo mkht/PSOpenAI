@@ -41,7 +41,7 @@ Describe 'Request-ImageEdit' {
                     Prompt      = 'Hello'
                     Image       = $script:TestImageData + '/fether_mask.png'
                     OutFile     = Join-Path $TestDrive 'out.png'
-                    Model       = 'gpt-image-1.5'
+                    Model       = 'gpt-image-2'
                     Size        = '1024x1024'
                     ErrorAction = 'Stop'
                 }
@@ -389,7 +389,7 @@ Describe 'Request-ImageEdit' {
                     Image          = @(($script:TestImageData + '/fether_mask.png'), ($script:TestImageData + '/sand_with_feather.png'))
                     Prompt         = 'sunflower'
                     ResponseFormat = 'base64'
-                    Model          = 'gpt-image-1.5'
+                    Model          = 'gpt-image-2'
                     NumberOfImages = 2
                     Size           = '1024x1024'
                     Quality        = 'low'
