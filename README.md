@@ -138,15 +138,6 @@ Guide: [How to use Realtime API](/Guides/How_to_use_Realtime_API.md)
 + [Request-AudioTranscription](/Docs/Request-AudioTranscription.md)
 + [Request-AudioTranslation](/Docs/Request-AudioTranslation.md)
 
-#### Videos
-Guide: [How to use Video generation](/Guides/How_to_use_Video_generation.md)
-
-+ [New-Video](/Docs/New-Video.md)
-+ [New-VideoRemix](/Docs/New-VideoRemix.md)
-+ [Get-Video](/Docs/Get-Video.md)
-+ [Get-VideoContent](/Docs/Get-VideoContent.md)
-+ [Remove-Video](/Docs/Remove-Video.md)
-
 #### Files
 + [Get-OpenAIFile](/Docs/Get-OpenAIFile.md)
 + [Add-OpenAIFile](/Docs/Add-OpenAIFile.md)
@@ -257,16 +248,6 @@ The edited image like this.
 | Original                                        | Generated                                  |
 | ----------------------------------------------- | ------------------------------------------ |
 | ![original](/Docs/images/sand_with_feather.png) | ![edited](/Docs/images/bird_on_desert.png) |
-
-### Video generation
-Generate a video from a text prompt.
-
-```PowerShell
-$VideoJob = New-Video -Model 'sora-2' -Prompt "A cat playing piano" -Size 1280x720
-$VideoJob | Get-VideoContent -OutFile "C:\output\cat_piano.mp4" -WaitForCompletion
-```
-
-![video](/Docs/images/cat_piano.gif)
 
 ### Moderation
 
