@@ -113,7 +113,7 @@ Position: Named
 ```
 
 ### -InputAudioTranscriptionModel
-The model to use for transcription, current options are `gpt-4o-transcribe`, `gpt-4o-mini-transcribe`, and `whisper-1`
+The model to use for transcription.
 
 ```yaml
 Type: String

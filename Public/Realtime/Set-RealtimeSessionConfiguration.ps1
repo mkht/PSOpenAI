@@ -55,7 +55,15 @@ function Set-RealtimeSessionConfiguration {
         [bool]$EnableInputAudioTranscription,
 
         [Parameter()]
-        [Completions('whisper-1', 'gpt-4o-transcribe-latest', 'gpt-4o-transcribe', 'gpt-4o-transcribe-diarize', 'gpt-4o-mini-transcribe')]
+        [Completions(
+            'whisper-1',
+            'gpt-4o-transcribe',
+            'gpt-4o-mini-transcribe',
+            'gpt-4o-transcribe-diarize',
+            'gpt-realtime-whisper',
+            'gpt-transcribe',
+            'gpt-live-transcribe'
+        )]
         [string][LowerCaseTransformation()]$InputAudioTranscriptionModel = 'whisper-1',
 
         [Parameter()]

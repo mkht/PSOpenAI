@@ -46,6 +46,9 @@ function Request-Response {
             'gpt-5.4-pro',
             'gpt-5.5',
             'gpt-5.5-pro',
+            'gpt-5.6-luna',
+            'gpt-5.6-terra',
+            'gpt-5.6-sol',
             'o1',
             'o1-pro',
             'o3',
@@ -331,14 +334,6 @@ function Request-Response {
         [string]$ImageGenerationSize = 'auto',
         #endregion Image Generation
 
-        #region Local shell
-        [Parameter()]
-        [switch]$UseLocalShellTool,
-
-        [Parameter(DontShow)]
-        [string]$LocalShellType = 'local_shell', # Always 'local_shell'
-        #endregion Local shell
-
         #region shell
         [Parameter()]
         [switch]$UseShellTool,
@@ -369,6 +364,7 @@ function Request-Response {
 
         [Parameter()]
         [Completions(
+            'web_search_call.action.sources',
             'code_interpreter_call.outputs',
             'computer_call_output.output.image_url',
             'file_search_call.results',
@@ -380,6 +376,7 @@ function Request-Response {
         [string[]]$Include,
 
         [Parameter()]
+        [System.Obsolete('Deprecated')]
         [Completions('auto', 'disabled')]
         [string]$Truncation,
 
@@ -421,8 +418,16 @@ function Request-Response {
 
         #region Reasoning
         [Parameter()]
-        [Completions('none', 'minimal', 'low', 'medium', 'high', 'xhigh')]
+        [Completions('auto', 'current_turn', 'all_turns')]
+        [string]$ReasoningContext,
+
+        [Parameter()]
+        [Completions('none', 'minimal', 'low', 'medium', 'high', 'xhigh', 'max')]
         [string]$ReasoningEffort,
+
+        [Parameter()]
+        [Completions('standard', 'pro')]
+        [string]$ReasoningMode,
 
         [Parameter()]
         [Completions('auto', 'concise', 'detailed')]
@@ -456,7 +461,7 @@ function Request-Response {
 
         [Parameter()]
         [Alias('service_tier')]
-        [Completions('auto', 'default', 'flex', 'scale', 'priority')]
+        [Completions('auto', 'default', 'flex', 'scale', 'priority', 'fast', 'ultrafast')]
         [string]$ServiceTier,
 
         [Parameter()]
@@ -464,15 +469,26 @@ function Request-Response {
         [string]$PromptCacheKey,
 
         [Parameter()]
+        [System.Obsolete('Deprecated. Use PromptCacheTtl instead.')]
         [Alias('prompt_cache_retention')]
         [Completions('in_memory', '24h')]
         [string]$PromptCacheRetention,
+
+        [Parameter()]
+        [Alias('prompt_cache_options.mode')]
+        [Completions('implicit', 'explicit')]
+        [string]$PromptCacheMode,
+
+        [Parameter()]
+        [Alias('prompt_cache_options.ttl')]
+        [string]$PromptCacheTtl,
 
         [Parameter()]
         [Alias('safety_identifier')]
         [string]$SafetyIdentifier,
 
         [Parameter()]
+        [System.Obsolete('Deprecated')]
         [string]$User,
 
         [Parameter()]
@@ -627,9 +643,23 @@ function Request-Response {
         if ($PSBoundParameters.ContainsKey('PromptCacheKey')) {
             $PostBody.prompt_cache_key = $PromptCacheKey
         }
+
+        # PromptCacheRetention is obsolete
         if ($PSBoundParameters.ContainsKey('PromptCacheRetention')) {
             $PostBody.prompt_cache_retention = $PromptCacheRetention
         }
+
+        $PromptCacheOptions = @{}
+        if ($PSBoundParameters.ContainsKey('PromptCacheMode')) {
+            $PromptCacheOptions.mode = $PromptCacheMode
+        }
+        if ($PSBoundParameters.ContainsKey('PromptCacheTtl')) {
+            $PromptCacheOptions.ttl = $PromptCacheTtl
+        }
+        if ($PromptCacheOptions.Keys.Count -gt 0) {
+            $PostBody.prompt_cache_options = $PromptCacheOptions
+        }
+
         if ($PSBoundParameters.ContainsKey('SafetyIdentifier')) {
             $PostBody.safety_identifier = $SafetyIdentifier
         }
@@ -960,14 +990,6 @@ function Request-Response {
             }
 
             $Tools += $ImageGenerationTool
-        }
-
-        #region Local Shell
-        if ($UseLocalShellTool) {
-            $LocalShellTool = @{
-                type = $LocalShellType
-            }
-            $Tools += $LocalShellTool
         }
 
         #region shell

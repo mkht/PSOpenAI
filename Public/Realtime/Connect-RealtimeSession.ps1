@@ -11,7 +11,9 @@ function Connect-RealtimeSession {
             'gpt-realtime',
             'gpt-realtime-mini',
             'gpt-realtime-1.5',
-            'gpt-realtime-2'
+            'gpt-realtime-2',
+            'gpt-realtime-2.1-mini',
+            'gpt-realtime-2.1'
         )]
         [string]$Model = 'gpt-realtime',
 

@@ -7,7 +7,13 @@ function Request-AudioTranscription {
         [string]$File,
 
         [Parameter()]
-        [Completions('whisper-1', 'gpt-4o-transcribe', 'gpt-4o-mini-transcribe', 'gpt-4o-transcribe-diarize')]
+        [Completions(
+            'whisper-1',
+            'gpt-4o-transcribe',
+            'gpt-4o-mini-transcribe',
+            'gpt-4o-transcribe-diarize',
+            'gpt-transcribe'
+        )]
         [string]$Model = 'whisper-1',
 
         [Parameter()]

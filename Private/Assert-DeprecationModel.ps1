@@ -88,6 +88,14 @@ class OpenAIDepricationModels {
         'gpt-image-1-mini'                   = [datetime]::new(2026, 12, 1)
         'gpt-image-1.5'                      = [datetime]::new(2026, 12, 1)
         'chatgpt-image-latest'               = [datetime]::new(2026, 12, 1)
+        'gpt-realtime'                       = [datetime]::new(2027, 1, 20)
+        'gpt-audio'                          = [datetime]::new(2027, 1, 20)
+        'gpt-4o-audio'                       = [datetime]::new(2027, 1, 20)
+        'gpt-4o-realtime'                    = [datetime]::new(2027, 1, 20)
+        'gpt-realtime-mini'                  = [datetime]::new(2027, 1, 20)
+        'gpt-audio-mini'                     = [datetime]::new(2027, 1, 20)
+        'gpt-4o-mini-realtime'               = [datetime]::new(2027, 1, 20)
+        'gpt-4o-mini-audio'                  = [datetime]::new(2027, 1, 20)
     }
 }
 

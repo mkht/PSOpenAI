@@ -116,7 +116,7 @@ Describe 'Request-Response' {
   "object": "response",
   "created_at": 1743926825,
   "status": "completed",
-  "model": "gpt-4o-mini-2024-07-18",
+  "model": "'gpt-5.6-luna'-2024-07-18",
   "output": [
     {
       "type": "message",
@@ -281,7 +281,7 @@ Describe 'Request-Response' {
   },
   "instructions": null,
   "max_output_tokens": 16,
-  "model": "gpt-4o-mini-2024-07-18",
+  "model": "'gpt-5.6-luna'-2024-07-18",
   "output": [
     {
       "type": "message",
@@ -316,7 +316,7 @@ Describe 'Request-Response' {
   "status": "completed",
   "error": null,
   "incomplete_details": null,
-  "model": "gpt-4o-mini-2024-07-18",
+  "model": "'gpt-5.6-luna'-2024-07-18",
   "output": [
     {
       "type": "message",
@@ -475,7 +475,7 @@ Describe 'Request-Response' {
             { $script:Result = Request-Response `
                     -Message 'What is this?' `
                     -Images ($script:TestData + '/sweets_donut.png') `
-                    -Model gpt-4o-mini -ea Stop } | Should -Not -Throw
+                    -Model 'gpt-5.6-luna' -ea Stop } | Should -Not -Throw
             Should -InvokeVerifiable
             $Result.LastUserMessage | Should -BeExactly 'What is this?'
             $Result.output_text | Should -BeExactly 'This is an illustration of two donuts.'
@@ -489,7 +489,7 @@ Describe 'Request-Response' {
   "object": "response",
   "created_at": 1743937620,
   "status": "completed",
-  "model": "gpt-4o-mini-2024-07-18",
+  "model": "'gpt-5.6-luna'-2024-07-18",
   "output": [
     {
       "type": "message",
@@ -517,7 +517,7 @@ Describe 'Request-Response' {
             { $script:Result = Request-Response `
                     -Message 'Summarize this text in Japanese' `
                     -Files ($script:TestData + '/日本語テキスト.txt') `
-                    -Model gpt-4o-mini -ea Stop } | Should -Not -Throw
+                    -Model 'gpt-5.6-luna' -ea Stop } | Should -Not -Throw
             Should -InvokeVerifiable
             $Result.LastUserMessage | Should -BeExactly 'Summarize this text in Japanese'
             $Result.output_text | Should -Not -BeNullOrEmpty
@@ -530,7 +530,7 @@ Describe 'Request-Response' {
   "object": "response",
   "created_at": 1743938395,
   "status": "completed",
-  "model": "gpt-4o-mini-2024-07-18",
+  "model": "'gpt-5.6-luna'-2024-07-18",
   "output": [
     {
       "type": "web_search_call",
@@ -613,7 +613,7 @@ Describe 'Request-Response' {
   "object": "response",
   "created_at": 1743938395,
   "status": "completed",
-  "model": "gpt-4o-mini-2024-07-18",
+  "model": "'gpt-5.6-luna'-2024-07-18",
   "output": [
     {
       "type": "message",
@@ -675,7 +675,7 @@ Describe 'Request-Response' {
 
         It 'Input Message is required' {
             Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest {}
-            { Request-Response -Model 'gpt-4o-mini' -ea Stop } | Should -Throw 'No message is specified. You must specify one or more messages.'
+            { Request-Response -Model 'gpt-5.6-luna' -ea Stop } | Should -Throw 'No message is specified. You must specify one or more messages.'
             Should -Not -InvokeVerifiable
         }
 
@@ -686,7 +686,7 @@ Describe 'Request-Response' {
   "object": "response",
   "created_at": 1743938395,
   "status": "completed",
-  "model": "gpt-4o-mini-2024-07-18"
+  "model": "'gpt-5.6-luna'-2024-07-18"
 }
 '@
             }
@@ -702,7 +702,7 @@ Describe 'Request-Response' {
   "object": "response",
   "created_at": 1743938395,
   "status": "completed",
-  "model": "gpt-4o-mini-2024-07-18"
+  "model": "'gpt-5.6-luna'-2024-07-18"
 }
 '@
         }
@@ -724,7 +724,7 @@ Describe 'Request-Response' {
         }
 
         It 'Simple chat response' {
-            { $script:Result = Request-Response -Message 'Hello' -Model gpt-4o-mini -Store $false -TimeoutSec 30 -ea Stop } | Should -Not -Throw
+            { $script:Result = Request-Response -Message 'Hello' -Model 'gpt-5.6-luna' -Store $false -TimeoutSec 30 -ea Stop } | Should -Not -Throw
             $Result | Should -BeOfType [pscustomobject]
             $Result.object | Should -Be 'response'
             $Result.output | Should -HaveCount 1
@@ -742,14 +742,17 @@ Describe 'Request-Response' {
                 $param = @{
                     Message          = 'What a defference between C# and C++? Please explain briefly.'
                     DeveloperMessage = 'You are a senior developer.'
-                    Model            = 'o4-mini'
-                    Truncation       = 'auto'
+                    Model            = 'gpt-5.6-luna'
                     MaxOutputTokens  = 1024
-                    User             = 'Kevin'
                     OutputType       = 'text'
                     MetaData         = @{'key1' = 'value1' }
-                    ReasoningEffort  = 'low'
+                    ReasoningEffort  = 'high'
                     ReasoningSummary = 'detailed'
+                    ReasoningContext = 'all_turns'
+                    PromptCacheMode  = 'explicit'
+                    PromptCacheTtl   = '30m'
+                    SafetyIdentifier = 'safety_id_123'
+                    ServiceTier      = 'fast'
                     Verbosity        = 'medium'
                     Store            = $false
                     TimeoutSec       = 30
@@ -770,7 +773,7 @@ Describe 'Request-Response' {
                 $param = @{
                     Message          = $Prompt
                     DeveloperMessage = $SystemMsg
-                    Model            = 'gpt-4o-mini'
+                    Model            = 'gpt-5.6-luna'
                     OutputType       = ([MathReasoning])
                     Store            = $false
                     TimeoutSec       = 30
@@ -871,13 +874,13 @@ Ping Source Address Latency(ms) BufferSize(B) Status
 
             $Message = 'Ping the Google Public DNS address three times and briefly report the results.'
             { $param = @{
-                    Message     = $Message
-                    Model       = 'gpt-4o-mini'
-                    Temperature = 0
-                    Functions   = $FunctionDefinition
-                    ToolChoice  = 'auto'
-                    Store       = $false
-                    TimeoutSec  = 30
+                    Message         = $Message
+                    Model           = 'gpt-5.6-luna'
+                    ReasoningEffort = 'none'
+                    Functions       = $FunctionDefinition
+                    ToolChoice      = 'auto'
+                    Store           = $false
+                    TimeoutSec      = 30
                 }
                 $script:Result1 = Request-Response @param -ea Stop
             } | Should -Not -Throw
@@ -893,12 +896,11 @@ Ping Source Address Latency(ms) BufferSize(B) Status
             }
 
             { $param = @{
-                    Model       = 'gpt-4o-mini'
-                    Temperature = 0
-                    Functions   = $FunctionDefinition
-                    ToolChoice  = 'auto'
-                    Store       = $false
-                    TimeoutSec  = 30
+                    Model      = 'gpt-5.6-luna'
+                    Functions  = $FunctionDefinition
+                    ToolChoice = 'auto'
+                    Store      = $false
+                    TimeoutSec = 30
                 }
                 $script:Result2 = $script:Result1 | Request-Response @param -ea Stop
             } | Should -Not -Throw
@@ -938,15 +940,15 @@ Follow the instructions below and return the result.
 STEP1. Use the get_n-days_from_now tool to get the date and time 3 days from now.
 STEP2. Use the timestamp tool to save the resulting timestamp in date and time, using 24-hour format.
 '@
-            { $param = @{
-                    Model       = 'gpt-5-mini'
-                    CustomTools = $CustomTools
-                    ToolChoice  = 'required'
-                    Store       = $false
-                    TimeoutSec  = 60
-                }
-                $script:Result1 = Request-Response @param -Message $Message -ea Stop
-            } | Should -Not -Throw
+
+            $param = @{
+                Model       = 'gpt-5.6-luna'
+                CustomTools = $CustomTools
+                ToolChoice  = 'required'
+                Store       = $false
+                TimeoutSec  = 60
+            }
+            { $script:Result1 = Request-Response @param -Message $Message -ea Stop } | Should -Not -Throw
             $Result1.output[-1].type | Should -Be 'custom_tool_call'
             $Result1.output[-1].name | Should -Be 'get_n-days_from_now'
 
@@ -968,8 +970,9 @@ STEP2. Use the timestamp tool to save the resulting timestamp in date and time, 
         It 'Stream output' {
             $params = @{
                 Message         = 'Please describe about ChatGPT'
-                Model           = 'gpt-4o-mini'
-                MaxOutputTokens = 32
+                Model           = 'gpt-5.6-luna'
+                ReasoningEffort = 'none'
+                MaxOutputTokens = 512
                 Store           = $false
                 Stream          = $true
                 TimeoutSec      = 30
@@ -981,14 +984,14 @@ STEP2. Use the timestamp tool to save the resulting timestamp in date and time, 
 
         It 'Image input (url)' {
             $RemoteImageUrl = 'https://upload.wikimedia.org/wikipedia/commons/a/a8/Dons_Coaches_coach_1957_Bedford_SB3_Yeates_Europa_NKY_161_at_Aldham_Old_Tyme_Rally_2014.jpg'
-            { $script:Result = Request-Response -Model 'gpt-4o-mini' -Message "What's in this image?" -Images ($RemoteImageUrl) -ImageDetail Low  -TimeoutSec 30 -Store $false -ea Stop } | Should -Not -Throw
+            { $script:Result = Request-Response -Model 'gpt-5.6-luna' -Message "What's in this image?" -Images ($RemoteImageUrl) -ImageDetail Low  -TimeoutSec 30 -Store $false -ea Stop } | Should -Not -Throw
             $Result.object | Should -Be 'response'
             $Result.LastUserMessage | Should -Be "What's in this image?"
             $Result.output_text | Should -Not -BeNullOrEmpty
         }
 
         It 'Image input (local file)' {
-            { $script:Result = Request-Response -Model 'gpt-4o-mini' -Message "What's in this image?" -Images ($script:TestData + '/sweets_donut.png') -ImageDetail Low -TimeoutSec 30 -Store $false -ea Stop } | Should -Not -Throw
+            { $script:Result = Request-Response -Model 'gpt-5.6-luna' -Message "What's in this image?" -Images ($script:TestData + '/sweets_donut.png') -ImageDetail Low -TimeoutSec 30 -Store $false -ea Stop } | Should -Not -Throw
             $Result.object | Should -Be 'response'
             $Result.LastUserMessage | Should -Be "What's in this image?"
             $Result.output_text | Should -Not -BeNullOrEmpty
@@ -996,21 +999,21 @@ STEP2. Use the timestamp tool to save the resulting timestamp in date and time, 
 
         It 'File input (url)' {
             $RemoteFileUrl = 'https://www.berkshirehathaway.com/letters/2024ltr.pdf'
-            { $script:Result = Request-Response -Model 'gpt-4o-mini' -Message 'Analyze the letter and provide a summary of the key points.' -Files ($RemoteFileUrl) -TimeoutSec 30 -Store $false -ea Stop } | Should -Not -Throw
+            { $script:Result = Request-Response -Model 'gpt-5.6-luna' -Message 'Analyze the letter and provide a summary of the key points.' -Files ($RemoteFileUrl) -TimeoutSec 30 -Store $false -ea Stop } | Should -Not -Throw
             $Result.object | Should -Be 'response'
             $Result.LastUserMessage | Should -Be 'Analyze the letter and provide a summary of the key points.'
             $Result.output_text | Should -Not -BeNullOrEmpty
         }
 
         It 'File input (local file)' {
-            { $script:Result = Request-Response -Model 'gpt-4o-mini' -Message 'Summarize this text in Japanese' -Files ($script:TestData + '/日本語テキスト.txt') -TimeoutSec 30 -Store $false -ea Stop } | Should -Not -Throw
+            { $script:Result = Request-Response -Model 'gpt-5.6-luna' -Message 'Summarize this text in Japanese' -Files ($script:TestData + '/日本語テキスト.txt') -TimeoutSec 30 -Store $false -ea Stop } | Should -Not -Throw
             $Result.object | Should -Be 'response'
             $Result.LastUserMessage | Should -Be 'Summarize this text in Japanese'
             $Result.output_text | Should -Not -BeNullOrEmpty
         }
 
         It 'Tools - File search (vector store)' {
-            { $script:Result = Request-Response -Model 'gpt-4o-mini' `
+            { $script:Result = Request-Response -Model 'gpt-5.6-luna' -ReasoningEffort 'none' `
                     -Message 'Please breifly describe the flow of setup an Azure Stack HCI demo environment.' `
                     -UseFileSearchTool `
                     -FileSearchVectorStoreIds 'vs_67f3ca64998c81919ab49ba98a827810' `
@@ -1027,7 +1030,7 @@ STEP2. Use the timestamp tool to save the resulting timestamp in date and time, 
         }
 
         It 'Tools - Web Search' {
-            { $script:Result = Request-Response -Model 'gpt-4o-mini' `
+            { $script:Result = Request-Response -Model 'gpt-5.6-luna' -ReasoningEffort 'none' `
                     -Message 'Please tell me some interesting recent tech stories.' `
                     -UseWebSearchTool `
                     -WebSearchAllowedDomains @('techradar.com', 'theguardian.com', 'theregister.com') `
@@ -1062,7 +1065,7 @@ STEP2. Use the timestamp tool to save the resulting timestamp in date and time, 
             {
                 $param = @{
                     Message                  = 'How does microsoft/markitdown convert pptx to markdown?'
-                    Model                    = 'gpt-4.1-mini'
+                    Model                    = 'gpt-5.6-luna'
                     UseRemoteMCPTool         = $true
                     RemoteMCPServerLabel     = 'DeepWiki'
                     RemoteMCPServerUrl       = 'https://mcp.deepwiki.com/mcp'
@@ -1082,7 +1085,7 @@ STEP2. Use the timestamp tool to save the resulting timestamp in date and time, 
             {
                 $param = @{
                     Message                = "How Many R's in 'Strawberry'? Solve it use with Python tools."
-                    Model                  = 'gpt-4.1-mini'
+                    Model                  = 'gpt-5.6-luna'
                     UseCodeInterpreterTool = $true
                     ToolChoice             = 'required'
                     Store                  = $false
@@ -1098,7 +1101,7 @@ STEP2. Use the timestamp tool to save the resulting timestamp in date and time, 
             {
                 $param = @{
                     Message                          = 'Create an illustration of a young man wearing a brown bucket hat, holding a cola in his left hand and chicken in his right hand.'
-                    Model                            = 'gpt-4.1-mini'
+                    Model                            = 'gpt-5.6-luna'
                     UseImageGenerationTool           = $true
                     ImageGenerationOutputFormat      = 'jpeg'
                     ImageGenerationQuality           = 'low'
@@ -1113,19 +1116,19 @@ STEP2. Use the timestamp tool to save the resulting timestamp in date and time, 
             $Result.output.type | Should -Contain 'image_generation_call'
         }
 
-        It 'Tools - Local Shell' {
+        It 'Tools - Shell' {
             {
                 $param = @{
-                    Message           = 'List all files that the size is larger than 100MB in /var/logs'
-                    Model             = 'gpt-5-codex-mini'
-                    UseLocalShellTool = $true
-                    Store             = $false
-                    TimeoutSec        = 30
+                    Message      = 'List all files that the size is larger than 100MB in /var/logs'
+                    Model        = 'gpt-5.6-luna'
+                    UseShellTool = $true
+                    Store        = $false
+                    TimeoutSec   = 30
                 }
 
                 $script:Result = Request-Response @param -ea Stop } | Should -Not -Throw
             $Result.object | Should -Be 'response'
-            $Result.output.type | Should -Contain 'local_shell_call'
+            $Result.output.type | Should -Contain 'shell_call'
         }
     }
 
@@ -1152,7 +1155,7 @@ STEP2. Use the timestamp tool to save the resulting timestamp in date and time, 
         }
 
         It 'Simple chat response' {
-            { $script:Result = Request-Response -Message 'Hello' -Model gpt-4o-mini -Store $false -TimeoutSec 30 -ea Stop } | Should -Not -Throw
+            { $script:Result = Request-Response -Message 'Hello' -Model 'gpt-5.6-luna' -Store $false -TimeoutSec 30 -ea Stop } | Should -Not -Throw
             $Result | Should -BeOfType [pscustomobject]
             $Result.object | Should -Be 'response'
             $Result.output | Should -HaveCount 1
@@ -1168,7 +1171,7 @@ STEP2. Use the timestamp tool to save the resulting timestamp in date and time, 
         It 'Stream output' {
             $params = @{
                 Message         = 'Please describe about Azure OpenAI'
-                Model           = 'gpt-4o-mini'
+                Model           = 'gpt-5.6-luna'
                 MaxOutputTokens = 32
                 Store           = $false
                 Stream          = $true

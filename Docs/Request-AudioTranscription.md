@@ -56,7 +56,7 @@ Hello, I am david.
 
 ### Example 2: Speaker diarization
 ```PowerShell
-PS C:\> $JsonResult = Request-AudioTranscription -File C:\sample\meeting.mp3 -Model gpt-4o-transcribe-diarize -ResponseFormat diarized_json
+PS C:\> $JsonResult = Request-AudioTranscription -File C:\sample\meeting.mp3 -Model gpt-transcribe-diarize -ResponseFormat diarized_json
 PS C:\> $JsonResult | ConvertFrom-Json
 ```
 

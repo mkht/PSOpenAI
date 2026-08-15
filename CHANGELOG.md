@@ -1,4 +1,12 @@
 # Changelog
+### 4.50.0
+- Add `gpt-5.6-sol`, `gpt-5.6-terra`, `gpt-5.6-luna`
+- Add `gpt-realtime-2.1`, `gpt-realtime-2.1-mini`, `gpt-transcribe`, `gpt-live-transcribe`
+- New parameters for `Request-Response`
+  + `ReasoningContext`, `ReasoningMode`, `PromptCacheMode` and `PromptCacheTtl`
+- API misc updates.
+- Update deprecation models list.
+
 ### 4.49.0
 - **IMPORTANT:** The default model for `Request-ChatCompletion` & `Request-Response` is changed to `gpt-5.4-mini`.
 - **IMPORTANT:** The default model for Images endpoints is changed to `gpt-image-2`. It because the dall-e models are shut down by OpenAI.

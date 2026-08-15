@@ -39,7 +39,7 @@ Set the realtime transcription session's configuration.
 ### Example 1
 ```powershell
 PS C:\> Set-RealtimeTranscriptionSessionConfiguration `
-    -InputAudioTranscriptionModel 'gpt-4o-transcribe'
+    -InputAudioTranscriptionModel 'gpt-transcribe'
     -InputAudioTranscriptionLanguage 'de'
     -EnableTurnDetection $true
     -TurnDetectionType 'server_vad'
@@ -85,7 +85,7 @@ Position: Named
 ```
 
 ### -InputAudioTranscriptionModel
-The model to use for transcription, current options are `gpt-4o-transcribe`, `gpt-4o-mini-transcribe`, and `whisper-1`
+The model to use for transcription.
 
 ```yaml
 Type: String
