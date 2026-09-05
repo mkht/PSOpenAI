@@ -1,6 +1,7 @@
 # Changelog
 ### Unreleased
 - Add `gpt-6-astra`
+- **IMPORTANT:** Remove Assistants API functions. The Assistants API was shut down by OpenAI on 2026-08-26.
 
 ### 4.50.0
 - Add `gpt-5.6-sol`, `gpt-5.6-terra`, `gpt-5.6-luna`

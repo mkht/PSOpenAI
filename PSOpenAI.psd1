@@ -49,26 +49,6 @@
         'Clear-OpenAIContext',
         'Set-OpenAIContext',
         ### OpenAI ###
-        #### Assistant ####
-        'Get-Assistant',
-        'New-Assistant',
-        'Remove-Assistant',
-        'Set-Assistant',
-        #### Thread & Run ####
-        'Get-Thread',
-        'New-Thread',
-        'Remove-Thread',
-        'Set-Thread',
-        'Add-ThreadMessage',
-        'Get-ThreadMessage',
-        'Remove-ThreadMessage',
-        'Start-ThreadRun',
-        'Stop-ThreadRun',
-        'Get-ThreadRun',
-        'Wait-ThreadRun',
-        'Receive-ThreadRun',
-        'Submit-ToolOutput',
-        'Get-ThreadRunStep',
         #### Model ####
         'Get-OpenAIModels',
         #### Audio ####

@@ -74,27 +74,7 @@ Guide: [Migrate ChatCompletion to Response](/Guides/Migrate_ChatCompletion_to_Re
 + [Get-ConversationItem](/Docs/Get-ConversationItem.md)
 + [Remove-ConversationItem](/Docs/Remove-ConversationItem.md)
 
-#### Assistants
-Guide: [How to use Assistants](/Guides/How_to_use_Assistants.md)  
-Guide: [How to use File search with Assistants and Vector Store](/Guides/How_to_use_FileSearch_with_VectorStore.md)
-
-+ [Get-Assistant](/Docs/Get-Assistant.md)
-+ [New-Assistant](/Docs/New-Assistant.md)
-+ [Set-Assistant](/Docs/Set-Assistant.md)
-+ [Remove-Assistant](/Docs/Remove-Assistant.md)
-+ [Get-Thread](/Docs/Get-Thread.md)
-+ [New-Thread](/Docs/New-Thread.md)
-+ [Set-Thread](/Docs/Set-Thread.md)
-+ [Remove-Thread](/Docs/Remove-Thread.md)
-+ [Get-ThreadMessage](/Docs/Get-ThreadMessage.md)
-+ [Add-ThreadMessage](/Docs/Add-ThreadMessage.md)
-+ [Remove-ThreadMessage](/Docs/Remove-ThreadMessage.md)
-+ [Get-ThreadRun](/Docs/Get-ThreadRun.md)
-+ [Start-ThreadRun](/Docs/Start-ThreadRun.md)
-+ [Stop-ThreadRun](/Docs/Stop-ThreadRun.md)
-+ [Wait-ThreadRun](/Docs/Wait-ThreadRun.md)
-+ [Receive-ThreadRun](/Docs/Receive-ThreadRun.md)
-+ [Get-ThreadRunStep](/Docs/Get-ThreadRunStep.md)
+#### Vector Stores
 + [Get-VectorStore](/Docs/Get-VectorStore.md)
 + [New-VectorStore](/Docs/New-VectorStore.md)
 + [Set-VectorStore](/Docs/Set-VectorStore.md)
