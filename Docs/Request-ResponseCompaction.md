@@ -24,6 +24,10 @@ Request-ResponseCompaction
     [-ImageDetail <String>]
     [-Files <String[]>]
     [-PreviousResponseId <String>]
+    [-ServiceTier <String>]
+    [-PromptCacheKey <String>]
+    [-PromptCacheMode <String>]
+    [-PromptCacheTtl <String>]
     [-OutputRawResponse]
     [-Organization <String>]
     [-TimeoutSec <Int32>]
@@ -143,6 +147,36 @@ You can speciy a list of the local file path, the URL of the file or the ID of t
 
 ```yaml
 Type: String[]
+Required: False
+Position: Named
+```
+
+### -ServiceTier
+Specifies the processing type used for serving the request.
+
+```yaml
+Type: String
+Aliases: service_tier
+Required: False
+Position: Named
+```
+
+### -PromptCacheMode
+Controls whether OpenAI automatically creates an implicit cache breakpoint. Defaults to implicit. With implicit.
+
+```yaml
+Type: String
+Aliases: prompt_cache_options.mode
+Required: False
+Position: Named
+```
+
+### -PromptCacheTtl
+The minimum lifetime applied to every implicit and explicit cache breakpoint written by the request. Defaults to 30m, which is currently the only supported value. The backend may retain cache entries for longer.
+
+```yaml
+Type: String
+Aliases: prompt_cache_options.ttl
 Required: False
 Position: Named
 ```

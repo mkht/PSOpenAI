@@ -105,6 +105,8 @@ Request-Response
     [-JsonSchemaStrict <Boolean>] 
     [-ServiceTier <String>]
     [-PromptCacheKey <String>]
+    [-PromptCacheMode <String>]
+    [-PromptCacheTtl <String>]
     [-PromptCacheRetention <String>]
     [-SafetyIdentifier <String>]
     [-User <String>]
@@ -1003,7 +1005,7 @@ Position: Named
 ```
 
 ### -ServiceTier
-Specifies the latency tier to use for processing the request. This parameter is relevant for customers subscribed to the scale tier service.
+Specifies the processing type used for serving the request.
 
 ```yaml
 Type: String
@@ -1022,8 +1024,29 @@ Required: False
 Position: Named
 ```
 
+### -PromptCacheMode
+Controls whether OpenAI automatically creates an implicit cache breakpoint. Defaults to implicit. With implicit.
+
+```yaml
+Type: String
+Aliases: prompt_cache_options.mode
+Required: False
+Position: Named
+```
+
+### -PromptCacheTtl
+The minimum lifetime applied to every implicit and explicit cache breakpoint written by the request. Defaults to 30m, which is currently the only supported value. The backend may retain cache entries for longer.
+
+```yaml
+Type: String
+Aliases: prompt_cache_options.ttl
+Required: False
+Position: Named
+```
+
 ### -PromptCacheRetention
-The retention policy for the prompt cache. Set to `24h` to enable extended prompt caching, which keeps cached prefixes active for longer, up to a maximum of 24 hours.
+Deprecated. Use `-PromptCacheTtl` instead.
+
 ```yaml
 Type: String
 Aliases: prompt_cache_retention
