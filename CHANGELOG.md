@@ -1,4 +1,7 @@
 # Changelog
+### Unreleased
+- Add `gpt-6-astra`
+
 ### 4.50.0
 - Add `gpt-5.6-sol`, `gpt-5.6-terra`, `gpt-5.6-luna`
 - Add `gpt-realtime-2.1`, `gpt-realtime-2.1-mini`, `gpt-transcribe`, `gpt-live-transcribe`
