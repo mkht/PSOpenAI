@@ -2,3 +2,4 @@ test*.ps1
 **/Debug
 **/bin
 **/obj
+AGENTS.md
