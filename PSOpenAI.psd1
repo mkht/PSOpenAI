@@ -74,6 +74,8 @@
         'Get-VideoContent',
         'Remove-Video',
         'Wait-Video',
+        #### Content Provenance Checks ####
+        'Request-ContentProvenanceCheck',
         #### Moderation ####
         'Request-Moderation',
         #### Responses ####

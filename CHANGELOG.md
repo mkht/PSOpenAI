@@ -1,4 +1,7 @@
 # Changelog
+### Unreleased
+- Add `Request-ContentProvenanceCheck` to check image and audio files for OpenAI C2PA and SynthID provenance signals.
+
 ### 4.51.0
 - **IMPORTANT:** Remove Assistants API functions. The Assistants API was shut down by OpenAI on 2026-08-26.
 - Add `gpt-6-astra`

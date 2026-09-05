@@ -101,6 +101,16 @@ function Get-OpenAIAPIEndpoint {
             }
             continue
         }
+        'ContentProvenanceChecks' {
+            $UriBuilder.Path += 'content_provenance_checks'
+            @{
+                Name        = 'content_provenance_check'
+                Method      = 'Post'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'multipart/form-data'
+            }
+            continue
+        }
         'Moderation' {
             $UriBuilder.Path += 'moderations'
             @{

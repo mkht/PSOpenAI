@@ -155,6 +155,7 @@ Guide: [How to use Batch](/Guides/How_to_use_Batch.md)
 + [Get-OpenAIModels](/Docs/Get-OpenAIModels.md)
 + [Request-Embeddings](/Docs/Request-Embeddings.md)
 + [Request-Moderation](/Docs/Request-Moderation.md)
++ [Request-ContentProvenanceCheck](/Docs/Request-ContentProvenanceCheck.md)
 + [Request-TextCompletion](/Docs/Request-TextCompletion.md)
 
 ### Azure OpenAI Service

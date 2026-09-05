@@ -114,6 +114,8 @@ function GetMultipartBytesContent {
     )
     $ContentDispositionHeader = 'Content-Disposition: form-data; name="{0}"' -f $fieldName
     if (-not [string]::IsNullOrWhiteSpace($fileName)) {
+        # Some endpoints require filename even when the extended filename* is present.
+        $ContentDispositionHeader += '; filename="{0}"' -f [Uri]::EscapeDataString($fileName)
         $ContentDispositionHeader += "; filename*=utf-8''{0}" -f [Uri]::EscapeDataString($fileName)
     }
     $header = @(
