@@ -13,7 +13,8 @@
     "editor.insertSpaces": true,
     "powershell.scriptAnalysis.settingsPath": "PSScriptAnalyzerRules.psd1",
     "[markdown]": {
-        "files.trimTrailingWhitespace": false
+        "files.trimTrailingWhitespace": false,
+        "editor.formatOnSave": false
     },
     "[xml]": {
         "editor.tabSize": 2,
