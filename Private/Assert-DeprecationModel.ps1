@@ -96,6 +96,10 @@ class OpenAIDepricationModels {
         'gpt-audio-mini'                     = [datetime]::new(2027, 1, 20)
         'gpt-4o-mini-realtime'               = [datetime]::new(2027, 1, 20)
         'gpt-4o-mini-audio'                  = [datetime]::new(2027, 1, 20)
+        'whisper-1'                          = [datetime]::new(2027, 2, 26)
+        'gpt-4o-transcribe'                  = [datetime]::new(2027, 2, 26)
+        'gpt-4o-mini-transcribe'             = [datetime]::new(2027, 2, 26)
+        'gpt-4o-transcribe-diarize'          = [datetime]::new(2027, 2, 26)
     }
 }
 
