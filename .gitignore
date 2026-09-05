@@ -3,3 +3,4 @@ test*.ps1
 **/bin
 **/obj
 AGENTS.md
+/Agent_Development_Guide.md
