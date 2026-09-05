@@ -234,6 +234,10 @@ Describe 'Request-ResponseCompaction' {
                     Images             = ($script:TestData + '/sweets_donut.png')
                     Model              = 'o4-mini'
                     PreviousResponseId = 'id_previous1234'
+                    ServiceTier        = 'fast'
+                    PromptCacheKey     = 'prompt_cache_key_1234'
+                    PromptCacheMode    = 'explicit'
+                    PromptCacheTtl     = '30m'
                     TimeoutSec         = 30
                     MaxRetryCount      = 3
                 }

@@ -84,6 +84,24 @@ function Request-ResponseCompaction {
         [string]$PreviousResponseId,
 
         [Parameter()]
+        [Alias('service_tier')]
+        [Completions('auto', 'default', 'flex', 'scale', 'priority', 'fast', 'ultrafast')]
+        [string]$ServiceTier,
+
+        [Parameter()]
+        [Alias('prompt_cache_key')]
+        [string]$PromptCacheKey,
+
+        [Parameter()]
+        [Alias('prompt_cache_options.mode')]
+        [Completions('implicit', 'explicit')]
+        [string]$PromptCacheMode,
+
+        [Parameter()]
+        [Alias('prompt_cache_options.ttl')]
+        [string]$PromptCacheTtl,
+
+        [Parameter()]
         [switch]$OutputRawResponse,
 
         [Parameter()]
@@ -148,6 +166,23 @@ function Request-ResponseCompaction {
 
         if ($PSBoundParameters.ContainsKey('Instructions')) {
             $PostBody.instructions = $Instructions
+        }
+        if ($PSBoundParameters.ContainsKey('ServiceTier')) {
+            $PostBody.service_tier = $ServiceTier
+        }
+        if ($PSBoundParameters.ContainsKey('PromptCacheKey')) {
+            $PostBody.prompt_cache_key = $PromptCacheKey
+        }
+
+        $PromptCacheOptions = @{}
+        if ($PSBoundParameters.ContainsKey('PromptCacheMode')) {
+            $PromptCacheOptions.mode = $PromptCacheMode
+        }
+        if ($PSBoundParameters.ContainsKey('PromptCacheTtl')) {
+            $PromptCacheOptions.ttl = $PromptCacheTtl
+        }
+        if ($PromptCacheOptions.Keys.Count -gt 0) {
+            $PostBody.prompt_cache_options = $PromptCacheOptions
         }
 
         #region Construct messages
