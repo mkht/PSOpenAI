@@ -98,7 +98,7 @@ Position: Named
 ```
 
 ### -TimeoutSec
-Specifies how long the request can be pending before it times out.  
+Specifies the timeout in seconds for each HTTP attempt, including reading the response body or stream. Retry delays are excluded.  
 The default value is `0` (infinite).
 
 ```yaml

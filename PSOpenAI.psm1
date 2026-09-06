@@ -64,7 +64,12 @@ foreach ($Type in $ExportableTypes) {
     }
 }
 # Remove type accelerators when the module is removed.
+$HttpTransport = $script:OpenAIHttpTransport
 $MyInvocation.MyCommand.ScriptBlock.Module.OnRemove = {
+    if ($null -ne $HttpTransport.Client) {
+        $HttpTransport.Client.Dispose()
+        $HttpTransport.Client = $null
+    }
     foreach ($Type in $ExportableTypes) {
         $null = $TypeAcceleratorsClass::Remove($Type.FullName)
     }

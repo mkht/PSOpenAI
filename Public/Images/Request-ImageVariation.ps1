@@ -163,9 +163,8 @@ function Request-ImageVariation {
                     Uri             = $_
                     Method          = 'Get'
                     OutFile         = $AbsoluteOutFile
-                    UseBasicParsing = $true
                 }
-                Microsoft.PowerShell.Utility\Invoke-WebRequest @splat
+                Invoke-OpenAIHttpRequest @splat
             }
         }
         elseif ($ResponseFormat -eq 'url') {

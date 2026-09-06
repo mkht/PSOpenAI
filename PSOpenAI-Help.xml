@@ -15725,7 +15725,7 @@ This parameter is valid only when the `-AsBatch` swicth is used. Otherwise, it i
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>TimeoutSec</maml:name>
           <maml:description>
-            <maml:para>Specifies how long the request can be pending before it times out.
+            <maml:para>Specifies the timeout in seconds for each HTTP attempt, including reading the response body or stream. Retry delays are excluded.
 The default value is `0` (infinite).</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
@@ -16439,7 +16439,7 @@ This parameter is valid only when the `-AsBatch` swicth is used. Otherwise, it i
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>TimeoutSec</maml:name>
         <maml:description>
-          <maml:para>Specifies how long the request can be pending before it times out.
+          <maml:para>Specifies the timeout in seconds for each HTTP attempt, including reading the response body or stream. Retry delays are excluded.
 The default value is `0` (infinite).</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
@@ -21019,7 +21019,7 @@ This parameter is valid only when the `-AsBatch` swicth is used.</maml:para>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>TimeoutSec</maml:name>
           <maml:description>
-            <maml:para>Specifies how long the request can be pending before it times out.
+            <maml:para>Specifies the timeout in seconds for each HTTP attempt, including reading the response body or stream. Retry delays are excluded.
 The default value is `0` (infinite).</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
@@ -22305,7 +22305,7 @@ This parameter is valid only when the `-AsBatch` swicth is used.</maml:para>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>TimeoutSec</maml:name>
         <maml:description>
-          <maml:para>Specifies how long the request can be pending before it times out.
+          <maml:para>Specifies the timeout in seconds for each HTTP attempt, including reading the response body or stream. Retry delays are excluded.
 The default value is `0` (infinite).</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
@@ -24203,7 +24203,7 @@ URL specified in the context take precedence over environment and global variabl
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>TimeoutSec</maml:name>
           <maml:description>
-            <maml:para>Specifies how long the request can be pending before it times out.
+            <maml:para>Specifies the timeout in seconds for each HTTP attempt, including reading the response body or stream. Retry delays are excluded.
 The default value is `0` (infinite).</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
@@ -24309,7 +24309,7 @@ URL specified in the context take precedence over environment and global variabl
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>TimeoutSec</maml:name>
         <maml:description>
-          <maml:para>Specifies how long the request can be pending before it times out.
+          <maml:para>Specifies the timeout in seconds for each HTTP attempt, including reading the response body or stream. Retry delays are excluded.
 The default value is `0` (infinite).</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
