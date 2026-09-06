@@ -1,5 +1,30 @@
 # One client per module instance. Authentication belongs to individual requests.
 Add-Type -AssemblyName System.Net.Http
+# Cleanup may run after the PowerShell pipeline has stopped. Use a CLR callback,
+# rather than a scriptblock delegate which requires a runspace on that thread.
+if (-not ('PSOpenAI.HttpTaskCleanup' -as [type])) {
+    Add-Type -ReferencedAssemblies System.Net.Http -TypeDefinition @'
+using System.Threading;
+using System.Threading.Tasks;
+using System.Net.Http;
+namespace PSOpenAI {
+    public static class HttpTaskCleanup {
+        public static void DisposeResponse(Task<HttpResponseMessage> task) {
+            task.ContinueWith(completed => {
+                if (completed.Status == TaskStatus.RanToCompletion) {
+                    if (completed.Result != null) {
+                        try { completed.Result.Dispose(); } catch { }
+                    }
+                } else {
+                    // Observe faults from requests abandoned by the caller.
+                    var exception = completed.Exception;
+                }
+            }, CancellationToken.None, TaskContinuationOptions.ExecuteSynchronously, TaskScheduler.Default);
+        }
+    }
+}
+'@
+}
 $script:OpenAIHttpTransport = @{ Client = $null }
 
 function Get-OpenAIHttpClient {
@@ -32,15 +57,24 @@ function Wait-OpenAIHttpTask {
         [System.Threading.CancellationToken]$CancellationToken
     )
 
-    # Polling also lets PowerShell stop the pipeline on runtimes without cancellable reads.
-    while (-not $Task.IsCompleted) {
+    $Delivered = $false
+    try {
+        # Polling also lets PowerShell stop the pipeline on runtimes without cancellable reads.
+        while (-not $Task.IsCompleted) {
+            $CancellationToken.ThrowIfCancellationRequested()
+            try { $null = $Task.Wait(100, $CancellationToken) }
+            catch [AggregateException] { break }
+        }
         $CancellationToken.ThrowIfCancellationRequested()
-        try { $null = $Task.Wait(100, $CancellationToken) }
-        catch [AggregateException] { break }
+        $Result = $Task.GetAwaiter().GetResult()
+        if ($null -ne $Result) { Write-Output (, $Result) }
+        $Delivered = $true
     }
-    $CancellationToken.ThrowIfCancellationRequested()
-    $Result = $Task.GetAwaiter().GetResult()
-    if ($null -ne $Result) { return , $Result }
+    finally {
+        if (-not $Delivered -and $Task -is [System.Threading.Tasks.Task[System.Net.Http.HttpResponseMessage]]) {
+            [PSOpenAI.HttpTaskCleanup]::DisposeResponse($Task)
+        }
+    }
 }
 
 function Send-OpenAIHttpRequest {

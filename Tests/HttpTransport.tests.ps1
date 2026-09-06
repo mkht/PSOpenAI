@@ -37,6 +37,42 @@ Describe 'Shared HTTP transport' -Tag Offline {
             $script:OpenAIHttpTransport.Client = $null
         }
 
+        It 'Disposes an abandoned response completing <Timing> cancellation' -TestCases @(
+            @{ Timing = 'before' }; @{ Timing = 'after' }
+        ) {
+            param ($Timing)
+            $response = Add-TestResponse
+            $source = [System.Threading.Tasks.TaskCompletionSource[System.Net.Http.HttpResponseMessage]]::new()
+            $cts = [System.Threading.CancellationTokenSource]::new()
+            try {
+                if ($Timing -eq 'before') { $source.SetResult($response) }
+                $cts.Cancel()
+                { Wait-OpenAIHttpTask -Task $source.Task -CancellationToken $cts.Token } | Should -Throw
+                if ($Timing -eq 'after') {
+                    # Simulate a handler completing after cancellation has already returned.
+                    $response.Content.Disposed | Should -BeFalse
+                    [PSOpenAI.Tests.HttpHandler]::CompleteOnWorker($source, $response).GetAwaiter().GetResult()
+                }
+                $response.Content.Disposed | Should -BeTrue
+            }
+            finally {
+                $response.Dispose()
+                $cts.Dispose()
+            }
+        }
+
+        It 'Transfers a successful response to the caller without disposing it' {
+            $response = Add-TestResponse
+            $source = [System.Threading.Tasks.TaskCompletionSource[System.Net.Http.HttpResponseMessage]]::new()
+            $source.SetResult($response)
+            try {
+                $result = Wait-OpenAIHttpTask -Task $source.Task -CancellationToken ([System.Threading.CancellationToken]::None)
+                [object]::ReferenceEquals($result, $response) | Should -BeTrue
+                $response.Content.Disposed | Should -BeFalse
+            }
+            finally { $response.Dispose() }
+        }
+
         It 'Preserves UTF-8 JSON and request-local authentication across calls' {
             $response = Add-TestResponse -Text '{"text":"日本語"}'
             $result = Invoke-OpenAIHttpRequest @RequestParams -Body @{ text = '日本語' } -Organization ' org-test '

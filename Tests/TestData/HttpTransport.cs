@@ -44,6 +44,9 @@ namespace PSOpenAI.Tests {
     }
 
     public sealed class HttpHandler : HttpMessageHandler {
+        public static Task CompleteOnWorker(TaskCompletionSource<HttpResponseMessage> source, HttpResponseMessage response) {
+            return Task.Run(() => source.SetResult(response));
+        }
         public readonly Queue<HttpResponseMessage> Responses = new Queue<HttpResponseMessage>();
         public readonly List<RecordedRequest> Requests = new List<RecordedRequest>();
         public int DelayMilliseconds;
