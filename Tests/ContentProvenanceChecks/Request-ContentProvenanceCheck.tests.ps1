@@ -11,7 +11,7 @@ Describe 'Request-ContentProvenanceCheck' {
     Context 'Unit tests (offline)' -Tag 'Offline' {
         BeforeAll {
             Mock -ModuleName $script:ModuleName Initialize-APIKey { [securestring]::new() }
-            Mock -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest {
+            Mock -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } {
                 '{"created_at":0,"object":"content_provenance_check","results":[{"type":"c2pa","outcome":"detected","generated_at":"2026-09-01T00:00:00Z","issuer":"OpenAI","model":"image-model","validation_state":"trusted"},{"type":"synthid","outcome":"not_detected","generated_at":null,"model":null}]}'
             }
         }
@@ -26,7 +26,7 @@ Describe 'Request-ContentProvenanceCheck' {
         ) {
             param($Name)
             $Result = Request-ContentProvenanceCheck -File (Join-Path $script:TestData $Name) -ErrorAction Stop
-            Should -Invoke -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest -Times 1 -Exactly -ParameterFilter {
+            Should -Invoke -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -Times 1 -Exactly -ParameterFilter { if ($Stream) { return $false };
                 $Method -eq 'Post' -and
                 $Uri -eq 'https://api.openai.com/v1/content_provenance_checks' -and
                 $ContentType -eq 'multipart/form-data' -and
@@ -50,13 +50,13 @@ Describe 'Request-ContentProvenanceCheck' {
                 (Join-Path $script:TestData 'voice_japanese.mp3')
             ) | Request-ContentProvenanceCheck -ErrorAction Stop
             $Result | Should -HaveCount 2
-            Should -Invoke -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest -Times 2 -Exactly
+            Should -Invoke -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -Times 2 -Exactly
         }
 
         It 'Rejects a missing file or directory before sending a request' {
             { Request-ContentProvenanceCheck -File (Join-Path $TestDrive 'missing.png') } | Should -Throw
             { Request-ContentProvenanceCheck -File $TestDrive } | Should -Throw
-            Should -Invoke -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest -Times 0 -Exactly
+            Should -Invoke -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -Times 0 -Exactly
         }
 
         It 'Resolves relative paths with non-ASCII filenames' {
@@ -68,7 +68,7 @@ Describe 'Request-ContentProvenanceCheck' {
             finally {
                 Pop-Location
             }
-            Should -Invoke -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest -Times 1 -Exactly -ParameterFilter {
+            Should -Invoke -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -Times 1 -Exactly -ParameterFilter { if ($Stream) { return $false };
                 $Body.file.Name -eq '画像.png' -and $Body.file.Exists
             }
         }
@@ -76,7 +76,7 @@ Describe 'Request-ContentProvenanceCheck' {
         It 'Uses context and explicit request options' {
             Set-OpenAIContext -ApiBase 'https://example.test/custom/v1' -TimeoutSec 15 -MaxRetryCount 2
             Request-ContentProvenanceCheck -File (Join-Path $script:TestData 'sweets_donut.png') -TimeoutSec 30 -Organization 'org-test' -AdditionalQuery @{ key = 'value' } -AdditionalHeaders @{ 'X-Test' = 'test' } -AdditionalBody @{ extra = 'value' } | Out-Null
-            Should -Invoke -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest -Times 1 -Exactly -ParameterFilter {
+            Should -Invoke -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -Times 1 -Exactly -ParameterFilter { if ($Stream) { return $false };
                 $Uri -eq 'https://example.test/custom/v1/content_provenance_checks' -and
                 $TimeoutSec -eq 30 -and $MaxRetryCount -eq 2 -and
                 $Organization -eq 'org-test' -and
@@ -87,12 +87,12 @@ Describe 'Request-ContentProvenanceCheck' {
         }
 
         It 'Does not output an object when the HTTP request fails' {
-            Mock -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $null }
+            Mock -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { $null }
             Request-ContentProvenanceCheck -File (Join-Path $script:TestData 'sweets_donut.png') | Should -BeNullOrEmpty
         }
 
         It 'Reports malformed JSON without emitting a result' {
-            Mock -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { 'invalid json' }
+            Mock -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { 'invalid json' }
             $Result = Request-ContentProvenanceCheck -File (Join-Path $script:TestData 'sweets_donut.png') -ErrorAction SilentlyContinue -ErrorVariable ParseError
             $Result | Should -BeNullOrEmpty
             $ParseError | Should -Not -BeNullOrEmpty
@@ -100,7 +100,7 @@ Describe 'Request-ContentProvenanceCheck' {
 
         It 'Rejects unsupported Azure endpoint before sending a request' {
             { Request-ContentProvenanceCheck -File (Join-Path $script:TestData 'sweets_donut.png') -ApiType Azure -ApiBase 'https://example.openai.azure.com' -ErrorAction Stop } | Should -Throw
-            Should -Invoke -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest -Times 0 -Exactly
+            Should -Invoke -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -Times 0 -Exactly
         }
 
         AfterAll {

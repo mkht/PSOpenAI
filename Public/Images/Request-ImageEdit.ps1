@@ -276,7 +276,7 @@ function Request-ImageEdit {
         #region Send API Request (Stream)
         if ($Stream) {
             # Stream output
-            Invoke-OpenAIAPIRequestSSE @splat |
+            Invoke-OpenAIHttpRequest -Stream @splat |
                 Where-Object {
                     -not [string]::IsNullOrEmpty($_)
                 } | ForEach-Object -Process {
@@ -342,7 +342,7 @@ function Request-ImageEdit {
 
         #region Send API Request
         else {
-            $Response = Invoke-OpenAIAPIRequest @splat
+            $Response = Invoke-OpenAIHttpRequest @splat
 
             # error check
             if ($null -eq $Response) {

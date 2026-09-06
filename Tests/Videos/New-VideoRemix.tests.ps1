@@ -11,8 +11,8 @@ Describe 'New-VideoRemix' {
     Context 'Unit tests (offline)' -Tag 'Offline' {
         BeforeAll {
             Mock -ModuleName $script:ModuleName Initialize-APIKey { [securestring]::new() }
-            Mock -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $PesterBoundParameters }
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+            Mock -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { $PesterBoundParameters }
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { @'
 {
   "id": "video_f90c",
   "object": "video",
@@ -36,7 +36,7 @@ Describe 'New-VideoRemix' {
 
         It 'Create a video remix job' {
             { $script:Result = New-VideoRemix -Prompt 'Dancing Doggo' -VideoId 'video_f90c' -ea Stop } | Should -Not -Throw
-            Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
+            Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 1 -Exactly
             $Result | Should -BeOfType [pscustomobject]
             $Result.psobject.TypeNames | Should -Contain 'PSOpenAI.Video.Job'
             $Result.id | Should -BeExactly 'video_f90c'

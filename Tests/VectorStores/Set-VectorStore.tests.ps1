@@ -11,8 +11,8 @@ Describe 'Set-VectorStore' {
     Context 'Unit tests (offline)' -Tag 'Offline' {
         BeforeAll {
             Mock -ModuleName $script:ModuleName Initialize-APIKey { [securestring]::new() }
-            Mock -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $PesterBoundParameters }
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+            Mock -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { $PesterBoundParameters }
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { @'
 {
     "id": "vs_123",
     "object": "vector_store",
@@ -41,7 +41,7 @@ Describe 'Set-VectorStore' {
         It 'Modify vector store (id)' {
             $vsid = 'vs_abc123'
             { $script:Result = Set-VectorStore -VectorStoreId $vsid -ea Stop } | Should -Not -Throw
-            Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
+            Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 1 -Exactly
             $Result | Should -BeOfType [pscustomobject]
             $Result.psobject.TypeNames | Should -Contain 'PSOpenAI.VectorStore'
             $Result.id | Should -BeExactly 'vs_123'
@@ -57,13 +57,13 @@ Describe 'Set-VectorStore' {
                 MetaData         = @{ meta_id = 'id-0001' }
             }
             { $script:Result = Set-VectorStore @Params -ea Stop } | Should -Not -Throw
-            Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
+            Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 1 -Exactly
         }
 
         It 'Invalid input' {
             $vso = @{id = 'hoge_abc123'; object = 'invalid_object' }
             { $script:Result = Set-VectorStore -InputObject $vso -ea Stop } | Should -Throw
-            Should -Not -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName
+            Should -Not -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName
         }
 
         Context 'Parameter Sets' {
@@ -78,7 +78,7 @@ Describe 'Set-VectorStore' {
                 { Set-VectorStore $InObject -Name 'NewName' -ea Stop } | Should -Not -Throw
                 # Pipeline
                 { $InObject | Set-VectorStore -Name 'NewName' -ea Stop } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 3 -Exactly
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 3 -Exactly
             }
 
             It 'VectorStoreId' {
@@ -90,7 +90,7 @@ Describe 'Set-VectorStore' {
                 { 'vs_abc123' | Set-VectorStore -Name 'NewName' -ea Stop } | Should -Not -Throw
                 # Property name
                 { [pscustomobject]@{vector_store_id = 'vs_abc123' } | Set-VectorStore -Name 'NewName' -ea Stop } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 4 -Exactly
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 4 -Exactly
             }
         }
     }

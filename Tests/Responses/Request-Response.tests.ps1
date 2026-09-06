@@ -25,7 +25,7 @@ Describe 'Request-Response' {
     Context 'Unit tests (offline)' -Tag 'Offline' {
         BeforeAll {
             Mock -ModuleName $script:ModuleName Initialize-APIKey { [securestring]::new() }
-            Mock -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $PesterBoundParameters }
+            Mock -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { $PesterBoundParameters }
         }
 
         BeforeEach {
@@ -33,7 +33,7 @@ Describe 'Request-Response' {
         }
 
         It 'Simple chat response' {
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { @'
 {
   "id": "resp_abcd1234",
   "object": "response",
@@ -110,7 +110,7 @@ Describe 'Request-Response' {
         }
 
         It 'Structured Outputs (PowerShell Class)' {
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { @'
 {
   "id": "resp_abc1234",
   "object": "response",
@@ -204,7 +204,7 @@ Describe 'Request-Response' {
         }
 
         It 'Structured Outputs (Json Schema)' {
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { @'
 {
   "id": "resp_abc123",
   "object": "response",
@@ -258,18 +258,18 @@ Describe 'Request-Response' {
         }
 
         It 'Structured Outputs (Json Schema) - JsonSchema is must be specified' {
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { }
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { }
             { $script:Result = Request-Response 'Tell me about you.' -OutputType 'json_schema' -JsonSchemaName 'user-info' -ea Stop } | Should -Throw -ExpectedMessage 'JsonSchema must be specified.'
         }
 
         It 'Structured Outputs (Json Schema) - JsonSchemaName is must be specified' {
             $JsonSchema = '{}'
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { }
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { }
             { $script:Result = Request-Response 'Tell me about you.' -OutputType 'json_schema' -JsonSchema $JsonSchema -ea Stop } | Should -Throw -ExpectedMessage 'JsonSchemaName must be specified.'
         }
 
         It 'The model stops to output in half way' {
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { @'
 {
   "id": "resp_abc1234",
   "object": "response",
@@ -308,7 +308,7 @@ Describe 'Request-Response' {
         }
 
         It 'The model refuses to respond' {
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { @'
 {
   "id": "resp_67f23ff5",
   "object": "response",
@@ -347,7 +347,7 @@ Describe 'Request-Response' {
         }
 
         It 'Stream output' {
-            Mock -ModuleName $script:ModuleName Invoke-OpenAIAPIRequestSSE {
+            Mock -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { $Stream } {
                 '{"type":"response.output_text.delta","item_id":"msg_e83","output_index":0,"content_index":0,"delta":"Hello"}',
                 '{"type":"response.output_text.delta","item_id":"msg_e83","output_index":0,"content_index":0,"delta":"ECHO"}'
             }
@@ -359,7 +359,7 @@ Describe 'Request-Response' {
         }
 
         It 'Background Stream' {
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequestSSE {
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { $Stream } {
                 @'
 {
     "type": "response.created",
@@ -381,14 +381,14 @@ Describe 'Request-Response' {
 '@
             }
             { $script:Result = Request-Response -Message 'test' -Stream -Background -ea Stop } | Should -Not -Throw
-            Should -Invoke -CommandName Invoke-OpenAIAPIRequestSSE -ModuleName $script:ModuleName -Times 1 -Exactly
+            Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { $Stream } -ModuleName $script:ModuleName -Times 1 -Exactly
             $Result.id | Should -Be 'resp_abc123'
             $Result.output | Should -HaveCount 0
             $Result.LastUserMessage | Should -BeExactly 'test'
         }
 
         It 'Stream output as object' {
-            Mock -ModuleName $script:ModuleName Invoke-OpenAIAPIRequestSSE {
+            Mock -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { $Stream } {
                 '{"type":"response.created","response":{"id":"resp_e83","object":"response","created_at":1743930702,"status":"in_progress","model":"gpt-4o-mini-2024-07-18","output":[]}}',
                 '{"type":"response.output_text.delta","item_id":"msg_e83","output_index":0,"content_index":0,"delta":"Hello"}',
                 '{"type":"response.output_text.delta","item_id":"msg_e83","output_index":0,"content_index":0,"delta":"ECHO"}',
@@ -433,7 +433,7 @@ Describe 'Request-Response' {
   "metadata": {}
 }
 '@
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $Response_json }
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { $Response_json }
             { $script:Result = Request-Response -Message 'Hello' -OutputRawResponse -ea Stop } | Should -Not -Throw
             Should -InvokeVerifiable
             $Result | Should -BeOfType [string]
@@ -441,7 +441,7 @@ Describe 'Request-Response' {
         }
 
         It 'Image input' {
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { @'
 {
   "id": "resp_d014",
   "object": "response",
@@ -483,7 +483,7 @@ Describe 'Request-Response' {
         }
 
         It 'File input' {
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { @'
 {
   "id": "resp_26266",
   "object": "response",
@@ -524,7 +524,7 @@ Describe 'Request-Response' {
         }
 
         It 'Web Search' {
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { @'
 {
   "id": "resp_3cfb",
   "object": "response",
@@ -607,7 +607,7 @@ Describe 'Request-Response' {
         }
 
         It 'Conversation State' {
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { @'
 {
   "id": "resp_7e5a5",
   "object": "response",
@@ -664,7 +664,7 @@ Describe 'Request-Response' {
         }
 
         It 'Batch' {
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest {}
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } {}
             { $script:Result = Request-Response -Message 'Hello!' -AsBatch -ea Stop } | Should -Not -Throw
             Should -Not -InvokeVerifiable
             $Result.method | Should -Be 'POST'
@@ -674,13 +674,13 @@ Describe 'Request-Response' {
         }
 
         It 'Input Message is required' {
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest {}
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } {}
             { Request-Response -Model 'gpt-5.6-luna' -ea Stop } | Should -Throw 'No message is specified. You must specify one or more messages.'
             Should -Not -InvokeVerifiable
         }
 
         It 'When specifying a reusable prompt, input message is not required' {
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { @'
 {
   "id": "resp_7e5a5",
   "object": "response",
@@ -696,7 +696,7 @@ Describe 'Request-Response' {
     }
 
     It 'When specifying conversation id, input message is not required' {
-        Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+        Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { @'
 {
   "id": "resp_7e5a5",
   "object": "response",

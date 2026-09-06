@@ -11,7 +11,7 @@ Describe 'Request-AudioTranscription' {
     Context 'Unit tests (offline)' -Tag 'Offline' {
         BeforeAll {
             Mock -ModuleName $script:ModuleName Initialize-APIKey { [securestring]::new() }
-            Mock -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $PesterBoundParameters }
+            Mock -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { $PesterBoundParameters }
             Mock -ModuleName $script:ModuleName Remove-Item {}
         }
 
@@ -20,21 +20,21 @@ Describe 'Request-AudioTranscription' {
         }
 
         It 'Audio transcription' {
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { 'MOCKED' }
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { 'MOCKED' }
             { $script:Text = Request-AudioTranscription -File ($script:TestData + '/voice_japanese.mp3') -ea Stop } | Should -Not -Throw
             Should -InvokeVerifiable
             $Text | Should -Be 'MOCKED'
         }
 
         It 'Audio transcription (format: verbose_json)' {
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { 'MOCKED' }
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { 'MOCKED' }
             { $script:Text = Request-AudioTranscription -File ($script:TestData + '/voice_japanese.mp3') -Format 'verbose_json' -ea Stop } | Should -Not -Throw
             Should -InvokeVerifiable
             $Text | Should -Be 'MOCKED'
         }
 
         It 'Audio transcription (full parameters)' {
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $PesterBoundParameters }
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { $PesterBoundParameters }
             {
                 $params = @{
                     File                            = ($script:TestData + '/voice_japanese.mp3')
@@ -60,7 +60,7 @@ Describe 'Request-AudioTranscription' {
         }
 
         It 'Audio transcription (Stream text)' {
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequestSSE {
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { $Stream } {
                 '{"type":"transcript.text.delta","delta":"ECHO","logprobs":[{"token":"ECHO","logprob":-0.0024760163,"bytes":[228,189,149]}]}'
             }
             $Result = Request-AudioTranscription -File ($script:TestData + '/voice_japanese.mp3') -Stream -ea Stop
@@ -69,7 +69,7 @@ Describe 'Request-AudioTranscription' {
         }
 
         It 'Audio transcription (Stream object)' {
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequestSSE {
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { $Stream } {
                 '{"type":"transcript.text.delta","delta":"ECHO","logprobs":[{"token":"ECHO","logprob":-0.0024760163,"bytes":[228,189,149]}]}'
             }
             $Result = Request-AudioTranscription -File ($script:TestData + '/voice_japanese.mp3') -Stream -StreamOutputType object -ea Stop
@@ -84,7 +84,7 @@ Describe 'Request-AudioTranscription' {
         }
 
         It 'Error if file not exist' {
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest {}
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } {}
             { Request-AudioTranscription -File ($script:TestData + '/notexist.mp3') -ea Stop } | Should -Throw
             Should -Not -InvokeVerifiable
         }
@@ -117,7 +117,7 @@ Describe 'Request-AudioTranscription' {
         }
 
         It 'Diarization model reuires chunking_strategy parameter' {
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $PesterBoundParameters }
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { $PesterBoundParameters }
 
             # Test that chunking_strategy is set to 'auto' when using a diarization model
             {

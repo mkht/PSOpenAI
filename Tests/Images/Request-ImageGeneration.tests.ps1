@@ -13,7 +13,7 @@ Describe 'Request-ImageGeneration' {
     Context 'Unit tests (offline)' -Tag 'Offline' {
         BeforeAll {
             Mock -ModuleName $script:ModuleName Initialize-APIKey { [securestring]::new() }
-            Mock -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $PesterBoundParameters }
+            Mock -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { $PesterBoundParameters }
             Mock -ModuleName $script:ModuleName Remove-Item {}
         }
 
@@ -40,7 +40,7 @@ Describe 'Request-ImageGeneration' {
   background: "opaque"
 }
 '@
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $TestResponse }
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { $TestResponse }
             { $splat = @{
                     Prompt      = 'A cute baby sea otter'
                     TimeoutSec  = 30
@@ -75,7 +75,7 @@ Describe 'Request-ImageGeneration' {
   background: "opaque"
 }
 '@
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $TestResponse }
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { $TestResponse }
             { $splat = @{
                     Prompt      = 'A cute baby sea otter'
                     OutFile     = Join-Path $TestDrive 'file.png'
@@ -112,7 +112,7 @@ Describe 'Request-ImageGeneration' {
   }
 }
 '@
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $TestResponse }
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { $TestResponse }
             { $splat = @{
                     Prompt         = 'Hello'
                     OutFile        = Join-Path $TestDrive 'fileA.png'
@@ -147,7 +147,7 @@ Describe 'Request-ImageGeneration' {
   }
 }
 '@
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $TestResponse }
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { $TestResponse }
             { $script:Result = Request-ImageGeneration -Prompt 'sunflower' -ResponseFormat base64 -ea Stop } | Should -Not -Throw
             Should -InvokeVerifiable
             $Result | Should -BeOfType [string]
@@ -172,7 +172,7 @@ Describe 'Request-ImageGeneration' {
   }
 }
 '@
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $TestResponse }
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { $TestResponse }
             { $script:Result = Request-ImageGeneration -Prompt 'sunflower' -NumberOfImages 2 -ResponseFormat base64 -ea Stop } | Should -Not -Throw
             Should -InvokeVerifiable
             $Result | Should -HaveCount 2
@@ -195,7 +195,7 @@ Describe 'Request-ImageGeneration' {
   }
 }
 '@
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $TestResponse }
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { $TestResponse }
             { $script:Result = Request-ImageGeneration -Prompt 'sunflower' -ResponseFormat byte -ea Stop } | Should -Not -Throw
             Should -InvokeVerifiable
             $Result | Should -HaveCount 5
@@ -225,7 +225,7 @@ Describe 'Request-ImageGeneration' {
   }
 }
 '@
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $TestResponse }
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { $TestResponse }
             { $script:Result = Request-ImageGeneration -Prompt 'sunflower' -NumberOfImages 2 -ResponseFormat byte -ea Stop } | Should -Not -Throw
             Should -InvokeVerifiable
             $Result | Should -HaveCount 2
@@ -250,7 +250,7 @@ Describe 'Request-ImageGeneration' {
     ]
 }
 '@
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $TestResponse }
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { $TestResponse }
             { $script:Result = Request-ImageGeneration -Model gpt-image-2 -Prompt 'sunflower' -ResponseFormat url -ea Stop } | Should -Not -Throw
             Should -InvokeVerifiable
             $Result.PSTypeNames | Should -Contain 'PSOpenAI.Image'
@@ -272,7 +272,7 @@ Describe 'Request-ImageGeneration' {
   }
 }
 '@
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $TestResponse }
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { $TestResponse }
             { $script:Result = Request-ImageGeneration -Prompt 'sunflower' -ResponseFormat object -ea Stop } | Should -Not -Throw
             Should -InvokeVerifiable
             $Result.PSTypeNames | Should -Contain 'PSOpenAI.Image'
@@ -299,7 +299,7 @@ Describe 'Request-ImageGeneration' {
   }
 }
 '@
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $TestResponse }
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { $TestResponse }
             { $script:Result = Request-ImageGeneration -Prompt 'sunflower' -NumberOfImages 2 -ResponseFormat object -ea Stop } | Should -Not -Throw
             Should -InvokeVerifiable
             $Result | Should -HaveCount 1
@@ -321,7 +321,7 @@ Describe 'Request-ImageGeneration' {
     ]
 }
 '@
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $TestResponse }
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { $TestResponse }
             { $script:Result = Request-ImageGeneration -Prompt 'sunflower' -ResponseFormat url -OutputRawResponse -ea Stop } | Should -Not -Throw
             Should -InvokeVerifiable
             $Result | Should -BeOfType [string]
@@ -345,8 +345,8 @@ Describe 'Request-ImageGeneration' {
   }
 }
 '@
-                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequestSSE { $TestResponse }
-                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { }
+                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { $Stream } { $TestResponse }
+                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { }
                 { $splat = @{
                         Prompt      = 'Hello'
                         Model       = 'gpt-image-2'
@@ -356,21 +356,21 @@ Describe 'Request-ImageGeneration' {
                     }
                     $script:Result = Request-ImageGeneration @splat -Stream
                 } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequestSSE -ModuleName $script:ModuleName -Times 1 -Exactly
-                Should -Not -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { $Stream } -ModuleName $script:ModuleName -Times 1 -Exactly
+                Should -Not -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName
                 $Result | Should -BeNullOrEmpty
                 (Join-Path $TestDrive 'file.png') | Should -Exist
                 (Join-Path $TestDrive 'file.png') | Should -FileContentMatchExactly 'TEST_IMAGE_1'
             }
 
             It 'Generate image. OutFile. Partial images.' {
-                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequestSSE {
+                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { $Stream } {
                     '{"type":"image_generation.partial_image","b64_json":"VEVTVF9JTUFHRV8yX1BBUlRJQUxfMA==","created_at":1620000000,"partial_image_index": 0}'
                     '{"type":"image_generation.partial_image","b64_json":"VEVTVF9JTUFHRV8yX1BBUlRJQUxfMQ==","created_at":1620000000,"partial_image_index": 1}'
                     '{"type":"image_generation.partial_image","b64_json":"VEVTVF9JTUFHRV8yX1BBUlRJQUxfMg==","created_at":1620000000,"partial_image_index": 2}'
                     '{"type":"image_generation.completed","b64_json":"VEVTVF9JTUFHRV8y","created_at":1620000000}'
                 }
-                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { }
+                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { }
                 { $splat = @{
                         Prompt        = 'Hello'
                         Model         = 'gpt-image-2'
@@ -381,8 +381,8 @@ Describe 'Request-ImageGeneration' {
                     }
                     $script:Result = Request-ImageGeneration @splat -Stream
                 } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequestSSE -ModuleName $script:ModuleName -Times 1 -Exactly
-                Should -Not -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { $Stream } -ModuleName $script:ModuleName -Times 1 -Exactly
+                Should -Not -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName
                 $Result | Should -BeNullOrEmpty
                 (Join-Path $TestDrive 'file-0.png') | Should -FileContentMatchExactly 'TEST_IMAGE_2_PARTIAL_0'
                 (Join-Path $TestDrive 'file-1.png') | Should -FileContentMatchExactly 'TEST_IMAGE_2_PARTIAL_1'
@@ -391,11 +391,11 @@ Describe 'Request-ImageGeneration' {
             }
 
             It 'Generate image. ResponseFormat = object' {
-                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequestSSE {
+                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { $Stream } {
                     '{"type":"image_generation.partial_image","b64_json":"VEVTVF9JTUFHRV8zX1BBUlRJQUxfMA==","created_at":1620000000,"partial_image_index": 0}'
                     '{"type":"image_generation.completed","b64_json":"VEVTVF9JTUFHRV8z","created_at":1620000000}'
                 }
-                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { }
+                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { }
                 { $splat = @{
                         Prompt         = 'Hello'
                         Model          = 'gpt-image-2'
@@ -406,8 +406,8 @@ Describe 'Request-ImageGeneration' {
                     }
                     $script:Result = Request-ImageGeneration @splat -Stream
                 } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequestSSE -ModuleName $script:ModuleName -Times 1 -Exactly
-                Should -Not -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { $Stream } -ModuleName $script:ModuleName -Times 1 -Exactly
+                Should -Not -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName
                 $Result | Should -HaveCount 2
                 $Result[0].PSTypeNames | Should -Contain 'PSOpenAI.Image'
                 $Result[0].type | Should -Be 'image_generation.partial_image'
@@ -420,11 +420,11 @@ Describe 'Request-ImageGeneration' {
             }
 
             It 'Generate image. ResponseFormat = base64' {
-                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequestSSE {
+                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { $Stream } {
                     '{"type":"image_generation.partial_image","b64_json":"VEVTVF9JTUFHRV8zX1BBUlRJQUxfMA==","created_at":1620000000,"partial_image_index": 0}'
                     '{"type":"image_generation.completed","b64_json":"VEVTVF9JTUFHRV8z","created_at":1620000000}'
                 }
-                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { }
+                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { }
                 { $splat = @{
                         Prompt         = 'Hello'
                         Model          = 'gpt-image-2'
@@ -435,18 +435,18 @@ Describe 'Request-ImageGeneration' {
                     }
                     $script:Result = Request-ImageGeneration @splat -Stream
                 } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequestSSE -ModuleName $script:ModuleName -Times 1 -Exactly
-                Should -Not -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { $Stream } -ModuleName $script:ModuleName -Times 1 -Exactly
+                Should -Not -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName
                 $Result | Should -HaveCount 2
                 $Result[0] | Should -BeExactly 'VEVTVF9JTUFHRV8zX1BBUlRJQUxfMA=='
                 $Result[1] | Should -BeExactly 'VEVTVF9JTUFHRV8z'
             }
 
             It 'Generate image. ResponseFormat = byte. Single image.' {
-                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequestSSE {
+                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { $Stream } {
                     '{"type":"image_generation.completed","b64_json":"VEVTVF9JTUFHRV8z","created_at":1620000000}'
                 }
-                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { }
+                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { }
                 { $splat = @{
                         Prompt         = 'Hello'
                         Model          = 'gpt-image-2'
@@ -457,19 +457,19 @@ Describe 'Request-ImageGeneration' {
                     }
                     $script:Result = Request-ImageGeneration @splat -Stream
                 } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequestSSE -ModuleName $script:ModuleName -Times 1 -Exactly
-                Should -Not -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { $Stream } -ModuleName $script:ModuleName -Times 1 -Exactly
+                Should -Not -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName
                 $Result | Should -HaveCount 12
                 $Result[0] | Should -Be 84
                 $Result[-1] | Should -Be 51
             }
 
             It 'Generate image. ResponseFormat = byte. Partial image.' {
-                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequestSSE {
+                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { $Stream } {
                     '{"type":"image_generation.partial_image","b64_json":"VEVTVF9JTUFHRV8zX1BBUlRJQUxfMA==","created_at":1620000000,"partial_image_index": 0}'
                     '{"type":"image_generation.completed","b64_json":"VEVTVF9JTUFHRV8z","created_at":1620000000}'
                 }
-                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { }
+                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { }
                 { $splat = @{
                         Prompt         = 'Hello'
                         Model          = 'gpt-image-2'
@@ -480,8 +480,8 @@ Describe 'Request-ImageGeneration' {
                     }
                     $script:Result = Request-ImageGeneration @splat -Stream
                 } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequestSSE -ModuleName $script:ModuleName -Times 1 -Exactly
-                Should -Not -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { $Stream } -ModuleName $script:ModuleName -Times 1 -Exactly
+                Should -Not -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName
                 $Result | Should -HaveCount 2
                 $Result[0] | Should -HaveCount 22
                 $Result[1] | Should -HaveCount 12
@@ -490,11 +490,11 @@ Describe 'Request-ImageGeneration' {
             }
 
             It 'Generate image. ResponseFormat = byte. Partial image.' {
-                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequestSSE {
+                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { $Stream } {
                     '{"type":"image_generation.partial_image","b64_json":"VEVTVF9JTUFHRV8zX1BBUlRJQUxfMA==","created_at":1620000000,"partial_image_index": 0}'
                     '{"type":"image_generation.completed","b64_json":"VEVTVF9JTUFHRV8z","created_at":1620000000}'
                 }
-                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { }
+                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { }
                 { $splat = @{
                         Prompt         = 'Hello'
                         Model          = 'gpt-image-2'
@@ -505,8 +505,8 @@ Describe 'Request-ImageGeneration' {
                     }
                     $script:Result = Request-ImageGeneration @splat -Stream
                 } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequestSSE -ModuleName $script:ModuleName -Times 1 -Exactly
-                Should -Not -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { $Stream } -ModuleName $script:ModuleName -Times 1 -Exactly
+                Should -Not -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName
                 $Result | Should -HaveCount 2
                 $Result[0] | Should -HaveCount 22
                 $Result[1] | Should -HaveCount 12
@@ -515,10 +515,10 @@ Describe 'Request-ImageGeneration' {
             }
 
             It 'Unknwon event type, Just ignore.' {
-                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequestSSE {
+                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { $Stream } {
                     '{"type":"unknown.event","b64_json":"VU5LTldPTg==","created_at":1620000000}'
                 }
-                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { }
+                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { }
                 { $splat = @{
                         Prompt      = 'Hello'
                         Model       = 'gpt-image-2'
@@ -527,8 +527,8 @@ Describe 'Request-ImageGeneration' {
                     }
                     $script:Result = Request-ImageGeneration @splat -Stream
                 } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequestSSE -ModuleName $script:ModuleName -Times 1 -Exactly
-                Should -Not -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { $Stream } -ModuleName $script:ModuleName -Times 1 -Exactly
+                Should -Not -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName
                 $Result | Should -BeNullOrEmpty
             }
         }

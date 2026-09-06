@@ -337,7 +337,7 @@ function Request-ResponseCompaction {
         }
 
         #region Send API Request (No Stream)
-        $Response = Invoke-OpenAIAPIRequest @splat
+        $Response = Invoke-OpenAIHttpRequest @splat
 
         # error check
         if ($null -eq $Response) {

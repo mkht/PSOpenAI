@@ -11,8 +11,8 @@ Describe 'New-Video' {
     Context 'Unit tests (offline)' -Tag 'Offline' {
         BeforeAll {
             Mock -ModuleName $script:ModuleName Initialize-APIKey { [securestring]::new() }
-            Mock -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $PesterBoundParameters }
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+            Mock -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { $PesterBoundParameters }
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { @'
 {
   "id": "video_fb4e",
   "object": "video",
@@ -36,7 +36,7 @@ Describe 'New-Video' {
 
         It 'Create a video job' {
             { $script:Result = New-Video -Prompt 'Dancing Doggo' -ea Stop } | Should -Not -Throw
-            Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
+            Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 1 -Exactly
             $Result | Should -BeOfType [pscustomobject]
             $Result.psobject.TypeNames | Should -Contain 'PSOpenAI.Video.Job'
             $Result.id | Should -BeExactly 'video_fb4e'
@@ -55,7 +55,7 @@ Describe 'New-Video' {
                 }
                 $script:Result = New-Video @Params -ea Stop
             } | Should -Not -Throw
-            Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
+            Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 1 -Exactly
         }
     }
 
@@ -81,7 +81,7 @@ Describe 'New-Video' {
                 }
                 $script:Result = New-Video @Params -ea Stop
             } | Should -Not -Throw
-            Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
+            Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 1 -Exactly
             $Result | Should -BeOfType [pscustomobject]
             $Result.psobject.TypeNames | Should -Contain 'PSOpenAI.Video.Job'
             $Result.id | Should -Not -BeNullOrEmpty
@@ -123,7 +123,7 @@ Describe 'New-Video' {
                 }
                 $script:Result = New-Video @Params -ea Stop
             } | Should -Not -Throw
-            Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
+            Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 1 -Exactly
             $Result | Should -BeOfType [pscustomobject]
             $Result.psobject.TypeNames | Should -Contain 'PSOpenAI.Video.Job'
             $Result.id | Should -Not -BeNullOrEmpty

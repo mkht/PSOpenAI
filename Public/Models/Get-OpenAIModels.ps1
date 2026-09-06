@@ -69,7 +69,7 @@ function Get-OpenAIModels {
             AdditionalHeaders = $AdditionalHeaders
             AdditionalBody    = $AdditionalBody
         }
-        $Response = Invoke-OpenAIAPIRequest @splat
+        $Response = Invoke-OpenAIHttpRequest @splat
 
         # error check
         if ($null -eq $Response) {

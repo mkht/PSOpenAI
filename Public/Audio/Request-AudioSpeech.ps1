@@ -142,7 +142,7 @@ function Request-AudioSpeech {
                 AdditionalHeaders = $AdditionalHeaders
                 AdditionalBody    = $AdditionalBody
             }
-            $Response = Invoke-OpenAIAPIRequest @splat
+            $Response = Invoke-OpenAIHttpRequest @splat
         }
         catch {
             Write-Error -Exception $_.Exception

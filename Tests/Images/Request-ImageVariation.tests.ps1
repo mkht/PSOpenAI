@@ -13,7 +13,7 @@ Describe 'Request-ImageVariation' {
     Context 'Unit tests (offline)' -Tag 'Offline' {
         BeforeAll {
             Mock -ModuleName $script:ModuleName Initialize-APIKey { [securestring]::new() }
-            Mock -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $PesterBoundParameters }
+            Mock -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { $PesterBoundParameters }
             Mock -ModuleName $script:ModuleName Remove-Item {}
         }
 
@@ -22,7 +22,7 @@ Describe 'Request-ImageVariation' {
         }
 
         It 'Generate valiation image. format = url' {
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { @'
 {
     "created": 1678359675,
     "data": [
@@ -39,7 +39,7 @@ Describe 'Request-ImageVariation' {
         }
 
         It 'Error if image file not exist' {
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest {}
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } {}
             { $script:Result = Request-ImageVariation -Image ($script:TestImageData + '/notexist.png') -ea Stop } | Should -Throw
             Should -Not -InvokeVerifiable
         }

@@ -12,7 +12,7 @@ Describe 'Set-Conversation' {
 
         BeforeAll {
             Mock -ModuleName $script:ModuleName Initialize-APIKey { [securestring]::new() }
-            Mock -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $PesterBoundParameters }
+            Mock -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { $PesterBoundParameters }
             Mock -Verifiable -ModuleName $script:ModuleName New-Conversation {
                 [pscustomobject]@{
                     PSTypeName = 'PSOpenAI.Conversation'

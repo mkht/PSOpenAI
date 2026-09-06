@@ -12,8 +12,8 @@ Describe 'Remove-ConversationItem' {
 
         BeforeAll {
             Mock -ModuleName $script:ModuleName Initialize-APIKey { [securestring]::new() }
-            Mock -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $PesterBoundParameters }
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+            Mock -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { $PesterBoundParameters }
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { @'
 {
     "id": "msg_abc123",
     "object": "conversation.item.deleted",
@@ -28,7 +28,7 @@ Describe 'Remove-ConversationItem' {
 
         It 'Remove conversation item with ID' {
             { $script:Result = Remove-ConversationItem -ConversationId 'conv_abc123' -ItemId 'msg_abc123' -ea Stop } | Should -Not -Throw
-            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
+            Should -Invoke Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 1 -Exactly
         }
 
         Context 'Parameter Sets' {
@@ -47,7 +47,7 @@ Describe 'Remove-ConversationItem' {
                 { Remove-ConversationItem -Conversation $InObject1 $InObject2 -ea Stop } | Should -Not -Throw
                 # Pipeline
                 { $InObject1 | Remove-ConversationItem $InObject2 -ea Stop } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 3 -Exactly
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 3 -Exactly
             }
 
             It 'Id' {
@@ -59,7 +59,7 @@ Describe 'Remove-ConversationItem' {
                 { 'conv_abc123' | Remove-ConversationItem 'msg_abc123' -ea Stop } | Should -Not -Throw
                 # Pipeline by property name
                 { [pscustomobject]@{conversation_id = 'conv_abc123'; item_id = 'msg_abc123' } | Remove-ConversationItem -ea Stop } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 4 -Exactly
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 4 -Exactly
             }
         }
     }

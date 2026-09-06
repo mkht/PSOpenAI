@@ -39,7 +39,7 @@ Describe 'Shared HTTP transport' -Tag Offline {
 
         It 'Preserves UTF-8 JSON and request-local authentication across calls' {
             $response = Add-TestResponse -Text '{"text":"日本語"}'
-            $result = Invoke-OpenAIAPIRequest @RequestParams -Body @{ text = '日本語' } -Organization ' org-test '
+            $result = Invoke-OpenAIHttpRequest @RequestParams -Body @{ text = '日本語' } -Organization ' org-test '
             $result | Should -BeExactly '{"text":"日本語"}'
             [System.Text.Encoding]::UTF8.GetString($TestHandler.Requests[0].Body) | Should -BeExactly '{"text":"日本語"}'
             $TestHandler.Requests[0].Headers | Should -Match 'Authorization: Bearer test-secret'
@@ -59,7 +59,7 @@ Describe 'Shared HTTP transport' -Tag Offline {
         ) {
             param ($AuthType, $Expected)
             $null = Add-TestResponse
-            $null = Invoke-OpenAIAPIRequest @RequestParams -AuthType $AuthType -Body @{ n = 1 } -AdditionalHeaders @{ 'X-Test' = 'value'; 'Content-Type' = 'application/json; charset=utf-8' }
+            $null = Invoke-OpenAIHttpRequest @RequestParams -AuthType $AuthType -Body @{ n = 1 } -AdditionalHeaders @{ 'X-Test' = 'value'; 'Content-Type' = 'application/json; charset=utf-8' }
             $TestHandler.Requests[0].Headers | Should -Match $Expected
             $TestHandler.Requests[0].Headers | Should -Match 'X-Test: value'
             $TestHandler.Requests[0].ContentHeaders | Should -Match 'Content-Type: application/json; charset=utf-8'
@@ -71,7 +71,7 @@ Describe 'Shared HTTP transport' -Tag Offline {
             $null = Add-TestResponse
             $file = Join-Path $TestDrive '画像.bin'
             [IO.File]::WriteAllBytes($file, [byte[]](0, 255, 1))
-            $null = Invoke-OpenAIAPIRequest @RequestParams -ContentType 'multipart/form-data' -Body @{ file = Get-Item $file } -MaxRetryCount 1
+            $null = Invoke-OpenAIHttpRequest @RequestParams -ContentType 'multipart/form-data' -Body @{ file = Get-Item $file } -MaxRetryCount 1
             $TestHandler.Requests.Count | Should -Be 2
             [Convert]::ToBase64String($TestHandler.Requests[0].Body) | Should -BeExactly ([Convert]::ToBase64String($TestHandler.Requests[1].Body))
             $text = [System.Text.Encoding]::UTF8.GetString($TestHandler.Requests[0].Body)
@@ -83,7 +83,7 @@ Describe 'Shared HTTP transport' -Tag Offline {
 
         It 'Preserves binary output and saved bytes' {
             $null = Add-TestResponse -MediaType 'audio/mpeg' -Bytes ([byte[]](0, 255, 128, 1))
-            [byte[]]$result = Invoke-OpenAIAPIRequest @RequestParams
+            [byte[]]$result = Invoke-OpenAIHttpRequest @RequestParams
             [Convert]::ToBase64String($result) | Should -BeExactly 'AP+AAQ=='
             $null = Add-TestResponse -MediaType 'text/plain' -Bytes ([byte[]](0, 255, 128, 1))
             $file = Join-Path $TestDrive 'download.bin'
@@ -93,9 +93,9 @@ Describe 'Shared HTTP transport' -Tag Offline {
 
         It 'Handles an empty response and a non-JSON HTTP error' {
             $null = Add-TestResponse -Status 204 -Text '' -MediaType ''
-            Invoke-OpenAIAPIRequest @RequestParams | Should -BeNullOrEmpty
+            Invoke-OpenAIHttpRequest @RequestParams | Should -BeNullOrEmpty
             $response = Add-TestResponse -Status 502 -Text '<html>gateway error</html>' -MediaType 'text/html'
-            try { Invoke-OpenAIAPIRequest @RequestParams -ErrorAction Stop; throw 'Expected HTTP failure' }
+            try { Invoke-OpenAIHttpRequest @RequestParams -ErrorAction Stop; throw 'Expected HTTP failure' }
             catch {
                 $_.Exception | Should -BeOfType APIRequestException
                 $_.Exception.StatusCode | Should -Be 502
@@ -107,19 +107,19 @@ Describe 'Shared HTTP transport' -Tag Offline {
 
         It 'Does not retry quota errors' {
             $null = Add-TestResponse -Status 429 -Text '{"error":{"message":"quota exhausted","code":"insufficient_quota"}}'
-            { Invoke-OpenAIAPIRequest @RequestParams -MaxRetryCount 3 -ErrorAction Stop } | Should -Throw '*quota*'
+            { Invoke-OpenAIHttpRequest @RequestParams -MaxRetryCount 3 -ErrorAction Stop } | Should -Throw '*quota*'
             $TestHandler.Requests.Count | Should -Be 1
         }
 
         It 'Preserves SSE data, First and raw lines' {
             $text = "event: test`ndata: {`"n`":1}`n`ndata: {`"n`":2}`n`ndata: [DONE]`n"
             $response = Add-TestResponse -MediaType 'text/event-stream' -Text $text
-            @(Invoke-OpenAIAPIRequestSSE @RequestParams -First 1) | Should -Be @('{"n":1}')
+            @(Invoke-OpenAIHttpRequest -Stream @RequestParams -First 1) | Should -Be @('{"n":1}')
             $response.Content.Disposed | Should -BeTrue
             $null = Add-TestResponse -MediaType 'text/event-stream' -Text $text
-            @(Invoke-OpenAIAPIRequestSSE @RequestParams) | Should -Be @('{"n":1}', '{"n":2}')
+            @(Invoke-OpenAIHttpRequest -Stream @RequestParams) | Should -Be @('{"n":1}', '{"n":2}')
             $null = Add-TestResponse -MediaType 'text/event-stream' -Text $text
-            @(Invoke-OpenAIAPIRequestSSE @RequestParams -ReturnRawResponse $true) | Should -Be @('event: test', 'data: {"n":1}', 'data: {"n":2}', 'data: [DONE]')
+            @(Invoke-OpenAIHttpRequest -Stream @RequestParams -ReturnRawResponse $true) | Should -Be @('event: test', 'data: {"n":1}', 'data: {"n":2}', 'data: [DONE]')
         }
 
         It 'Times out stalled <Mode> reads and disposes the stream' -TestCases @(
@@ -141,8 +141,8 @@ Describe 'Shared HTTP transport' -Tag Offline {
         It 'Does not carry a previous timeout into the next request' {
             $TestHandler.DelayMilliseconds = 1200
             $null = Add-TestResponse
-            { Invoke-OpenAIAPIRequest @RequestParams -TimeoutSec 1 -ErrorAction Stop } | Should -Throw '*timeout*'
-            Invoke-OpenAIAPIRequest @RequestParams -TimeoutSec 0 | Should -BeExactly '{"ok":true}'
+            { Invoke-OpenAIHttpRequest @RequestParams -TimeoutSec 1 -ErrorAction Stop } | Should -Throw '*timeout*'
+            Invoke-OpenAIHttpRequest @RequestParams -TimeoutSec 0 | Should -BeExactly '{"ok":true}'
             $script:OpenAIHttpTransport.Client.Timeout | Should -Be ([System.Threading.Timeout]::InfiniteTimeSpan)
         }
 
@@ -150,7 +150,7 @@ Describe 'Shared HTTP transport' -Tag Offline {
             $response = Add-TestResponse -Status 307
             $response.Headers.Location = [uri]'https://other.example.test/result'
             $null = Add-TestResponse
-            $null = Invoke-OpenAIAPIRequest @RequestParams -AuthType azure -Body @{ n = 1 }
+            $null = Invoke-OpenAIHttpRequest @RequestParams -AuthType azure -Body @{ n = 1 }
             $TestHandler.Requests[1].Headers | Should -Not -Match 'api-key|test-secret'
             $TestHandler.Requests[1].Method | Should -BeExactly 'POST'
             [Convert]::ToBase64String($TestHandler.Requests[1].Body) | Should -BeExactly ([Convert]::ToBase64String($TestHandler.Requests[0].Body))
@@ -159,7 +159,7 @@ Describe 'Shared HTTP transport' -Tag Offline {
 
         It 'Releases SSE content when the downstream pipeline stops early' {
             $response = Add-TestResponse -MediaType 'text/event-stream' -Text "data: one`n`ndata: two`n"
-            Invoke-OpenAIAPIRequestSSE @RequestParams | Select-Object -First 1 | Should -BeExactly 'one'
+            Invoke-OpenAIHttpRequest -Stream @RequestParams | Select-Object -First 1 | Should -BeExactly 'one'
             $response.Content.Disposed | Should -BeTrue
         }
 
@@ -167,7 +167,7 @@ Describe 'Shared HTTP transport' -Tag Offline {
             $response = Add-TestResponse -Status 503 -Text '{"error":{"message":"busy"}}'
             $null = $response.Headers.TryAddWithoutValidation('retry-after-ms', '1')
             $null = Add-TestResponse -MediaType 'text/event-stream' -Text "data: ready`n`ndata: [DONE]`n"
-            Invoke-OpenAIAPIRequestSSE @RequestParams -MaxRetryCount 1 | Should -BeExactly 'ready'
+            Invoke-OpenAIHttpRequest -Stream @RequestParams -MaxRetryCount 1 | Should -BeExactly 'ready'
             $TestHandler.Requests.Count | Should -Be 2
         }
 

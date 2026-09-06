@@ -11,8 +11,8 @@ Describe 'Get-Video' {
     Context 'Unit tests (offline)' -Tag 'Offline' {
         BeforeAll {
             Mock -ModuleName $script:ModuleName Initialize-APIKey { [securestring]::new() }
-            Mock -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $PesterBoundParameters }
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+            Mock -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { $PesterBoundParameters }
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest { @'
 {
     "id": "video_fb4e",
     "object": "video",
@@ -27,9 +27,9 @@ Describe 'Get-Video' {
     "seconds": "4",
     "size": "720x1280"
 }
-'@ } -ParameterFilter { $Uri -eq 'https://api.openai.com/v1/videos/video_fb4e' }
+'@ } -ParameterFilter { if ($Stream) { return $false }; $Uri -eq 'https://api.openai.com/v1/videos/video_fb4e' }
 
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest { @'
 {
   "object": "list",
   "data": [
@@ -66,7 +66,7 @@ Describe 'Get-Video' {
   "has_more": false,
   "last_id": "video_f90c"
 }
-'@ } -ParameterFilter { $Uri -like 'https://api.openai.com/v1/videos?limit=*' }
+'@ } -ParameterFilter { if ($Stream) { return $false }; $Uri -like 'https://api.openai.com/v1/videos?limit=*' }
         }
 
         BeforeEach {
@@ -75,7 +75,7 @@ Describe 'Get-Video' {
 
         It 'List video jobs' {
             { $script:Result = Get-Video -ea Stop } | Should -Not -Throw
-            Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly -ParameterFilter { $Uri -like 'https://api.openai.com/v1/videos?limit=*' }
+            Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ModuleName $script:ModuleName -Times 1 -Exactly -ParameterFilter { if ($Stream) { return $false }; $Uri -like 'https://api.openai.com/v1/videos?limit=*' }
             $Result | Should -HaveCount 2
             $Result[0].id | Should -BeLike 'video_fb4e'
             $Result[1].id | Should -BeLike 'video_f90c'
@@ -84,7 +84,7 @@ Describe 'Get-Video' {
 
         It 'Get single video job' {
             { $script:Result = Get-Video -VideoId 'video_fb4e' -ea Stop } | Should -Not -Throw
-            Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly -ParameterFilter { $Uri -eq 'https://api.openai.com/v1/videos/video_fb4e' }
+            Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ModuleName $script:ModuleName -Times 1 -Exactly -ParameterFilter { if ($Stream) { return $false }; $Uri -eq 'https://api.openai.com/v1/videos/video_fb4e' }
             $Result | Should -BeOfType [pscustomobject]
             $Result.id | Should -BeExactly 'video_fb4e'
             $Result.psobject.TypeNames | Should -Contain 'PSOpenAI.Video.Job'
@@ -100,14 +100,14 @@ Describe 'Get-Video' {
                 { 'video_fb4e' | Get-Video -ea Stop } | Should -Not -Throw
                 # Pipeline by property name
                 { [pscustomobject]@{PSTypeName = 'PSOpenAI.Video.Job'; id = 'video_fb4e' } | Get-Video -ea Stop } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 4 -Exactly -ParameterFilter { $Uri -eq 'https://api.openai.com/v1/videos/video_fb4e' }
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ModuleName $script:ModuleName -Times 4 -Exactly -ParameterFilter { if ($Stream) { return $false }; $Uri -eq 'https://api.openai.com/v1/videos/video_fb4e' }
             }
 
             It 'List' {
                 { Get-Video -ea Stop } | Should -Not -Throw
                 { Get-Video -Limit 5 -Order desc -ea Stop } | Should -Not -Throw
                 { Get-Video -All -ea Stop } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 3 -Exactly -ParameterFilter { $Uri -like 'https://api.openai.com/v1/videos?limit=*' }
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ModuleName $script:ModuleName -Times 3 -Exactly -ParameterFilter { if ($Stream) { return $false }; $Uri -like 'https://api.openai.com/v1/videos?limit=*' }
             }
         }
     }

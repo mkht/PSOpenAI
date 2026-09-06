@@ -25,7 +25,7 @@ Describe 'Request-ChatCompletion' {
     Context 'Unit tests (offline)' -Tag 'Offline' {
         BeforeAll {
             Mock -ModuleName $script:ModuleName Initialize-APIKey { [securestring]::new() }
-            Mock -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $PesterBoundParameters }
+            Mock -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { $PesterBoundParameters }
         }
 
         BeforeEach {
@@ -33,7 +33,7 @@ Describe 'Request-ChatCompletion' {
         }
 
         It 'Chat completion' {
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { @'
 {
     "id": "chatcmpl-123",
     "object": "chat.completion",
@@ -66,7 +66,7 @@ Describe 'Request-ChatCompletion' {
         }
 
         It 'Structured Outputs (Auto parse)' {
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { @'
 {
     "id": "chatcmpl-123",
     "object": "chat.completion",
@@ -120,7 +120,7 @@ Describe 'Request-ChatCompletion' {
   }
 }
 '@
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { @'
 {
     "id": "chatcmpl-123",
     "object": "chat.completion",
@@ -155,7 +155,7 @@ Describe 'Request-ChatCompletion' {
         }
 
         It 'The model stops to output in half way' {
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { @'
 {
     "id": "chatcmpl-123",
     "object": "chat.completion",
@@ -182,7 +182,7 @@ Describe 'Request-ChatCompletion' {
         }
 
         It 'The model refuses to respond' {
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { @'
 {
     "id": "chatcmpl-123",
     "object": "chat.completion",
@@ -216,7 +216,7 @@ Describe 'Request-ChatCompletion' {
         }
 
         It 'Stream output' {
-            Mock -ModuleName $script:ModuleName Invoke-OpenAIAPIRequestSSE {
+            Mock -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { $Stream } {
                 '{"id":"chatcmpl-sf547Pa","object":"chat.completion.chunk","created":1679839328,"model":"gpt-3.5-turbo-0301","choices":[{"delta":{"content":"ECHO"},"index":0,"finish_reason":null}]}'
             }
             $Result = Request-ChatCompletion -Message 'test' -Stream -InformationVariable StreamOut -ea Stop
@@ -232,7 +232,7 @@ Describe 'Request-ChatCompletion' {
     "object": "chat.completion"
 }
 '@
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $Response_json }
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { $Response_json }
             { $script:Result = Request-ChatCompletion -Message 'test' -Format raw_response -ea Stop } | Should -Not -Throw
             Should -InvokeVerifiable
             $Result | Should -BeExactly $Response_json
@@ -240,7 +240,7 @@ Describe 'Request-ChatCompletion' {
 
         It 'Tool calls (non execution)' {
             Mock Test-Path { return $true }
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { @'
 {
     "id": "chatcmpl-8Iv2FuLeNiC4TLvU0q1fYBUt4WFop",
     "object": "chat.completion",
@@ -306,7 +306,7 @@ Describe 'Request-ChatCompletion' {
         }
 
         It 'Audio In/Out' {
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { @'
 {
     "id": "chatcmpl-abc123",
     "object": "chat.completion",
@@ -352,7 +352,7 @@ Describe 'Request-ChatCompletion' {
         }
 
         It 'Image input (Vision)' {
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { @'
 {
   "id": "chatcmpl-abc123",
   "object": "chat.completion",
@@ -399,7 +399,7 @@ Describe 'Request-ChatCompletion' {
         }
 
         It 'Use collect endpoint' {
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @"
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { @"
 {"choices": [{"message": {"content": "$($PesterBoundParameters.Uri)"}}]}
 "@ }
             $Result = Request-ChatCompletion -Message 'test'

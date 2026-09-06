@@ -13,7 +13,7 @@ Describe 'Request-Moderation' {
     Context 'Unit tests (offline)' -Tag 'Offline' {
         BeforeAll {
             Mock -ModuleName $script:ModuleName Initialize-APIKey { [securestring]::new() }
-            Mock -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $PesterBoundParameters }
+            Mock -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { $PesterBoundParameters }
         }
 
         BeforeEach {
@@ -21,7 +21,7 @@ Describe 'Request-Moderation' {
         }
 
         It 'Text moderation' {
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { gc ($script:TestData + '/moderation_flagged_true.json') -raw }
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { gc ($script:TestData + '/moderation_flagged_true.json') -raw }
             { $script:Result = Request-Moderation -Text 'I want to kill them.' -ea Stop } | Should -Not -Throw
             Should -InvokeVerifiable
             $Result | Should -BeOfType [PSCustomObject]
@@ -32,7 +32,7 @@ Describe 'Request-Moderation' {
         }
 
         It 'Output warning when the message violates the policy' {
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { gc ($script:TestData + '/moderation_flagged_true.json') -raw }
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { gc ($script:TestData + '/moderation_flagged_true.json') -raw }
             { $script:Result = Request-Moderation -Text 'I want to kill them.' -WarningAction Stop } | Should -Throw
         }
     }
