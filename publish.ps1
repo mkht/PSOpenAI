@@ -11,7 +11,7 @@ param (
 
     [Parameter(Mandatory = $false)]
     [ValidateNotNullOrEmpty()]
-    [string[]]$ExcludeFiles = @('.gitignore', '.gitmodules', '.gitattributes', 'PSScriptAnalyzerRules.psd1', 'AGENTS.md', 'Agent_Development_Guide.md', '*.tmp'),
+    [string[]]$ExcludeFiles = @('.gitignore', '.gitmodules', '.gitattributes', 'PSScriptAnalyzerRules.psd1', 'AGENTS.md', 'Agent_Development_Guide.md', '.worktreeinclude', '*.tmp'),
 
     [switch]$WhatIf
 )
