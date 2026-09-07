@@ -39,17 +39,7 @@ function New-Video {
         [int]$MaxRetryCount = 0,
 
         [Parameter()]
-        [OpenAIApiType]$ApiType = [OpenAIApiType]::OpenAI,
-
-        [Parameter()]
         [System.Uri]$ApiBase,
-
-        [Parameter(DontShow)]
-        [string]$ApiVersion,
-
-        [Parameter()]
-        [ValidateSet('openai', 'azure', 'azure_ad')]
-        [string]$AuthType = 'openai',
 
         [Parameter()]
         [securestring][SecureStringTransformation()]$ApiKey,
@@ -71,7 +61,6 @@ function New-Video {
     begin {
         # Get API context
         $OpenAIParameter = Get-OpenAIAPIParameter -EndpointName 'Videos' -Parameters $PSBoundParameters -ErrorAction Stop
-        $ApiType = $OpenAIParameter.ApiType
     }
 
     process {
@@ -81,21 +70,10 @@ function New-Video {
         $PostBody.model = $Model
 
         if ($PSBoundParameters.ContainsKey('Seconds')) {
-            if ($ApiType -eq [OpenAIApiType]::Azure) {
-                $PostBody.n_seconds = [int]$Seconds
-            }
-            else {
-                $PostBody.seconds = $Seconds.Trim()
-            }
+            $PostBody.seconds = $Seconds.Trim()
         }
         if ($PSBoundParameters.ContainsKey('Size')) {
-            if ($ApiType -eq [OpenAIApiType]::Azure) {
-                $PostBody.width = $Size.Split('x')[0].Trim()
-                $PostBody.height = $Size.Split('x')[1].Trim()
-            }
-            else {
-                $PostBody.size = $Size.Trim()
-            }
+            $PostBody.size = $Size.Trim()
         }
 
         if ($PSBoundParameters.ContainsKey('InputReference')) {
@@ -112,7 +90,6 @@ function New-Video {
             TimeoutSec        = $OpenAIParameter.TimeoutSec
             MaxRetryCount     = $OpenAIParameter.MaxRetryCount
             ApiKey            = $OpenAIParameter.ApiKey
-            AuthType          = $OpenAIParameter.AuthType
             Organization      = $OpenAIParameter.Organization
             Body              = $PostBody
             AdditionalQuery   = $AdditionalQuery

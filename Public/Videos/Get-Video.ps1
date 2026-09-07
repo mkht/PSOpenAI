@@ -30,17 +30,7 @@ function Get-Video {
         [int]$MaxRetryCount = 0,
 
         [Parameter()]
-        [OpenAIApiType]$ApiType = [OpenAIApiType]::OpenAI,
-
-        [Parameter()]
         [System.Uri]$ApiBase,
-
-        [Parameter(DontShow)]
-        [string]$ApiVersion,
-
-        [Parameter()]
-        [ValidateSet('openai', 'azure', 'azure_ad')]
-        [string]$AuthType = 'openai',
 
         [Parameter()]
         [securestring][SecureStringTransformation()]$ApiKey,
@@ -62,7 +52,6 @@ function Get-Video {
     begin {
         # Get API context
         $OpenAIParameter = Get-OpenAIAPIParameter -EndpointName 'Videos' -Parameters $PSBoundParameters -ErrorAction Stop
-        $ApiType = $OpenAIParameter.ApiType
 
         # Iterator flag
         [bool]$HasMore = $true
@@ -106,7 +95,6 @@ function Get-Video {
                     TimeoutSec        = $OpenAIParameter.TimeoutSec
                     MaxRetryCount     = $OpenAIParameter.MaxRetryCount
                     ApiKey            = $OpenAIParameter.ApiKey
-                    AuthType          = $OpenAIParameter.AuthType
                     Organization      = $OpenAIParameter.Organization
                     AdditionalQuery   = $AdditionalQuery
                     AdditionalHeaders = $AdditionalHeaders

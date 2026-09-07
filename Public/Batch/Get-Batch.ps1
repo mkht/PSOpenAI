@@ -27,17 +27,7 @@ function Get-Batch {
         [int]$MaxRetryCount = 0,
 
         [Parameter()]
-        [OpenAIApiType]$ApiType = [OpenAIApiType]::OpenAI,
-
-        [Parameter()]
         [System.Uri]$ApiBase,
-
-        [Parameter(DontShow)]
-        [string]$ApiVersion,
-
-        [Parameter()]
-        [ValidateSet('openai', 'azure', 'azure_ad')]
-        [string]$AuthType = 'openai',
 
         [Parameter()]
         [securestring][SecureStringTransformation()]$ApiKey,
@@ -102,7 +92,6 @@ function Get-Batch {
                     TimeoutSec        = $OpenAIParameter.TimeoutSec
                     MaxRetryCount     = $OpenAIParameter.MaxRetryCount
                     ApiKey            = $OpenAIParameter.ApiKey
-                    AuthType          = $OpenAIParameter.AuthType
                     Organization      = $OpenAIParameter.Organization
                     AdditionalQuery   = $AdditionalQuery
                     AdditionalHeaders = $AdditionalHeaders

@@ -33,17 +33,7 @@ function Set-VectorStore {
         [int]$MaxRetryCount = 0,
 
         [Parameter()]
-        [OpenAIApiType]$ApiType = [OpenAIApiType]::OpenAI,
-
-        [Parameter()]
         [System.Uri]$ApiBase,
-
-        [Parameter(DontShow)]
-        [string]$ApiVersion,
-
-        [Parameter()]
-        [ValidateSet('openai', 'azure', 'azure_ad')]
-        [string]$AuthType = 'openai',
 
         [Parameter()]
         [securestring][SecureStringTransformation()]$ApiKey,

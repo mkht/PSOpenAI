@@ -601,40 +601,5 @@ Describe 'Request-ImageGeneration' {
         }
     }
 
-    Context 'Integration tests (Azure)' -Tag 'Azure' {
 
-        BeforeAll {
-            $AzureContext = @{
-                ApiType    = 'Azure'
-                AuthType   = 'Azure'
-                ApiKey     = $env:AZURE_OPENAI_API_KEY
-                ApiBase    = $env:AZURE_OPENAI_ENDPOINT
-                TimeoutSec = 30
-            }
-            Set-OpenAIContext @AzureContext
-        }
-
-        BeforeEach {
-            $script:Result = ''
-        }
-
-        AfterAll {
-            Clear-OpenAIContext
-        }
-
-        It 'Image generation. Save to file.' {
-            { $splat = @{
-                    Model       = 'gpt-image-2'
-                    Prompt      = 'A polar bear on an ice block'
-                    OutFile     = Join-Path $TestDrive 'file1.png'
-                    Size        = '1024x1024'
-                    TimeoutSec  = 30
-                    ErrorAction = 'Stop'
-                }
-                $script:Result = Request-ImageGeneration @splat
-            } | Should -Not -Throw
-            $Result | Should -BeNullOrEmpty
-            (Join-Path $TestDrive 'file1.png') | Should -Exist
-        }
-    }
 }

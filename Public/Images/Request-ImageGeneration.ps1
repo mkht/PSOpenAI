@@ -79,17 +79,7 @@ function Request-ImageGeneration {
         [int]$TimeoutSec = 0,
 
         [Parameter()]
-        [OpenAIApiType]$ApiType = [OpenAIApiType]::OpenAI,
-
-        [Parameter()]
         [System.Uri]$ApiBase,
-
-        [Parameter(DontShow)]
-        [string]$ApiVersion,
-
-        [Parameter()]
-        [ValidateSet('openai', 'azure', 'azure_ad')]
-        [string]$AuthType = 'openai',
 
         [Parameter()]
         [ValidateRange(0, 100)]
@@ -114,7 +104,7 @@ function Request-ImageGeneration {
 
     begin {
         # Get API context
-        $OpenAIParameter = Get-OpenAIAPIParameter -EndpointName 'Image.Generation' -Parameters $PSBoundParameters -Engine $Model -ErrorAction Stop
+        $OpenAIParameter = Get-OpenAIAPIParameter -EndpointName 'Image.Generation' -Parameters $PSBoundParameters -ErrorAction Stop
 
         ## Set up masking patterns
         $MaskPatterns = [System.Collections.Generic.List[Tuple[regex, string]]]::new()
@@ -126,9 +116,7 @@ function Request-ImageGeneration {
         $PostBody = [System.Collections.Specialized.OrderedDictionary]::new()
         $PostBody.prompt = $Prompt
 
-        if ($OpenAIParameter.ApiType -eq [OpenAIApiType]::OpenAI) {
-            $PostBody.model = $Model
-        }
+        $PostBody.model = $Model
 
         if ($PSBoundParameters.ContainsKey('NumberOfImages')) {
             $PostBody.n = $NumberOfImages
@@ -228,7 +216,6 @@ function Request-ImageGeneration {
             TimeoutSec        = $OpenAIParameter.TimeoutSec
             MaxRetryCount     = $OpenAIParameter.MaxRetryCount
             ApiKey            = $OpenAIParameter.ApiKey
-            AuthType          = $OpenAIParameter.AuthType
             Organization      = $OpenAIParameter.Organization
             Body              = $PostBody
             AdditionalQuery   = $AdditionalQuery

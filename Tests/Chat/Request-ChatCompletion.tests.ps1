@@ -895,52 +895,5 @@ Ping Source Address Latency(ms) BufferSize(B) Status
         }
     }
 
-    Context 'Integration tests (Azure OpenAI)' -Tag 'Azure' {
 
-        BeforeAll {
-            # Set Context for Azure OpenAI
-            $AzureContext = @{
-                ApiType    = 'Azure'
-                AuthType   = 'Azure'
-                ApiKey     = $env:AZURE_OPENAI_API_KEY
-                ApiBase    = $env:AZURE_OPENAI_ENDPOINT
-                TimeoutSec = 30
-            }
-            Set-OpenAIContext @AzureContext
-
-            # Deploymenet name
-            $script:Model = 'gpt-4o-mini'
-        }
-
-        BeforeEach {
-            $script:Result = ''
-        }
-
-        AfterAll {
-            Clear-OpenAIContext
-        }
-
-        It 'Chat completion' {
-            { $script:Result = Request-ChatCompletion -Message '君の名は？' -Model $script:Model -ea Stop } | Should -Not -Throw
-            $Result | Should -BeOfType [pscustomobject]
-            $Result.object | Should -Be 'chat.completion'
-            $Result.Answer | Should -HaveCount 1
-            # content_filter_results has only in Azure API
-            $Result.choices[0].content_filter_results | Should -Not -BeNullOrEmpty
-        }
-
-        It 'Stream output' {
-            $params = @{
-                Model               = $script:Model
-                Message             = 'Please describe about Azure'
-                MaxCompletionTokens = 32
-                Stream              = $true
-                InformationVariable = 'Info'
-                ErrorAction         = 'Stop'
-            }
-            $Result = Request-ChatCompletion @params | Select-Object -First 10
-            $Result | Should -HaveCount 10
-            ([string[]]$Info) | Should -Be ([string[]]$Result)
-        }
-    }
 }

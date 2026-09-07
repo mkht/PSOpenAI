@@ -261,17 +261,7 @@ function Request-ChatCompletion {
         [int]$MaxRetryCount = 0,
 
         [Parameter()]
-        [OpenAIApiType]$ApiType = [OpenAIApiType]::OpenAI,
-
-        [Parameter()]
         [System.Uri]$ApiBase,
-
-        [Parameter(DontShow)]
-        [string]$ApiVersion,
-
-        [Parameter()]
-        [ValidateSet('openai', 'azure', 'azure_ad')]
-        [string]$AuthType = 'openai',
 
         [Parameter()]
         [securestring][SecureStringTransformation()]$ApiKey,
@@ -295,15 +285,9 @@ function Request-ChatCompletion {
 
     begin {
         # Get API context
-        $OpenAIParameter = Get-OpenAIAPIParameter -EndpointName 'Chat.Completion' -Parameters $PSBoundParameters -Engine $Model -ErrorAction Stop
+        $OpenAIParameter = Get-OpenAIAPIParameter -EndpointName 'Chat.Completion' -Parameters $PSBoundParameters -ErrorAction Stop
 
-        if ($OpenAIParameter.ApiType -eq [OpenAIApiType]::Azure) {
-            # Temporal engine name for Azure
-            $Engine = 'gpt-3.5-turbo'
-        }
-        else {
-            $Engine = $Model
-        }
+        $Engine = $Model
     }
 
     process {
@@ -350,9 +334,7 @@ function Request-ChatCompletion {
         #region Construct parameters for API request
         $Response = $null
         $PostBody = [System.Collections.Specialized.OrderedDictionary]::new()
-        if ($OpenAIParameter.ApiType -eq [OpenAIApiType]::OpenAI -or $AsBatch) {
-            $PostBody.model = $Model
-        }
+        $PostBody.model = $Model
         if ($PSBoundParameters.ContainsKey('Modalities')) {
             $PostBody.modalities = $Modalities
             if ($Modalities -contains 'audio') {
@@ -675,7 +657,6 @@ function Request-ChatCompletion {
             TimeoutSec        = $OpenAIParameter.TimeoutSec
             MaxRetryCount     = $OpenAIParameter.MaxRetryCount
             ApiKey            = $OpenAIParameter.ApiKey
-            AuthType          = $OpenAIParameter.AuthType
             Organization      = $OpenAIParameter.Organization
             Body              = $PostBody
             AdditionalQuery   = $AdditionalQuery
