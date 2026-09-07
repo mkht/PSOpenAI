@@ -67,13 +67,6 @@
         'Request-ImageEdit',
         'Request-ImageGeneration',
         'Request-ImageVariation',
-        #### Videos ####
-        'New-Video',
-        'New-VideoRemix',
-        'Get-Video',
-        'Get-VideoContent',
-        'Remove-Video',
-        'Wait-Video',
         #### Content Provenance Checks ####
         'Request-ContentProvenanceCheck',
         #### Moderation ####
