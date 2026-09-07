@@ -241,53 +241,5 @@ Describe 'Get-Response' {
         }
     }
 
-    Context 'Integration tests (Azure)' -Tag 'Azure' {
 
-        BeforeAll {
-            # Set Context for Azure OpenAI
-            $AzureContext = @{
-                ApiType    = 'Azure'
-                AuthType   = 'Azure'
-                ApiKey     = $env:AZURE_OPENAI_API_KEY
-                ApiBase    = $env:AZURE_OPENAI_ENDPOINT
-                TimeoutSec = 30
-            }
-            Set-OpenAIContext @AzureContext
-
-            $script:TestResponse = Request-Response -Model 'gpt-4o-mini' -Message 'Hello' -Store $true -TimeoutSec 30 -ErrorAction Stop
-            Start-Sleep -Seconds 5
-        }
-
-        BeforeEach {
-            $script:Result = ''
-        }
-
-        It 'Get response by object' {
-            { $splat = @{
-                    Response    = $script:TestResponse
-                    TimeoutSec  = 30
-                    ErrorAction = 'Stop'
-                }
-                $script:Result = Get-Response @splat
-            } | Should -Not -Throw
-            $Result.id | Should -Be $script:TestResponse.id
-            $Result.LastUserMessage | Should -BeExactly $script:TestResponse.LastUserMessage
-            $Result.output_text | Should -BeExactly $script:TestResponse.output_text
-            $Result.History | Should -HaveCount 2
-        }
-
-        It 'Get response by id' {
-            { $splat = @{
-                    ResponseId  = $script:TestResponse.id
-                    TimeoutSec  = 30
-                    ErrorAction = 'Stop'
-                }
-                $script:Result = Get-Response @splat
-            } | Should -Not -Throw
-            $Result.id | Should -Be $script:TestResponse.id
-            $Result.LastUserMessage | Should -BeExactly $script:TestResponse.LastUserMessage
-            $Result.output_text | Should -BeExactly $script:TestResponse.output_text
-            $Result.History | Should -HaveCount 2
-        }
-    }
 }

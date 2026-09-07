@@ -2,16 +2,14 @@
 
 [![Test](https://github.com/mkht/PSOpenAI/actions/workflows/test.yml/badge.svg)](https://github.com/mkht/PSOpenAI/actions/workflows/test.yml)
 
-PowerShell module for OpenAI and Azure OpenAI Service.  
+PowerShell module for OpenAI and OpenAI-compatible API servers.
+
 You can use OpenAI functions such as ChatGPT, Speech-to-Text, Text-to-Image from PowerShell.
 
 **This is a community-based project and is not an official offering of OpenAI.**
 
 + About OpenAI API  
 https://platform.openai.com/docs
-
-+ About Azure OpenAI Service  
-https://learn.microsoft.com/en-us/azure/ai-services/openai/overview
 
 ----
 ## Supported Platforms
@@ -158,8 +156,8 @@ Guide: [How to use Batch](/Guides/How_to_use_Batch.md)
 + [Request-ContentProvenanceCheck](/Docs/Request-ContentProvenanceCheck.md)
 + [Request-TextCompletion](/Docs/Request-TextCompletion.md)
 
-### Azure OpenAI Service
-+ [Guide: How to use with Azure OpenAI Service](Guides/How_to_use_with_Azure_OpenAI_Service.md)
+### OpenAI-compatible API servers
++ [Guide: Migrate Azure OpenAI to v1](Guides/How_to_use_with_Azure_OpenAI_Service.md)
 
 </details>
 
@@ -363,22 +361,6 @@ Allow models to search the web for the latest information before generating a re
 $Response = Request-Response -Model 'gpt-5.6-terra' -Message 'What was a tech news in December 2025?' -UseWebSearch
 ```
 
-### Azure OpenAI Service
-
-If you want to use Azure OpenAI Service instead of OpenAI. You should create Azure OpenAI resource to your Azure tenant, and get API key and endpoint url. See guides for more details.
-
-+ [Guide: How to use with Azure OpenAI Service](Guides/How_to_use_with_Azure_OpenAI_Service.md)
-
-```powershell
-$global:OPENAI_API_KEY = '<Put your api key here>'
-$global:OPENAI_API_BASE  = 'https://<resource-name>.openai.azure.com/'
-
-Request-ChatCompletion `
-  -Model 'gpt-4o' `
-  -Message 'Hello Azure OpenAI Service.' `
-  -ApiType Azure
-```
-
 ### OpenAI Compatible Servers
 
 If you want to use OpenAI compatible services such as GitHub Models, Google Gemini, self-hosted servers like LM Studio or Ollama.
@@ -390,9 +372,12 @@ $global:OPENAI_API_BASE  = 'https://models.github.ai/inference'
 
 Request-ChatCompletion `
   -Model 'microsoft/Phi-4-reasoning' `
-  -Message 'What is the capital of France?' `
-  -ApiType OpenAI
+  -Message 'What is the capital of France?'
 ```
+
+Azure OpenAI v1 can be used through the same interface. Set `ApiBase` to `https://<resource>.openai.azure.com/openai/v1/`, supply the Azure API key or an Entra ID access token as `ApiKey`, and use the deployment name as `Model`. Available operations and options depend on the server. PSOpenAI does not maintain an Azure-specific API mode.
+
+Version 5.0 removes `ApiType`, `ApiVersion`, and `AuthType`, including `-ApiType OpenAI`. See the [Azure v1 migration guide](Guides/How_to_use_with_Azure_OpenAI_Service.md).
 
 ----
 ## About API key

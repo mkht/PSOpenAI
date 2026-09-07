@@ -27,17 +27,7 @@ function Get-VideoContent {
         [int]$MaxRetryCount = 0,
 
         [Parameter()]
-        [OpenAIApiType]$ApiType = [OpenAIApiType]::OpenAI,
-
-        [Parameter()]
         [System.Uri]$ApiBase,
-
-        [Parameter(DontShow)]
-        [string]$ApiVersion,
-
-        [Parameter()]
-        [ValidateSet('openai', 'azure', 'azure_ad')]
-        [string]$AuthType = 'openai',
 
         [Parameter()]
         [securestring][SecureStringTransformation()]$ApiKey,
@@ -59,7 +49,6 @@ function Get-VideoContent {
     begin {
         # Get API context
         $OpenAIParameter = Get-OpenAIAPIParameter -EndpointName 'Videos.Content' -Parameters $PSBoundParameters -ErrorAction Stop
-        $ApiType = $OpenAIParameter.ApiType
 
         # Parse Common params
         $CommonParams = ParseCommonParams $PSBoundParameters
@@ -80,31 +69,17 @@ function Get-VideoContent {
         }
         # endregion
 
-        # For Azure OpenAI, the job id is not equal to the video id.
-        # video id is required to get from the finished job object.
-        if ($ApiType -eq [OpenAIApiType]::Azure) {
-            $JobObject = PSOpenAI\Get-Video -VideoId $VideoId @CommonParams
-            if ($null -eq $JobObject) {
-                Write-Error -Message "The job with id '$VideoId' was not found."
-            }
-            else {
-                $VideoId = $JobObject.generations[0].id
-            }
-        }
+
 
         #region Construct Query URI
         $QueryUri = $OpenAIParameter.Uri.ToString() -f $VideoId
         $UriBuilder = [System.UriBuilder]::new($QueryUri)
-        if ($ApiType -eq [OpenAIApiType]::Azure) {
-            $UriBuilder.Path += "/$Variant"
-        }
 
-        if ($ApiType -eq [OpenAIApiType]::OpenAI) {
-            if ($PSBoundParameters.ContainsKey('Variant')) {
-                $QueryParam = [System.Web.HttpUtility]::ParseQueryString($UriBuilder.Query)
-                $QueryParam.Add('variant', $Variant)
-                $UriBuilder.Query = $QueryParam.ToString()
-            }
+
+        if ($PSBoundParameters.ContainsKey('Variant')) {
+            $QueryParam = [System.Web.HttpUtility]::ParseQueryString($UriBuilder.Query)
+            $QueryParam.Add('variant', $Variant)
+            $UriBuilder.Query = $QueryParam.ToString()
         }
 
         $QueryUri = $UriBuilder.Uri
@@ -117,7 +92,6 @@ function Get-VideoContent {
             TimeoutSec        = $OpenAIParameter.TimeoutSec
             MaxRetryCount     = $OpenAIParameter.MaxRetryCount
             ApiKey            = $OpenAIParameter.ApiKey
-            AuthType          = $OpenAIParameter.AuthType
             Organization      = $OpenAIParameter.Organization
             AdditionalQuery   = $AdditionalQuery
             AdditionalHeaders = $AdditionalHeaders

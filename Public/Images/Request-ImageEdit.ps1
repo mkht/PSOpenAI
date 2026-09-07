@@ -86,17 +86,7 @@ function Request-ImageEdit {
         [int]$TimeoutSec = 0,
 
         [Parameter()]
-        [OpenAIApiType]$ApiType = [OpenAIApiType]::OpenAI,
-
-        [Parameter()]
         [System.Uri]$ApiBase,
-
-        [Parameter(DontShow)]
-        [string]$ApiVersion,
-
-        [Parameter()]
-        [ValidateSet('openai', 'azure', 'azure_ad')]
-        [string]$AuthType = 'openai',
 
         [Parameter()]
         [ValidateRange(0, 100)]
@@ -121,7 +111,7 @@ function Request-ImageEdit {
 
     begin {
         # Get API endpoint
-        $OpenAIParameter = Get-OpenAIAPIParameter -EndpointName 'Image.Edit' -Parameters $PSBoundParameters -Engine $Model -ErrorAction Stop
+        $OpenAIParameter = Get-OpenAIAPIParameter -EndpointName 'Image.Edit' -Parameters $PSBoundParameters -ErrorAction Stop
 
         ## Set up masking patterns
         $MaskPatterns = [System.Collections.Generic.List[Tuple[regex, string]]]::new()
@@ -132,21 +122,11 @@ function Request-ImageEdit {
         $InputImages = @()
 
         foreach ($img in $Image) {
-            if ($OpenAIParameter.ApiType -eq [OpenAIApiType]::OpenAI) {
-                $InputImages += Resolve-FileInfo $img
-            }
-            else {
-                $InputImages += Convert-ImageToDataURL $img
-            }
+            $InputImages += Resolve-FileInfo $img
         }
 
         if ($PSBoundParameters.ContainsKey('Mask')) {
-            if ($OpenAIParameter.ApiType -eq [OpenAIApiType]::OpenAI) {
-                $MaskImage = Resolve-FileInfo $Mask
-            }
-            else {
-                $MaskImage = Convert-ImageToDataURL $Mask
-            }
+            $MaskImage = Resolve-FileInfo $Mask
         }
 
         #region Construct parameters for API request
@@ -164,10 +144,8 @@ function Request-ImageEdit {
             $PostBody.mask = $MaskImage
         }
 
-        if ($OpenAIParameter.ApiType -eq [OpenAIApiType]::OpenAI) {
-            if ($PSBoundParameters.ContainsKey('Model')) {
-                $PostBody.model = $Model
-            }
+        if ($PSBoundParameters.ContainsKey('Model')) {
+            $PostBody.model = $Model
         }
 
         if ($PSBoundParameters.ContainsKey('NumberOfImages')) {

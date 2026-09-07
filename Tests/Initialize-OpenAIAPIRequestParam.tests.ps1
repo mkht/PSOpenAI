@@ -39,7 +39,6 @@ Describe 'Initialize-OpenAIAPIRequestParam' {
                     ContentType = 'application/json'
                     Body        = @{ 'key' = 'value' }
                     Headers     = @{ 'Authorization' = 'Bearer token'; 'X-TEST' = 'true' }
-                    AuthType    = 'azure'
                 }
 
                 $ret = Initialize-OpenAIAPIRequestParam @Parameters
@@ -53,7 +52,7 @@ Describe 'Initialize-OpenAIAPIRequestParam' {
                 $ret['Headers'] | Should -BeOfType [hashtable]
                 $ret['Headers']['Authorization'] | Should -BeExactly 'Bearer token'
                 $ret['Headers']['X-TEST'] | Should -BeExactly 'true'
-                $ret['ServiceName'] | Should -BeExactly 'Azure OpenAI'
+                $ret['ServiceName'] | Should -BeExactly 'OpenAI'
             }
 
             It 'Should assert deprecation model' {

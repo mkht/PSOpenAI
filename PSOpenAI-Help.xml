@@ -1933,15 +1933,12 @@ PS C:\&gt; $Store = $Store | Add-VectorStoreFile -FileId 'file-abc123' -PassThru
     <command:examples>
       <command:example>
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; Set-OpenAIContext -ApiType 'Azure' -ApiKey 'API_KEY'
+        <dev:code>PS C:\&gt; Set-OpenAIContext -ApiKey 'API_KEY'
 PS C:\&gt; Clear-OpenAIContext
 PS C:\&gt; Get-OpenAIContext
 
 ApiKey        : 
-ApiType       : OpenAI
 ApiBase       : 
-ApiVersion    : 
-AuthType      : openai
 Organization  : 
 TimeoutSec    : 0
 MaxRetryCount : 0</dev:code>
@@ -2012,39 +2009,6 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>ApiType</maml:name>
-          <maml:description>
-            <maml:para>Specifies API type of use. `OpenAI`(default) or `Azure`</maml:para>
-          </maml:description>
-          <command:parameterValueGroup>
-            <command:parameterValue required="false" command:variableLength="false">OpenAI</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Azure</command:parameterValue>
-          </command:parameterValueGroup>
-          <command:parameterValue required="true" variableLength="false">OpenAIApiType</command:parameterValue>
-          <dev:type>
-            <maml:name>OpenAIApiType</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>OpenAI</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>AuthType</maml:name>
-          <maml:description>
-            <maml:para>If you wish to use Entra-ID based authentication, specifies as `azure_ad`.</maml:para>
-          </maml:description>
-          <command:parameterValueGroup>
-            <command:parameterValue required="false" command:variableLength="false">openai</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">azure</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">azure_ad</command:parameterValue>
-          </command:parameterValueGroup>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
@@ -2083,30 +2047,6 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
         <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
         <dev:type>
           <maml:name>Object</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-        <maml:name>ApiType</maml:name>
-        <maml:description>
-          <maml:para>Specifies API type of use. `OpenAI`(default) or `Azure`</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">OpenAIApiType</command:parameterValue>
-        <dev:type>
-          <maml:name>OpenAIApiType</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>OpenAI</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-        <maml:name>AuthType</maml:name>
-        <maml:description>
-          <maml:para>If you wish to use Entra-ID based authentication, specifies as `azure_ad`.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -2182,39 +2122,6 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>ApiType</maml:name>
-          <maml:description>
-            <maml:para>Specifies API type of use. `OpenAI`(default) or `Azure`</maml:para>
-          </maml:description>
-          <command:parameterValueGroup>
-            <command:parameterValue required="false" command:variableLength="false">OpenAI</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Azure</command:parameterValue>
-          </command:parameterValueGroup>
-          <command:parameterValue required="true" variableLength="false">OpenAIApiType</command:parameterValue>
-          <dev:type>
-            <maml:name>OpenAIApiType</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>OpenAI</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>AuthType</maml:name>
-          <maml:description>
-            <maml:para>If you wish to use Entra-ID based authentication, specifies as `azure_ad`.</maml:para>
-          </maml:description>
-          <command:parameterValueGroup>
-            <command:parameterValue required="false" command:variableLength="false">openai</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">azure</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">azure_ad</command:parameterValue>
-          </command:parameterValueGroup>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
@@ -2241,30 +2148,6 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
         <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
         <dev:type>
           <maml:name>Object</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-        <maml:name>ApiType</maml:name>
-        <maml:description>
-          <maml:para>Specifies API type of use. `OpenAI`(default) or `Azure`</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">OpenAIApiType</command:parameterValue>
-        <dev:type>
-          <maml:name>OpenAIApiType</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>OpenAI</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-        <maml:name>AuthType</maml:name>
-        <maml:description>
-          <maml:para>If you wish to use Entra-ID based authentication, specifies as `azure_ad`.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -5950,14 +5833,11 @@ PS C:\&gt; Get-CosineSimilarity $v1 $v2
     <command:examples>
       <command:example>
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; Set-OpenAIContext -ApiType 'Azure' -ApiKey 'AZURE_API_KEY' -ApiBase 'https://my-endpoint.openai.azure.com/'
+        <dev:code>PS C:\&gt; Set-OpenAIContext -ApiKey 'AZURE_API_KEY' -ApiBase 'https://my-endpoint.openai.azure.com/openai/v1/'
 PS C:\&gt; Get-OpenAIContext
 
 ApiKey        : System.Security.SecureString
-ApiType       : Azure
-ApiBase       : https://my-endpoint.openai.azure.com/
-ApiVersion    : 
-AuthType      : azure
+ApiBase       : https://my-endpoint.openai.azure.com/openai/v1/
 Organization  : 
 TimeoutSec    : 0
 MaxRetryCount : 0</dev:code>
@@ -15560,6 +15440,7 @@ Positive values penalize new tokens based on their existing frequency in the tex
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="logit_bias">
           <maml:name>LogitBias</maml:name>
           <maml:description>
+            <maml:para>For custom model or deployment names that do not identify a known tokenizer, supply integer token IDs for the actual model. PSOpenAI does not infer a tokenizer from an Azure deployment name.</maml:para>
             <maml:para>Modify the likelihood of specified tokens appearing in the completion.
 Accepts a maps of tokens to an associated bias value from `-100` to `100`. You can use `ConvertTo-Token` to convert text to token IDs. Mathematically, the bias is added to the logits generated by the model prior to sampling. The exact effect will vary per model, but values between `-1` and `1` should decrease or increase likelihood of selection; values like `-100` or `100` should result in a ban or exclusive selection of the relevant token.
 As an example, you can pass like so: `@{23182 = 20; 88847 = -100}`
@@ -16273,6 +16154,7 @@ Positive values penalize new tokens based on their existing frequency in the tex
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="logit_bias">
         <maml:name>LogitBias</maml:name>
         <maml:description>
+          <maml:para>For custom model or deployment names that do not identify a known tokenizer, supply integer token IDs for the actual model. PSOpenAI does not infer a tokenizer from an Azure deployment name.</maml:para>
           <maml:para>Modify the likelihood of specified tokens appearing in the completion.
 Accepts a maps of tokens to an associated bias value from `-100` to `100`. You can use `ConvertTo-Token` to convert text to token IDs. Mathematically, the bias is added to the logits generated by the model prior to sampling. The exact effect will vary per model, but values between `-1` and `1` should decrease or increase likelihood of selection; values like `-100` or `100` should result in a ban or exclusive selection of the relevant token.
 As an example, you can pass like so: `@{23182 = 20; 88847 = -100}`
@@ -16781,7 +16663,7 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
       <maml:alert>
         <maml:para>Uploads the file as multipart/form-data to POST /v1/content_provenance_checks. Image results include C2PA and SynthID; audio results include SynthID.</maml:para>
         <maml:para>A not_detected outcome does not establish that the content is human-created. Signals may be missing or degraded, and other companies' models are not detected.</maml:para>
-        <maml:para>This endpoint is provided by OpenAI; Azure OpenAI is not supported.</maml:para>
+        <maml:para>The configured server must implement the OpenAI content provenance endpoint.</maml:para>
       </maml:alert>
     </maml:alertSet>
     <command:examples>
@@ -23116,6 +22998,7 @@ Positive values penalize new tokens based on their existing frequency in the tex
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="logit_bias">
           <maml:name>LogitBias</maml:name>
           <maml:description>
+            <maml:para>For custom model or deployment names that do not identify a known tokenizer, supply integer token IDs for the actual model. PSOpenAI does not infer a tokenizer from an Azure deployment name.</maml:para>
             <maml:para>Modify the likelihood of specified tokens appearing in the completion.
 Accepts a maps of tokens to an associated bias value from `-100` to `100`. You can use `ConvertTo-Token` to convert text to token IDs. Mathematically, the bias is added to the logits generated by the model prior to sampling. The exact effect will vary per model, but values between `-1` and `1` should decrease or increase likelihood of selection; values like `-100` or `100` should result in a ban or exclusive selection of the relevant token.
 As an example, you can pass like so: `@{23182 = 20; 88847 = -100}`
@@ -23400,6 +23283,7 @@ Positive values penalize new tokens based on their existing frequency in the tex
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="logit_bias">
         <maml:name>LogitBias</maml:name>
         <maml:description>
+          <maml:para>For custom model or deployment names that do not identify a known tokenizer, supply integer token IDs for the actual model. PSOpenAI does not infer a tokenizer from an Azure deployment name.</maml:para>
           <maml:para>Modify the likelihood of specified tokens appearing in the completion.
 Accepts a maps of tokens to an associated bias value from `-100` to `100`. You can use `ConvertTo-Token` to convert text to token IDs. Mathematically, the bias is added to the logits generated by the model prior to sampling. The exact effect will vary per model, but values between `-1` and `1` should decrease or increase likelihood of selection; values like `-100` or `100` should result in a ban or exclusive selection of the relevant token.
 As an example, you can pass like so: `@{23182 = 20; 88847 = -100}`
@@ -24140,18 +24024,6 @@ API key specified in the context take precedence over environment and global var
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>ApiType</maml:name>
-          <maml:description>
-            <maml:para>Specify whether to call OpenAI or Azure OpenAI Service. Supported values are "OpenAI" or "Azure".</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>ApiBase</maml:name>
           <maml:description>
             <maml:para>Specifies an API endpoint URL such like: `https://your-api-endpoint.test/v1`
@@ -24160,30 +24032,6 @@ URL specified in the context take precedence over environment and global variabl
           <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
           <dev:type>
             <maml:name>System.Uri</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>ApiVersion</maml:name>
-          <maml:description>
-            <maml:para>Specify a string representing the API version. This is only valid when using the Azure OpenAI Service.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>AuthType</maml:name>
-          <maml:description>
-            <maml:para>Specify the authentication type to be used. Valid values are "OpenAI", "Azure", or "Azure_AD".</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -24246,18 +24094,6 @@ API key specified in the context take precedence over environment and global var
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-        <maml:name>ApiType</maml:name>
-        <maml:description>
-          <maml:para>Specify whether to call OpenAI or Azure OpenAI Service. Supported values are "OpenAI" or "Azure".</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>ApiBase</maml:name>
         <maml:description>
           <maml:para>Specifies an API endpoint URL such like: `https://your-api-endpoint.test/v1`
@@ -24266,30 +24102,6 @@ URL specified in the context take precedence over environment and global variabl
         <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
         <dev:type>
           <maml:name>System.Uri</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-        <maml:name>ApiVersion</maml:name>
-        <maml:description>
-          <maml:para>Specify a string representing the API version. This is only valid when using the Azure OpenAI Service.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-        <maml:name>AuthType</maml:name>
-        <maml:description>
-          <maml:para>Specify the authentication type to be used. Valid values are "OpenAI", "Azure", or "Azure_AD".</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -24346,10 +24158,10 @@ Note : Retries will only be performed if the request fails with a `429 (Rate lim
     <command:examples>
       <command:example>
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; Set-OpenAIContext -ApiType 'Azure' -ApiKey 'AZURE_API_KEY' -ApiBase 'https://my-endpoint.openai.azure.com/'
-PS C:\&gt; Request-ChatCompletion -Message 'Hello Azure OpenAI'</dev:code>
+        <dev:code>PS C:\&gt; Set-OpenAIContext -ApiKey 'AZURE_API_KEY' -ApiBase 'https://my-endpoint.openai.azure.com/openai/v1/'
+PS C:\&gt; Request-ChatCompletion -Message 'Hello Azure OpenAI' -Model '&lt;deployment-name&gt;'</dev:code>
         <dev:remarks>
-          <maml:para>Because the context is set to use Azure, Request-ChatCompletion is executed to Azure instead of the default OpenAI.</maml:para>
+          <maml:para>The custom API base and API key are used for subsequent requests. For Azure v1, Model must be the deployment name.</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>

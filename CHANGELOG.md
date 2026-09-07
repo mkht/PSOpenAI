@@ -1,5 +1,7 @@
 # Changelog
-### Unreleased
+### Unreleased (5.0.0)
+- **BREAKING:** Remove explicit Azure OpenAI support and the `ApiType`, `ApiVersion`, and `AuthType` parameters/context properties, including `-ApiType OpenAI`. Use an OpenAI-compatible API base and Bearer authentication. See the [Azure v1 migration guide](Guides/How_to_use_with_Azure_OpenAI_Service.md).
+- Remove legacy Azure image/video request conversions. Existing Azure video jobs require the previous module version.
 - Unify HTTP requests and SSE on a shared HttpClient transport while retaining Windows PowerShell 5.1 support and public command outputs.
 - Apply request timeouts independently to each attempt, including response-body reads; fix SSE client reuse and dispose HTTP resources on completion.
 - Add `Request-ContentProvenanceCheck` to check image and audio files for OpenAI C2PA and SynthID provenance signals.

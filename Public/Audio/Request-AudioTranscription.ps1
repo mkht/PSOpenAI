@@ -84,17 +84,7 @@ function Request-AudioTranscription {
         [int]$MaxRetryCount = 0,
 
         [Parameter()]
-        [OpenAIApiType]$ApiType = [OpenAIApiType]::OpenAI,
-
-        [Parameter()]
         [System.Uri]$ApiBase,
-
-        [Parameter(DontShow)]
-        [string]$ApiVersion,
-
-        [Parameter()]
-        [ValidateSet('openai', 'azure', 'azure_ad')]
-        [string]$AuthType = 'openai',
 
         [Parameter()]
         [securestring][SecureStringTransformation()]$ApiKey,
@@ -115,7 +105,7 @@ function Request-AudioTranscription {
 
     begin {
         # Get API context
-        $OpenAIParameter = Get-OpenAIAPIParameter -EndpointName 'Audio.Transcription' -Parameters $PSBoundParameters -Engine $Model -ErrorAction Stop
+        $OpenAIParameter = Get-OpenAIAPIParameter -EndpointName 'Audio.Transcription' -Parameters $PSBoundParameters -ErrorAction Stop
 
         # Convert language name to ISO-639-1 format (if we can)
         if ($PSBoundParameters.ContainsKey('Language')) {
@@ -134,9 +124,7 @@ function Request-AudioTranscription {
 
         #region Construct parameters for API request
         $PostBody = [System.Collections.Specialized.OrderedDictionary]::new()
-        if ($OpenAIParameter.ApiType -eq [OpenAIApiType]::OpenAI) {
-            $PostBody.model = $Model
-        }
+        $PostBody.model = $Model
         $PostBody.file = $FileInfo
         if ($ResponseFormat) {
             $PostBody.response_format = $ResponseFormat
@@ -213,7 +201,6 @@ function Request-AudioTranscription {
             TimeoutSec        = $OpenAIParameter.TimeoutSec
             MaxRetryCount     = $OpenAIParameter.MaxRetryCount
             ApiKey            = $OpenAIParameter.ApiKey
-            AuthType          = $OpenAIParameter.AuthType
             Organization      = $OpenAIParameter.Organization
             Body              = $PostBody
             AdditionalQuery   = $AdditionalQuery

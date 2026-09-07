@@ -31,17 +31,8 @@ function Request-ImageVariation {
         [Parameter()]
         [int]$TimeoutSec = 0,
 
-        # [Parameter(DontShow)]
-        # [OpenAIApiType]$ApiType = [OpenAIApiType]::OpenAI,
-
         [Parameter()]
         [System.Uri]$ApiBase,
-
-        # [Parameter(DontShow)]
-        # [string]$ApiVersion,
-
-        # [Parameter(DontShow)]
-        # [string]$AuthType = 'openai',
 
         [Parameter()]
         [ValidateRange(0, 100)]

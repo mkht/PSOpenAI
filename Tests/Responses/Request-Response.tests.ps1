@@ -1132,54 +1132,5 @@ STEP2. Use the timestamp tool to save the resulting timestamp in date and time, 
         }
     }
 
-    Context 'Integration tests (Azure OpenAI)' -Tag 'Azure' {
 
-        BeforeAll {
-            # Set Context for Azure OpenAI
-            $AzureContext = @{
-                ApiType    = 'Azure'
-                AuthType   = 'Azure'
-                ApiKey     = $env:AZURE_OPENAI_API_KEY
-                ApiBase    = $env:AZURE_OPENAI_ENDPOINT
-                TimeoutSec = 30
-            }
-            Set-OpenAIContext @AzureContext
-        }
-
-        BeforeEach {
-            $script:Result = ''
-        }
-
-        AfterAll {
-            Clear-OpenAIContext
-        }
-
-        It 'Simple chat response' {
-            { $script:Result = Request-Response -Message 'Hello' -Model 'gpt-5.6-luna' -Store $false -TimeoutSec 30 -ea Stop } | Should -Not -Throw
-            $Result | Should -BeOfType [pscustomobject]
-            $Result.object | Should -Be 'response'
-            $Result.output | Should -HaveCount 1
-            $Result.created_at | Should -BeOfType [datetime]
-            $Result.LastUserMessage | Should -Be 'Hello'
-            $Result.output_text | Should -Not -BeNullOrEmpty
-            $Result.History[0] | Should -BeOfType [pscustomobject]
-            $Result.History[0].Role | Should -Be 'user'
-            $Result.History[1] | Should -BeOfType [pscustomobject]
-            $Result.History[1].Role | Should -Be 'assistant'
-        }
-
-        It 'Stream output' {
-            $params = @{
-                Message         = 'Please describe about Azure OpenAI'
-                Model           = 'gpt-5.6-luna'
-                MaxOutputTokens = 32
-                Store           = $false
-                Stream          = $true
-                TimeoutSec      = 30
-                ErrorAction     = 'Stop'
-            }
-            $Result = Request-Response @params | Select-Object -First 10
-            $Result | Should -HaveCount 10
-        }
-    }
 }
