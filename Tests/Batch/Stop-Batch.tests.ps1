@@ -12,7 +12,7 @@ Describe 'Stop-Batch' {
 
         BeforeAll {
             Mock -ModuleName $script:ModuleName Initialize-APIKey { [securestring]::new() }
-            Mock -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $PesterBoundParameters }
+            Mock -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { $PesterBoundParameters }
             Mock -Verifiable -ModuleName $script:ModuleName Get-Batch {
                 [pscustomobject]@{
                     PSTypeName     = 'PSOpenAI.Batch'
@@ -31,7 +31,7 @@ Describe 'Stop-Batch' {
                     'cancelled_at' = [datetime]::Today
                 }
             }
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { @'
 {
     "id": "batch_abc123",
     "object": "batch",
@@ -72,7 +72,7 @@ Describe 'Stop-Batch' {
                 status     = 'in_progress'
             }
             { $script:Result = Stop-Batch -Batch $InObject -ea Stop } | Should -Not -Throw
-            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
+            Should -Invoke Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 1 -Exactly
             Should -Not -Invoke Wait-Batch -ModuleName $script:ModuleName
             $Result | Should -BeNullOrEmpty
         }
@@ -84,7 +84,7 @@ Describe 'Stop-Batch' {
                 status     = 'in_progress'
             }
             { $script:Result = Stop-Batch -Batch $InObject -PassThru -ea Stop } | Should -Not -Throw
-            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
+            Should -Invoke Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 1 -Exactly
             Should -Not -Invoke Wait-Batch -ModuleName $script:ModuleName
             $Result.id | Should -Be 'batch_abc123'
             $Result.status | Should -Be 'cancelling'
@@ -97,7 +97,7 @@ Describe 'Stop-Batch' {
                 status     = 'in_progress'
             }
             { $script:Result = Stop-Batch -InputObject $InObject -Wait -ea Stop } | Should -Not -Throw
-            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
+            Should -Invoke Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 1 -Exactly
             Should -Invoke Wait-Batch -ModuleName $script:ModuleName -Times 1 -Exactly
             $Result | Should -BeNullOrEmpty
         }
@@ -109,7 +109,7 @@ Describe 'Stop-Batch' {
                 status     = 'in_progress'
             }
             { $script:Result = Stop-Batch -InputObject $InObject -Wait -PassThru -ea Stop } | Should -Not -Throw
-            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
+            Should -Invoke Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 1 -Exactly
             Should -Invoke Wait-Batch -ModuleName $script:ModuleName -Times 1 -Exactly
             $Result.id | Should -Be 'batch_abc123'
             $Result.status | Should -Be 'cancelled'
@@ -122,7 +122,7 @@ Describe 'Stop-Batch' {
                 status     = 'completed'
             }
             { $script:Result = Stop-Batch -InputObject $InObject -ea Stop } | Should -Throw
-            Should -Not -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName
+            Should -Not -Invoke Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName
             Should -Not -Invoke Wait-Batch -ModuleName $script:ModuleName
             $Result | Should -BeNullOrEmpty
         }
@@ -134,7 +134,7 @@ Describe 'Stop-Batch' {
                 status     = 'completed'
             }
             { $script:Result = Stop-Batch -InputObject $InObject -Force -PassThru -ea Stop } | Should -Not -Throw
-            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
+            Should -Invoke Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 1 -Exactly
             Should -Not -Invoke Wait-Batch -ModuleName $script:ModuleName
             $Result.id | Should -Be 'batch_abc123'
         }
@@ -152,7 +152,7 @@ Describe 'Stop-Batch' {
                 { Stop-Batch $InObject -ea Stop } | Should -Not -Throw
                 # Pipeline
                 { $InObject | Stop-Batch -ea Stop } | Should -Not -Throw
-                Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 3 -Exactly
+                Should -Invoke Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 3 -Exactly
                 Should -Not -Invoke Get-Batch -ModuleName $script:ModuleName
                 Should -Not -Invoke Wait-Batch -ModuleName $script:ModuleName
             }
@@ -166,7 +166,7 @@ Describe 'Stop-Batch' {
                 { 'batch_abc123' | Stop-Batch -Wait -ea Stop } | Should -Not -Throw
                 # Pipeline by property name
                 { [pscustomobject]@{batch_id = 'batch_abc123' } | Stop-Batch -Wait -ea Stop } | Should -Not -Throw
-                Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 4 -Exactly
+                Should -Invoke Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 4 -Exactly
                 Should -Invoke Get-Batch -ModuleName $script:ModuleName -Times 4 -Exactly
                 Should -Invoke Wait-Batch -ModuleName $script:ModuleName -Times 4 -Exactly
             }

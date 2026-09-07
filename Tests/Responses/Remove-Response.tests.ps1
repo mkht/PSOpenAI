@@ -11,7 +11,7 @@ Describe 'Remove-Response' {
     Context 'Unit tests (offline)' -Tag 'Offline' {
         BeforeAll {
             Mock -ModuleName $script:ModuleName Initialize-APIKey { [securestring]::new() }
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { @'
 {
   "id": "resp_abc123",
   "object": "response",
@@ -26,7 +26,7 @@ Describe 'Remove-Response' {
 
         It 'Remove response with ID' {
             { $script:Result = Remove-Response -ResponseId 'resp_abc123' -ea Stop } | Should -Not -Throw
-            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
+            Should -Invoke Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 1 -Exactly
             $Result | Should -BeNullOrEmpty
         }
 
@@ -44,7 +44,7 @@ Describe 'Remove-Response' {
                 { Remove-Response $InObject -ea Stop } | Should -Not -Throw
                 # Pipeline
                 { $InObject | Remove-Response -ea Stop } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 4 -Exactly
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 4 -Exactly
             }
 
             It 'Id' {
@@ -58,7 +58,7 @@ Describe 'Remove-Response' {
                 { 'resp_abc123' | Remove-Response -ea Stop } | Should -Not -Throw
                 # Pipeline by property name
                 { [pscustomobject]@{id = 'resp_abc123' } | Remove-Response -ea Stop } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 5 -Exactly
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 5 -Exactly
             }
         }
     }

@@ -11,11 +11,11 @@ Describe 'Get-OpenAIModels' {
     Context 'Unit tests (offline)' -Tag 'Offline' {
         BeforeAll {
             Mock -ModuleName $script:ModuleName Initialize-APIKey { [securestring]::new() }
-            Mock -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $PesterBoundParameters }
+            Mock -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { $PesterBoundParameters }
         }
 
         It 'List all available AI models.' {
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { gc ($script:TestData + '/models.json') -Raw }
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { gc ($script:TestData + '/models.json') -Raw }
 
             $Models = Get-OpenAIModels
             Should -InvokeVerifiable
@@ -27,7 +27,7 @@ Describe 'Get-OpenAIModels' {
         }
 
         It 'Get a specific AI model.' {
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { @'
 {
     "id": "gpt-5",
     "object": "model",

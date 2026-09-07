@@ -11,8 +11,8 @@ Describe 'Get-VideoContent' {
     Context 'Unit tests (offline)' -Tag 'Offline' {
         BeforeAll {
             Mock -ModuleName $script:ModuleName Initialize-APIKey { [securestring]::new() }
-            Mock -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $PesterBoundParameters }
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest {
+            Mock -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { $PesterBoundParameters }
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } {
                 [System.Text.Encoding]::UTF8.GetBytes('ABC')
             }
             Mock -Verifiable -ModuleName $script:ModuleName Wait-Video {
@@ -38,7 +38,7 @@ Describe 'Get-VideoContent' {
         It 'Save video to local file' {
             $OutFile = (Join-Path $TestDrive 'abc.mp4')
             { $script:Result = Get-VideoContent -VideoId 'video_abc123' -OutFile $OutFile -Variant video -ea Stop } | Should -Not -Throw
-            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
+            Should -Invoke Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 1 -Exactly
             $Result | Should -BeNullOrEmpty
             $OutFile | Should -Exist
             $OutFile | Should -FileContentMatchExactly 'ABC'
@@ -46,7 +46,7 @@ Describe 'Get-VideoContent' {
 
         It 'Output video as byte array' {
             { $script:Result = Get-VideoContent -VideoId 'video_abc123'-ea Stop } | Should -Not -Throw
-            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
+            Should -Invoke Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 1 -Exactly
             $Result | Should -HaveCount 3
             $Result[0] | Should -BeOfType [byte]
             $Result[0] | Should -Be ([byte]65)
@@ -55,7 +55,7 @@ Describe 'Get-VideoContent' {
         It 'Wait for completion' {
             $OutFile = (Join-Path $TestDrive 'abc123.mp4')
             { $script:Result = Get-VideoContent -VideoId 'video_abc123' -OutFile $OutFile -WaitForCompletion -ea Stop } | Should -Not -Throw
-            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
+            Should -Invoke Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 1 -Exactly
             Should -Invoke Wait-Video -ModuleName $script:ModuleName -Times 1
             $Result | Should -BeNullOrEmpty
             $OutFile | Should -Exist
@@ -66,8 +66,8 @@ Describe 'Get-VideoContent' {
     Context 'Wait for completion with timeout' -Tag 'Offline' {
         BeforeAll {
             Mock -ModuleName $script:ModuleName Initialize-APIKey { [securestring]::new() }
-            Mock -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $PesterBoundParameters }
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest {
+            Mock -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { $PesterBoundParameters }
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } {
                 [System.Text.Encoding]::UTF8.GetBytes('ABC')
             }
         }

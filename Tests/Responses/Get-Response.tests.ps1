@@ -11,7 +11,7 @@ Describe 'Get-Response' {
     Context 'Unit tests (offline)' -Tag 'Offline' {
         BeforeAll {
             Mock -ModuleName $script:ModuleName Initialize-APIKey { [securestring]::new() }
-            Mock -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $PesterBoundParameters }
+            Mock -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { $PesterBoundParameters }
             Mock -Verifiable -ModuleName $script:ModuleName Get-ResponseInputItem {
                 @(
                     [pscustomobject]@{
@@ -47,7 +47,7 @@ Describe 'Get-Response' {
         }
 
         It 'Get a single object by ID' {
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { @'
 {
   "id": "resp_abc123",
   "object": "response",
@@ -87,7 +87,7 @@ Describe 'Get-Response' {
             }
 
             { $script:Result = Get-Response -Id 'resp_abc123' -ea Stop } | Should -Not -Throw
-            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly -Scope It
+            Should -Invoke Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 1 -Exactly -Scope It
             Should -Invoke Get-ResponseInputItem -ModuleName $script:ModuleName -Times 1
             $Result.id | Should -BeExactly 'resp_abc123'
             $Result.PSTypeNames | Should -Contain 'PSOpenAI.Response'
@@ -100,7 +100,7 @@ Describe 'Get-Response' {
 
         Context 'Streaming' {
             BeforeAll {
-                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequestSSE {
+                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { $Stream } {
                     '{"type":"response.output_text.delta","sequence_number":100,"delta":"Hello","item_id":"msg_123","content_index":0,"output_index":0}'
                     '{"type":"response.output_text.delta","sequence_number":101,"delta":".","item_id":"msg_123","content_index":0,"output_index":0}'
                     '{"type":"response.output_text.done","sequence_number":102,"text":"Hello.","item_id":"msg_123","content_index":0,"output_index":0}'
@@ -109,7 +109,7 @@ Describe 'Get-Response' {
 
             It 'Stream Response (text)' {
                 { $script:Result = Get-Response -ResponseId 'resp_abc123' -Stream -StreamOutputType text -ea Stop } | Should -Not -Throw
-                Should -Invoke Invoke-OpenAIAPIRequestSSE -ModuleName $script:ModuleName -Times 1 -Exactly
+                Should -Invoke Invoke-OpenAIHttpRequest -ParameterFilter { $Stream } -ModuleName $script:ModuleName -Times 1 -Exactly
                 $Result | Should -HaveCount 2
                 $Result[0] | Should -Be 'Hello'
                 $Result[1] | Should -Be '.'
@@ -117,7 +117,7 @@ Describe 'Get-Response' {
 
             It 'Stream Response (object)' {
                 { $script:Result = Get-Response -ResponseId 'resp_abc123' -Stream -StreamOutputType object -ea Stop } | Should -Not -Throw
-                Should -Invoke Invoke-OpenAIAPIRequestSSE -ModuleName $script:ModuleName -Times 1 -Exactly
+                Should -Invoke Invoke-OpenAIHttpRequest -ParameterFilter { $Stream } -ModuleName $script:ModuleName -Times 1 -Exactly
                 $Result | Should -HaveCount 3
                 $Result[0].type | Should -Be 'response.output_text.delta'
                 $Result[0].delta | Should -Be 'Hello'
@@ -130,7 +130,7 @@ Describe 'Get-Response' {
 
         Context 'Parameter Sets' {
             BeforeAll {
-                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { @'
 {
   "id": "resp_abc123",
   "object": "response",
@@ -181,7 +181,7 @@ Describe 'Get-Response' {
                 { Get-Response $InObject -ea Stop } | Should -Not -Throw
                 # Pipeline
                 { $InObject | Get-Response -ea Stop } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 3 -Exactly
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 3 -Exactly
             }
 
             It 'Get_Id' {
@@ -193,7 +193,7 @@ Describe 'Get-Response' {
                 { 'resp_abc123' | Get-Response -ea Stop } | Should -Not -Throw
                 # Pipeline by property name
                 { [pscustomobject]@{ID = 'resp_abc123' } | Get-Response -ea Stop } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 4 -Exactly
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 4 -Exactly
             }
 
         }

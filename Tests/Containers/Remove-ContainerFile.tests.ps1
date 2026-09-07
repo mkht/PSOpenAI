@@ -11,8 +11,8 @@ Describe 'Remove-ContainerFile' {
     Context 'Unit tests (offline)' -Tag 'Offline' {
         BeforeAll {
             Mock -ModuleName $script:ModuleName Initialize-APIKey { [securestring]::new() }
-            Mock -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $PesterBoundParameters }
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+            Mock -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { $PesterBoundParameters }
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { @'
 {
     id: "file-xyz789",
     object: "container.file.deleted",
@@ -27,7 +27,7 @@ Describe 'Remove-ContainerFile' {
 
         It 'Delete a container file' {
             { $script:Result = Remove-ContainerFile -ContainerId 'cont_123456' -FileId 'file-xyz789' -ea Stop } | Should -Not -Throw
-            Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
+            Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 1 -Exactly
             $Result | Should -BeNullOrEmpty
         }
 
@@ -41,7 +41,7 @@ Describe 'Remove-ContainerFile' {
                 { 'cont_123456' | Remove-ContainerFile -FileId 'file-xyz789' -ea Stop } | Should -Not -Throw
                 # Pipeline by property name
                 { [pscustomobject]@{ContainerId = 'cont_123456'; FileId = 'file-xyz789' } | Remove-ContainerFile -ea Stop } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 4 -Exactly
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 4 -Exactly
             }
 
             It 'ContainerFile' {
@@ -56,7 +56,7 @@ Describe 'Remove-ContainerFile' {
                 { Remove-ContainerFile $InObject -ea Stop } | Should -Not -Throw
                 # Pipeline
                 { $InObject | Remove-ContainerFile -ea Stop } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 3 -Exactly
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 3 -Exactly
             }
         }
     }

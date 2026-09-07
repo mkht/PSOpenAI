@@ -11,8 +11,8 @@ Describe 'Get-OpenAIFileContent' {
     Context 'Unit tests (offline)' -Tag 'Offline' {
         BeforeAll {
             Mock -ModuleName $script:ModuleName Initialize-APIKey { [securestring]::new() }
-            Mock -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $PesterBoundParameters }
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest {
+            Mock -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { $PesterBoundParameters }
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } {
                 [System.Text.Encoding]::UTF8.GetBytes('ABC')
             }
         }
@@ -24,7 +24,7 @@ Describe 'Get-OpenAIFileContent' {
         It 'Save content to local file' {
             $OutFile = (Join-Path $TestDrive 'abc.txt')
             { $script:Result = Get-OpenAIFileContent -FileId 'file-abc123' -OutFile $OutFile -ea Stop } | Should -Not -Throw
-            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
+            Should -Invoke Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 1 -Exactly
             $Result | Should -BeNullOrEmpty
             $OutFile | Should -Exist
             $OutFile | Should -FileContentMatchExactly 'ABC'
@@ -32,7 +32,7 @@ Describe 'Get-OpenAIFileContent' {
 
         It 'Output content as byte array' {
             { $script:Result = Get-OpenAIFileContent -FileId 'file-abc123'-ea Stop } | Should -Not -Throw
-            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
+            Should -Invoke Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 1 -Exactly
             $Result | Should -HaveCount 3
             $Result[0] | Should -BeOfType [byte]
             $Result[0] | Should -Be ([byte]65)
@@ -50,7 +50,7 @@ Describe 'Get-OpenAIFileContent' {
                 { Get-OpenAIFileContent $InObject -ea Stop } | Should -Not -Throw
                 # Pipeline
                 { $InObject | Get-OpenAIFileContent -ea Stop } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 3 -Exactly
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 3 -Exactly
             }
 
             It 'Id' {
@@ -62,7 +62,7 @@ Describe 'Get-OpenAIFileContent' {
                 { 'file-abc123' | Get-OpenAIFileContent -ea Stop } | Should -Not -Throw
                 # Pipeline by property name
                 { [pscustomobject]@{ID = 'thread_abc123' } | Get-OpenAIFileContent -ea Stop } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 4 -Exactly
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 4 -Exactly
             }
         }
     }

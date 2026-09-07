@@ -71,7 +71,7 @@ function Remove-Container {
             AdditionalHeaders = $AdditionalHeaders
             AdditionalBody    = $AdditionalBody
         }
-        $Response = Invoke-OpenAIAPIRequest @params
+        $Response = Invoke-OpenAIHttpRequest @params
 
         if ($null -eq $Response) {
             return

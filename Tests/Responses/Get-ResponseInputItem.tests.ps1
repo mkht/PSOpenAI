@@ -19,7 +19,7 @@ Describe 'Get-ResponseInputItem' {
 
         It 'List all items' {
             InModuleScope $script:ModuleName {
-                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { @'
 {
   "object": "list",
   "data": [
@@ -43,7 +43,7 @@ Describe 'Get-ResponseInputItem' {
                 }
 
                 { $script:Result = Get-ResponseInputItem -ResponseId 'resp_abc123' -ea Stop } | Should -Not -Throw
-                Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
+                Should -Invoke Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 1 -Exactly
                 $Result | Should -HaveCount 1
                 $Result[0].id | Should -BeExactly 'msg_abc123'
             }
@@ -51,7 +51,7 @@ Describe 'Get-ResponseInputItem' {
 
         It 'List all messages (pagenate)' {
             InModuleScope $script:ModuleName {
-                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest { @'
 {
   "object": "list",
   "data": [
@@ -72,9 +72,9 @@ Describe 'Get-ResponseInputItem' {
   "has_more": true
 }
 '@
-                } -ParameterFilter { -not $Uri.Query.Contains('after=') }
+                } -ParameterFilter { if ($Stream) { return $false }; -not $Uri.Query.Contains('after=') }
 
-                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest { @'
 {
   "object": "list",
   "data": [
@@ -95,11 +95,11 @@ Describe 'Get-ResponseInputItem' {
   "has_more": false
 }
 '@
-                } -ParameterFilter { $Uri.Query.Contains('after=') }
+                } -ParameterFilter { if ($Stream) { return $false }; $Uri.Query.Contains('after=') }
 
                 { $script:Result = Get-ResponseInputItem -ResponseId 'resp_abc123' -All -ea Stop } | Should -Not -Throw
-                Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly -ParameterFilter { -not $Uri.Query.Contains('after=') }
-                Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly -ParameterFilter { $Uri.Query.Contains('after=') }
+                Should -Invoke Invoke-OpenAIHttpRequest -ModuleName $script:ModuleName -Times 1 -Exactly -ParameterFilter { if ($Stream) { return $false }; -not $Uri.Query.Contains('after=') }
+                Should -Invoke Invoke-OpenAIHttpRequest -ModuleName $script:ModuleName -Times 1 -Exactly -ParameterFilter { if ($Stream) { return $false }; $Uri.Query.Contains('after=') }
                 $Result | Should -HaveCount 2
                 $Result[0].id | Should -BeExactly 'msg_abc123'
                 $Result[1].id | Should -BeExactly 'msg_abc456'

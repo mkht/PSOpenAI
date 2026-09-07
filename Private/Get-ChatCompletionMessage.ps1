@@ -113,7 +113,7 @@ function Get-ChatCompletionMessage {
                     AdditionalHeaders = $AdditionalHeaders
                     AdditionalBody    = $AdditionalBody
                 }
-                $Response = Invoke-OpenAIAPIRequest @params
+                $Response = Invoke-OpenAIHttpRequest @params
 
                 # error check
                 if ($null -eq $Response) {

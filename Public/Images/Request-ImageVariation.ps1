@@ -133,7 +133,7 @@ function Request-ImageVariation {
             AdditionalHeaders = $AdditionalHeaders
             AdditionalBody    = $AdditionalBody
         }
-        $Response = Invoke-OpenAIAPIRequest @params
+        $Response = Invoke-OpenAIHttpRequest @params
 
         # error check
         if ($null -eq $Response) {
@@ -163,9 +163,8 @@ function Request-ImageVariation {
                     Uri             = $_
                     Method          = 'Get'
                     OutFile         = $AbsoluteOutFile
-                    UseBasicParsing = $true
                 }
-                Microsoft.PowerShell.Utility\Invoke-WebRequest @splat
+                Invoke-OpenAIHttpRequest @splat
             }
         }
         elseif ($ResponseFormat -eq 'url') {

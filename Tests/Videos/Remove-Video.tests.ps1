@@ -11,14 +11,14 @@ Describe 'Remove-Video' {
     Context 'Unit tests (offline)' -Tag 'Offline' {
         BeforeAll {
             Mock -ModuleName $script:ModuleName Initialize-APIKey { [securestring]::new() }
-            Mock -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $PesterBoundParameters }
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+            Mock -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { $PesterBoundParameters }
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest { @'
 {
   "id": "video_68ea",
   "object": "video.deleted",
   "deleted": true
 }
-'@ } -ParameterFilter { $Method -eq 'DELETE' }
+'@ } -ParameterFilter { if ($Stream) { return $false }; $Method -eq 'DELETE' }
         }
 
         BeforeEach {
@@ -27,7 +27,7 @@ Describe 'Remove-Video' {
 
         It 'Remove video job' {
             { $script:Result = Remove-Video -VideoId 'video_68ea' -ea Stop } | Should -Not -Throw
-            Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly -ParameterFilter { $Method -eq 'DELETE' }
+            Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ModuleName $script:ModuleName -Times 1 -Exactly -ParameterFilter { if ($Stream) { return $false }; $Method -eq 'DELETE' }
             $Result | Should -BeNullOrEmpty
         }
 
@@ -42,7 +42,7 @@ Describe 'Remove-Video' {
             { 'video_fb4e' | Remove-Video -ea Stop } | Should -Not -Throw
             # Pipeline by property name
             { [pscustomobject]@{PSTypeName = 'PSOpenAI.Video.Job'; id = 'video_fb4e' } | Remove-Video -ea Stop } | Should -Not -Throw
-            Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 5 -Exactly -ParameterFilter { $Method -eq 'DELETE' }
+            Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ModuleName $script:ModuleName -Times 5 -Exactly -ParameterFilter { if ($Stream) { return $false }; $Method -eq 'DELETE' }
         }
     }
 }

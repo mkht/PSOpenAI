@@ -25,7 +25,7 @@ Describe 'Request-ChatCompletion' {
     Context 'Unit tests (offline)' -Tag 'Offline' {
         BeforeAll {
             Mock -ModuleName $script:ModuleName Initialize-APIKey { [securestring]::new() }
-            Mock -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $PesterBoundParameters }
+            Mock -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { $PesterBoundParameters }
         }
 
         BeforeEach {
@@ -33,7 +33,7 @@ Describe 'Request-ChatCompletion' {
         }
 
         It 'Chat completion' {
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { @'
 {
     "id": "chatcmpl-123",
     "object": "chat.completion",
@@ -66,7 +66,7 @@ Describe 'Request-ChatCompletion' {
         }
 
         It 'Structured Outputs (Auto parse)' {
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { @'
 {
     "id": "chatcmpl-123",
     "object": "chat.completion",
@@ -120,7 +120,7 @@ Describe 'Request-ChatCompletion' {
   }
 }
 '@
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { @'
 {
     "id": "chatcmpl-123",
     "object": "chat.completion",
@@ -155,7 +155,7 @@ Describe 'Request-ChatCompletion' {
         }
 
         It 'The model stops to output in half way' {
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { @'
 {
     "id": "chatcmpl-123",
     "object": "chat.completion",
@@ -182,7 +182,7 @@ Describe 'Request-ChatCompletion' {
         }
 
         It 'The model refuses to respond' {
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { @'
 {
     "id": "chatcmpl-123",
     "object": "chat.completion",
@@ -216,7 +216,7 @@ Describe 'Request-ChatCompletion' {
         }
 
         It 'Stream output' {
-            Mock -ModuleName $script:ModuleName Invoke-OpenAIAPIRequestSSE {
+            Mock -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { $Stream } {
                 '{"id":"chatcmpl-sf547Pa","object":"chat.completion.chunk","created":1679839328,"model":"gpt-3.5-turbo-0301","choices":[{"delta":{"content":"ECHO"},"index":0,"finish_reason":null}]}'
             }
             $Result = Request-ChatCompletion -Message 'test' -Stream -InformationVariable StreamOut -ea Stop
@@ -232,7 +232,7 @@ Describe 'Request-ChatCompletion' {
     "object": "chat.completion"
 }
 '@
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $Response_json }
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { $Response_json }
             { $script:Result = Request-ChatCompletion -Message 'test' -Format raw_response -ea Stop } | Should -Not -Throw
             Should -InvokeVerifiable
             $Result | Should -BeExactly $Response_json
@@ -240,7 +240,7 @@ Describe 'Request-ChatCompletion' {
 
         It 'Tool calls (non execution)' {
             Mock Test-Path { return $true }
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { @'
 {
     "id": "chatcmpl-8Iv2FuLeNiC4TLvU0q1fYBUt4WFop",
     "object": "chat.completion",
@@ -306,7 +306,7 @@ Describe 'Request-ChatCompletion' {
         }
 
         It 'Audio In/Out' {
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { @'
 {
     "id": "chatcmpl-abc123",
     "object": "chat.completion",
@@ -352,7 +352,7 @@ Describe 'Request-ChatCompletion' {
         }
 
         It 'Image input (Vision)' {
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { @'
 {
   "id": "chatcmpl-abc123",
   "object": "chat.completion",
@@ -399,7 +399,7 @@ Describe 'Request-ChatCompletion' {
         }
 
         It 'Use collect endpoint' {
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @"
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { @"
 {"choices": [{"message": {"content": "$($PesterBoundParameters.Uri)"}}]}
 "@ }
             $Result = Request-ChatCompletion -Message 'test'
@@ -417,10 +417,10 @@ Describe 'Request-ChatCompletion' {
         BeforeAll {
             Mock -ModuleName $script:ModuleName Initialize-APIKey { [securestring]::new() }
 
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-WebRequest {
-                if ($PSVersionTable.PSVersion.Major -le 5) { $e = [System.Net.WebException]::new('error') }
-                else { $e = [System.Net.Http.HttpRequestException]::new() }
-                throw $e
+            Mock -Verifiable -ModuleName $script:ModuleName Send-OpenAIHttpRequest {
+                $response = [System.Net.Http.HttpResponseMessage]::new([System.Net.HttpStatusCode]::InternalServerError)
+                $response.Content = [System.Net.Http.StringContent]::new('{"error":{"message":"Server error"}}')
+                return $response
             }
         }
 
@@ -438,7 +438,7 @@ Describe 'Request-ChatCompletion' {
             $StopWatch.Start()
             { Request-ChatCompletion -Message 'test' -MaxRetryCount 3 -MaxCompletionTokens 16 -ea Stop } | Should -Throw
             $StopWatch.Stop()
-            Should -Invoke -CommandName 'Invoke-WebRequest' -ModuleName $script:ModuleName -Times 1 -Exactly
+            Should -Invoke -CommandName 'Send-OpenAIHttpRequest' -ModuleName $script:ModuleName -Times 1 -Exactly
         }
 
         It 'Should NOT Retry on Quota-Limit exceeds error.' {
@@ -455,7 +455,7 @@ Describe 'Request-ChatCompletion' {
             $StopWatch.Start()
             { Request-ChatCompletion -Message 'test' -MaxRetryCount 3 -MaxCompletionTokens 16 -ea Stop } | Should -Throw
             $StopWatch.Stop()
-            Should -Invoke -CommandName 'Invoke-WebRequest' -ModuleName $script:ModuleName -Times 1 -Exactly
+            Should -Invoke -CommandName 'Send-OpenAIHttpRequest' -ModuleName $script:ModuleName -Times 1 -Exactly
         }
 
         It 'Should retry if the response contains x-should-retry header and the value is "true"' {
@@ -477,7 +477,7 @@ Describe 'Request-ChatCompletion' {
             $StopWatch.Start()
             { Request-ChatCompletion -Message 'test' -MaxRetryCount 1 -MaxCompletionTokens 16 -ea Stop } | Should -Throw
             $StopWatch.Stop()
-            Should -Invoke -CommandName 'Invoke-WebRequest' -ModuleName $script:ModuleName -Times 2 -Exactly
+            Should -Invoke -CommandName 'Send-OpenAIHttpRequest' -ModuleName $script:ModuleName -Times 2 -Exactly
         }
 
         It 'Should NOT retry if the response contains x-should-retry header and the value is "false"' {
@@ -499,7 +499,7 @@ Describe 'Request-ChatCompletion' {
             $StopWatch.Start()
             { Request-ChatCompletion -Message 'test' -MaxRetryCount 1 -MaxCompletionTokens 16 -ea Stop } | Should -Throw
             $StopWatch.Stop()
-            Should -Invoke -CommandName 'Invoke-WebRequest' -ModuleName $script:ModuleName -Times 1 -Exactly
+            Should -Invoke -CommandName 'Send-OpenAIHttpRequest' -ModuleName $script:ModuleName -Times 1 -Exactly
         }
 
         It 'Retry on Rate-Limit exceeds error and the interval follows retry-after-ms header value.' {
@@ -521,7 +521,7 @@ Describe 'Request-ChatCompletion' {
             $StopWatch.Start()
             { Request-ChatCompletion -Message 'test' -MaxRetryCount 1 -MaxCompletionTokens 16 -ea Stop } | Should -Throw
             $StopWatch.Stop()
-            Should -Invoke -CommandName 'Invoke-WebRequest' -ModuleName $script:ModuleName -Times 2 -Exactly
+            Should -Invoke -CommandName 'Send-OpenAIHttpRequest' -ModuleName $script:ModuleName -Times 2 -Exactly
             # The retry interval should around 200ms
             $StopWatch.ElapsedMilliseconds | Should -BeGreaterOrEqual 200
             $StopWatch.ElapsedMilliseconds | Should -BeLessThan 400
@@ -546,7 +546,7 @@ Describe 'Request-ChatCompletion' {
             $StopWatch.Start()
             { Request-ChatCompletion -Message 'test' -MaxRetryCount 1 -MaxCompletionTokens 16 -ea Stop } | Should -Throw
             $StopWatch.Stop()
-            Should -Invoke -CommandName 'Invoke-WebRequest' -ModuleName $script:ModuleName -Times 2 -Exactly
+            Should -Invoke -CommandName 'Send-OpenAIHttpRequest' -ModuleName $script:ModuleName -Times 2 -Exactly
             # The retry interval should around 1s
             $StopWatch.ElapsedMilliseconds | Should -BeGreaterOrEqual 1000
             $StopWatch.ElapsedMilliseconds | Should -BeLessThan 1500
@@ -566,7 +566,7 @@ Describe 'Request-ChatCompletion' {
             $StopWatch.Start()
             { Request-ChatCompletion -Message 'test' -MaxRetryCount 3 -MaxCompletionTokens 16 -ea Stop } | Should -Throw
             $StopWatch.Stop()
-            Should -Invoke -CommandName 'Invoke-WebRequest' -ModuleName $script:ModuleName -Times 4 -Exactly
+            Should -Invoke -CommandName 'Send-OpenAIHttpRequest' -ModuleName $script:ModuleName -Times 4 -Exactly
             # The retry interval is given a jitter of 0.8 to 1.2 times, so the minimum is 5.6s ((1+2+4)*0.8) and the maximum is 8.4s
             $StopWatch.ElapsedMilliseconds | Should -BeGreaterOrEqual 5600
             $StopWatch.ElapsedMilliseconds | Should -BeLessThan 8400
@@ -591,7 +591,7 @@ Describe 'Request-ChatCompletion' {
             $StopWatch.Start()
             { Request-ChatCompletion -Message 'test' -MaxRetryCount 1 -MaxCompletionTokens 16 -ea Stop } | Should -Throw
             $StopWatch.Stop()
-            Should -Invoke -CommandName 'Invoke-WebRequest' -ModuleName $script:ModuleName -Times 2 -Exactly
+            Should -Invoke -CommandName 'Send-OpenAIHttpRequest' -ModuleName $script:ModuleName -Times 2 -Exactly
         }
     }
 
@@ -841,14 +841,16 @@ Ping Source Address Latency(ms) BufferSize(B) Status
         }
 
         It 'Retrying with exponential backoff on server error' {
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-WebRequest {
-                iwr https://httpstat.us/500 -UseBasicParsing
+            Mock -Verifiable -ModuleName $script:ModuleName Send-OpenAIHttpRequest {
+                $response = [System.Net.Http.HttpResponseMessage]::new([System.Net.HttpStatusCode]::InternalServerError)
+                $response.Content = [System.Net.Http.StringContent]::new('{"error":{"message":"Server error"}}')
+                return $response
             }
             $StopWatch = [System.Diagnostics.Stopwatch]::new()
             $StopWatch.Start()
             { Request-ChatCompletion -Message 'test' -MaxRetryCount 1 -MaxCompletionTokens 16 -ea Stop } | Should -Throw
             $StopWatch.Stop()
-            Should -Invoke -CommandName 'Invoke-WebRequest' -ModuleName $script:ModuleName -Times 2 -Exactly
+            Should -Invoke -CommandName 'Send-OpenAIHttpRequest' -ModuleName $script:ModuleName -Times 2 -Exactly
             # The retry interval is given a jitter of 0.8 to 1.2 times, so the minimum is 0.8 seconds.
             $StopWatch.ElapsedMilliseconds | Should -BeGreaterOrEqual 800
         }

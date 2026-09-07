@@ -86,6 +86,9 @@ function Initialize-OpenAIAPIRequestParam {
         $UserAgent = Get-UserAgent
         $script:UserAgent = $UserAgent
     }
+    else {
+        $UserAgent = $script:UserAgent
+    }
     $InternalParams.UserAgent = $UserAgent
 
     # Set debug flag

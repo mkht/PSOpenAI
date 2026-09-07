@@ -11,7 +11,7 @@ Describe 'Remove-ChatCompletion' {
     Context 'Unit tests (offline)' -Tag 'Offline' {
         BeforeAll {
             Mock -ModuleName $script:ModuleName Initialize-APIKey { [securestring]::new() }
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { @'
 {
   "object": "chat.completion.deleted",
   "id": "chatcmpl-abc123",
@@ -26,7 +26,7 @@ Describe 'Remove-ChatCompletion' {
 
         It 'Remove completion with ID' {
             { $script:Result = Remove-ChatCompletion -CompletionId 'chatcmpl-abc123' -ea Stop } | Should -Not -Throw
-            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
+            Should -Invoke Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 1 -Exactly
             $Result | Should -BeNullOrEmpty
         }
 
@@ -44,7 +44,7 @@ Describe 'Remove-ChatCompletion' {
                 { Remove-ChatCompletion $InObject -ea Stop } | Should -Not -Throw
                 # Pipeline
                 { $InObject | Remove-ChatCompletion -ea Stop } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 4 -Exactly
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 4 -Exactly
             }
 
             It 'Id' {
@@ -58,7 +58,7 @@ Describe 'Remove-ChatCompletion' {
                 { 'file-abc123' | Remove-ChatCompletion -ea Stop } | Should -Not -Throw
                 # Pipeline by property name
                 { [pscustomobject]@{completion_id = 'file-abc123' } | Remove-ChatCompletion -ea Stop } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 5 -Exactly
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 5 -Exactly
             }
         }
     }

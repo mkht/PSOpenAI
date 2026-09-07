@@ -11,8 +11,8 @@ Describe 'Add-OpenAIFile' {
     Context 'Unit tests (offline)' -Tag 'Offline' {
         BeforeAll {
             Mock -ModuleName $script:ModuleName Initialize-APIKey { [securestring]::new() }
-            Mock -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $PesterBoundParameters }
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+            Mock -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { $PesterBoundParameters }
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { @'
 {
     "id": "file-abc123",
     "object": "file",
@@ -30,7 +30,7 @@ Describe 'Add-OpenAIFile' {
 
         It 'Upload single file' {
             { $script:Result = Add-OpenAIFile -File ($script:TestData + '/sweets_donut.png') -Purpose assistants -ea Stop } | Should -Not -Throw
-            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName
+            Should -Invoke Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName
             $Result.id | Should -BeExactly 'file-abc123'
             $Result.object | Should -BeExactly 'file'
             $Result.created_at | Should -BeOfType [datetime]
@@ -40,7 +40,7 @@ Describe 'Add-OpenAIFile' {
             Push-Location $script:TestData
             { $script:Result = Add-OpenAIFile -File 'sweets_donut.png' -Purpose assistants -ea Stop } | Should -Not -Throw
             Pop-Location
-            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName
+            Should -Invoke Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName
             $Result.id | Should -BeExactly 'file-abc123'
             $Result.object | Should -BeExactly 'file'
             $Result.created_at | Should -BeOfType [datetime]
@@ -49,12 +49,12 @@ Describe 'Add-OpenAIFile' {
         It 'Pipeline input (FileInfo)' {
             $InObject = Get-Item ($script:TestData + '/sweets_donut.png')
             { $InObject | Add-OpenAIFile -Purpose assistants -ea Stop } | Should -Not -Throw
-            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName
+            Should -Invoke Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName
         }
 
         It 'Upload from raw bytes' {
             { $script:Result = Add-OpenAIFile -Content ([byte[]](97..99)) -Name 'test.txt' -Purpose assistants -ea Stop } | Should -Not -Throw
-            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName
+            Should -Invoke Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName
             $Result.id | Should -BeExactly 'file-abc123'
             $Result.object | Should -BeExactly 'file'
             $Result.created_at | Should -BeOfType [datetime]
@@ -63,13 +63,13 @@ Describe 'Add-OpenAIFile' {
         It 'Error if the file does not exist (Absolute)' {
             # Absolute
             { Add-OpenAIFile -File ($script:TestData + '/notexist.txt') -Purpose assistants -ea Stop } | Should -Throw
-            Should -Not -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName
+            Should -Not -Invoke Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName
         }
 
         It 'Error if the file does not exist (Relative)' {
             # Absolute
             { Add-OpenAIFile -File 'notexist.txt' -Purpose assistants -ea Stop } | Should -Throw
-            Should -Not -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName
+            Should -Not -Invoke Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName
         }
     }
 
