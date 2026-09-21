@@ -693,6 +693,47 @@ Describe 'Request-Response' {
             { Request-Response -PromptId 'pmpt_123' -PromptVersion 4 -PromptVariables @{'city' = 'Tokyo' } -ea Stop } | Should -Not -Throw
             Should -InvokeVerifiable
         }
+
+        It 'Serializes prompt cache diagnostics, prewarming, MCP tunnels, and GPT Image 2.5 options' {
+            {
+                $script:Result = Request-Response `
+                    -Message 'Hello' `
+                    -PromptCacheComparisonResponseId 'resp_compare123' `
+                    -PromptCachePrewarm `
+                    -UseRemoteMCPTool `
+                    -RemoteMCPServerLabel 'secure-server' `
+                    -RemoteMCPTunnelId 'tnl_123' `
+                    -UseImageGenerationTool `
+                    -ImageGenerationModel 'gpt-image-2.5-sunburst-2026-09-08' `
+                    -ImageGenerationQuality 'xhigh' `
+                    -ImageGenerationSize '2048x1024' `
+                    -OutputRawResponse `
+                    -ea Stop
+            } | Should -Not -Throw
+
+            $RequestBody = $Result.Body
+            $RequestBody.prompt_cache_options.comparison_response_id | Should -BeExactly 'resp_compare123'
+            $RequestBody.prompt_cache_options.prewarm | Should -BeTrue
+            $MCPTool = $RequestBody.tools | Where-Object type -EQ 'mcp'
+            $MCPTool.tunnel_id | Should -BeExactly 'tnl_123'
+            $MCPTool.ContainsKey('server_url') | Should -BeFalse
+            $ImageTool = $RequestBody.tools | Where-Object type -EQ 'image_generation'
+            $ImageTool.model | Should -BeExactly 'gpt-image-2.5-sunburst-2026-09-08'
+            $ImageTool.quality | Should -BeExactly 'xhigh'
+            $ImageTool.size | Should -BeExactly '2048x1024'
+        }
+
+        It 'Rejects specifying both an MCP server URL and tunnel ID' {
+            {
+                Request-Response `
+                    -Message 'Hello' `
+                    -UseRemoteMCPTool `
+                    -RemoteMCPServerLabel 'server' `
+                    -RemoteMCPServerUrl 'https://example.com/mcp' `
+                    -RemoteMCPTunnelId 'tnl_123' `
+                    -ea Stop
+            } | Should -Throw 'RemoteMCPServerUrl and RemoteMCPTunnelId cannot be specified together.'
+        }
     }
 
     It 'When specifying conversation id, input message is not required' {
