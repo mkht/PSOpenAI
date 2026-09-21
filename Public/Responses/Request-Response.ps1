@@ -321,7 +321,7 @@ function Request-Response {
         [int]$ImageGenerationOutputCompression,
 
         [Parameter()]
-        [ValidateSet('png', 'jpeg', 'webp')]
+        [Completions('png', 'jpeg', 'webp')]
         [string][LowerCaseTransformation()]$ImageGenerationOutputFormat = 'png',
 
         [Parameter()]
@@ -329,11 +329,11 @@ function Request-Response {
         [int]$ImageGenerationPartialImages,
 
         [Parameter()]
-        [ValidateSet('low', 'medium', 'high', 'xhigh', 'max', 'auto')]
+        [Completions('low', 'medium', 'high', 'xhigh', 'max', 'auto')]
         [string][LowerCaseTransformation()]$ImageGenerationQuality = 'auto',
 
         [Parameter()]
-        [ValidatePattern('^(auto|[1-9][0-9]*x[1-9][0-9]*)$')]
+        [Completions('auto', '1024x1024', '1536x1024', '1024x1536')]
         [string]$ImageGenerationSize = 'auto',
         #endregion Image Generation
 
