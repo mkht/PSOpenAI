@@ -22680,29 +22680,6 @@ You can speciy a list of the local file path, the URL of the file or the ID of t
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="prompt_cache_options.comparison_response_id">
-          <maml:name>PromptCacheComparisonResponseId</maml:name>
-          <maml:description>
-            <maml:para>The response ID to compare against when producing prompt cache diagnostics.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="prompt_cache_options.prewarm">
-          <maml:name>PromptCachePrewarm</maml:name>
-          <maml:description>
-            <maml:para>Prepares the prompt cache without generating output. The option is sent to the server as `prompt_cache_options.prewarm`.</maml:para>
-          </maml:description>
-          <dev:type>
-            <maml:name>SwitchParameter</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>False</dev:defaultValue>
-        </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>OutputRawResponse</maml:name>
           <maml:description>
@@ -22945,30 +22922,6 @@ You can speciy a list of the local file path, the URL of the file or the ID of t
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="prompt_cache_options.comparison_response_id">
-        <maml:name>PromptCacheComparisonResponseId</maml:name>
-        <maml:description>
-          <maml:para>The response ID to compare against when producing prompt cache diagnostics.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="prompt_cache_options.prewarm">
-        <maml:name>PromptCachePrewarm</maml:name>
-        <maml:description>
-          <maml:para>Prepares the prompt cache without generating output. The option is sent to the server as `prompt_cache_options.prewarm`.</maml:para>
-        </maml:description>
-        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
-        <dev:type>
-          <maml:name>SwitchParameter</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>False</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>OutputRawResponse</maml:name>

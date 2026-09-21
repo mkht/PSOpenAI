@@ -102,14 +102,6 @@ function Request-ResponseCompaction {
         [string]$PromptCacheTtl,
 
         [Parameter()]
-        [Alias('prompt_cache_options.comparison_response_id')]
-        [string]$PromptCacheComparisonResponseId,
-
-        [Parameter()]
-        [Alias('prompt_cache_options.prewarm')]
-        [switch]$PromptCachePrewarm,
-
-        [Parameter()]
         [switch]$OutputRawResponse,
 
         [Parameter()]
@@ -188,12 +180,6 @@ function Request-ResponseCompaction {
         }
         if ($PSBoundParameters.ContainsKey('PromptCacheTtl')) {
             $PromptCacheOptions.ttl = $PromptCacheTtl
-        }
-        if ($PSBoundParameters.ContainsKey('PromptCacheComparisonResponseId')) {
-            $PromptCacheOptions.comparison_response_id = $PromptCacheComparisonResponseId
-        }
-        if ($PSBoundParameters.ContainsKey('PromptCachePrewarm')) {
-            $PromptCacheOptions.prewarm = $PromptCachePrewarm.IsPresent
         }
         if ($PromptCacheOptions.Keys.Count -gt 0) {
             $PostBody.prompt_cache_options = $PromptCacheOptions
