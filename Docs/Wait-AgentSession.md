@@ -1,46 +1,46 @@
 ---
 external help file: PSOpenAI-help.xml
 Module Name: PSOpenAI
-online version: https://github.com/mkht/PSOpenAI/blob/v5/Docs/Get-AgentVaultCredential.md
+online version: https://github.com/mkht/PSOpenAI/blob/v5/Docs/Wait-AgentSession.md
 schema: 2.0.0
 ---
 
-# Get-AgentVaultCredential
+# Wait-AgentSession
 
 ## SYNOPSIS
-Retrieves or lists credentials in an agent vault.
+Waits for an agent session to reach a selected status.
 
 ## SYNTAX
 
-### List (Default)
+### SessionId (Default)
 ```
-Get-AgentVaultCredential [-VaultId] <String> [-Status <String[]>] [-Limit <Int32>] [-All] [-After <String>]
- [-Order <String>] [-TimeoutSec <Int32>] [-MaxRetryCount <Int32>] [-ApiType <OpenAIApiType>] [-ApiBase <Uri>]
- [-AuthType <String>] [-ApiKey <SecureString>] [-Organization <String>] [-AdditionalQuery <IDictionary>]
- [-AdditionalHeaders <IDictionary>] [-AdditionalBody <Object>] [-ProgressAction <ActionPreference>]
- [<CommonParameters>]
+Wait-AgentSession [-SessionId] <String> [[-PollIntervalSec] <Single>] [[-StatusForWait] <String[]>]
+ [[-StatusForExit] <String[]>] [[-TimeoutSec] <Int32>] [[-MaxRetryCount] <Int32>] [[-ApiType] <OpenAIApiType>]
+ [[-ApiBase] <Uri>] [[-ApiVersion] <String>] [[-AuthType] <String>] [[-ApiKey] <SecureString>]
+ [[-Organization] <String>] [[-AdditionalQuery] <IDictionary>] [[-AdditionalHeaders] <IDictionary>]
+ [[-AdditionalBody] <Object>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
-### Id
+### Session
 ```
-Get-AgentVaultCredential [-VaultId] <String> -CredentialId <String> [-TimeoutSec <Int32>]
- [-MaxRetryCount <Int32>] [-ApiType <OpenAIApiType>] [-ApiBase <Uri>] [-AuthType <String>]
- [-ApiKey <SecureString>] [-Organization <String>] [-AdditionalQuery <IDictionary>]
- [-AdditionalHeaders <IDictionary>] [-AdditionalBody <Object>] [-ProgressAction <ActionPreference>]
- [<CommonParameters>]
+Wait-AgentSession [-Session] <PSObject> [[-PollIntervalSec] <Single>] [[-StatusForWait] <String[]>]
+ [[-StatusForExit] <String[]>] [[-TimeoutSec] <Int32>] [[-MaxRetryCount] <Int32>] [[-ApiType] <OpenAIApiType>]
+ [[-ApiBase] <Uri>] [[-ApiVersion] <String>] [[-AuthType] <String>] [[-ApiKey] <SecureString>]
+ [[-Organization] <String>] [[-AdditionalQuery] <IDictionary>] [[-AdditionalHeaders] <IDictionary>]
+ [[-AdditionalBody] <Object>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Retrieves or lists credentials in an agent vault. This command uses the OpenAI Agents API public beta and sends the required `OpenAI-Beta: agents=v1` header. Nested, evolving request schemas are accepted through `-Body` where applicable.
+Polls an agent session while its status matches `-StatusForWait` and returns the latest session object when its status matches `-StatusForExit`. The command throws when the timeout expires or an unexpected status is returned.
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-Get-AgentVaultCredential -VaultId 'vault_123' -CredentialId 'credential_123'
+$Session | Wait-AgentSession -TimeoutSec 120
 ```
 
-Retrieves non-secret metadata for a vault credential.
+Waits up to 120 seconds for the session to become idle, require an action, or fail.
 
 ## PARAMETERS
 
@@ -89,38 +89,8 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -After
-Cursor identifying the item after which to continue a cursor-based listing.
-
-```yaml
-Type: String
-Parameter Sets: List
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -All
-Retrieves all available cursor-based pages.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: List
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -ApiBase
-The base URI for the OpenAI API.
+The base URI of the OpenAI API.
 
 ```yaml
 Type: Uri
@@ -135,7 +105,7 @@ Accept wildcard characters: False
 ```
 
 ### -ApiKey
-The OpenAI API key as a secure string.
+The API key used to authenticate the request.
 
 ```yaml
 Type: SecureString
@@ -165,14 +135,13 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -AuthType
-The authentication type. Use openai for the Agents API.
+### -ApiVersion
+The API version query value when required by a compatible endpoint.
 
 ```yaml
 Type: String
 Parameter Sets: (All)
 Aliases:
-Accepted values: openai, azure, azure_ad
 
 Required: False
 Position: Named
@@ -181,28 +150,14 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -CredentialId
-The vault credential ID.
+### -AuthType
+The authentication scheme used for the API request.
 
 ```yaml
 Type: String
-Parameter Sets: Id
-Aliases: id, credential_id
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
-### -Limit
-The maximum number of items to return in one page.
-
-```yaml
-Type: Int32
-Parameter Sets: List
+Parameter Sets: (All)
 Aliases:
+Accepted values: openai, azure, azure_ad
 
 Required: False
 Position: Named
@@ -226,14 +181,13 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Order
-The order in which items are returned.
+### -Organization
+The OpenAI organization ID.
 
 ```yaml
 Type: String
-Parameter Sets: List
-Aliases:
-Accepted values: asc, desc
+Parameter Sets: (All)
+Aliases: OrgId
 
 Required: False
 Position: Named
@@ -242,13 +196,13 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Organization
-The OpenAI organization ID.
+### -PollIntervalSec
+The number of seconds between status requests.
 
 ```yaml
-Type: String
+Type: Single
 Parameter Sets: (All)
-Aliases: OrgId
+Aliases:
 
 Required: False
 Position: Named
@@ -272,14 +226,60 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Status
-One or more lifecycle statuses used to filter results.
+### -Session
+An agent session object returned by an Agents API command.
+
+```yaml
+Type: PSObject
+Parameter Sets: Session
+Aliases:
+
+Required: True
+Position: 0
+Default value: None
+Accept pipeline input: True (ByValue)
+Accept wildcard characters: False
+```
+
+### -SessionId
+The ID of the agent session.
+
+```yaml
+Type: String
+Parameter Sets: SessionId
+Aliases: session_id, Id
+
+Required: True
+Position: 0
+Default value: None
+Accept pipeline input: True (ByPropertyName, ByValue)
+Accept wildcard characters: False
+```
+
+### -StatusForExit
+Session statuses that cause the command to return the current session.
 
 ```yaml
 Type: String[]
-Parameter Sets: List
+Parameter Sets: (All)
 Aliases:
-Accepted values: active, archived
+Accepted values: idle, in_progress, requires_action, failed
+
+Required: False
+Position: Named
+Default value: idle, requires_action, failed
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -StatusForWait
+Session statuses for which the command continues polling.
+
+```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases:
+Accepted values: idle, in_progress, requires_action, failed
 
 Required: False
 Position: Named
@@ -289,7 +289,7 @@ Accept wildcard characters: False
 ```
 
 ### -TimeoutSec
-The request timeout in seconds. Zero uses the module default.
+The maximum number of seconds to wait. Specify 0 to wait without a time limit.
 
 ```yaml
 Type: Int32
@@ -303,30 +303,19 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -VaultId
-The agent vault ID.
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases: vault_id
-
-Required: True
-Position: 0
-Default value: None
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
 ### CommonParameters
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
+### System.Management.Automation.PSObject
+
+### System.String
+
 ## OUTPUTS
+
+### System.Management.Automation.PSObject
 
 ## NOTES
 
 ## RELATED LINKS
-
-[OpenAI Agents API](https://developers.openai.com/api/reference/typescript/resources/beta/subresources/agents)

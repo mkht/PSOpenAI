@@ -12,12 +12,21 @@ Retrieves or lists immutable session artifacts.
 
 ## SYNTAX
 
+### List (Default)
 ```
-Get-AgentSessionArtifact [-SessionId] <String> [[-ArtifactId] <String>] [[-EnvironmentId] <String>]
- [[-Limit] <Int32>] [-All] [[-After] <String>] [[-Order] <String>] [[-TimeoutSec] <Int32>]
- [[-MaxRetryCount] <Int32>] [[-ApiType] <OpenAIApiType>] [[-ApiBase] <Uri>] [[-AuthType] <String>]
- [[-ApiKey] <SecureString>] [[-Organization] <String>] [[-AdditionalQuery] <IDictionary>]
- [[-AdditionalHeaders] <IDictionary>] [[-AdditionalBody] <Object>] [-ProgressAction <ActionPreference>]
+Get-AgentSessionArtifact [-SessionId] <String> [-EnvironmentId <String>] [-Limit <Int32>] [-All]
+ [-After <String>] [-Order <String>] [-TimeoutSec <Int32>] [-MaxRetryCount <Int32>] [-ApiType <OpenAIApiType>]
+ [-ApiBase <Uri>] [-AuthType <String>] [-ApiKey <SecureString>] [-Organization <String>]
+ [-AdditionalQuery <IDictionary>] [-AdditionalHeaders <IDictionary>] [-AdditionalBody <Object>]
+ [-ProgressAction <ActionPreference>] [<CommonParameters>]
+```
+
+### Id
+```
+Get-AgentSessionArtifact [-SessionId] <String> -ArtifactId <String> [-TimeoutSec <Int32>]
+ [-MaxRetryCount <Int32>] [-ApiType <OpenAIApiType>] [-ApiBase <Uri>] [-AuthType <String>]
+ [-ApiKey <SecureString>] [-Organization <String>] [-AdditionalQuery <IDictionary>]
+ [-AdditionalHeaders <IDictionary>] [-AdditionalBody <Object>] [-ProgressAction <ActionPreference>]
  [<CommonParameters>]
 ```
 
@@ -85,7 +94,7 @@ Cursor identifying the item after which to continue a cursor-based listing.
 
 ```yaml
 Type: String
-Parameter Sets: (All)
+Parameter Sets: List
 Aliases:
 
 Required: False
@@ -100,7 +109,7 @@ Retrieves all available cursor-based pages.
 
 ```yaml
 Type: SwitchParameter
-Parameter Sets: (All)
+Parameter Sets: List
 Aliases:
 
 Required: False
@@ -161,13 +170,13 @@ The session artifact ID.
 
 ```yaml
 Type: String
-Parameter Sets: (All)
-Aliases:
+Parameter Sets: Id
+Aliases: id, artifact_id
 
-Required: False
+Required: True
 Position: Named
 Default value: None
-Accept pipeline input: False
+Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
@@ -192,8 +201,8 @@ The live agent environment ID.
 
 ```yaml
 Type: String
-Parameter Sets: (All)
-Aliases:
+Parameter Sets: List
+Aliases: environment_id
 
 Required: False
 Position: Named
@@ -207,7 +216,7 @@ The maximum number of items to return in one page.
 
 ```yaml
 Type: Int32
-Parameter Sets: (All)
+Parameter Sets: List
 Aliases:
 
 Required: False
@@ -237,7 +246,7 @@ The order in which items are returned.
 
 ```yaml
 Type: String
-Parameter Sets: (All)
+Parameter Sets: List
 Aliases:
 Accepted values: asc, desc
 
@@ -263,6 +272,21 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -ProgressAction
+Controls how PowerShell responds to progress updates.
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -SessionId
 The managed agent session ID.
 
@@ -274,7 +298,7 @@ Aliases: session_id
 Required: True
 Position: 0
 Default value: None
-Accept pipeline input: False
+Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
@@ -285,21 +309,6 @@ The request timeout in seconds. Zero uses the module default.
 Type: Int32
 Parameter Sets: (All)
 Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -ProgressAction
-Controls how PowerShell responds to progress updates.
-
-```yaml
-Type: ActionPreference
-Parameter Sets: (All)
-Aliases: proga
 
 Required: False
 Position: Named

@@ -13,11 +13,11 @@ Lists files in a live agent environment.
 ## SYNTAX
 
 ```
-Get-AgentEnvironmentFile [-EnvironmentId] <String> [[-Limit] <Int32>] [[-Order] <String>] [[-Page] <String>]
- [[-Path] <String>] [[-TimeoutSec] <Int32>] [[-MaxRetryCount] <Int32>] [[-ApiType] <OpenAIApiType>]
- [[-ApiBase] <Uri>] [[-AuthType] <String>] [[-ApiKey] <SecureString>] [[-Organization] <String>]
- [[-AdditionalQuery] <IDictionary>] [[-AdditionalHeaders] <IDictionary>] [[-AdditionalBody] <Object>]
- [-ProgressAction <ActionPreference>] [<CommonParameters>]
+Get-AgentEnvironmentFile [-EnvironmentId] <String> [-Limit <Int32>] [-Order <String>] [-Page <String>]
+ [-Path <String>] [-TimeoutSec <Int32>] [-MaxRetryCount <Int32>] [-ApiType <OpenAIApiType>] [-ApiBase <Uri>]
+ [-AuthType <String>] [-ApiKey <SecureString>] [-Organization <String>] [-AdditionalQuery <IDictionary>]
+ [-AdditionalHeaders <IDictionary>] [-AdditionalBody <Object>] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -247,13 +247,13 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -TimeoutSec
-The request timeout in seconds. Zero uses the module default.
+### -ProgressAction
+Controls how PowerShell responds to progress updates.
 
 ```yaml
-Type: Int32
+Type: ActionPreference
 Parameter Sets: (All)
-Aliases:
+Aliases: proga
 
 Required: False
 Position: Named
@@ -262,13 +262,13 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -ProgressAction
-Controls how PowerShell responds to progress updates.
+### -TimeoutSec
+The request timeout in seconds. Zero uses the module default.
 
 ```yaml
-Type: ActionPreference
+Type: Int32
 Parameter Sets: (All)
-Aliases: proga
+Aliases:
 
 Required: False
 Position: Named

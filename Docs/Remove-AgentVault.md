@@ -12,11 +12,20 @@ Deletes an agent credential vault.
 
 ## SYNTAX
 
+### Id (Default)
 ```
-Remove-AgentVault [-VaultId] <String> [[-TimeoutSec] <Int32>] [[-MaxRetryCount] <Int32>]
- [[-ApiType] <OpenAIApiType>] [[-ApiBase] <Uri>] [[-AuthType] <String>] [[-ApiKey] <SecureString>]
- [[-Organization] <String>] [[-AdditionalQuery] <IDictionary>] [[-AdditionalHeaders] <IDictionary>]
- [[-AdditionalBody] <Object>] [-ProgressAction <ActionPreference>] [-WhatIf] [-Confirm] [<CommonParameters>]
+Remove-AgentVault [-VaultId] <String> [-TimeoutSec <Int32>] [-MaxRetryCount <Int32>] [-ApiType <OpenAIApiType>]
+ [-ApiBase <Uri>] [-AuthType <String>] [-ApiKey <SecureString>] [-Organization <String>]
+ [-AdditionalQuery <IDictionary>] [-AdditionalHeaders <IDictionary>] [-AdditionalBody <Object>]
+ [-ProgressAction <ActionPreference>] [-WhatIf] [-Confirm] [<CommonParameters>]
+```
+
+### Vault
+```
+Remove-AgentVault -Vault <Object> [-TimeoutSec <Int32>] [-MaxRetryCount <Int32>] [-ApiType <OpenAIApiType>]
+ [-ApiBase <Uri>] [-AuthType <String>] [-ApiKey <SecureString>] [-Organization <String>]
+ [-AdditionalQuery <IDictionary>] [-AdditionalHeaders <IDictionary>] [-AdditionalBody <Object>]
+ [-ProgressAction <ActionPreference>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -140,21 +149,6 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Confirm
-Prompts you for confirmation before running the cmdlet.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases: cf
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -MaxRetryCount
 The maximum number of retries for transient API failures.
 
@@ -185,6 +179,21 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -ProgressAction
+Controls how PowerShell responds to progress updates.
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -TimeoutSec
 The request timeout in seconds. Zero uses the module default.
 
@@ -200,18 +209,48 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -Vault
+A vault object returned by an Agents API command.
+
+```yaml
+Type: Object
+Parameter Sets: Vault
+Aliases: InputObject
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: True (ByValue)
+Accept wildcard characters: False
+```
+
 ### -VaultId
 The agent vault ID.
 
 ```yaml
 Type: String
-Parameter Sets: (All)
-Aliases: vault_id
+Parameter Sets: Id
+Aliases: id, vault_id
 
 Required: True
 Position: 0
 Default value: None
-Accept pipeline input: True (ByPropertyName)
+Accept pipeline input: True (ByPropertyName, ByValue)
+Accept wildcard characters: False
+```
+
+### -Confirm
+Prompts you for confirmation before running the cmdlet.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases: cf
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
@@ -222,21 +261,6 @@ Shows what would happen if the cmdlet runs. The cmdlet is not run.
 Type: SwitchParameter
 Parameter Sets: (All)
 Aliases: wi
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -ProgressAction
-Controls how PowerShell responds to progress updates.
-
-```yaml
-Type: ActionPreference
-Parameter Sets: (All)
-Aliases: proga
 
 Required: False
 Position: Named

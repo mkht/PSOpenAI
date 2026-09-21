@@ -12,25 +12,35 @@ Adds one or more input events to an agent session.
 
 ## SYNTAX
 
+### Event (Default)
 ```
-Add-AgentSessionEvent [-SessionId] <String> [-Event] <Object[]> [[-IdempotencyKey] <String>]
- [[-TimeoutSec] <Int32>] [[-MaxRetryCount] <Int32>] [[-ApiType] <OpenAIApiType>] [[-ApiBase] <Uri>]
- [[-AuthType] <String>] [[-ApiKey] <SecureString>] [[-Organization] <String>]
- [[-AdditionalQuery] <IDictionary>] [[-AdditionalHeaders] <IDictionary>] [[-AdditionalBody] <Object>]
- [-ProgressAction <ActionPreference>] [<CommonParameters>]
+Add-AgentSessionEvent [-SessionId] <String> [-Event] <Object[]> [-IdempotencyKey <String>]
+ [-TimeoutSec <Int32>] [-MaxRetryCount <Int32>] [-ApiType <OpenAIApiType>] [-ApiBase <Uri>]
+ [-AuthType <String>] [-ApiKey <SecureString>] [-Organization <String>] [-AdditionalQuery <IDictionary>]
+ [-AdditionalHeaders <IDictionary>] [-AdditionalBody <Object>] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
+```
+
+### Message
+```
+Add-AgentSessionEvent [-SessionId] <String> -Message <String> [-Role <String>] [-IdempotencyKey <String>]
+ [-TimeoutSec <Int32>] [-MaxRetryCount <Int32>] [-ApiType <OpenAIApiType>] [-ApiBase <Uri>]
+ [-AuthType <String>] [-ApiKey <SecureString>] [-Organization <String>] [-AdditionalQuery <IDictionary>]
+ [-AdditionalHeaders <IDictionary>] [-AdditionalBody <Object>] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Adds one or more input events to an agent session. This command uses the OpenAI Agents API public beta and sends the required `OpenAI-Beta: agents=v1` header. Nested, evolving request schemas are accepted through `-Body` where applicable.
+Adds one or more input events to an agent session. This command uses the OpenAI Agents API public beta and sends the required `OpenAI-Beta: agents=v1` header. Use `-Message` for ordinary user input or `-Event` for advanced event shapes.
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-Add-AgentSessionEvent -SessionId 'session_123' -Event @{ type = 'message'; role = 'user'; content = @(@{ type = 'input_text'; text = 'Continue.' }) }
+$Session | Add-AgentSessionEvent -Message 'Continue.'
 ```
 
-Submits a user input event to an existing session.
+Converts the text to an `agent.session.input.message` event and submits it to the existing session.
 
 ## PARAMETERS
 
@@ -146,7 +156,7 @@ One or more input event objects to submit to the session.
 
 ```yaml
 Type: Object[]
-Parameter Sets: (All)
+Parameter Sets: Event
 Aliases:
 
 Required: True
@@ -186,6 +196,21 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -Message
+A user message converted to an agent session input event.
+
+```yaml
+Type: String
+Parameter Sets: Message
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -Organization
 The OpenAI organization ID.
 
@@ -201,18 +226,48 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -ProgressAction
+Controls how PowerShell responds to progress updates.
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Role
+The role assigned to a message created with `-Message`.
+
+```yaml
+Type: String
+Parameter Sets: Message
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -SessionId
 The managed agent session ID.
 
 ```yaml
 Type: String
 Parameter Sets: (All)
-Aliases: session_id
+Aliases: id, session_id
 
 Required: True
 Position: 0
 Default value: None
-Accept pipeline input: False
+Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
@@ -223,21 +278,6 @@ The request timeout in seconds. Zero uses the module default.
 Type: Int32
 Parameter Sets: (All)
 Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -ProgressAction
-Controls how PowerShell responds to progress updates.
-
-```yaml
-Type: ActionPreference
-Parameter Sets: (All)
-Aliases: proga
 
 Required: False
 Position: Named

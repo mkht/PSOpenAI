@@ -12,12 +12,24 @@ Updates an agent environment template.
 
 ## SYNTAX
 
+### Properties (Default)
 ```
-Set-AgentEnvironmentTemplate [-EnvironmentTemplateId] <String> [-Body] <IDictionary> [[-TimeoutSec] <Int32>]
- [[-MaxRetryCount] <Int32>] [[-ApiType] <OpenAIApiType>] [[-ApiBase] <Uri>] [[-AuthType] <String>]
- [[-ApiKey] <SecureString>] [[-Organization] <String>] [[-AdditionalQuery] <IDictionary>]
- [[-AdditionalHeaders] <IDictionary>] [[-AdditionalBody] <Object>] [-ProgressAction <ActionPreference>]
- [-WhatIf] [-Confirm] [<CommonParameters>]
+Set-AgentEnvironmentTemplate [-EnvironmentTemplateId] <String> [-Name <String>]
+ [-CapabilityDirectory <String[]>] [-Env <IDictionary>] [-File <IDictionary[]>] [-Network <IDictionary>]
+ [-Packages <IDictionary>] [-Plugin <IDictionary[]>] [-Skill <IDictionary[]>] [-Setup <IDictionary[]>]
+ [-TimeoutSec <Int32>] [-MaxRetryCount <Int32>] [-ApiType <OpenAIApiType>] [-ApiBase <Uri>]
+ [-AuthType <String>] [-ApiKey <SecureString>] [-Organization <String>] [-AdditionalQuery <IDictionary>]
+ [-AdditionalHeaders <IDictionary>] [-AdditionalBody <Object>] [-ProgressAction <ActionPreference>] [-WhatIf]
+ [-Confirm] [<CommonParameters>]
+```
+
+### Body
+```
+Set-AgentEnvironmentTemplate [-EnvironmentTemplateId] <String> [-Body] <IDictionary> [-TimeoutSec <Int32>]
+ [-MaxRetryCount <Int32>] [-ApiType <OpenAIApiType>] [-ApiBase <Uri>] [-AuthType <String>]
+ [-ApiKey <SecureString>] [-Organization <String>] [-AdditionalQuery <IDictionary>]
+ [-AdditionalHeaders <IDictionary>] [-AdditionalBody <Object>] [-ProgressAction <ActionPreference>] [-WhatIf]
+ [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -146,7 +158,7 @@ The request body as a dictionary. Use the fields defined by the corresponding Op
 
 ```yaml
 Type: IDictionary
-Parameter Sets: (All)
+Parameter Sets: Body
 Aliases:
 
 Required: True
@@ -156,13 +168,28 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Confirm
-Prompts you for confirmation before running the cmdlet.
+### -CapabilityDirectory
+Directories made available as capabilities in the hosted environment.
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases: cf
+Type: String[]
+Parameter Sets: Properties
+Aliases: capability_directories
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Env
+Environment variables supplied to the hosted environment.
+
+```yaml
+Type: IDictionary
+Parameter Sets: Properties
+Aliases:
 
 Required: False
 Position: Named
@@ -186,12 +213,57 @@ Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
+### -File
+A file object returned by an Agents API command.
+
+```yaml
+Type: IDictionary[]
+Parameter Sets: Properties
+Aliases: files
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -MaxRetryCount
 The maximum number of retries for transient API failures.
 
 ```yaml
 Type: Int32
 Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Name
+The display name of the resource.
+
+```yaml
+Type: String
+Parameter Sets: Properties
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Network
+Network access settings for the hosted environment.
+
+```yaml
+Type: IDictionary
+Parameter Sets: Properties
 Aliases:
 
 Required: False
@@ -216,12 +288,12 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -TimeoutSec
-The request timeout in seconds. Zero uses the module default.
+### -Packages
+System and language package settings for the hosted environment.
 
 ```yaml
-Type: Int32
-Parameter Sets: (All)
+Type: IDictionary
+Parameter Sets: Properties
 Aliases:
 
 Required: False
@@ -231,13 +303,13 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -WhatIf
-Shows what would happen if the cmdlet runs. The cmdlet is not run.
+### -Plugin
+Plugin definitions installed in the hosted environment.
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases: wi
+Type: IDictionary[]
+Parameter Sets: Properties
+Aliases: plugins
 
 Required: False
 Position: Named
@@ -253,6 +325,81 @@ Controls how PowerShell responds to progress updates.
 Type: ActionPreference
 Parameter Sets: (All)
 Aliases: proga
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Setup
+Setup commands executed when the hosted environment is prepared.
+
+```yaml
+Type: IDictionary[]
+Parameter Sets: Properties
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Skill
+Skill definitions installed in the hosted environment.
+
+```yaml
+Type: IDictionary[]
+Parameter Sets: Properties
+Aliases: skills
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -TimeoutSec
+The request timeout in seconds. Zero uses the module default.
+
+```yaml
+Type: Int32
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Confirm
+Prompts you for confirmation before running the cmdlet.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases: cf
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -WhatIf
+Shows what would happen if the cmdlet runs. The cmdlet is not run.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases: wi
 
 Required: False
 Position: Named

@@ -1,11 +1,61 @@
 function Remove-Agent {
-    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'High')] [OutputType([pscustomobject])]
-    param(
-        [Parameter(Mandatory, Position = 0, ValueFromPipelineByPropertyName)] [Alias('agent_id')] [string][UrlEncodeTransformation()]$AgentId,
-        [int]$TimeoutSec = 0, [ValidateRange(0, 100)] [int]$MaxRetryCount = 0, [OpenAIApiType]$ApiType = [OpenAIApiType]::OpenAI,
-        [System.Uri]$ApiBase, [Parameter(DontShow)] [string]$ApiVersion, [ValidateSet('openai', 'azure', 'azure_ad')] [string]$AuthType = 'openai',
-        [securestring][SecureStringTransformation()]$ApiKey, [Alias('OrgId')] [string]$Organization,
-        [System.Collections.IDictionary]$AdditionalQuery, [System.Collections.IDictionary]$AdditionalHeaders, [object]$AdditionalBody
+    [CmdletBinding(DefaultParameterSetName = 'Id', SupportsShouldProcess, ConfirmImpact = 'High')]
+    [OutputType([pscustomobject])]
+    param (
+        [Parameter(ParameterSetName = 'Agent', Mandatory, Position = 0, ValueFromPipeline)]
+        [Alias('InputObject')]
+        [PSTypeName('PSOpenAI.Agent')]$Agent,
+
+        [Parameter(ParameterSetName = 'Id', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
+        [Alias('id', 'agent_id')]
+        [string][UrlEncodeTransformation()]$AgentId,
+
+        [Parameter()]
+        [int]$TimeoutSec = 0,
+
+        [Parameter()]
+        [ValidateRange(0, 100)]
+        [int]$MaxRetryCount = 0,
+
+        [Parameter()]
+        [OpenAIApiType]$ApiType = [OpenAIApiType]::OpenAI,
+
+        [Parameter()]
+        [System.Uri]$ApiBase,
+
+        [Parameter(DontShow)]
+        [string]$ApiVersion,
+
+        [Parameter()]
+        [ValidateSet('openai', 'azure', 'azure_ad')]
+        [string]$AuthType = 'openai',
+
+        [Parameter()]
+        [securestring][SecureStringTransformation()]$ApiKey,
+
+        [Parameter()]
+        [Alias('OrgId')]
+        [string]$Organization,
+
+        [Parameter()]
+        [System.Collections.IDictionary]$AdditionalQuery,
+
+        [Parameter()]
+        [System.Collections.IDictionary]$AdditionalHeaders,
+
+        [Parameter()]
+        [object]$AdditionalBody
     )
-    process { if ($PSCmdlet.ShouldProcess($AgentId, 'Delete agent')) { Invoke-AgentApiRequest -EndpointName Agents -Path $AgentId -Method Delete -Parameters $PSBoundParameters -TypeName PSOpenAI.Agent.Deleted } }
+
+    process {
+        $TargetAgentId = if ($PSCmdlet.ParameterSetName -ceq 'Agent') { $Agent.id } else { $AgentId }
+        if ([string]::IsNullOrWhiteSpace([string]$TargetAgentId)) {
+            Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve agent id.'))
+            return
+        }
+        if ($PSCmdlet.ShouldProcess($TargetAgentId, 'Delete agent')) {
+            Invoke-AgentApiRequest -EndpointName 'Agents' -Path $TargetAgentId -Method 'Delete' -Parameters $PSBoundParameters -TypeName 'PSOpenAI.Agent.Deleted'
+        }
+    }
 }

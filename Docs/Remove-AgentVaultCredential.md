@@ -13,11 +13,11 @@ Deletes a credential from an agent vault.
 ## SYNTAX
 
 ```
-Remove-AgentVaultCredential [-VaultId] <String> [-CredentialId] <String> [[-TimeoutSec] <Int32>]
- [[-MaxRetryCount] <Int32>] [[-ApiType] <OpenAIApiType>] [[-ApiBase] <Uri>] [[-AuthType] <String>]
- [[-ApiKey] <SecureString>] [[-Organization] <String>] [[-AdditionalQuery] <IDictionary>]
- [[-AdditionalHeaders] <IDictionary>] [[-AdditionalBody] <Object>] [-ProgressAction <ActionPreference>]
- [-WhatIf] [-Confirm] [<CommonParameters>]
+Remove-AgentVaultCredential [-VaultId] <String> [-CredentialId] <String> [-TimeoutSec <Int32>]
+ [-MaxRetryCount <Int32>] [-ApiType <OpenAIApiType>] [-ApiBase <Uri>] [-AuthType <String>]
+ [-ApiKey <SecureString>] [-Organization <String>] [-AdditionalQuery <IDictionary>]
+ [-AdditionalHeaders <IDictionary>] [-AdditionalBody <Object>] [-ProgressAction <ActionPreference>] [-WhatIf]
+ [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -141,28 +141,13 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Confirm
-Prompts you for confirmation before running the cmdlet.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases: cf
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -CredentialId
 The vault credential ID.
 
 ```yaml
 Type: String
 Parameter Sets: (All)
-Aliases: credential_id
+Aliases: id, credential_id
 
 Required: True
 Position: 1
@@ -201,6 +186,21 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -ProgressAction
+Controls how PowerShell responds to progress updates.
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -TimeoutSec
 The request timeout in seconds. Zero uses the module default.
 
@@ -227,6 +227,21 @@ Aliases: vault_id
 Required: True
 Position: 0
 Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -Confirm
+Prompts you for confirmation before running the cmdlet.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases: cf
+
+Required: False
+Position: Named
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -238,21 +253,6 @@ Shows what would happen if the cmdlet runs. The cmdlet is not run.
 Type: SwitchParameter
 Parameter Sets: (All)
 Aliases: wi
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -ProgressAction
-Controls how PowerShell responds to progress updates.
-
-```yaml
-Type: ActionPreference
-Parameter Sets: (All)
-Aliases: proga
 
 Required: False
 Position: Named

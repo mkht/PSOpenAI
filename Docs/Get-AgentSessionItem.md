@@ -12,12 +12,31 @@ Lists items from a session, subagent, or subagent turn.
 
 ## SYNTAX
 
+### Session (Default)
 ```
-Get-AgentSessionItem [-SessionId] <String> [[-SubagentId] <String>] [[-TurnId] <String>] [[-Limit] <Int32>]
- [-All] [[-After] <String>] [[-Order] <String>] [[-TimeoutSec] <Int32>] [[-MaxRetryCount] <Int32>]
- [[-ApiType] <OpenAIApiType>] [[-ApiBase] <Uri>] [[-AuthType] <String>] [[-ApiKey] <SecureString>]
- [[-Organization] <String>] [[-AdditionalQuery] <IDictionary>] [[-AdditionalHeaders] <IDictionary>]
- [[-AdditionalBody] <Object>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+Get-AgentSessionItem [-SessionId] <String> [-Limit <Int32>] [-All] [-After <String>] [-Order <String>]
+ [-TimeoutSec <Int32>] [-MaxRetryCount <Int32>] [-ApiType <OpenAIApiType>] [-ApiBase <Uri>]
+ [-AuthType <String>] [-ApiKey <SecureString>] [-Organization <String>] [-AdditionalQuery <IDictionary>]
+ [-AdditionalHeaders <IDictionary>] [-AdditionalBody <Object>] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
+```
+
+### Turn
+```
+Get-AgentSessionItem [-SessionId] <String> -SubagentId <String> -TurnId <String> [-Limit <Int32>] [-All]
+ [-After <String>] [-Order <String>] [-TimeoutSec <Int32>] [-MaxRetryCount <Int32>] [-ApiType <OpenAIApiType>]
+ [-ApiBase <Uri>] [-AuthType <String>] [-ApiKey <SecureString>] [-Organization <String>]
+ [-AdditionalQuery <IDictionary>] [-AdditionalHeaders <IDictionary>] [-AdditionalBody <Object>]
+ [-ProgressAction <ActionPreference>] [<CommonParameters>]
+```
+
+### Subagent
+```
+Get-AgentSessionItem [-SessionId] <String> -SubagentId <String> [-Limit <Int32>] [-All] [-After <String>]
+ [-Order <String>] [-TimeoutSec <Int32>] [-MaxRetryCount <Int32>] [-ApiType <OpenAIApiType>] [-ApiBase <Uri>]
+ [-AuthType <String>] [-ApiKey <SecureString>] [-Organization <String>] [-AdditionalQuery <IDictionary>]
+ [-AdditionalHeaders <IDictionary>] [-AdditionalBody <Object>] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -232,18 +251,33 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -ProgressAction
+Controls how PowerShell responds to progress updates.
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -SessionId
 The managed agent session ID.
 
 ```yaml
 Type: String
 Parameter Sets: (All)
-Aliases: session_id
+Aliases: id, session_id
 
 Required: True
 Position: 0
 Default value: None
-Accept pipeline input: False
+Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
@@ -252,10 +286,10 @@ The session subagent ID.
 
 ```yaml
 Type: String
-Parameter Sets: (All)
-Aliases:
+Parameter Sets: Turn, Subagent
+Aliases: subagent_id
 
-Required: False
+Required: True
 Position: Named
 Default value: None
 Accept pipeline input: False
@@ -282,25 +316,10 @@ The agent or subagent turn ID.
 
 ```yaml
 Type: String
-Parameter Sets: (All)
-Aliases:
+Parameter Sets: Turn
+Aliases: turn_id
 
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -ProgressAction
-Controls how PowerShell responds to progress updates.
-
-```yaml
-Type: ActionPreference
-Parameter Sets: (All)
-Aliases: proga
-
-Required: False
+Required: True
 Position: Named
 Default value: None
 Accept pipeline input: False

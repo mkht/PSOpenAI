@@ -12,11 +12,20 @@ Deletes a reusable agent.
 
 ## SYNTAX
 
+### Id (Default)
 ```
-Remove-Agent [-AgentId] <String> [[-TimeoutSec] <Int32>] [[-MaxRetryCount] <Int32>]
- [[-ApiType] <OpenAIApiType>] [[-ApiBase] <Uri>] [[-AuthType] <String>] [[-ApiKey] <SecureString>]
- [[-Organization] <String>] [[-AdditionalQuery] <IDictionary>] [[-AdditionalHeaders] <IDictionary>]
- [[-AdditionalBody] <Object>] [-ProgressAction <ActionPreference>] [-WhatIf] [-Confirm] [<CommonParameters>]
+Remove-Agent [-AgentId] <String> [-TimeoutSec <Int32>] [-MaxRetryCount <Int32>] [-ApiType <OpenAIApiType>]
+ [-ApiBase <Uri>] [-AuthType <String>] [-ApiKey <SecureString>] [-Organization <String>]
+ [-AdditionalQuery <IDictionary>] [-AdditionalHeaders <IDictionary>] [-AdditionalBody <Object>]
+ [-ProgressAction <ActionPreference>] [-WhatIf] [-Confirm] [<CommonParameters>]
+```
+
+### Agent
+```
+Remove-Agent -Agent <Object> [-TimeoutSec <Int32>] [-MaxRetryCount <Int32>] [-ApiType <OpenAIApiType>]
+ [-ApiBase <Uri>] [-AuthType <String>] [-ApiKey <SecureString>] [-Organization <String>]
+ [-AdditionalQuery <IDictionary>] [-AdditionalHeaders <IDictionary>] [-AdditionalBody <Object>]
+ [-ProgressAction <ActionPreference>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -78,18 +87,33 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -Agent
+An agent object returned by an Agents API command.
+
+```yaml
+Type: Object
+Parameter Sets: Agent
+Aliases: InputObject
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: True (ByValue)
+Accept wildcard characters: False
+```
+
 ### -AgentId
 The reusable agent ID.
 
 ```yaml
 Type: String
-Parameter Sets: (All)
-Aliases: agent_id
+Parameter Sets: Id
+Aliases: id, agent_id
 
 Required: True
 Position: 0
 Default value: None
-Accept pipeline input: True (ByPropertyName)
+Accept pipeline input: True (ByPropertyName, ByValue)
 Accept wildcard characters: False
 ```
 
@@ -155,21 +179,6 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Confirm
-Prompts you for confirmation before running the cmdlet.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases: cf
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -MaxRetryCount
 The maximum number of retries for transient API failures.
 
@@ -200,6 +209,21 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -ProgressAction
+Controls how PowerShell responds to progress updates.
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -TimeoutSec
 The request timeout in seconds. Zero uses the module default.
 
@@ -215,13 +239,13 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -WhatIf
-Shows what would happen if the cmdlet runs. The cmdlet is not run.
+### -Confirm
+Prompts you for confirmation before running the cmdlet.
 
 ```yaml
 Type: SwitchParameter
 Parameter Sets: (All)
-Aliases: wi
+Aliases: cf
 
 Required: False
 Position: Named
@@ -230,13 +254,13 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -ProgressAction
-Controls how PowerShell responds to progress updates.
+### -WhatIf
+Shows what would happen if the cmdlet runs. The cmdlet is not run.
 
 ```yaml
-Type: ActionPreference
+Type: SwitchParameter
 Parameter Sets: (All)
-Aliases: proga
+Aliases: wi
 
 Required: False
 Position: Named

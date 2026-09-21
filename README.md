@@ -66,6 +66,8 @@ Guide: [Migrate ChatCompletion to Response](/Guides/Migrate_ChatCompletion_to_Re
 + [Request-ResponseCompaction](/Docs/Request-ResponseCompaction.md)
 
 #### Agents API (Beta)
+[Usage guide](/Guides/How_to_use_Agents_API.md)
+
 + [New-Agent](/Docs/New-Agent.md)
 + [Get-Agent](/Docs/Get-Agent.md)
 + [Set-Agent](/Docs/Set-Agent.md)
@@ -79,6 +81,7 @@ Guide: [Migrate ChatCompletion to Response](/Guides/Migrate_ChatCompletion_to_Re
 + [Get-AgentEnvironmentFile](/Docs/Get-AgentEnvironmentFile.md)
 + [New-AgentSession](/Docs/New-AgentSession.md)
 + [Get-AgentSession](/Docs/Get-AgentSession.md)
++ [Wait-AgentSession](/Docs/Wait-AgentSession.md)
 + [Set-AgentSession](/Docs/Set-AgentSession.md)
 + [Remove-AgentSession](/Docs/Remove-AgentSession.md)
 + [Add-AgentSessionEvent](/Docs/Add-AgentSessionEvent.md)
@@ -202,23 +205,19 @@ See [Docs](/Docs) and [Guides](/Guides) for more detailed and complex scenario d
 
 ### Agents API (Beta)
 
-Agents API commands accept evolving nested API schemas through `-Body`. The following creates a reusable agent and starts a managed session without a hosted execution environment.
+Agents API commands expose common fields as named PowerShell parameters and retain `-Body` for evolving beta schemas. The following creates a reusable agent and starts a managed session without a hosted execution environment.
 
 ```PowerShell
-$Agent = New-Agent -Body @{
-    model        = 'gpt-5.6'
-    name         = 'Repository assistant'
-    instructions = 'Review PowerShell code and report actionable findings.'
-}
+$Agent = New-Agent `
+    -Model 'gpt-5.6' `
+    -Name 'Repository assistant' `
+    -Instructions 'Review PowerShell code and report actionable findings.'
 
-$Session = New-AgentSession -Body @{
-    agent_id    = $Agent.id
-    environment = @{ type = 'none' }
-    input       = 'Inspect this repository.'
-}
+$Session = $Agent | New-AgentSession -Input 'Inspect this repository.'
+$Session = $Session | Wait-AgentSession -TimeoutSec 120
 ```
 
-The Agents API is a public beta and is currently supported only with the OpenAI API, not Azure OpenAI.
+The Agents API is a public beta and is currently supported only with the OpenAI API, not Azure OpenAI. See [How to use the Agents API](/Guides/How_to_use_Agents_API.md) for sessions, events, hosted environments, vault credentials, and artifacts.
 
 ### Responses
 

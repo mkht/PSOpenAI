@@ -1,11 +1,61 @@
 function Remove-AgentSession {
-    [CmdletBinding(SupportsShouldProcess,ConfirmImpact='High')] [OutputType([pscustomobject])]
-    param(
-        [Parameter(Mandatory,Position=0,ValueFromPipelineByPropertyName)] [Alias('session_id')] [string][UrlEncodeTransformation()]$SessionId,
-        [int]$TimeoutSec=0,[ValidateRange(0,100)][int]$MaxRetryCount=0,[OpenAIApiType]$ApiType=[OpenAIApiType]::OpenAI,
-        [System.Uri]$ApiBase,[Parameter(DontShow)][string]$ApiVersion,[ValidateSet('openai','azure','azure_ad')][string]$AuthType='openai',
-        [securestring][SecureStringTransformation()]$ApiKey,[Alias('OrgId')][string]$Organization,
-        [System.Collections.IDictionary]$AdditionalQuery,[System.Collections.IDictionary]$AdditionalHeaders,[object]$AdditionalBody
+    [CmdletBinding(DefaultParameterSetName = 'Id', SupportsShouldProcess, ConfirmImpact = 'High')]
+    [OutputType([pscustomobject])]
+    param (
+        [Parameter(ParameterSetName = 'Session', Mandatory, Position = 0, ValueFromPipeline)]
+        [Alias('InputObject')]
+        [PSTypeName('PSOpenAI.Agent.Session')]$Session,
+
+        [Parameter(ParameterSetName = 'Id', Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
+        [Alias('id', 'session_id')]
+        [string][UrlEncodeTransformation()]$SessionId,
+
+        [Parameter()]
+        [int]$TimeoutSec = 0,
+
+        [Parameter()]
+        [ValidateRange(0, 100)]
+        [int]$MaxRetryCount = 0,
+
+        [Parameter()]
+        [OpenAIApiType]$ApiType = [OpenAIApiType]::OpenAI,
+
+        [Parameter()]
+        [System.Uri]$ApiBase,
+
+        [Parameter(DontShow)]
+        [string]$ApiVersion,
+
+        [Parameter()]
+        [ValidateSet('openai', 'azure', 'azure_ad')]
+        [string]$AuthType = 'openai',
+
+        [Parameter()]
+        [securestring][SecureStringTransformation()]$ApiKey,
+
+        [Parameter()]
+        [Alias('OrgId')]
+        [string]$Organization,
+
+        [Parameter()]
+        [System.Collections.IDictionary]$AdditionalQuery,
+
+        [Parameter()]
+        [System.Collections.IDictionary]$AdditionalHeaders,
+
+        [Parameter()]
+        [object]$AdditionalBody
     )
-    process { if($PSCmdlet.ShouldProcess($SessionId,'Delete agent session')){ Invoke-AgentApiRequest -EndpointName Agent.Sessions -Path $SessionId -Method Delete -Parameters $PSBoundParameters -TypeName PSOpenAI.Agent.Session.Deleted } }
+
+    process {
+        $TargetSessionId = if ($PSCmdlet.ParameterSetName -ceq 'Session') { $Session.id } else { $SessionId }
+        if ([string]::IsNullOrWhiteSpace([string]$TargetSessionId)) {
+            Write-Error -Exception ([System.ArgumentException]::new('Could not retrieve agent session id.'))
+            return
+        }
+        if ($PSCmdlet.ShouldProcess($TargetSessionId, 'Delete agent session')) {
+            Invoke-AgentApiRequest -EndpointName 'Agent.Sessions' -Path $TargetSessionId -Method 'Delete' -Parameters $PSBoundParameters -TypeName 'PSOpenAI.Agent.Session.Deleted'
+        }
+    }
 }

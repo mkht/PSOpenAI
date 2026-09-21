@@ -12,10 +12,21 @@ Creates a reusable agent.
 
 ## SYNTAX
 
+### Properties (Default)
 ```
-New-Agent [-Body] <IDictionary> [[-TimeoutSec] <Int32>] [[-MaxRetryCount] <Int32>] [[-ApiType] <OpenAIApiType>]
- [[-ApiBase] <Uri>] [[-AuthType] <String>] [[-ApiKey] <SecureString>] [[-Organization] <String>]
- [[-AdditionalQuery] <IDictionary>] [[-AdditionalHeaders] <IDictionary>] [[-AdditionalBody] <Object>]
+New-Agent -Model <String> [-Name <String>] [-Instructions <String>] [-Metadata <IDictionary>]
+ [-MultiAgent <IDictionary>] [-Reasoning <IDictionary>] [-ServiceTier <String>] [-Text <IDictionary>]
+ [-Tool <IDictionary[]>] [-TimeoutSec <Int32>] [-MaxRetryCount <Int32>] [-ApiType <OpenAIApiType>]
+ [-ApiBase <Uri>] [-AuthType <String>] [-ApiKey <SecureString>] [-Organization <String>]
+ [-AdditionalQuery <IDictionary>] [-AdditionalHeaders <IDictionary>] [-AdditionalBody <Object>]
+ [-ProgressAction <ActionPreference>] [<CommonParameters>]
+```
+
+### Raw
+```
+New-Agent [-Body] <IDictionary> [-TimeoutSec <Int32>] [-MaxRetryCount <Int32>] [-ApiType <OpenAIApiType>]
+ [-ApiBase <Uri>] [-AuthType <String>] [-ApiKey <SecureString>] [-Organization <String>]
+ [-AdditionalQuery <IDictionary>] [-AdditionalHeaders <IDictionary>] [-AdditionalBody <Object>]
  [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
@@ -26,10 +37,13 @@ Creates a reusable agent. This command uses the OpenAI Agents API public beta an
 
 ### Example 1
 ```powershell
-New-Agent -Body @{ model = 'gpt-5.6'; name = 'Repository assistant' }
+New-Agent `
+    -Model 'gpt-5.6' `
+    -Name 'Repository assistant' `
+    -Instructions 'Review PowerShell code and report actionable findings.'
 ```
 
-Creates a reusable agent configuration.
+Creates a reusable agent configuration using named PowerShell parameters. Use `-Body` for advanced beta fields that do not yet have named parameters.
 
 ## PARAMETERS
 
@@ -145,11 +159,26 @@ The request body as a dictionary. Use the fields defined by the corresponding Op
 
 ```yaml
 Type: IDictionary
-Parameter Sets: (All)
+Parameter Sets: Raw
 Aliases:
 
 Required: True
 Position: 0
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Instructions
+Instructions that define the agent behavior.
+
+```yaml
+Type: String
+Parameter Sets: Properties
+Aliases:
+
+Required: False
+Position: Named
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -161,6 +190,66 @@ The maximum number of retries for transient API failures.
 ```yaml
 Type: Int32
 Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Metadata
+Metadata to associate with the resource.
+
+```yaml
+Type: IDictionary
+Parameter Sets: Properties
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Model
+The model used by the agent.
+
+```yaml
+Type: String
+Parameter Sets: Properties
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -MultiAgent
+Multi-agent orchestration settings.
+
+```yaml
+Type: IDictionary
+Parameter Sets: Properties
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Name
+The display name of the resource.
+
+```yaml
+Type: String
+Parameter Sets: Properties
 Aliases:
 
 Required: False
@@ -185,6 +274,66 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -ProgressAction
+Controls how PowerShell responds to progress updates.
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Reasoning
+Reasoning configuration for the agent.
+
+```yaml
+Type: IDictionary
+Parameter Sets: Properties
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ServiceTier
+The service tier used for agent requests.
+
+```yaml
+Type: String
+Parameter Sets: Properties
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Text
+Text output configuration for the agent.
+
+```yaml
+Type: IDictionary
+Parameter Sets: Properties
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -TimeoutSec
 The request timeout in seconds. Zero uses the module default.
 
@@ -200,13 +349,13 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -ProgressAction
-Controls how PowerShell responds to progress updates.
+### -Tool
+Tool configurations available to the agent.
 
 ```yaml
-Type: ActionPreference
-Parameter Sets: (All)
-Aliases: proga
+Type: IDictionary[]
+Parameter Sets: Properties
+Aliases:
 
 Required: False
 Position: Named

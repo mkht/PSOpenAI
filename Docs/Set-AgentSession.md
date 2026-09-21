@@ -12,11 +12,21 @@ Updates an agent session.
 
 ## SYNTAX
 
+### Properties (Default)
 ```
-Set-AgentSession [-SessionId] <String> [-Body] <IDictionary> [[-TimeoutSec] <Int32>] [[-MaxRetryCount] <Int32>]
- [[-ApiType] <OpenAIApiType>] [[-ApiBase] <Uri>] [[-AuthType] <String>] [[-ApiKey] <SecureString>]
- [[-Organization] <String>] [[-AdditionalQuery] <IDictionary>] [[-AdditionalHeaders] <IDictionary>]
- [[-AdditionalBody] <Object>] [-ProgressAction <ActionPreference>] [-WhatIf] [-Confirm] [<CommonParameters>]
+Set-AgentSession [-SessionId] <String> [-Agent <Object>] [-Metadata <IDictionary>] [-TimeoutSec <Int32>]
+ [-MaxRetryCount <Int32>] [-ApiType <OpenAIApiType>] [-ApiBase <Uri>] [-AuthType <String>]
+ [-ApiKey <SecureString>] [-Organization <String>] [-AdditionalQuery <IDictionary>]
+ [-AdditionalHeaders <IDictionary>] [-AdditionalBody <Object>] [-ProgressAction <ActionPreference>] [-WhatIf]
+ [-Confirm] [<CommonParameters>]
+```
+
+### Raw
+```
+Set-AgentSession [-SessionId] <String> [-Body] <IDictionary> [-TimeoutSec <Int32>] [-MaxRetryCount <Int32>]
+ [-ApiType <OpenAIApiType>] [-ApiBase <Uri>] [-AuthType <String>] [-ApiKey <SecureString>]
+ [-Organization <String>] [-AdditionalQuery <IDictionary>] [-AdditionalHeaders <IDictionary>]
+ [-AdditionalBody <Object>] [-ProgressAction <ActionPreference>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -69,6 +79,21 @@ Additional query parameters to include in the request.
 ```yaml
 Type: IDictionary
 Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Agent
+An agent object returned by an Agents API command.
+
+```yaml
+Type: Object
+Parameter Sets: Properties
 Aliases:
 
 Required: False
@@ -145,26 +170,11 @@ The request body as a dictionary. Use the fields defined by the corresponding Op
 
 ```yaml
 Type: IDictionary
-Parameter Sets: (All)
+Parameter Sets: Raw
 Aliases:
 
 Required: True
 Position: 1
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Confirm
-Prompts you for confirmation before running the cmdlet.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases: cf
-
-Required: False
-Position: Named
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -176,6 +186,21 @@ The maximum number of retries for transient API failures.
 ```yaml
 Type: Int32
 Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Metadata
+Metadata to associate with the resource.
+
+```yaml
+Type: IDictionary
+Parameter Sets: Properties
 Aliases:
 
 Required: False
@@ -200,13 +225,28 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -ProgressAction
+Controls how PowerShell responds to progress updates.
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -SessionId
 The managed agent session ID.
 
 ```yaml
 Type: String
 Parameter Sets: (All)
-Aliases: session_id
+Aliases: id, session_id
 
 Required: True
 Position: 0
@@ -230,13 +270,13 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -WhatIf
-Shows what would happen if the cmdlet runs. The cmdlet is not run.
+### -Confirm
+Prompts you for confirmation before running the cmdlet.
 
 ```yaml
 Type: SwitchParameter
 Parameter Sets: (All)
-Aliases: wi
+Aliases: cf
 
 Required: False
 Position: Named
@@ -245,13 +285,13 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -ProgressAction
-Controls how PowerShell responds to progress updates.
+### -WhatIf
+Shows what would happen if the cmdlet runs. The cmdlet is not run.
 
 ```yaml
-Type: ActionPreference
+Type: SwitchParameter
 Parameter Sets: (All)
-Aliases: proga
+Aliases: wi
 
 Required: False
 Position: Named

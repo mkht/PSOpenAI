@@ -1,16 +1,84 @@
 function Get-AgentVaultCredential {
-    [CmdletBinding()] [OutputType([pscustomobject])]
-    param(
-        [Parameter(Mandatory,Position=0)] [Alias('vault_id')] [string][UrlEncodeTransformation()]$VaultId,
-        [string][UrlEncodeTransformation()]$CredentialId,[ValidateSet('active','archived')][string[]]$Status,
-        [ValidateRange(1,100)][int]$Limit=20,[switch]$All,[string]$After,[ValidateSet('asc','desc')][string]$Order='desc',
-        [int]$TimeoutSec=0,[ValidateRange(0,100)][int]$MaxRetryCount=0,[OpenAIApiType]$ApiType=[OpenAIApiType]::OpenAI,
-        [System.Uri]$ApiBase,[Parameter(DontShow)][string]$ApiVersion,[ValidateSet('openai','azure','azure_ad')][string]$AuthType='openai',
-        [securestring][SecureStringTransformation()]$ApiKey,[Alias('OrgId')][string]$Organization,
-        [System.Collections.IDictionary]$AdditionalQuery,[System.Collections.IDictionary]$AdditionalHeaders,[object]$AdditionalBody
+    [CmdletBinding(DefaultParameterSetName = 'List')]
+    [OutputType([pscustomobject])]
+    param (
+        [Parameter(Mandatory, Position = 0, ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
+        [Alias('vault_id')]
+        [string][UrlEncodeTransformation()]$VaultId,
+
+        [Parameter(ParameterSetName = 'Id', Mandatory, Position = 1, ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
+        [Alias('id', 'credential_id')]
+        [string][UrlEncodeTransformation()]$CredentialId,
+
+        [Parameter(ParameterSetName = 'List')]
+        [ValidateSet('active', 'archived')]
+        [string[]]$Status,
+
+        [Parameter(ParameterSetName = 'List')]
+        [ValidateRange(1, 100)]
+        [int]$Limit = 20,
+
+        [Parameter(ParameterSetName = 'List')]
+        [switch]$All,
+
+        [Parameter(ParameterSetName = 'List')]
+        [string]$After,
+
+        [Parameter(ParameterSetName = 'List')]
+        [ValidateSet('asc', 'desc')]
+        [string]$Order = 'desc',
+
+        [Parameter()]
+        [int]$TimeoutSec = 0,
+
+        [Parameter()]
+        [ValidateRange(0, 100)]
+        [int]$MaxRetryCount = 0,
+
+        [Parameter()]
+        [OpenAIApiType]$ApiType = [OpenAIApiType]::OpenAI,
+
+        [Parameter()]
+        [System.Uri]$ApiBase,
+
+        [Parameter(DontShow)]
+        [string]$ApiVersion,
+
+        [Parameter()]
+        [ValidateSet('openai', 'azure', 'azure_ad')]
+        [string]$AuthType = 'openai',
+
+        [Parameter()]
+        [securestring][SecureStringTransformation()]$ApiKey,
+
+        [Parameter()]
+        [Alias('OrgId')]
+        [string]$Organization,
+
+        [Parameter()]
+        [System.Collections.IDictionary]$AdditionalQuery,
+
+        [Parameter()]
+        [System.Collections.IDictionary]$AdditionalHeaders,
+
+        [Parameter()]
+        [object]$AdditionalBody
     )
-    process{
-        $Path=if($CredentialId){"$VaultId/credentials/$CredentialId"}else{"$VaultId/credentials"};$Query=if($CredentialId){$null}else{[ordered]@{status=$Status;limit=$Limit;after=$After;order=$Order}}
-        Invoke-AgentApiRequest -EndpointName Agent.Vaults -Path $Path -Method Get -Parameters $PSBoundParameters -Query $Query -All:($All -and -not $CredentialId) -TypeName PSOpenAI.Agent.Vault.Credential
+
+    process {
+        if ($PSCmdlet.ParameterSetName -ceq 'Id') {
+            Invoke-AgentApiRequest -EndpointName 'Agent.Vaults' -Path "$VaultId/credentials/$CredentialId" -Method 'Get' -Parameters $PSBoundParameters -TypeName 'PSOpenAI.Agent.Vault.Credential'
+            return
+        }
+
+        $Query = [ordered]@{
+            status = $Status
+            limit  = $Limit
+            after  = $After
+            order  = $Order
+        }
+        Invoke-AgentApiRequest -EndpointName 'Agent.Vaults' -Path "$VaultId/credentials" -Method 'Get' -Parameters $PSBoundParameters -Query $Query -All:$All -TypeName 'PSOpenAI.Agent.Vault.Credential'
     }
 }

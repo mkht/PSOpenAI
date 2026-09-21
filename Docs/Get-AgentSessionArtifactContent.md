@@ -13,11 +13,10 @@ Downloads the binary content of a session artifact.
 ## SYNTAX
 
 ```
-Get-AgentSessionArtifactContent [-SessionId] <String> [-ArtifactId] <String> [[-OutFile] <String>]
- [[-TimeoutSec] <Int32>] [[-MaxRetryCount] <Int32>] [[-ApiType] <OpenAIApiType>] [[-ApiBase] <Uri>]
- [[-AuthType] <String>] [[-ApiKey] <SecureString>] [[-Organization] <String>]
- [[-AdditionalQuery] <IDictionary>] [[-AdditionalHeaders] <IDictionary>] [-ProgressAction <ActionPreference>]
- [<CommonParameters>]
+Get-AgentSessionArtifactContent [-SessionId] <String> [-ArtifactId] <String> [-OutFile <String>]
+ [-TimeoutSec <Int32>] [-MaxRetryCount <Int32>] [-ApiType <OpenAIApiType>] [-ApiBase <Uri>]
+ [-AuthType <String>] [-ApiKey <SecureString>] [-Organization <String>] [-AdditionalQuery <IDictionary>]
+ [-AdditionalHeaders <IDictionary>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -116,7 +115,7 @@ The session artifact ID.
 ```yaml
 Type: String
 Parameter Sets: (All)
-Aliases: artifact_id
+Aliases: id, artifact_id
 
 Required: True
 Position: 1
@@ -186,6 +185,21 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -ProgressAction
+Controls how PowerShell responds to progress updates.
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -SessionId
 The managed agent session ID.
 
@@ -197,7 +211,7 @@ Aliases: session_id
 Required: True
 Position: 0
 Default value: None
-Accept pipeline input: False
+Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
@@ -208,21 +222,6 @@ The request timeout in seconds. Zero uses the module default.
 Type: Int32
 Parameter Sets: (All)
 Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -ProgressAction
-Controls how PowerShell responds to progress updates.
-
-```yaml
-Type: ActionPreference
-Parameter Sets: (All)
-Aliases: proga
 
 Required: False
 Position: Named

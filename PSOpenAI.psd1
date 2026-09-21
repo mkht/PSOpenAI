@@ -98,6 +98,7 @@
         'Get-AgentEnvironmentFile',
         'New-AgentSession',
         'Get-AgentSession',
+        'Wait-AgentSession',
         'Set-AgentSession',
         'Remove-AgentSession',
         'Add-AgentSessionEvent',

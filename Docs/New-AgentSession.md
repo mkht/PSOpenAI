@@ -12,11 +12,22 @@ Creates an agent session, optionally returning streamed events.
 
 ## SYNTAX
 
+### Properties (Default)
 ```
-New-AgentSession [-Body] <IDictionary> [-Stream] [[-TimeoutSec] <Int32>] [[-MaxRetryCount] <Int32>]
- [[-ApiType] <OpenAIApiType>] [[-ApiBase] <Uri>] [[-AuthType] <String>] [[-ApiKey] <SecureString>]
- [[-Organization] <String>] [[-AdditionalQuery] <IDictionary>] [[-AdditionalHeaders] <IDictionary>]
- [[-AdditionalBody] <Object>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+New-AgentSession [-Environment <IDictionary>] [-EnvironmentTemplateId <String>] [-Agent <Object>]
+ [-AgentId <String>] [-Input <Object>] [-Metadata <IDictionary>] [-VaultId <String[]>] [-Stream]
+ [-TimeoutSec <Int32>] [-MaxRetryCount <Int32>] [-ApiType <OpenAIApiType>] [-ApiBase <Uri>]
+ [-AuthType <String>] [-ApiKey <SecureString>] [-Organization <String>] [-AdditionalQuery <IDictionary>]
+ [-AdditionalHeaders <IDictionary>] [-AdditionalBody <Object>] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
+```
+
+### Raw
+```
+New-AgentSession [-Body] <IDictionary> [-Stream] [-TimeoutSec <Int32>] [-MaxRetryCount <Int32>]
+ [-ApiType <OpenAIApiType>] [-ApiBase <Uri>] [-AuthType <String>] [-ApiKey <SecureString>]
+ [-Organization <String>] [-AdditionalQuery <IDictionary>] [-AdditionalHeaders <IDictionary>]
+ [-AdditionalBody <Object>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -26,10 +37,10 @@ Creates an agent session, optionally returning streamed events. This command use
 
 ### Example 1
 ```powershell
-New-AgentSession -Body @{ agent_id = 'agent_123'; environment = @{ type = 'none' }; input = 'Inspect this repository.' }
+$Session = $Agent | New-AgentSession -Input 'Inspect this repository.'
 ```
 
-Creates a managed session and submits its initial user input.
+Creates a managed session for an agent from the pipeline and submits its initial user input. When no environment is specified, the command uses a no-execution environment.
 
 ## PARAMETERS
 
@@ -70,6 +81,36 @@ Additional query parameters to include in the request.
 Type: IDictionary
 Parameter Sets: (All)
 Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Agent
+An agent object returned by an Agents API command.
+
+```yaml
+Type: Object
+Parameter Sets: Properties
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: True (ByValue)
+Accept wildcard characters: False
+```
+
+### -AgentId
+The ID of the reusable agent.
+
+```yaml
+Type: String
+Parameter Sets: Properties
+Aliases: agent_id
 
 Required: False
 Position: Named
@@ -145,11 +186,56 @@ The request body as a dictionary. Use the fields defined by the corresponding Op
 
 ```yaml
 Type: IDictionary
-Parameter Sets: (All)
+Parameter Sets: Raw
 Aliases:
 
 Required: True
 Position: 0
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Environment
+The complete session environment configuration.
+
+```yaml
+Type: IDictionary
+Parameter Sets: Properties
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -EnvironmentTemplateId
+The ID of the hosted environment template to use for the session.
+
+```yaml
+Type: String
+Parameter Sets: Properties
+Aliases: environment_template_id
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Input
+The initial session input. A string is converted to a user message.
+
+```yaml
+Type: Object
+Parameter Sets: Properties
+Aliases:
+
+Required: False
+Position: Named
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -170,6 +256,21 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -Metadata
+Metadata to associate with the resource.
+
+```yaml
+Type: IDictionary
+Parameter Sets: Properties
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -Organization
 The OpenAI organization ID.
 
@@ -177,6 +278,21 @@ The OpenAI organization ID.
 Type: String
 Parameter Sets: (All)
 Aliases: OrgId
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ProgressAction
+Controls how PowerShell responds to progress updates.
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
 
 Required: False
 Position: Named
@@ -215,13 +331,13 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -ProgressAction
-Controls how PowerShell responds to progress updates.
+### -VaultId
+One or more vault IDs made available to the session.
 
 ```yaml
-Type: ActionPreference
-Parameter Sets: (All)
-Aliases: proga
+Type: String[]
+Parameter Sets: Properties
+Aliases: vault_ids
 
 Required: False
 Position: Named

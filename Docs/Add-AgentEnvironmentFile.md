@@ -12,11 +12,21 @@ Uploads a file definition to a live agent environment.
 
 ## SYNTAX
 
+### FileId (Default)
 ```
-Add-AgentEnvironmentFile [-EnvironmentId] <String> [-Body] <IDictionary> [[-TimeoutSec] <Int32>]
- [[-MaxRetryCount] <Int32>] [[-ApiType] <OpenAIApiType>] [[-ApiBase] <Uri>] [[-AuthType] <String>]
- [[-ApiKey] <SecureString>] [[-Organization] <String>] [[-AdditionalQuery] <IDictionary>]
- [[-AdditionalHeaders] <IDictionary>] [[-AdditionalBody] <Object>] [-ProgressAction <ActionPreference>]
+Add-AgentEnvironmentFile [-EnvironmentId] <String> -FileId <String> -Path <String> [-TimeoutSec <Int32>]
+ [-MaxRetryCount <Int32>] [-ApiType <OpenAIApiType>] [-ApiBase <Uri>] [-AuthType <String>]
+ [-ApiKey <SecureString>] [-Organization <String>] [-AdditionalQuery <IDictionary>]
+ [-AdditionalHeaders <IDictionary>] [-AdditionalBody <Object>] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
+```
+
+### Body
+```
+Add-AgentEnvironmentFile [-EnvironmentId] <String> [-Body] <IDictionary> [-TimeoutSec <Int32>]
+ [-MaxRetryCount <Int32>] [-ApiType <OpenAIApiType>] [-ApiBase <Uri>] [-AuthType <String>]
+ [-ApiKey <SecureString>] [-Organization <String>] [-AdditionalQuery <IDictionary>]
+ [-AdditionalHeaders <IDictionary>] [-AdditionalBody <Object>] [-ProgressAction <ActionPreference>]
  [<CommonParameters>]
 ```
 
@@ -146,7 +156,7 @@ The request body as a dictionary. Use the fields defined by the corresponding Op
 
 ```yaml
 Type: IDictionary
-Parameter Sets: (All)
+Parameter Sets: Body
 Aliases:
 
 Required: True
@@ -162,10 +172,25 @@ The live agent environment ID.
 ```yaml
 Type: String
 Parameter Sets: (All)
-Aliases: environment_id
+Aliases: id, environment_id
 
 Required: True
 Position: 0
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -FileId
+The ID of an uploaded OpenAI file.
+
+```yaml
+Type: String
+Parameter Sets: FileId
+Aliases: file_id
+
+Required: True
+Position: Named
 Default value: None
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
@@ -201,15 +226,15 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -TimeoutSec
-The request timeout in seconds. Zero uses the module default.
+### -Path
+The destination path for the file in the hosted environment workspace.
 
 ```yaml
-Type: Int32
-Parameter Sets: (All)
+Type: String
+Parameter Sets: FileId
 Aliases:
 
-Required: False
+Required: True
 Position: Named
 Default value: None
 Accept pipeline input: False
@@ -223,6 +248,21 @@ Controls how PowerShell responds to progress updates.
 Type: ActionPreference
 Parameter Sets: (All)
 Aliases: proga
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -TimeoutSec
+The request timeout in seconds. Zero uses the module default.
+
+```yaml
+Type: Int32
+Parameter Sets: (All)
+Aliases:
 
 Required: False
 Position: Named

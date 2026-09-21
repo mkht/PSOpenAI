@@ -12,11 +12,20 @@ Retrieves a live agent environment.
 
 ## SYNTAX
 
+### Id (Default)
 ```
-Get-AgentEnvironment [-EnvironmentId] <String> [[-TimeoutSec] <Int32>] [[-MaxRetryCount] <Int32>]
- [[-ApiType] <OpenAIApiType>] [[-ApiBase] <Uri>] [[-AuthType] <String>] [[-ApiKey] <SecureString>]
- [[-Organization] <String>] [[-AdditionalQuery] <IDictionary>] [[-AdditionalHeaders] <IDictionary>]
- [[-AdditionalBody] <Object>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+Get-AgentEnvironment [-EnvironmentId] <String> [-TimeoutSec <Int32>] [-MaxRetryCount <Int32>]
+ [-ApiType <OpenAIApiType>] [-ApiBase <Uri>] [-AuthType <String>] [-ApiKey <SecureString>]
+ [-Organization <String>] [-AdditionalQuery <IDictionary>] [-AdditionalHeaders <IDictionary>]
+ [-AdditionalBody <Object>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+```
+
+### Environment
+```
+Get-AgentEnvironment -Environment <Object> [-TimeoutSec <Int32>] [-MaxRetryCount <Int32>]
+ [-ApiType <OpenAIApiType>] [-ApiBase <Uri>] [-AuthType <String>] [-ApiKey <SecureString>]
+ [-Organization <String>] [-AdditionalQuery <IDictionary>] [-AdditionalHeaders <IDictionary>]
+ [-AdditionalBody <Object>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -140,18 +149,33 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -Environment
+The complete session environment configuration.
+
+```yaml
+Type: Object
+Parameter Sets: Environment
+Aliases: InputObject
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: True (ByValue)
+Accept wildcard characters: False
+```
+
 ### -EnvironmentId
 The live agent environment ID.
 
 ```yaml
 Type: String
-Parameter Sets: (All)
-Aliases: environment_id
+Parameter Sets: Id
+Aliases: id, environment_id
 
 Required: True
 Position: 0
 Default value: None
-Accept pipeline input: True (ByPropertyName)
+Accept pipeline input: True (ByPropertyName, ByValue)
 Accept wildcard characters: False
 ```
 
@@ -185,13 +209,13 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -TimeoutSec
-The request timeout in seconds. Zero uses the module default.
+### -ProgressAction
+Controls how PowerShell responds to progress updates.
 
 ```yaml
-Type: Int32
+Type: ActionPreference
 Parameter Sets: (All)
-Aliases:
+Aliases: proga
 
 Required: False
 Position: Named
@@ -200,13 +224,13 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -ProgressAction
-Controls how PowerShell responds to progress updates.
+### -TimeoutSec
+The request timeout in seconds. Zero uses the module default.
 
 ```yaml
-Type: ActionPreference
+Type: Int32
 Parameter Sets: (All)
-Aliases: proga
+Aliases:
 
 Required: False
 Position: Named

@@ -12,11 +12,22 @@ Updates a reusable agent.
 
 ## SYNTAX
 
+### Properties (Default)
 ```
-Set-Agent [-AgentId] <String> [-Body] <IDictionary> [[-TimeoutSec] <Int32>] [[-MaxRetryCount] <Int32>]
- [[-ApiType] <OpenAIApiType>] [[-ApiBase] <Uri>] [[-AuthType] <String>] [[-ApiKey] <SecureString>]
- [[-Organization] <String>] [[-AdditionalQuery] <IDictionary>] [[-AdditionalHeaders] <IDictionary>]
- [[-AdditionalBody] <Object>] [-ProgressAction <ActionPreference>] [-WhatIf] [-Confirm] [<CommonParameters>]
+Set-Agent [-AgentId] <String> [-Model <String>] [-Name <String>] [-Instructions <String>]
+ [-Metadata <IDictionary>] [-MultiAgent <IDictionary>] [-Reasoning <IDictionary>] [-ServiceTier <String>]
+ [-Text <IDictionary>] [-Tool <IDictionary[]>] [-TimeoutSec <Int32>] [-MaxRetryCount <Int32>]
+ [-ApiType <OpenAIApiType>] [-ApiBase <Uri>] [-AuthType <String>] [-ApiKey <SecureString>]
+ [-Organization <String>] [-AdditionalQuery <IDictionary>] [-AdditionalHeaders <IDictionary>]
+ [-AdditionalBody <Object>] [-ProgressAction <ActionPreference>] [-WhatIf] [-Confirm] [<CommonParameters>]
+```
+
+### Raw
+```
+Set-Agent [-AgentId] <String> [-Body] <IDictionary> [-TimeoutSec <Int32>] [-MaxRetryCount <Int32>]
+ [-ApiType <OpenAIApiType>] [-ApiBase <Uri>] [-AuthType <String>] [-ApiKey <SecureString>]
+ [-Organization <String>] [-AdditionalQuery <IDictionary>] [-AdditionalHeaders <IDictionary>]
+ [-AdditionalBody <Object>] [-ProgressAction <ActionPreference>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -84,7 +95,7 @@ The reusable agent ID.
 ```yaml
 Type: String
 Parameter Sets: (All)
-Aliases: agent_id
+Aliases: id, agent_id
 
 Required: True
 Position: 0
@@ -160,7 +171,7 @@ The request body as a dictionary. Use the fields defined by the corresponding Op
 
 ```yaml
 Type: IDictionary
-Parameter Sets: (All)
+Parameter Sets: Raw
 Aliases:
 
 Required: True
@@ -170,13 +181,13 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Confirm
-Prompts you for confirmation before running the cmdlet.
+### -Instructions
+Instructions that define the agent behavior.
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases: cf
+Type: String
+Parameter Sets: Properties
+Aliases:
 
 Required: False
 Position: Named
@@ -191,6 +202,66 @@ The maximum number of retries for transient API failures.
 ```yaml
 Type: Int32
 Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Metadata
+Metadata to associate with the resource.
+
+```yaml
+Type: IDictionary
+Parameter Sets: Properties
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Model
+The model used by the agent.
+
+```yaml
+Type: String
+Parameter Sets: Properties
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -MultiAgent
+Multi-agent orchestration settings.
+
+```yaml
+Type: IDictionary
+Parameter Sets: Properties
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Name
+The display name of the resource.
+
+```yaml
+Type: String
+Parameter Sets: Properties
 Aliases:
 
 Required: False
@@ -215,6 +286,66 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -ProgressAction
+Controls how PowerShell responds to progress updates.
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Reasoning
+Reasoning configuration for the agent.
+
+```yaml
+Type: IDictionary
+Parameter Sets: Properties
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ServiceTier
+The service tier used for agent requests.
+
+```yaml
+Type: String
+Parameter Sets: Properties
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Text
+Text output configuration for the agent.
+
+```yaml
+Type: IDictionary
+Parameter Sets: Properties
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -TimeoutSec
 The request timeout in seconds. Zero uses the module default.
 
@@ -230,13 +361,13 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -WhatIf
-Shows what would happen if the cmdlet runs. The cmdlet is not run.
+### -Tool
+Tool configurations available to the agent.
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases: wi
+Type: IDictionary[]
+Parameter Sets: Properties
+Aliases:
 
 Required: False
 Position: Named
@@ -245,13 +376,28 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -ProgressAction
-Controls how PowerShell responds to progress updates.
+### -Confirm
+Prompts you for confirmation before running the cmdlet.
 
 ```yaml
-Type: ActionPreference
+Type: SwitchParameter
 Parameter Sets: (All)
-Aliases: proga
+Aliases: cf
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -WhatIf
+Shows what would happen if the cmdlet runs. The cmdlet is not run.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases: wi
 
 Required: False
 Position: Named

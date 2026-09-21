@@ -14,18 +14,26 @@ Retrieves or lists reusable agents.
 
 ### List (Default)
 ```
-Get-Agent [[-Limit] <Int32>] [-All] [[-After] <String>] [[-Order] <String>] [[-TimeoutSec] <Int32>]
- [[-MaxRetryCount] <Int32>] [[-ApiType] <OpenAIApiType>] [[-ApiBase] <Uri>] [[-AuthType] <String>]
- [[-ApiKey] <SecureString>] [[-Organization] <String>] [[-AdditionalQuery] <IDictionary>]
- [[-AdditionalHeaders] <IDictionary>] [[-AdditionalBody] <Object>] [-ProgressAction <ActionPreference>]
+Get-Agent [-Limit <Int32>] [-All] [-After <String>] [-Order <String>] [-TimeoutSec <Int32>]
+ [-MaxRetryCount <Int32>] [-ApiType <OpenAIApiType>] [-ApiBase <Uri>] [-AuthType <String>]
+ [-ApiKey <SecureString>] [-Organization <String>] [-AdditionalQuery <IDictionary>]
+ [-AdditionalHeaders <IDictionary>] [-AdditionalBody <Object>] [-ProgressAction <ActionPreference>]
  [<CommonParameters>]
 ```
 
-### Get
+### Agent
 ```
-Get-Agent [-AgentId] <String> [[-TimeoutSec] <Int32>] [[-MaxRetryCount] <Int32>] [[-ApiType] <OpenAIApiType>]
- [[-ApiBase] <Uri>] [[-AuthType] <String>] [[-ApiKey] <SecureString>] [[-Organization] <String>]
- [[-AdditionalQuery] <IDictionary>] [[-AdditionalHeaders] <IDictionary>] [[-AdditionalBody] <Object>]
+Get-Agent -Agent <Object> [-TimeoutSec <Int32>] [-MaxRetryCount <Int32>] [-ApiType <OpenAIApiType>]
+ [-ApiBase <Uri>] [-AuthType <String>] [-ApiKey <SecureString>] [-Organization <String>]
+ [-AdditionalQuery <IDictionary>] [-AdditionalHeaders <IDictionary>] [-AdditionalBody <Object>]
+ [-ProgressAction <ActionPreference>] [<CommonParameters>]
+```
+
+### Id
+```
+Get-Agent [-AgentId] <String> [-TimeoutSec <Int32>] [-MaxRetryCount <Int32>] [-ApiType <OpenAIApiType>]
+ [-ApiBase <Uri>] [-AuthType <String>] [-ApiKey <SecureString>] [-Organization <String>]
+ [-AdditionalQuery <IDictionary>] [-AdditionalHeaders <IDictionary>] [-AdditionalBody <Object>]
  [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
@@ -103,13 +111,28 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -Agent
+An agent object returned by an Agents API command.
+
+```yaml
+Type: Object
+Parameter Sets: Agent
+Aliases: InputObject
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: True (ByValue)
+Accept wildcard characters: False
+```
+
 ### -AgentId
 The reusable agent ID.
 
 ```yaml
 Type: String
-Parameter Sets: Get
-Aliases: agent_id
+Parameter Sets: Id
+Aliases: id, agent_id
 
 Required: True
 Position: 0
@@ -256,13 +279,13 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -TimeoutSec
-The request timeout in seconds. Zero uses the module default.
+### -ProgressAction
+Controls how PowerShell responds to progress updates.
 
 ```yaml
-Type: Int32
+Type: ActionPreference
 Parameter Sets: (All)
-Aliases:
+Aliases: proga
 
 Required: False
 Position: Named
@@ -271,13 +294,13 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -ProgressAction
-Controls how PowerShell responds to progress updates.
+### -TimeoutSec
+The request timeout in seconds. Zero uses the module default.
 
 ```yaml
-Type: ActionPreference
+Type: Int32
 Parameter Sets: (All)
-Aliases: proga
+Aliases:
 
 Required: False
 Position: Named

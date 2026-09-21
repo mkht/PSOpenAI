@@ -14,20 +14,27 @@ Retrieves or lists reusable agent environment templates.
 
 ### List (Default)
 ```
-Get-AgentEnvironmentTemplate [[-Limit] <Int32>] [-All] [[-After] <String>] [[-Order] <String>]
- [[-TimeoutSec] <Int32>] [[-MaxRetryCount] <Int32>] [[-ApiType] <OpenAIApiType>] [[-ApiBase] <Uri>]
- [[-AuthType] <String>] [[-ApiKey] <SecureString>] [[-Organization] <String>]
- [[-AdditionalQuery] <IDictionary>] [[-AdditionalHeaders] <IDictionary>] [[-AdditionalBody] <Object>]
- [-ProgressAction <ActionPreference>] [<CommonParameters>]
+Get-AgentEnvironmentTemplate [-Limit <Int32>] [-All] [-After <String>] [-Order <String>] [-TimeoutSec <Int32>]
+ [-MaxRetryCount <Int32>] [-ApiType <OpenAIApiType>] [-ApiBase <Uri>] [-AuthType <String>]
+ [-ApiKey <SecureString>] [-Organization <String>] [-AdditionalQuery <IDictionary>]
+ [-AdditionalHeaders <IDictionary>] [-AdditionalBody <Object>] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
 ```
 
-### Get
+### Template
 ```
-Get-AgentEnvironmentTemplate [-EnvironmentTemplateId] <String> [[-TimeoutSec] <Int32>]
- [[-MaxRetryCount] <Int32>] [[-ApiType] <OpenAIApiType>] [[-ApiBase] <Uri>] [[-AuthType] <String>]
- [[-ApiKey] <SecureString>] [[-Organization] <String>] [[-AdditionalQuery] <IDictionary>]
- [[-AdditionalHeaders] <IDictionary>] [[-AdditionalBody] <Object>] [-ProgressAction <ActionPreference>]
- [<CommonParameters>]
+Get-AgentEnvironmentTemplate -EnvironmentTemplate <Object> [-TimeoutSec <Int32>] [-MaxRetryCount <Int32>]
+ [-ApiType <OpenAIApiType>] [-ApiBase <Uri>] [-AuthType <String>] [-ApiKey <SecureString>]
+ [-Organization <String>] [-AdditionalQuery <IDictionary>] [-AdditionalHeaders <IDictionary>]
+ [-AdditionalBody <Object>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+```
+
+### Id
+```
+Get-AgentEnvironmentTemplate [-EnvironmentTemplateId] <String> [-TimeoutSec <Int32>] [-MaxRetryCount <Int32>]
+ [-ApiType <OpenAIApiType>] [-ApiBase <Uri>] [-AuthType <String>] [-ApiKey <SecureString>]
+ [-Organization <String>] [-AdditionalQuery <IDictionary>] [-AdditionalHeaders <IDictionary>]
+ [-AdditionalBody <Object>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -181,18 +188,33 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -EnvironmentTemplate
+An environment template object returned by an Agents API command.
+
+```yaml
+Type: Object
+Parameter Sets: Template
+Aliases: InputObject
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: True (ByValue)
+Accept wildcard characters: False
+```
+
 ### -EnvironmentTemplateId
 The reusable agent environment template ID.
 
 ```yaml
 Type: String
-Parameter Sets: Get
-Aliases: environment_template_id
+Parameter Sets: Id
+Aliases: id, environment_template_id
 
 Required: True
 Position: 0
 Default value: None
-Accept pipeline input: True (ByPropertyName)
+Accept pipeline input: True (ByPropertyName, ByValue)
 Accept wildcard characters: False
 ```
 
@@ -257,13 +279,13 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -TimeoutSec
-The request timeout in seconds. Zero uses the module default.
+### -ProgressAction
+Controls how PowerShell responds to progress updates.
 
 ```yaml
-Type: Int32
+Type: ActionPreference
 Parameter Sets: (All)
-Aliases:
+Aliases: proga
 
 Required: False
 Position: Named
@@ -272,13 +294,13 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -ProgressAction
-Controls how PowerShell responds to progress updates.
+### -TimeoutSec
+The request timeout in seconds. Zero uses the module default.
 
 ```yaml
-Type: ActionPreference
+Type: Int32
 Parameter Sets: (All)
-Aliases: proga
+Aliases:
 
 Required: False
 Position: Named

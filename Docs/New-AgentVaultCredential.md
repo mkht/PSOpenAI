@@ -12,11 +12,39 @@ Creates a credential in an agent vault.
 
 ## SYNTAX
 
+### StaticBearer (Default)
 ```
-New-AgentVaultCredential [-VaultId] <String> [-Body] <IDictionary> [[-TimeoutSec] <Int32>]
- [[-MaxRetryCount] <Int32>] [[-ApiType] <OpenAIApiType>] [[-ApiBase] <Uri>] [[-AuthType] <String>]
- [[-ApiKey] <SecureString>] [[-Organization] <String>] [[-AdditionalQuery] <IDictionary>]
- [[-AdditionalHeaders] <IDictionary>] [[-AdditionalBody] <Object>] [-ProgressAction <ActionPreference>]
+New-AgentVaultCredential [-VaultId] <String> -Name <String> -Token <SecureString> -McpServerUrl <Uri>
+ [-TimeoutSec <Int32>] [-MaxRetryCount <Int32>] [-ApiType <OpenAIApiType>] [-ApiBase <Uri>]
+ [-AuthType <String>] [-ApiKey <SecureString>] [-Organization <String>] [-AdditionalQuery <IDictionary>]
+ [-AdditionalHeaders <IDictionary>] [-AdditionalBody <Object>] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
+```
+
+### Auth
+```
+New-AgentVaultCredential [-VaultId] <String> -Name <String> -Auth <IDictionary> [-TimeoutSec <Int32>]
+ [-MaxRetryCount <Int32>] [-ApiType <OpenAIApiType>] [-ApiBase <Uri>] [-AuthType <String>]
+ [-ApiKey <SecureString>] [-Organization <String>] [-AdditionalQuery <IDictionary>]
+ [-AdditionalHeaders <IDictionary>] [-AdditionalBody <Object>] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
+```
+
+### EnvironmentVariable
+```
+New-AgentVaultCredential [-VaultId] <String> -Name <String> -SecretName <String> -SecretValue <SecureString>
+ [-AllowedHost <String[]>] [-TimeoutSec <Int32>] [-MaxRetryCount <Int32>] [-ApiType <OpenAIApiType>]
+ [-ApiBase <Uri>] [-AuthType <String>] [-ApiKey <SecureString>] [-Organization <String>]
+ [-AdditionalQuery <IDictionary>] [-AdditionalHeaders <IDictionary>] [-AdditionalBody <Object>]
+ [-ProgressAction <ActionPreference>] [<CommonParameters>]
+```
+
+### Body
+```
+New-AgentVaultCredential [-VaultId] <String> [-Body] <IDictionary> [-TimeoutSec <Int32>]
+ [-MaxRetryCount <Int32>] [-ApiType <OpenAIApiType>] [-ApiBase <Uri>] [-AuthType <String>]
+ [-ApiKey <SecureString>] [-Organization <String>] [-AdditionalQuery <IDictionary>]
+ [-AdditionalHeaders <IDictionary>] [-AdditionalBody <Object>] [-ProgressAction <ActionPreference>]
  [<CommonParameters>]
 ```
 
@@ -27,10 +55,14 @@ Creates a credential in an agent vault. This command uses the OpenAI Agents API 
 
 ### Example 1
 ```powershell
-New-AgentVaultCredential -VaultId 'vault_123' -Body @{ name = 'MCP token'; auth = @{ type = 'static_bearer'; token = '<token>'; mcp_server_url = 'https://mcp.example.com' } }
+$Token = Read-Host 'MCP bearer token' -AsSecureString
+$Vault | New-AgentVaultCredential `
+    -Name 'MCP token' `
+    -Token $Token `
+    -McpServerUrl 'https://mcp.example.com'
 ```
 
-Stores a write-only MCP bearer credential in a vault.
+Stores a write-only MCP bearer credential without requiring plain text secret input.
 
 ## PARAMETERS
 
@@ -70,6 +102,21 @@ Additional query parameters to include in the request.
 ```yaml
 Type: IDictionary
 Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -AllowedHost
+Host names the hosted environment may access.
+
+```yaml
+Type: String[]
+Parameter Sets: EnvironmentVariable
 Aliases:
 
 Required: False
@@ -125,6 +172,21 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -Auth
+A complete credential authentication object for an advanced or newly introduced authentication shape.
+
+```yaml
+Type: IDictionary
+Parameter Sets: Auth
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -AuthType
 The authentication type. Use openai for the Agents API.
 
@@ -146,7 +208,7 @@ The request body as a dictionary. Use the fields defined by the corresponding Op
 
 ```yaml
 Type: IDictionary
-Parameter Sets: (All)
+Parameter Sets: Body
 Aliases:
 
 Required: True
@@ -171,6 +233,36 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -McpServerUrl
+The MCP server URL associated with the credential.
+
+```yaml
+Type: Uri
+Parameter Sets: StaticBearer
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Name
+The display name of the resource.
+
+```yaml
+Type: String
+Parameter Sets: StaticBearer, Auth, EnvironmentVariable
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -Organization
 The OpenAI organization ID.
 
@@ -180,6 +272,51 @@ Parameter Sets: (All)
 Aliases: OrgId
 
 Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ProgressAction
+Controls how PowerShell responds to progress updates.
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -SecretName
+The environment variable name exposed by an environment credential.
+
+```yaml
+Type: String
+Parameter Sets: EnvironmentVariable
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -SecretValue
+The environment credential value as a secure string.
+
+```yaml
+Type: SecureString
+Parameter Sets: EnvironmentVariable
+Aliases:
+
+Required: True
 Position: Named
 Default value: None
 Accept pipeline input: False
@@ -201,33 +338,33 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -Token
+The bearer token stored in the vault credential, supplied as a secure string.
+
+```yaml
+Type: SecureString
+Parameter Sets: StaticBearer
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -VaultId
 The agent vault ID.
 
 ```yaml
 Type: String
 Parameter Sets: (All)
-Aliases: vault_id
+Aliases: id, vault_id
 
 Required: True
 Position: 0
 Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -ProgressAction
-Controls how PowerShell responds to progress updates.
-
-```yaml
-Type: ActionPreference
-Parameter Sets: (All)
-Aliases: proga
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
+Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 

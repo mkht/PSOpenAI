@@ -1,11 +1,47 @@
 function Get-AgentSessionEvent {
-    [CmdletBinding()] [OutputType([pscustomobject])]
-    param(
-        [Parameter(Mandatory,Position=0,ValueFromPipelineByPropertyName)] [Alias('session_id')] [string][UrlEncodeTransformation()]$SessionId,
-        [int]$TimeoutSec=0,[ValidateRange(0,100)][int]$MaxRetryCount=0,[OpenAIApiType]$ApiType=[OpenAIApiType]::OpenAI,
-        [System.Uri]$ApiBase,[Parameter(DontShow)][string]$ApiVersion,[ValidateSet('openai','azure','azure_ad')][string]$AuthType='openai',
-        [securestring][SecureStringTransformation()]$ApiKey,[Alias('OrgId')][string]$Organization,
-        [System.Collections.IDictionary]$AdditionalQuery,[System.Collections.IDictionary]$AdditionalHeaders
+    [CmdletBinding()]
+    [OutputType([pscustomobject])]
+    param (
+        [Parameter(Mandatory, Position = 0, ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
+        [Alias('id', 'session_id')]
+        [string][UrlEncodeTransformation()]$SessionId,
+
+        [Parameter()]
+        [int]$TimeoutSec = 0,
+
+        [Parameter()]
+        [ValidateRange(0, 100)]
+        [int]$MaxRetryCount = 0,
+
+        [Parameter()]
+        [OpenAIApiType]$ApiType = [OpenAIApiType]::OpenAI,
+
+        [Parameter()]
+        [System.Uri]$ApiBase,
+
+        [Parameter(DontShow)]
+        [string]$ApiVersion,
+
+        [Parameter()]
+        [ValidateSet('openai', 'azure', 'azure_ad')]
+        [string]$AuthType = 'openai',
+
+        [Parameter()]
+        [securestring][SecureStringTransformation()]$ApiKey,
+
+        [Parameter()]
+        [Alias('OrgId')]
+        [string]$Organization,
+
+        [Parameter()]
+        [System.Collections.IDictionary]$AdditionalQuery,
+
+        [Parameter()]
+        [System.Collections.IDictionary]$AdditionalHeaders
     )
-    process { Invoke-AgentApiRequest -EndpointName Agent.Sessions -Path "$SessionId/events" -Method Get -Parameters $PSBoundParameters -Stream }
+
+    process {
+        Invoke-AgentApiRequest -EndpointName 'Agent.Sessions' -Path "$SessionId/events" -Method 'Get' -Parameters $PSBoundParameters -Stream
+    }
 }
