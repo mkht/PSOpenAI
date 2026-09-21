@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <helpItems schema="maml" xmlns="http://msh">
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
     <command:details>
@@ -1937,12 +1937,12 @@ PS C:\&gt; $Store = $Store | Add-VectorStoreFile -FileId 'file-abc123' -PassThru
 PS C:\&gt; Clear-OpenAIContext
 PS C:\&gt; Get-OpenAIContext
 
-ApiKey        : 
+ApiKey        :
 ApiType       : OpenAI
-ApiBase       : 
-ApiVersion    : 
+ApiBase       :
+ApiVersion    :
 AuthType      : openai
-Organization  : 
+Organization  :
 TimeoutSec    : 0
 MaxRetryCount : 0</dev:code>
         <dev:remarks>
@@ -5956,9 +5956,9 @@ PS C:\&gt; Get-OpenAIContext
 ApiKey        : System.Security.SecureString
 ApiType       : Azure
 ApiBase       : https://my-endpoint.openai.azure.com/
-ApiVersion    : 
+ApiVersion    :
 AuthType      : azure
-Organization  : 
+Organization  :
 TimeoutSec    : 0
 MaxRetryCount : 0</dev:code>
         <dev:remarks>
@@ -17237,7 +17237,7 @@ https://developers.openai.com/api/reference/resources/images/methods/edit</maml:
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>Model</maml:name>
           <maml:description>
-            <maml:para>The model to use for image generation. Defaults to `gpt-image-2`.</maml:para>
+            <maml:para>The model to use for image generation. Defaults to `gpt-image-2`. GPT Image 2.5 models include `gpt-image-2.5-sunburst`, `gpt-image-2.5-flare`, and their `2026-09-08` snapshots.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -17263,7 +17263,7 @@ https://developers.openai.com/api/reference/resources/images/methods/edit</maml:
           <maml:description>
             <maml:para>The quality of the image that will be generated.
 - `auto` (default value) will automatically select the best quality for the given model.</maml:para>
-            <maml:para>- `high`, `medium` and `low` are supported for the GPT image models.</maml:para>
+            <maml:para>- `max`, `xhigh`, `high`, `medium`, and `low` are accepted subject to model support.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -17275,7 +17275,7 @@ https://developers.openai.com/api/reference/resources/images/methods/edit</maml:
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>Size</maml:name>
           <maml:description>
-            <maml:para>The size of the generated images. Must be one of `1024x1024`, `1536x1024` (landscape), `1024x1536` (portrait), or `auto` (default value) for the GPT image models, and one of `256x256`, `512x512`, or `1024x1024` for dall-e-2, and one of `1024x1024`, `1792x1024`, or `1024x1792` for `dall-e-3`.</maml:para>
+            <maml:para>The size of the generated images. GPT Image 2 and GPT Image 2.5 accept arbitrary supported `WIDTHxHEIGHT` resolutions or `auto`. Older image models support their documented fixed sizes.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -17501,7 +17501,7 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>Model</maml:name>
           <maml:description>
-            <maml:para>The model to use for image generation. Defaults to `gpt-image-2`.</maml:para>
+            <maml:para>The model to use for image generation. Defaults to `gpt-image-2`. GPT Image 2.5 models include `gpt-image-2.5-sunburst`, `gpt-image-2.5-flare`, and their `2026-09-08` snapshots.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -17527,7 +17527,7 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
           <maml:description>
             <maml:para>The quality of the image that will be generated.
 - `auto` (default value) will automatically select the best quality for the given model.</maml:para>
-            <maml:para>- `high`, `medium` and `low` are supported for the GPT image models.</maml:para>
+            <maml:para>- `max`, `xhigh`, `high`, `medium`, and `low` are accepted subject to model support.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -17539,7 +17539,7 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>Size</maml:name>
           <maml:description>
-            <maml:para>The size of the generated images. Must be one of `1024x1024`, `1536x1024` (landscape), `1024x1536` (portrait), or `auto` (default value) for the GPT image models, and one of `256x256`, `512x512`, or `1024x1024` for dall-e-2, and one of `1024x1024`, `1792x1024`, or `1024x1792` for `dall-e-3`.</maml:para>
+            <maml:para>The size of the generated images. GPT Image 2 and GPT Image 2.5 accept arbitrary supported `WIDTHxHEIGHT` resolutions or `auto`. Older image models support their documented fixed sizes.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -17754,7 +17754,7 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>Model</maml:name>
         <maml:description>
-          <maml:para>The model to use for image generation. Defaults to `gpt-image-2`.</maml:para>
+          <maml:para>The model to use for image generation. Defaults to `gpt-image-2`. GPT Image 2.5 models include `gpt-image-2.5-sunburst`, `gpt-image-2.5-flare`, and their `2026-09-08` snapshots.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -17780,7 +17780,7 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <maml:description>
           <maml:para>The quality of the image that will be generated.
 - `auto` (default value) will automatically select the best quality for the given model.</maml:para>
-          <maml:para>- `high`, `medium` and `low` are supported for the GPT image models.</maml:para>
+          <maml:para>- `max`, `xhigh`, `high`, `medium`, and `low` are accepted subject to model support.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -17792,7 +17792,7 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>Size</maml:name>
         <maml:description>
-          <maml:para>The size of the generated images. Must be one of `1024x1024`, `1536x1024` (landscape), `1024x1536` (portrait), or `auto` (default value) for the GPT image models, and one of `256x256`, `512x512`, or `1024x1024` for dall-e-2, and one of `1024x1024`, `1792x1024`, or `1024x1792` for `dall-e-3`.</maml:para>
+          <maml:para>The size of the generated images. GPT Image 2 and GPT Image 2.5 accept arbitrary supported `WIDTHxHEIGHT` resolutions or `auto`. Older image models support their documented fixed sizes.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -18066,7 +18066,7 @@ https://developers.openai.com/api/reference/resources/images/methods/generate</m
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>Model</maml:name>
           <maml:description>
-            <maml:para>The model to use for image generation. One of `dall-e-2`, `dall-e-3`, or a GPT image model. Defaults to `dall-e-2` unless a parameter specific to the GPT image models is used.</maml:para>
+            <maml:para>The model to use for image generation. One of `dall-e-2`, `dall-e-3`, or a GPT image model. GPT Image 2.5 models include `gpt-image-2.5-sunburst`, `gpt-image-2.5-flare`, and their `2026-09-08` snapshots. Defaults to `dall-e-2` unless a parameter specific to the GPT image models is used.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -18090,7 +18090,7 @@ https://developers.openai.com/api/reference/resources/images/methods/generate</m
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>Size</maml:name>
           <maml:description>
-            <maml:para>The size of the generated images. Must be one of `1024x1024`, `1536x1024` (landscape), `1024x1536` (portrait), or `auto` (default value) for the GPT image models, one of `256x256`, `512x512`, or `1024x1024` for `dall-e-2`, and one of `1024x1024`, `1792x1024`, or `1024x1792` for `dall-e-3`.</maml:para>
+            <maml:para>The size of the generated images. GPT Image 2 and GPT Image 2.5 accept arbitrary supported `WIDTHxHEIGHT` resolutions or `auto`. Older image models support their documented fixed sizes.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -18104,7 +18104,7 @@ https://developers.openai.com/api/reference/resources/images/methods/generate</m
           <maml:description>
             <maml:para>The quality of the image that will be generated.
 - `auto` (default value) will automatically select the best quality for the given model.</maml:para>
-            <maml:para>- `high`, `medium` and `low` are supported for the GPT image models.</maml:para>
+            <maml:para>- `max`, `xhigh`, `high`, `medium`, and `low` are accepted subject to model support.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -18294,7 +18294,7 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>Model</maml:name>
           <maml:description>
-            <maml:para>The model to use for image generation. One of `dall-e-2`, `dall-e-3`, or a GPT image model. Defaults to `dall-e-2` unless a parameter specific to the GPT image models is used.</maml:para>
+            <maml:para>The model to use for image generation. One of `dall-e-2`, `dall-e-3`, or a GPT image model. GPT Image 2.5 models include `gpt-image-2.5-sunburst`, `gpt-image-2.5-flare`, and their `2026-09-08` snapshots. Defaults to `dall-e-2` unless a parameter specific to the GPT image models is used.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -18318,7 +18318,7 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>Size</maml:name>
           <maml:description>
-            <maml:para>The size of the generated images. Must be one of `1024x1024`, `1536x1024` (landscape), `1024x1536` (portrait), or `auto` (default value) for the GPT image models, one of `256x256`, `512x512`, or `1024x1024` for `dall-e-2`, and one of `1024x1024`, `1792x1024`, or `1024x1792` for `dall-e-3`.</maml:para>
+            <maml:para>The size of the generated images. GPT Image 2 and GPT Image 2.5 accept arbitrary supported `WIDTHxHEIGHT` resolutions or `auto`. Older image models support their documented fixed sizes.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -18332,7 +18332,7 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
           <maml:description>
             <maml:para>The quality of the image that will be generated.
 - `auto` (default value) will automatically select the best quality for the given model.</maml:para>
-            <maml:para>- `high`, `medium` and `low` are supported for the GPT image models.</maml:para>
+            <maml:para>- `max`, `xhigh`, `high`, `medium`, and `low` are accepted subject to model support.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -18511,7 +18511,7 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>Model</maml:name>
         <maml:description>
-          <maml:para>The model to use for image generation. One of `dall-e-2`, `dall-e-3`, or a GPT image model. Defaults to `dall-e-2` unless a parameter specific to the GPT image models is used.</maml:para>
+          <maml:para>The model to use for image generation. One of `dall-e-2`, `dall-e-3`, or a GPT image model. GPT Image 2.5 models include `gpt-image-2.5-sunburst`, `gpt-image-2.5-flare`, and their `2026-09-08` snapshots. Defaults to `dall-e-2` unless a parameter specific to the GPT image models is used.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -18535,7 +18535,7 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>Size</maml:name>
         <maml:description>
-          <maml:para>The size of the generated images. Must be one of `1024x1024`, `1536x1024` (landscape), `1024x1536` (portrait), or `auto` (default value) for the GPT image models, one of `256x256`, `512x512`, or `1024x1024` for `dall-e-2`, and one of `1024x1024`, `1792x1024`, or `1024x1792` for `dall-e-3`.</maml:para>
+          <maml:para>The size of the generated images. GPT Image 2 and GPT Image 2.5 accept arbitrary supported `WIDTHxHEIGHT` resolutions or `auto`. Older image models support their documented fixed sizes.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -18549,7 +18549,7 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <maml:description>
           <maml:para>The quality of the image that will be generated.
 - `auto` (default value) will automatically select the best quality for the given model.</maml:para>
-          <maml:para>- `high`, `medium` and `low` are supported for the GPT image models.</maml:para>
+          <maml:para>- `max`, `xhigh`, `high`, `medium`, and `low` are accepted subject to model support.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -20297,7 +20297,19 @@ Possible values: `browser`, `mac`, `windows`, `ubuntu`.</maml:para>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>RemoteMCPServerUrl</maml:name>
           <maml:description>
-            <maml:para>The URL for the MCP server.</maml:para>
+            <maml:para>The URL for the MCP server. Specify either this parameter or `-RemoteMCPTunnelId`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>RemoteMCPTunnelId</maml:name>
+          <maml:description>
+            <maml:para>The ID of a secure MCP tunnel. Specify either this parameter or `-RemoteMCPServerUrl`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -20392,8 +20404,8 @@ Possible values: `browser`, `mac`, `windows`, `ubuntu`.</maml:para>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>ConnectorId</maml:name>
           <maml:description>
-            <maml:para>The ID of the connector. Supported connector id values are:
-- Dropbox: `connector_dropbox`</maml:para>
+            <maml:para>Deprecated for models released after September 1, 2026. Use a remote MCP server URL or secure tunnel instead. The parameter remains available for compatibility with earlier models.</maml:para>
+            <maml:para>The supported connector ID values are: - Dropbox: `connector_dropbox`</maml:para>
             <maml:para>- Gmail: `connector_gmail`</maml:para>
             <maml:para>- Google Calendar: `connector_googlecalendar`</maml:para>
             <maml:para>- Google Drive: `connector_googledrive`</maml:para>
@@ -20494,7 +20506,7 @@ Possible values: `browser`, `mac`, `windows`, `ubuntu`.</maml:para>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>ImageGenerationModel</maml:name>
           <maml:description>
-            <maml:para>The image generation model to use. Default: `gpt-image-1`.</maml:para>
+            <maml:para>The image generation model to use. GPT Image 2.5 models include `gpt-image-2.5-sunburst`, `gpt-image-2.5-flare`, and their `2026-09-08` snapshots.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -20590,7 +20602,7 @@ Possible values: `browser`, `mac`, `windows`, `ubuntu`.</maml:para>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>ImageGenerationQuality</maml:name>
           <maml:description>
-            <maml:para>The quality of the generated image. One of `low`, `medium`, `high`, or `auto`.</maml:para>
+            <maml:para>The quality of the generated image. One of `low`, `medium`, `high`, `xhigh`, `max`, or `auto`, subject to model support.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -20602,7 +20614,7 @@ Possible values: `browser`, `mac`, `windows`, `ubuntu`.</maml:para>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>ImageGenerationSize</maml:name>
           <maml:description>
-            <maml:para>The size of the generated image. One of `1024x1024`, `1024x1536`, `1536x1024`, or `auto`. Default: `auto`.</maml:para>
+            <maml:para>The size of the generated image. Use `auto` or a `WIDTHxHEIGHT` value supported by the selected image model. GPT Image 2 and GPT Image 2.5 accept arbitrary supported resolutions.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -20941,6 +20953,29 @@ Valid values are `low`, `medium`, or `high`.
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="prompt_cache_options.comparison_response_id">
+          <maml:name>PromptCacheComparisonResponseId</maml:name>
+          <maml:description>
+            <maml:para>The response ID to compare against when producing prompt cache diagnostics.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="prompt_cache_options.prewarm">
+          <maml:name>PromptCachePrewarm</maml:name>
+          <maml:description>
+            <maml:para>Prepares the prompt cache without generating output. The option is sent to the server as `prompt_cache_options.prewarm`.</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="prompt_cache_retention">
           <maml:name>PromptCacheRetention</maml:name>
@@ -21577,7 +21612,19 @@ Possible values: `browser`, `mac`, `windows`, `ubuntu`.</maml:para>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>RemoteMCPServerUrl</maml:name>
         <maml:description>
-          <maml:para>The URL for the MCP server.</maml:para>
+          <maml:para>The URL for the MCP server. Specify either this parameter or `-RemoteMCPTunnelId`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>RemoteMCPTunnelId</maml:name>
+        <maml:description>
+          <maml:para>The ID of a secure MCP tunnel. Specify either this parameter or `-RemoteMCPServerUrl`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -21673,8 +21720,8 @@ Possible values: `browser`, `mac`, `windows`, `ubuntu`.</maml:para>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>ConnectorId</maml:name>
         <maml:description>
-          <maml:para>The ID of the connector. Supported connector id values are:
-- Dropbox: `connector_dropbox`</maml:para>
+          <maml:para>Deprecated for models released after September 1, 2026. Use a remote MCP server URL or secure tunnel instead. The parameter remains available for compatibility with earlier models.</maml:para>
+          <maml:para>The supported connector ID values are: - Dropbox: `connector_dropbox`</maml:para>
           <maml:para>- Gmail: `connector_gmail`</maml:para>
           <maml:para>- Google Calendar: `connector_googlecalendar`</maml:para>
           <maml:para>- Google Drive: `connector_googledrive`</maml:para>
@@ -21777,7 +21824,7 @@ Possible values: `browser`, `mac`, `windows`, `ubuntu`.</maml:para>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>ImageGenerationModel</maml:name>
         <maml:description>
-          <maml:para>The image generation model to use. Default: `gpt-image-1`.</maml:para>
+          <maml:para>The image generation model to use. GPT Image 2.5 models include `gpt-image-2.5-sunburst`, `gpt-image-2.5-flare`, and their `2026-09-08` snapshots.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -21873,7 +21920,7 @@ Possible values: `browser`, `mac`, `windows`, `ubuntu`.</maml:para>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>ImageGenerationQuality</maml:name>
         <maml:description>
-          <maml:para>The quality of the generated image. One of `low`, `medium`, `high`, or `auto`.</maml:para>
+          <maml:para>The quality of the generated image. One of `low`, `medium`, `high`, `xhigh`, `max`, or `auto`, subject to model support.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -21885,7 +21932,7 @@ Possible values: `browser`, `mac`, `windows`, `ubuntu`.</maml:para>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>ImageGenerationSize</maml:name>
         <maml:description>
-          <maml:para>The size of the generated image. One of `1024x1024`, `1024x1536`, `1536x1024`, or `auto`. Default: `auto`.</maml:para>
+          <maml:para>The size of the generated image. Use `auto` or a `WIDTHxHEIGHT` value supported by the selected image model. GPT Image 2 and GPT Image 2.5 accept arbitrary supported resolutions.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -22226,6 +22273,30 @@ Valid values are `low`, `medium`, or `high`.
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="prompt_cache_options.comparison_response_id">
+        <maml:name>PromptCacheComparisonResponseId</maml:name>
+        <maml:description>
+          <maml:para>The response ID to compare against when producing prompt cache diagnostics.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="prompt_cache_options.prewarm">
+        <maml:name>PromptCachePrewarm</maml:name>
+        <maml:description>
+          <maml:para>Prepares the prompt cache without generating output. The option is sent to the server as `prompt_cache_options.prewarm`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="prompt_cache_retention">
         <maml:name>PromptCacheRetention</maml:name>
@@ -22609,6 +22680,29 @@ You can speciy a list of the local file path, the URL of the file or the ID of t
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="prompt_cache_options.comparison_response_id">
+          <maml:name>PromptCacheComparisonResponseId</maml:name>
+          <maml:description>
+            <maml:para>The response ID to compare against when producing prompt cache diagnostics.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="prompt_cache_options.prewarm">
+          <maml:name>PromptCachePrewarm</maml:name>
+          <maml:description>
+            <maml:para>Prepares the prompt cache without generating output. The option is sent to the server as `prompt_cache_options.prewarm`.</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>OutputRawResponse</maml:name>
           <maml:description>
@@ -22851,6 +22945,30 @@ You can speciy a list of the local file path, the URL of the file or the ID of t
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="prompt_cache_options.comparison_response_id">
+        <maml:name>PromptCacheComparisonResponseId</maml:name>
+        <maml:description>
+          <maml:para>The response ID to compare against when producing prompt cache diagnostics.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="prompt_cache_options.prewarm">
+        <maml:name>PromptCachePrewarm</maml:name>
+        <maml:description>
+          <maml:para>Prepares the prompt cache without generating output. The option is sent to the server as `prompt_cache_options.prewarm`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>OutputRawResponse</maml:name>

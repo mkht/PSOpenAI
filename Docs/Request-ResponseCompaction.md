@@ -28,6 +28,8 @@ Request-ResponseCompaction
     [-PromptCacheKey <String>]
     [-PromptCacheMode <String>]
     [-PromptCacheTtl <String>]
+    [-PromptCacheComparisonResponseId <String>]
+    [-PromptCachePrewarm]
     [-OutputRawResponse]
     [-Organization <String>]
     [-TimeoutSec <Int32>]
@@ -177,6 +179,26 @@ The minimum lifetime applied to every implicit and explicit cache breakpoint wri
 ```yaml
 Type: String
 Aliases: prompt_cache_options.ttl
+Required: False
+Position: Named
+```
+
+### -PromptCacheComparisonResponseId
+The response ID to compare against when producing prompt cache diagnostics.
+
+```yaml
+Type: String
+Aliases: prompt_cache_options.comparison_response_id
+Required: False
+Position: Named
+```
+
+### -PromptCachePrewarm
+Prepares the prompt cache without generating output. The option is sent to the server as `prompt_cache_options.prewarm`.
+
+```yaml
+Type: SwitchParameter
+Aliases: prompt_cache_options.prewarm
 Required: False
 Position: Named
 ```

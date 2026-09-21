@@ -95,7 +95,7 @@ Accept pipeline input: True (ByValue)
 ```
 
 ### -Model
-The model to use for image generation. One of `dall-e-2`, `dall-e-3`, or a GPT image model. Defaults to `dall-e-2` unless a parameter specific to the GPT image models is used.
+The model to use for image generation. One of `dall-e-2`, `dall-e-3`, or a GPT image model. GPT Image 2.5 models include `gpt-image-2.5-sunburst`, `gpt-image-2.5-flare`, and their `2026-09-08` snapshots. Defaults to `dall-e-2` unless a parameter specific to the GPT image models is used.
 
 ```yaml
 Type: String
@@ -116,7 +116,7 @@ Default value: 1
 ```
 
 ### -Size
-The size of the generated images. Must be one of `1024x1024`, `1536x1024` (landscape), `1024x1536` (portrait), or `auto` (default value) for the GPT image models, one of `256x256`, `512x512`, or `1024x1024` for `dall-e-2`, and one of `1024x1024`, `1792x1024`, or `1024x1792` for `dall-e-3`.
+The size of the generated images. GPT Image 2 and GPT Image 2.5 accept arbitrary supported `WIDTHxHEIGHT` resolutions or `auto`. Older image models support their documented fixed sizes.
 
 ```yaml
 Type: String
@@ -128,7 +128,7 @@ Default value: auto
 ### -Quality
 The quality of the image that will be generated.  
 - `auto` (default value) will automatically select the best quality for the given model.
-- `high`, `medium` and `low` are supported for the GPT image models.
+- `max`, `xhigh`, `high`, `medium`, and `low` are accepted subject to model support.
 
 ```yaml
 Type: String

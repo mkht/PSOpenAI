@@ -238,12 +238,28 @@ Describe 'Request-ResponseCompaction' {
                     PromptCacheKey     = 'prompt_cache_key_1234'
                     PromptCacheMode    = 'explicit'
                     PromptCacheTtl     = '30m'
+                    PromptCacheComparisonResponseId = 'resp_compare123'
+                    PromptCachePrewarm = $true
                     TimeoutSec         = 30
                     MaxRetryCount      = 3
                 }
                 $script:Result = Request-ResponseCompaction @param -ea Stop
             } | Should -Not -Throw
             Should -InvokeVerifiable
+        }
+
+        It 'Serializes prompt cache diagnostics and prewarming options' {
+            {
+                $script:Result = Request-ResponseCompaction `
+                    -Message 'Hello.' `
+                    -PromptCacheComparisonResponseId 'resp_compare123' `
+                    -PromptCachePrewarm `
+                    -OutputRawResponse `
+                    -ea Stop
+            } | Should -Not -Throw
+
+            $Result.Body.prompt_cache_options.comparison_response_id | Should -BeExactly 'resp_compare123'
+            $Result.Body.prompt_cache_options.prewarm | Should -BeTrue
         }
     }
 
