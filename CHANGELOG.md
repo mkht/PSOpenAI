@@ -2,6 +2,7 @@
 ### Unreleased
 - Unify HTTP requests and SSE on a shared HttpClient transport while retaining Windows PowerShell 5.1 support and public command outputs.
 - Apply request timeouts independently to each attempt, including response-body reads; fix SSE client reuse and dispose HTTP resources on completion.
+- **BREAKING (v5):** Remove Video API (Sora) support, including Azure video generation: New-Video, New-VideoRemix, Get-Video, Get-VideoContent, Remove-Video, and Wait-Video.
 - Add `Request-ContentProvenanceCheck` to check image and audio files for OpenAI C2PA and SynthID provenance signals.
 
 ### 4.51.0
