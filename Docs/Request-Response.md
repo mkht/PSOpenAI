@@ -702,7 +702,7 @@ Position: Named
 ```
 
 ### -ImageGenerationModel
-The image generation model to use. GPT Image 2.5 models include `gpt-image-2.5-sunburst`, `gpt-image-2.5-flare`, and their `2026-09-08` snapshots.
+The image generation model to use.
 
 ```yaml
 Type: String

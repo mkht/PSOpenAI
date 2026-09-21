@@ -122,7 +122,7 @@ Position: Named
 ```
 
 ### -Model
-The model to use for image generation. Defaults to `gpt-image-2`. GPT Image 2.5 models include `gpt-image-2.5-sunburst`, `gpt-image-2.5-flare`, and their `2026-09-08` snapshots.
+The model to use for image generation. Defaults to `gpt-image-2`. GPT Image 2.5 models include `gpt-image-2.5-sunburst`, `gpt-image-2.5-flare`.
 
 ```yaml
 Type: String

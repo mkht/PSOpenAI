@@ -95,13 +95,13 @@ Accept pipeline input: True (ByValue)
 ```
 
 ### -Model
-The model to use for image generation. One of `dall-e-2`, `dall-e-3`, or a GPT image model. GPT Image 2.5 models include `gpt-image-2.5-sunburst`, `gpt-image-2.5-flare`, and their `2026-09-08` snapshots. Defaults to `dall-e-2` unless a parameter specific to the GPT image models is used.
+The model to use for image generation. Defaults to `gpt-image-2`. GPT Image 2.5 models include `gpt-image-2.5-sunburst`, `gpt-image-2.5-flare`.
 
 ```yaml
 Type: String
 Required: False
 Position: Named
-Default value: dall-e-2
+Default value: gpt-image-2
 ```
 
 ### -NumberOfImages
