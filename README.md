@@ -65,6 +65,38 @@ Guide: [Migrate ChatCompletion to Response](/Guides/Migrate_ChatCompletion_to_Re
 + [Get-ResponseInputItem](/Docs/Get-ResponseInputItem.md)
 + [Request-ResponseCompaction](/Docs/Request-ResponseCompaction.md)
 
+#### Agents API (Beta)
++ [New-Agent](/Docs/New-Agent.md)
++ [Get-Agent](/Docs/Get-Agent.md)
++ [Set-Agent](/Docs/Set-Agent.md)
++ [Remove-Agent](/Docs/Remove-Agent.md)
++ [New-AgentEnvironmentTemplate](/Docs/New-AgentEnvironmentTemplate.md)
++ [Get-AgentEnvironmentTemplate](/Docs/Get-AgentEnvironmentTemplate.md)
++ [Set-AgentEnvironmentTemplate](/Docs/Set-AgentEnvironmentTemplate.md)
++ [Remove-AgentEnvironmentTemplate](/Docs/Remove-AgentEnvironmentTemplate.md)
++ [Get-AgentEnvironment](/Docs/Get-AgentEnvironment.md)
++ [Add-AgentEnvironmentFile](/Docs/Add-AgentEnvironmentFile.md)
++ [Get-AgentEnvironmentFile](/Docs/Get-AgentEnvironmentFile.md)
++ [New-AgentSession](/Docs/New-AgentSession.md)
++ [Get-AgentSession](/Docs/Get-AgentSession.md)
++ [Set-AgentSession](/Docs/Set-AgentSession.md)
++ [Remove-AgentSession](/Docs/Remove-AgentSession.md)
++ [Add-AgentSessionEvent](/Docs/Add-AgentSessionEvent.md)
++ [Get-AgentSessionEvent](/Docs/Get-AgentSessionEvent.md)
++ [Get-AgentSessionItem](/Docs/Get-AgentSessionItem.md)
++ [Get-AgentSessionTurn](/Docs/Get-AgentSessionTurn.md)
++ [Get-AgentSessionSubagent](/Docs/Get-AgentSessionSubagent.md)
++ [Get-AgentSessionArtifact](/Docs/Get-AgentSessionArtifact.md)
++ [Get-AgentSessionArtifactContent](/Docs/Get-AgentSessionArtifactContent.md)
++ [Remove-AgentSessionArtifact](/Docs/Remove-AgentSessionArtifact.md)
++ [New-AgentVault](/Docs/New-AgentVault.md)
++ [Get-AgentVault](/Docs/Get-AgentVault.md)
++ [Remove-AgentVault](/Docs/Remove-AgentVault.md)
++ [New-AgentVaultCredential](/Docs/New-AgentVaultCredential.md)
++ [Get-AgentVaultCredential](/Docs/Get-AgentVaultCredential.md)
++ [Set-AgentVaultCredential](/Docs/Set-AgentVaultCredential.md)
++ [Remove-AgentVaultCredential](/Docs/Remove-AgentVaultCredential.md)
+
 #### Conversations
 + [New-Conversation](/Docs/New-Conversation.md)
 + [Get-Conversation](/Docs/Get-Conversation.md)
@@ -167,6 +199,26 @@ Guide: [How to use Batch](/Guides/How_to_use_Batch.md)
 ## Usage
 
 See [Docs](/Docs) and [Guides](/Guides) for more detailed and complex scenario descriptions.
+
+### Agents API (Beta)
+
+Agents API commands accept evolving nested API schemas through `-Body`. The following creates a reusable agent and starts a managed session without a hosted execution environment.
+
+```PowerShell
+$Agent = New-Agent -Body @{
+    model        = 'gpt-5.6'
+    name         = 'Repository assistant'
+    instructions = 'Review PowerShell code and report actionable findings.'
+}
+
+$Session = New-AgentSession -Body @{
+    agent_id    = $Agent.id
+    environment = @{ type = 'none' }
+    input       = 'Inspect this repository.'
+}
+```
+
+The Agents API is a public beta and is currently supported only with the OpenAI API, not Azure OpenAI.
 
 ### Responses
 
