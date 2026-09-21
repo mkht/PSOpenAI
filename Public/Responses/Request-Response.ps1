@@ -214,6 +214,10 @@ function Request-Response {
         [string]$RemoteMCPServerUrl,
 
         [Parameter()]
+        [ValidateNotNullOrEmpty()]
+        [string]$RemoteMCPTunnelId,
+
+        [Parameter()]
         [string]$RemoteMCPServerDescription,
 
         [Parameter()]
@@ -249,6 +253,7 @@ function Request-Response {
             'connector_outlookemail',
             'connector_sharepoint'
         )]
+        [System.Obsolete('ConnectorId is deprecated for models released after 2026-09-01. Use a remote MCP server URL or tunnel ID instead.')]
         [ValidateNotNullOrEmpty()]
         [string]$ConnectorId,
 
@@ -286,7 +291,15 @@ function Request-Response {
         [string]$ImageGenerationType = 'image_generation', # Always 'image_generation'
 
         [Parameter()]
-        [Completions('gpt-image-1', 'gpt-image-1-mini', 'gpt-image-1.5', 'gpt-image-2', 'chatgpt-image-latest')]
+        [Completions(
+            'gpt-image-2.5-sunburst',
+            'gpt-image-2.5-flare',
+            'gpt-image-2',
+            'gpt-image-1.5',
+            'gpt-image-1',
+            'gpt-image-1-mini',
+            'chatgpt-image-latest'
+        )]
         [string]$ImageGenerationModel,
 
         [Parameter()]
@@ -308,7 +321,7 @@ function Request-Response {
         [int]$ImageGenerationOutputCompression,
 
         [Parameter()]
-        [ValidateSet('png', 'jpeg', 'webp')]
+        [Completions('png', 'jpeg', 'webp')]
         [string][LowerCaseTransformation()]$ImageGenerationOutputFormat = 'png',
 
         [Parameter()]
@@ -316,11 +329,11 @@ function Request-Response {
         [int]$ImageGenerationPartialImages,
 
         [Parameter()]
-        [ValidateSet('low', 'medium', 'high', 'auto')]
+        [Completions('low', 'medium', 'high', 'xhigh', 'max', 'auto')]
         [string][LowerCaseTransformation()]$ImageGenerationQuality = 'auto',
 
         [Parameter()]
-        [ValidateSet('auto', '1024x1024', '1536x1024', '1024x1536')]
+        [Completions('auto', '1024x1024', '1536x1024', '1024x1536')]
         [string]$ImageGenerationSize = 'auto',
         #endregion Image Generation
 
@@ -472,6 +485,14 @@ function Request-Response {
         [Parameter()]
         [Alias('prompt_cache_options.ttl')]
         [string]$PromptCacheTtl,
+
+        [Parameter()]
+        [Alias('prompt_cache_options.comparison_response_id')]
+        [string]$PromptCacheComparisonResponseId,
+
+        [Parameter()]
+        [Alias('prompt_cache_options.prewarm')]
+        [switch]$PromptCachePrewarm,
 
         [Parameter()]
         [Alias('safety_identifier')]
@@ -645,6 +666,12 @@ function Request-Response {
         }
         if ($PSBoundParameters.ContainsKey('PromptCacheTtl')) {
             $PromptCacheOptions.ttl = $PromptCacheTtl
+        }
+        if ($PSBoundParameters.ContainsKey('PromptCacheComparisonResponseId')) {
+            $PromptCacheOptions.comparison_response_id = $PromptCacheComparisonResponseId
+        }
+        if ($PSBoundParameters.ContainsKey('PromptCachePrewarm')) {
+            $PromptCacheOptions.prewarm = $PromptCachePrewarm.IsPresent
         }
         if ($PromptCacheOptions.Keys.Count -gt 0) {
             $PostBody.prompt_cache_options = $PromptCacheOptions
@@ -838,18 +865,26 @@ function Request-Response {
 
         #region Remote MCP
         if ($UseRemoteMCPTool) {
-            # Server label and URL are required.
+            # Server label and one connection target are required.
             if ([string]::IsNullOrWhiteSpace($RemoteMCPServerLabel)) {
                 Write-Error 'RemoteMCPServerLabel must be specified.'
             }
-            if ([string]::IsNullOrWhiteSpace($RemoteMCPServerUrl)) {
-                Write-Error 'RemoteMCPServerUrl must be specified.'
+            if ([string]::IsNullOrWhiteSpace($RemoteMCPServerUrl) -and [string]::IsNullOrWhiteSpace($RemoteMCPTunnelId)) {
+                Write-Error 'RemoteMCPServerUrl or RemoteMCPTunnelId must be specified.'
+            }
+            if (-not [string]::IsNullOrWhiteSpace($RemoteMCPServerUrl) -and -not [string]::IsNullOrWhiteSpace($RemoteMCPTunnelId)) {
+                Write-Error 'RemoteMCPServerUrl and RemoteMCPTunnelId cannot be specified together.'
             }
 
             $MCPTool = @{
                 type         = $RemoteMCPType
                 server_label = $RemoteMCPServerLabel
-                server_url   = $RemoteMCPServerUrl
+            }
+            if ($PSBoundParameters.ContainsKey('RemoteMCPServerUrl')) {
+                $MCPTool.server_url = $RemoteMCPServerUrl
+            }
+            if ($PSBoundParameters.ContainsKey('RemoteMCPTunnelId')) {
+                $MCPTool.tunnel_id = $RemoteMCPTunnelId
             }
 
             if ($PSBoundParameters.ContainsKey('RemoteMCPServerDescription')) {

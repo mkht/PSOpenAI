@@ -214,17 +214,21 @@ function ParseResponseObject {
     $StructuredOutputs = @()
     if ($OutputType -is [type]) {
         foreach ($output in $InputObject.output) {
-            if ($output.content.type -eq 'output_text') {
-                ## Deserialize JSON output to .NET object
-                try {
-                    $DeserializedObject = [Newtonsoft.Json.JsonConvert]::DeserializeObject($output.content.text, $OutputType)
-                    if ($null -ne $DeserializedObject) {
-                        $output.content | Add-Member -MemberType NoteProperty -Name 'parsed' -Value $DeserializedObject -Force
-                        $StructuredOutputs += $DeserializedObject
+            foreach ($content in $output.content) {
+                # Only final answer text contains the structured response. Older API
+                # responses do not include phase, so preserve their parsing behavior.
+                if ($content.type -eq 'output_text' -and ($null -eq $content.phase -or $content.phase -eq 'final_answer')) {
+                    ## Deserialize JSON output to .NET object
+                    try {
+                        $DeserializedObject = [Newtonsoft.Json.JsonConvert]::DeserializeObject($content.text, $OutputType)
+                        if ($null -ne $DeserializedObject) {
+                            $content | Add-Member -MemberType NoteProperty -Name 'parsed' -Value $DeserializedObject -Force
+                            $StructuredOutputs += $DeserializedObject
+                        }
                     }
-                }
-                catch {
-                    Write-Error -Exception $_.Exception
+                    catch {
+                        Write-Error -Exception $_.Exception
+                    }
                 }
             }
         }
