@@ -451,3 +451,32 @@ function ParseVideoJobObject {
         Write-Warning -Message $WarnMessage
     }
 }
+
+function ParseAgentApiObject {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory, Position = 0, ValueFromPipeline)]
+        [pscustomobject]$InputObject,
+
+        [Parameter()]
+        [string]$TypeName
+    )
+
+    if (-not [string]::IsNullOrWhiteSpace($TypeName)) {
+        $InputObject.PSObject.TypeNames.Insert(0, $TypeName)
+    }
+
+    $InputObject.PSObject.Properties |
+        Where-Object { $_.Name -like '*_at' } |
+        ForEach-Object {
+            if ($null -ne $_.Value -and $null -ne ($UnixTime = $_.Value -as [long])) {
+                $InputObject | Add-Member `
+                    -MemberType NoteProperty `
+                    -Name $_.Name `
+                    -Value ([System.DateTimeOffset]::FromUnixTimeSeconds($UnixTime).LocalDateTime) `
+                    -Force
+            }
+        }
+
+    Write-Output $InputObject
+}

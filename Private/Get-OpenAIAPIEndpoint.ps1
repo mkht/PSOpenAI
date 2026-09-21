@@ -270,6 +270,46 @@ function Get-OpenAIAPIEndpoint {
             }
             continue
         }
+        'Agents' {
+            $UriBuilder.Path += 'agents'
+            @{
+                Name        = 'agents'
+                Method      = 'Post'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+            continue
+        }
+        'Agent.Environments' {
+            $UriBuilder.Path += 'agents/environments'
+            @{
+                Name        = 'agent_environments'
+                Method      = 'Get'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+            continue
+        }
+        'Agent.Sessions' {
+            $UriBuilder.Path += 'agents/sessions'
+            @{
+                Name        = 'agent_sessions'
+                Method      = 'Post'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+            continue
+        }
+        'Agent.Vaults' {
+            $UriBuilder.Path += 'vaults'
+            @{
+                Name        = 'agent_vaults'
+                Method      = 'Post'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+            continue
+        }
         'Videos' {
             $UriBuilder.Path += 'videos'
             @{
