@@ -1,4 +1,4 @@
-#Requires -Modules @{ ModuleName="Pester"; ModuleVersion="5.3.0" }
+﻿#Requires -Modules @{ ModuleName="Pester"; ModuleVersion="5.3.0" }
 
 BeforeAll {
     Import-Module (Join-Path (Split-Path $PSScriptRoot -Parent) 'PSOpenAI.psd1') -Force
@@ -169,5 +169,49 @@ Describe 'Optional compatible server smoke test' -Tag Online {
         $result = Request-ChatCompletion -ApiBase $env:PSOPENAI_COMPAT_API_BASE -ApiKey $env:PSOPENAI_COMPAT_API_KEY -Model $env:PSOPENAI_COMPAT_MODEL -Message 'Reply with OK.' -TimeoutSec 30 -ErrorAction Stop
         $result.object | Should -BeExactly 'chat.completion'
         $result.choices | Should -Not -BeNullOrEmpty
+    }
+}
+
+Describe 'Azure AI v1 integration tests' -Tag @('Online', 'Azure') {
+    BeforeAll {
+        if ($env:AZURE_ENDPOINT -and $env:AZURE_API_KEY) {
+            $script:AzureApiBase = $env:AZURE_ENDPOINT.TrimEnd('/')
+            if ($script:AzureApiBase -notmatch '/openai/v1$') {
+                $script:AzureApiBase += '/openai/v1'
+            }
+            $script:AzureApiBase += '/'
+            Set-OpenAIContext -ApiBase $script:AzureApiBase -ApiKey $env:AZURE_API_KEY -TimeoutSec 120 -MaxRetryCount 0
+        }
+    }
+
+    AfterAll {
+        Clear-OpenAIContext
+    }
+
+    It 'Creates a chat completion with gpt-5.6-luna' -Skip:(-not ($env:AZURE_ENDPOINT -and $env:AZURE_API_KEY)) {
+        $result = Request-ChatCompletion -Model 'gpt-5.6-luna' -Message 'Reply with OK.' -MaxCompletionTokens 20 -TimeoutSec 90 -ErrorAction Stop
+        $result.object | Should -BeExactly 'chat.completion'
+        $result.choices | Should -Not -BeNullOrEmpty
+    }
+
+    It 'Creates a response with gpt-5.6-luna' -Skip:(-not ($env:AZURE_ENDPOINT -and $env:AZURE_API_KEY)) {
+        $result = Request-Response -Model 'gpt-5.6-luna' -Message 'Reply with OK.' -MaxOutputTokens 20 -Store $false -TimeoutSec 90 -ErrorAction Stop
+        $result.object | Should -BeExactly 'response'
+        $result.output_text | Should -Not -BeNullOrEmpty
+    }
+
+    It 'Handles audio input and output with gpt-audio-mini' -Skip:(-not ($env:AZURE_ENDPOINT -and $env:AZURE_API_KEY)) {
+        $audioPath = Join-Path $TestDrive 'audio-output.mp3'
+        $result = Request-ChatCompletion -Model 'gpt-audio-mini' -Message 'この音声の内容を短く説明してください。' -InputAudio (Join-Path $PSScriptRoot 'TestData/voice_japanese.mp3') -Modalities @('text', 'audio') -Voice 'shimmer' -AudioOutFile $audioPath -TimeoutSec 120 -ErrorAction Stop
+        $result.object | Should -BeExactly 'chat.completion'
+        $result.choices | Should -Not -BeNullOrEmpty
+        $audioPath | Should -Exist
+    }
+
+    It 'Generates an image with gpt-image-2.5-flare' -Skip:(-not ($env:AZURE_ENDPOINT -and $env:AZURE_API_KEY)) {
+        $imagePath = Join-Path $TestDrive 'generated.png'
+        $null = Request-ImageGeneration -Model 'gpt-image-2.5-flare' -Prompt 'A small red paper crane on a plain light background.' -Size '1024x1024' -OutFile $imagePath -TimeoutSec 120 -MaxRetryCount 0 -ErrorAction Stop
+        $imagePath | Should -Exist
+        (Get-Item $imagePath).Length | Should -BeGreaterThan 0
     }
 }
