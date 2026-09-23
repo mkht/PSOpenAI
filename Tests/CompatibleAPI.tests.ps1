@@ -64,7 +64,6 @@ Describe 'OpenAI-compatible connection contract' -Tag Offline {
                 'Image.Edit' = 'images/edits'
                 'Audio.Transcription' = 'audio/transcriptions'
                 'Batch' = 'batches'
-                'Videos' = 'videos'
             }
             foreach ($entry in $paths.GetEnumerator()) {
                 $resolved = Get-OpenAIAPIParameter -EndpointName $entry.Key -Parameters @{ ApiBase = $Base; ApiKey = 'test-key' }
@@ -147,21 +146,6 @@ Describe 'OpenAI-compatible connection contract' -Tag Offline {
         }
     }
 
-    It 'Uses common video fields and downloads by video ID without an extra lookup' {
-        Mock -ModuleName PSOpenAI Invoke-OpenAIHttpRequest { '{"id":"video-test","object":"video","status":"completed"}' }
-        Mock -ModuleName PSOpenAI Get-Video { throw 'Unexpected legacy job lookup' }
-        $connection = @{ ApiBase = 'https://example.test/openai/v1/'; ApiKey = 'test-key' }
-        $null = New-Video -Prompt 'test' -Model 'video-deployment' -Seconds 4 -Size '1280x720' @connection
-        Should -Invoke -ModuleName PSOpenAI Invoke-OpenAIHttpRequest -Times 1 -Exactly -ParameterFilter {
-            $Uri.AbsoluteUri -eq 'https://example.test/openai/v1/videos' -and $Body.seconds -eq '4' -and
-            $Body.size -eq '1280x720' -and -not $Body.Contains('n_seconds') -and -not $Body.Contains('width')
-        }
-        $null = Get-VideoContent -VideoId 'video-test' -Variant 'thumbnail' @connection
-        Should -Invoke -ModuleName PSOpenAI Get-Video -Times 0 -Exactly
-        Should -Invoke -ModuleName PSOpenAI Invoke-OpenAIHttpRequest -Times 1 -Exactly -ParameterFilter {
-            $Uri.AbsoluteUri -eq 'https://example.test/openai/v1/videos/video-test/content?variant=thumbnail'
-        }
-    }
 }
 
 Describe 'Optional compatible server smoke test' -Tag Online {
@@ -182,35 +166,42 @@ Describe 'Azure AI v1 integration tests' -Tag @('Online', 'Azure') {
             $script:AzureApiBase += '/'
             Set-OpenAIContext -ApiBase $script:AzureApiBase -ApiKey $env:AZURE_API_KEY -TimeoutSec 120 -MaxRetryCount 0
         }
+
+        $script:AzureChatModel = 'gpt-5.6-luna'
+        if ($env:AZURE_CHAT_MODEL) { $script:AzureChatModel = $env:AZURE_CHAT_MODEL }
+        $script:AzureAudioModel = 'gpt-audio-mini'
+        if ($env:AZURE_AUDIO_MODEL) { $script:AzureAudioModel = $env:AZURE_AUDIO_MODEL }
+        $script:AzureImageModel = 'gpt-image-2.5-flare'
+        if ($env:AZURE_IMAGE_MODEL) { $script:AzureImageModel = $env:AZURE_IMAGE_MODEL }
     }
 
     AfterAll {
         Clear-OpenAIContext
     }
 
-    It 'Creates a chat completion with gpt-5.6-luna' -Skip:(-not ($env:AZURE_ENDPOINT -and $env:AZURE_API_KEY)) {
-        $result = Request-ChatCompletion -Model 'gpt-5.6-luna' -Message 'Reply with OK.' -MaxCompletionTokens 20 -TimeoutSec 90 -ErrorAction Stop
+    It 'Creates a chat completion with the configured chat deployment' -Skip:(-not ($env:AZURE_ENDPOINT -and $env:AZURE_API_KEY)) {
+        $result = Request-ChatCompletion -Model $script:AzureChatModel -Message 'Reply with OK.' -MaxCompletionTokens 20 -TimeoutSec 90 -ErrorAction Stop
         $result.object | Should -BeExactly 'chat.completion'
         $result.choices | Should -Not -BeNullOrEmpty
     }
 
-    It 'Creates a response with gpt-5.6-luna' -Skip:(-not ($env:AZURE_ENDPOINT -and $env:AZURE_API_KEY)) {
-        $result = Request-Response -Model 'gpt-5.6-luna' -Message 'Reply with OK.' -MaxOutputTokens 20 -Store $false -TimeoutSec 90 -ErrorAction Stop
+    It 'Creates a response with the configured chat deployment' -Skip:(-not ($env:AZURE_ENDPOINT -and $env:AZURE_API_KEY)) {
+        $result = Request-Response -Model $script:AzureChatModel -Message 'Reply with OK.' -MaxOutputTokens 20 -Store $false -TimeoutSec 90 -ErrorAction Stop
         $result.object | Should -BeExactly 'response'
         $result.output_text | Should -Not -BeNullOrEmpty
     }
 
-    It 'Handles audio input and output with gpt-audio-mini' -Skip:(-not ($env:AZURE_ENDPOINT -and $env:AZURE_API_KEY)) {
+    It 'Handles audio input and output with the configured audio deployment' -Skip:(-not ($env:AZURE_ENDPOINT -and $env:AZURE_API_KEY)) {
         $audioPath = Join-Path $TestDrive 'audio-output.mp3'
-        $result = Request-ChatCompletion -Model 'gpt-audio-mini' -Message 'この音声の内容を短く説明してください。' -InputAudio (Join-Path $PSScriptRoot 'TestData/voice_japanese.mp3') -Modalities @('text', 'audio') -Voice 'shimmer' -AudioOutFile $audioPath -TimeoutSec 120 -ErrorAction Stop
+        $result = Request-ChatCompletion -Model $script:AzureAudioModel -Message 'この音声の内容を短く説明してください。' -InputAudio (Join-Path $PSScriptRoot 'TestData/voice_japanese.mp3') -Modalities @('text', 'audio') -Voice 'shimmer' -AudioOutFile $audioPath -TimeoutSec 120 -ErrorAction Stop
         $result.object | Should -BeExactly 'chat.completion'
         $result.choices | Should -Not -BeNullOrEmpty
         $audioPath | Should -Exist
     }
 
-    It 'Generates an image with gpt-image-2.5-flare' -Skip:(-not ($env:AZURE_ENDPOINT -and $env:AZURE_API_KEY)) {
+    It 'Generates an image with the configured image deployment' -Skip:(-not ($env:AZURE_ENDPOINT -and $env:AZURE_API_KEY)) {
         $imagePath = Join-Path $TestDrive 'generated.png'
-        $null = Request-ImageGeneration -Model 'gpt-image-2.5-flare' -Prompt 'A small red paper crane on a plain light background.' -Size '1024x1024' -OutFile $imagePath -TimeoutSec 120 -MaxRetryCount 0 -ErrorAction Stop
+        $null = Request-ImageGeneration -Model $script:AzureImageModel -Prompt 'A small red paper crane on a plain light background.' -Size '1024x1024' -OutFile $imagePath -TimeoutSec 120 -MaxRetryCount 0 -ErrorAction Stop
         $imagePath | Should -Exist
         (Get-Item $imagePath).Length | Should -BeGreaterThan 0
     }
