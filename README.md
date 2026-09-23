@@ -183,7 +183,7 @@ Chat Completions API is compatible with other AI services besides OpenAI, such a
 
 ```PowerShell
 $env:OPENAI_API_KEY = '<Put your API key here.>'
-$Completion = Request-ChatCompletion -Model 'gpt-5.6-luna' -Message 'Give me a recipe for chocolate cake.'
+$Completion = Request-ChatCompletion -Model 'gpt-6-luna' -Message 'Give me a recipe for chocolate cake.'
 Write-Output $Completion.Answer[0]
 ```
 
@@ -297,7 +297,7 @@ Disconnect-RealtimeSession
 `Request-Response` and `Request-ChatCompletion` accepts past dialogs from pipeline. Additional questions can be asked while maintaining context.
 
 ```PowerShell
-PS C:\> $FirstQA = Request-ChatCompletion -Model 'gpt-5.6-luna' -Message 'What is the population of the United States?'
+PS C:\> $FirstQA = Request-ChatCompletion -Model 'gpt-6-luna' -Message 'What is the population of the United States?'
 PS C:\> Write-Output $FirstQA.Answer
 
 The United States has approximately **342 million people** as of 2026. Population figures vary slightly depending on the source and date.
@@ -330,10 +330,10 @@ You can input images to the model and get answers.
 
 ```PowerShell
 # Local file
-$Response = Request-Response -Model 'gpt-5.6-luna' -Images 'C:\SampleData\donut.png' -Message 'How many donuts are there?'
+$Response = Request-Response -Model 'gpt-6-luna' -Images 'C:\SampleData\donut.png' -Message 'How many donuts are there?'
 
 # Remote URL
-$Response = Request-Response -Model 'gpt-5.6-luna' -Images 'https://upload.wikimedia.org/wikipedia/commons/5/5f/Cerro_El_%C3%81vila_desde_El_Bosque_-_Caracas.jpg' -Message 'Where is this?'
+$Response = Request-Response -Model 'gpt-6-luna' -Images 'https://upload.wikimedia.org/wikipedia/commons/5/5f/Cerro_El_%C3%81vila_desde_El_Bosque_-_Caracas.jpg' -Message 'Where is this?'
 ```
 
 ### Web Search
@@ -341,7 +341,7 @@ $Response = Request-Response -Model 'gpt-5.6-luna' -Images 'https://upload.wikim
 Allow models to search the web for the latest information before generating a response.
 
 ```PowerShell
-$Response = Request-Response -Model 'gpt-5.6-terra' -Message 'What was a tech news in December 2025?' -UseWebSearch
+$Response = Request-Response -Model 'gpt-6-sol' -Message 'What was a tech news in December 2025?' -UseWebSearch
 ```
 
 ### Azure OpenAI Service
