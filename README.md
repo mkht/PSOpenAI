@@ -36,9 +36,6 @@ Install-Module -Name PSOpenAI
 <summary>The full list of functions</summary>
 
 ### Common
-+ [ConvertFrom-Token](/Docs/ConvertFrom-Token.md)
-+ [ConvertTo-Token](/Docs/ConvertTo-Token.md)
-+ [Get-CosineSimilarity](/Docs/Get-CosineSimilarity.md)
 + [Get-OpenAIContext](/Docs/Get-OpenAIContext.md)
 + [Set-OpenAIContext](/Docs/Set-OpenAIContext.md)
 + [Clear-OpenAIContext](/Docs/Clear-OpenAIContext.md)
@@ -116,15 +113,6 @@ Guide: [How to use Realtime API](/Guides/How_to_use_Realtime_API.md)
 + [Request-AudioTranscription](/Docs/Request-AudioTranscription.md)
 + [Request-AudioTranslation](/Docs/Request-AudioTranslation.md)
 
-#### Videos
-Guide: [How to use Video generation](/Guides/How_to_use_Video_generation.md)
-
-+ [New-Video](/Docs/New-Video.md)
-+ [New-VideoRemix](/Docs/New-VideoRemix.md)
-+ [Get-Video](/Docs/Get-Video.md)
-+ [Get-VideoContent](/Docs/Get-VideoContent.md)
-+ [Remove-Video](/Docs/Remove-Video.md)
-
 #### Files
 + [Get-OpenAIFile](/Docs/Get-OpenAIFile.md)
 + [Add-OpenAIFile](/Docs/Add-OpenAIFile.md)
@@ -190,7 +178,7 @@ Chat Completions API is compatible with other AI services besides OpenAI, such a
 
 ```PowerShell
 $env:OPENAI_API_KEY = '<Put your API key here.>'
-$Completion = Request-ChatCompletion -Model 'gpt-5.6-luna' -Message 'Give me a recipe for chocolate cake.'
+$Completion = Request-ChatCompletion -Model 'gpt-6-luna' -Message 'Give me a recipe for chocolate cake.'
 Write-Output $Completion.Answer[0]
 ```
 
@@ -236,16 +224,6 @@ The edited image like this.
 | Original                                        | Generated                                  |
 | ----------------------------------------------- | ------------------------------------------ |
 | ![original](/Docs/images/sand_with_feather.png) | ![edited](/Docs/images/bird_on_desert.png) |
-
-### Video generation
-Generate a video from a text prompt.
-
-```PowerShell
-$VideoJob = New-Video -Model 'sora-2' -Prompt "A cat playing piano" -Size 1280x720
-$VideoJob | Get-VideoContent -OutFile "C:\output\cat_piano.mp4" -WaitForCompletion
-```
-
-![video](/Docs/images/cat_piano.gif)
 
 ### Moderation
 
@@ -314,7 +292,7 @@ Disconnect-RealtimeSession
 `Request-Response` and `Request-ChatCompletion` accepts past dialogs from pipeline. Additional questions can be asked while maintaining context.
 
 ```PowerShell
-PS C:\> $FirstQA = Request-ChatCompletion -Model 'gpt-5.6-luna' -Message 'What is the population of the United States?'
+PS C:\> $FirstQA = Request-ChatCompletion -Model 'gpt-6-luna' -Message 'What is the population of the United States?'
 PS C:\> Write-Output $FirstQA.Answer
 
 The United States has approximately **342 million people** as of 2026. Population figures vary slightly depending on the source and date.
@@ -347,10 +325,10 @@ You can input images to the model and get answers.
 
 ```PowerShell
 # Local file
-$Response = Request-Response -Model 'gpt-5.6-luna' -Images 'C:\SampleData\donut.png' -Message 'How many donuts are there?'
+$Response = Request-Response -Model 'gpt-6-luna' -Images 'C:\SampleData\donut.png' -Message 'How many donuts are there?'
 
 # Remote URL
-$Response = Request-Response -Model 'gpt-5.6-luna' -Images 'https://upload.wikimedia.org/wikipedia/commons/5/5f/Cerro_El_%C3%81vila_desde_El_Bosque_-_Caracas.jpg' -Message 'Where is this?'
+$Response = Request-Response -Model 'gpt-6-luna' -Images 'https://upload.wikimedia.org/wikipedia/commons/5/5f/Cerro_El_%C3%81vila_desde_El_Bosque_-_Caracas.jpg' -Message 'Where is this?'
 ```
 
 ### Web Search
@@ -358,7 +336,7 @@ $Response = Request-Response -Model 'gpt-5.6-luna' -Images 'https://upload.wikim
 Allow models to search the web for the latest information before generating a response.
 
 ```PowerShell
-$Response = Request-Response -Model 'gpt-5.6-terra' -Message 'What was a tech news in December 2025?' -UseWebSearch
+$Response = Request-Response -Model 'gpt-6-sol' -Message 'What was a tech news in December 2025?' -UseWebSearch
 ```
 
 ### OpenAI Compatible Servers
@@ -438,5 +416,4 @@ This module uses these OSS libraries.
 
 - [Newtonsoft.Json](https://www.newtonsoft.com/json) by jamesnk (MIT License)
 - [NJsonSchema](https://github.com/RicoSuter/NJsonSchema) by rsuter (MIT License)
-- [Microsoft.DeepDev.TokenizerLib](https://github.com/microsoft/Tokenizer) by microsoft (MIT License)
 - [NAudio](https://github.com/naudio/NAudio) by Mark Heath (MIT License)

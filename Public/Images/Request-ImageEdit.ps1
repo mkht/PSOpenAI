@@ -16,6 +16,8 @@ function Request-ImageEdit {
 
         [Parameter()]
         [Completions(
+            'gpt-image-2.5-sunburst',
+            'gpt-image-2.5-flare',
             'gpt-image-2',
             'gpt-image-1.5',
             'gpt-image-1',
@@ -34,16 +36,16 @@ function Request-ImageEdit {
         [string]$Size = 'auto',
 
         [Parameter()]
-        [ValidateSet('low', 'medium', 'high', 'auto')]
+        [Completions('low', 'medium', 'high', 'xhigh', 'max', 'auto')]
         [string][LowerCaseTransformation()]$Quality = 'auto',
 
         [Parameter()]
-        [ValidateSet('transparent', 'opaque', 'auto')]
+        [Completions('transparent', 'opaque', 'auto')]
         [string][LowerCaseTransformation()]$Background = 'auto',
 
         [Parameter()]
         [Alias('input_fidelity')]
-        [ValidateSet('low', 'high')]
+        [Completions('low', 'high')]
         [string][LowerCaseTransformation()]$InputFidelity = 'low',
 
         [Parameter()]
@@ -53,7 +55,7 @@ function Request-ImageEdit {
 
         [Parameter()]
         [Alias('output_format')]
-        [ValidateSet('png', 'jpeg', 'webp')]
+        [Completions('png', 'jpeg', 'webp')]
         [string][LowerCaseTransformation()]$OutputFormat = 'png',
 
         # Obsolete

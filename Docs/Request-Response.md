@@ -55,6 +55,7 @@ Request-Response
     [-UseRemoteMCPTool]
     [-RemoteMCPServerLabel <String>]
     [-RemoteMCPServerUrl <String>]
+    [-RemoteMCPTunnelId <String>]
     [-RemoteMCPServerDescription <String>]
     [-RemoteMCPAllowedTools <Object>]
     [-RemoteMCPRequireApproval <Object>]
@@ -107,6 +108,8 @@ Request-Response
     [-PromptCacheKey <String>]
     [-PromptCacheMode <String>]
     [-PromptCacheTtl <String>]
+    [-PromptCacheComparisonResponseId <String>]
+    [-PromptCachePrewarm]
     [-PromptCacheRetention <String>]
     [-SafetyIdentifier <String>]
     [-User <String>]
@@ -535,7 +538,16 @@ Position: Named
 ```
 
 ### -RemoteMCPServerUrl
-The URL for the MCP server.
+The URL for the MCP server. Specify either this parameter or `-RemoteMCPTunnelId`.
+
+```yaml
+Type: String
+Required: False
+Position: Named
+```
+
+### -RemoteMCPTunnelId
+The ID of a secure MCP tunnel. Specify either this parameter or `-RemoteMCPServerUrl`.
 
 ```yaml
 Type: String
@@ -607,7 +619,9 @@ Position: Named
 ```
 
 ### -ConnectorId
-The ID of the connector. Supported connector id values are:  
+Deprecated for models released after September 1, 2026. Use a remote MCP server URL or secure tunnel instead. The parameter remains available for compatibility with earlier models.
+
+The supported connector ID values are:
 - Dropbox: `connector_dropbox`
 - Gmail: `connector_gmail`
 - Google Calendar: `connector_googlecalendar`
@@ -688,7 +702,7 @@ Position: Named
 ```
 
 ### -ImageGenerationModel
-The image generation model to use. Default: `gpt-image-1`.
+The image generation model to use.
 
 ```yaml
 Type: String
@@ -764,7 +778,7 @@ Position: Named
 ```
 
 ### -ImageGenerationQuality
-The quality of the generated image. One of `low`, `medium`, `high`, or `auto`. 
+The quality of the generated image. One of `low`, `medium`, `high`, `xhigh`, `max`, or `auto`, subject to model support.
 
 ```yaml
 Type: String
@@ -774,7 +788,7 @@ Default value: auto
 ```
 
 ### -ImageGenerationSize
-The size of the generated image. One of `1024x1024`, `1024x1536`, `1536x1024`, or `auto`. Default: `auto`.
+The size of the generated image. Use `auto` or a `WIDTHxHEIGHT` value supported by the selected image model. GPT Image 2 and GPT Image 2.5 accept arbitrary supported resolutions.
 
 ```yaml
 Type: String
@@ -1040,6 +1054,26 @@ The minimum lifetime applied to every implicit and explicit cache breakpoint wri
 ```yaml
 Type: String
 Aliases: prompt_cache_options.ttl
+Required: False
+Position: Named
+```
+
+### -PromptCacheComparisonResponseId
+The response ID to compare against when producing prompt cache diagnostics.
+
+```yaml
+Type: String
+Aliases: prompt_cache_options.comparison_response_id
+Required: False
+Position: Named
+```
+
+### -PromptCachePrewarm
+Prepares the prompt cache without generating output. The option is sent to the server as `prompt_cache_options.prewarm`.
+
+```yaml
+Type: SwitchParameter
+Aliases: prompt_cache_options.prewarm
 Required: False
 Position: Named
 ```

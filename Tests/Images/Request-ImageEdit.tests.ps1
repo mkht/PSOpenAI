@@ -21,6 +21,23 @@ Describe 'Request-ImageEdit' {
             $script:Result = ''
         }
 
+        It 'Serializes GPT Image 2.5 model, arbitrary size, and xhigh quality' {
+            {
+                $script:Result = Request-ImageEdit `
+                    -Image ($script:TestImageData + '/fether_mask.png') `
+                    -Prompt 'Add a sunrise' `
+                    -Model 'gpt-image-2.5-sunburst' `
+                    -Size '2048x1024' `
+                    -Quality 'xhigh' `
+                    -OutputRawResponse `
+                    -ea Stop
+            } | Should -Not -Throw
+
+            $Result.Body.model | Should -BeExactly 'gpt-image-2.5-sunburst'
+            $Result.Body.size | Should -BeExactly '2048x1024'
+            $Result.Body.quality | Should -BeExactly 'xhigh'
+        }
+
         It 'Image edit. one input, one output, save to file' {
             $TestResponse = @'
 {

@@ -21,6 +21,22 @@ Describe 'Request-ImageGeneration' {
             $script:Result = ''
         }
 
+        It 'Serializes GPT Image 2.5 model and maximum quality options' {
+            {
+                $script:Result = Request-ImageGeneration `
+                    -Prompt 'A sunrise' `
+                    -Model 'gpt-image-2.5-flare-2026-09-08' `
+                    -Size '2048x1024' `
+                    -Quality 'max' `
+                    -OutputRawResponse `
+                    -ea Stop
+            } | Should -Not -Throw
+
+            $Result.Body.model | Should -BeExactly 'gpt-image-2.5-flare-2026-09-08'
+            $Result.Body.size | Should -BeExactly '2048x1024'
+            $Result.Body.quality | Should -BeExactly 'max'
+        }
+
         It 'Generate image. No options.' {
             $TestResponse = @'
 {
