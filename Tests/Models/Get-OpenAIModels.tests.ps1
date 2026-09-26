@@ -45,6 +45,30 @@ Describe 'Get-OpenAIModels' {
         }
     }
 
+    Context 'Explicit null API key (offline)' -Tag 'Offline' {
+        BeforeAll {
+            $script:BackupEnvApiKey = $env:OPENAI_API_KEY
+            $script:BackupGlobalApiKey = $global:OPENAI_API_KEY
+            Mock -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest { '{"data":[]}' }
+        }
+
+        AfterAll {
+            $env:OPENAI_API_KEY = $script:BackupEnvApiKey
+            $global:OPENAI_API_KEY = $script:BackupGlobalApiKey
+            Clear-OpenAIContext
+        }
+
+        It 'passes an empty key to the request when ApiKey is explicitly null' {
+            $env:OPENAI_API_KEY = 'ENV_KEY'
+            $global:OPENAI_API_KEY = 'GLOBAL_KEY'
+            Set-OpenAIContext -ApiKey 'CONTEXT_KEY'
+
+            Get-OpenAIModels -ApiKey $null
+
+            Should -Invoke -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -Times 1 -Exactly -ParameterFilter { $ApiKey -is [securestring] -and $ApiKey.Length -eq 0 }
+        }
+    }
+
     Context 'Integration tests (online)' -Tag 'Online' {
         BeforeAll {
             Clear-OpenAIContext

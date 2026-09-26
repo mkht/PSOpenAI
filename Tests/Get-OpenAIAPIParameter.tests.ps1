@@ -110,6 +110,17 @@ Describe 'Get-OpenAIAPIParameter' {
                 Should -Invoke Get-OpenAIAPIEndpoint -Times 1 -Exactly
             }
 
+            It 'Explicit null ApiKey becomes empty and does not use Context or environment' {
+                $global:OPENAI_API_KEY = 'GLOBAL_KEY'
+                $env:OPENAI_API_KEY = 'ENV_KEY'
+                Set-OpenAIContext -ApiKey 'CONTEXT_KEY'
+
+                $ret = Get-OpenAIAPIParameter -EndpointName 'foo' -Parameters @{ ApiKey = $null }
+
+                $ret.ApiKey | Should -BeOfType [securestring]
+                Get-PlainTextFromSecureString $ret.ApiKey | Should -Be ''
+            }
+
             It 'Custom API base URL (OpenAI)' {
                 $ExplicitParams = @{
                     ApiKey  = 'PARAM_KEY'

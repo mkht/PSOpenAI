@@ -38,6 +38,8 @@ Set the API key to the `$global:OPENAI_API_KEY` variable. PSOpenAI will use the 
 
 Specify the API key explicitly in the `-ApiKey` parameter. It must be specified each time the function is called.
 
+Passing `$null` explicitly to `-ApiKey` uses an empty key. The global and environment variables are used only when `-ApiKey` is omitted and no key is set in the context.
+
 This is best used when the function is called only once or with few calls, such as when executing manually from the console.
 
 ```powershell
