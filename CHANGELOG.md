@@ -1,12 +1,24 @@
 # Changelog
-### Unreleased (5.0.0)
-- **BREAKING:** Remove explicit Azure OpenAI support and the `ApiType`, `ApiVersion`, and `AuthType` parameters/context properties, including `-ApiType OpenAI`. Use an OpenAI-compatible API base and Bearer authentication. See the [Azure v1 migration guide](Guides/How_to_use_with_Azure_OpenAI_Service.md).
-- Remove legacy Azure image request conversions.
-- Unify HTTP requests and SSE on a shared HttpClient transport while retaining Windows PowerShell 5.1 support and public command outputs.
-- Apply request timeouts independently to each attempt, including response-body reads; fix SSE client reuse and dispose HTTP resources on completion.
-- **BREAKING (v5):** Remove Video API (Sora) support, including Azure video generation: New-Video, New-VideoRemix, Get-Video, Get-VideoContent, Remove-Video, and Wait-Video.
-- Add `Request-ContentProvenanceCheck` to check image and audio files for OpenAI C2PA and SynthID provenance signals.
-- Add `gpt-6-sol` and `gpt-6-luna`.
+
+### 5.0.0
+
+#### Breaking changes and migration
+
+- **Azure OpenAI:** Remove the Azure-specific API mode and `ApiType`, `ApiVersion`, and `AuthType` parameters/context properties. Remove these parameters from scripts, including `-ApiType OpenAI`. For Azure v1, set `ApiBase` to `https://<resource>.openai.azure.com/openai/v1/`, pass an Azure API key or Entra ID token as `ApiKey` (Bearer authentication), and use the deployment name as `Model`. Legacy deployment URLs and `api-key` authentication are no longer used. See the [migration guide](Guides/How_to_use_with_Azure_OpenAI_Service.md).
+- **Video API (Sora):** Remove `New-Video`, `New-VideoRemix`, `Get-Video`, `Get-VideoContent`, `Remove-Video`, and `Wait-Video`. There API is no longer available from OpenAI.
+- **Local utilities:** Remove `ConvertTo-Token`, `ConvertFrom-Token`, and `Get-CosineSimilarity`, including the bundled tokenizer library. Use another library for tokenization or vector similarity.
+- **API keys:** Explicit `-ApiKey $null` now uses an empty key. Omit `-ApiKey` to use the configured key.
+
+#### Added and improved
+
+- Add `Request-ContentProvenanceCheck` for image and audio provenance checks (C2PA and SynthID).
+- Add completions for `gpt-6-sol`, `gpt-6-luna`, and GPT Image 2.5 models. Accept additional image quality and size values supported by the server.
+- Add `Request-Response -RemoteMCPTunnelId`, `-PromptCacheComparisonResponseId`, and `-PromptCachePrewarm`. Deprecate `-ConnectorId` for models released after September 1, 2026.
+- Share the HTTP transport across regular and streaming requests. `TimeoutSec` now covers each attempt's response read.
+
+#### Fixed
+
+- Fix API key precedence, response compaction prompt cache options, and structured output parsing of final-answer content.
 
 ### 4.51.0
 - **IMPORTANT:** Remove Assistants API functions. The Assistants API was shut down by OpenAI on 2026-08-26.
