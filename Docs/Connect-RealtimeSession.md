@@ -15,9 +15,7 @@ Create a new OpenAI realtime conversation session.
 ```
 Connect-RealtimeSession
     [-Model <String>]
-    [-ApiType <OpenAIApiType>]
     [-ApiBase <Uri>]
-    [-AuthType <String>]
     [-ApiKey <SecureString>]
 ```
 
@@ -61,27 +59,6 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
 
 ```yaml
 Type: Object
-Required: False
-Position: Named
-```
-
-### -ApiType
-Specifies API type of use. `OpenAI`(default) or `Azure`
-
-```yaml
-Type: OpenAIApiType
-Accepted values: OpenAI, Azure
-Required: False
-Position: Named
-Default value: OpenAI
-```
-
-### -AuthType
-If you wish to use Entra-ID based authentication, specifies as `azure_ad`.
-
-```yaml
-Type: String
-Accepted values: openai, azure, azure_ad
 Required: False
 Position: Named
 ```

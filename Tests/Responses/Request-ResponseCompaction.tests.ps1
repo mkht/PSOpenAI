@@ -11,7 +11,7 @@ Describe 'Request-ResponseCompaction' {
     Context 'Unit tests (offline)' -Tag 'Offline' {
         BeforeAll {
             Mock -ModuleName $script:ModuleName Initialize-APIKey { [securestring]::new() }
-            Mock -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $PesterBoundParameters }
+            Mock -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { $PesterBoundParameters }
         }
 
         BeforeEach {
@@ -19,7 +19,7 @@ Describe 'Request-ResponseCompaction' {
         }
 
         It 'Simple response compaction' {
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { @'
 {
   "id": "resp_abcd1234",
   "object": "response.compaction",
@@ -101,7 +101,7 @@ Describe 'Request-ResponseCompaction' {
   "usage": {}
 }
 '@
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $Response_json }
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { $Response_json }
             { $script:Result = Request-ResponseCompaction -Message 'Hello.' -OutputRawResponse -ea Stop } | Should -Not -Throw
             Should -InvokeVerifiable
             $Result | Should -BeOfType [string]
@@ -109,7 +109,7 @@ Describe 'Request-ResponseCompaction' {
         }
 
         It 'Pipeline input' {
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { @'
 {
   "id": "resp_abcd1234",
   "object": "response.compaction",
@@ -154,7 +154,7 @@ Describe 'Request-ResponseCompaction' {
         }
 
         It 'Image input' {
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { @'
 {
   "id": "resp_abcd1234",
   "object": "response.compaction",
@@ -178,7 +178,7 @@ Describe 'Request-ResponseCompaction' {
         }
 
         It 'File input' {
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { @'
 {
   "id": "resp_abcd1234",
   "object": "response.compaction",
@@ -202,14 +202,14 @@ Describe 'Request-ResponseCompaction' {
         }
 
         It 'Input Message is required' {
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest {}
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } {}
             { Request-ResponseCompaction -Model 'gpt-5.2' -ea Stop } | Should -Throw 'No message is specified. You must specify one or more messages.'
             Should -Not -InvokeVerifiable
         }
 
 
         It 'Full parameters' {
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { @'
 {
   "id": "resp_abcd1234",
   "object": "response.compaction",

@@ -11,8 +11,8 @@ Describe 'New-Container' {
     Context 'Unit tests (offline)' -Tag 'Offline' {
         BeforeAll {
             Mock -ModuleName $script:ModuleName Initialize-APIKey { [securestring]::new() }
-            Mock -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $PesterBoundParameters }
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+            Mock -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { $PesterBoundParameters }
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { @'
 {
     "id": "container_abc123",
     "object": "container",
@@ -34,7 +34,7 @@ Describe 'New-Container' {
 
         It 'Create container' {
             { $script:Result = New-Container -Name 'My Container' -ea Stop } | Should -Not -Throw
-            Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
+            Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 1 -Exactly
             $Result | Should -BeOfType [pscustomobject]
             $Result.psobject.TypeNames | Should -Contain 'PSOpenAI.Container'
             $Result.id | Should -BeExactly 'container_abc123'
@@ -51,13 +51,13 @@ Describe 'New-Container' {
                 MemoryLimit         = '4g'
             }
             { $script:Result = New-Container @Params -ea Stop } | Should -Not -Throw
-            Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
+            Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 1 -Exactly
         }
 
         Context 'Parameter Sets' {
             It 'Name only' {
                 { New-Container -Name 'My Container' -ea Stop } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 1 -Exactly
             }
 
             It 'FileId' {
@@ -65,7 +65,7 @@ Describe 'New-Container' {
                 { New-Container -Name 'My Container' -FileId 'file-abc123' -ea Stop } | Should -Not -Throw
                 # Array
                 { New-Container -Name 'My Container' -FileId 'file-abc123', 'file-abc456' -ea Stop } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 2 -Exactly
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 2 -Exactly
             }
 
             It 'File object' {
@@ -81,7 +81,7 @@ Describe 'New-Container' {
                 { New-Container -Name 'My Container' -FileId $InObject1 -ea Stop } | Should -Not -Throw
                 # Array
                 { New-Container -Name 'My Container' -FileId $InObject1, $InObject2 -ea Stop } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 2 -Exactly
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 2 -Exactly
             }
 
             It 'Mix' {
@@ -94,7 +94,7 @@ Describe 'New-Container' {
                     id         = 'file-abc456'
                 }
                 { New-Container -Name 'My Container' -FileId 'file-abc123', $InObject1, 'file-abc456', $InObject2 -ea Stop } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 1 -Exactly
             }
         }
     }

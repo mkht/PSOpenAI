@@ -161,7 +161,7 @@ class UnprocessableEntityException : APIRequestException {
         [string]$message,
         [object]$response,
         [object]$content,
-        [System.Net.HttpStatusCode]422,
+        [System.Net.HttpStatusCode][Enum]::ToObject([System.Net.HttpStatusCode], 422),
         [Exception]$innerException
     ) {}
 }
@@ -176,7 +176,7 @@ class RateLimitExceededException : APIRequestException {
         [string]$message,
         [object]$response,
         [object]$content,
-        [System.Net.HttpStatusCode]429,
+        [System.Net.HttpStatusCode][Enum]::ToObject([System.Net.HttpStatusCode], 429),
         [Exception]$innerException
     ) {}
 }

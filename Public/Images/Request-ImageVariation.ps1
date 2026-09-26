@@ -31,17 +31,8 @@ function Request-ImageVariation {
         [Parameter()]
         [int]$TimeoutSec = 0,
 
-        # [Parameter(DontShow)]
-        # [OpenAIApiType]$ApiType = [OpenAIApiType]::OpenAI,
-
         [Parameter()]
         [System.Uri]$ApiBase,
-
-        # [Parameter(DontShow)]
-        # [string]$ApiVersion,
-
-        # [Parameter(DontShow)]
-        # [string]$AuthType = 'openai',
 
         [Parameter()]
         [ValidateRange(0, 100)]
@@ -133,7 +124,7 @@ function Request-ImageVariation {
             AdditionalHeaders = $AdditionalHeaders
             AdditionalBody    = $AdditionalBody
         }
-        $Response = Invoke-OpenAIAPIRequest @params
+        $Response = Invoke-OpenAIHttpRequest @params
 
         # error check
         if ($null -eq $Response) {
@@ -163,9 +154,8 @@ function Request-ImageVariation {
                     Uri             = $_
                     Method          = 'Get'
                     OutFile         = $AbsoluteOutFile
-                    UseBasicParsing = $true
                 }
-                Microsoft.PowerShell.Utility\Invoke-WebRequest @splat
+                Invoke-OpenAIHttpRequest @splat
             }
         }
         elseif ($ResponseFormat -eq 'url') {

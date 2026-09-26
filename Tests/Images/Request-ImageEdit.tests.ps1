@@ -13,12 +13,29 @@ Describe 'Request-ImageEdit' {
     Context 'Unit tests (offline)' -Tag 'Offline' {
         BeforeAll {
             Mock -ModuleName $script:ModuleName Initialize-APIKey { [securestring]::new() }
-            Mock -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $PesterBoundParameters }
+            Mock -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { $PesterBoundParameters }
             Mock -ModuleName $script:ModuleName Remove-Item {}
         }
 
         BeforeEach {
             $script:Result = ''
+        }
+
+        It 'Serializes GPT Image 2.5 model, arbitrary size, and xhigh quality' {
+            {
+                $script:Result = Request-ImageEdit `
+                    -Image ($script:TestImageData + '/fether_mask.png') `
+                    -Prompt 'Add a sunrise' `
+                    -Model 'gpt-image-2.5-sunburst' `
+                    -Size '2048x1024' `
+                    -Quality 'xhigh' `
+                    -OutputRawResponse `
+                    -ea Stop
+            } | Should -Not -Throw
+
+            $Result.Body.model | Should -BeExactly 'gpt-image-2.5-sunburst'
+            $Result.Body.size | Should -BeExactly '2048x1024'
+            $Result.Body.quality | Should -BeExactly 'xhigh'
         }
 
         It 'Image edit. one input, one output, save to file' {
@@ -36,7 +53,7 @@ Describe 'Request-ImageEdit' {
   }
 }
 '@
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $TestResponse }
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { $TestResponse }
             { $splat = @{
                     Prompt      = 'Hello'
                     Image       = $script:TestImageData + '/fether_mask.png'
@@ -73,7 +90,7 @@ Describe 'Request-ImageEdit' {
   }
 }
 '@
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $TestResponse }
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { $TestResponse }
             { $splat = @{
                     Prompt         = 'Hello'
                     Image          = @(($script:TestImageData + '/fether_mask.png'), ($script:TestImageData + '/cupcake.png'))
@@ -107,7 +124,7 @@ Describe 'Request-ImageEdit' {
   }
 }
 '@
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $TestResponse }
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { $TestResponse }
             { $splat = @{
                     Prompt         = 'Hello'
                     Image          = ($script:TestImageData + '/fether_mask.png')
@@ -136,7 +153,7 @@ Describe 'Request-ImageEdit' {
     ]
 }
 '@
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $TestResponse }
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { $TestResponse }
             { $script:Result = Request-ImageEdit -Image ($script:TestImageData + '/fether_mask.png') -Model gpt-image-1 -Prompt 'sunflower' -ResponseFormat url -ea Stop } | Should -Not -Throw
             Should -InvokeVerifiable
             $Result.PSTypeNames | Should -Contain 'PSOpenAI.Image'
@@ -144,7 +161,7 @@ Describe 'Request-ImageEdit' {
         }
 
         It 'Error if image file not exist' {
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest {}
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } {}
             { $script:Result = Request-ImageEdit -Image ($script:TestImageData + '/notexist.png') -Prompt 'sunflower' -ea Stop } | Should -Throw
             Should -Not -InvokeVerifiable
         }
@@ -166,8 +183,8 @@ Describe 'Request-ImageEdit' {
   }
 }
 '@
-                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequestSSE { $TestResponse }
-                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { }
+                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { $Stream } { $TestResponse }
+                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { }
                 { $splat = @{
                         Prompt      = 'Hello'
                         Image       = ($script:TestImageData + '/fether_mask.png')
@@ -178,21 +195,21 @@ Describe 'Request-ImageEdit' {
                     }
                     $script:Result = Request-ImageEdit @splat -Stream
                 } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequestSSE -ModuleName $script:ModuleName -Times 1 -Exactly
-                Should -Not -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { $Stream } -ModuleName $script:ModuleName -Times 1 -Exactly
+                Should -Not -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName
                 $Result | Should -BeNullOrEmpty
                 (Join-Path $TestDrive 'file.png') | Should -Exist
                 (Join-Path $TestDrive 'file.png') | Should -FileContentMatchExactly 'TEST_IMAGE_1'
             }
 
             It 'Image Edit. OutFile. Partial images.' {
-                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequestSSE {
+                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { $Stream } {
                     '{"type":"image_edit.partial_image","b64_json":"VEVTVF9JTUFHRV8yX1BBUlRJQUxfMA==","created_at":1620000000,"partial_image_index": 0}'
                     '{"type":"image_edit.partial_image","b64_json":"VEVTVF9JTUFHRV8yX1BBUlRJQUxfMQ==","created_at":1620000000,"partial_image_index": 1}'
                     '{"type":"image_edit.partial_image","b64_json":"VEVTVF9JTUFHRV8yX1BBUlRJQUxfMg==","created_at":1620000000,"partial_image_index": 2}'
                     '{"type":"image_edit.completed","b64_json":"VEVTVF9JTUFHRV8y","created_at":1620000000}'
                 }
-                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { }
+                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { }
                 { $splat = @{
                         Prompt        = 'Hello'
                         Image         = ($script:TestImageData + '/fether_mask.png')
@@ -204,8 +221,8 @@ Describe 'Request-ImageEdit' {
                     }
                     $script:Result = Request-ImageEdit @splat -Stream
                 } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequestSSE -ModuleName $script:ModuleName -Times 1 -Exactly
-                Should -Not -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { $Stream } -ModuleName $script:ModuleName -Times 1 -Exactly
+                Should -Not -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName
                 $Result | Should -BeNullOrEmpty
                 (Join-Path $TestDrive 'file-0.png') | Should -FileContentMatchExactly 'TEST_IMAGE_2_PARTIAL_0'
                 (Join-Path $TestDrive 'file-1.png') | Should -FileContentMatchExactly 'TEST_IMAGE_2_PARTIAL_1'
@@ -214,11 +231,11 @@ Describe 'Request-ImageEdit' {
             }
 
             It 'Image Edit. ResponseFormat = object' {
-                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequestSSE {
+                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { $Stream } {
                     '{"type":"image_edit.partial_image","b64_json":"VEVTVF9JTUFHRV8zX1BBUlRJQUxfMA==","created_at":1620000000,"partial_image_index": 0}'
                     '{"type":"image_edit.completed","b64_json":"VEVTVF9JTUFHRV8z","created_at":1620000000}'
                 }
-                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { }
+                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { }
                 { $splat = @{
                         Prompt         = 'Hello'
                         Image          = ($script:TestImageData + '/fether_mask.png')
@@ -230,8 +247,8 @@ Describe 'Request-ImageEdit' {
                     }
                     $script:Result = Request-ImageEdit @splat -Stream
                 } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequestSSE -ModuleName $script:ModuleName -Times 1 -Exactly
-                Should -Not -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { $Stream } -ModuleName $script:ModuleName -Times 1 -Exactly
+                Should -Not -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName
                 $Result | Should -HaveCount 2
                 $Result[0].PSTypeNames | Should -Contain 'PSOpenAI.Image'
                 $Result[0].type | Should -Be 'image_edit.partial_image'
@@ -244,11 +261,11 @@ Describe 'Request-ImageEdit' {
             }
 
             It 'Image Edit. ResponseFormat = base64' {
-                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequestSSE {
+                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { $Stream } {
                     '{"type":"image_edit.partial_image","b64_json":"VEVTVF9JTUFHRV8zX1BBUlRJQUxfMA==","created_at":1620000000,"partial_image_index": 0}'
                     '{"type":"image_edit.completed","b64_json":"VEVTVF9JTUFHRV8z","created_at":1620000000}'
                 }
-                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { }
+                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { }
                 { $splat = @{
                         Prompt         = 'Hello'
                         Image          = ($script:TestImageData + '/fether_mask.png')
@@ -260,18 +277,18 @@ Describe 'Request-ImageEdit' {
                     }
                     $script:Result = Request-ImageEdit @splat -Stream
                 } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequestSSE -ModuleName $script:ModuleName -Times 1 -Exactly
-                Should -Not -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { $Stream } -ModuleName $script:ModuleName -Times 1 -Exactly
+                Should -Not -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName
                 $Result | Should -HaveCount 2
                 $Result[0] | Should -BeExactly 'VEVTVF9JTUFHRV8zX1BBUlRJQUxfMA=='
                 $Result[1] | Should -BeExactly 'VEVTVF9JTUFHRV8z'
             }
 
             It 'Image Edit. ResponseFormat = byte. Single image.' {
-                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequestSSE {
+                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { $Stream } {
                     '{"type":"image_edit.completed","b64_json":"VEVTVF9JTUFHRV8z","created_at":1620000000}'
                 }
-                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { }
+                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { }
                 { $splat = @{
                         Prompt         = 'Hello'
                         Image          = ($script:TestImageData + '/fether_mask.png')
@@ -283,19 +300,19 @@ Describe 'Request-ImageEdit' {
                     }
                     $script:Result = Request-ImageEdit @splat -Stream
                 } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequestSSE -ModuleName $script:ModuleName -Times 1 -Exactly
-                Should -Not -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { $Stream } -ModuleName $script:ModuleName -Times 1 -Exactly
+                Should -Not -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName
                 $Result | Should -HaveCount 12
                 $Result[0] | Should -Be 84
                 $Result[-1] | Should -Be 51
             }
 
             It 'Image Edit. ResponseFormat = byte. Partial image.' {
-                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequestSSE {
+                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { $Stream } {
                     '{"type":"image_edit.partial_image","b64_json":"VEVTVF9JTUFHRV8zX1BBUlRJQUxfMA==","created_at":1620000000,"partial_image_index": 0}'
                     '{"type":"image_edit.completed","b64_json":"VEVTVF9JTUFHRV8z","created_at":1620000000}'
                 }
-                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { }
+                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { }
                 { $splat = @{
                         Prompt         = 'Hello'
                         Image          = ($script:TestImageData + '/fether_mask.png')
@@ -307,8 +324,8 @@ Describe 'Request-ImageEdit' {
                     }
                     $script:Result = Request-ImageEdit @splat -Stream
                 } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequestSSE -ModuleName $script:ModuleName -Times 1 -Exactly
-                Should -Not -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { $Stream } -ModuleName $script:ModuleName -Times 1 -Exactly
+                Should -Not -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName
                 $Result | Should -HaveCount 2
                 $Result[0] | Should -HaveCount 22
                 $Result[1] | Should -HaveCount 12
@@ -317,11 +334,11 @@ Describe 'Request-ImageEdit' {
             }
 
             It 'Image Edit. ResponseFormat = byte. Partial image.' {
-                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequestSSE {
+                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { $Stream } {
                     '{"type":"image_edit.partial_image","b64_json":"VEVTVF9JTUFHRV8zX1BBUlRJQUxfMA==","created_at":1620000000,"partial_image_index": 0}'
                     '{"type":"image_edit.completed","b64_json":"VEVTVF9JTUFHRV8z","created_at":1620000000}'
                 }
-                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { }
+                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { }
                 { $splat = @{
                         Prompt         = 'Hello'
                         Image          = ($script:TestImageData + '/fether_mask.png')
@@ -333,8 +350,8 @@ Describe 'Request-ImageEdit' {
                     }
                     $script:Result = Request-ImageEdit @splat -Stream
                 } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequestSSE -ModuleName $script:ModuleName -Times 1 -Exactly
-                Should -Not -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { $Stream } -ModuleName $script:ModuleName -Times 1 -Exactly
+                Should -Not -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName
                 $Result | Should -HaveCount 2
                 $Result[0] | Should -HaveCount 22
                 $Result[1] | Should -HaveCount 12
@@ -343,10 +360,10 @@ Describe 'Request-ImageEdit' {
             }
 
             It 'Unknwon event type, Just ignore.' {
-                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequestSSE {
+                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { $Stream } {
                     '{"type":"unknown.event","b64_json":"VU5LTldPTg==","created_at":1620000000}'
                 }
-                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { }
+                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { }
                 { $splat = @{
                         Prompt      = 'Hello'
                         Image       = ($script:TestImageData + '/fether_mask.png')
@@ -356,8 +373,8 @@ Describe 'Request-ImageEdit' {
                     }
                     $script:Result = Request-ImageEdit @splat -Stream
                 } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequestSSE -ModuleName $script:ModuleName -Times 1 -Exactly
-                Should -Not -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { $Stream } -ModuleName $script:ModuleName -Times 1 -Exactly
+                Should -Not -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName
                 $Result | Should -BeNullOrEmpty
             }
         }

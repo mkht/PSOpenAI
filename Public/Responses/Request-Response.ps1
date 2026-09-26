@@ -40,6 +40,8 @@ function Request-Response {
             'gpt-5.6-luna',
             'gpt-5.6-terra',
             'gpt-5.6-sol',
+            'gpt-6-luna',
+            'gpt-6-sol',
             'gpt-6-astra',
             'o1',
             'o1-pro',
@@ -214,6 +216,10 @@ function Request-Response {
         [string]$RemoteMCPServerUrl,
 
         [Parameter()]
+        [ValidateNotNullOrEmpty()]
+        [string]$RemoteMCPTunnelId,
+
+        [Parameter()]
         [string]$RemoteMCPServerDescription,
 
         [Parameter()]
@@ -249,6 +255,7 @@ function Request-Response {
             'connector_outlookemail',
             'connector_sharepoint'
         )]
+        [System.Obsolete('ConnectorId is deprecated for models released after 2026-09-01. Use a remote MCP server URL or tunnel ID instead.')]
         [ValidateNotNullOrEmpty()]
         [string]$ConnectorId,
 
@@ -286,7 +293,15 @@ function Request-Response {
         [string]$ImageGenerationType = 'image_generation', # Always 'image_generation'
 
         [Parameter()]
-        [Completions('gpt-image-1', 'gpt-image-1-mini', 'gpt-image-1.5', 'gpt-image-2', 'chatgpt-image-latest')]
+        [Completions(
+            'gpt-image-2.5-sunburst',
+            'gpt-image-2.5-flare',
+            'gpt-image-2',
+            'gpt-image-1.5',
+            'gpt-image-1',
+            'gpt-image-1-mini',
+            'chatgpt-image-latest'
+        )]
         [string]$ImageGenerationModel,
 
         [Parameter()]
@@ -308,7 +323,7 @@ function Request-Response {
         [int]$ImageGenerationOutputCompression,
 
         [Parameter()]
-        [ValidateSet('png', 'jpeg', 'webp')]
+        [Completions('png', 'jpeg', 'webp')]
         [string][LowerCaseTransformation()]$ImageGenerationOutputFormat = 'png',
 
         [Parameter()]
@@ -316,11 +331,11 @@ function Request-Response {
         [int]$ImageGenerationPartialImages,
 
         [Parameter()]
-        [ValidateSet('low', 'medium', 'high', 'auto')]
+        [Completions('low', 'medium', 'high', 'xhigh', 'max', 'auto')]
         [string][LowerCaseTransformation()]$ImageGenerationQuality = 'auto',
 
         [Parameter()]
-        [ValidateSet('auto', '1024x1024', '1536x1024', '1024x1536')]
+        [Completions('auto', '1024x1024', '1536x1024', '1024x1536')]
         [string]$ImageGenerationSize = 'auto',
         #endregion Image Generation
 
@@ -474,6 +489,14 @@ function Request-Response {
         [string]$PromptCacheTtl,
 
         [Parameter()]
+        [Alias('prompt_cache_options.comparison_response_id')]
+        [string]$PromptCacheComparisonResponseId,
+
+        [Parameter()]
+        [Alias('prompt_cache_options.prewarm')]
+        [switch]$PromptCachePrewarm,
+
+        [Parameter()]
         [Alias('safety_identifier')]
         [string]$SafetyIdentifier,
 
@@ -498,17 +521,7 @@ function Request-Response {
         [int]$MaxRetryCount = 0,
 
         [Parameter()]
-        [OpenAIApiType]$ApiType = [OpenAIApiType]::OpenAI,
-
-        [Parameter()]
         [System.Uri]$ApiBase,
-
-        [Parameter(DontShow)]
-        [string]$ApiVersion,
-
-        [Parameter()]
-        [ValidateSet('openai', 'azure', 'azure_ad')]
-        [string]$AuthType = 'openai',
 
         [Parameter()]
         [securestring][SecureStringTransformation()]$ApiKey,
@@ -532,7 +545,7 @@ function Request-Response {
 
     begin {
         # Get API context
-        $OpenAIParameter = Get-OpenAIAPIParameter -EndpointName 'Responses' -Parameters $PSBoundParameters -Engine $Model -ErrorAction Stop
+        $OpenAIParameter = Get-OpenAIAPIParameter -EndpointName 'Responses' -Parameters $PSBoundParameters -ErrorAction Stop
 
         ## Set up masking patterns
         $MaskPatterns = [System.Collections.Generic.List[Tuple[regex, string]]]::new()
@@ -645,6 +658,12 @@ function Request-Response {
         }
         if ($PSBoundParameters.ContainsKey('PromptCacheTtl')) {
             $PromptCacheOptions.ttl = $PromptCacheTtl
+        }
+        if ($PSBoundParameters.ContainsKey('PromptCacheComparisonResponseId')) {
+            $PromptCacheOptions.comparison_response_id = $PromptCacheComparisonResponseId
+        }
+        if ($PSBoundParameters.ContainsKey('PromptCachePrewarm')) {
+            $PromptCacheOptions.prewarm = $PromptCachePrewarm.IsPresent
         }
         if ($PromptCacheOptions.Keys.Count -gt 0) {
             $PostBody.prompt_cache_options = $PromptCacheOptions
@@ -838,18 +857,26 @@ function Request-Response {
 
         #region Remote MCP
         if ($UseRemoteMCPTool) {
-            # Server label and URL are required.
+            # Server label and one connection target are required.
             if ([string]::IsNullOrWhiteSpace($RemoteMCPServerLabel)) {
                 Write-Error 'RemoteMCPServerLabel must be specified.'
             }
-            if ([string]::IsNullOrWhiteSpace($RemoteMCPServerUrl)) {
-                Write-Error 'RemoteMCPServerUrl must be specified.'
+            if ([string]::IsNullOrWhiteSpace($RemoteMCPServerUrl) -and [string]::IsNullOrWhiteSpace($RemoteMCPTunnelId)) {
+                Write-Error 'RemoteMCPServerUrl or RemoteMCPTunnelId must be specified.'
+            }
+            if (-not [string]::IsNullOrWhiteSpace($RemoteMCPServerUrl) -and -not [string]::IsNullOrWhiteSpace($RemoteMCPTunnelId)) {
+                Write-Error 'RemoteMCPServerUrl and RemoteMCPTunnelId cannot be specified together.'
             }
 
             $MCPTool = @{
                 type         = $RemoteMCPType
                 server_label = $RemoteMCPServerLabel
-                server_url   = $RemoteMCPServerUrl
+            }
+            if ($PSBoundParameters.ContainsKey('RemoteMCPServerUrl')) {
+                $MCPTool.server_url = $RemoteMCPServerUrl
+            }
+            if ($PSBoundParameters.ContainsKey('RemoteMCPTunnelId')) {
+                $MCPTool.tunnel_id = $RemoteMCPTunnelId
             }
 
             if ($PSBoundParameters.ContainsKey('RemoteMCPServerDescription')) {
@@ -1162,7 +1189,6 @@ function Request-Response {
             TimeoutSec        = $OpenAIParameter.TimeoutSec
             MaxRetryCount     = $OpenAIParameter.MaxRetryCount
             ApiKey            = $OpenAIParameter.ApiKey
-            AuthType          = $OpenAIParameter.AuthType
             Organization      = $OpenAIParameter.Organization
             Body              = $PostBody
             AdditionalQuery   = $AdditionalQuery
@@ -1177,7 +1203,7 @@ function Request-Response {
                 $splat.First = 1
             }
             # Stream output
-            Invoke-OpenAIAPIRequestSSE @splat |
+            Invoke-OpenAIHttpRequest -Stream @splat |
                 Where-Object {
                     -not [string]::IsNullOrEmpty($_)
                 } | ForEach-Object -Process {
@@ -1216,7 +1242,7 @@ function Request-Response {
 
         #region Send API Request (No Stream)
         else {
-            $Response = Invoke-OpenAIAPIRequest @splat
+            $Response = Invoke-OpenAIHttpRequest @splat
 
             # error check
             if ($null -eq $Response) {

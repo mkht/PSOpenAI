@@ -2,16 +2,14 @@
 
 [![Test](https://github.com/mkht/PSOpenAI/actions/workflows/test.yml/badge.svg)](https://github.com/mkht/PSOpenAI/actions/workflows/test.yml)
 
-PowerShell module for OpenAI and Azure OpenAI Service.  
+PowerShell module for OpenAI and OpenAI-compatible API servers.
+
 You can use OpenAI functions such as ChatGPT, Speech-to-Text, Text-to-Image from PowerShell.
 
 **This is a community-based project and is not an official offering of OpenAI.**
 
 + About OpenAI API  
 https://platform.openai.com/docs
-
-+ About Azure OpenAI Service  
-https://learn.microsoft.com/en-us/azure/ai-services/openai/overview
 
 ----
 ## Supported Platforms
@@ -38,9 +36,6 @@ Install-Module -Name PSOpenAI
 <summary>The full list of functions</summary>
 
 ### Common
-+ [ConvertFrom-Token](/Docs/ConvertFrom-Token.md)
-+ [ConvertTo-Token](/Docs/ConvertTo-Token.md)
-+ [Get-CosineSimilarity](/Docs/Get-CosineSimilarity.md)
 + [Get-OpenAIContext](/Docs/Get-OpenAIContext.md)
 + [Set-OpenAIContext](/Docs/Set-OpenAIContext.md)
 + [Clear-OpenAIContext](/Docs/Clear-OpenAIContext.md)
@@ -118,15 +113,6 @@ Guide: [How to use Realtime API](/Guides/How_to_use_Realtime_API.md)
 + [Request-AudioTranscription](/Docs/Request-AudioTranscription.md)
 + [Request-AudioTranslation](/Docs/Request-AudioTranslation.md)
 
-#### Videos
-Guide: [How to use Video generation](/Guides/How_to_use_Video_generation.md)
-
-+ [New-Video](/Docs/New-Video.md)
-+ [New-VideoRemix](/Docs/New-VideoRemix.md)
-+ [Get-Video](/Docs/Get-Video.md)
-+ [Get-VideoContent](/Docs/Get-VideoContent.md)
-+ [Remove-Video](/Docs/Remove-Video.md)
-
 #### Files
 + [Get-OpenAIFile](/Docs/Get-OpenAIFile.md)
 + [Add-OpenAIFile](/Docs/Add-OpenAIFile.md)
@@ -158,8 +144,8 @@ Guide: [How to use Batch](/Guides/How_to_use_Batch.md)
 + [Request-ContentProvenanceCheck](/Docs/Request-ContentProvenanceCheck.md)
 + [Request-TextCompletion](/Docs/Request-TextCompletion.md)
 
-### Azure OpenAI Service
-+ [Guide: How to use with Azure OpenAI Service](Guides/How_to_use_with_Azure_OpenAI_Service.md)
+### OpenAI-compatible API servers
++ [Guide: Migrate Azure OpenAI to v1](Guides/How_to_use_with_Azure_OpenAI_Service.md)
 
 </details>
 
@@ -192,7 +178,7 @@ Chat Completions API is compatible with other AI services besides OpenAI, such a
 
 ```PowerShell
 $env:OPENAI_API_KEY = '<Put your API key here.>'
-$Completion = Request-ChatCompletion -Model 'gpt-5.6-luna' -Message 'Give me a recipe for chocolate cake.'
+$Completion = Request-ChatCompletion -Model 'gpt-6-luna' -Message 'Give me a recipe for chocolate cake.'
 Write-Output $Completion.Answer[0]
 ```
 
@@ -238,16 +224,6 @@ The edited image like this.
 | Original                                        | Generated                                  |
 | ----------------------------------------------- | ------------------------------------------ |
 | ![original](/Docs/images/sand_with_feather.png) | ![edited](/Docs/images/bird_on_desert.png) |
-
-### Video generation
-Generate a video from a text prompt.
-
-```PowerShell
-$VideoJob = New-Video -Model 'sora-2' -Prompt "A cat playing piano" -Size 1280x720
-$VideoJob | Get-VideoContent -OutFile "C:\output\cat_piano.mp4" -WaitForCompletion
-```
-
-![video](/Docs/images/cat_piano.gif)
 
 ### Moderation
 
@@ -316,7 +292,7 @@ Disconnect-RealtimeSession
 `Request-Response` and `Request-ChatCompletion` accepts past dialogs from pipeline. Additional questions can be asked while maintaining context.
 
 ```PowerShell
-PS C:\> $FirstQA = Request-ChatCompletion -Model 'gpt-5.6-luna' -Message 'What is the population of the United States?'
+PS C:\> $FirstQA = Request-ChatCompletion -Model 'gpt-6-luna' -Message 'What is the population of the United States?'
 PS C:\> Write-Output $FirstQA.Answer
 
 The United States has approximately **342 million people** as of 2026. Population figures vary slightly depending on the source and date.
@@ -349,10 +325,10 @@ You can input images to the model and get answers.
 
 ```PowerShell
 # Local file
-$Response = Request-Response -Model 'gpt-5.6-luna' -Images 'C:\SampleData\donut.png' -Message 'How many donuts are there?'
+$Response = Request-Response -Model 'gpt-6-luna' -Images 'C:\SampleData\donut.png' -Message 'How many donuts are there?'
 
 # Remote URL
-$Response = Request-Response -Model 'gpt-5.6-luna' -Images 'https://upload.wikimedia.org/wikipedia/commons/5/5f/Cerro_El_%C3%81vila_desde_El_Bosque_-_Caracas.jpg' -Message 'Where is this?'
+$Response = Request-Response -Model 'gpt-6-luna' -Images 'https://upload.wikimedia.org/wikipedia/commons/5/5f/Cerro_El_%C3%81vila_desde_El_Bosque_-_Caracas.jpg' -Message 'Where is this?'
 ```
 
 ### Web Search
@@ -360,39 +336,24 @@ $Response = Request-Response -Model 'gpt-5.6-luna' -Images 'https://upload.wikim
 Allow models to search the web for the latest information before generating a response.
 
 ```PowerShell
-$Response = Request-Response -Model 'gpt-5.6-terra' -Message 'What was a tech news in December 2025?' -UseWebSearch
-```
-
-### Azure OpenAI Service
-
-If you want to use Azure OpenAI Service instead of OpenAI. You should create Azure OpenAI resource to your Azure tenant, and get API key and endpoint url. See guides for more details.
-
-+ [Guide: How to use with Azure OpenAI Service](Guides/How_to_use_with_Azure_OpenAI_Service.md)
-
-```powershell
-$global:OPENAI_API_KEY = '<Put your api key here>'
-$global:OPENAI_API_BASE  = 'https://<resource-name>.openai.azure.com/'
-
-Request-ChatCompletion `
-  -Model 'gpt-4o' `
-  -Message 'Hello Azure OpenAI Service.' `
-  -ApiType Azure
+$Response = Request-Response -Model 'gpt-6-sol' -Message 'What was a tech news in December 2025?' -UseWebSearch
 ```
 
 ### OpenAI Compatible Servers
 
-If you want to use OpenAI compatible services such as GitHub Models, Google Gemini, self-hosted servers like LM Studio or Ollama.
+If you want to use OpenAI compatible services such as Azure OpenAI, self-hosted servers like LM Studio or Ollama.
 
 ```powershell
-# This is an example for GitHub Models.
-$global:OPENAI_API_KEY = '<Put your GITHUB_TOKEN>'
-$global:OPENAI_API_BASE  = 'https://models.github.ai/inference'
+# This is an example for Azure OpenAI.
+$global:OPENAI_API_KEY = '<Put your Azure API key here.>'
+$global:OPENAI_API_BASE  = 'https://<your-resource>.openai.azure.com/mai/v1/'
 
 Request-ChatCompletion `
-  -Model 'microsoft/Phi-4-reasoning' `
-  -Message 'What is the capital of France?' `
-  -ApiType OpenAI
+  -Model 'MAI-Thinking-1' `
+  -Message 'What is the capital of France?'
 ```
+
+Azure OpenAI v1 can be used through the same interface. Set `ApiBase` to `https://<resource>.openai.azure.com/openai/v1/`, supply the Azure API key or an Entra ID access token as `ApiKey`, and use the deployment name as `Model`. Available operations and options depend on the server. PSOpenAI does not maintain an Azure-specific API mode.
 
 ----
 ## About API key
@@ -453,5 +414,4 @@ This module uses these OSS libraries.
 
 - [Newtonsoft.Json](https://www.newtonsoft.com/json) by jamesnk (MIT License)
 - [NJsonSchema](https://github.com/RicoSuter/NJsonSchema) by rsuter (MIT License)
-- [Microsoft.DeepDev.TokenizerLib](https://github.com/microsoft/Tokenizer) by microsoft (MIT License)
 - [NAudio](https://github.com/naudio/NAudio) by Mark Heath (MIT License)

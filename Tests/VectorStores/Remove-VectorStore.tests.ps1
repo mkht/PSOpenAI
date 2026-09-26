@@ -12,8 +12,8 @@ Describe 'Remove-VectorStore' {
 
         BeforeAll {
             Mock -ModuleName $script:ModuleName Initialize-APIKey { [securestring]::new() }
-            Mock -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $PesterBoundParameters }
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+            Mock -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { $PesterBoundParameters }
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { @'
 {
     "id": "vs_abc123",
     "object": "vector_store.deleted",
@@ -28,7 +28,7 @@ Describe 'Remove-VectorStore' {
 
         It 'Remove vector store with ID' {
             { $script:Result = Remove-VectorStore -VectorStoreId 'vs_abc123' -ea Stop } | Should -Not -Throw
-            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
+            Should -Invoke Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 1 -Exactly
             $Result | Should -BeNullOrEmpty
         }
 
@@ -42,7 +42,7 @@ Describe 'Remove-VectorStore' {
                 { 'vs_abc123' | Remove-VectorStore -ea Stop } | Should -Not -Throw
                 # Pipeline by property name
                 { [pscustomobject]@{vector_store_id = 'vs_abc123' } | Remove-VectorStore -ea Stop } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 4 -Exactly
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 4 -Exactly
             }
 
             It 'VectorStore' {
@@ -56,7 +56,7 @@ Describe 'Remove-VectorStore' {
                 { Remove-VectorStore $InObject -ea Stop } | Should -Not -Throw
                 # Pipeline
                 { $InObject | Remove-VectorStore -ea Stop } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 3 -Exactly
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 3 -Exactly
             }
         }
     }

@@ -11,8 +11,8 @@ Describe 'Add-VectorStoreFile' {
     Context 'Unit tests (offline)' -Tag 'Offline' {
         BeforeAll {
             Mock -ModuleName $script:ModuleName Initialize-APIKey { [securestring]::new() }
-            Mock -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $PesterBoundParameters }
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+            Mock -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { $PesterBoundParameters }
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { @'
 {
     "id": "file-abc123",
     "object": "vector_store.file",
@@ -39,14 +39,14 @@ Describe 'Add-VectorStoreFile' {
 
         It 'Add file to vector store' {
             { $script:Result = Add-VectorStoreFile -VectorStoreId 'vs_abc123' -FileId 'file-abc123' -ea Stop } | Should -Not -Throw
-            Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
+            Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 1 -Exactly
             Should -Not -Invoke -CommandName Get-VectorStore -ModuleName $script:ModuleName
             $Result | Should -BeNullOrEmpty
         }
 
         It 'Add file to vector store (PassThru)' {
             { $script:Result = Add-VectorStoreFile -VectorStoreId 'vs_abc123' -FileId 'file-abc123' -PassThru -ea Stop } | Should -Not -Throw
-            Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
+            Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 1 -Exactly
             Should -Invoke -CommandName Get-VectorStore -ModuleName $script:ModuleName -Times 1 -Exactly
             $Result | Should -BeOfType [pscustomobject]
             $Result.id | Should -Be 'vs_abc123'
@@ -65,7 +65,7 @@ Describe 'Add-VectorStoreFile' {
                 { Get-VectorStoreFile $InObject 'file-abc123' -ea Stop } | Should -Not -Throw
                 # Pipeline
                 { $InObject | Get-VectorStoreFile -FileId 'file-abc123' -ea Stop } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 3 -Exactly
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 3 -Exactly
             }
 
             It 'VectorStore_File' {
@@ -83,7 +83,7 @@ Describe 'Add-VectorStoreFile' {
                 { Add-VectorStoreFile $InObject $FileObject -ea Stop } | Should -Not -Throw
                 # Pipeline
                 { $InObject | Add-VectorStoreFile -File $FileObject -ea Stop } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 3 -Exactly
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 3 -Exactly
             }
 
             It 'VectorStoreId_FileId' {
@@ -95,7 +95,7 @@ Describe 'Add-VectorStoreFile' {
                 { 'vs_abc123' | Add-VectorStoreFile -FileId 'file-abc123' -ea Stop } | Should -Not -Throw
                 # Pipeline by property name
                 { [pscustomobject]@{VectorStoreId = 'vs_abc123'; FileId = 'file-abc123' } | Add-VectorStoreFile -ea Stop } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 4 -Exactly
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 4 -Exactly
             }
 
             It 'VectorStoreId_File' {
@@ -111,7 +111,7 @@ Describe 'Add-VectorStoreFile' {
                 { 'vs_abc123' | Add-VectorStoreFile -File $FileObject -ea Stop } | Should -Not -Throw
                 # Pipeline by property name
                 { [pscustomobject]@{VectorStoreId = 'vs_abc123'; File = $FileObject } | Add-VectorStoreFile -ea Stop } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 4 -Exactly
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 4 -Exactly
             }
         }
     }

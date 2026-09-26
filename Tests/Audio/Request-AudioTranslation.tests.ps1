@@ -11,7 +11,7 @@ Describe 'Request-AudioTranslation' {
     Context 'Unit tests (offline)' -Tag 'Offline' {
         BeforeAll {
             Mock -ModuleName $script:ModuleName Initialize-APIKey { [securestring]::new() }
-            Mock -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $PesterBoundParameters }
+            Mock -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { $PesterBoundParameters }
             Mock -ModuleName $script:ModuleName Remove-Item {}
         }
 
@@ -20,7 +20,7 @@ Describe 'Request-AudioTranslation' {
         }
 
         It 'Audio translation' {
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { 'MOCKED' }
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { 'MOCKED' }
             { $script:Text = Request-AudioTranslation -File ($script:TestData + '/voice_japanese.mp3') -ea Stop } | Should -Not -Throw
             Should -InvokeVerifiable
             $Text | Should -Be 'MOCKED'
@@ -32,7 +32,7 @@ Describe 'Request-AudioTranslation' {
         }
 
         It 'Error if file not exist' {
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest {}
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } {}
             { Request-AudioTranslation -File ($script:TestData + '/notexist.mp3') -ea Stop } | Should -Throw
             Should -Not -InvokeVerifiable
         }

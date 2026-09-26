@@ -11,7 +11,7 @@ Describe 'Set-ChatCompletion' {
     Context 'Unit tests (offline)' -Tag 'Offline' {
         BeforeAll {
             Mock -ModuleName $script:ModuleName Initialize-APIKey { [securestring]::new() }
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { @'
 {
   "object": "chat.completion",
   "id": "chatcmpl-abc123",
@@ -54,7 +54,7 @@ Describe 'Set-ChatCompletion' {
 
         It 'Update metadata with completion ID' {
             { $script:Result = Set-ChatCompletion -CompletionId 'chatcmpl-abc123' -MetaData @{'foo' = 'qux' } -ea Stop } | Should -Not -Throw
-            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
+            Should -Invoke Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 1 -Exactly
             $Result.metadata.foo | Should -Be 'qux'
             $Result.PSTypeNames | Should -Contain 'PSOpenAI.Chat.Completion'
         }
@@ -73,7 +73,7 @@ Describe 'Set-ChatCompletion' {
                 { Set-ChatCompletion $InObject -MetaData @{'foo' = 'qux' } -ea Stop } | Should -Not -Throw
                 # Pipeline
                 { $InObject | Set-ChatCompletion -MetaData @{'foo' = 'qux' } -ea Stop } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 4 -Exactly
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 4 -Exactly
             }
 
             It 'Id' {
@@ -87,7 +87,7 @@ Describe 'Set-ChatCompletion' {
                 { 'file-abc123' | Set-ChatCompletion -MetaData @{'foo' = 'qux' } -ea Stop } | Should -Not -Throw
                 # Pipeline by property name
                 { [pscustomobject]@{completion_id = 'file-abc123' } | Set-ChatCompletion -MetaData @{'foo' = 'qux' } -ea Stop } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 5 -Exactly
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 5 -Exactly
             }
         }
     }

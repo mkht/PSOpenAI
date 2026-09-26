@@ -12,7 +12,7 @@ Describe 'Add-ConversationItem' {
 
         BeforeAll {
             Mock -ModuleName $script:ModuleName Initialize-APIKey { [securestring]::new() }
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest {
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } {
                 @'
 {
   "object": "list",
@@ -84,7 +84,7 @@ Describe 'Add-ConversationItem' {
                 }
                 $script:Result = Add-ConversationItem @splat
             } | Should -Not -Throw
-            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
+            Should -Invoke Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 1 -Exactly
             Should -Not -Invoke Get-Conversation -ModuleName $script:ModuleName
             $script:Result | Should -BeNullOrEmpty
         }
@@ -98,7 +98,7 @@ Describe 'Add-ConversationItem' {
                 }
                 $script:Result = Add-ConversationItem @splat
             } | Should -Not -Throw
-            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
+            Should -Invoke Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 1 -Exactly
             Should -Invoke Get-Conversation -ModuleName $script:ModuleName -Times 1 -Exactly
             $script:Result | Should -Not -BeNullOrEmpty
         }
@@ -112,7 +112,7 @@ Describe 'Add-ConversationItem' {
                 }
                 $script:Result = Add-ConversationItem @splat
             } | Should -Not -Throw
-            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
+            Should -Invoke Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 1 -Exactly
             Should -Invoke Get-Conversation -ModuleName $script:ModuleName -Times 1 -Exactly
             $script:Result | Should -Not -BeNullOrEmpty
         }
@@ -126,7 +126,7 @@ Describe 'Add-ConversationItem' {
                 }
                 $script:Result = Add-ConversationItem @splat
             } | Should -Not -Throw
-            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
+            Should -Invoke Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 1 -Exactly
             Should -Invoke Get-Conversation -ModuleName $script:ModuleName -Times 1 -Exactly
             $script:Result | Should -Not -BeNullOrEmpty
         }
@@ -141,7 +141,7 @@ Describe 'Add-ConversationItem' {
                 }
                 $script:Result = Add-ConversationItem @splat
             } | Should -Not -Throw
-            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
+            Should -Invoke Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 1 -Exactly
             Should -Invoke Get-Conversation -ModuleName $script:ModuleName -Times 1 -Exactly
             $script:Result | Should -Not -BeNullOrEmpty
         }
@@ -164,14 +164,14 @@ Describe 'Add-ConversationItem' {
                 }
                 $script:Result = Add-ConversationItem @splat
             } | Should -Not -Throw
-            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
+            Should -Invoke Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 1 -Exactly
             Should -Invoke Get-Conversation -ModuleName $script:ModuleName -Times 1 -Exactly
             $script:Result | Should -Not -BeNullOrEmpty
         }
 
         It 'Error: No message' {
             { Add-ConversationItem -ConversationId 'conv_abc123' -ErrorAction Stop } | Should -Throw 'No message is specified. You must specify one or more messages.*'
-            Should -Not -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName
+            Should -Not -Invoke Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName
             Should -Not -Invoke Get-Conversation -ModuleName $script:ModuleName
         }
 
@@ -183,7 +183,7 @@ Describe 'Add-ConversationItem' {
                 { Add-ConversationItem 'Hi' -ConversationId 'conv_abc123' -ea Stop } | Should -Not -Throw
                 # Pipeline by property name
                 { [pscustomobject]@{conversation_id = 'conv_abc123'; message = 'Hi' } | Add-ConversationItem -ea Stop } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 3 -Exactly
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 3 -Exactly
             }
         }
     }

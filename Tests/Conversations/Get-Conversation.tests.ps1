@@ -28,7 +28,7 @@ Describe 'Get-Conversation' {
                 }
             }
 
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { @'
 {
     "id": "conv_xyz789",
     "object": "conversation",
@@ -44,7 +44,7 @@ Describe 'Get-Conversation' {
 
         It 'Get conversation with ID' {
             { $script:Result = Get-Conversation -ConversationId 'conv_xyz789' -ea Stop } | Should -Not -Throw
-            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
+            Should -Invoke Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 1 -Exactly
             Should -Invoke Get-ConversationItem -ModuleName $script:ModuleName -Times 1 -Exactly
             $Result.id | Should -BeExactly 'conv_xyz789'
             $Result.psobject.TypeNames | Should -Contain 'PSOpenAI.Conversation'
@@ -66,7 +66,7 @@ Describe 'Get-Conversation' {
                 { Get-Conversation $InObject -ea Stop } | Should -Not -Throw
                 # Pipeline
                 { $InObject | Get-Conversation -ea Stop } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 3 -Exactly
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 3 -Exactly
             }
 
             It 'Get_Id' {
@@ -78,7 +78,7 @@ Describe 'Get-Conversation' {
                 { 'conv_xyz789' | Get-Conversation -ea Stop } | Should -Not -Throw
                 # Pipeline by property name
                 { [pscustomobject]@{conversation_id = 'conv_xyz789' } | Get-Conversation -ea Stop } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 4 -Exactly
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 4 -Exactly
             }
         }
     }

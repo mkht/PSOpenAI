@@ -11,8 +11,8 @@ Describe 'Get-VectorStoreFileBatch' {
     Context 'Unit tests (offline)' -Tag 'Offline' {
         BeforeAll {
             Mock -ModuleName $script:ModuleName Initialize-APIKey { [securestring]::new() }
-            Mock -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $PesterBoundParameters }
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+            Mock -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { $PesterBoundParameters }
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { @'
 {
     "id": "vsfb_abc123",
     "object": "vector_store.file_batch",
@@ -36,7 +36,7 @@ Describe 'Get-VectorStoreFileBatch' {
 
         It 'Get vector store file batch' {
             { $script:Result = Get-VectorStoreFileBatch -VectorStoreId 'vs_abc123' -BatchId 'vsfb_abc123' -ea Stop } | Should -Not -Throw
-            Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
+            Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 1 -Exactly
             $Result | Should -BeOfType [pscustomobject]
             $Result.psobject.TypeNames | Should -Contain 'PSOpenAI.VectorStore.FileBatch'
             $Result.id | Should -BeExactly 'vsfb_abc123'
@@ -56,7 +56,7 @@ Describe 'Get-VectorStoreFileBatch' {
                 { Get-VectorStoreFileBatch $InObject 'vsfb_abc123' -ea Stop } | Should -Not -Throw
                 # Pipeline
                 { $InObject | Get-VectorStoreFileBatch -BatchId 'vsfb_abc123' -ea Stop } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 3 -Exactly
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 3 -Exactly
             }
 
             It 'VectorStoreId' {
@@ -69,7 +69,7 @@ Describe 'Get-VectorStoreFileBatch' {
                 # Property name
                 { [pscustomobject]@{vector_store_id = 'vs_abc123'; batch_id = 'vsfb_abc123' } | `
                             Get-VectorStoreFileBatch -ea Stop } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 4 -Exactly
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 4 -Exactly
             }
 
             It 'VectorStoreFileBatch' {
@@ -84,7 +84,7 @@ Describe 'Get-VectorStoreFileBatch' {
                 { Get-VectorStoreFileBatch $InObject -ea Stop } | Should -Not -Throw
                 # Pipeline
                 { $InObject | Get-VectorStoreFileBatch -ea Stop } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 3 -Exactly
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 3 -Exactly
             }
         }
     }

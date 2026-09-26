@@ -12,8 +12,8 @@ Describe 'Get-ConversationItem' {
 
         BeforeAll {
             Mock -ModuleName $script:ModuleName Initialize-APIKey { [securestring]::new() }
-            Mock -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $PesterBoundParameters }
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+            Mock -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { $PesterBoundParameters }
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest { @'
 {
   "type": "message",
   "id": "msg_abc",
@@ -23,9 +23,9 @@ Describe 'Get-ConversationItem' {
     {"type": "input_text", "text": "Hello!"}
   ]
 }
-'@ } -ParameterFilter { 'https://api.openai.com/v1/conversations/conv_abc123/items/msg_abc' -eq $Uri }
+'@ } -ParameterFilter { if ($Stream) { return $false }; 'https://api.openai.com/v1/conversations/conv_abc123/items/msg_abc' -eq $Uri }
 
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest { @'
 {
     "object": "list",
     "data": [
@@ -52,7 +52,7 @@ Describe 'Get-ConversationItem' {
     "last_id": "msg_def",
     "has_more": false
 }
-'@ } -ParameterFilter { $Uri -like 'https://api.openai.com/v1/conversations/conv_abc123/items`?*' }
+'@ } -ParameterFilter { if ($Stream) { return $false }; $Uri -like 'https://api.openai.com/v1/conversations/conv_abc123/items`?*' }
         }
 
         BeforeEach {
@@ -61,7 +61,7 @@ Describe 'Get-ConversationItem' {
 
         It 'Get single conversation item with item ID' {
             { $script:Result = Get-ConversationItem -ConversationId 'conv_abc123' -ItemId 'msg_abc' -ea Stop } | Should -Not -Throw
-            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly -ParameterFilter { 'https://api.openai.com/v1/conversations/conv_abc123/items/msg_abc' -eq $Uri }
+            Should -Invoke Invoke-OpenAIHttpRequest -ModuleName $script:ModuleName -Times 1 -Exactly -ParameterFilter { if ($Stream) { return $false }; 'https://api.openai.com/v1/conversations/conv_abc123/items/msg_abc' -eq $Uri }
             $Result.id | Should -BeExactly 'msg_abc'
             $Result.role | Should -BeExactly 'user'
             $Result.content[0].type | Should -Be 'input_text'
@@ -71,7 +71,7 @@ Describe 'Get-ConversationItem' {
 
         It 'List conversation items.' {
             { $script:Result = Get-ConversationItem -ConversationId 'conv_abc123' -All -ea Stop } | Should -Not -Throw
-            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly -ParameterFilter { $Uri -like 'https://api.openai.com/v1/conversations/conv_abc123/items`?*' }
+            Should -Invoke Invoke-OpenAIHttpRequest -ModuleName $script:ModuleName -Times 1 -Exactly -ParameterFilter { if ($Stream) { return $false }; $Uri -like 'https://api.openai.com/v1/conversations/conv_abc123/items`?*' }
             $Result | Should -HaveCount 2
             $Result[0].id | Should -BeExactly 'msg_abc'
             $Result[1].id | Should -BeExactly 'msg_def'
@@ -95,7 +95,7 @@ Describe 'Get-ConversationItem' {
                 { Get-ConversationItem $InObject 'msg_abc' -ea Stop } | Should -Not -Throw
                 # Pipeline
                 { $InObject | Get-ConversationItem -ItemId 'msg_abc' -ea Stop } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 3 -Exactly -ParameterFilter { 'https://api.openai.com/v1/conversations/conv_abc123/items/msg_abc' -eq $Uri }
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ModuleName $script:ModuleName -Times 3 -Exactly -ParameterFilter { if ($Stream) { return $false }; 'https://api.openai.com/v1/conversations/conv_abc123/items/msg_abc' -eq $Uri }
             }
 
             It 'Get_ConversationId' {
@@ -105,7 +105,7 @@ Describe 'Get-ConversationItem' {
                 { Get-ConversationItem 'conv_abc123' 'msg_abc' -ea Stop } | Should -Not -Throw
                 # Pipeline
                 { 'conv_abc123' | Get-ConversationItem -ItemId 'msg_abc' -ea Stop } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 3 -Exactly -ParameterFilter { 'https://api.openai.com/v1/conversations/conv_abc123/items/msg_abc' -eq $Uri }
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ModuleName $script:ModuleName -Times 3 -Exactly -ParameterFilter { if ($Stream) { return $false }; 'https://api.openai.com/v1/conversations/conv_abc123/items/msg_abc' -eq $Uri }
             }
 
             It 'List_Conversation' {
@@ -119,7 +119,7 @@ Describe 'Get-ConversationItem' {
                 { Get-ConversationItem $InObject -ea Stop } | Should -Not -Throw
                 # Pipeline
                 { $InObject | Get-ConversationItem -All -ea Stop } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 3 -Exactly -ParameterFilter { $Uri -like 'https://api.openai.com/v1/conversations/conv_abc123/items`?*' }
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ModuleName $script:ModuleName -Times 3 -Exactly -ParameterFilter { if ($Stream) { return $false }; $Uri -like 'https://api.openai.com/v1/conversations/conv_abc123/items`?*' }
             }
 
             It 'List_ConversationId' {
@@ -131,7 +131,7 @@ Describe 'Get-ConversationItem' {
                 { 'conv_abc123' | Get-ConversationItem -All -ea Stop } | Should -Not -Throw
                 # Pipeline by property name
                 { [pscustomobject]@{conversation_id = 'conv_abc123' } | Get-ConversationItem -ea Stop } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 4 -Exactly -ParameterFilter { $Uri -like 'https://api.openai.com/v1/conversations/conv_abc123/items`?*' }
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ModuleName $script:ModuleName -Times 4 -Exactly -ParameterFilter { if ($Stream) { return $false }; $Uri -like 'https://api.openai.com/v1/conversations/conv_abc123/items`?*' }
             }
         }
     }

@@ -40,6 +40,8 @@ function Request-ResponseCompaction {
             'gpt-5.6-luna',
             'gpt-5.6-terra',
             'gpt-5.6-sol',
+            'gpt-6-luna',
+            'gpt-6-sol',
             'gpt-6-astra',
             'o1',
             'o1-pro',
@@ -112,17 +114,7 @@ function Request-ResponseCompaction {
         [int]$MaxRetryCount = 0,
 
         [Parameter()]
-        [OpenAIApiType]$ApiType = [OpenAIApiType]::OpenAI,
-
-        [Parameter()]
         [System.Uri]$ApiBase,
-
-        [Parameter(DontShow)]
-        [string]$ApiVersion,
-
-        [Parameter()]
-        [ValidateSet('openai', 'azure', 'azure_ad')]
-        [string]$AuthType = 'openai',
 
         [Parameter()]
         [securestring][SecureStringTransformation()]$ApiKey,
@@ -146,7 +138,7 @@ function Request-ResponseCompaction {
 
     begin {
         # Get API context
-        $OpenAIParameter = Get-OpenAIAPIParameter -EndpointName 'Responses.Compact' -Parameters $PSBoundParameters -Engine $Model -ErrorAction Stop
+        $OpenAIParameter = Get-OpenAIAPIParameter -EndpointName 'Responses.Compact' -Parameters $PSBoundParameters -ErrorAction Stop
 
         ## Set up masking patterns
         $MaskPatterns = [System.Collections.Generic.List[Tuple[regex, string]]]::new()
@@ -327,7 +319,6 @@ function Request-ResponseCompaction {
             TimeoutSec        = $OpenAIParameter.TimeoutSec
             MaxRetryCount     = $OpenAIParameter.MaxRetryCount
             ApiKey            = $OpenAIParameter.ApiKey
-            AuthType          = $OpenAIParameter.AuthType
             Organization      = $OpenAIParameter.Organization
             Body              = $PostBody
             AdditionalQuery   = $AdditionalQuery
@@ -337,7 +328,7 @@ function Request-ResponseCompaction {
         }
 
         #region Send API Request (No Stream)
-        $Response = Invoke-OpenAIAPIRequest @splat
+        $Response = Invoke-OpenAIHttpRequest @splat
 
         # error check
         if ($null -eq $Response) {

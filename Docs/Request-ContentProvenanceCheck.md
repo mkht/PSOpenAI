@@ -107,7 +107,7 @@ Uploads the file as multipart/form-data to POST /v1/content_provenance_checks. I
 
 A not_detected outcome does not establish that the content is human-created. Signals may be missing or degraded, and other companies' models are not detected.
 
-This endpoint is provided by OpenAI; Azure OpenAI is not supported.
+The configured server must implement the OpenAI content provenance endpoint.
 
 ## RELATED LINKS
 

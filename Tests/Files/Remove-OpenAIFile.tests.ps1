@@ -11,8 +11,8 @@ Describe 'Remove-OpenAIFile' {
     Context 'Unit tests (offline)' -Tag 'Offline' {
         BeforeAll {
             Mock -ModuleName $script:ModuleName Initialize-APIKey { [securestring]::new() }
-            Mock -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $PesterBoundParameters }
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+            Mock -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { $PesterBoundParameters }
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { @'
 {
     "id": "file-abc123",
     "object": "file",
@@ -27,7 +27,7 @@ Describe 'Remove-OpenAIFile' {
 
         It 'Remove file with ID' {
             { $script:Result = Remove-OpenAIFile -ID 'file-abc123' -ea Stop } | Should -Not -Throw
-            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
+            Should -Invoke Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 1 -Exactly
             $Result | Should -BeNullOrEmpty
         }
 
@@ -43,7 +43,7 @@ Describe 'Remove-OpenAIFile' {
                 { Remove-OpenAIFile $InObject -ea Stop } | Should -Not -Throw
                 # Pipeline
                 { $InObject | Remove-OpenAIFile -ea Stop } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 3 -Exactly
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 3 -Exactly
             }
 
             It 'Id' {
@@ -55,7 +55,7 @@ Describe 'Remove-OpenAIFile' {
                 { 'file-abc123' | Remove-OpenAIFile -ea Stop } | Should -Not -Throw
                 # Pipeline by property name
                 { [pscustomobject]@{file_id = 'file-abc123' } | Remove-OpenAIFile -ea Stop } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 4 -Exactly
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 4 -Exactly
             }
         }
     }
@@ -77,32 +77,5 @@ Describe 'Remove-OpenAIFile' {
         }
     }
 
-    Context 'Integration tests (Azure)' -Tag 'Azure' {
-        BeforeAll {
-            # Set Context for Azure OpenAI
-            $AzureContext = @{
-                ApiType    = 'Azure'
-                AuthType   = 'Azure'
-                ApiKey     = $env:AZURE_OPENAI_API_KEY
-                ApiBase    = $env:AZURE_OPENAI_ENDPOINT
-                TimeoutSec = 30
-            }
-            Set-OpenAIContext @AzureContext
 
-            # Upload test files
-            $script:File1 = Add-OpenAIFile -File ($script:TestData + '/my-data.jsonl') -Purpose fine-tune
-        }
-
-        BeforeEach {
-            $script:Result = ''
-        }
-
-        AfterAll {
-            Clear-OpenAIContext
-        }
-
-        It 'Remove a file' {
-            { Remove-OpenAIFile -ID $script:File1.id -ea Stop } | Should -Not -Throw
-        }
-    }
 }

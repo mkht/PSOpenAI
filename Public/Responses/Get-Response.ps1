@@ -47,17 +47,7 @@ function Get-Response {
         [int]$MaxRetryCount = 0,
 
         [Parameter()]
-        [OpenAIApiType]$ApiType = [OpenAIApiType]::OpenAI,
-
-        [Parameter()]
         [System.Uri]$ApiBase,
-
-        [Parameter(DontShow)]
-        [string]$ApiVersion,
-
-        [Parameter()]
-        [ValidateSet('openai', 'azure', 'azure_ad')]
-        [string]$AuthType = 'openai',
 
         [Parameter()]
         [securestring][SecureStringTransformation()]$ApiKey,
@@ -117,7 +107,6 @@ function Get-Response {
             TimeoutSec        = $OpenAIParameter.TimeoutSec
             MaxRetryCount     = $OpenAIParameter.MaxRetryCount
             ApiKey            = $OpenAIParameter.ApiKey
-            AuthType          = $OpenAIParameter.AuthType
             Organization      = $OpenAIParameter.Organization
             AdditionalQuery   = $AdditionalQuery
             AdditionalHeaders = $AdditionalHeaders
@@ -127,7 +116,7 @@ function Get-Response {
         #region Send API Request (Stream)
         if ($Stream) {
             # Stream output
-            Invoke-OpenAIAPIRequestSSE @splat |
+            Invoke-OpenAIHttpRequest -Stream @splat |
                 Where-Object {
                     -not [string]::IsNullOrEmpty($_)
                 } | ForEach-Object -Process {
@@ -161,7 +150,7 @@ function Get-Response {
 
         #region Send API Request (No Stream)
         else {
-            $Response = Invoke-OpenAIAPIRequest @splat
+            $Response = Invoke-OpenAIHttpRequest @splat
 
             # error check
             if ($null -eq $Response) {

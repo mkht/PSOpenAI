@@ -11,17 +11,17 @@ Describe 'Get-ContainerFile' {
     Context 'Unit tests (offline)' -Tag 'Offline' {
         BeforeAll {
             Mock -ModuleName $script:ModuleName Initialize-APIKey { [securestring]::new() }
-            Mock -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $PesterBoundParameters }
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+            Mock -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { $PesterBoundParameters }
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest { @'
 {
     "id": "file_abc123",
     "object": "container.file",
     "created_at": 1699061776,
     "container_id": "container_abc123"
 }
-'@ } -ParameterFilter { $Uri -eq 'https://api.openai.com/v1/containers/container_abc123/files/file_abc123' }
+'@ } -ParameterFilter { if ($Stream) { return $false }; $Uri -eq 'https://api.openai.com/v1/containers/container_abc123/files/file_abc123' }
 
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest { @'
 {
 "object": "list",
 "data": [
@@ -42,7 +42,7 @@ Describe 'Get-ContainerFile' {
 "last_id": "file_abc456",
 "has_more": false
 }
-'@ } -ParameterFilter { $Uri -like 'https://api.openai.com/v1/containers/container_abc123/files?limit=*' }
+'@ } -ParameterFilter { if ($Stream) { return $false }; $Uri -like 'https://api.openai.com/v1/containers/container_abc123/files?limit=*' }
         }
 
         BeforeEach {
@@ -51,7 +51,7 @@ Describe 'Get-ContainerFile' {
 
         It 'List container file objects' {
             { $script:Result = Get-ContainerFile -ContainerId 'container_abc123' -ea Stop } | Should -Not -Throw
-            Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly -ParameterFilter { $Uri -like 'https://api.openai.com/v1/containers/container_abc123/files?limit=*' }
+            Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ModuleName $script:ModuleName -Times 1 -Exactly -ParameterFilter { if ($Stream) { return $false }; $Uri -like 'https://api.openai.com/v1/containers/container_abc123/files?limit=*' }
             $Result | Should -HaveCount 2
             $Result[0].id | Should -BeLike 'file_abc123'
             $Result[1].id | Should -BeLike 'file_abc456'
@@ -60,7 +60,7 @@ Describe 'Get-ContainerFile' {
 
         It 'Get single container file object' {
             { $script:Result = Get-ContainerFile -ContainerId 'container_abc123' -FileId 'file_abc123' -ea Stop } | Should -Not -Throw
-            Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly -ParameterFilter { $Uri -eq 'https://api.openai.com/v1/containers/container_abc123/files/file_abc123' }
+            Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ModuleName $script:ModuleName -Times 1 -Exactly -ParameterFilter { if ($Stream) { return $false }; $Uri -eq 'https://api.openai.com/v1/containers/container_abc123/files/file_abc123' }
             $Result | Should -BeOfType [pscustomobject]
             $Result.id | Should -BeExactly 'file_abc123'
             $Result.psobject.TypeNames | Should -Contain 'PSOpenAI.Container.File'
@@ -76,14 +76,14 @@ Describe 'Get-ContainerFile' {
                 { 'container_abc123' | Get-ContainerFile -FileId 'file_abc123' -ea Stop } | Should -Not -Throw
                 # Pipeline by property name
                 { [pscustomobject]@{ContainerId = 'container_abc123' } | Get-ContainerFile -FileId 'file_abc123' -ea Stop } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 4 -Exactly -ParameterFilter { $Uri -eq 'https://api.openai.com/v1/containers/container_abc123/files/file_abc123' }
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ModuleName $script:ModuleName -Times 4 -Exactly -ParameterFilter { if ($Stream) { return $false }; $Uri -eq 'https://api.openai.com/v1/containers/container_abc123/files/file_abc123' }
             }
 
             It 'List parameters' {
                 { Get-ContainerFile -ContainerId 'container_abc123' -ea Stop } | Should -Not -Throw
                 { Get-ContainerFile -ContainerId 'container_abc123' -Limit 30 -ea Stop } | Should -Not -Throw
                 { Get-ContainerFile -ContainerId 'container_abc123' -All -ea Stop } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 3 -Exactly -ParameterFilter { $Uri -like 'https://api.openai.com/v1/containers/container_abc123/files?limit=*' }
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ModuleName $script:ModuleName -Times 3 -Exactly -ParameterFilter { if ($Stream) { return $false }; $Uri -like 'https://api.openai.com/v1/containers/container_abc123/files?limit=*' }
             }
         }
     }

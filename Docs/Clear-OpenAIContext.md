@@ -23,15 +23,12 @@ Resets the common parameter context set by Set-OpenAIContext.
 
 ### Example 1
 ```powershell
-PS C:\> Set-OpenAIContext -ApiType 'Azure' -ApiKey 'API_KEY'
+PS C:\> Set-OpenAIContext -ApiKey 'API_KEY'
 PS C:\> Clear-OpenAIContext
 PS C:\> Get-OpenAIContext
 
 ApiKey        : 
-ApiType       : OpenAI
 ApiBase       : 
-ApiVersion    : 
-AuthType      : openai
 Organization  : 
 TimeoutSec    : 0
 MaxRetryCount : 0

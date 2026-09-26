@@ -11,8 +11,8 @@ Describe 'Get-VectorStoreFile' {
     Context 'Unit tests (offline)' -Tag 'Offline' {
         BeforeAll {
             Mock -ModuleName $script:ModuleName Initialize-APIKey { [securestring]::new() }
-            Mock -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $PesterBoundParameters }
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+            Mock -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { $PesterBoundParameters }
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest { @'
 {
     "id": "file-abc123",
     "object": "vector_store.file",
@@ -21,9 +21,9 @@ Describe 'Get-VectorStoreFile' {
     "status": "completed",
     "last_error": null
 }
-'@ } -ParameterFilter { 'https://api.openai.com/v1/vector_stores/vs_abc123/files/file-abc123' -eq $Uri }
+'@ } -ParameterFilter { if ($Stream) { return $false }; 'https://api.openai.com/v1/vector_stores/vs_abc123/files/file-abc123' -eq $Uri }
 
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest { @'
 {
     "object": "list",
     "data": [
@@ -45,7 +45,7 @@ Describe 'Get-VectorStoreFile' {
     "has_more": false
 }
 '@
-            } -ParameterFilter { $Uri -like 'https://api.openai.com/v1/vector_stores/vs_abc123/files`?*' }
+            } -ParameterFilter { if ($Stream) { return $false }; $Uri -like 'https://api.openai.com/v1/vector_stores/vs_abc123/files`?*' }
         }
 
         BeforeEach {
@@ -54,7 +54,7 @@ Describe 'Get-VectorStoreFile' {
 
         It 'List vector store file objects' {
             { $script:Result = Get-VectorStoreFile -VectorStoreId 'vs_abc123' -ea Stop } | Should -Not -Throw
-            Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly -ParameterFilter { $Uri -like 'https://api.openai.com/v1/vector_stores/vs_abc123/files`?*' }
+            Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ModuleName $script:ModuleName -Times 1 -Exactly -ParameterFilter { if ($Stream) { return $false }; $Uri -like 'https://api.openai.com/v1/vector_stores/vs_abc123/files`?*' }
             $Result | Should -HaveCount 2
             $Result[0].id | Should -BeLike 'file-abc*'
             $Result[1].id | Should -BeLike 'file-abc*'
@@ -64,7 +64,7 @@ Describe 'Get-VectorStoreFile' {
 
         It 'Get single vector store object' {
             { $script:Result = Get-VectorStoreFile -VectorStoreId 'vs_abc123' -FileId 'file-abc123' -ea Stop } | Should -Not -Throw
-            Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly -ParameterFilter { 'https://api.openai.com/v1/vector_stores/vs_abc123/files/file-abc123' -eq $Uri }
+            Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ModuleName $script:ModuleName -Times 1 -Exactly -ParameterFilter { if ($Stream) { return $false }; 'https://api.openai.com/v1/vector_stores/vs_abc123/files/file-abc123' -eq $Uri }
             $Result | Should -BeOfType [pscustomobject]
             $Result.id | Should -BeExactly 'file-abc123'
             $Result.created_at | Should -BeOfType [datetime]
@@ -84,7 +84,7 @@ Describe 'Get-VectorStoreFile' {
                 { Get-VectorStoreFile 'vs_abc123' 'file-abc123' -ea Stop } | Should -Not -Throw
                 # Pipeline
                 { 'vs_abc123' | Get-VectorStoreFile -FileId 'file-abc123' -ea Stop } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 3 -Exactly -ParameterFilter { 'https://api.openai.com/v1/vector_stores/vs_abc123/files/file-abc123' -eq $Uri }
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ModuleName $script:ModuleName -Times 3 -Exactly -ParameterFilter { if ($Stream) { return $false }; 'https://api.openai.com/v1/vector_stores/vs_abc123/files/file-abc123' -eq $Uri }
             }
 
             It 'List_Id' {
@@ -96,7 +96,7 @@ Describe 'Get-VectorStoreFile' {
                 { 'vs_abc123' | Get-VectorStoreFile -ea Stop } | Should -Not -Throw
                 # Pipeline by property name
                 { [pscustomobject]@{VectorStoreId = 'vs_abc123' } | Get-VectorStoreFile -ea Stop } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 4 -Exactly -ParameterFilter { $Uri -like 'https://api.openai.com/v1/vector_stores/vs_abc123/files`?*' }
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ModuleName $script:ModuleName -Times 4 -Exactly -ParameterFilter { if ($Stream) { return $false }; $Uri -like 'https://api.openai.com/v1/vector_stores/vs_abc123/files`?*' }
             }
 
             It 'Get_VectorStore' {
@@ -110,7 +110,7 @@ Describe 'Get-VectorStoreFile' {
                 { Get-VectorStoreFile $InObject 'file-abc123' -ea Stop } | Should -Not -Throw
                 # Pipeline
                 { $InObject | Get-VectorStoreFile -FileId 'file-abc123' -ea Stop } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 3 -Exactly -ParameterFilter { 'https://api.openai.com/v1/vector_stores/vs_abc123/files/file-abc123' -eq $Uri }
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ModuleName $script:ModuleName -Times 3 -Exactly -ParameterFilter { if ($Stream) { return $false }; 'https://api.openai.com/v1/vector_stores/vs_abc123/files/file-abc123' -eq $Uri }
             }
 
             It 'List_VectorStore' {
@@ -124,7 +124,7 @@ Describe 'Get-VectorStoreFile' {
                 { Get-VectorStoreFile $InObject -ea Stop } | Should -Not -Throw
                 # Pipeline
                 { $InObject | Get-VectorStoreFile -ea Stop } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 3 -Exactly -ParameterFilter { $Uri -like 'https://api.openai.com/v1/vector_stores/vs_abc123/files`?*' }
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ModuleName $script:ModuleName -Times 3 -Exactly -ParameterFilter { if ($Stream) { return $false }; $Uri -like 'https://api.openai.com/v1/vector_stores/vs_abc123/files`?*' }
             }
 
             It 'Get_VectorStoreFile' {
@@ -139,7 +139,7 @@ Describe 'Get-VectorStoreFile' {
                 { Get-VectorStoreFile $InObject -ea Stop } | Should -Not -Throw
                 # Pipeline
                 { $InObject | Get-VectorStoreFile -ea Stop } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 3 -Exactly -ParameterFilter { 'https://api.openai.com/v1/vector_stores/vs_abc123/files/file-abc123' -eq $Uri }
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ModuleName $script:ModuleName -Times 3 -Exactly -ParameterFilter { if ($Stream) { return $false }; 'https://api.openai.com/v1/vector_stores/vs_abc123/files/file-abc123' -eq $Uri }
             }
         }
     }

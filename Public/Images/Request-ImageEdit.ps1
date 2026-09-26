@@ -16,6 +16,8 @@ function Request-ImageEdit {
 
         [Parameter()]
         [Completions(
+            'gpt-image-2.5-sunburst',
+            'gpt-image-2.5-flare',
             'gpt-image-2',
             'gpt-image-1.5',
             'gpt-image-1',
@@ -34,16 +36,16 @@ function Request-ImageEdit {
         [string]$Size = 'auto',
 
         [Parameter()]
-        [ValidateSet('low', 'medium', 'high', 'auto')]
+        [Completions('low', 'medium', 'high', 'xhigh', 'max', 'auto')]
         [string][LowerCaseTransformation()]$Quality = 'auto',
 
         [Parameter()]
-        [ValidateSet('transparent', 'opaque', 'auto')]
+        [Completions('transparent', 'opaque', 'auto')]
         [string][LowerCaseTransformation()]$Background = 'auto',
 
         [Parameter()]
         [Alias('input_fidelity')]
-        [ValidateSet('low', 'high')]
+        [Completions('low', 'high')]
         [string][LowerCaseTransformation()]$InputFidelity = 'low',
 
         [Parameter()]
@@ -53,7 +55,7 @@ function Request-ImageEdit {
 
         [Parameter()]
         [Alias('output_format')]
-        [ValidateSet('png', 'jpeg', 'webp')]
+        [Completions('png', 'jpeg', 'webp')]
         [string][LowerCaseTransformation()]$OutputFormat = 'png',
 
         # Obsolete
@@ -86,17 +88,7 @@ function Request-ImageEdit {
         [int]$TimeoutSec = 0,
 
         [Parameter()]
-        [OpenAIApiType]$ApiType = [OpenAIApiType]::OpenAI,
-
-        [Parameter()]
         [System.Uri]$ApiBase,
-
-        [Parameter(DontShow)]
-        [string]$ApiVersion,
-
-        [Parameter()]
-        [ValidateSet('openai', 'azure', 'azure_ad')]
-        [string]$AuthType = 'openai',
 
         [Parameter()]
         [ValidateRange(0, 100)]
@@ -121,7 +113,7 @@ function Request-ImageEdit {
 
     begin {
         # Get API endpoint
-        $OpenAIParameter = Get-OpenAIAPIParameter -EndpointName 'Image.Edit' -Parameters $PSBoundParameters -Engine $Model -ErrorAction Stop
+        $OpenAIParameter = Get-OpenAIAPIParameter -EndpointName 'Image.Edit' -Parameters $PSBoundParameters -ErrorAction Stop
 
         ## Set up masking patterns
         $MaskPatterns = [System.Collections.Generic.List[Tuple[regex, string]]]::new()
@@ -132,21 +124,11 @@ function Request-ImageEdit {
         $InputImages = @()
 
         foreach ($img in $Image) {
-            if ($OpenAIParameter.ApiType -eq [OpenAIApiType]::OpenAI) {
-                $InputImages += Resolve-FileInfo $img
-            }
-            else {
-                $InputImages += Convert-ImageToDataURL $img
-            }
+            $InputImages += Resolve-FileInfo $img
         }
 
         if ($PSBoundParameters.ContainsKey('Mask')) {
-            if ($OpenAIParameter.ApiType -eq [OpenAIApiType]::OpenAI) {
-                $MaskImage = Resolve-FileInfo $Mask
-            }
-            else {
-                $MaskImage = Convert-ImageToDataURL $Mask
-            }
+            $MaskImage = Resolve-FileInfo $Mask
         }
 
         #region Construct parameters for API request
@@ -164,10 +146,8 @@ function Request-ImageEdit {
             $PostBody.mask = $MaskImage
         }
 
-        if ($OpenAIParameter.ApiType -eq [OpenAIApiType]::OpenAI) {
-            if ($PSBoundParameters.ContainsKey('Model')) {
-                $PostBody.model = $Model
-            }
+        if ($PSBoundParameters.ContainsKey('Model')) {
+            $PostBody.model = $Model
         }
 
         if ($PSBoundParameters.ContainsKey('NumberOfImages')) {
@@ -276,7 +256,7 @@ function Request-ImageEdit {
         #region Send API Request (Stream)
         if ($Stream) {
             # Stream output
-            Invoke-OpenAIAPIRequestSSE @splat |
+            Invoke-OpenAIHttpRequest -Stream @splat |
                 Where-Object {
                     -not [string]::IsNullOrEmpty($_)
                 } | ForEach-Object -Process {
@@ -342,7 +322,7 @@ function Request-ImageEdit {
 
         #region Send API Request
         else {
-            $Response = Invoke-OpenAIAPIRequest @splat
+            $Response = Invoke-OpenAIHttpRequest @splat
 
             # error check
             if ($null -eq $Response) {

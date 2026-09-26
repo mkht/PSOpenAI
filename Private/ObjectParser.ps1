@@ -214,17 +214,21 @@ function ParseResponseObject {
     $StructuredOutputs = @()
     if ($OutputType -is [type]) {
         foreach ($output in $InputObject.output) {
-            if ($output.content.type -eq 'output_text') {
-                ## Deserialize JSON output to .NET object
-                try {
-                    $DeserializedObject = [Newtonsoft.Json.JsonConvert]::DeserializeObject($output.content.text, $OutputType)
-                    if ($null -ne $DeserializedObject) {
-                        $output.content | Add-Member -MemberType NoteProperty -Name 'parsed' -Value $DeserializedObject -Force
-                        $StructuredOutputs += $DeserializedObject
+            foreach ($content in $output.content) {
+                # Only final answer text contains the structured response. Older API
+                # responses do not include phase, so preserve their parsing behavior.
+                if ($content.type -eq 'output_text' -and ($null -eq $content.phase -or $content.phase -eq 'final_answer')) {
+                    ## Deserialize JSON output to .NET object
+                    try {
+                        $DeserializedObject = [Newtonsoft.Json.JsonConvert]::DeserializeObject($content.text, $OutputType)
+                        if ($null -ne $DeserializedObject) {
+                            $content | Add-Member -MemberType NoteProperty -Name 'parsed' -Value $DeserializedObject -Force
+                            $StructuredOutputs += $DeserializedObject
+                        }
                     }
-                }
-                catch {
-                    Write-Error -Exception $_.Exception
+                    catch {
+                        Write-Error -Exception $_.Exception
+                    }
                 }
             }
         }
@@ -419,35 +423,4 @@ function ParseImageGenerationObject {
         }
     }
     Write-Output $InputObject
-}
-
-function ParseVideoJobObject {
-    [CmdletBinding()]
-    param (
-        [Parameter(Mandatory, Position = 0, ValueFromPipeline)]
-        [PSCustomObject]$InputObject
-    )
-
-    # Add custom type name and properties to output object.
-    $InputObject.PSObject.TypeNames.Insert(0, 'PSOpenAI.Video.Job')
-    ('created_at', 'expires_at', 'started_at', 'cancelled_at', 'failed_at', 'completed_at') | ForEach-Object {
-        if ($null -ne $InputObject.$_ -and ($unixtime = $InputObject.$_ -as [long])) {
-            # convert unixtime to [DateTime] for read suitable
-            $InputObject | Add-Member -MemberType NoteProperty -Name $_ -Value ([System.DateTimeOffset]::FromUnixTimeSeconds($unixtime).LocalDateTime) -Force
-        }
-    }
-    Write-Output $InputObject
-
-    # Output warning message if the status is not success.
-    if ($null -ne $InputObject.error -or $InputObject.status -eq 'failed') {
-        if ($null -ne $InputObject.failure_reason) {
-            $WarnMessage = ('The status of job with id "{0}" is "{1}". Reason: "{2}"' -f `
-                    $InputObject.id, $InputObject.status, $InputObject.failure_reason)
-        }
-        else {
-            $WarnMessage = ('The status of job with id "{0}" is "{1}". Error: "{2}" ({3})' -f `
-                    $InputObject.id, $InputObject.status, $InputObject.error.message, $InputObject.error.code)
-        }
-        Write-Warning -Message $WarnMessage
-    }
 }

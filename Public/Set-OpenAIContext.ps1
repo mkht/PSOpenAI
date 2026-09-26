@@ -6,17 +6,7 @@ function Set-OpenAIContext {
         [securestring][SecureStringTransformation()]$ApiKey,
 
         [Parameter(ValueFromPipelineByPropertyName)]
-        [OpenAIApiType]$ApiType = [OpenAIApiType]::OpenAI,
-
-        [Parameter(ValueFromPipelineByPropertyName)]
         [System.Uri]$ApiBase,
-
-        [Parameter(ValueFromPipelineByPropertyName)]
-        [string]$ApiVersion,
-
-        [Parameter(ValueFromPipelineByPropertyName)]
-        [ValidateSet('openai', 'azure', 'azure_ad')]
-        [string]$AuthType = 'openai',
 
         [Parameter(ValueFromPipelineByPropertyName)]
         [Alias('OrgId')]
@@ -37,28 +27,8 @@ function Set-OpenAIContext {
     if ($PSBoundParameters.ContainsKey('ApiKey')) {
         $Global:PSOpenAIContextDictionary['ApiKey'] = $ApiKey
     }
-    if ($PSBoundParameters.ContainsKey('ApiType')) {
-        $Global:PSOpenAIContextDictionary['ApiType'] = $ApiType
-    }
     if ($PSBoundParameters.ContainsKey('ApiBase')) {
         $Global:PSOpenAIContextDictionary['ApiBase'] = $ApiBase
-    }
-    if ($PSBoundParameters.ContainsKey('ApiVersion')) {
-        $Global:PSOpenAIContextDictionary['ApiVersion'] = $ApiVersion
-    }
-    if ($PSBoundParameters.ContainsKey('AuthType')) {
-        $Global:PSOpenAIContextDictionary['AuthType'] = $AuthType
-    }
-    elseif (
-        $Global:PSOpenAIContextDictionary['ApiType'] -eq [OpenAIApiType]::Azure `
-            -and $Global:PSOpenAIContextDictionary['AuthType'] -ieq 'openai'
-    ) {
-        $Global:PSOpenAIContextDictionary['AuthType'] = 'azure'
-    }
-    elseif (
-        $Global:PSOpenAIContextDictionary['ApiType'] -eq [OpenAIApiType]::OpenAI
-    ) {
-        $Global:PSOpenAIContextDictionary['AuthType'] = 'openai'
     }
     if ($PSBoundParameters.ContainsKey('Organization')) {
         $Global:PSOpenAIContextDictionary['Organization'] = $Organization

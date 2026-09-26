@@ -7,6 +7,8 @@ function Request-ImageGeneration {
 
         [Parameter()]
         [Completions(
+            'gpt-image-2.5-sunburst',
+            'gpt-image-2.5-flare',
             'gpt-image-2',
             'gpt-image-1.5',
             'gpt-image-1',
@@ -25,19 +27,19 @@ function Request-ImageGeneration {
         [string]$Size = 'auto',
 
         [Parameter()]
-        [ValidateSet('low', 'medium', 'high', 'auto')]
+        [Completions('low', 'medium', 'high', 'xhigh', 'max', 'auto')]
         [string][LowerCaseTransformation()]$Quality = 'auto',
 
         [Parameter()]
-        [ValidateSet('vivid', 'natural')]
+        [Completions('vivid', 'natural')]
         [string][LowerCaseTransformation()]$Style = 'vivid',
 
         [Parameter()]
-        [ValidateSet('transparent', 'opaque', 'auto')]
+        [Completions('transparent', 'opaque', 'auto')]
         [string][LowerCaseTransformation()]$Background = 'auto',
 
         [Parameter()]
-        [ValidateSet('low', 'auto')]
+        [Completions('low', 'auto')]
         [string][LowerCaseTransformation()]$Moderation = 'auto',
 
         [Parameter()]
@@ -47,7 +49,7 @@ function Request-ImageGeneration {
 
         [Parameter()]
         [Alias('output_format')]
-        [ValidateSet('png', 'jpeg', 'webp')]
+        [Completions('png', 'jpeg', 'webp')]
         [string][LowerCaseTransformation()]$OutputFormat = 'png',
 
         [Parameter(ParameterSetName = 'Format')]
@@ -79,17 +81,7 @@ function Request-ImageGeneration {
         [int]$TimeoutSec = 0,
 
         [Parameter()]
-        [OpenAIApiType]$ApiType = [OpenAIApiType]::OpenAI,
-
-        [Parameter()]
         [System.Uri]$ApiBase,
-
-        [Parameter(DontShow)]
-        [string]$ApiVersion,
-
-        [Parameter()]
-        [ValidateSet('openai', 'azure', 'azure_ad')]
-        [string]$AuthType = 'openai',
 
         [Parameter()]
         [ValidateRange(0, 100)]
@@ -114,7 +106,7 @@ function Request-ImageGeneration {
 
     begin {
         # Get API context
-        $OpenAIParameter = Get-OpenAIAPIParameter -EndpointName 'Image.Generation' -Parameters $PSBoundParameters -Engine $Model -ErrorAction Stop
+        $OpenAIParameter = Get-OpenAIAPIParameter -EndpointName 'Image.Generation' -Parameters $PSBoundParameters -ErrorAction Stop
 
         ## Set up masking patterns
         $MaskPatterns = [System.Collections.Generic.List[Tuple[regex, string]]]::new()
@@ -126,9 +118,7 @@ function Request-ImageGeneration {
         $PostBody = [System.Collections.Specialized.OrderedDictionary]::new()
         $PostBody.prompt = $Prompt
 
-        if ($OpenAIParameter.ApiType -eq [OpenAIApiType]::OpenAI) {
-            $PostBody.model = $Model
-        }
+        $PostBody.model = $Model
 
         if ($PSBoundParameters.ContainsKey('NumberOfImages')) {
             $PostBody.n = $NumberOfImages
@@ -228,7 +218,6 @@ function Request-ImageGeneration {
             TimeoutSec        = $OpenAIParameter.TimeoutSec
             MaxRetryCount     = $OpenAIParameter.MaxRetryCount
             ApiKey            = $OpenAIParameter.ApiKey
-            AuthType          = $OpenAIParameter.AuthType
             Organization      = $OpenAIParameter.Organization
             Body              = $PostBody
             AdditionalQuery   = $AdditionalQuery
@@ -240,7 +229,7 @@ function Request-ImageGeneration {
         #region Send API Request (Stream)
         if ($Stream) {
             # Stream output
-            Invoke-OpenAIAPIRequestSSE @splat |
+            Invoke-OpenAIHttpRequest -Stream @splat |
                 Where-Object {
                     -not [string]::IsNullOrEmpty($_)
                 } | ForEach-Object -Process {
@@ -306,7 +295,7 @@ function Request-ImageGeneration {
 
         #region Send API Request
         else {
-            $Response = Invoke-OpenAIAPIRequest @splat
+            $Response = Invoke-OpenAIHttpRequest @splat
 
             # error check
             if ($null -eq $Response) {
