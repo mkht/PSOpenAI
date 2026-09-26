@@ -1,5 +1,7 @@
 # Changelog
-### Unreleased
+### Unreleased (5.0.0)
+- **BREAKING:** Remove explicit Azure OpenAI support and the `ApiType`, `ApiVersion`, and `AuthType` parameters/context properties, including `-ApiType OpenAI`. Use an OpenAI-compatible API base and Bearer authentication. See the [Azure v1 migration guide](Guides/How_to_use_with_Azure_OpenAI_Service.md).
+- Remove legacy Azure image request conversions.
 - Unify HTTP requests and SSE on a shared HttpClient transport while retaining Windows PowerShell 5.1 support and public command outputs.
 - Apply request timeouts independently to each attempt, including response-body reads; fix SSE client reuse and dispose HTTP resources on completion.
 - **BREAKING (v5):** Remove Video API (Sora) support, including Azure video generation: New-Video, New-VideoRemix, Get-Video, Get-VideoContent, Remove-Video, and Wait-Video.

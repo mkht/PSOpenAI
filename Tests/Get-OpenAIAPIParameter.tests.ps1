@@ -45,19 +45,14 @@ Describe 'Get-OpenAIAPIParameter' {
                     }
                 }
 
-                Mock -Verifiable Get-AzureOpenAIAPIEndpoint {
-                    @{
-                        Name        = 'chat.completion'
-                        Method      = 'Post'
-                        Uri         = 'https://test.openai.azure.com/openai/deployments/dummy/chat/completions'
-                        ContentType = 'application/json'
-                    }
-                }
+
             }
 
             BeforeEach {
                 $global:OPENAI_API_KEY = $null
                 $env:OPENAI_API_KEY = $null
+                $global:OPENAI_API_BASE = $null
+                $env:OPENAI_API_BASE = $null
                 Clear-OpenAIContext
             }
 
@@ -71,8 +66,6 @@ Describe 'Get-OpenAIAPIParameter' {
                 $ExplicitParams = @{}
                 $ret = Get-OpenAIAPIParameter -EndpointName 'foo' -Parameters $ExplicitParams
                 $ret.Uri | Should -Be 'https://api.openai.com/v1/chat/completions'
-                $ret.ApiType | Should -Be 'OpenAI'          # default value
-                $ret.AuthType | Should -Be 'openai'         # default value
                 $ret.ApiBase | Should -BeNullOrEmpty        # default value
                 $ret.MaxRetryCount | Should -Be 0           # default value
                 Get-PlainTextFromSecureString $ret.ApiKey | Should -Be 'ENV_KEY'  # env value
@@ -85,19 +78,15 @@ Describe 'Get-OpenAIAPIParameter' {
                 $ExplicitParams = @{}
                 $Context = @{
                     ApiKey        = 'CONTEXT_KEY'
-                    ApiType       = 'Azure'
-                    AuthType      = 'Azure'
                     MaxRetryCount = 15
                 }
                 Set-OpenAIContext @Context
                 $ret = Get-OpenAIAPIParameter -EndpointName 'foo' -Parameters $ExplicitParams
-                $ret.Uri | Should -Be 'https://test.openai.azure.com/openai/deployments/dummy/chat/completions'
-                $ret.ApiType | Should -Be 'Azure'           # context value
-                $ret.AuthType | Should -Be 'azure'          # context value
+                $ret.Uri | Should -Be 'https://api.openai.com/v1/chat/completions'
                 $ret.ApiBase | Should -Be 'ENV_BASE'        # env value
                 $ret.MaxRetryCount | Should -Be 15          # context value
                 Get-PlainTextFromSecureString $ret.ApiKey | Should -Be 'CONTEXT_KEY' # context value
-                Should -Invoke Get-AzureOpenAIAPIEndpoint -Times 1 -Exactly
+                Should -Invoke Get-OpenAIAPIEndpoint -Times 1 -Exactly
             }
 
             It 'With explicit param, With Context, With environment' {
@@ -105,63 +94,48 @@ Describe 'Get-OpenAIAPIParameter' {
                 $env:OPENAI_API_BASE = 'ENV_BASE'
                 $ExplicitParams = @{
                     ApiKey     = 'PARAM_KEY'
-                    ApiType    = 'Azure'
-                    AuthType   = 'Azure'
                     TimeoutSec = 50
                 }
                 $Context = @{
                     ApiKey        = 'CONTEXT_KEY'
-                    ApiType       = 'OpenAI'
-                    AuthType      = 'openai'
                     MaxRetryCount = 15
                 }
                 Set-OpenAIContext @Context
                 $ret = Get-OpenAIAPIParameter -EndpointName 'foo' -Parameters $ExplicitParams
-                $ret.Uri | Should -Be 'https://test.openai.azure.com/openai/deployments/dummy/chat/completions'
-                $ret.ApiType | Should -Be 'Azure'       # param value
-                $ret.AuthType | Should -Be 'azure'      # param value
+                $ret.Uri | Should -Be 'https://api.openai.com/v1/chat/completions'
                 $ret.ApiBase | Should -Be 'ENV_BASE'    # env value
                 $ret.MaxRetryCount | Should -Be 15      # context value
                 $ret.TimeoutSec | Should -Be 50         # param value
                 Get-PlainTextFromSecureString $ret.ApiKey | Should -Be 'PARAM_KEY' # param value
-                Should -Invoke Get-AzureOpenAIAPIEndpoint -Times 1 -Exactly
+                Should -Invoke Get-OpenAIAPIEndpoint -Times 1 -Exactly
             }
 
             It 'Custom API base URL (OpenAI)' {
                 $ExplicitParams = @{
                     ApiKey  = 'PARAM_KEY'
-                    ApiType = 'OpenAI'
                     ApiBase = 'https://custombase.localhost.local/'
                 }
                 $ret = Get-OpenAIAPIParameter -EndpointName 'foo' -Parameters $ExplicitParams
-                $ret.ApiType | Should -Be 'OpenAI'
-                $ret.AuthType | Should -Be 'openai'
                 $ret.ApiBase | Should -Be 'https://custombase.localhost.local/'
                 Should -Invoke Get-OpenAIAPIEndpoint -Times 1 -Exactly
             }
 
-            It 'Custom API base URL (Azure)' {
+            It 'Custom API base URL (nested path)' {
                 $ExplicitParams = @{
                     ApiKey  = 'PARAM_KEY'
-                    ApiType = 'Azure'
                     ApiBase = 'https://custombase.localhost.local/inference'
                 }
                 $ret = Get-OpenAIAPIParameter -EndpointName 'foo' -Parameters $ExplicitParams
-                $ret.ApiType | Should -Be 'Azure'
-                $ret.AuthType | Should -Be 'azure'
                 $ret.ApiBase | Should -Be 'https://custombase.localhost.local/inference'
-                Should -Invoke Get-AzureOpenAIAPIEndpoint -Times 1 -Exactly
+                Should -Invoke Get-OpenAIAPIEndpoint -Times 1 -Exactly
             }
 
             It 'Custom API base URL (IP address with port number)' {
                 $ExplicitParams = @{
                     ApiKey  = 'PARAM_KEY'
-                    ApiType = 'OpenAI'
                     ApiBase = 'http://127.0.0.1:8080/v1'
                 }
                 $ret = Get-OpenAIAPIParameter -EndpointName 'foo' -Parameters $ExplicitParams
-                $ret.ApiType | Should -Be 'OpenAI'
-                $ret.AuthType | Should -Be 'openai'
                 $ret.ApiBase | Should -Be 'http://127.0.0.1:8080/v1'
                 Should -Invoke Get-OpenAIAPIEndpoint -Times 1 -Exactly
             }

@@ -12,6 +12,7 @@ namespace PSOpenAI.Tests {
         private readonly TcpListener listener;
         public readonly int Port;
         public readonly Task Completion;
+        public string RequestHeaders;
         public LoopbackServer(byte[] response) {
             listener = new TcpListener(IPAddress.Loopback, 0);
             listener.Start();
@@ -22,12 +23,15 @@ namespace PSOpenAI.Tests {
                     // Only HTTP/1.1 headers are expected; bound reads to avoid hanging a failed test.
                     stream.ReadTimeout = 5000;
                     int state = 0;
+                    var headers = new System.Text.StringBuilder();
                     while (state < 4) {
                         int value = stream.ReadByte();
                         if (value < 0) return;
+                        headers.Append((char)value);
                         int expected = state % 2 == 0 ? 13 : 10;
                         state = value == expected ? state + 1 : (value == 13 ? 1 : 0);
                     }
+                    RequestHeaders = headers.ToString();
                     await stream.WriteAsync(response, 0, response.Length);
                 }
             });

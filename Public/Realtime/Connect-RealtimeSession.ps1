@@ -18,17 +18,7 @@ function Connect-RealtimeSession {
         [string]$Model = 'gpt-realtime',
 
         [Parameter()]
-        [OpenAIApiType]$ApiType = [OpenAIApiType]::OpenAI,
-
-        [Parameter()]
         [System.Uri]$ApiBase,
-
-        [Parameter(DontShow)]
-        [string]$ApiVersion,
-
-        [Parameter()]
-        [ValidateSet('openai', 'azure', 'azure_ad')]
-        [string]$AuthType = 'openai',
 
         [Parameter()]
         [securestring][SecureStringTransformation()]$ApiKey
@@ -44,14 +34,11 @@ function Connect-RealtimeSession {
         }
 
         # Get API context
-        $OpenAIParameter = Get-OpenAIAPIParameter -EndpointName 'Realtime' -Parameters $PSBoundParameters -Engine $Model -ErrorAction Stop
+        $OpenAIParameter = Get-OpenAIAPIParameter -EndpointName 'Realtime' -Parameters $PSBoundParameters -ErrorAction Stop
 
         #region Set variables
         $IsDebug = Test-Debug
-        $ServiceName = switch -Wildcard ($OpenAIParameter.AuthType) {
-            'openai*' { 'OpenAI' }
-            'azure*' { 'Azure OpenAI' }
-        }
+        $ServiceName = 'OpenAI'
         #endregion
 
         #region Construct Query URI
@@ -78,12 +65,7 @@ function Connect-RealtimeSession {
             $script:WebSocketClient = [System.Net.WebSockets.ClientWebSocket]::new()
 
             # Set Authorization header
-            if ($OpenAIParameter.AuthType -eq 'azure') {
-                $WebSocketClient.Options.SetRequestHeader('api-key', $private:PlainToken)
-            }
-            else {
-                $WebSocketClient.Options.SetRequestHeader('Authorization', "Bearer $private:PlainToken")
-            }
+            $WebSocketClient.Options.SetRequestHeader('Authorization', "Bearer $private:PlainToken")
 
             # Set debug header
             if ($IsDebug) {

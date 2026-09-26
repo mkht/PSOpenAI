@@ -43,17 +43,7 @@ function Request-Embeddings {
         [int]$MaxRetryCount = 0,
 
         [Parameter()]
-        [OpenAIApiType]$ApiType = [OpenAIApiType]::OpenAI,
-
-        [Parameter()]
         [System.Uri]$ApiBase,
-
-        [Parameter(DontShow)]
-        [string]$ApiVersion,
-
-        [Parameter()]
-        [ValidateSet('openai', 'azure', 'azure_ad')]
-        [string]$AuthType = 'openai',
 
         [Parameter()]
         [securestring][SecureStringTransformation()]$ApiKey,
@@ -74,7 +64,7 @@ function Request-Embeddings {
 
     begin {
         # Get API context
-        $OpenAIParameter = Get-OpenAIAPIParameter -EndpointName 'Embeddings' -Parameters $PSBoundParameters -Engine $Model -ErrorAction Stop
+        $OpenAIParameter = Get-OpenAIAPIParameter -EndpointName 'Embeddings' -Parameters $PSBoundParameters -ErrorAction Stop
     }
 
     process {
@@ -86,9 +76,7 @@ function Request-Embeddings {
 
         #region Construct parameters for API request
         $PostBody = [System.Collections.Specialized.OrderedDictionary]::new()
-        if ($OpenAIParameter.ApiType -eq [OpenAIApiType]::OpenAI) {
-            $PostBody.model = $Model
-        }
+        $PostBody.model = $Model
         if ($Text.Count -eq 1) {
             $PostBody.input = [string](@($Text)[0])
         }
@@ -129,7 +117,6 @@ function Request-Embeddings {
             TimeoutSec        = $OpenAIParameter.TimeoutSec
             MaxRetryCount     = $OpenAIParameter.MaxRetryCount
             ApiKey            = $OpenAIParameter.ApiKey
-            AuthType          = $OpenAIParameter.AuthType
             Organization      = $OpenAIParameter.Organization
             Body              = $PostBody
             AdditionalQuery   = $AdditionalQuery

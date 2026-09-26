@@ -76,44 +76,5 @@ Describe 'Get-OpenAIModels' {
         }
     }
 
-    Context 'Integration tests (Azure)' -Tag 'Azure' {
-        BeforeAll {
-            # Set Context for Azure OpenAI
-            $AzureContext = @{
-                ApiType    = 'Azure'
-                AuthType   = 'Azure'
-                ApiKey     = $env:AZURE_OPENAI_API_KEY
-                ApiBase    = $env:AZURE_OPENAI_ENDPOINT
-                TimeoutSec = 30
-            }
-            Set-OpenAIContext @AzureContext
-        }
 
-        BeforeEach {
-            $script:Models = ''
-        }
-
-        AfterAll {
-            Clear-OpenAIContext
-        }
-
-        It 'List all available AI models.' {
-            { $script:Models = Get-OpenAIModels -ErrorAction Stop } | Should -Not -Throw
-            $Models.GetType().Name | Should -Be 'Object[]'
-            $Models.Count | Should -BeGreaterThan 1
-            $Models[0] | Should -BeOfType [pscustomobject]
-            $Models[0].id | Should -Not -BeNullOrEmpty
-        }
-
-        It 'Get a specific AI model.' {
-            { $script:Models = Get-OpenAIModels -Name 'gpt-4o-mini-2024-07-18' -ErrorAction Stop } | Should -Not -Throw
-            $Models.GetType().Name | Should -Be 'PSCustomObject'
-            @($Models).Count | Should -Be 1
-            $Models.id | Should -Be 'gpt-4o-mini-2024-07-18'
-        }
-
-        It '404 error not found' {
-            { $script.Models = Get-OpenAIModels -Name 'non-exist-model' -ErrorAction Stop } | Should -Throw '*404*'
-        }
-    }
 }

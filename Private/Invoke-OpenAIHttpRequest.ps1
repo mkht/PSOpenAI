@@ -44,10 +44,6 @@ function Invoke-OpenAIHttpRequest {
         [int]$RetryCount = 0,
 
         [Parameter()]
-        # [ValidateSet('openai', 'azure', 'azure_ad')]
-        [string]$AuthType = 'openai',
-
-        [Parameter()]
         [bool]$ReturnRawResponse = $false,
 
         [Parameter()]
@@ -110,13 +106,8 @@ function Invoke-OpenAIHttpRequest {
                 foreach ($h in $InternalParams.Headers.GetEnumerator()) { $RequestHeaders[$h.Key] = $h.Value }
                 $RequestHeaders['User-Agent'] = $InternalParams.UserAgent
                 if ($null -ne $ApiKey) {
-                    if ($AuthType -eq 'azure') {
-                        $RequestHeaders['api-key'] = $PlainToken
-                    }
-                    else {
-                        $RequestHeaders['Authorization'] = "Bearer $PlainToken"
-                    }
-                    if ($AuthType -eq 'openai' -and -not [string]::IsNullOrWhiteSpace($Organization)) {
+                    $RequestHeaders['Authorization'] = "Bearer $PlainToken"
+                    if (-not [string]::IsNullOrWhiteSpace($Organization)) {
                         $RequestHeaders['OpenAI-Organization'] = $Organization.Trim()
                     }
                 }

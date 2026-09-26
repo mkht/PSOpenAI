@@ -15,10 +15,7 @@ Sets common parameters that are implicitly used when executing functions.
 ```
 Set-OpenAIContext
     [-ApiKey <SecureString>]
-    [-ApiType <OpenAIApiType>]
     [-ApiBase <Uri>]
-    [-ApiVersion <String>]
-    [-AuthType <String>]
     [-Organization <String>]
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
@@ -32,11 +29,11 @@ Parameters set in the context are implicitly used when each function is executed
 
 ### Example 1
 ```powershell
-PS C:\> Set-OpenAIContext -ApiType 'Azure' -ApiKey 'AZURE_API_KEY' -ApiBase 'https://my-endpoint.openai.azure.com/'
-PS C:\> Request-ChatCompletion -Message 'Hello Azure OpenAI'
+PS C:\> Set-OpenAIContext -ApiKey 'AZURE_API_KEY' -ApiBase 'https://my-endpoint.openai.azure.com/openai/v1/'
+PS C:\> Request-ChatCompletion -Message 'Hello Azure OpenAI' -Model '<deployment-name>'
 ```
 
-Because the context is set to use Azure, Request-ChatCompletion is executed to Azure instead of the default OpenAI.
+The custom API base and API key are used for subsequent requests. For Azure v1, Model must be the deployment name.
 
 ## PARAMETERS
 
@@ -50,39 +47,12 @@ Required: False
 Position: Named
 ```
 
-### -ApiType
-Specify whether to call OpenAI or Azure OpenAI Service. Supported values are "OpenAI" or "Azure".
-
-```yaml
-Type: String
-Required: False
-Position: Named
-```
-
 ### -ApiBase
 Specifies an API endpoint URL such like: `https://your-api-endpoint.test/v1`  
 URL specified in the context take precedence over environment and global variables.
 
 ```yaml
 Type: System.Uri
-Required: False
-Position: Named
-```
-
-### -ApiVersion
-Specify a string representing the API version. This is only valid when using the Azure OpenAI Service.
-
-```yaml
-Type: String
-Required: False
-Position: Named
-```
-
-### -AuthType
-Specify the authentication type to be used. Valid values are "OpenAI", "Azure", or "Azure_AD".
-
-```yaml
-Type: String
 Required: False
 Position: Named
 ```

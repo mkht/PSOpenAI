@@ -28,9 +28,6 @@ function Initialize-OpenAIAPIRequestParam {
         [Parameter()]
         [IDictionary]$AdditionalHeaders,
 
-        [Parameter()]
-        [string]$AuthType = 'openai',
-
         [Parameter(ValueFromRemainingArguments)]$ArgList
     )
 
@@ -45,11 +42,7 @@ function Initialize-OpenAIAPIRequestParam {
         IsDebug     = $false
     }
 
-    # Set service name based on AuthType
-    $InternalParams.ServiceName = switch -Wildcard ($AuthType) {
-        'openai*' { 'OpenAI' }
-        'azure*' { 'Azure OpenAI' }
-    }
+    $InternalParams.ServiceName = 'OpenAI'
 
     # Assert selected model is discontinued
     if ($null -ne $Body -and $null -ne $Body.model) {

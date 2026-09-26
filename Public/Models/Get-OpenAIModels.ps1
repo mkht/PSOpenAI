@@ -15,17 +15,7 @@ function Get-OpenAIModels {
         [int]$MaxRetryCount = 0,
 
         [Parameter()]
-        [OpenAIApiType]$ApiType = [OpenAIApiType]::OpenAI,
-
-        [Parameter()]
         [System.Uri]$ApiBase,
-
-        [Parameter(DontShow)]
-        [string]$ApiVersion,
-
-        [Parameter()]
-        [ValidateSet('openai', 'azure', 'azure_ad')]
-        [string]$AuthType = 'openai',
 
         [Parameter()]
         [securestring][SecureStringTransformation()]$ApiKey,
@@ -61,7 +51,6 @@ function Get-OpenAIModels {
             Method            = $OpenAIParameter.Method
             Uri               = $OpenAIParameter.Uri
             ApiKey            = $OpenAIParameter.ApiKey
-            AuthType          = $OpenAIParameter.AuthType
             Organization      = $OpenAIParameter.Organization
             TimeoutSec        = $OpenAIParameter.TimeoutSec
             MaxRetryCount     = $OpenAIParameter.MaxRetryCount
@@ -98,9 +87,7 @@ function Get-OpenAIModels {
         foreach ($m in $Models) {
             if ($null -eq $m) { continue }
             # Add custom type name and properties to output object.
-            if ($OpenAIParameter.ApiType -eq [OpenAIApiType]::OpenAI) {
-                $m.PSObject.TypeNames.Insert(0, 'PSOpenAI.Model')
-            }
+            $m.PSObject.TypeNames.Insert(0, 'PSOpenAI.Model')
               ('created', 'created_at', 'updated_at') | ForEach-Object {
                 if ($null -ne $m.$_ -and ($unixtime = $m.$_ -as [long])) {
                     # convert unixtime to [DateTime] for read suitable

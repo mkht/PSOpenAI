@@ -87,35 +87,5 @@ Describe 'Remove-Response' {
         }
     }
 
-    Context 'Integration tests (Azure)' -Tag 'Azure' {
 
-        BeforeAll {
-            # Set Context for Azure OpenAI
-            $AzureContext = @{
-                ApiType    = 'Azure'
-                AuthType   = 'Azure'
-                ApiKey     = $env:AZURE_OPENAI_API_KEY
-                ApiBase    = $env:AZURE_OPENAI_ENDPOINT
-                TimeoutSec = 30
-            }
-            Set-OpenAIContext @AzureContext
-        }
-
-        BeforeEach {
-            $script:Result = ''
-            $script:TestResponse = Request-Response -Model 'gpt-4o-mini' -Message 'Hello' -Store $true -TimeoutSec 30 -ErrorAction Stop
-            Start-Sleep -Seconds 5
-        }
-
-        It 'Remove response' {
-            { $splat = @{
-                    Response    = $script:TestResponse
-                    TimeoutSec  = 30
-                    ErrorAction = 'Stop'
-                }
-                $script:Result = Remove-Response @splat
-            } | Should -Not -Throw
-            $Result | Should -BeNullOrEmpty
-        }
-    }
 }

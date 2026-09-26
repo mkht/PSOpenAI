@@ -502,6 +502,8 @@ Position: Named
 ```
 
 ### -LogitBias
+For custom model or deployment names that do not identify a known tokenizer, supply integer token IDs for the actual model. PSOpenAI does not infer a tokenizer from an Azure deployment name.
+
 Modify the likelihood of specified tokens appearing in the completion.  
 Accepts a maps of tokens to an associated bias value from `-100` to `100`.
 

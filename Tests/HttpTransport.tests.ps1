@@ -89,14 +89,11 @@ Describe 'Shared HTTP transport' -Tag Offline {
             $TestHandler.Disposed | Should -BeFalse
         }
 
-        It 'Uses <AuthType> authentication with additional headers' -TestCases @(
-            @{ AuthType = 'azure'; Expected = 'api-key: test-secret' }
-            @{ AuthType = 'azure_ad'; Expected = 'Authorization: Bearer test-secret' }
-        ) {
-            param ($AuthType, $Expected)
+        It 'Uses Bearer authentication with additional headers' {
             $null = Add-TestResponse
-            $null = Invoke-OpenAIHttpRequest @RequestParams -AuthType $AuthType -Body @{ n = 1 } -AdditionalHeaders @{ 'X-Test' = 'value'; 'Content-Type' = 'application/json; charset=utf-8' }
-            $TestHandler.Requests[0].Headers | Should -Match $Expected
+            $null = Invoke-OpenAIHttpRequest @RequestParams -Body @{ n = 1 } -AdditionalHeaders @{ 'X-Test' = 'value'; 'Content-Type' = 'application/json; charset=utf-8' }
+            $TestHandler.Requests[0].Headers | Should -Match 'Authorization: Bearer test-secret'
+            $TestHandler.Requests[0].Headers | Should -Not -Match 'api-key:'
             $TestHandler.Requests[0].Headers | Should -Match 'X-Test: value'
             $TestHandler.Requests[0].ContentHeaders | Should -Match 'Content-Type: application/json; charset=utf-8'
         }
@@ -186,8 +183,8 @@ Describe 'Shared HTTP transport' -Tag Offline {
             $response = Add-TestResponse -Status 307
             $response.Headers.Location = [uri]'https://other.example.test/result'
             $null = Add-TestResponse
-            $null = Invoke-OpenAIHttpRequest @RequestParams -AuthType azure -Body @{ n = 1 }
-            $TestHandler.Requests[1].Headers | Should -Not -Match 'api-key|test-secret'
+            $null = Invoke-OpenAIHttpRequest @RequestParams -Body @{ n = 1 } -AdditionalHeaders @{ 'api-key' = 'test-secret' }
+            $TestHandler.Requests[1].Headers | Should -Not -Match 'Authorization|api-key|test-secret'
             $TestHandler.Requests[1].Method | Should -BeExactly 'POST'
             [Convert]::ToBase64String($TestHandler.Requests[1].Body) | Should -BeExactly ([Convert]::ToBase64String($TestHandler.Requests[0].Body))
             $response.Content.Disposed | Should -BeTrue

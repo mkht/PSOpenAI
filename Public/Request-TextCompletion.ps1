@@ -73,17 +73,7 @@ function Request-TextCompletion {
         [int]$TimeoutSec = 0,
 
         [Parameter()]
-        [OpenAIApiType]$ApiType = [OpenAIApiType]::OpenAI,
-
-        [Parameter()]
         [System.Uri]$ApiBase,
-
-        [Parameter(DontShow)]
-        [string]$ApiVersion,
-
-        [Parameter()]
-        [ValidateSet('openai', 'azure', 'azure_ad')]
-        [string]$AuthType = 'openai',
 
         [Parameter()]
         [ValidateRange(0, 100)]
@@ -108,15 +98,9 @@ function Request-TextCompletion {
 
     begin {
         # Get API context
-        $OpenAIParameter = Get-OpenAIAPIParameter -EndpointName 'Text.Completion' -Parameters $PSBoundParameters -Engine $Model -ErrorAction Stop
+        $OpenAIParameter = Get-OpenAIAPIParameter -EndpointName 'Text.Completion' -Parameters $PSBoundParameters -ErrorAction Stop
 
-        if ($OpenAIParameter.ApiType -eq [OpenAIApiType]::Azure) {
-            # Temporal engine name for Azure
-            $Engine = 'text-davinci-003'
-        }
-        else {
-            $Engine = $Model
-        }
+        $Engine = $Model
     }
 
     process {
@@ -136,9 +120,7 @@ function Request-TextCompletion {
 
         #region Construct parameters for API request
         $PostBody = [System.Collections.Specialized.OrderedDictionary]::new()
-        if ($OpenAIParameter.ApiType -eq [OpenAIApiType]::OpenAI) {
-            $PostBody.model = $Model
-        }
+        $PostBody.model = $Model
         if ($PSBoundParameters.ContainsKey('Prompt')) {
             if ($Prompt.Count -eq 1) {
                 $PostBody.prompt = [string](@($Prompt)[0])
@@ -209,7 +191,6 @@ function Request-TextCompletion {
             TimeoutSec        = $OpenAIParameter.TimeoutSec
             MaxRetryCount     = $OpenAIParameter.MaxRetryCount
             ApiKey            = $OpenAIParameter.ApiKey
-            AuthType          = $OpenAIParameter.AuthType
             Organization      = $OpenAIParameter.Organization
             Body              = $PostBody
             AdditionalQuery   = $AdditionalQuery

@@ -98,7 +98,7 @@ Describe 'Request-ContentProvenanceCheck' {
             $ParseError | Should -Not -BeNullOrEmpty
         }
 
-        It 'Rejects unsupported Azure endpoint before sending a request' {
+        It 'Rejects removed ApiType parameter before sending a request' {
             { Request-ContentProvenanceCheck -File (Join-Path $script:TestData 'sweets_donut.png') -ApiType Azure -ApiBase 'https://example.openai.azure.com' -ErrorAction Stop } | Should -Throw
             Should -Invoke -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -Times 0 -Exactly
         }

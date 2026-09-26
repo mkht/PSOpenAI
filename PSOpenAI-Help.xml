@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <helpItems schema="maml" xmlns="http://msh">
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
     <command:details>
@@ -1933,15 +1933,12 @@ PS C:\&gt; $Store = $Store | Add-VectorStoreFile -FileId 'file-abc123' -PassThru
     <command:examples>
       <command:example>
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; Set-OpenAIContext -ApiType 'Azure' -ApiKey 'API_KEY'
+        <dev:code>PS C:\&gt; Set-OpenAIContext -ApiKey 'API_KEY'
 PS C:\&gt; Clear-OpenAIContext
 PS C:\&gt; Get-OpenAIContext
 
 ApiKey        :
-ApiType       : OpenAI
 ApiBase       :
-ApiVersion    :
-AuthType      : openai
 Organization  :
 TimeoutSec    : 0
 MaxRetryCount : 0</dev:code>
@@ -2012,39 +2009,6 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>ApiType</maml:name>
-          <maml:description>
-            <maml:para>Specifies API type of use. `OpenAI`(default) or `Azure`</maml:para>
-          </maml:description>
-          <command:parameterValueGroup>
-            <command:parameterValue required="false" command:variableLength="false">OpenAI</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Azure</command:parameterValue>
-          </command:parameterValueGroup>
-          <command:parameterValue required="true" variableLength="false">OpenAIApiType</command:parameterValue>
-          <dev:type>
-            <maml:name>OpenAIApiType</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>OpenAI</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>AuthType</maml:name>
-          <maml:description>
-            <maml:para>If you wish to use Entra-ID based authentication, specifies as `azure_ad`.</maml:para>
-          </maml:description>
-          <command:parameterValueGroup>
-            <command:parameterValue required="false" command:variableLength="false">openai</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">azure</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">azure_ad</command:parameterValue>
-          </command:parameterValueGroup>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
@@ -2083,30 +2047,6 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
         <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
         <dev:type>
           <maml:name>Object</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-        <maml:name>ApiType</maml:name>
-        <maml:description>
-          <maml:para>Specifies API type of use. `OpenAI`(default) or `Azure`</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">OpenAIApiType</command:parameterValue>
-        <dev:type>
-          <maml:name>OpenAIApiType</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>OpenAI</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-        <maml:name>AuthType</maml:name>
-        <maml:description>
-          <maml:para>If you wish to use Entra-ID based authentication, specifies as `azure_ad`.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -2182,39 +2122,6 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>ApiType</maml:name>
-          <maml:description>
-            <maml:para>Specifies API type of use. `OpenAI`(default) or `Azure`</maml:para>
-          </maml:description>
-          <command:parameterValueGroup>
-            <command:parameterValue required="false" command:variableLength="false">OpenAI</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Azure</command:parameterValue>
-          </command:parameterValueGroup>
-          <command:parameterValue required="true" variableLength="false">OpenAIApiType</command:parameterValue>
-          <dev:type>
-            <maml:name>OpenAIApiType</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>OpenAI</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>AuthType</maml:name>
-          <maml:description>
-            <maml:para>If you wish to use Entra-ID based authentication, specifies as `azure_ad`.</maml:para>
-          </maml:description>
-          <command:parameterValueGroup>
-            <command:parameterValue required="false" command:variableLength="false">openai</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">azure</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">azure_ad</command:parameterValue>
-          </command:parameterValueGroup>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
@@ -2245,30 +2152,6 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-        <maml:name>ApiType</maml:name>
-        <maml:description>
-          <maml:para>Specifies API type of use. `OpenAI`(default) or `Azure`</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">OpenAIApiType</command:parameterValue>
-        <dev:type>
-          <maml:name>OpenAIApiType</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>OpenAI</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-        <maml:name>AuthType</maml:name>
-        <maml:description>
-          <maml:para>If you wish to use Entra-ID based authentication, specifies as `azure_ad`.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
     </command:parameters>
     <command:inputTypes />
     <command:returnValues />
@@ -2294,379 +2177,6 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
       <maml:navigationLink>
         <maml:linkText>https://developers.openai.com/api/docs/guides/realtime-transcription</maml:linkText>
         <maml:uri>https://developers.openai.com/api/docs/guides/realtime-transcription</maml:uri>
-      </maml:navigationLink>
-    </command:relatedLinks>
-  </command:command>
-  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
-    <command:details>
-      <command:name>ConvertFrom-Token</command:name>
-      <command:verb>ConvertFrom</command:verb>
-      <command:noun>Token</command:noun>
-      <maml:description>
-        <maml:para>Decode tokens to original text.</maml:para>
-      </maml:description>
-    </command:details>
-    <maml:description>
-      <maml:para>Decode tokens to original text.</maml:para>
-    </maml:description>
-    <command:syntax>
-      <command:syntaxItem>
-        <maml:name>ConvertFrom-Token</maml:name>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="0" aliases="none">
-          <maml:name>Token</maml:name>
-          <maml:description>
-            <maml:para>Specifies the token array to be decoded.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">Int32[]</command:parameterValue>
-          <dev:type>
-            <maml:name>Int32[]</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="1" aliases="none">
-          <maml:name>Encoding</maml:name>
-          <maml:description>
-            <maml:para>Specifies the encoding name. Currently `cl100k_base` and `o200k_base` are supported.
-It cannot be specified with the model name.</maml:para>
-          </maml:description>
-          <command:parameterValueGroup>
-            <command:parameterValue required="false" command:variableLength="false">cl100k_base</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">o200k_base</command:parameterValue>
-          </command:parameterValueGroup>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>cl100k_base</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>AsArray</maml:name>
-          <maml:description>
-            <maml:para>If set, output as an array of strings decoded token by token.</maml:para>
-          </maml:description>
-          <dev:type>
-            <maml:name>SwitchParameter</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>False</dev:defaultValue>
-        </command:parameter>
-      </command:syntaxItem>
-      <command:syntaxItem>
-        <maml:name>ConvertFrom-Token</maml:name>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="0" aliases="none">
-          <maml:name>Token</maml:name>
-          <maml:description>
-            <maml:para>Specifies the token array to be decoded.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">Int32[]</command:parameterValue>
-          <dev:type>
-            <maml:name>Int32[]</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="1" aliases="none">
-          <maml:name>Model</maml:name>
-          <maml:description>
-            <maml:para>Specifies the model name. such like `gpt-4` or `text-embedding-3-small`.
-It cannot be specified with the encoding name.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>AsArray</maml:name>
-          <maml:description>
-            <maml:para>If set, output as an array of strings decoded token by token.</maml:para>
-          </maml:description>
-          <dev:type>
-            <maml:name>SwitchParameter</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>False</dev:defaultValue>
-        </command:parameter>
-      </command:syntaxItem>
-    </command:syntax>
-    <command:parameters>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="0" aliases="none">
-        <maml:name>Token</maml:name>
-        <maml:description>
-          <maml:para>Specifies the token array to be decoded.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">Int32[]</command:parameterValue>
-        <dev:type>
-          <maml:name>Int32[]</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="1" aliases="none">
-        <maml:name>Encoding</maml:name>
-        <maml:description>
-          <maml:para>Specifies the encoding name. Currently `cl100k_base` and `o200k_base` are supported.
-It cannot be specified with the model name.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>cl100k_base</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="1" aliases="none">
-        <maml:name>Model</maml:name>
-        <maml:description>
-          <maml:para>Specifies the model name. such like `gpt-4` or `text-embedding-3-small`.
-It cannot be specified with the encoding name.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-        <maml:name>AsArray</maml:name>
-        <maml:description>
-          <maml:para>If set, output as an array of strings decoded token by token.</maml:para>
-        </maml:description>
-        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
-        <dev:type>
-          <maml:name>SwitchParameter</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>False</dev:defaultValue>
-      </command:parameter>
-    </command:parameters>
-    <command:inputTypes>
-      <command:inputType>
-        <dev:type>
-          <maml:name>System.Int32[]</maml:name>
-        </dev:type>
-        <maml:description>
-          <maml:para></maml:para>
-        </maml:description>
-      </command:inputType>
-    </command:inputTypes>
-    <command:returnValues>
-      <command:returnValue>
-        <dev:type>
-          <maml:name>System.String</maml:name>
-        </dev:type>
-        <maml:description>
-          <maml:para></maml:para>
-        </maml:description>
-      </command:returnValue>
-    </command:returnValues>
-    <maml:alertSet>
-      <maml:alert>
-        <maml:para></maml:para>
-      </maml:alert>
-    </maml:alertSet>
-    <command:examples>
-      <command:example>
-        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>$Tokens = (9906, 11, 1917, 0)
-ConvertFrom-Token -Token $Tokens -Model 'gpt-4'
-# Output: Hello, world!</dev:code>
-        <dev:remarks>
-          <maml:para></maml:para>
-        </dev:remarks>
-      </command:example>
-      <command:example>
-        <maml:title>-------------------------- Example 2 --------------------------</maml:title>
-        <dev:code>(102415, 230, 102415, 240, 102415, 239) | ConvertFrom-Token -Encoding 'o200k_base'
-# Output: 🍈🍒🍑</dev:code>
-        <dev:remarks>
-          <maml:para></maml:para>
-        </dev:remarks>
-      </command:example>
-    </command:examples>
-    <command:relatedLinks>
-      <maml:navigationLink>
-        <maml:linkText>Online Version:</maml:linkText>
-        <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/ConvertFrom-Token.md</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
-        <maml:linkText>https://github.com/openai/tiktoken</maml:linkText>
-        <maml:uri>https://github.com/openai/tiktoken</maml:uri>
-      </maml:navigationLink>
-    </command:relatedLinks>
-  </command:command>
-  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
-    <command:details>
-      <command:name>ConvertTo-Token</command:name>
-      <command:verb>ConvertTo</command:verb>
-      <command:noun>Token</command:noun>
-      <maml:description>
-        <maml:para>BPE tokeniser for use with OpenAI's models.</maml:para>
-      </maml:description>
-    </command:details>
-    <maml:description>
-      <maml:para>Encode text to tokens for use with OpenAI's models. (tokenize)
-The output values are compatible with OpenAI tiktoken.</maml:para>
-    </maml:description>
-    <command:syntax>
-      <command:syntaxItem>
-        <maml:name>ConvertTo-Token</maml:name>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="0" aliases="none">
-          <maml:name>Text</maml:name>
-          <maml:description>
-            <maml:para>Specifies texts to be encoded.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="1" aliases="none">
-          <maml:name>Encoding</maml:name>
-          <maml:description>
-            <maml:para>Specifies the encoding name. Currently `cl100k_base` and `o200k_base` are supported.
-It cannot be specified with the model name.</maml:para>
-          </maml:description>
-          <command:parameterValueGroup>
-            <command:parameterValue required="false" command:variableLength="false">cl100k_base</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">o200k_base</command:parameterValue>
-          </command:parameterValueGroup>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>cl100k_base</dev:defaultValue>
-        </command:parameter>
-      </command:syntaxItem>
-      <command:syntaxItem>
-        <maml:name>ConvertTo-Token</maml:name>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="0" aliases="none">
-          <maml:name>Text</maml:name>
-          <maml:description>
-            <maml:para>Specifies texts to be encoded.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="1" aliases="none">
-          <maml:name>Model</maml:name>
-          <maml:description>
-            <maml:para>Specifies the model name. such like `gpt-4` or `text-embedding-3-small`.
-It cannot be specified with the encoding name.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-      </command:syntaxItem>
-    </command:syntax>
-    <command:parameters>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="0" aliases="none">
-        <maml:name>Text</maml:name>
-        <maml:description>
-          <maml:para>Specifies texts to be encoded.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="1" aliases="none">
-        <maml:name>Encoding</maml:name>
-        <maml:description>
-          <maml:para>Specifies the encoding name. Currently `cl100k_base` and `o200k_base` are supported.
-It cannot be specified with the model name.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>cl100k_base</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="1" aliases="none">
-        <maml:name>Model</maml:name>
-        <maml:description>
-          <maml:para>Specifies the model name. such like `gpt-4` or `text-embedding-3-small`.
-It cannot be specified with the encoding name.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-    </command:parameters>
-    <command:inputTypes>
-      <command:inputType>
-        <dev:type>
-          <maml:name>System.String</maml:name>
-        </dev:type>
-        <maml:description>
-          <maml:para></maml:para>
-        </maml:description>
-      </command:inputType>
-    </command:inputTypes>
-    <command:returnValues>
-      <command:returnValue>
-        <dev:type>
-          <maml:name>System.Int32[]</maml:name>
-        </dev:type>
-        <maml:description>
-          <maml:para></maml:para>
-        </maml:description>
-      </command:returnValue>
-    </command:returnValues>
-    <maml:alertSet>
-      <maml:alert>
-        <maml:para></maml:para>
-      </maml:alert>
-    </maml:alertSet>
-    <command:examples>
-      <command:example>
-        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>$Text = Hello, world!
-ConvertTo-Token -Text $Text -Model 'gpt-4'
-# Output: (9906, 11, 1917, 0)</dev:code>
-        <dev:remarks>
-          <maml:para></maml:para>
-        </dev:remarks>
-      </command:example>
-      <command:example>
-        <maml:title>-------------------------- Example 2 --------------------------</maml:title>
-        <dev:code>'🍈🍒🍑' | ConvertTo-Token -Encoding 'o200k_base'
-# Output: (102415, 230, 102415, 240, 102415, 239)</dev:code>
-        <dev:remarks>
-          <maml:para></maml:para>
-        </dev:remarks>
-      </command:example>
-    </command:examples>
-    <command:relatedLinks>
-      <maml:navigationLink>
-        <maml:linkText>Online Version:</maml:linkText>
-        <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/ConvertTo-Token.md</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
-        <maml:linkText>https://github.com/openai/tiktoken</maml:linkText>
-        <maml:uri>https://github.com/openai/tiktoken</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -5822,108 +5332,6 @@ Default is `0` (No retry).</maml:para>
   </command:command>
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
     <command:details>
-      <command:name>Get-CosineSimilarity</command:name>
-      <command:verb>Get</command:verb>
-      <command:noun>CosineSimilarity</command:noun>
-      <maml:description>
-        <maml:para>Calculate cosine similarity between two vectors.</maml:para>
-      </maml:description>
-    </command:details>
-    <maml:description>
-      <maml:para>Calculate cosine similarity between two vectors.</maml:para>
-    </maml:description>
-    <command:syntax>
-      <command:syntaxItem>
-        <maml:name>Get-CosineSimilarity</maml:name>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="0" aliases="none">
-          <maml:name>Vector1</maml:name>
-          <maml:description>
-            <maml:para>First vector</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">Double[]</command:parameterValue>
-          <dev:type>
-            <maml:name>Double[]</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="1" aliases="none">
-          <maml:name>Vector2</maml:name>
-          <maml:description>
-            <maml:para>Second vector. The dimension is must same as first vector.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">Double[]</command:parameterValue>
-          <dev:type>
-            <maml:name>Double[]</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-      </command:syntaxItem>
-    </command:syntax>
-    <command:parameters>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="0" aliases="none">
-        <maml:name>Vector1</maml:name>
-        <maml:description>
-          <maml:para>First vector</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">Double[]</command:parameterValue>
-        <dev:type>
-          <maml:name>Double[]</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="1" aliases="none">
-        <maml:name>Vector2</maml:name>
-        <maml:description>
-          <maml:para>Second vector. The dimension is must same as first vector.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">Double[]</command:parameterValue>
-        <dev:type>
-          <maml:name>Double[]</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-    </command:parameters>
-    <command:inputTypes />
-    <command:returnValues>
-      <command:returnValue>
-        <dev:type>
-          <maml:name>System.Double</maml:name>
-        </dev:type>
-        <maml:description>
-          <maml:para></maml:para>
-        </maml:description>
-      </command:returnValue>
-    </command:returnValues>
-    <maml:alertSet>
-      <maml:alert>
-        <maml:para></maml:para>
-      </maml:alert>
-    </maml:alertSet>
-    <command:examples>
-      <command:example>
-        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; $v1 = (-0.01302161, -0.01999075, 0.007301898)
-PS C:\&gt; $v2 = (0.01506045, -0.04311577, 0.01272033)
-PS C:\&gt; Get-CosineSimilarity $v1 $v2
-0.00144161334877118</dev:code>
-        <dev:remarks>
-          <maml:para></maml:para>
-        </dev:remarks>
-      </command:example>
-    </command:examples>
-    <command:relatedLinks>
-      <maml:navigationLink>
-        <maml:linkText>Online Version:</maml:linkText>
-        <maml:uri>https://github.com/mkht/PSOpenAI/blob/main/Docs/Get-CosineSimilarity.md</maml:uri>
-      </maml:navigationLink>
-    </command:relatedLinks>
-  </command:command>
-  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
-    <command:details>
       <command:name>Set-OpenAIContext</command:name>
       <command:verb>Set</command:verb>
       <command:noun>OpenAIContext</command:noun>
@@ -5950,14 +5358,11 @@ PS C:\&gt; Get-CosineSimilarity $v1 $v2
     <command:examples>
       <command:example>
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; Set-OpenAIContext -ApiType 'Azure' -ApiKey 'AZURE_API_KEY' -ApiBase 'https://my-endpoint.openai.azure.com/'
+        <dev:code>PS C:\&gt; Set-OpenAIContext -ApiKey 'AZURE_API_KEY' -ApiBase 'https://my-endpoint.openai.azure.com/openai/v1/'
 PS C:\&gt; Get-OpenAIContext
 
 ApiKey        : System.Security.SecureString
-ApiType       : Azure
-ApiBase       : https://my-endpoint.openai.azure.com/
-ApiVersion    :
-AuthType      : azure
+ApiBase       : https://my-endpoint.openai.azure.com/openai/v1/
 Organization  :
 TimeoutSec    : 0
 MaxRetryCount : 0</dev:code>
@@ -14202,10 +13607,9 @@ Positive values penalize new tokens based on their existing frequency in the tex
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="logit_bias">
           <maml:name>LogitBias</maml:name>
           <maml:description>
+            <maml:para>For custom model or deployment names that do not identify a known tokenizer, supply integer token IDs for the actual model. PSOpenAI does not infer a tokenizer from an Azure deployment name.</maml:para>
             <maml:para>Modify the likelihood of specified tokens appearing in the completion.
-Accepts a maps of tokens to an associated bias value from `-100` to `100`. You can use `ConvertTo-Token` to convert text to token IDs. Mathematically, the bias is added to the logits generated by the model prior to sampling. The exact effect will vary per model, but values between `-1` and `1` should decrease or increase likelihood of selection; values like `-100` or `100` should result in a ban or exclusive selection of the relevant token.
-As an example, you can pass like so: `@{23182 = 20; 88847 = -100}`
-ID 23182 maps to "apple" and ID 88847 maps to "banana". Thus, this example increases the likelihood of the word "apple" being included in the response from the AI and greatly reduces the likelihood of the word "banana" being included.</maml:para>
+Accepts a maps of tokens to an associated bias value from `-100` to `100`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">IDictionary</command:parameterValue>
           <dev:type>
@@ -14915,10 +14319,9 @@ Positive values penalize new tokens based on their existing frequency in the tex
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="logit_bias">
         <maml:name>LogitBias</maml:name>
         <maml:description>
+          <maml:para>For custom model or deployment names that do not identify a known tokenizer, supply integer token IDs for the actual model. PSOpenAI does not infer a tokenizer from an Azure deployment name.</maml:para>
           <maml:para>Modify the likelihood of specified tokens appearing in the completion.
-Accepts a maps of tokens to an associated bias value from `-100` to `100`. You can use `ConvertTo-Token` to convert text to token IDs. Mathematically, the bias is added to the logits generated by the model prior to sampling. The exact effect will vary per model, but values between `-1` and `1` should decrease or increase likelihood of selection; values like `-100` or `100` should result in a ban or exclusive selection of the relevant token.
-As an example, you can pass like so: `@{23182 = 20; 88847 = -100}`
-ID 23182 maps to "apple" and ID 88847 maps to "banana". Thus, this example increases the likelihood of the word "apple" being included in the response from the AI and greatly reduces the likelihood of the word "banana" being included.</maml:para>
+Accepts a maps of tokens to an associated bias value from `-100` to `100`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">IDictionary</command:parameterValue>
         <dev:type>
@@ -15423,7 +14826,7 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
       <maml:alert>
         <maml:para>Uploads the file as multipart/form-data to POST /v1/content_provenance_checks. Image results include C2PA and SynthID; audio results include SynthID.</maml:para>
         <maml:para>A not_detected outcome does not establish that the content is human-created. Signals may be missing or degraded, and other companies' models are not detected.</maml:para>
-        <maml:para>This endpoint is provided by OpenAI; Azure OpenAI is not supported.</maml:para>
+        <maml:para>The configured server must implement the OpenAI content provenance endpoint.</maml:para>
       </maml:alert>
     </maml:alertSet>
     <command:examples>
@@ -15879,7 +15282,7 @@ https://developers.openai.com/api/reference/resources/images/methods/edit</maml:
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>Model</maml:name>
           <maml:description>
-            <maml:para>The model to use for image generation. Defaults to `gpt-image-2`. GPT Image 2.5 models include `gpt-image-2.5-sunburst`, `gpt-image-2.5-flare`, and their `2026-09-08` snapshots.</maml:para>
+            <maml:para>The model to use for image generation. Defaults to `gpt-image-2`. GPT Image 2.5 models include `gpt-image-2.5-sunburst`, `gpt-image-2.5-flare`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -16143,7 +15546,7 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>Model</maml:name>
           <maml:description>
-            <maml:para>The model to use for image generation. Defaults to `gpt-image-2`. GPT Image 2.5 models include `gpt-image-2.5-sunburst`, `gpt-image-2.5-flare`, and their `2026-09-08` snapshots.</maml:para>
+            <maml:para>The model to use for image generation. Defaults to `gpt-image-2`. GPT Image 2.5 models include `gpt-image-2.5-sunburst`, `gpt-image-2.5-flare`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -16396,7 +15799,7 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>Model</maml:name>
         <maml:description>
-          <maml:para>The model to use for image generation. Defaults to `gpt-image-2`. GPT Image 2.5 models include `gpt-image-2.5-sunburst`, `gpt-image-2.5-flare`, and their `2026-09-08` snapshots.</maml:para>
+          <maml:para>The model to use for image generation. Defaults to `gpt-image-2`. GPT Image 2.5 models include `gpt-image-2.5-sunburst`, `gpt-image-2.5-flare`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -16708,14 +16111,14 @@ https://developers.openai.com/api/reference/resources/images/methods/generate</m
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>Model</maml:name>
           <maml:description>
-            <maml:para>The model to use for image generation. One of `dall-e-2`, `dall-e-3`, or a GPT image model. GPT Image 2.5 models include `gpt-image-2.5-sunburst`, `gpt-image-2.5-flare`, and their `2026-09-08` snapshots. Defaults to `dall-e-2` unless a parameter specific to the GPT image models is used.</maml:para>
+            <maml:para>The model to use for image generation. Defaults to `gpt-image-2`. GPT Image 2.5 models include `gpt-image-2.5-sunburst`, `gpt-image-2.5-flare`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
             <maml:name>String</maml:name>
             <maml:uri />
           </dev:type>
-          <dev:defaultValue>dall-e-2</dev:defaultValue>
+          <dev:defaultValue>gpt-image-2</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="n">
           <maml:name>NumberOfImages</maml:name>
@@ -16936,14 +16339,14 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>Model</maml:name>
           <maml:description>
-            <maml:para>The model to use for image generation. One of `dall-e-2`, `dall-e-3`, or a GPT image model. GPT Image 2.5 models include `gpt-image-2.5-sunburst`, `gpt-image-2.5-flare`, and their `2026-09-08` snapshots. Defaults to `dall-e-2` unless a parameter specific to the GPT image models is used.</maml:para>
+            <maml:para>The model to use for image generation. Defaults to `gpt-image-2`. GPT Image 2.5 models include `gpt-image-2.5-sunburst`, `gpt-image-2.5-flare`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
             <maml:name>String</maml:name>
             <maml:uri />
           </dev:type>
-          <dev:defaultValue>dall-e-2</dev:defaultValue>
+          <dev:defaultValue>gpt-image-2</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="n">
           <maml:name>NumberOfImages</maml:name>
@@ -17153,14 +16556,14 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>Model</maml:name>
         <maml:description>
-          <maml:para>The model to use for image generation. One of `dall-e-2`, `dall-e-3`, or a GPT image model. GPT Image 2.5 models include `gpt-image-2.5-sunburst`, `gpt-image-2.5-flare`, and their `2026-09-08` snapshots. Defaults to `dall-e-2` unless a parameter specific to the GPT image models is used.</maml:para>
+          <maml:para>The model to use for image generation. Defaults to `gpt-image-2`. GPT Image 2.5 models include `gpt-image-2.5-sunburst`, `gpt-image-2.5-flare`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
           <maml:name>String</maml:name>
           <maml:uri />
         </dev:type>
-        <dev:defaultValue>dall-e-2</dev:defaultValue>
+        <dev:defaultValue>gpt-image-2</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="n">
         <maml:name>NumberOfImages</maml:name>
@@ -19148,7 +18551,7 @@ Possible values: `browser`, `mac`, `windows`, `ubuntu`.</maml:para>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>ImageGenerationModel</maml:name>
           <maml:description>
-            <maml:para>The image generation model to use. GPT Image 2.5 models include `gpt-image-2.5-sunburst`, `gpt-image-2.5-flare`, and their `2026-09-08` snapshots.</maml:para>
+            <maml:para>The image generation model to use.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -20466,7 +19869,7 @@ Possible values: `browser`, `mac`, `windows`, `ubuntu`.</maml:para>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>ImageGenerationModel</maml:name>
         <maml:description>
-          <maml:para>The image generation model to use. GPT Image 2.5 models include `gpt-image-2.5-sunburst`, `gpt-image-2.5-flare`, and their `2026-09-08` snapshots.</maml:para>
+          <maml:para>The image generation model to use.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -21829,10 +21232,9 @@ Positive values penalize new tokens based on their existing frequency in the tex
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="logit_bias">
           <maml:name>LogitBias</maml:name>
           <maml:description>
+            <maml:para>For custom model or deployment names that do not identify a known tokenizer, supply integer token IDs for the actual model. PSOpenAI does not infer a tokenizer from an Azure deployment name.</maml:para>
             <maml:para>Modify the likelihood of specified tokens appearing in the completion.
-Accepts a maps of tokens to an associated bias value from `-100` to `100`. You can use `ConvertTo-Token` to convert text to token IDs. Mathematically, the bias is added to the logits generated by the model prior to sampling. The exact effect will vary per model, but values between `-1` and `1` should decrease or increase likelihood of selection; values like `-100` or `100` should result in a ban or exclusive selection of the relevant token.
-As an example, you can pass like so: `@{23182 = 20; 88847 = -100}`
-ID 23182 maps to "apple" and ID 88847 maps to "banana". Thus, this example increases the likelihood of the word "apple" being included in the response from the AI and greatly reduces the likelihood of the word "banana" being included.</maml:para>
+Accepts a maps of tokens to an associated bias value from `-100` to `100`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">IDictionary</command:parameterValue>
           <dev:type>
@@ -22113,10 +21515,9 @@ Positive values penalize new tokens based on their existing frequency in the tex
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="logit_bias">
         <maml:name>LogitBias</maml:name>
         <maml:description>
+          <maml:para>For custom model or deployment names that do not identify a known tokenizer, supply integer token IDs for the actual model. PSOpenAI does not infer a tokenizer from an Azure deployment name.</maml:para>
           <maml:para>Modify the likelihood of specified tokens appearing in the completion.
-Accepts a maps of tokens to an associated bias value from `-100` to `100`. You can use `ConvertTo-Token` to convert text to token IDs. Mathematically, the bias is added to the logits generated by the model prior to sampling. The exact effect will vary per model, but values between `-1` and `1` should decrease or increase likelihood of selection; values like `-100` or `100` should result in a ban or exclusive selection of the relevant token.
-As an example, you can pass like so: `@{23182 = 20; 88847 = -100}`
-ID 23182 maps to "apple" and ID 88847 maps to "banana". Thus, this example increases the likelihood of the word "apple" being included in the response from the AI and greatly reduces the likelihood of the word "banana" being included.</maml:para>
+Accepts a maps of tokens to an associated bias value from `-100` to `100`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">IDictionary</command:parameterValue>
         <dev:type>
@@ -22853,18 +22254,6 @@ API key specified in the context take precedence over environment and global var
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>ApiType</maml:name>
-          <maml:description>
-            <maml:para>Specify whether to call OpenAI or Azure OpenAI Service. Supported values are "OpenAI" or "Azure".</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>ApiBase</maml:name>
           <maml:description>
             <maml:para>Specifies an API endpoint URL such like: `https://your-api-endpoint.test/v1`
@@ -22873,30 +22262,6 @@ URL specified in the context take precedence over environment and global variabl
           <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
           <dev:type>
             <maml:name>System.Uri</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>ApiVersion</maml:name>
-          <maml:description>
-            <maml:para>Specify a string representing the API version. This is only valid when using the Azure OpenAI Service.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>AuthType</maml:name>
-          <maml:description>
-            <maml:para>Specify the authentication type to be used. Valid values are "OpenAI", "Azure", or "Azure_AD".</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -22959,18 +22324,6 @@ API key specified in the context take precedence over environment and global var
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-        <maml:name>ApiType</maml:name>
-        <maml:description>
-          <maml:para>Specify whether to call OpenAI or Azure OpenAI Service. Supported values are "OpenAI" or "Azure".</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>ApiBase</maml:name>
         <maml:description>
           <maml:para>Specifies an API endpoint URL such like: `https://your-api-endpoint.test/v1`
@@ -22979,30 +22332,6 @@ URL specified in the context take precedence over environment and global variabl
         <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
         <dev:type>
           <maml:name>System.Uri</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-        <maml:name>ApiVersion</maml:name>
-        <maml:description>
-          <maml:para>Specify a string representing the API version. This is only valid when using the Azure OpenAI Service.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-        <maml:name>AuthType</maml:name>
-        <maml:description>
-          <maml:para>Specify the authentication type to be used. Valid values are "OpenAI", "Azure", or "Azure_AD".</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -23059,10 +22388,10 @@ Note : Retries will only be performed if the request fails with a `429 (Rate lim
     <command:examples>
       <command:example>
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; Set-OpenAIContext -ApiType 'Azure' -ApiKey 'AZURE_API_KEY' -ApiBase 'https://my-endpoint.openai.azure.com/'
-PS C:\&gt; Request-ChatCompletion -Message 'Hello Azure OpenAI'</dev:code>
+        <dev:code>PS C:\&gt; Set-OpenAIContext -ApiKey 'AZURE_API_KEY' -ApiBase 'https://my-endpoint.openai.azure.com/openai/v1/'
+PS C:\&gt; Request-ChatCompletion -Message 'Hello Azure OpenAI' -Model '&lt;deployment-name&gt;'</dev:code>
         <dev:remarks>
-          <maml:para>Because the context is set to use Azure, Request-ChatCompletion is executed to Azure instead of the default OpenAI.</maml:para>
+          <maml:para>The custom API base and API key are used for subsequent requests. For Azure v1, Model must be the deployment name.</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>

@@ -1,6 +1,6 @@
 # How to handle API keys and context parameters
 
-To request to the OpenAI (and Azure OpenAI Service), we need to specify API key for authentication. And some scenarios also additional parameters such as organization IDs and Azure resource names must be provided.
+Requests use Bearer authentication with the supplied API key or access token. A custom API base can be used for OpenAI-compatible servers.
 
 This guide illustrates how the PSOpenAI handle these user-specific parameters.
 
@@ -61,25 +61,25 @@ $global:OPENAI_ORGANIZATION = '<Put your organization ID here>'
 Request-ChatCompletion -Message 'Hello OpenAI' -Organization '<Put your organization ID here>'
 ```
 
-## API Base (Azure OpenAI Service)
+## API Base (OpenAI-compatible servers)
 
-For Azure OpenAI Service, the API base is required to be specified. This is usually a URL of the form `https://<your-resource-name>.openai.azure.com/`.
+Specify the full API base, including its version/path prefix. For Azure v1, use `https://<your-resource-name>.openai.azure.com/openai/v1/`. PSOpenAI reads `OPENAI_API_BASE`, not the official SDK variable `OPENAI_BASE_URL`. See the [Azure migration guide](How_to_use_with_Azure_OpenAI_Service.md).
 
 The method of specifying the API base is the same as for API keys. It can be specified as an environment variable, a global variable, or a named parameter. The variable name is `OPENAI_API_BASE` and the parameter name is `-ApiBase`.
 
 ```powershell
 # Set required params for the Azure OpenAI Service
 $env:OPENAI_API_KEY = '<Put your API key for Azure here>'
-$Deployment = 'gpt-4o'
+$Deployment = '<deployment-name>'
 
 # 1. Environment variable
-$env:OPENAI_API_BASE = 'https://your-resource-name.openai.azure.com/'
+$env:OPENAI_API_BASE = 'https://your-resource-name.openai.azure.com/openai/v1/'
 
 # 2. Global variable
-$global:OPENAI_API_BASE = 'https://your-resource-name.openai.azure.com/'
+$global:OPENAI_API_BASE = 'https://your-resource-name.openai.azure.com/openai/v1/'
 
 # 3. Named parameter
-Request-ChatCompletion -Message 'Hello Azure' -Deployment $Deployment -ApiBase 'https://your-resource-name.openai.azure.com/' -ApiType 'Azure'
+Request-ChatCompletion -Message 'Hello Azure' -Model $Deployment -ApiBase 'https://your-resource-name.openai.azure.com/openai/v1/'
 ```
 
 ### Other compatible servers
@@ -95,7 +95,7 @@ Request-ChatCompletion -Message 'Hello Local LLM' -Model 'llama2'
 
 ## Context
 
-Set-OpenAIContext is used to store common parameters such as API key, API base, and authentication method in Context and implicitly use them in all function calls.
+Set-OpenAIContext is used to store common parameters such as API key, API base, timeout, and retry count in Context and implicitly use them in all function calls.
 
 > [!NOTE]
 > Context is only effective within the configured PowerShell session and is not persistent. It will be cleared by restarting the session or reloading the module.
@@ -103,20 +103,16 @@ Set-OpenAIContext is used to store common parameters such as API key, API base, 
 ```powershell
 # Set context to use Azure
 Set-OpenAIContext `
-    -ApiType Azure `
-    -AuthType Azure `
     -ApiKey 'Put your api key here' `
-    -ApiBase 'https://your-resource-name.openai.azure.com/' `
+    -ApiBase 'https://your-resource-name.openai.azure.com/openai/v1/'
 
 # This command calls to Azure implicitly.
-Request-ChatCompletion -Message 'Hello Azure' -Model 'gpt-4o'
+Request-ChatCompletion -Message 'Hello Azure' -Model '<deployment-name>'
 
 # Re-set context to use local LLM
 Set-OpenAIContext `
-    -ApiType OpenAI `
-    -AuthType OpenAI `
     -ApiKey 'dummy' `
-    -ApiBase 'http://localhost:1234/v1' `
+    -ApiBase 'http://localhost:1234/v1'
 
 # This command calls to local server implicitly.
 Request-ChatCompletion -Message 'Hello Local LLM' -Model 'gpt-4o'
