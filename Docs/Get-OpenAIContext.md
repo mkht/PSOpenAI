@@ -24,7 +24,7 @@ Note: Objects obtained with Get-OpenAIContext are read-only, and changes to thei
 
 ### Example 1
 ```powershell
-PS C:\> Set-OpenAIContext -ApiKey 'AZURE_API_KEY' -ApiBase 'https://my-endpoint.openai.azure.com/openai/v1/'
+PS C:\> Set-OpenAIContext -ApiKey 'AZURE_OPENAI_API_KEY' -ApiBase 'https://my-endpoint.openai.azure.com/openai/v1/'
 PS C:\> Get-OpenAIContext
 
 ApiKey        : System.Security.SecureString

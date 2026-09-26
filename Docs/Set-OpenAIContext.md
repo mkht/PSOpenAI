@@ -29,7 +29,7 @@ Parameters set in the context are implicitly used when each function is executed
 
 ### Example 1
 ```powershell
-PS C:\> Set-OpenAIContext -ApiKey 'AZURE_API_KEY' -ApiBase 'https://my-endpoint.openai.azure.com/openai/v1/'
+PS C:\> Set-OpenAIContext -ApiKey 'AZURE_OPENAI_API_KEY' -ApiBase 'https://my-endpoint.openai.azure.com/openai/v1/'
 PS C:\> Request-ChatCompletion -Message 'Hello Azure OpenAI' -Model '<deployment-name>'
 ```
 

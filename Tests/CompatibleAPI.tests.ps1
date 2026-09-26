@@ -58,12 +58,12 @@ Describe 'OpenAI-compatible connection contract' -Tag Offline {
         param ($Base, $Prefix)
         InModuleScope PSOpenAI -Parameters @{ Base = $Base; Prefix = $Prefix } {
             $paths = @{
-                'Chat.Completion' = 'chat/completions'
-                'Responses' = 'responses'
-                'Embeddings' = 'embeddings'
-                'Image.Edit' = 'images/edits'
+                'Chat.Completion'     = 'chat/completions'
+                'Responses'           = 'responses'
+                'Embeddings'          = 'embeddings'
+                'Image.Edit'          = 'images/edits'
                 'Audio.Transcription' = 'audio/transcriptions'
-                'Batch' = 'batches'
+                'Batch'               = 'batches'
             }
             foreach ($entry in $paths.GetEnumerator()) {
                 $resolved = Get-OpenAIAPIParameter -EndpointName $entry.Key -Parameters @{ ApiBase = $Base; ApiKey = 'test-key' }
@@ -158,13 +158,13 @@ Describe 'Optional compatible server smoke test' -Tag Online {
 
 Describe 'Azure AI v1 integration tests' -Tag @('Online', 'Azure') {
     BeforeAll {
-        if ($env:AZURE_ENDPOINT -and $env:AZURE_API_KEY) {
-            $script:AzureApiBase = $env:AZURE_ENDPOINT.TrimEnd('/')
+        if ($env:AZURE_OPENAI_ENDPOINT -and $env:AZURE_OPENAI_API_KEY) {
+            $script:AzureApiBase = $env:AZURE_OPENAI_ENDPOINT.TrimEnd('/')
             if ($script:AzureApiBase -notmatch '/openai/v1$') {
                 $script:AzureApiBase += '/openai/v1'
             }
             $script:AzureApiBase += '/'
-            Set-OpenAIContext -ApiBase $script:AzureApiBase -ApiKey $env:AZURE_API_KEY -TimeoutSec 120 -MaxRetryCount 0
+            Set-OpenAIContext -ApiBase $script:AzureApiBase -ApiKey $env:AZURE_OPENAI_API_KEY -TimeoutSec 120 -MaxRetryCount 0
         }
 
         $script:AzureChatModel = 'gpt-5.6-luna'
@@ -179,19 +179,19 @@ Describe 'Azure AI v1 integration tests' -Tag @('Online', 'Azure') {
         Clear-OpenAIContext
     }
 
-    It 'Creates a chat completion with the configured chat deployment' -Skip:(-not ($env:AZURE_ENDPOINT -and $env:AZURE_API_KEY)) {
+    It 'Creates a chat completion with the configured chat deployment' -Skip:(-not ($env:AZURE_OPENAI_ENDPOINT -and $env:AZURE_OPENAI_API_KEY)) {
         $result = Request-ChatCompletion -Model $script:AzureChatModel -Message 'Reply with OK.' -MaxCompletionTokens 20 -TimeoutSec 90 -ErrorAction Stop
         $result.object | Should -BeExactly 'chat.completion'
         $result.choices | Should -Not -BeNullOrEmpty
     }
 
-    It 'Creates a response with the configured chat deployment' -Skip:(-not ($env:AZURE_ENDPOINT -and $env:AZURE_API_KEY)) {
+    It 'Creates a response with the configured chat deployment' -Skip:(-not ($env:AZURE_OPENAI_ENDPOINT -and $env:AZURE_OPENAI_API_KEY)) {
         $result = Request-Response -Model $script:AzureChatModel -Message 'Reply with OK.' -MaxOutputTokens 20 -Store $false -TimeoutSec 90 -ErrorAction Stop
         $result.object | Should -BeExactly 'response'
         $result.output_text | Should -Not -BeNullOrEmpty
     }
 
-    It 'Handles audio input and output with the configured audio deployment' -Skip:(-not ($env:AZURE_ENDPOINT -and $env:AZURE_API_KEY)) {
+    It 'Handles audio input and output with the configured audio deployment' -Skip:(-not ($env:AZURE_OPENAI_ENDPOINT -and $env:AZURE_OPENAI_API_KEY)) {
         $audioPath = Join-Path $TestDrive 'audio-output.mp3'
         $result = Request-ChatCompletion -Model $script:AzureAudioModel -Message 'この音声の内容を短く説明してください。' -InputAudio (Join-Path $PSScriptRoot 'TestData/voice_japanese.mp3') -Modalities @('text', 'audio') -Voice 'shimmer' -AudioOutFile $audioPath -TimeoutSec 120 -ErrorAction Stop
         $result.object | Should -BeExactly 'chat.completion'
@@ -199,7 +199,7 @@ Describe 'Azure AI v1 integration tests' -Tag @('Online', 'Azure') {
         $audioPath | Should -Exist
     }
 
-    It 'Generates an image with the configured image deployment' -Skip:(-not ($env:AZURE_ENDPOINT -and $env:AZURE_API_KEY)) {
+    It 'Generates an image with the configured image deployment' -Skip:(-not ($env:AZURE_OPENAI_ENDPOINT -and $env:AZURE_OPENAI_API_KEY)) {
         $imagePath = Join-Path $TestDrive 'generated.png'
         $null = Request-ImageGeneration -Model $script:AzureImageModel -Prompt 'A small red paper crane on a plain light background.' -Size '1024x1024' -OutFile $imagePath -TimeoutSec 120 -MaxRetryCount 0 -ErrorAction Stop
         $imagePath | Should -Exist
