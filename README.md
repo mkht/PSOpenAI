@@ -341,21 +341,19 @@ $Response = Request-Response -Model 'gpt-6-sol' -Message 'What was a tech news i
 
 ### OpenAI Compatible Servers
 
-If you want to use OpenAI compatible services such as GitHub Models, Google Gemini, self-hosted servers like LM Studio or Ollama.
+If you want to use OpenAI compatible services such as Azure OpenAI, self-hosted servers like LM Studio or Ollama.
 
 ```powershell
-# This is an example for GitHub Models.
-$global:OPENAI_API_KEY = '<Put your GITHUB_TOKEN>'
-$global:OPENAI_API_BASE  = 'https://models.github.ai/inference'
+# This is an example for Azure OpenAI.
+$global:OPENAI_API_KEY = '<Put your Azure API key here.>'
+$global:OPENAI_API_BASE  = 'https://<your-resource>.openai.azure.com/mai/v1/'
 
 Request-ChatCompletion `
-  -Model 'microsoft/Phi-4-reasoning' `
+  -Model 'MAI-Thinking-1' `
   -Message 'What is the capital of France?'
 ```
 
 Azure OpenAI v1 can be used through the same interface. Set `ApiBase` to `https://<resource>.openai.azure.com/openai/v1/`, supply the Azure API key or an Entra ID access token as `ApiKey`, and use the deployment name as `Model`. Available operations and options depend on the server. PSOpenAI does not maintain an Azure-specific API mode.
-
-Version 5.0 removes `ApiType`, `ApiVersion`, and `AuthType`, including `-ApiType OpenAI`. See the [Azure v1 migration guide](Guides/How_to_use_with_Azure_OpenAI_Service.md).
 
 ----
 ## About API key
