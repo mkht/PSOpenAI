@@ -51,7 +51,7 @@ function Request-ResponseCompaction {
             'o4-mini',
             'chat-latest'
         )]
-        [string]$Model = 'gpt-4o-mini',
+        [string]$Model = 'gpt-6-luna',
 
         #region System messages
         [Parameter()]

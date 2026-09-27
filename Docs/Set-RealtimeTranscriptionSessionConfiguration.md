@@ -91,7 +91,7 @@ The model to use for transcription.
 Type: String
 Required: False
 Position: Named
-Default value: whisper-1
+Default value: gpt-transcribe
 ```
 
 ### -InputAudioTranscriptionLanguage

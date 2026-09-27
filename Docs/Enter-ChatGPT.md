@@ -49,13 +49,13 @@ PS C:\> Enter-ChatGPT -ApiKey 'YOUR_OPENAI_APIKEY' -NoHeader
 
 ### -Model
 The name of model to use.
-The default value is `gpt-3.5-turbo`.
+The default value is `gpt-6-luna`.
 
 ```yaml
 Type: String
 Required: False
 Position: Named
-Default value: gpt-3.5-turbo
+Default value: gpt-6-luna
 ```
 
 ### -SystemMessage

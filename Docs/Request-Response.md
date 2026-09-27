@@ -180,14 +180,14 @@ Position: Named
 
 ### -Model
 The name of model to use.  
-The default value is `gpt-4o-mini`.
+The default value is `gpt-6-luna`.
 
 ```yaml
 Type: String
 Required: False
 Position: Named
 Accept pipeline input: True (ByPropertyName)
-Default value: gpt-4o-mini
+Default value: gpt-6-luna
 ```
 
 ### -SystemMessage

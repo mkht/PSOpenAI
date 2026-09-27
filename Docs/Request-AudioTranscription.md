@@ -75,13 +75,13 @@ Accept pipeline input: True (ByValue)
 
 ### -Model
 The name of model to use.
-The default value is `whisper-1`.
+The default value is `gpt-transcribe`.
 
 ```yaml
 Type: String
 Required: False
 Position: Named
-Default value: whisper-1
+Default value: gpt-transcribe
 ```
 
 ### -Prompt

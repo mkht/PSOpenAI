@@ -59,7 +59,7 @@ function Request-ChatCompletion {
             'o4-mini',
             'chat-latest'
         )]
-        [string]$Model = 'gpt-5.4-mini',
+        [string]$Model = 'gpt-6-luna',
 
         [Parameter()]
         [AllowEmptyString()]

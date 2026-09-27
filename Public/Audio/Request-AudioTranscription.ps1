@@ -14,7 +14,7 @@ function Request-AudioTranscription {
             'gpt-4o-transcribe-diarize',
             'gpt-transcribe'
         )]
-        [string]$Model = 'whisper-1',
+        [string]$Model = 'gpt-transcribe',
 
         [Parameter()]
         [string]$Prompt,
