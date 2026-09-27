@@ -11,7 +11,7 @@ Describe 'Get-ContainerFileContent' {
     Context 'Unit tests (offline)' -Tag 'Offline' {
         BeforeAll {
             Mock -ModuleName $script:ModuleName Initialize-APIKey { [securestring]::new() }
-            Mock -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { [System.Text.Encoding]::UTF8.GetBytes('XYZ') }
+            Mock -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { [System.Text.Encoding]::UTF8.GetBytes('XYZ') }
         }
 
         BeforeEach {
@@ -21,7 +21,7 @@ Describe 'Get-ContainerFileContent' {
         It 'Save content to local file' {
             $OutFile = (Join-Path $TestDrive 'xyz.txt')
             { $script:Result = Get-ContainerFileContent -ContainerId 'container_abc123' -FileId 'file_abc123' -OutFile $OutFile -ea Stop } | Should -Not -Throw
-            Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
+            Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 1 -Exactly
             $Result | Should -BeNullOrEmpty
             $OutFile | Should -Exist
             $OutFile | Should -FileContentMatchExactly 'XYZ'
@@ -29,7 +29,7 @@ Describe 'Get-ContainerFileContent' {
 
         It 'Output content as byte array' {
             { $script:Result = Get-ContainerFileContent -ContainerId 'container_abc123' -FileId 'file_abc123' -ea Stop } | Should -Not -Throw
-            Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
+            Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 1 -Exactly
             $Result | Should -HaveCount 3
             $Result[0] | Should -BeOfType [byte]
             $Result[0] | Should -Be ([byte]88) # 'X'
@@ -42,7 +42,7 @@ Describe 'Get-ContainerFileContent' {
                 container_id = 'container_abc123'
             }
             { $script:Result = Get-ContainerFileContent -ContainerFile $InObject -ea Stop } | Should -Not -Throw
-            Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
+            Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 1 -Exactly
             $Result | Should -HaveCount 3
             $Result[0] | Should -BeOfType [byte]
             $Result[0] | Should -Be ([byte]88) # 'X'
@@ -58,7 +58,7 @@ Describe 'Get-ContainerFileContent' {
                 { 'container_abc123' | Get-ContainerFileContent -FileId 'file_abc123' -ea Stop } | Should -Not -Throw
                 # Pipeline by property name
                 { [pscustomobject]@{ContainerId = 'container_abc123' } | Get-ContainerFileContent -FileId 'file_abc123' -ea Stop } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 4 -Exactly
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 4 -Exactly
             }
 
             It 'ContainerFile' {
@@ -73,7 +73,7 @@ Describe 'Get-ContainerFileContent' {
                 { Get-ContainerFileContent $InObject -ea Stop } | Should -Not -Throw
                 # Pipeline
                 { $InObject | Get-ContainerFileContent -FileId 'file_abc123' -ea Stop } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 3 -Exactly
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 3 -Exactly
             }
         }
     }

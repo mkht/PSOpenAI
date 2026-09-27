@@ -18,7 +18,6 @@ Get-Batch
     [-BatchId] <String>
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
-    [-ApiType <OpenAIApiType>]
     [-ApiBase <Uri>]
     [-ApiKey <SecureString>]
     [-Organization <String>]
@@ -31,7 +30,6 @@ Get-Batch
     [-Limit <Int32>] 
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
-    [-ApiType <OpenAIApiType>]
     [-ApiBase <Uri>]
     [-ApiKey <SecureString>]
     [-Organization <String>]

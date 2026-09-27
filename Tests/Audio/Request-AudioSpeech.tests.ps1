@@ -11,8 +11,8 @@ Describe 'Request-AudioSpeech' {
     Context 'Unit tests (offline)' -Tag 'Offline' {
         BeforeAll {
             Mock -ModuleName $script:ModuleName Initialize-APIKey { [securestring]::new() }
-            Mock -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $PesterBoundParameters }
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { [byte[]](77, 79, 67, 75) }
+            Mock -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { $PesterBoundParameters }
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { [byte[]](77, 79, 67, 75) }
         }
 
         It 'Text to Speech' {
@@ -84,46 +84,5 @@ Describe 'Request-AudioSpeech' {
         }
     }
 
-    Context 'Integration tests (Azure)' -Tag 'Azure' {
 
-        BeforeAll {
-            # Set Context for Azure OpenAI
-            $AzureContext = @{
-                ApiType    = 'Azure'
-                AuthType   = 'Azure'
-                ApiKey     = $env:AZURE_OPENAI_API_KEY
-                ApiBase    = $env:AZURE_OPENAI_ENDPOINT
-                TimeoutSec = 30
-            }
-            Set-OpenAIContext @AzureContext
-
-            $script:Model = 'tts-1'
-        }
-
-        BeforeEach {
-            Remove-Item (Join-Path $TestDrive 'test.aac') -Force -ErrorAction Ignore
-        }
-
-        AfterAll {
-            Clear-OpenAIContext
-        }
-
-        It 'Text to Speech' {
-            { $params = @{
-                    Text          = 'Hey, I want to play the game with you.'
-                    Model         = $script:Model
-                    Voice         = 'nova'
-                    Format        = 'aac'
-                    Speed         = 1.1
-                    OutFile       = (Join-Path $TestDrive 'test.aac')
-                    TimeoutSec    = 30
-                    MaxRetryCount = 3
-                    ErrorAction   = 'Stop'
-                }
-
-                Request-AudioSpeech @params
-            } | Should -Not -Throw
-            (Join-Path $TestDrive 'test.aac') | Should -Exist
-        }
-    }
 }

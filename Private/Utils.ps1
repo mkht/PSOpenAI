@@ -140,9 +140,6 @@ function ParseCommonParams {
             'TimeoutSec'
             'MaxRetryCount'
             'ApiBase'
-            'ApiVersion'
-            'ApiType'
-            'AuthType'
             'ApiKey'
             'Organization'
             'AdditionalQuery'
@@ -160,7 +157,12 @@ function ParseCommonParams {
         }
         # Explicit param
         if ($Arguments.ContainsKey($item)) {
-            $OutParam.$item = $Arguments[$item]
+            if ($item -eq 'ApiKey' -and $null -eq $Arguments[$item]) {
+                $OutParam.$item = [securestring]::new()
+            }
+            else {
+                $OutParam.$item = $Arguments[$item]
+            }
         }
     }
     $OutParam

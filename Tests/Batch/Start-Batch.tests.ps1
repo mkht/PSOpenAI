@@ -17,8 +17,8 @@ Describe 'Start-Batch' {
                     id         = 'file-abc123'
                 }
             }
-            Mock -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $PesterBoundParameters }
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+            Mock -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { $PesterBoundParameters }
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { @'
 {
     "id": "batch_abc123",
     "object": "batch",
@@ -54,7 +54,7 @@ Describe 'Start-Batch' {
 
         It 'Start batch with file_input_id' {
             { $script:Result = Start-Batch -FileId 'file-abc123' -ea Stop } | Should -Not -Throw
-            Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
+            Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 1 -Exactly
             Should -Not -Invoke -CommandName Add-OpenAIFile -ModuleName $script:ModuleName
             $Result | Should -BeOfType [pscustomobject]
             $Result.id | Should -BeExactly 'batch_abc123'
@@ -80,7 +80,7 @@ Describe 'Start-Batch' {
                 }
             )
             { $script:Result = Start-Batch -InputObject $BatchInputs -ea Stop } | Should -Not -Throw
-            Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
+            Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 1 -Exactly
             Should -Invoke -CommandName Add-OpenAIFile -ModuleName $script:ModuleName -Times 1 -Exactly
             $Result | Should -BeOfType [pscustomobject]
             $Result.id | Should -BeExactly 'batch_abc123'
@@ -106,7 +106,7 @@ Describe 'Start-Batch' {
                 }
             )
             { $script:Result = $BatchInputs | Start-Batch -ea Stop } | Should -Not -Throw
-            Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
+            Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 1 -Exactly
             Should -Invoke -CommandName Add-OpenAIFile -ModuleName $script:ModuleName -Times 1 -Exactly
             $Result | Should -BeOfType [pscustomobject]
             $Result.id | Should -BeExactly 'batch_abc123'
@@ -140,7 +140,7 @@ Describe 'Start-Batch' {
                 { Start-Batch $InObject -ea Stop } | Should -Not -Throw
                 # Pipeline
                 { $InObject | Start-Batch -ea Stop } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 3 -Exactly
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 3 -Exactly
             }
 
             It 'Id' {
@@ -152,7 +152,7 @@ Describe 'Start-Batch' {
                 { 'file-abc123' | Start-Batch -ea Stop } | Should -Not -Throw
                 # Pipeline by property name
                 { [pscustomobject]@{input_file_id = 'file-abc123' } | Start-Batch -ea Stop } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 4 -Exactly
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 4 -Exactly
             }
 
             It 'BatchObject (Single)' {
@@ -169,7 +169,7 @@ Describe 'Start-Batch' {
                 { Start-Batch $InObject -ea Stop } | Should -Not -Throw
                 # Pipeline
                 { $InObject | Start-Batch -ea Stop } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 3 -Exactly
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 3 -Exactly
             }
 
             It 'BatchObject (Multiple)' {
@@ -202,7 +202,7 @@ Describe 'Start-Batch' {
                 { Start-Batch $InObject -ea Stop } | Should -Not -Throw
                 # Pipeline
                 { $InObject | Start-Batch -ea Stop } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 3 -Exactly
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 3 -Exactly
             }
         }
     }

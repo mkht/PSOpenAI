@@ -11,7 +11,7 @@ Describe 'Get-ChatCompletion' {
     Context 'Unit tests (offline)' -Tag 'Offline' {
         BeforeAll {
             Mock -ModuleName $script:ModuleName Initialize-APIKey { [securestring]::new() }
-            Mock -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $PesterBoundParameters }
+            Mock -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { $PesterBoundParameters }
             Mock -Verifiable -ModuleName $script:ModuleName Get-ChatCompletionMessage {
                 [ordered]@{
                     PSTypeNames = 'PSOpenAI.Chat.Completion.Message'
@@ -27,7 +27,7 @@ Describe 'Get-ChatCompletion' {
         }
 
         It 'Get a single object with ID' {
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { @'
 {
   "object": "chat.completion",
   "id": "chatcmpl-abc123",
@@ -54,7 +54,7 @@ Describe 'Get-ChatCompletion' {
             }
 
             { $script:Result = Get-ChatCompletion -CompletionId 'chatcmpl-abc123' -ea Stop } | Should -Not -Throw
-            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly -Scope It
+            Should -Invoke Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 1 -Exactly -Scope It
             Should -Invoke Get-ChatCompletionMessage -ModuleName $script:ModuleName -Times 1
             $Result.id | Should -BeExactly 'chatcmpl-abc123'
             $Result.PSTypeNames | Should -Contain 'PSOpenAI.Chat.Completion'
@@ -66,7 +66,7 @@ Describe 'Get-ChatCompletion' {
         }
 
         It 'List all completions.' {
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { @'
 {
     "object": "list",
     "data": [
@@ -123,12 +123,12 @@ Describe 'Get-ChatCompletion' {
             }
 
             { $script:Result = Get-ChatCompletion -All -ea Stop } | Should -Not -Throw
-            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly -Scope It
+            Should -Invoke Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 1 -Exactly -Scope It
             $Result | Should -HaveCount 2
         }
 
         It 'Timeout' {
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest {
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } {
                 Start-Sleep -Seconds 1
                 @'
 {
@@ -161,12 +161,12 @@ Describe 'Get-ChatCompletion' {
 '@
             }
             { Get-ChatCompletion -TimeoutSec 2 -All -ea Stop } | Should -Throw -ExceptionType ([System.TimeoutException])
-            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 2 -Exactly -Scope It
+            Should -Invoke Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 2 -Exactly -Scope It
         }
 
         Context 'Parameter Sets' {
             BeforeAll {
-                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { @'
 {
     "object": "chat.completion",
     "id": "chatcmpl-abc123",
@@ -204,7 +204,7 @@ Describe 'Get-ChatCompletion' {
                 { Get-ChatCompletion $InObject -ea Stop } | Should -Not -Throw
                 # Pipeline
                 { $InObject | Get-ChatCompletion -ea Stop } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 3 -Exactly
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 3 -Exactly
             }
 
             It 'Get_Id' {
@@ -216,12 +216,12 @@ Describe 'Get-ChatCompletion' {
                 { 'chatcmpl-abc123' | Get-ChatCompletion -ea Stop } | Should -Not -Throw
                 # Pipeline by property name
                 { [pscustomobject]@{ID = 'chatcmpl-abc123' } | Get-ChatCompletion -ea Stop } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 4 -Exactly
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 4 -Exactly
             }
 
             It 'List' {
                 { Get-ChatCompletion -ea Stop } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 1 -Exactly
             }
         }
     }

@@ -12,7 +12,7 @@ Describe 'Stop-VectorStoreFileBatch' {
 
         BeforeAll {
             Mock -ModuleName $script:ModuleName Initialize-APIKey { [securestring]::new() }
-            Mock -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $PesterBoundParameters }
+            Mock -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { $PesterBoundParameters }
             Mock -Verifiable -ModuleName $script:ModuleName Wait-VectorStoreFileBatch {
                 [pscustomobject]@{
                     PSTypeName        = 'PSOpenAI.VectorStore.FileBatch'
@@ -23,7 +23,7 @@ Describe 'Stop-VectorStoreFileBatch' {
                     'status'          = 'cancelling'
                 }
             }
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { @'
 {
     "id": "vsfb_abc123",
     "object": "vector_store.file_batch",
@@ -53,7 +53,7 @@ Describe 'Stop-VectorStoreFileBatch' {
                 status          = 'in_progress'
             }
             { $script:Result = Stop-VectorStoreFileBatch -Batch $InObject -ea Stop } | Should -Not -Throw
-            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
+            Should -Invoke Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 1 -Exactly
             Should -Not -Invoke Wait-VectorStoreFileBatch -ModuleName $script:ModuleName
             $Result | Should -BeNullOrEmpty
         }
@@ -66,7 +66,7 @@ Describe 'Stop-VectorStoreFileBatch' {
                 status          = 'in_progress'
             }
             { $script:Result = Stop-VectorStoreFileBatch -Batch $InObject -PassThru -ea Stop } | Should -Not -Throw
-            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
+            Should -Invoke Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 1 -Exactly
             Should -Not -Invoke Wait-VectorStoreFileBatch -ModuleName $script:ModuleName
             $Result.id | Should -Be 'vsfb_abc123'
             $Result.vector_store_id | Should -Be 'vs_abc123'
@@ -82,7 +82,7 @@ Describe 'Stop-VectorStoreFileBatch' {
                 status          = 'in_progress'
             }
             { $script:Result = Stop-VectorStoreFileBatch -Batch $InObject -Wait -ea Stop } | Should -Not -Throw
-            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
+            Should -Invoke Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 1 -Exactly
             Should -Invoke Wait-VectorStoreFileBatch -ModuleName $script:ModuleName -Times 1 -Exactly
             $Result | Should -BeNullOrEmpty
         }
@@ -95,7 +95,7 @@ Describe 'Stop-VectorStoreFileBatch' {
                 status          = 'in_progress'
             }
             { $script:Result = Stop-VectorStoreFileBatch --Batch $InObject -Wait -PassThru -ea Stop } | Should -Not -Throw
-            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
+            Should -Invoke Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 1 -Exactly
             Should -Invoke Wait-VectorStoreFileBatch -ModuleName $script:ModuleName -Times 1 -Exactly
             $Result.id | Should -Be 'vsfb_abc123'
             $Result.vector_store_id | Should -Be 'vs_abc123'
@@ -112,7 +112,7 @@ Describe 'Stop-VectorStoreFileBatch' {
                 started_at = [datetime]::Today
             }
             { $script:Result = Stop-VectorStoreFileBatch -InputObject $InObject -ea Stop } | Should -Throw
-            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 0 -Exactly
+            Should -Invoke Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 0 -Exactly
             Should -Invoke Wait-VectorStoreFileBatch -ModuleName $script:ModuleName -Times 0 -Exactly
             $Result | Should -BeNullOrEmpty
         }
@@ -129,7 +129,7 @@ Describe 'Stop-VectorStoreFileBatch' {
                 { Stop-VectorStoreFileBatch $InObject 'vsfb_abc123' -ea Stop } | Should -Not -Throw
                 # Pipeline
                 { $InObject | Stop-VectorStoreFileBatch -BatchId 'vsfb_abc123' -ea Stop } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 3 -Exactly
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 3 -Exactly
             }
 
             It 'VectorStoreId' {
@@ -142,7 +142,7 @@ Describe 'Stop-VectorStoreFileBatch' {
                 # Property name
                 { [pscustomobject]@{vector_store_id = 'vs_abc123'; batch_id = 'vsfb_abc123' } | `
                             Stop-VectorStoreFileBatch -ea Stop } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 4 -Exactly
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 4 -Exactly
             }
 
             It 'VectorStoreFileBatch' {
@@ -157,7 +157,7 @@ Describe 'Stop-VectorStoreFileBatch' {
                 { Stop-VectorStoreFileBatch $InObject -ea Stop } | Should -Not -Throw
                 # Pipeline
                 { $InObject | Stop-VectorStoreFileBatch -ea Stop } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 3 -Exactly
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 3 -Exactly
             }
         }
     }

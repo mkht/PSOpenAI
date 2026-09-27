@@ -108,7 +108,7 @@ function Parse-WebExceptionResponse {
             continue
         }
         Default {
-            $ex = [APIRequestException]::new($ErrorMessage, $ErrorResponse , $ErrorContent, $ErrorCode, $InnerException)
+            $ex = [APIRequestException]::new($ErrorMessage, $ErrorResponse , $ErrorContent, [Enum]::ToObject([System.Net.HttpStatusCode], $ErrorCode), $InnerException)
         }
     }
 

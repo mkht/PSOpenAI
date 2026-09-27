@@ -19,7 +19,7 @@ Describe 'Get-ChatCompletionMessage' {
 
         It 'List all messages' {
             InModuleScope $script:ModuleName {
-                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { @'
 {
   "object": "list",
   "data": [
@@ -46,7 +46,7 @@ Describe 'Get-ChatCompletionMessage' {
                 }
 
                 { $script:Result = Get-ChatCompletionMessage -CompletionId 'chatcmpl-abc123' -ea Stop } | Should -Not -Throw
-                Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
+                Should -Invoke Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 1 -Exactly
                 $Result | Should -HaveCount 2
                 $Result[0].id | Should -BeExactly 'chatcmpl-abc123-0'
                 $Result[0] | Should -BeOfType [System.Collections.Specialized.OrderedDictionary]
@@ -57,7 +57,7 @@ Describe 'Get-ChatCompletionMessage' {
 
         It 'List all messages (pagenate)' {
             InModuleScope $script:ModuleName {
-                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest { @'
 {
 "object": "list",
 "data": [
@@ -74,9 +74,9 @@ Describe 'Get-ChatCompletionMessage' {
 "has_more": true
 }
 '@
-                } -ParameterFilter { -not $Uri.Query.Contains('after=') }
+                } -ParameterFilter { if ($Stream) { return $false }; -not $Uri.Query.Contains('after=') }
 
-                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest { @'
 {
 "object": "list",
 "data": [
@@ -93,11 +93,11 @@ Describe 'Get-ChatCompletionMessage' {
 "has_more": false
 }
 '@
-                } -ParameterFilter { $Uri.Query.Contains('after=') }
+                } -ParameterFilter { if ($Stream) { return $false }; $Uri.Query.Contains('after=') }
 
                 { $script:Result = Get-ChatCompletionMessage -CompletionId 'chatcmpl-abc123' -All -ea Stop } | Should -Not -Throw
-                Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly -ParameterFilter { -not $Uri.Query.Contains('after=') }
-                Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly -ParameterFilter { $Uri.Query.Contains('after=') }
+                Should -Invoke Invoke-OpenAIHttpRequest -ModuleName $script:ModuleName -Times 1 -Exactly -ParameterFilter { if ($Stream) { return $false }; -not $Uri.Query.Contains('after=') }
+                Should -Invoke Invoke-OpenAIHttpRequest -ModuleName $script:ModuleName -Times 1 -Exactly -ParameterFilter { if ($Stream) { return $false }; $Uri.Query.Contains('after=') }
                 $Result | Should -HaveCount 2
                 $Result[0].id | Should -BeExactly 'chatcmpl-abc123-0'
                 $Result[0] | Should -BeOfType [System.Collections.Specialized.OrderedDictionary]
@@ -108,7 +108,7 @@ Describe 'Get-ChatCompletionMessage' {
 
         It 'Timeout' {
             InModuleScope $script:ModuleName {
-                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest {
+                Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } {
                     Start-Sleep -Seconds 2
                     @'
 {
@@ -137,7 +137,7 @@ Describe 'Get-ChatCompletionMessage' {
                 }
 
                 { Get-ChatCompletionMessage -CompletionId 'chatcmpl-abc123' -TimeoutSec 1 -ea Stop } | Should -Throw -ExceptionType ([System.TimeoutException])
-                Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
+                Should -Invoke Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 1 -Exactly
             }
         }
     }

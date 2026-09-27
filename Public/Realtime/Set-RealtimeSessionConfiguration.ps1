@@ -64,7 +64,7 @@ function Set-RealtimeSessionConfiguration {
             'gpt-transcribe',
             'gpt-live-transcribe'
         )]
-        [string][LowerCaseTransformation()]$InputAudioTranscriptionModel = 'whisper-1',
+        [string][LowerCaseTransformation()]$InputAudioTranscriptionModel = 'gpt-transcribe',
 
         [Parameter()]
         [string]$InputAudioTranscriptionLanguage,

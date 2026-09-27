@@ -61,16 +61,6 @@ function Get-OpenAIAPIEndpoint {
             }
             continue
         }
-        'Image.Variation' {
-            $UriBuilder.Path += 'images/variations'
-            @{
-                Name        = 'image.variation'
-                Method      = 'Post'
-                Uri         = $UriBuilder.Uri
-                ContentType = 'multipart/form-data'
-            }
-            continue
-        }
         'Audio.Speech' {
             $UriBuilder.Path += 'audio/speech'
             @{
@@ -267,36 +257,6 @@ function Get-OpenAIAPIEndpoint {
                 Uri           = $UriBuilder.Uri
                 ContentType   = 'application/json'
                 BatchEndpoint = '/v1/conversations'
-            }
-            continue
-        }
-        'Videos' {
-            $UriBuilder.Path += 'videos'
-            @{
-                Name        = 'videos'
-                Method      = 'Post'
-                Uri         = $UriBuilder.Uri
-                ContentType = 'multipart/form-data'
-            }
-            continue
-        }
-        'Videos.Remix' {
-            $UriBuilder.Path += 'videos/{0}/remix'
-            @{
-                Name        = 'videos_remix'
-                Method      = 'Post'
-                Uri         = $UriBuilder.Uri
-                ContentType = 'application/json'
-            }
-            continue
-        }
-        'Videos.Content' {
-            $UriBuilder.Path += 'videos/{0}/content'
-            @{
-                Name        = 'videos_content'
-                Method      = 'Get'
-                Uri         = $UriBuilder.Uri
-                ContentType = ''
             }
             continue
         }

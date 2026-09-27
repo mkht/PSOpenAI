@@ -55,8 +55,7 @@ Accept pipeline input: True (ByValue)
 ```
 
 ### -Model
-The name of model to use.
-The default value is `whisper-1`.
+The name of model to use. The default value is `whisper-1`.
 
 ```yaml
 Type: String

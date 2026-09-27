@@ -11,7 +11,7 @@ Describe 'Request-Embeddings' {
     Context 'Unit tests (offline)' -Tag 'Offline' {
         BeforeAll {
             Mock -ModuleName $script:ModuleName Initialize-APIKey { [securestring]::new() }
-            Mock -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $PesterBoundParameters }
+            Mock -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { $PesterBoundParameters }
         }
 
         BeforeEach {
@@ -19,7 +19,7 @@ Describe 'Request-Embeddings' {
         }
 
         It 'Chat completion' {
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { @'
 {
     "object": "list",
     "data": [
@@ -93,35 +93,5 @@ Describe 'Request-Embeddings' {
         }
     }
 
-    Context 'Integration tests (Azure)' -Tag 'Azure' {
-        BeforeAll {
-            # Set Context for Azure OpenAI
-            $AzureContext = @{
-                ApiType    = 'Azure'
-                AuthType   = 'Azure'
-                ApiKey     = $env:AZURE_OPENAI_API_KEY
-                ApiBase    = $env:AZURE_OPENAI_ENDPOINT
-                TimeoutSec = 30
-            }
-            Set-OpenAIContext @AzureContext
 
-            $script:Model = 'text-embedding-ada-002'
-        }
-
-        BeforeEach {
-            $script:Result = ''
-        }
-
-        AfterAll {
-            Clear-OpenAIContext
-        }
-
-        It 'Get vector representation of text' {
-            { $script:Result = Request-Embeddings -Text 'Banana' -Model $script:Model -TimeoutSec 30 -ea Stop } | Should -Not -Throw
-            $Result | Should -BeOfType [pscustomobject]
-            $Result.data | Should -HaveCount 1
-            , $Result.data[0].embedding | Should -BeOfType [float[]]
-            $Result.data[0].embedding | Should -HaveCount 1536
-        }
-    }
 }

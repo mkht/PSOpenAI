@@ -11,7 +11,7 @@ Describe 'Request-TextCompletion' {
     Context 'Unit tests (offline)' -Tag 'Offline' {
         BeforeAll {
             Mock -ModuleName $script:ModuleName Initialize-APIKey { [securestring]::new() }
-            Mock -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $PesterBoundParameters }
+            Mock -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { $PesterBoundParameters }
         }
 
         BeforeEach {
@@ -19,7 +19,7 @@ Describe 'Request-TextCompletion' {
         }
 
         It 'Text completion' {
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { @'
 {
     "id": "cmpl-uqkvlQyYK7bGYrRHQ0eXlWi7",
     "object": "text_completion",
@@ -54,7 +54,7 @@ Describe 'Request-TextCompletion' {
         }
 
         It 'Stream output' {
-            Mock -ModuleName $script:ModuleName Invoke-OpenAIAPIRequestSSE {
+            Mock -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { $Stream } {
                 '{"id":"cmpl-sf547Pa","object":"text_completion","created":1679839328,"model":"text-davinci-003","choices":[{"text":"ECHO","index":0,"finish_reason":null}]}'
             }
             $Result = Request-TextCompletion -Prompt 'test' -Stream -InformationVariable StreamOut -ea Stop

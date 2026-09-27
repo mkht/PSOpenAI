@@ -11,8 +11,8 @@ Describe 'Get-OpenAIFile' {
     Context 'Unit tests (offline)' -Tag 'Offline' {
         BeforeAll {
             Mock -ModuleName $script:ModuleName Initialize-APIKey { [securestring]::new() }
-            Mock -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $PesterBoundParameters }
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+            Mock -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { $PesterBoundParameters }
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest { @'
 {
     "id": "file-abc123",
     "object": "file",
@@ -22,9 +22,9 @@ Describe 'Get-OpenAIFile' {
     "purpose": "assistants"
 }
 '@
-            } -ParameterFilter { 'https://api.openai.com/v1/files/file-abc123' -eq $Uri }
+            } -ParameterFilter { if ($Stream) { return $false }; 'https://api.openai.com/v1/files/file-abc123' -eq $Uri }
 
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest { @'
 {
     "data": [
         {
@@ -47,9 +47,9 @@ Describe 'Get-OpenAIFile' {
     "object": "list"
 }
 '@
-            } -ParameterFilter { 'https://api.openai.com/v1/files' -eq $Uri }
+            } -ParameterFilter { if ($Stream) { return $false }; 'https://api.openai.com/v1/files' -eq $Uri }
 
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest { @'
 {
     "data": [
         {
@@ -64,7 +64,7 @@ Describe 'Get-OpenAIFile' {
     "object": "list"
 }
 '@
-            } -ParameterFilter { 'https://api.openai.com/v1/files?purpose=assistants' -eq $Uri }
+            } -ParameterFilter { if ($Stream) { return $false }; 'https://api.openai.com/v1/files?purpose=assistants' -eq $Uri }
         }
 
         BeforeEach {
@@ -73,7 +73,7 @@ Describe 'Get-OpenAIFile' {
 
         It 'Get a single object with file ID' {
             { $script:Result = Get-OpenAIFile -ID 'file-abc123' -ea Stop } | Should -Not -Throw
-            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly -ParameterFilter { 'https://api.openai.com/v1/files/file-abc123' -eq $Uri }
+            Should -Invoke Invoke-OpenAIHttpRequest -ModuleName $script:ModuleName -Times 1 -Exactly -ParameterFilter { if ($Stream) { return $false }; 'https://api.openai.com/v1/files/file-abc123' -eq $Uri }
             $Result.id | Should -BeExactly 'file-abc123'
             $Result.object | Should -BeExactly 'file'
             $Result.created_at | Should -BeOfType [datetime]
@@ -81,13 +81,13 @@ Describe 'Get-OpenAIFile' {
 
         It 'Get all files.' {
             { $script:Result = Get-OpenAIFile -ea Stop } | Should -Not -Throw
-            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly -ParameterFilter { 'https://api.openai.com/v1/files' -eq $Uri }
+            Should -Invoke Invoke-OpenAIHttpRequest -ModuleName $script:ModuleName -Times 1 -Exactly -ParameterFilter { if ($Stream) { return $false }; 'https://api.openai.com/v1/files' -eq $Uri }
             $Result | Should -HaveCount 2
         }
 
         It 'Get specified purpose files.' {
             { $script:Result = Get-OpenAIFile -Purpose 'assistants' -ea Stop } | Should -Not -Throw
-            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly -ParameterFilter { 'https://api.openai.com/v1/files?purpose=assistants' -eq $Uri }
+            Should -Invoke Invoke-OpenAIHttpRequest -ModuleName $script:ModuleName -Times 1 -Exactly -ParameterFilter { if ($Stream) { return $false }; 'https://api.openai.com/v1/files?purpose=assistants' -eq $Uri }
             $Result | Should -HaveCount 1
             $Result.id | Should -BeExactly 'file-abc123'
             $Result.purpose | Should -BeExactly 'assistants'
@@ -105,7 +105,7 @@ Describe 'Get-OpenAIFile' {
                 { Get-OpenAIFile $InObject -ea Stop } | Should -Not -Throw
                 # Pipeline
                 { $InObject | Get-OpenAIFile -ea Stop } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 3 -Exactly -ParameterFilter { 'https://api.openai.com/v1/files/file-abc123' -eq $Uri }
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ModuleName $script:ModuleName -Times 3 -Exactly -ParameterFilter { if ($Stream) { return $false }; 'https://api.openai.com/v1/files/file-abc123' -eq $Uri }
             }
 
             It 'Get_Id' {
@@ -117,14 +117,14 @@ Describe 'Get-OpenAIFile' {
                 { 'file-abc123' | Get-OpenAIFile -ea Stop } | Should -Not -Throw
                 # Pipeline by property name
                 { [pscustomobject]@{ID = 'file-abc123' } | Get-OpenAIFile -ea Stop } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 4 -Exactly -ParameterFilter { 'https://api.openai.com/v1/files/file-abc123' -eq $Uri }
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ModuleName $script:ModuleName -Times 4 -Exactly -ParameterFilter { if ($Stream) { return $false }; 'https://api.openai.com/v1/files/file-abc123' -eq $Uri }
             }
 
             It 'List' {
                 { Get-OpenAIFile -ea Stop } | Should -Not -Throw
                 { Get-OpenAIFile -Purpose 'assistants' -ea Stop } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly -ParameterFilter { 'https://api.openai.com/v1/files' -eq $Uri }
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly -ParameterFilter { 'https://api.openai.com/v1/files?purpose=assistants' -eq $Uri }
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ModuleName $script:ModuleName -Times 1 -Exactly -ParameterFilter { if ($Stream) { return $false }; 'https://api.openai.com/v1/files' -eq $Uri }
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ModuleName $script:ModuleName -Times 1 -Exactly -ParameterFilter { if ($Stream) { return $false }; 'https://api.openai.com/v1/files?purpose=assistants' -eq $Uri }
             }
         }
     }
@@ -166,49 +166,5 @@ Describe 'Get-OpenAIFile' {
         }
     }
 
-    Context 'Integration tests (Azure)' -Tag 'Azure' {
-        BeforeAll {
-            # Set Context for Azure OpenAI
-            $AzureContext = @{
-                ApiType    = 'Azure'
-                AuthType   = 'Azure'
-                ApiKey     = $env:AZURE_OPENAI_API_KEY
-                ApiBase    = $env:AZURE_OPENAI_ENDPOINT
-                TimeoutSec = 30
-            }
-            Set-OpenAIContext @AzureContext
 
-            # Upload test files
-            $script:File1 = Add-OpenAIFile -File ($script:TestData + '/sweets_donut.png') -Purpose assistants
-            $script:File2 = Add-OpenAIFile -File ($script:TestData + '/my-data.jsonl') -Purpose fine-tune
-        }
-
-        BeforeEach {
-            $script:Result = ''
-        }
-
-        AfterAll {
-            ($script:File1, $script:File2) | Remove-OpenAIFile -ea SilentlyContinue
-            Clear-OpenAIContext
-        }
-
-        It 'Get a single object with file ID' {
-            { $script:Result = Get-OpenAIFile -ID $script:File1.id -ea Stop } | Should -Not -Throw
-            $Result.id | Should -BeExactly $script:File1.id
-            $Result.object | Should -BeExactly 'file'
-            $Result.filename | Should -Be 'sweets_donut.png'
-        }
-
-        It 'Get all files.' {
-            { $script:Result = Get-OpenAIFile -ea Stop } | Should -Not -Throw
-            @($Result).Count | Should -BeGreaterOrEqual 2
-        }
-
-        It 'Get specified purpose files.' {
-            { $script:Result = Get-OpenAIFile -Purpose fine-tune -ea Stop } | Should -Not -Throw
-            @($Result).Count | Should -BeGreaterOrEqual 1
-            $Result.id | Should -Contain $script:File2.id
-            $Result.filename | Should -Contain 'my-data.jsonl'
-        }
-    }
 }

@@ -12,8 +12,8 @@ Describe 'Remove-Conversation' {
 
         BeforeAll {
             Mock -ModuleName $script:ModuleName Initialize-APIKey { [securestring]::new() }
-            Mock -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $PesterBoundParameters }
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { @'
+            Mock -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { $PesterBoundParameters }
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { @'
 {
     "id": "conv_abc123",
     "object": "conversation.deleted",
@@ -28,7 +28,7 @@ Describe 'Remove-Conversation' {
 
         It 'Remove conversation with ID' {
             { $script:Result = Remove-Conversation -ConversationId 'conv_abc123' -ea Stop } | Should -Not -Throw
-            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
+            Should -Invoke Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 1 -Exactly
         }
 
         It 'Remove conversation with Conversation object' {
@@ -40,7 +40,7 @@ Describe 'Remove-Conversation' {
                 Items      = @()
             }
             { $script:Result = Remove-Conversation -Conversation $InObject -ea Stop } | Should -Not -Throw
-            Should -Invoke Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 1 -Exactly
+            Should -Invoke Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 1 -Exactly
         }
 
         Context 'Parameter Sets' {
@@ -58,7 +58,7 @@ Describe 'Remove-Conversation' {
                 { Remove-Conversation $InObject -ea Stop } | Should -Not -Throw
                 # Pipeline
                 { $InObject | Remove-Conversation -ea Stop } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 3 -Exactly
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 3 -Exactly
             }
 
             It 'Id' {
@@ -70,7 +70,7 @@ Describe 'Remove-Conversation' {
                 { 'conv_abc123' | Remove-Conversation -ea Stop } | Should -Not -Throw
                 # Pipeline by property name
                 { [pscustomobject]@{conversation_id = 'conv_abc123' } | Remove-Conversation -ea Stop } | Should -Not -Throw
-                Should -Invoke -CommandName Invoke-OpenAIAPIRequest -ModuleName $script:ModuleName -Times 4 -Exactly
+                Should -Invoke -CommandName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } -ModuleName $script:ModuleName -Times 4 -Exactly
             }
         }
     }

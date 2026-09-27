@@ -11,7 +11,7 @@ Describe 'Get-BatchOutput' {
     Context 'Unit tests (offline)' -Tag 'Offline' {
         BeforeAll {
             Mock -ModuleName $script:ModuleName Initialize-APIKey { [securestring]::new() }
-            Mock -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $PesterBoundParameters }
+            Mock -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { $PesterBoundParameters }
             Mock -Verifiable -ModuleName $script:ModuleName Get-Batch {
                 [pscustomobject]@{
                     PSTypeName     = 'PSOpenAI.Batch'

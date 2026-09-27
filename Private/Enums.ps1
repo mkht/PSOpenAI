@@ -1,4 +1,0 @@
-enum OpenAIApiType {
-    OpenAI
-    Azure
-}

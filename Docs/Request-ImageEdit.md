@@ -78,7 +78,7 @@ Request-ImageEdit -Model 'gpt-image-2' -Prompt 'A bird on the desert' -Image 'C:
 | ![original](/Docs/images/sand_with_feather.png) | ![edited](/Docs/images/bird_on_desert.png) |
 
 
-### Example 2: Create variation image from source and mask.
+### Example 2: Edit an image using a source and mask.
 ```PowerShell
 Request-ImageEdit -Model 'gpt-image-2' -Image C:\sand_with_feather.png -Mask C:\fether_mask.png -Prompt "A bird on the desert" -OutFile C:\edit2.png
 ```
@@ -86,6 +86,12 @@ Request-ImageEdit -Model 'gpt-image-2' -Image C:\sand_with_feather.png -Mask C:\
 | Source (sand_with_feather.png)                | Mask (fether_mask.png)                | Generated (edit2.png)               |
 | --------------------------------------------- | ------------------------------------- | ----------------------------------- |
 | ![masked](/Docs/images/sand_with_feather.png) | ![mask](/Docs/images/fether_mask.png) | ![restored](/Docs/images/edit2.png) |
+
+
+### Example 3: Edit using multiple source images.
+```PowerShell
+Request-ImageEdit -Model 'gpt-image-2' -Image @('C:\sand_with_feather.png', 'C:\fether_mask.png') -Prompt 'Use both images as references for a new scene' -OutFile 'C:\combined.png'
+```
 
 
 
@@ -122,7 +128,7 @@ Position: Named
 ```
 
 ### -Model
-The model to use for image generation. Defaults to `gpt-image-2`.
+The model to use for image generation. Defaults to `gpt-image-2`. GPT Image 2.5 models include `gpt-image-2.5-sunburst`, `gpt-image-2.5-flare`.
 
 ```yaml
 Type: String
@@ -144,7 +150,7 @@ Default value: 1
 ### -Quality
 The quality of the image that will be generated.  
 - `auto` (default value) will automatically select the best quality for the given model.
-- `high`, `medium` and `low` are supported for the GPT image models.
+- `max`, `xhigh`, `high`, `medium`, and `low` are accepted subject to model support.
 
 ```yaml
 Type: String
@@ -154,7 +160,7 @@ Default value: auto
 ```
 
 ### -Size
-The size of the generated images. Must be one of `1024x1024`, `1536x1024` (landscape), `1024x1536` (portrait), or `auto` (default value) for the GPT image models, and one of `256x256`, `512x512`, or `1024x1024` for dall-e-2, and one of `1024x1024`, `1792x1024`, or `1024x1792` for `dall-e-3`.
+The size of the generated images. GPT Image 2 and GPT Image 2.5 accept arbitrary supported `WIDTHxHEIGHT` resolutions or `auto`. Older image models support their documented fixed sizes.
 
 ```yaml
 Type: String

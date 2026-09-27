@@ -13,7 +13,7 @@ Describe 'Request-Moderation' {
     Context 'Unit tests (offline)' -Tag 'Offline' {
         BeforeAll {
             Mock -ModuleName $script:ModuleName Initialize-APIKey { [securestring]::new() }
-            Mock -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { $PesterBoundParameters }
+            Mock -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { $PesterBoundParameters }
         }
 
         BeforeEach {
@@ -21,7 +21,7 @@ Describe 'Request-Moderation' {
         }
 
         It 'Text moderation' {
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { gc ($script:TestData + '/moderation_flagged_true.json') -raw }
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { gc ($script:TestData + '/moderation_flagged_true.json') -raw }
             { $script:Result = Request-Moderation -Text 'I want to kill them.' -ea Stop } | Should -Not -Throw
             Should -InvokeVerifiable
             $Result | Should -BeOfType [PSCustomObject]
@@ -32,7 +32,7 @@ Describe 'Request-Moderation' {
         }
 
         It 'Output warning when the message violates the policy' {
-            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIAPIRequest { gc ($script:TestData + '/moderation_flagged_true.json') -raw }
+            Mock -Verifiable -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { gc ($script:TestData + '/moderation_flagged_true.json') -raw }
             { $script:Result = Request-Moderation -Text 'I want to kill them.' -WarningAction Stop } | Should -Throw
         }
     }
@@ -97,7 +97,7 @@ Describe 'Request-Moderation' {
         It 'Multi-modal moderation (Text & Image_url)' {
             { $splat = @{
                     Text        = 'I want to kill them.'
-                    Images      = 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Morakniv_Basic_511_Carbon_Steel_5.jpg/640px-Morakniv_Basic_511_Carbon_Steel_5.jpg'
+                    Images      = 'https://upload.wikimedia.org/wikipedia/commons/0/0f/Becker_Knife_and_Tool_Combat_Knife_%284970043406%29.jpg'
                     Model       = 'omni-moderation-latest'
                     TimeoutSec  = 30
                     ErrorAction = 'Stop'
