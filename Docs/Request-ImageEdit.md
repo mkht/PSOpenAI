@@ -78,7 +78,7 @@ Request-ImageEdit -Model 'gpt-image-2' -Prompt 'A bird on the desert' -Image 'C:
 | ![original](/Docs/images/sand_with_feather.png) | ![edited](/Docs/images/bird_on_desert.png) |
 
 
-### Example 2: Create variation image from source and mask.
+### Example 2: Edit an image using a source and mask.
 ```PowerShell
 Request-ImageEdit -Model 'gpt-image-2' -Image C:\sand_with_feather.png -Mask C:\fether_mask.png -Prompt "A bird on the desert" -OutFile C:\edit2.png
 ```
@@ -86,6 +86,12 @@ Request-ImageEdit -Model 'gpt-image-2' -Image C:\sand_with_feather.png -Mask C:\
 | Source (sand_with_feather.png)                | Mask (fether_mask.png)                | Generated (edit2.png)               |
 | --------------------------------------------- | ------------------------------------- | ----------------------------------- |
 | ![masked](/Docs/images/sand_with_feather.png) | ![mask](/Docs/images/fether_mask.png) | ![restored](/Docs/images/edit2.png) |
+
+
+### Example 3: Edit using multiple source images.
+```PowerShell
+Request-ImageEdit -Model 'gpt-image-2' -Image @('C:\sand_with_feather.png', 'C:\fether_mask.png') -Prompt 'Use both images as references for a new scene' -OutFile 'C:\combined.png'
+```
 
 
 

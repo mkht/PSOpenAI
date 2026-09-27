@@ -1,4 +1,4 @@
-﻿#Requires -Modules @{ ModuleName="Pester"; ModuleVersion="5.3.0" }
+#Requires -Modules @{ ModuleName="Pester"; ModuleVersion="5.3.0" }
 
 BeforeAll {
     $script:ModuleRoot = Split-Path (Split-Path $PSScriptRoot -Parent) -Parent
@@ -669,7 +669,7 @@ Describe 'Request-Response' {
             Should -Not -InvokeVerifiable
             $Result.method | Should -Be 'POST'
             $Result.url | Should -Be '/v1/responses'
-            $Result.body.model | Should -Be 'gpt-5.4-mini'
+            $Result.body.model | Should -Be 'gpt-6-luna'
             $Result.body.input[0].content[0].text | Should -Be 'Hello!'
         }
 
@@ -765,7 +765,7 @@ Describe 'Request-Response' {
         }
 
         It 'Simple chat response' {
-            { $script:Result = Request-Response -Message 'Hello' -Model 'gpt-6-luna' -Store $false -TimeoutSec 30 -ea Stop } | Should -Not -Throw
+            { $script:Result = Request-Response -Message 'Hello' -Model 'gpt-6-luna' -ReasoningEffort none -Store $false -TimeoutSec 30 -ea Stop } | Should -Not -Throw
             $Result | Should -BeOfType [pscustomobject]
             $Result.object | Should -Be 'response'
             $Result.output | Should -HaveCount 1
@@ -815,6 +815,7 @@ Describe 'Request-Response' {
                     Message          = $Prompt
                     DeveloperMessage = $SystemMsg
                     Model            = 'gpt-6-luna'
+                    ReasoningEffort  = 'none'
                     OutputType       = ([MathReasoning])
                     Store            = $false
                     TimeoutSec       = 30
@@ -824,8 +825,8 @@ Describe 'Request-Response' {
             } | Should -Not -Throw
             $Result.StructuredOutputs | Should -HaveCount 1
             $Result.StructuredOutputs[0].GetType().Name | Should -Be 'MathReasoning'
-            $Result.output[0].content[0].parsed.GetType().Name | Should -Be 'MathReasoning'
-            $Result.output[0].content[0].text | Should -BeOfType ([string])
+            $Result.output[-1].content[0].parsed.GetType().Name | Should -Be 'MathReasoning'
+            $Result.output[-1].content[0].text | Should -BeOfType ([string])
         }
 
         It 'Structured Outputs (Json Schema)' {
@@ -855,14 +856,15 @@ Describe 'Request-Response' {
 
             {
                 $param = @{
-                    Message        = "Create a fictitious person's info"
-                    Model          = 'gpt-6-luna'
-                    OutputType     = 'json_schema'
-                    JsonSchema     = $JsonSchema
-                    JsonSchemaName = 'user-info'
-                    Store          = $false
-                    TimeoutSec     = 30
-                    MaxRetryCount  = 1
+                    Message         = "Create a fictitious person's info"
+                    Model           = 'gpt-6-luna'
+                    ReasoningEffort = 'low'
+                    OutputType      = 'json_schema'
+                    JsonSchema      = $JsonSchema
+                    JsonSchemaName  = 'user-info'
+                    Store           = $false
+                    TimeoutSec      = 30
+                    MaxRetryCount   = 1
                 }
                 $script:Result = Request-Response @param -ea Stop
             } | Should -Not -Throw
@@ -870,15 +872,15 @@ Describe 'Request-Response' {
         }
 
         It 'Pipeline input (Conversations)' {
-            { $script:First = Request-Response -Message 'What' -MaxOutputTokens 20 -Store $false -TimeoutSec 30 -ea Stop } | Should -Not -Throw
-            { $script:Result = $script:First | Request-Response -Message 'When' -MaxOutputTokens 20 -Store $false -TimeoutSec 30 -ea Stop } | Should -Not -Throw
-            $Result.LastUserMessage | Should -Be 'When'
-            $Result.output_text | Should -Not -BeNullOrEmpty
+            { $script:First = Request-Response -Message 'What year is it now?' -MaxOutputTokens 500 -ReasoningEffort none -Store $false -TimeoutSec 30 -ea Stop } | Should -Not -Throw
+            { $script:Result = $script:First | Request-Response -Message 'What is the date today?' -MaxOutputTokens 500 -ReasoningEffort none -Store $false -TimeoutSec 30 -ea Stop } | Should -Not -Throw
+            $Result | Should -BeOfType [pscustomobject]
+            $Result.object | Should -Be 'response'
             $Result.History[0].Role | Should -Be 'user'
-            $Result.History[0].Content[0].text | Should -Be 'What'
+            $Result.History[0].Content[0].text | Should -Be 'What year is it now?'
             $Result.History[1].Role | Should -Be 'assistant'
             $Result.History[2].Role | Should -Be 'user'
-            $Result.History[2].Content[0].text | Should -Be 'When'
+            $Result.History[2].Content[0].text | Should -Be 'What is the date today?'
             $Result.History[3].Role | Should -Be 'assistant'
         }
 
@@ -1081,15 +1083,15 @@ STEP2. Use the timestamp tool to save the resulting timestamp in date and time, 
             $Result.LastUserMessage | Should -Not -BeNullOrEmpty
             $Result.output_text | Should -Not -BeNullOrEmpty
             $Result.output[0].type | Should -Be 'web_search_call'
-            $Result.output[1].type | Should -Be 'message'
-            $Result.output[1].content[0].annotations.Count | Should -BeGreaterOrEqual 1
+            $Result.output[-1].type | Should -Be 'message'
+            $Result.output[-1].content[0].annotations.Count | Should -BeGreaterOrEqual 1
         }
 
         It 'Tools - Computer Use' {
             {
                 $param = @{
                     Message            = 'Check whether the Filters panel is open. If it is not open, click Show filters. Then type penguin in the search box. Use the computer tool for UI interaction.'
-                    Model              = 'gpt-66-sol'
+                    Model              = 'gpt-6-sol'
                     UseComputerUseTool = $true
                     ComputerUseType    = 'computer'
                     Store              = $false

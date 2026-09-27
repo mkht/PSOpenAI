@@ -623,7 +623,7 @@ Describe 'Request-ChatCompletion' {
         }
 
         It 'Chat completion, multiple answers' {
-            { $script:Result = Request-ChatCompletion -Message 'What your name' -NumberOfAnswers 2 -MaxCompletionTokens 10 -TimeoutSec 30 -ea Stop } | Should -Not -Throw
+            { $script:Result = Request-ChatCompletion -Message 'What your name' -NumberOfAnswers 2 -MaxCompletionTokens 100 -TimeoutSec 30 -ea Stop } | Should -Not -Throw
             $Result | Should -BeOfType [pscustomobject]
             $Result.object | Should -Be 'chat.completion'
             $Result.Answer | Should -HaveCount 2
@@ -632,7 +632,7 @@ Describe 'Request-ChatCompletion' {
         It 'Structured Outputs' {
             $SystemMsg = 'You are a helpful math tutor. Guide the user through the solution step by step.'
             $Prompt = 'how can I solve 8x + 7 = -23'
-            { $script:Result = Request-ChatCompletion -Message $Prompt -SystemMessage $SystemMsg -Model 'gpt-4o-mini' -Format ([MathReasoning]) -TimeoutSec 30 -ea Stop } | Should -Not -Throw
+            { $script:Result = Request-ChatCompletion -Message $Prompt -SystemMessage $SystemMsg -Model 'gpt-6-sol' -Format ([MathReasoning]) -TimeoutSec 30 -ea Stop } | Should -Not -Throw
             $Result | Should -BeOfType [pscustomobject]
             $Result.object | Should -Be 'chat.completion'
             $Result.Answer | Should -HaveCount 1
@@ -642,22 +642,22 @@ Describe 'Request-ChatCompletion' {
         }
 
         It 'Pipeline input (Message)' {
-            { $script:Result = 'What your name' | Request-ChatCompletion -MaxCompletionTokens 10 -TimeoutSec 30 -ea Stop } | Should -Not -Throw
+            { $script:Result = 'What your name' | Request-ChatCompletion -MaxCompletionTokens 100 -ReasoningEffort none -TimeoutSec 30 -ea Stop } | Should -Not -Throw
             $Result | Should -BeOfType [pscustomobject]
             $Result.object | Should -Be 'chat.completion'
             $Result.Answer | Should -HaveCount 1
         }
 
         It 'Pipeline input (Conversations)' {
-            { $script:First = Request-ChatCompletion -Message 'What' -MaxCompletionTokens 10 -TimeoutSec 30 -ea Stop } | Should -Not -Throw
-            { $script:Result = $script:First | Request-ChatCompletion -Message 'When' -MaxCompletionTokens 10 -TimeoutSec 30 -ea Stop } | Should -Not -Throw
+            { $script:First = Request-ChatCompletion -Message 'What year is it now?' -MaxCompletionTokens 500 -ReasoningEffort none -TimeoutSec 30 -ea Stop } | Should -Not -Throw
+            { $script:Result = $script:First | Request-ChatCompletion -Message 'What is the date today?' -MaxCompletionTokens 500 -ReasoningEffort none -TimeoutSec 30 -ea Stop } | Should -Not -Throw
             $Result | Should -BeOfType [pscustomobject]
             $Result.object | Should -Be 'chat.completion'
             $Result.History[0].Role | Should -Be 'user'
-            $Result.History[0].Content | Should -Be 'What'
+            $Result.History[0].Content | Should -Be 'What year is it now?'
             $Result.History[1].Role | Should -Be 'assistant'
             $Result.History[2].Role | Should -Be 'user'
-            $Result.History[2].Content | Should -Be 'When'
+            $Result.History[2].Content | Should -Be 'What is the date today?'
             $Result.History[3].Role | Should -Be 'assistant'
         }
 
@@ -829,7 +829,8 @@ Ping Source Address Latency(ms) BufferSize(B) Status
         It 'Stream output' {
             $params = @{
                 Message             = 'Please describe about ChatGPT'
-                MaxCompletionTokens = 32
+                MaxCompletionTokens = 500
+                ReasoningEffort     = 'none'
                 Stream              = $true
                 InformationVariable = 'Info'
                 TimeoutSec          = 30

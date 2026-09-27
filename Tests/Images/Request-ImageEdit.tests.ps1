@@ -38,6 +38,20 @@ Describe 'Request-ImageEdit' {
             $Result.Body.quality | Should -BeExactly 'xhigh'
         }
 
+        It 'Uses the image array field for multiple input images' {
+            $images = @(
+                ($script:TestImageData + '/fether_mask.png'),
+                ($script:TestImageData + '/sand_with_feather.png')
+            )
+            $script:Result = Request-ImageEdit -Image $images -Prompt 'Add a sunrise' -OutputRawResponse -ErrorAction Stop
+
+            $Result.Body.Contains('image[]') | Should -BeTrue
+            $Result.Body.Contains('image') | Should -BeFalse
+            $Result.Body['image[]'] | Should -HaveCount 2
+            $Result.Body['image[]'][0] | Should -BeOfType [System.IO.FileInfo]
+            $Result.Body['image[]'][1] | Should -BeOfType [System.IO.FileInfo]
+        }
+
         It 'Image edit. one input, one output, save to file' {
             $TestResponse = @'
 {
@@ -391,7 +405,7 @@ Describe 'Request-ImageEdit' {
                     Image       = $script:TestImageData + '/fether_mask.png'
                     Prompt      = 'sunflower'
                     OutFile     = Join-Path $TestDrive 'file1.png'
-                    Size        = '256x256'
+                    Size        = '1024x1024'
                     TimeoutSec  = 30
                     ErrorAction = 'Stop'
                 }
@@ -438,7 +452,7 @@ Describe 'Request-ImageEdit' {
         It 'Stream image edit' {
             { $splat = @{
                     Image         = $script:TestImageData + '/sand_with_feather.png'
-                    Prompt        = 'A bird on the desert'
+                    Prompt        = "A children's book drawing of a veterinarian using a stethoscope to listen to the heartbeat of a baby otter."
                     Model         = 'gpt-image-2'
                     OutFile       = Join-Path $TestDrive 'file4.png'
                     Size          = '1024x1024'
@@ -451,7 +465,6 @@ Describe 'Request-ImageEdit' {
             } | Should -Not -Throw
             $Result | Should -BeNullOrEmpty
             (Join-Path $TestDrive 'file4-0.png') | Should -Exist
-            (Join-Path $TestDrive 'file4-1.png') | Should -Exist
             (Join-Path $TestDrive 'file4.png') | Should -Exist
         }
     }

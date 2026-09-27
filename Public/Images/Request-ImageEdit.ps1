@@ -134,9 +134,10 @@ function Request-ImageEdit {
         #region Construct parameters for API request
         $PostBody = [System.Collections.Specialized.OrderedDictionary]::new()
         $PostBody.prompt = $Prompt
+        $PostBody.model = $Model
 
         if ( $InputImages.Count -gt 1) {
-            $PostBody.image = $InputImages
+            $PostBody['image[]'] = $InputImages
         }
         else {
             $PostBody.image = $InputImages[0]
@@ -144,10 +145,6 @@ function Request-ImageEdit {
 
         if ($MaskImage) {
             $PostBody.mask = $MaskImage
-        }
-
-        if ($PSBoundParameters.ContainsKey('Model')) {
-            $PostBody.model = $Model
         }
 
         if ($PSBoundParameters.ContainsKey('NumberOfImages')) {

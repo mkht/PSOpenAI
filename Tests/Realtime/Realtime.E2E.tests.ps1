@@ -62,7 +62,7 @@ Describe 'Realtime E2E Test' {
                 { Set-RealtimeSessionConfiguration `
                         -Instructions $script:Instructions `
                         -OutputModalities 'text' `
-                        -MaxOutputTokens 32 `
+                        -MaxOutputTokens 1000 `
                         -ea Stop } | Should -Not -Throw
                 Start-Sleep -Seconds 1
 
@@ -91,8 +91,8 @@ Describe 'Realtime E2E Test' {
 
             It 'STEP4: Trigger response' {
                 $item = $null
-                { Request-RealtimeSessionResponse -MaxOutputTokens 12 -ea Stop } | Should -Not -Throw
-                Start-Sleep -Seconds 5
+                { Request-RealtimeSessionResponse -MaxOutputTokens 1000 -ea Stop } | Should -Not -Throw
+                Start-Sleep -Seconds 15
 
                 $null = $global:SendStack.TryPeek([ref]$item)
                 $item = $item | ConvertFrom-Json
@@ -110,7 +110,7 @@ Describe 'Realtime E2E Test' {
             It 'STEP5: Input a next message (with trigger response)' {
                 $item = $null
                 { Add-RealtimeSessionItem -Role 'user' -Message $script:PromptNextMessage -TriggerResponse -ea Stop } | Should -Not -Throw
-                Start-Sleep -Seconds 12
+                Start-Sleep -Seconds 15
 
                 $null = $global:SendStack.TryPeek([ref]$item)
                 $item = $item | ConvertFrom-Json

@@ -204,7 +204,7 @@ Describe 'Get-Response' {
         BeforeAll {
             Clear-OpenAIContext
 
-            $script:TestResponse = Request-Response -Model 'gpt-4.1-nano' -Message 'Hello' -Store $true -TimeoutSec 30 -ErrorAction Stop
+            $script:TestResponse = Request-Response -Model 'gpt-6-luna' -ReasoningEffort none -Message 'Hello' -Store $true -TimeoutSec 30 -ErrorAction Stop
             Start-Sleep -Seconds 5
         }
 

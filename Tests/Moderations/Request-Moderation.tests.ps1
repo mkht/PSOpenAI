@@ -97,7 +97,7 @@ Describe 'Request-Moderation' {
         It 'Multi-modal moderation (Text & Image_url)' {
             { $splat = @{
                     Text        = 'I want to kill them.'
-                    Images      = 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Morakniv_Basic_511_Carbon_Steel_5.jpg/640px-Morakniv_Basic_511_Carbon_Steel_5.jpg'
+                    Images      = 'https://upload.wikimedia.org/wikipedia/commons/0/0f/Becker_Knife_and_Tool_Combat_Knife_%284970043406%29.jpg'
                     Model       = 'omni-moderation-latest'
                     TimeoutSec  = 30
                     ErrorAction = 'Stop'

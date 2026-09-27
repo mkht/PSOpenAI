@@ -71,7 +71,7 @@ Describe 'Remove-Response' {
 
         BeforeEach {
             $script:Result = ''
-            $script:TestResponse = Request-Response -Model 'gpt-4.1-nano' -Message 'Hello' -Store $true -TimeoutSec 30 -ErrorAction Stop
+            $script:TestResponse = Request-Response -Model 'gpt-6-luna' -Message 'Hello' -Store $true -TimeoutSec 30 -ErrorAction Stop
             Start-Sleep -Seconds 5
         }
 
