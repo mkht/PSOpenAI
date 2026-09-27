@@ -38,14 +38,17 @@ jobs:
       - uses: actions/checkout@v6
 
       - name: Install Pester
-        run: Install-Module Pester -Force -AllowClobber -Scope CurrentUser -SkipPublisherCheck
+        run: Install-Module Pester -MinimumVersion 6.0.0 -Force -AllowClobber -Scope CurrentUser -SkipPublisherCheck
 
       - name: Test
         run: |
-          $pesterParam = @{CI = $true; Output = 'Detailed'}
-          if('${{ inputs.tag }}' -eq ''){$pesterParam.Tag = 'Offline'}
-          elseif('${{ inputs.tag }}' -ne 'all'){$pesterParam.Tag = '${{ inputs.tag }}'}
-          Invoke-Pester @pesterParam
+          $configuration = & ./PesterConfiguration.ps1
+          $configuration.Run.Exit = $true
+          $configuration.TestResult.Enabled = $true
+          $configuration.Output.Verbosity = 'Detailed'
+          if('${{ inputs.tag }}' -eq ''){$configuration.Filter.Tag = 'Offline'}
+          elseif('${{ inputs.tag }}' -ne 'all'){$configuration.Filter.Tag = '${{ inputs.tag }}'}
+          Invoke-Pester -Configuration $configuration
 
   Tests_PS7:
     runs-on: ${{ matrix.os }}
@@ -65,11 +68,14 @@ jobs:
       - uses: actions/checkout@v6
 
       - name: Install Pester
-        run: Install-Module Pester -Force -AllowClobber -Scope CurrentUser -SkipPublisherCheck
+        run: Install-Module Pester -MinimumVersion 6.0.0 -Force -AllowClobber -Scope CurrentUser -SkipPublisherCheck
 
       - name: Test
         run: |
-          $pesterParam = @{CI = $true; Output = 'Detailed'}
-          if('${{ inputs.tag }}' -eq ''){$pesterParam.Tag = 'Offline'}
-          elseif('${{ inputs.tag }}' -ne 'all'){$pesterParam.Tag = '${{ inputs.tag }}'}
-          Invoke-Pester @pesterParam
+          $configuration = & ./PesterConfiguration.ps1
+          $configuration.Run.Exit = $true
+          $configuration.TestResult.Enabled = $true
+          $configuration.Output.Verbosity = 'Detailed'
+          if('${{ inputs.tag }}' -eq ''){$configuration.Filter.Tag = 'Offline'}
+          elseif('${{ inputs.tag }}' -ne 'all'){$configuration.Filter.Tag = '${{ inputs.tag }}'}
+          Invoke-Pester -Configuration $configuration
