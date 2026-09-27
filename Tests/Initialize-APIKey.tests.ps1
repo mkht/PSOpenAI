@@ -1,4 +1,4 @@
-#Requires -Modules @{ ModuleName="Pester"; ModuleVersion="5.3.0" }
+﻿#Requires -Modules @{ ModuleName="Pester"; ModuleVersion="5.3.0" }
 
 $ModuleName = 'PSOpenAI'
 $ModuleRoot = Split-Path $PSScriptRoot -Parent
