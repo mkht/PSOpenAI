@@ -390,6 +390,19 @@ PS C:> Request-ChatCompletion -Message "Who are you?" -ApiKey '<Put your API key
 ```
 
 ----
+## Testing
+
+Install Pester 6, then run the offline tests from the repository root:
+
+```powershell
+$configuration = & ./PesterConfiguration.ps1
+$configuration.Filter.Tag = 'Offline'
+Invoke-Pester -Configuration $configuration
+```
+
+`PesterConfiguration.ps1` disables the unused TestRegistry feature. Set `$configuration.Run.Path` to a test file to run a smaller set. Tests tagged `Online` can call the OpenAI API and are not included in the command above.
+
+----
 ## Changelog
 
 [CHANGELOG.md](/CHANGELOG.md)

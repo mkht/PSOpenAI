@@ -1,4 +1,4 @@
-﻿#Requires -Modules @{ ModuleName="Pester"; ModuleVersion="5.3.0" }
+﻿#Requires -Modules @{ ModuleName="Pester"; ModuleVersion="6.0.0" }
 
 BeforeDiscovery {
     Import-Module (Join-Path (Split-Path $PSScriptRoot -Parent) 'PSOpenAI.psd1') -Force
