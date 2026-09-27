@@ -52,7 +52,6 @@ Guide: [How to use Chat](/Guides/How_to_use_Chat.md)
 + [New-ChatCompletionFunction](/Docs/New-ChatCompletionFunction.md)
 
 #### Responses
-Guide: [Migrate ChatCompletion to Response](/Guides/Migrate_ChatCompletion_to_Response.md)  
 
 + [Request-Response](/Docs/Request-Response.md)
 + [Get-Response](/Docs/Get-Response.md)
