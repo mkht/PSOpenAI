@@ -62,7 +62,6 @@
         #### Image ####
         'Request-ImageEdit',
         'Request-ImageGeneration',
-        'Request-ImageVariation',
         #### Content Provenance Checks ####
         'Request-ContentProvenanceCheck',
         #### Moderation ####

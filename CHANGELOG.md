@@ -4,6 +4,7 @@
 
 #### Breaking changes and migration
 
+- **Image variations:** Remove `Request-ImageVariation`. The `/images/variations` endpoint seems to be deprecated by OpenAI.
 - **Default models:** Use `gpt-6-luna` for `Request-ChatCompletion`, `Enter-ChatGPT`, `Request-Response`, and `Request-ResponseCompaction`. Use `gpt-transcribe` for `Request-AudioTranscription` and Realtime input audio transcription.
 - **Azure OpenAI:** Remove the Azure-specific API mode and `ApiType`, `ApiVersion`, and `AuthType` parameters/context properties. Remove these parameters from scripts, including `-ApiType OpenAI`. For Azure v1, set `ApiBase` to `https://<resource>.openai.azure.com/openai/v1/`, pass an Azure API key or Entra ID token as `ApiKey` (Bearer authentication), and use the deployment name as `Model`. Legacy deployment URLs and `api-key` authentication are no longer used. See the [migration guide](Guides/How_to_use_with_Azure_OpenAI_Service.md).
 - **Video API (Sora):** Remove `New-Video`, `New-VideoRemix`, `Get-Video`, `Get-VideoContent`, `Remove-Video`, and `Wait-Video`. There API is no longer available from OpenAI.

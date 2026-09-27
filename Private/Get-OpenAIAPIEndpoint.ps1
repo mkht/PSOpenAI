@@ -61,16 +61,6 @@ function Get-OpenAIAPIEndpoint {
             }
             continue
         }
-        'Image.Variation' {
-            $UriBuilder.Path += 'images/variations'
-            @{
-                Name        = 'image.variation'
-                Method      = 'Post'
-                Uri         = $UriBuilder.Uri
-                ContentType = 'multipart/form-data'
-            }
-            continue
-        }
         'Audio.Speech' {
             $UriBuilder.Path += 'audio/speech'
             @{

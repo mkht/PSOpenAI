@@ -106,7 +106,6 @@ Guide: [How to use Realtime API](/Guides/How_to_use_Realtime_API.md)
 #### Images
 + [Request-ImageEdit](/Docs/Request-ImageEdit.md)
 + [Request-ImageGeneration](/Docs/Request-ImageGeneration.md)
-+ [Request-ImageVariation](/Docs/Request-ImageVariation.md)
 
 #### Audio
 + [Request-AudioSpeech](/Docs/Request-AudioSpeech.md)
