@@ -79,6 +79,7 @@ class OpenAIDepricationModels {
         'gpt-3.5-turbo-1106'                 = [datetime]::new(2026, 09, 28)
         'gpt-3.5-turbo'                      = [datetime]::new(2026, 10, 23)
         'gpt-4'                              = [datetime]::new(2026, 10, 23)
+        'gpt-4-turbo'                        = [datetime]::new(2026, 10, 23)
         'gpt-4.1-nano'                       = [datetime]::new(2026, 10, 23)
         'gpt-image-1'                        = [datetime]::new(2026, 10, 23)
         'o1'                                 = [datetime]::new(2026, 10, 23)
@@ -88,6 +89,8 @@ class OpenAIDepricationModels {
         'gpt-image-1-mini'                   = [datetime]::new(2026, 12, 1)
         'gpt-image-1.5'                      = [datetime]::new(2026, 12, 1)
         'chatgpt-image-latest'               = [datetime]::new(2026, 12, 1)
+        'tts-1'                              = [datetime]::new(2027, 1, 6)
+        'tts-1-hd'                           = [datetime]::new(2027, 1, 6)
         'gpt-realtime'                       = [datetime]::new(2027, 1, 20)
         'gpt-audio'                          = [datetime]::new(2027, 1, 20)
         'gpt-4o-audio'                       = [datetime]::new(2027, 1, 20)
@@ -100,6 +103,9 @@ class OpenAIDepricationModels {
         'gpt-4o-transcribe'                  = [datetime]::new(2027, 2, 26)
         'gpt-4o-mini-transcribe'             = [datetime]::new(2027, 2, 26)
         'gpt-4o-transcribe-diarize'          = [datetime]::new(2027, 2, 26)
+        'gpt-5.3-codex'                      = [datetime]::new(2027, 4, 1)
+        'gpt-5.4-nano'                       = [datetime]::new(2027, 4, 1)
+        'gpt-5.1'                            = [datetime]::new(2027, 4, 1)
     }
 }
 
