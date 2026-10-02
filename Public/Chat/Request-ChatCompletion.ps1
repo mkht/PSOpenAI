@@ -50,6 +50,7 @@ function Request-ChatCompletion {
             'gpt-6-luna',
             'gpt-6-sol',
             'gpt-6-astra',
+            'gpt-6.1-sol',
             'gpt-audio',
             'gpt-audio-mini',
             'gpt-audio-1.5',
