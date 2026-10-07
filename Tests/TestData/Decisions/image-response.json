@@ -1,0 +1,34 @@
+{
+  "model": "gpt-6-luna",
+  "answers": [
+    { "type": "predicate", "name": "orange_shape", "probability": 1.0 },
+    {
+      "type": "choice",
+      "name": "image_kind",
+      "choice": "geometric_drawing",
+      "probabilities": [
+        { "value": "geometric_drawing", "probability": 1.0 },
+        { "value": "photograph", "probability": 0.0 }
+      ],
+      "confidence": 1.0
+    },
+    {
+      "type": "score",
+      "name": "colored_shape_count",
+      "score": 1.0,
+      "probabilities": [
+        { "value": 0, "label": "None", "probability": 0.0 },
+        { "value": 1, "label": "One", "probability": 1.0 },
+        { "value": 2, "label": "Two", "probability": 0.0 }
+      ],
+      "confidence": 1.0
+    }
+  ],
+  "usage": {
+    "input_tokens": 483,
+    "input_tokens_details": { "cached_tokens": 0, "cache_write_tokens": 0 },
+    "output_tokens": 0,
+    "output_tokens_details": { "reasoning_tokens": 0 },
+    "total_tokens": 483
+  }
+}

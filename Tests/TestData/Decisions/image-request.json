@@ -1,0 +1,32 @@
+{
+  "model": "gpt-6-luna",
+  "message": "Inspect the image itself. Classify its visual content.",
+  "image_file": "ContentProvenanceChecks/not-detected.png",
+  "image_detail": "original",
+  "questions": [
+    {
+      "type": "predicate",
+      "name": "orange_shape",
+      "instructions": "Is an orange filled geometric shape visible?"
+    },
+    {
+      "type": "choice",
+      "name": "image_kind",
+      "instructions": "Which description best matches the image?",
+      "choices": [
+        { "value": "geometric_drawing", "description": "Flat solid-colored geometric shapes on a plain background." },
+        { "value": "photograph", "description": "A photograph of a real-world scene." }
+      ]
+    },
+    {
+      "type": "score",
+      "name": "colored_shape_count",
+      "instructions": "Count the separate colored filled geometric shapes, excluding the background.",
+      "levels": [
+        { "label": "None", "description": "No colored shapes." },
+        { "label": "One", "description": "Exactly one colored shape." },
+        { "label": "Two", "description": "Exactly two colored shapes." }
+      ]
+    }
+  ]
+}

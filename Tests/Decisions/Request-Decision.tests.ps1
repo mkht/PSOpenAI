@@ -79,6 +79,32 @@ Describe 'Request-Decision' {
             $Result.usage.compute_units | Should -BeNullOrEmpty
         }
 
+        It 'Parses a recorded live response without losing its fields: <Fixture>' -TestCases @(
+            @{ Fixture = 'text' }
+            @{ Fixture = 'image' }
+        ) {
+            param($Fixture)
+            $Request = Get-Content -LiteralPath (Join-Path $script:TestData "Decisions/$Fixture-request.json") -Raw | ConvertFrom-Json
+            $script:RecordedDecisionResponse = Get-Content -LiteralPath (Join-Path $script:TestData "Decisions/$Fixture-response.json") -Raw
+            Mock -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { $script:RecordedDecisionResponse }
+            $Params = @{ Questions = $Request.questions; Model = $Request.model; ErrorAction = 'Stop' }
+            if ($Fixture -eq 'text') {
+                $Params.Message = $Request.input
+                $Params.SafetyIdentifier = $Request.safety_identifier
+            }
+            else {
+                $Params.Message = $Request.message
+                $Params.Images = Join-Path $script:TestData $Request.image_file
+                $Params.ImageDetail = $Request.image_detail
+            }
+            $Expected = $script:RecordedDecisionResponse | ConvertFrom-Json
+            $Result = Request-Decision @Params
+            $Result.PSObject.TypeNames | Should -Contain 'PSOpenAI.Decision'
+            ($Result | ConvertTo-Json -Depth 100 -Compress) | Should -BeExactly ($Expected | ConvertTo-Json -Depth 100 -Compress)
+            $Result.answers | Should -HaveCount $Request.questions.Count
+            ($Result.answers.name -join ',') | Should -BeExactly ($Request.questions.name -join ',')
+        }
+
         It 'Processes each pipeline text as a separate request' {
             $Results = 'First report', 'Second report' | Request-Decision -Questions $script:Predicate
             $Results | Should -HaveCount 2
@@ -186,6 +212,66 @@ Describe 'Request-Decision' {
             $Result = Request-Decision -Message 'Evidence' -Questions $script:Predicate -ErrorAction SilentlyContinue -ErrorVariable ParseError
             $Result | Should -BeNullOrEmpty
             $ParseError | Should -Not -BeNullOrEmpty
+        }
+
+        AfterAll {
+            Clear-OpenAIContext
+        }
+    }
+
+    Context 'Integration tests (online)' -Tag 'Online' {
+        BeforeAll {
+            Clear-OpenAIContext
+            $script:DecisionTestData = Join-Path $script:TestData 'Decisions'
+        }
+
+        It 'Evaluates text with predicate, boolean/string choice, and score questions' {
+            $Request = Get-Content -LiteralPath (Join-Path $script:DecisionTestData 'text-request.json') -Raw | ConvertFrom-Json
+            $Result = Request-Decision -Message $Request.input -Questions $Request.questions -Model $Request.model -SafetyIdentifier $Request.safety_identifier -TimeoutSec 90 -MaxRetryCount 0 -ErrorAction Stop
+            Write-Host ('Decisions text response: ' + ($Result | ConvertTo-Json -Depth 100 -Compress))
+
+            $Result.PSObject.TypeNames | Should -Contain 'PSOpenAI.Decision'
+            $Result.model | Should -BeLike 'gpt-6-luna*'
+            $Result.answers | Should -HaveCount 4
+            ($Result.answers.name -join ',') | Should -BeExactly 'damaged,usable,resolution,severity'
+            ($Result.answers.type -join ',') | Should -BeExactly 'predicate,choice,choice,score'
+            $Result.answers[0].probability | Should -BeGreaterThan 0.5
+            $Result.answers[0].probability | Should -BeLessOrEqual 1
+            $Result.answers[1].choice | Should -BeOfType [bool]
+            $Result.answers[1].choice | Should -BeFalse
+            $Result.answers[2].choice | Should -BeExactly 'refund'
+            $Result.answers[3].score | Should -BeGreaterOrEqual 1.5
+            $Result.answers[3].score | Should -BeLessOrEqual 2
+            $Result.answers[3].probabilities | Should -HaveCount 3
+            $Result.usage.input_tokens | Should -BeGreaterThan 0
+            $Result.usage.total_tokens | Should -BeGreaterOrEqual $Result.usage.input_tokens
+        }
+
+        It 'Evaluates an existing local image with original detail' {
+            $Request = Get-Content -LiteralPath (Join-Path $script:DecisionTestData 'image-request.json') -Raw | ConvertFrom-Json
+            $ImagePath = Join-Path $script:TestData $Request.image_file
+            $Result = Request-Decision -Message $Request.message -Images $ImagePath -ImageDetail $Request.image_detail -Questions $Request.questions -Model $Request.model -TimeoutSec 90 -MaxRetryCount 0 -ErrorAction Stop
+            Write-Host ('Decisions image response: ' + ($Result | ConvertTo-Json -Depth 100 -Compress))
+
+            $Result.PSObject.TypeNames | Should -Contain 'PSOpenAI.Decision'
+            $Result.model | Should -BeLike 'gpt-6-luna*'
+            $Result.answers | Should -HaveCount 3
+            ($Result.answers.name -join ',') | Should -BeExactly 'orange_shape,image_kind,colored_shape_count'
+            ($Result.answers.type -join ',') | Should -BeExactly 'predicate,choice,score'
+            $Result.answers[0].probability | Should -BeGreaterThan 0.5
+            $Result.answers[0].probability | Should -BeLessOrEqual 1
+            $Result.answers[1].choice | Should -BeExactly 'geometric_drawing'
+            # The model can disagree with the visual shape count. Verify the API
+            # contract and weighted-score arithmetic, rather than an exact count.
+            $Result.answers[2].score | Should -BeGreaterOrEqual 0
+            $Result.answers[2].score | Should -BeLessOrEqual 2
+            $Result.answers[2].probabilities | Should -HaveCount 3
+            $WeightedScore = ($Result.answers[2].probabilities | ForEach-Object { $_.value * $_.probability } | Measure-Object -Sum).Sum
+            [Math]::Abs($Result.answers[2].score - $WeightedScore) | Should -BeLessThan 0.000001
+            $ProbabilitySum = ($Result.answers[2].probabilities | Measure-Object -Property probability -Sum).Sum
+            [Math]::Abs($ProbabilitySum - 1) | Should -BeLessThan 0.000001
+            $Result.usage.input_tokens | Should -BeGreaterThan 0
+            $Result.usage.total_tokens | Should -BeGreaterOrEqual $Result.usage.input_tokens
         }
 
         AfterAll {
