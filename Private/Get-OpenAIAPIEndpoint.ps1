@@ -101,6 +101,16 @@ function Get-OpenAIAPIEndpoint {
             }
             continue
         }
+        'Decisions' {
+            $UriBuilder.Path += 'decisions'
+            @{
+                Name        = 'decision'
+                Method      = 'Post'
+                Uri         = $UriBuilder.Uri
+                ContentType = 'application/json'
+            }
+            continue
+        }
         'Moderation' {
             $UriBuilder.Path += 'moderations'
             @{

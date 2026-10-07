@@ -64,6 +64,8 @@
         'Request-ImageGeneration',
         #### Content Provenance Checks ####
         'Request-ContentProvenanceCheck',
+        #### Decisions ####
+        'Request-Decision',
         #### Moderation ####
         'Request-Moderation',
         #### Responses ####

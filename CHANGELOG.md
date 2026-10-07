@@ -13,6 +13,7 @@
 
 #### Added and improved
 
+- Add `Request-Decision` for the beta Decisions API, with text and inline image input, predicate/choice/score questions, and typed answers.
 - Add `Request-ContentProvenanceCheck` for image and audio provenance checks (C2PA and SynthID).
 - Add completions for `gpt-6-sol`, `gpt-6-luna`, and GPT Image 2.5 models. Accept additional image quality and size values supported by the server.
 - Add `Request-Response -RemoteMCPTunnelId`, `-PromptCacheComparisonResponseId`, and `-PromptCachePrewarm`. Deprecate `-ConnectorId` for models released after September 1, 2026.

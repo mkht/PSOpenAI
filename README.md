@@ -135,6 +135,9 @@ Guide: [How to use Batch](/Guides/How_to_use_Batch.md)
 + [Remove-ContainerFile](/Docs/Remove-ContainerFile.md)
 + [Get-ContainerFileContent](/Docs/Get-ContainerFileContent.md)
 
+### Decisions (Beta)
++ [Request-Decision](/Docs/Request-Decision.md): Evaluate text and images with predicate, choice, and score questions.
+
 ### Others
 + [Get-OpenAIModels](/Docs/Get-OpenAIModels.md)
 + [Request-Embeddings](/Docs/Request-Embeddings.md)
