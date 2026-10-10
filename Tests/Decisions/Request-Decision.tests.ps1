@@ -184,6 +184,36 @@ Describe 'Request-Decision' {
             }
         }
 
+        It 'Warns for an unordered score hashtable and continues sending the question' {
+            $Levels = @{ Low = 'Minor damage.'; High = 'Severe damage.' }
+
+            Request-Decision -Message 'Evidence' -ScoreQuestionInstructions 'Rate the damage.' -ScoreQuestionLevels $Levels -WarningAction SilentlyContinue -WarningVariable ScoreWarnings -ErrorAction Stop | Out-Null
+
+            $ScoreWarnings | Should -HaveCount 1
+            [string]$ScoreWarnings[0] | Should -Match 'ScoreQuestionLevels\[0\].*order is not guaranteed'
+            Should -Invoke -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -Times 1 -Exactly -ParameterFilter {
+                $Body.questions.Count -eq 1 -and
+                $Body.questions[0].levels.Count -eq 2 -and
+                @($Body.questions[0].levels | Where-Object { $_.label -eq 'Low' -and $_.description -eq 'Minor damage.' }).Count -eq 1 -and
+                @($Body.questions[0].levels | Where-Object { $_.label -eq 'High' -and $_.description -eq 'Severe damage.' }).Count -eq 1
+            }
+        }
+
+        It 'Does not warn for ordered score dictionaries or level arrays' {
+            $LevelGroups = [object[]]::new(2)
+            $LevelGroups[0] = [ordered]@{ Low = 'Minor damage.'; High = 'Severe damage.' }
+            $LevelGroups[1] = @('None', 'Moderate')
+
+            Request-Decision -Message 'Evidence' -ScoreQuestionInstructions @('Ordered levels?', 'Array levels?') -ScoreQuestionLevels $LevelGroups -WarningVariable ScoreWarnings -ErrorAction Stop | Out-Null
+
+            $ScoreWarnings | Should -BeNullOrEmpty
+            Should -Invoke -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -Times 1 -Exactly -ParameterFilter {
+                $Body.questions.Count -eq 2 -and
+                ($Body.questions[0].levels.label -join ',') -eq 'Low,High' -and
+                ($Body.questions[1].levels.label -join ',') -eq 'None,Moderate'
+            }
+        }
+
         It 'Skips a choice question with fewer than two options and continues with later questions' {
             $ChoiceGroups = [object[]]::new(2)
             $ChoiceGroups[0] = [pscustomobject]@{ value = 'only'; description = 'Only option.' }
@@ -303,6 +333,18 @@ Describe 'Request-Decision' {
             }
         }
 
+        It 'Passes HTTP and HTTPS image URLs through without converting them' {
+            $ImageUrls = @('https://example.test/photo.jpg?size=small', 'http://example.test/photo.png')
+
+            Request-Decision -Message 'Inspect these images.' -Images $ImageUrls @script:PredicateParameters -ErrorAction Stop | Out-Null
+
+            Should -Invoke -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -Times 1 -Exactly -ParameterFilter {
+                $Body.input[0].content.Count -eq 3 -and
+                $Body.input[0].content[1].image_url -eq 'https://example.test/photo.jpg?size=small' -and
+                $Body.input[0].content[2].image_url -eq 'http://example.test/photo.png'
+            }
+        }
+
         It 'Supports image-only requests without inserting an empty text part' {
             Request-Decision -Images 'data:image/png;base64,AA==' @script:PredicateParameters -ErrorAction Stop | Out-Null
             Should -Invoke -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -Times 1 -Exactly -ParameterFilter {
@@ -312,11 +354,11 @@ Describe 'Request-Decision' {
             }
         }
 
-        It 'Rejects missing input, missing images, directories, and external image URLs before HTTP' {
+        It 'Rejects missing input, missing images, directories, and unsupported image URI schemes before HTTP' {
             { Request-Decision @script:PredicateParameters -ErrorAction Stop } | Should -Throw
             { Request-Decision -Images (Join-Path $TestDrive 'missing.png') @script:PredicateParameters -ErrorAction Stop } | Should -Throw
             { Request-Decision -Images $TestDrive @script:PredicateParameters -ErrorAction Stop } | Should -Throw
-            { Request-Decision -Images 'https://example.test/image.png' @script:PredicateParameters -ErrorAction Stop } | Should -Throw
+            { Request-Decision -Images 'ftp://example.test/image.png' @script:PredicateParameters -ErrorAction Stop } | Should -Throw
             Should -Invoke -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -Times 0 -Exactly
         }
 
@@ -427,6 +469,21 @@ Describe 'Request-Decision' {
             $Result.answers[1].choice | Should -BeExactly 'first'
             $Result.usage.input_tokens | Should -BeGreaterThan 0
             $Result.usage.total_tokens | Should -BeGreaterOrEqual $Result.usage.input_tokens
+        }
+
+        It 'Evaluates a publicly hosted image URL' {
+            $Result = Request-Decision -Message 'Inspect this publicly hosted image.' `
+                -Images 'https://upload.wikimedia.org/wikipedia/commons/a/a9/Example.jpg' -ImageDetail low `
+                -PredicateQuestionName 'has_text' -PredicateQuestionInstructions 'Does the image contain visible text?' `
+                -TimeoutSec 90 -MaxRetryCount 0 -ErrorAction Stop
+
+            $Result.PSObject.TypeNames | Should -Contain 'PSOpenAI.Decision'
+            $Result.answers | Should -HaveCount 1
+            $Result.answers[0].type | Should -BeExactly 'predicate'
+            $Result.answers[0].name | Should -BeExactly 'has_text'
+            $Result.answers[0].probability | Should -BeGreaterOrEqual 0
+            $Result.answers[0].probability | Should -BeLessOrEqual 1
+            $Result.usage.input_tokens | Should -BeGreaterThan 0
         }
 
         AfterAll {

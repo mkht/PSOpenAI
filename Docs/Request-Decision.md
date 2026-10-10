@@ -43,9 +43,9 @@ Each instruction array defines the questions of that type. Optional names and re
 
 Questions are sent in Predicate, Choice, Score order, preserving array order within each type. Each answer corresponds to the question at the same index in the resulting questions array.
 
-Score level order defines the numeric indices. Use an ordered dictionary (`[ordered]@{ ... }`) or an array for ScoreQuestionLevels when the order matters. A regular hashtable (`@{ ... }`) does not guarantee the order in which its keys are enumerated.
+Score level order defines the numeric indices. Use an ordered dictionary (`[ordered]@{ ... }`) or an array for ScoreQuestionLevels when the order matters. A regular hashtable (`@{ ... }`) does not guarantee the order in which its keys are enumerated. Supplying one emits a warning, and the question is still sent using its enumerated key order.
 
-Specify Message, Images, or both. A Message array supplies ordered text parts as shared evidence in one request. Pipeline strings are processed separately, with one request per string. Images accepts local image paths and inline base64 data URLs; images follow text parts when both are supplied.
+Specify Message, Images, or both. A Message array supplies ordered text parts as shared evidence in one request. Pipeline strings are processed separately, with one request per string. Images accepts local image paths, inline base64 data URLs, and publicly accessible HTTP(S) image URLs; images follow text parts when both are supplied.
 
 The returned PSOpenAI.Decision object contains model, answers, and usage. Answer fields, boolean or string choice values, fractional scores, and refusal answers are preserved.
 
@@ -96,9 +96,19 @@ $params = @{
 }
 Request-Decision @params
 ```
-Converts the local image to an inline data URL. Images can be combined with Message, and can also contain data URLs. The Images parameter does not accept external URLs or file IDs.
+Converts the local image to an inline data URL. Images can be combined with Message and can also contain data URLs or publicly accessible HTTP(S) image URLs. HTTP(S) URLs are forwarded without downloading the image locally. File IDs are not supported.
 
-### Example 4: Ask multiple choice questions about shared text
+### Example 4: Evaluate a publicly hosted image
+
+```powershell
+Request-Decision -Message 'Inspect this publicly hosted image.' `
+    -Images 'https://upload.wikimedia.org/wikipedia/commons/a/a9/Example.jpg' `
+    -PredicateQuestionInstructions 'Does the image contain visible text?'
+```
+
+Passes the public HTTPS image URL to the API as `image_url`. The API must be able to retrieve the image.
+
+### Example 5: Ask multiple choice questions about shared text
 ```powershell
 $usableChoices = @($true, $false)
 $resolutionChoices = @('refund', 'repair')
@@ -113,7 +123,7 @@ Request-Decision @params
 ```
 Sends both text strings as shared evidence in one request. Each outer Choices array entry belongs to the instruction at the same index. The first choice uses JSON booleans; string and boolean values remain distinct.
 
-### Example 5: Supply descriptions in ordered choice and score arrays
+### Example 6: Supply descriptions in ordered choice and score arrays
 
 ```powershell
 $choices = @(
@@ -145,7 +155,7 @@ Accept pipeline input: True (ByValue)
 ```
 
 ### -Images
-One to 128 local image paths or inline base64 image data URLs, shared by all questions. Local paths are converted to data URLs before sending. Missing files, directories, and external URLs produce an error before the API request.
+One to 128 local image paths, inline base64 image data URLs, or publicly accessible HTTP(S) image URLs, shared by all questions. Local paths are converted to data URLs before sending; HTTP(S) URLs are passed through unchanged. Missing files, directories, and unsupported URI schemes produce an error before the API request. The API must be able to retrieve any supplied URL.
 
 ```yaml
 Type: String[]
@@ -240,7 +250,7 @@ Position: Named
 ```
 
 ### -ScoreQuestionLevels
-One entry per ScoreQuestionInstructions entry. An entry can be a dictionary mapping labels to optional descriptions, an enumerable of labels and objects with a `label` property and optional `description` property, or a property-based object that produces one level. The enumerable may contain dictionaries or other property-based objects. Each entry must contain at least one level; detailed level validation is performed by the API. Level order defines indices starting at 0. To preserve the intended order, use `[ordered]@{ ... }` or an array; ordinary `@{ ... }` does not guarantee key order.
+One entry per ScoreQuestionInstructions entry. An entry can be a dictionary mapping labels to optional descriptions, an enumerable of labels and objects with a `label` property and optional `description` property, or a property-based object that produces one level. The enumerable may contain dictionaries or other property-based objects. Each entry must contain at least one level; detailed level validation is performed by the API. Level order defines indices starting at 0. To preserve the intended order, use `[ordered]@{ ... }` or an array. An ordinary `@{ ... }` emits a warning because its key order is not guaranteed; processing continues.
 
 For one question, pass the dictionary directly or use `, $levels` to wrap an array of labels. For multiple questions, use `@($firstLevels, $secondLevels)` with one entry per question.
 

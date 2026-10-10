@@ -164,6 +164,7 @@ function Request-Decision {
                     }
                     else {
                         Write-Error -Exception ([System.ArgumentException]::new('Each ChoiceQuestionChoices entry must be a hashtable or an array.'))
+                        continue
                     }
 
                     if ($q.choices.Count -lt 2) {
@@ -200,6 +201,9 @@ function Request-Decision {
                     }
 
                     if ($ScoreQuestionLevels[$i] -is [System.Collections.IDictionary]) {
+                        if ($ScoreQuestionLevels[$i] -is [hashtable]) {
+                            Write-Warning ('ScoreQuestionLevels[{0}] is a Hashtable, so level order is not guaranteed. Use an ordered dictionary or an array to preserve order.' -f $i)
+                        }
                         foreach ($key in $ScoreQuestionLevels[$i].Keys) {
                             $l = @{
                                 label = [string]$key
@@ -239,6 +243,7 @@ function Request-Decision {
                     }
                     else {
                         Write-Error -Exception ([System.ArgumentException]::new('Each ScoreQuestionLevels entry must be a hashtable or an array.'))
+                        continue
                     }
 
                     $ScoreQuestions += $q
@@ -273,12 +278,16 @@ function Request-Decision {
                 $Parts += @{ type = 'input_text'; text = $Text }
             }
             foreach ($Image in $Images) {
+                $ImageUri = $null
                 if ($Image -match '^data:image/[^;,]+;base64,') {
                     $ImageUrl = $Image
                 }
+                elseif ([System.Uri]::TryCreate($Image, [System.UriKind]::Absolute, [ref]$ImageUri) -and $ImageUri.Scheme -in @('http', 'https')) {
+                    $ImageUrl = $Image
+                }
                 else {
-                    # This parameter accepts local files and inline data URLs.
-                    # Missing files and external URLs must fail before sending.
+                    # This parameter accepts local files, inline data URLs, and HTTP(S) URLs.
+                    # Missing files and unsupported URI schemes must fail before sending.
                     $ImageUrl = Convert-ImageToDataURL -File $Image -ErrorAction Stop
                 }
                 $Parts += @{ type = 'input_image'; image_url = $ImageUrl; detail = $ImageDetail }
