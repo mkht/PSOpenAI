@@ -1,5 +1,8 @@
 # Changelog
 
+### 5.1.0
+- Add `Request-Decision` for the Decisions API, with shared text arrays and inline image input, named predicate/choice/score question parameters, and typed answers.
+
 ### 5.0.0
 
 #### Breaking changes and migration
