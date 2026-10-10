@@ -325,36 +325,6 @@ Required: False
 Position: Named
 ```
 
-### -AdditionalQuery
-Additional query parameters for the request.
-
-```yaml
-Type: IDictionary
-Parameter Sets: (All)
-Required: False
-Position: Named
-```
-
-### -AdditionalHeaders
-Additional HTTP request headers.
-
-```yaml
-Type: IDictionary
-Parameter Sets: (All)
-Required: False
-Position: Named
-```
-
-### -AdditionalBody
-Additional body fields as a dictionary, object, or JSON string. Fields are merged shallowly and replace fields with the same name.
-
-```yaml
-Type: Object
-Parameter Sets: (All)
-Required: False
-Position: Named
-```
-
 ## INPUTS
 
 ### System.String

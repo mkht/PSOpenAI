@@ -15087,42 +15087,6 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>AdditionalQuery</maml:name>
-          <maml:description>
-            <maml:para>Additional query parameters for the request.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">IDictionary</command:parameterValue>
-          <dev:type>
-            <maml:name>IDictionary</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>AdditionalHeaders</maml:name>
-          <maml:description>
-            <maml:para>Additional HTTP request headers.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">IDictionary</command:parameterValue>
-          <dev:type>
-            <maml:name>IDictionary</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>AdditionalBody</maml:name>
-          <maml:description>
-            <maml:para>Additional body fields as a dictionary, object, or JSON string. Fields are merged shallowly and replace fields with the same name.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
-          <dev:type>
-            <maml:name>Object</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
@@ -15340,42 +15304,6 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
           <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-        <maml:name>AdditionalQuery</maml:name>
-        <maml:description>
-          <maml:para>Additional query parameters for the request.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">IDictionary</command:parameterValue>
-        <dev:type>
-          <maml:name>IDictionary</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-        <maml:name>AdditionalHeaders</maml:name>
-        <maml:description>
-          <maml:para>Additional HTTP request headers.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">IDictionary</command:parameterValue>
-        <dev:type>
-          <maml:name>IDictionary</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-        <maml:name>AdditionalBody</maml:name>
-        <maml:description>
-          <maml:para>Additional body fields as a dictionary, object, or JSON string. Fields are merged shallowly and replace fields with the same name.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
-        <dev:type>
-          <maml:name>Object</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
