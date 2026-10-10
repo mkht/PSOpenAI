@@ -37,7 +37,7 @@ function Request-Decision {
         [string[]]$ChoiceQuestionInstructions,
 
         [Parameter()]
-        [System.Collections.IDictionary[][]]$ChoiceQuestionChoices,
+        [object[]]$ChoiceQuestionChoices,
 
         # Score
         [Parameter()]
@@ -47,7 +47,7 @@ function Request-Decision {
         [string[]]$ScoreQuestionInstructions,
 
         [Parameter()]
-        [System.Collections.IDictionary[][]]$ScoreQuestionLevels,
+        [object[]]$ScoreQuestionLevels,
         #endregion
 
         [Parameter()]
@@ -84,59 +84,179 @@ function Request-Decision {
     )
 
     begin {
-        $QuestionDefinitions = @()
-        $QuestionGroups = @(
-            @{
-                Type         = 'predicate'
-                Prefix       = 'PredicateQuestion'
-                Instructions = $PredicateQuestionInstructions
-                Names        = $PredicateQuestionName
-                Options      = $null
-                OptionsField = $null
-            }
-            @{
-                Type         = 'choice'
-                Prefix       = 'ChoiceQuestion'
-                Instructions = $ChoiceQuestionInstructions
-                Names        = $ChoiceQuestionName
-                Options      = $ChoiceQuestionChoices
-                OptionsField = 'choices'
-            }
-            @{
-                Type         = 'score'
-                Prefix       = 'ScoreQuestion'
-                Instructions = $ScoreQuestionInstructions
-                Names        = $ScoreQuestionName
-                Options      = $ScoreQuestionLevels
-                OptionsField = 'levels'
-            }
-        )
-
-        foreach ($Group in $QuestionGroups) {
-            if ($null -ne $Group.OptionsField -and $Group.Options.Count -ne $Group.Instructions.Count) {
-                throw [System.ArgumentException]::new("The $($Group.Type) options must have one array for each $($Group.Prefix)Instructions entry.")
-            }
-            for ($i = 0; $i -lt $Group.Instructions.Count; $i++) {
-                if ([string]::IsNullOrWhiteSpace($Group.Instructions[$i])) {
-                    throw [System.ArgumentException]::new("$($Group.Prefix)Instructions entries must not be empty.")
+        $Questions = @()
+        #Predicate
+        $PredicationQuestions = @()
+        if ($PredicateQuestionInstructions.Count -gt 0) {
+            for ($i = 0; $i -lt $PredicateQuestionInstructions.Count; $i++) {
+                $p = @{
+                    type         = 'predicate'
+                    instructions = $PredicateQuestionInstructions[$i]
                 }
-                $Definition = [System.Collections.Specialized.OrderedDictionary]::new()
-                $Definition.type = $Group.Type
-                $Definition.instructions = $Group.Instructions[$i]
-                if ($Group.Names.Count -gt 0 -and -not [string]::IsNullOrEmpty($Group.Names[$i])) {
-                    $Definition.name = $Group.Names[$i]
+                if ($null -ne $PredicateQuestionName -and -not [string]::IsNullOrEmpty($PredicateQuestionName[$i])) {
+                    $p.name = $PredicateQuestionName[$i]
                 }
-                if ($null -ne $Group.OptionsField) {
-                    if ($Group.Options[$i].Count -eq 0) {
-                        throw [System.ArgumentException]::new("Each $($Group.Type) question must have a non-empty $($Group.OptionsField) array.")
-                    }
-                    $Definition[$Group.OptionsField] = @($Group.Options[$i])
-                }
-                $QuestionDefinitions += $Definition
+                $PredicationQuestions += $p
+            }
+            if ($PredicationQuestions.Count -gt 0) {
+                $Questions += $PredicationQuestions
             }
         }
-        if ($QuestionDefinitions.Count -eq 0) {
-            throw [System.ArgumentException]::new('At least one predicate, choice, or score question is required.')
+
+        #Choice
+        $ChoiceQuestions = @()
+        if ($ChoiceQuestionInstructions.Count -gt 0) {
+            if ($ChoiceQuestionChoices.Count -ne $ChoiceQuestionInstructions.Count) {
+                Write-Error -Exception ([System.ArgumentException]::new('The ChoiceQuestionChoices parameter must have one hashtable for each ChoiceQuestionInstructions entry.'))
+            }
+            else {
+                for ($i = 0; $i -lt $ChoiceQuestionInstructions.Count; $i++) {
+                    if ($ChoiceQuestionChoices[$i].Count -eq 0) {
+                        Write-Error -Exception ([System.ArgumentException]::new('Each choice question requires at least one choice.'))
+                        continue
+                    }
+                    $q = @{
+                        type         = 'choice'
+                        instructions = $ChoiceQuestionInstructions[$i]
+                        choices      = @()
+                    }
+                    if ($null -ne $ChoiceQuestionName -and -not [string]::IsNullOrEmpty($ChoiceQuestionName[$i])) {
+                        $q.name = $ChoiceQuestionName[$i]
+                    }
+
+                    if ($ChoiceQuestionChoices[$i] -is [System.Collections.IDictionary]) {
+                        foreach ($key in $ChoiceQuestionChoices[$i].Keys) {
+                            $c = @{
+                                value = $key
+                            }
+                            if (-not [string]::IsNullOrEmpty($ChoiceQuestionChoices[$i][$key])) {
+                                $c.description = [string]$ChoiceQuestionChoices[$i][$key]
+                            }
+                            $q.choices += $c
+                        }
+                    }
+                    elseif ( $ChoiceQuestionChoices[$i] -is [System.Collections.IEnumerable]) {
+                        foreach ($value in $ChoiceQuestionChoices[$i]) {
+                            if ($value -is [System.Collections.IDictionary] -and $value.Contains('value')) {
+                                $c = @{ value = $value['value'] }
+                                if (-not [string]::IsNullOrEmpty($value['description'])) {
+                                    $c.description = [string]$value['description']
+                                }
+                            }
+                            elseif ($null -ne $value -and $null -ne $value.PSObject.Properties['value']) {
+                                $c = @{ value = $value.value }
+                                if (-not [string]::IsNullOrEmpty($value.description)) {
+                                    $c.description = [string]$value.description
+                                }
+                            }
+                            else {
+                                $c = @{ value = $value }
+                            }
+                            $q.choices += $c
+                        }
+                    }
+                    elseif ( $ChoiceQuestionChoices[$i].value -is [string] -or $ChoiceQuestionChoices[$i].value -is [bool]) {
+                        $c = @{ value = $ChoiceQuestionChoices[$i].value }
+                        if (-not [string]::IsNullOrEmpty($ChoiceQuestionChoices[$i].description)) {
+                            $c.description = [string]$ChoiceQuestionChoices[$i].description
+                        }
+                        $q.choices += $c
+                    }
+                    else {
+                        Write-Error -Exception ([System.ArgumentException]::new('Each ChoiceQuestionChoices entry must be a hashtable or an array.'))
+                    }
+
+                    if ($q.choices.Count -lt 2) {
+                        Write-Error -Exception ([System.ArgumentException]::new('Each choice question requires at least two choices.'))
+                        continue
+                    }
+                    $ChoiceQuestions += $q
+                }
+                if ($ChoiceQuestions.Count -gt 0) {
+                    $Questions += $ChoiceQuestions
+                }
+            }
+        }
+
+        #Score
+        $ScoreQuestions = @()
+        if ($ScoreQuestionInstructions.Count -gt 0) {
+            if ($ScoreQuestionLevels.Count -ne $ScoreQuestionInstructions.Count) {
+                Write-Error -Exception ([System.ArgumentException]::new('The ScoreQuestionLevels parameter must have one hashtable for each ScoreQuestionInstructions entry.'))
+            }
+            else {
+                for ($i = 0; $i -lt $ScoreQuestionInstructions.Count; $i++) {
+                    if ($ScoreQuestionLevels[$i].Count -eq 0) {
+                        Write-Error -Exception ([System.ArgumentException]::new('Each score question requires at least one level.'))
+                        continue
+                    }
+                    $q = @{
+                        type         = 'score'
+                        instructions = $ScoreQuestionInstructions[$i]
+                        levels       = @()
+                    }
+                    if ($null -ne $ScoreQuestionName -and -not [string]::IsNullOrEmpty($ScoreQuestionName[$i])) {
+                        $q.name = $ScoreQuestionName[$i]
+                    }
+
+                    if ($ScoreQuestionLevels[$i] -is [System.Collections.IDictionary]) {
+                        foreach ($key in $ScoreQuestionLevels[$i].Keys) {
+                            $l = @{
+                                label = [string]$key
+                            }
+                            if (-not [string]::IsNullOrEmpty($ScoreQuestionLevels[$i][$key])) {
+                                $l.description = [string]$ScoreQuestionLevels[$i][$key]
+                            }
+                            $q.levels += $l
+                        }
+                    }
+                    elseif ( $ScoreQuestionLevels[$i] -is [System.Collections.IEnumerable]) {
+                        foreach ($value in $ScoreQuestionLevels[$i]) {
+                            if ($value -is [System.Collections.IDictionary] -and $value.Contains('label')) {
+                                $l = @{ label = [string]$value['label'] }
+                                if (-not [string]::IsNullOrEmpty($value['description'])) {
+                                    $l.description = [string]$value['description']
+                                }
+                            }
+                            elseif ($null -ne $value -and $null -ne $value.PSObject.Properties['label']) {
+                                $l = @{ label = [string]$value.label }
+                                if (-not [string]::IsNullOrEmpty($value.description)) {
+                                    $l.description = [string]$value.description
+                                }
+                            }
+                            else {
+                                $l = @{ label = [string]$value }
+                            }
+                            $q.levels += $l
+                        }
+                    }
+                    elseif ( $ScoreQuestionLevels[$i].label -as [string]) {
+                        $l = @{ label = [string]$ScoreQuestionLevels[$i].label }
+                        if (-not [string]::IsNullOrEmpty($ScoreQuestionLevels[$i].description)) {
+                            $l.description = [string]$ScoreQuestionLevels[$i].description
+                        }
+                        $q.levels += $l
+                    }
+                    else {
+                        Write-Error -Exception ([System.ArgumentException]::new('Each ScoreQuestionLevels entry must be a hashtable or an array.'))
+                    }
+
+                    $ScoreQuestions += $q
+                }
+                if ($ScoreQuestions.Count -gt 0) {
+                    $Questions += $ScoreQuestions
+                }
+            }
+        }
+
+        if ($Questions.Count -eq 0) {
+            $er = [System.Management.Automation.ErrorRecord]::new(
+                [System.ArgumentException]::new('At least one question is required.'),
+                'NoQuestions',
+                [System.Management.Automation.ErrorCategory]::InvalidArgument,
+                $null
+            )
+            $PSCmdlet.ThrowTerminatingError($er)
         }
 
         $OpenAIParameter = Get-OpenAIAPIParameter -EndpointName 'Decisions' -Parameters $PSBoundParameters -ErrorAction Stop
@@ -145,7 +265,7 @@ function Request-Decision {
     process {
         $PostBody = [System.Collections.Specialized.OrderedDictionary]::new()
         $PostBody.model = $Model
-        $PostBody.questions = $QuestionDefinitions
+        $PostBody.questions = $Questions
 
         if ($Images.Count -gt 0 -or $Message.Count -gt 1) {
             $Parts = @()

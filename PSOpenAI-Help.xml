@@ -14859,34 +14859,24 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Send shared text or image evidence and an ordered list of questions to POST /v1/decisions. Questions use predicate, choice, or score types. Each answer corresponds to the question at the same array index.</maml:para>
-      <maml:para>Specify Message, Images, or InputMessages. Message accepts text from the pipeline and sends one request per input string. Images accepts local image paths and inline base64 data URLs. InputMessages accepts API-format user messages for direct control over content parts and their order.</maml:para>
+      <maml:para>Send shared text or image evidence and questions to POST /v1/decisions. Specify questions with PredicateQuestionInstructions, ChoiceQuestionInstructions, or ScoreQuestionInstructions. At least one question is required.</maml:para>
+      <maml:para>Each instruction array defines the questions of that type. Optional names and required choice/level entries are matched by index. Omitted, null, and empty names are left out of the request. Each choice question requires at least two choices; a question with fewer choices produces an error and is skipped. Each score question requires at least one level.</maml:para>
+      <maml:para>Questions are sent in Predicate, Choice, Score order, preserving array order within each type. Each answer corresponds to the question at the same index in the resulting questions array.</maml:para>
+      <maml:para>Score level order defines the numeric indices. Use an ordered dictionary (`[ordered]@{ ... }`) or an array for ScoreQuestionLevels when the order matters. A regular hashtable (`@{ ... }`) does not guarantee the order in which its keys are enumerated.</maml:para>
+      <maml:para>Specify Message, Images, or both. A Message array supplies ordered text parts as shared evidence in one request. Pipeline strings are processed separately, with one request per string. Images accepts local image paths and inline base64 data URLs; images follow text parts when both are supplied.</maml:para>
       <maml:para>The returned PSOpenAI.Decision object contains model, answers, and usage. Answer fields, boolean or string choice values, fractional scores, and refusal answers are preserved.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Request-Decision</maml:name>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="0" aliases="Input, Text">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="0" aliases="Input">
           <maml:name>Message</maml:name>
           <maml:description>
-            <maml:para>Shared text evidence. Aliases: Input, Text. Either Message or Images is required in the default parameter set.</maml:para>
+            <maml:para>Shared text evidence. Alias: Input. Either Message or Images is required. A single text string is sent as a string; multiple strings become ordered input_text parts. Pipeline strings each produce a separate request.</maml:para>
           </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="1" aliases="Question">
-          <maml:name>Questions</maml:name>
-          <maml:description>
-            <maml:para>An ordered array of hashtables or objects describing independent questions. A single question is also accepted. Alias: Question.</maml:para>
-            <maml:para>Every question requires type and instructions, and may have a name. Predicate questions use type predicate. Choice questions use type choice and a choices array, where each entry has a string or boolean value and an optional description. Score questions use type score and an ordered levels array, where each entry has a label and an optional description.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">Object[]</command:parameterValue>
-          <dev:type>
-            <maml:name>Object[]</maml:name>
+            <maml:name>String[]</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -14906,7 +14896,7 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>ImageDetail</maml:name>
           <maml:description>
-            <maml:para>Image detail for images passed through Images. Accepted values: auto, low, high, original. For InputMessages, specify detail on each input_image part instead.</maml:para>
+            <maml:para>Image detail for Images. Completion candidates are auto, low, high, and original. Other values can also be supplied and are validated by the server. Values are converted to lowercase before sending.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -14927,134 +14917,59 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
           </dev:type>
           <dev:defaultValue>gpt-6-luna</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="safety_identifier">
-          <maml:name>SafetyIdentifier</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>PredicateQuestionName</maml:name>
           <maml:description>
-            <maml:para>Opaque end-user identifier, up to 128 characters, sent as safety_identifier only when explicitly supplied. Alias: safety_identifier.</maml:para>
+            <maml:para>Optional predicate question names, matched by index to PredicateQuestionInstructions. Omitted, null, or empty entries do not send a `name` property.</maml:para>
           </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>String[]</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>TimeoutSec</maml:name>
+          <maml:name>PredicateQuestionInstructions</maml:name>
           <maml:description>
-            <maml:para>Timeout in seconds for each request attempt, including response reading. The default 0 means no timeout. Uses the OpenAI context setting when not explicitly supplied.</maml:para>
+            <maml:para>Instructions for predicate questions that estimate whether a condition is true. Each non-empty entry creates one question; names may be omitted.</maml:para>
           </maml:description>
-          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
           <dev:type>
-            <maml:name>Int32</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>0</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>MaxRetryCount</maml:name>
-          <maml:description>
-            <maml:para>Maximum retry count, from 0 to 100. The default 0 disables retries. Uses the OpenAI context setting when not explicitly supplied.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-          <dev:type>
-            <maml:name>Int32</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>0</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>ApiBase</maml:name>
-          <maml:description>
-            <maml:para>Base API URL. Uses the OpenAI context setting, or https://api.openai.com/v1 by default. The configured server must implement the Decisions endpoint.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
-          <dev:type>
-            <maml:name>System.Uri</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>https://api.openai.com/v1</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>ApiKey</maml:name>
-          <maml:description>
-            <maml:para>API key as a string or SecureString. If omitted, the context, global OPENAI_API_KEY variable, or OPENAI_API_KEY environment variable is used. Explicit null supplies an empty key.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">SecureString</command:parameterValue>
-          <dev:type>
-            <maml:name>SecureString</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="OrgId">
-          <maml:name>Organization</maml:name>
-          <maml:description>
-            <maml:para>Optional organization ID. Alias: OrgId. Uses the common OpenAI context and environment settings when omitted.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>String[]</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>AdditionalQuery</maml:name>
+          <maml:name>ChoiceQuestionName</maml:name>
           <maml:description>
-            <maml:para>Additional query parameters for the request.</maml:para>
+            <maml:para>Optional choice question names, matched by index to ChoiceQuestionInstructions. Omitted, null, or empty entries do not send a `name` property.</maml:para>
           </maml:description>
-          <command:parameterValue required="true" variableLength="false">IDictionary</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
           <dev:type>
-            <maml:name>IDictionary</maml:name>
+            <maml:name>String[]</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>AdditionalHeaders</maml:name>
+          <maml:name>ChoiceQuestionInstructions</maml:name>
           <maml:description>
-            <maml:para>Additional HTTP request headers.</maml:para>
+            <maml:para>Instructions for choice questions. Each non-empty entry requires a corresponding choices entry in ChoiceQuestionChoices.</maml:para>
           </maml:description>
-          <command:parameterValue required="true" variableLength="false">IDictionary</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
           <dev:type>
-            <maml:name>IDictionary</maml:name>
+            <maml:name>String[]</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>AdditionalBody</maml:name>
+          <maml:name>ChoiceQuestionChoices</maml:name>
           <maml:description>
-            <maml:para>Additional body fields as a dictionary, object, or JSON string. Fields are merged shallowly and replace fields with the same name.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
-          <dev:type>
-            <maml:name>Object</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-      </command:syntaxItem>
-      <command:syntaxItem>
-        <maml:name>Request-Decision</maml:name>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="1" aliases="Question">
-          <maml:name>Questions</maml:name>
-          <maml:description>
-            <maml:para>An ordered array of hashtables or objects describing independent questions. A single question is also accepted. Alias: Question.</maml:para>
-            <maml:para>Every question requires type and instructions, and may have a name. Predicate questions use type predicate. Choice questions use type choice and a choices array, where each entry has a string or boolean value and an optional description. Score questions use type score and an ordered levels array, where each entry has a label and an optional description.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">Object[]</command:parameterValue>
-          <dev:type>
-            <maml:name>Object[]</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>InputMessages</maml:name>
-          <maml:description>
-            <maml:para>An array of API-format user messages containing text and inline images. Message and Images cannot be combined with InputMessages. Message and question schemas supplied directly are validated by the API.</maml:para>
+            <maml:para>One entry per ChoiceQuestionInstructions entry. An entry can be a dictionary mapping string or boolean choice values to optional descriptions, or an enumerable of string/boolean values and objects with a `value` property and optional `description` property. The enumerable may contain dictionaries or other property-based objects. A property-based object passed alone produces only one choice, so it does not meet the two-choice minimum. Questions with fewer than two choices produce an error and are skipped; detailed option validation is performed by the API.</maml:para>
+            <maml:para>For one question, pass the dictionary directly or use `, $choices` to wrap an array of values. For multiple questions, use `@($firstChoices, $secondChoices)` with one entry per question.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Object[]</command:parameterValue>
           <dev:type>
@@ -15064,16 +14979,41 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>Model</maml:name>
+          <maml:name>ScoreQuestionName</maml:name>
           <maml:description>
-            <maml:para>Model to use. The beta API currently supports gpt-6-luna. Completion candidates do not restrict model or deployment names on compatible servers.</maml:para>
+            <maml:para>Optional score question names, matched by index to ScoreQuestionInstructions. Omitted, null, or empty entries do not send a `name` property.</maml:para>
           </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>String[]</maml:name>
             <maml:uri />
           </dev:type>
-          <dev:defaultValue>gpt-6-luna</dev:defaultValue>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>ScoreQuestionInstructions</maml:name>
+          <maml:description>
+            <maml:para>Instructions for score questions. Each non-empty entry requires a corresponding levels entry in ScoreQuestionLevels.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>ScoreQuestionLevels</maml:name>
+          <maml:description>
+            <maml:para>One entry per ScoreQuestionInstructions entry. An entry can be a dictionary mapping labels to optional descriptions, an enumerable of labels and objects with a `label` property and optional `description` property, or a property-based object that produces one level. The enumerable may contain dictionaries or other property-based objects. Each entry must contain at least one level; detailed level validation is performed by the API. Level order defines indices starting at 0. To preserve the intended order, use `[ordered]@{ ... }` or an array; ordinary `@{ ... }` does not guarantee key order.</maml:para>
+            <maml:para>For one question, pass the dictionary directly or use `, $levels` to wrap an array of labels. For multiple questions, use `@($firstLevels, $secondLevels)` with one entry per question.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Object[]</command:parameterValue>
+          <dev:type>
+            <maml:name>Object[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="safety_identifier">
           <maml:name>SafetyIdentifier</maml:name>
@@ -15186,26 +15126,14 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="0" aliases="Input, Text">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="0" aliases="Input">
         <maml:name>Message</maml:name>
         <maml:description>
-          <maml:para>Shared text evidence. Aliases: Input, Text. Either Message or Images is required in the default parameter set.</maml:para>
+          <maml:para>Shared text evidence. Alias: Input. Either Message or Images is required. A single text string is sent as a string; multiple strings become ordered input_text parts. Pipeline strings each produce a separate request.</maml:para>
         </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-        <maml:name>InputMessages</maml:name>
-        <maml:description>
-          <maml:para>An array of API-format user messages containing text and inline images. Message and Images cannot be combined with InputMessages. Message and question schemas supplied directly are validated by the API.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">Object[]</command:parameterValue>
-        <dev:type>
-          <maml:name>Object[]</maml:name>
+          <maml:name>String[]</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -15225,7 +15153,7 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>ImageDetail</maml:name>
         <maml:description>
-          <maml:para>Image detail for images passed through Images. Accepted values: auto, low, high, original. For InputMessages, specify detail on each input_image part instead.</maml:para>
+          <maml:para>Image detail for Images. Completion candidates are auto, low, high, and original. Other values can also be supplied and are validated by the server. Values are converted to lowercase before sending.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -15233,19 +15161,6 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
           <maml:uri />
         </dev:type>
         <dev:defaultValue>auto</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="1" aliases="Question">
-        <maml:name>Questions</maml:name>
-        <maml:description>
-          <maml:para>An ordered array of hashtables or objects describing independent questions. A single question is also accepted. Alias: Question.</maml:para>
-          <maml:para>Every question requires type and instructions, and may have a name. Predicate questions use type predicate. Choice questions use type choice and a choices array, where each entry has a string or boolean value and an optional description. Score questions use type score and an ordered levels array, where each entry has a label and an optional description.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">Object[]</command:parameterValue>
-        <dev:type>
-          <maml:name>Object[]</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>Model</maml:name>
@@ -15258,6 +15173,104 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
           <maml:uri />
         </dev:type>
         <dev:defaultValue>gpt-6-luna</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>PredicateQuestionName</maml:name>
+        <maml:description>
+          <maml:para>Optional predicate question names, matched by index to PredicateQuestionInstructions. Omitted, null, or empty entries do not send a `name` property.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+        <dev:type>
+          <maml:name>String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>PredicateQuestionInstructions</maml:name>
+        <maml:description>
+          <maml:para>Instructions for predicate questions that estimate whether a condition is true. Each non-empty entry creates one question; names may be omitted.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+        <dev:type>
+          <maml:name>String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>ChoiceQuestionName</maml:name>
+        <maml:description>
+          <maml:para>Optional choice question names, matched by index to ChoiceQuestionInstructions. Omitted, null, or empty entries do not send a `name` property.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+        <dev:type>
+          <maml:name>String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>ChoiceQuestionInstructions</maml:name>
+        <maml:description>
+          <maml:para>Instructions for choice questions. Each non-empty entry requires a corresponding choices entry in ChoiceQuestionChoices.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+        <dev:type>
+          <maml:name>String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>ChoiceQuestionChoices</maml:name>
+        <maml:description>
+          <maml:para>One entry per ChoiceQuestionInstructions entry. An entry can be a dictionary mapping string or boolean choice values to optional descriptions, or an enumerable of string/boolean values and objects with a `value` property and optional `description` property. The enumerable may contain dictionaries or other property-based objects. A property-based object passed alone produces only one choice, so it does not meet the two-choice minimum. Questions with fewer than two choices produce an error and are skipped; detailed option validation is performed by the API.</maml:para>
+          <maml:para>For one question, pass the dictionary directly or use `, $choices` to wrap an array of values. For multiple questions, use `@($firstChoices, $secondChoices)` with one entry per question.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Object[]</command:parameterValue>
+        <dev:type>
+          <maml:name>Object[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>ScoreQuestionName</maml:name>
+        <maml:description>
+          <maml:para>Optional score question names, matched by index to ScoreQuestionInstructions. Omitted, null, or empty entries do not send a `name` property.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+        <dev:type>
+          <maml:name>String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>ScoreQuestionInstructions</maml:name>
+        <maml:description>
+          <maml:para>Instructions for score questions. Each non-empty entry requires a corresponding levels entry in ScoreQuestionLevels.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+        <dev:type>
+          <maml:name>String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>ScoreQuestionLevels</maml:name>
+        <maml:description>
+          <maml:para>One entry per ScoreQuestionInstructions entry. An entry can be a dictionary mapping labels to optional descriptions, an enumerable of labels and objects with a `label` property and optional `description` property, or a property-based object that produces one level. The enumerable may contain dictionaries or other property-based objects. Each entry must contain at least one level; detailed level validation is performed by the API. Level order defines indices starting at 0. To preserve the intended order, use `[ordered]@{ ... }` or an array; ordinary `@{ ... }` does not guarantee key order.</maml:para>
+          <maml:para>For one question, pass the dictionary directly or use `, $levels` to wrap an array of labels. For multiple questions, use `@($firstLevels, $secondLevels)` with one entry per question.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Object[]</command:parameterValue>
+        <dev:type>
+          <maml:name>Object[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="safety_identifier">
         <maml:name>SafetyIdentifier</maml:name>
@@ -15390,18 +15403,18 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
     </command:returnValues>
     <maml:alertSet>
       <maml:alert>
-        <maml:para>The Decisions API is in beta. InputMessages supports only user messages and input_text/input_image parts, with at most 128 images across a request. Non-user roles, audio, files, tools, and item references are unsupported. Streaming and Batch integration are not exposed by this command.</maml:para>
+        <maml:para>The Decisions API is in beta. This command constructs user messages with input_text/input_image parts when required, with at most 128 Images entries. It does not expose non-user roles, audio, files, tools, or item references. Streaming and Batch integration are not exposed by this command.</maml:para>
       </maml:alert>
     </maml:alertSet>
     <command:examples>
       <command:example>
         <maml:title>----------------- Example 1: Check a condition -----------------</maml:title>
-        <dev:code>$question = @{
-    type = 'predicate'
-    name = 'needs_refund'
-    instructions = 'Is the customer requesting a refund?'
+        <dev:code>$params = @{
+    Message = 'Please refund my purchase.'
+    PredicateQuestionName = 'needs_refund'
+    PredicateQuestionInstructions = 'Is the customer requesting a refund?'
 }
-$result = Request-Decision -Message 'Please refund my purchase.' -Questions $question
+$result = Request-Decision @params
 $result.answers[0].probability</dev:code>
         <dev:remarks>
           <maml:para>Returns the estimated probability that the condition is true. A question can instead receive an answer with type refusal.</maml:para>
@@ -15409,53 +15422,72 @@ $result.answers[0].probability</dev:code>
       </command:example>
       <command:example>
         <maml:title>-------- Example 2: Classify and score shared evidence --------</maml:title>
-        <dev:code>$questions = @(
-    @{
-        type = 'choice'
-        name = 'route'
-        instructions = 'Which team should handle this issue?'
-        choices = @(
-            @{ value = 'support'; description = 'Problems using the product.' }
-            @{ value = 'billing'; description = 'Invoices and payments.' }
-        )
-    }
-    @{
-        type = 'score'
-        name = 'severity'
-        instructions = 'How much does the issue prevent use of the product?'
-        levels = @(
-            @{ label = 'Low'; description = 'The product remains usable.' }
-            @{ label = 'High'; description = 'The product cannot be used.' }
-        )
-    }
-)
-Request-Decision -Message 'The application cannot open any documents.' -Questions $questions</dev:code>
+        <dev:code>$choices = [ordered]@{
+    support = 'Problems using the product.'
+    billing = 'Invoices and payments.'
+}
+$levels = [ordered]@{
+    Low = 'The product remains usable.'
+    High = 'The product cannot be used.'
+}
+$params = @{
+    Message = 'The application cannot open any documents.'
+    ChoiceQuestionName = 'route'
+    ChoiceQuestionInstructions = 'Which team should handle this issue?'
+    ChoiceQuestionChoices = $choices
+    ScoreQuestionName = 'severity'
+    ScoreQuestionInstructions = 'How much does the issue prevent use of the product?'
+    ScoreQuestionLevels = $levels
+}
+Request-Decision @params</dev:code>
         <dev:remarks>
-          <maml:para>Returns answers in question order. Choice values can also be booleans; use $true and $false to retain their JSON boolean type. Score levels are ordered from index 0, and score is a probability-weighted average that can fall between indices.</maml:para>
+          <maml:para>The dictionary keys become choice values or score labels, and their values become optional descriptions. The choice answer precedes the score answer. Score levels are ordered from index 0, and score is a probability-weighted average that can fall between indices.</maml:para>
         </dev:remarks>
       </command:example>
       <command:example>
         <maml:title>-------------- Example 3: Evaluate a local image --------------</maml:title>
-        <dev:code>$question = @{
-    type = 'predicate'
-    name = 'text_visible'
-    instructions = 'Does the image contain readable text?'
+        <dev:code>$params = @{
+    Images = './photo.png'
+    ImageDetail = 'original'
+    PredicateQuestionName = 'text_visible'
+    PredicateQuestionInstructions = 'Does the image contain readable text?'
 }
-Request-Decision -Images './photo.png' -ImageDetail original -Questions $question</dev:code>
+Request-Decision @params</dev:code>
         <dev:remarks>
-          <maml:para>Converts the local image to an inline data URL. Images can be combined with Message, and can also contain data URLs. External image URLs and file IDs are not accepted.</maml:para>
+          <maml:para>Converts the local image to an inline data URL. Images can be combined with Message, and can also contain data URLs. The Images parameter does not accept external URLs or file IDs.</maml:para>
         </dev:remarks>
       </command:example>
       <command:example>
-        <maml:title>---------- Example 4: Supply API-format user messages ----------</maml:title>
-        <dev:code>$messages = @(
-    @{ role = 'user'; content = 'The customer says the display is cracked.' }
-    @{ role = 'user'; content = @(@{ type = 'input_text'; text = 'The device will not turn on.' }) }
-)
-$question = @{ type = 'predicate'; instructions = 'Is the device usable?' }
-Request-Decision -InputMessages $messages -Questions $question -SafetyIdentifier 'user-opaque-id'</dev:code>
+        <maml:title>-- Example 4: Ask multiple choice questions about shared text --</maml:title>
+        <dev:code>$usableChoices = @($true, $false)
+$resolutionChoices = @('refund', 'repair')
+$params = @{
+    Message = @('The display is cracked and the device will not turn on.', 'I want a refund.')
+    ChoiceQuestionName = @('usable', 'resolution')
+    ChoiceQuestionInstructions = @('Is the device usable?', 'Which resolution does the customer request?')
+    ChoiceQuestionChoices = @($usableChoices, $resolutionChoices)
+    SafetyIdentifier = 'user-opaque-id'
+}
+Request-Decision @params</dev:code>
         <dev:remarks>
-          <maml:para>Sends the message array as supplied. Each message must have role user. Content may be a string or an array of input_text and input_image parts. For images, image_url must contain an inline data URL; detail can be auto, low, high, or original.</maml:para>
+          <maml:para>Sends both text strings as shared evidence in one request. Each outer Choices array entry belongs to the instruction at the same index. The first choice uses JSON booleans; string and boolean values remain distinct.</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>Example 5: Supply descriptions in ordered choice and score arrays</maml:title>
+        <dev:code>$choices = @(
+    [pscustomobject]@{ value = 'refund'; description = 'Return the payment.' }
+    [pscustomobject]@{ value = 'repair'; description = 'Fix the item.' }
+)
+$levels = @(
+    [pscustomobject]@{ label = 'Low'; description = 'The item remains usable.' }
+    [pscustomobject]@{ label = 'High'; description = 'The item cannot be used.' }
+)
+Request-Decision -Message 'The item is broken.' `
+    -ChoiceQuestionInstructions 'Which resolution is requested?' -ChoiceQuestionChoices (,$choices) `
+    -ScoreQuestionInstructions 'How severe is the damage?' -ScoreQuestionLevels (,$levels)</dev:code>
+        <dev:remarks>
+          <maml:para>The array order is preserved. A choice array needs at least two entries; each score level receives an index according to its position.</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>
