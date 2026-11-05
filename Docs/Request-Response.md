@@ -75,7 +75,8 @@ Request-Response
     [-ImageGenerationComplexity <String>]
     [-ImageGenerationFrameCount <Int32>]
     [-ImageGenerationFrameDurationMs <Int32>]
-    [-ImageGenerationSvg <IDictionary>]
+    [-ImageGenerationSvgModel <String>]
+    [-ImageGenerationSvgReasoningEffort <String>]
     [-ImageGenerationAction <String>]
     [-ImageGenerationBackGround <String>]
     [-ImageGenerationInputImageMask <String>]
@@ -741,11 +742,20 @@ Required: False
 Position: Named
 ```
 
-### -ImageGenerationSvg
-SVG author settings as a dictionary, for example `@{ model = 'gpt-6-luna'; reasoning = @{ effort = 'low' } }`. Requires `UseImageGenerationTool` and SVG output. When SVG model selection is enabled, omitting the author model uses the outer response model. Otherwise omit model overrides to use the API's default author. Omitted reasoning uses the author's default, independently of image complexity. Completed image generation items retain `svg_usage` separately from image rendering usage when returned by the API.
+### -ImageGenerationSvgModel
+The model used to author SVG output, for example `gpt-6-luna`. Requires `UseImageGenerationTool` and SVG output. When SVG model selection is enabled, omitting this parameter uses the outer response model. Otherwise omit model overrides to use the API's default author. Completed image generation items retain `svg_usage` separately from image rendering usage when returned by the API.
 
 ```yaml
-Type: System.Collections.IDictionary
+Type: String
+Required: False
+Position: Named
+```
+
+### -ImageGenerationSvgReasoningEffort
+Reasoning effort for the SVG author, independently of `ImageGenerationComplexity` and the outer response's `ReasoningEffort`. Suggested values are `none`, `minimal`, `low`, `medium`, `high`, `xhigh`, and `max`; support depends on the author model. Requires `UseImageGenerationTool` and SVG output. This can be specified without `ImageGenerationSvgModel` to keep the default author selection. Omit this parameter to use the author's default; no reasoning settings are sent when omitted.
+
+```yaml
+Type: String
 Required: False
 Position: Named
 ```

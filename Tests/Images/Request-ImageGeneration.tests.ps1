@@ -78,7 +78,7 @@ Describe 'Request-ImageGeneration' {
 
         It 'Infers <Format> output and saves decoded bytes' -TestCases @(
             @{ Format = 'gif'; ModelName = 'gpt-image-2.6-flare'; Options = @{ FrameCount = 2; FrameDurationMs = 2010 }; Payload = 'R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==' }
-            @{ Format = 'svg'; ModelName = 'gpt-image-2.6-sunburst'; Options = @{ Svg = @{ model = 'gpt-6'; reasoning = @{ effort = 'low' } } }; Payload = 'PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciLz4=' }
+            @{ Format = 'svg'; ModelName = 'gpt-image-2.6-sunburst'; Options = @{ SvgModel = 'gpt-6'; SvgReasoningEffort = 'LOW' }; Payload = 'PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciLz4=' }
         ) {
             param($Format, $ModelName, $Options, $Payload)
             # Synthetic format fixtures; no image generation is performed by these tests.
@@ -102,7 +102,7 @@ Describe 'Request-ImageGeneration' {
             Mock -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } {
                 '{"data":[{"b64_json":"PHN2Zy8+"}],"output_format":"svg","usage":{"total_tokens":30},"svg_usage":{"model":"gpt-6","input_tokens":10,"output_tokens":5,"reasoning_tokens":2,"total_tokens":15}}'
             }
-            $Result = Request-ImageGeneration -Prompt 'A circle' -Model 'gpt-image-2.6-sunburst' -OutputFormat SVG -ErrorAction Stop
+            $Result = Request-ImageGeneration -Prompt 'A circle' -Model 'gpt-image-2.6-sunburst' -OutputFormat SVG -SvgModel 'gpt-6' -ErrorAction Stop
             $Result.PSObject.TypeNames | Should -Contain 'PSOpenAI.Image'
             $Result.output_format | Should -BeExactly 'svg'
             $Result.usage.total_tokens | Should -Be 30
@@ -110,7 +110,7 @@ Describe 'Request-ImageGeneration' {
             $Result.svg_usage.total_tokens | Should -Be 15
             $Result.svg_usage.reasoning_tokens | Should -Be 2
             Should -Invoke Invoke-OpenAIHttpRequest -ModuleName $script:ModuleName -Times 1 -Exactly -ParameterFilter {
-                $Body.output_format -ceq 'svg' -and -not $Body.Contains('svg')
+                $Body.output_format -ceq 'svg' -and $Body.svg.model -eq 'gpt-6' -and -not $Body.svg.ContainsKey('reasoning')
             }
         }
 

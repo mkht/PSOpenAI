@@ -16975,13 +16975,25 @@ https://developers.openai.com/api/reference/resources/images/methods/generate</m
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>Svg</maml:name>
+          <maml:name>SvgModel</maml:name>
           <maml:description>
-            <maml:para>SVG author settings as a dictionary, for example `@{ model = 'gpt-6-luna'; reasoning = @{ effort = 'low' } }`. Requires SVG output and access to SVG model selection. When selection is enabled, supply `model`; otherwise omit this parameter. `reasoning` and its `effort` may be omitted or null to use the author's default. Supported efforts depend on the author model. The top-level `Model` still selects the image model that creates the reference image.</maml:para>
+            <maml:para>The model used to author SVG output, for example `gpt-6-luna`. Requires SVG output and access to SVG model selection. When selection is enabled, specify this parameter; otherwise omit both SVG author parameters. The top-level `Model` still selects the image model that creates the reference image.</maml:para>
           </maml:description>
-          <command:parameterValue required="true" variableLength="false">System.Collections.IDictionary</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
-            <maml:name>System.Collections.IDictionary</maml:name>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>SvgReasoningEffort</maml:name>
+          <maml:description>
+            <maml:para>Reasoning effort for the SVG author, independently of image `Complexity`. Suggested values are `none`, `minimal`, `low`, `medium`, `high`, `xhigh`, and `max`; support depends on the author model. Requires SVG output and access to SVG model selection. Use with `SvgModel`. Omit this parameter to use the author's default; no reasoning settings are sent when omitted.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -17252,13 +17264,25 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>Svg</maml:name>
+          <maml:name>SvgModel</maml:name>
           <maml:description>
-            <maml:para>SVG author settings as a dictionary, for example `@{ model = 'gpt-6-luna'; reasoning = @{ effort = 'low' } }`. Requires SVG output and access to SVG model selection. When selection is enabled, supply `model`; otherwise omit this parameter. `reasoning` and its `effort` may be omitted or null to use the author's default. Supported efforts depend on the author model. The top-level `Model` still selects the image model that creates the reference image.</maml:para>
+            <maml:para>The model used to author SVG output, for example `gpt-6-luna`. Requires SVG output and access to SVG model selection. When selection is enabled, specify this parameter; otherwise omit both SVG author parameters. The top-level `Model` still selects the image model that creates the reference image.</maml:para>
           </maml:description>
-          <command:parameterValue required="true" variableLength="false">System.Collections.IDictionary</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
-            <maml:name>System.Collections.IDictionary</maml:name>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>SvgReasoningEffort</maml:name>
+          <maml:description>
+            <maml:para>Reasoning effort for the SVG author, independently of image `Complexity`. Suggested values are `none`, `minimal`, `low`, `medium`, `high`, `xhigh`, and `max`; support depends on the author model. Requires SVG output and access to SVG model selection. Use with `SvgModel`. Omit this parameter to use the author's default; no reasoning settings are sent when omitted.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -17518,13 +17542,25 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-        <maml:name>Svg</maml:name>
+        <maml:name>SvgModel</maml:name>
         <maml:description>
-          <maml:para>SVG author settings as a dictionary, for example `@{ model = 'gpt-6-luna'; reasoning = @{ effort = 'low' } }`. Requires SVG output and access to SVG model selection. When selection is enabled, supply `model`; otherwise omit this parameter. `reasoning` and its `effort` may be omitted or null to use the author's default. Supported efforts depend on the author model. The top-level `Model` still selects the image model that creates the reference image.</maml:para>
+          <maml:para>The model used to author SVG output, for example `gpt-6-luna`. Requires SVG output and access to SVG model selection. When selection is enabled, specify this parameter; otherwise omit both SVG author parameters. The top-level `Model` still selects the image model that creates the reference image.</maml:para>
         </maml:description>
-        <command:parameterValue required="true" variableLength="false">System.Collections.IDictionary</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
-          <maml:name>System.Collections.IDictionary</maml:name>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>SvgReasoningEffort</maml:name>
+        <maml:description>
+          <maml:para>Reasoning effort for the SVG author, independently of image `Complexity`. Suggested values are `none`, `minimal`, `low`, `medium`, `high`, `xhigh`, and `max`; support depends on the author model. Requires SVG output and access to SVG model selection. Use with `SvgModel`. Omit this parameter to use the author's default; no reasoning settings are sent when omitted.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -17681,9 +17717,9 @@ https://oaidalleapiprodscus.blob.core.windows.net/private/org-BXLtGIt0xglP9if8FV
       </command:example>
       <command:example>
         <maml:title>-------- Example 4: Generate an SVG with GPT Image 2.6. --------</maml:title>
-        <dev:code>Request-ImageGeneration -Model 'gpt-image-2.6-sunburst' -Prompt 'A simple mountain icon' -Complexity low -Quality low -Svg @{ model = 'gpt-6-luna'; reasoning = @{ effort = 'low' } } -OutFile C:\mountain.svg</dev:code>
+        <dev:code>Request-ImageGeneration -Model 'gpt-image-2.6-sunburst' -Prompt 'A simple mountain icon' -Complexity low -Quality low -SvgModel 'gpt-6-luna' -SvgReasoningEffort low -OutFile C:\mountain.svg</dev:code>
         <dev:remarks>
-          <maml:para>This example requires SVG model selection and access to the specified author model. If SVG model selection is disabled for your account, omit `-Svg` to use the API's default author. With object output, `svg_usage` reports author token usage separately from image `usage`.</maml:para>
+          <maml:para>This example requires SVG model selection and access to the specified author model. If SVG model selection is disabled for your account, omit `-SvgModel` and `-SvgReasoningEffort` to use the API's default author. With object output, `svg_usage` reports author token usage separately from image `usage`.</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>
@@ -18966,13 +19002,25 @@ Possible values: `browser`, `mac`, `windows`, `ubuntu`.</maml:para>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-          <maml:name>ImageGenerationSvg</maml:name>
+          <maml:name>ImageGenerationSvgModel</maml:name>
           <maml:description>
-            <maml:para>SVG author settings as a dictionary, for example `@{ model = 'gpt-6-luna'; reasoning = @{ effort = 'low' } }`. Requires `UseImageGenerationTool` and SVG output. When SVG model selection is enabled, omitting the author model uses the outer response model. Otherwise omit model overrides to use the API's default author. Omitted reasoning uses the author's default, independently of image complexity. Completed image generation items retain `svg_usage` separately from image rendering usage when returned by the API.</maml:para>
+            <maml:para>The model used to author SVG output, for example `gpt-6-luna`. Requires `UseImageGenerationTool` and SVG output. When SVG model selection is enabled, omitting this parameter uses the outer response model. Otherwise omit model overrides to use the API's default author. Completed image generation items retain `svg_usage` separately from image rendering usage when returned by the API.</maml:para>
           </maml:description>
-          <command:parameterValue required="true" variableLength="false">System.Collections.IDictionary</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
-            <maml:name>System.Collections.IDictionary</maml:name>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>ImageGenerationSvgReasoningEffort</maml:name>
+          <maml:description>
+            <maml:para>Reasoning effort for the SVG author, independently of `ImageGenerationComplexity` and the outer response's `ReasoningEffort`. Suggested values are `none`, `minimal`, `low`, `medium`, `high`, `xhigh`, and `max`; support depends on the author model. Requires `UseImageGenerationTool` and SVG output. This can be specified without `ImageGenerationSvgModel` to keep the default author selection. Omit this parameter to use the author's default; no reasoning settings are sent when omitted.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -20332,13 +20380,25 @@ Possible values: `browser`, `mac`, `windows`, `ubuntu`.</maml:para>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
-        <maml:name>ImageGenerationSvg</maml:name>
+        <maml:name>ImageGenerationSvgModel</maml:name>
         <maml:description>
-          <maml:para>SVG author settings as a dictionary, for example `@{ model = 'gpt-6-luna'; reasoning = @{ effort = 'low' } }`. Requires `UseImageGenerationTool` and SVG output. When SVG model selection is enabled, omitting the author model uses the outer response model. Otherwise omit model overrides to use the API's default author. Omitted reasoning uses the author's default, independently of image complexity. Completed image generation items retain `svg_usage` separately from image rendering usage when returned by the API.</maml:para>
+          <maml:para>The model used to author SVG output, for example `gpt-6-luna`. Requires `UseImageGenerationTool` and SVG output. When SVG model selection is enabled, omitting this parameter uses the outer response model. Otherwise omit model overrides to use the API's default author. Completed image generation items retain `svg_usage` separately from image rendering usage when returned by the API.</maml:para>
         </maml:description>
-        <command:parameterValue required="true" variableLength="false">System.Collections.IDictionary</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
-          <maml:name>System.Collections.IDictionary</maml:name>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>ImageGenerationSvgReasoningEffort</maml:name>
+        <maml:description>
+          <maml:para>Reasoning effort for the SVG author, independently of `ImageGenerationComplexity` and the outer response's `ReasoningEffort`. Suggested values are `none`, `minimal`, `low`, `medium`, `high`, `xhigh`, and `max`; support depends on the author model. Requires `UseImageGenerationTool` and SVG output. This can be specified without `ImageGenerationSvgModel` to keep the default author selection. Omit this parameter to use the author's default; no reasoning settings are sent when omitted.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>

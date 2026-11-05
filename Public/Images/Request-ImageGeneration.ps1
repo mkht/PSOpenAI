@@ -69,7 +69,11 @@ function Request-ImageGeneration {
         [int]$FrameDurationMs,
 
         [Parameter()]
-        [System.Collections.IDictionary]$Svg,
+        [string]$SvgModel,
+
+        [Parameter()]
+        [Completions('none', 'minimal', 'low', 'medium', 'high', 'xhigh', 'max')]
+        [string]$SvgReasoningEffort,
 
         [Parameter(ParameterSetName = 'Format')]
         [Alias('response_format')]
@@ -157,8 +161,15 @@ function Request-ImageGeneration {
         if ($PSBoundParameters.ContainsKey('FrameDurationMs')) {
             $PostBody.frame_duration_ms = $FrameDurationMs
         }
-        if ($PSBoundParameters.ContainsKey('Svg')) {
-            $PostBody.svg = $Svg
+        if ($PSBoundParameters.ContainsKey('SvgModel') -or $PSBoundParameters.ContainsKey('SvgReasoningEffort')) {
+            $SvgOptions = @{}
+            if ($PSBoundParameters.ContainsKey('SvgModel')) {
+                $SvgOptions.model = $SvgModel
+            }
+            if ($PSBoundParameters.ContainsKey('SvgReasoningEffort')) {
+                $SvgOptions.reasoning = @{ effort = $SvgReasoningEffort.ToLowerInvariant() }
+            }
+            $PostBody.svg = $SvgOptions
         }
         if ($PSBoundParameters.ContainsKey('Style')) {
             $PostBody.style = $Style

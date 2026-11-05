@@ -320,7 +320,11 @@ function Request-Response {
         [int]$ImageGenerationFrameDurationMs,
 
         [Parameter()]
-        [System.Collections.IDictionary]$ImageGenerationSvg,
+        [string]$ImageGenerationSvgModel,
+
+        [Parameter()]
+        [Completions('none', 'minimal', 'low', 'medium', 'high', 'xhigh', 'max')]
+        [string]$ImageGenerationSvgReasoningEffort,
 
         [Parameter()]
         [Completions('generate', 'edit', 'auto')]
@@ -997,8 +1001,15 @@ function Request-Response {
             if ($PSBoundParameters.ContainsKey('ImageGenerationFrameDurationMs')) {
                 $ImageGenerationTool.frame_duration_ms = $ImageGenerationFrameDurationMs
             }
-            if ($PSBoundParameters.ContainsKey('ImageGenerationSvg')) {
-                $ImageGenerationTool.svg = $ImageGenerationSvg
+            if ($PSBoundParameters.ContainsKey('ImageGenerationSvgModel') -or $PSBoundParameters.ContainsKey('ImageGenerationSvgReasoningEffort')) {
+                $SvgOptions = @{}
+                if ($PSBoundParameters.ContainsKey('ImageGenerationSvgModel')) {
+                    $SvgOptions.model = $ImageGenerationSvgModel
+                }
+                if ($PSBoundParameters.ContainsKey('ImageGenerationSvgReasoningEffort')) {
+                    $SvgOptions.reasoning = @{ effort = $ImageGenerationSvgReasoningEffort.ToLowerInvariant() }
+                }
+                $ImageGenerationTool.svg = $SvgOptions
             }
             if ($PSBoundParameters.ContainsKey('ImageGenerationAction')) {
                 $ImageGenerationTool.action = $ImageGenerationAction

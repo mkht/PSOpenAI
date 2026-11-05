@@ -727,16 +727,17 @@ Describe 'Request-Response' {
             $ImageTool.ContainsKey('svg') | Should -BeFalse
         }
 
-        It 'Serializes GPT Image 2.6 <Format> tool controls independently of outer reasoning' -TestCases @(
-            @{ Format = 'gif'; ModelName = 'gpt-image-2.6-flare'; Options = @{ ImageGenerationFrameCount = 2; ImageGenerationFrameDurationMs = 2000 } }
-            @{ Format = 'svg'; ModelName = 'gpt-image-2.6-sunburst'; Options = @{ ImageGenerationSvg = @{ model = 'gpt-6'; reasoning = $null } } }
+        It 'Serializes GPT Image 2.6 <CaseName> tool controls independently of outer reasoning' -TestCases @(
+            @{ CaseName = 'GIF'; Format = 'gif'; ModelName = 'gpt-image-2.6-flare'; Options = @{ ImageGenerationFrameCount = 2; ImageGenerationFrameDurationMs = 2000 } }
+            @{ CaseName = 'SVG with author'; Format = 'svg'; ModelName = 'gpt-image-2.6-sunburst'; Options = @{ ImageGenerationSvgModel = 'gpt-6'; ImageGenerationSvgReasoningEffort = 'LOW' } }
+            @{ CaseName = 'SVG with inherited author'; Format = 'svg'; ModelName = 'gpt-image-2.6-sunburst'; Options = @{ ImageGenerationSvgReasoningEffort = 'MEDIUM' } }
         ) {
             param($Format, $ModelName, $Options)
             $Result = Request-Response -Message 'Draw a circle' -UseImageGenerationTool -ImageGenerationModel $ModelName `
                 -ImageGenerationComplexity LOW -ImageGenerationOutputFormat $Format.ToUpperInvariant() `
                 -ReasoningEffort high @Options -OutputRawResponse -ErrorAction Stop
 
-            # Check JSON serialization, including the nested SVG object and null reasoning.
+            # Check JSON serialization, including SVG author settings and omitted fields.
             $RequestBody = $Result.Body | ConvertTo-Json -Depth 100 | ConvertFrom-Json
             $RequestBody.reasoning.effort | Should -BeExactly 'high'
             $ImageTool = $RequestBody.tools | Where-Object type -EQ 'image_generation'
@@ -749,9 +750,13 @@ Describe 'Request-Response' {
                 $ImageTool.PSObject.Properties.Name | Should -Not -Contain 'svg'
             }
             else {
-                $ImageTool.svg.model | Should -BeExactly 'gpt-6'
-                $ImageTool.svg.PSObject.Properties.Name | Should -Contain 'reasoning'
-                $ImageTool.svg.reasoning | Should -BeNullOrEmpty
+                if ($Options.ContainsKey('ImageGenerationSvgModel')) {
+                    $ImageTool.svg.model | Should -BeExactly $Options.ImageGenerationSvgModel
+                }
+                else {
+                    $ImageTool.svg.PSObject.Properties.Name | Should -Not -Contain 'model'
+                }
+                $ImageTool.svg.reasoning.effort | Should -BeExactly $Options.ImageGenerationSvgReasoningEffort.ToLowerInvariant()
                 $ImageTool.PSObject.Properties.Name | Should -Not -Contain 'frame_count'
             }
         }

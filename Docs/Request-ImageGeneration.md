@@ -27,7 +27,8 @@ Request-ImageGeneration
     [-OutputFormat <String>]
     [-FrameCount <Int32>]
     [-FrameDurationMs <Int32>]
-    [-Svg <IDictionary>]
+    [-SvgModel <String>]
+    [-SvgReasoningEffort <String>]
     [-ResponseFormat <String>]
     [-OutputRawResponse]
     [-User <String>]
@@ -55,7 +56,8 @@ Request-ImageGeneration
     [-OutputFormat <String>]
     [-FrameCount <Int32>]
     [-FrameDurationMs <Int32>]
-    [-Svg <IDictionary>]
+    [-SvgModel <String>]
+    [-SvgReasoningEffort <String>]
     [-User <String>]
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
@@ -98,10 +100,10 @@ The file extension selects GIF output. Availability depends on GIF preview acces
 
 ### Example 4: Generate an SVG with GPT Image 2.6.
 ```PowerShell
-Request-ImageGeneration -Model 'gpt-image-2.6-sunburst' -Prompt 'A simple mountain icon' -Complexity low -Quality low -Svg @{ model = 'gpt-6-luna'; reasoning = @{ effort = 'low' } } -OutFile C:\mountain.svg
+Request-ImageGeneration -Model 'gpt-image-2.6-sunburst' -Prompt 'A simple mountain icon' -Complexity low -Quality low -SvgModel 'gpt-6-luna' -SvgReasoningEffort low -OutFile C:\mountain.svg
 ```
 
-This example requires SVG model selection and access to the specified author model. If SVG model selection is disabled for your account, omit `-Svg` to use the API's default author. With object output, `svg_usage` reports author token usage separately from image `usage`.
+This example requires SVG model selection and access to the specified author model. If SVG model selection is disabled for your account, omit `-SvgModel` and `-SvgReasoningEffort` to use the API's default author. With object output, `svg_usage` reports author token usage separately from image `usage`.
 
 ## PARAMETERS
 
@@ -238,11 +240,20 @@ Required: False
 Position: Named
 ```
 
-### -Svg
-SVG author settings as a dictionary, for example `@{ model = 'gpt-6-luna'; reasoning = @{ effort = 'low' } }`. Requires SVG output and access to SVG model selection. When selection is enabled, supply `model`; otherwise omit this parameter. `reasoning` and its `effort` may be omitted or null to use the author's default. Supported efforts depend on the author model. The top-level `Model` still selects the image model that creates the reference image.
+### -SvgModel
+The model used to author SVG output, for example `gpt-6-luna`. Requires SVG output and access to SVG model selection. When selection is enabled, specify this parameter; otherwise omit both SVG author parameters. The top-level `Model` still selects the image model that creates the reference image.
 
 ```yaml
-Type: System.Collections.IDictionary
+Type: String
+Required: False
+Position: Named
+```
+
+### -SvgReasoningEffort
+Reasoning effort for the SVG author, independently of image `Complexity`. Suggested values are `none`, `minimal`, `low`, `medium`, `high`, `xhigh`, and `max`; support depends on the author model. Requires SVG output and access to SVG model selection. Use with `SvgModel`. Omit this parameter to use the author's default; no reasoning settings are sent when omitted.
+
+```yaml
+Type: String
 Required: False
 Position: Named
 ```
