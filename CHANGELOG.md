@@ -1,5 +1,8 @@
 # Changelog
 
+### 5.2.0
+- Add GPT Image 2.6 models and GIF/SVG output controls.
+
 ### 5.1.0
 - Add `Request-Decision` for the Decisions API, with shared text arrays and inline image input, named predicate/choice/score question parameters, and typed answers.
 
