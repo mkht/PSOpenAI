@@ -16,6 +16,8 @@ function Request-ImageEdit {
 
         [Parameter()]
         [Completions(
+            'gpt-image-2.6-sunburst',
+            'gpt-image-2.6-flare',
             'gpt-image-2.5-sunburst',
             'gpt-image-2.5-flare',
             'gpt-image-2',
@@ -40,6 +42,10 @@ function Request-ImageEdit {
         [string][LowerCaseTransformation()]$Quality = 'auto',
 
         [Parameter()]
+        [Completions('low', 'medium', 'high')]
+        [string]$Complexity,
+
+        [Parameter()]
         [Completions('transparent', 'opaque', 'auto')]
         [string][LowerCaseTransformation()]$Background = 'auto',
 
@@ -55,8 +61,18 @@ function Request-ImageEdit {
 
         [Parameter()]
         [Alias('output_format')]
-        [Completions('png', 'jpeg', 'webp')]
-        [string][LowerCaseTransformation()]$OutputFormat = 'png',
+        [Completions('png', 'jpeg', 'webp', 'gif')]
+        [string]$OutputFormat = 'png',
+
+        [Parameter()]
+        [Alias('frame_count')]
+        [ValidateRange(2, 16)]
+        [int]$FrameCount,
+
+        [Parameter()]
+        [Alias('frame_duration_ms')]
+        [ValidateRange(20, [int]::MaxValue)]
+        [int]$FrameDurationMs,
 
         # Obsolete
         [Parameter(ParameterSetName = 'Format')]
@@ -156,6 +172,15 @@ function Request-ImageEdit {
         if ($PSBoundParameters.ContainsKey('Quality')) {
             $PostBody.quality = $Quality
         }
+        if ($PSBoundParameters.ContainsKey('Complexity')) {
+            $PostBody.complexity = $Complexity.ToLowerInvariant()
+        }
+        if ($PSBoundParameters.ContainsKey('FrameCount')) {
+            $PostBody.frame_count = $FrameCount
+        }
+        if ($PSBoundParameters.ContainsKey('FrameDurationMs')) {
+            $PostBody.frame_duration_ms = $FrameDurationMs
+        }
         if ($PSBoundParameters.ContainsKey('InputFidelity')) {
             $PostBody.input_fidelity = $InputFidelity
         }
@@ -210,10 +235,10 @@ function Request-ImageEdit {
         if ($Model -like '*gpt-image-*') {
             # The output_format parameter is only supported for the GPT image models.
             if ($PSBoundParameters.ContainsKey('OutputFormat')) {
-                $PostBody.output_format = $OutputFormat
+                $PostBody.output_format = $OutputFormat.ToLowerInvariant()
             }
             elseif ($PSCmdlet.ParameterSetName -eq 'OutFile') {
-                $ext = [System.IO.Path]::GetExtension($OutFile).ToLower()
+                $ext = [System.IO.Path]::GetExtension($OutFile).ToLowerInvariant()
                 if ($ext -eq '.png') {
                     $PostBody.output_format = 'png'
                 }
@@ -222,6 +247,9 @@ function Request-ImageEdit {
                 }
                 elseif ($ext -eq '.webp') {
                     $PostBody.output_format = 'webp'
+                }
+                elseif ($ext -eq '.gif') {
+                    $PostBody.output_format = 'gif'
                 }
                 else {
                     $PostBody.output_format = 'png'

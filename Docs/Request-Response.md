@@ -72,6 +72,11 @@ Request-Response
     [-ContainerFileIds <String[]>]
     [-UseImageGenerationTool]
     [-ImageGenerationModel <String>]
+    [-ImageGenerationComplexity <String>]
+    [-ImageGenerationFrameCount <Int32>]
+    [-ImageGenerationFrameDurationMs <Int32>]
+    [-ImageGenerationSvgModel <String>]
+    [-ImageGenerationSvgReasoningEffort <String>]
     [-ImageGenerationAction <String>]
     [-ImageGenerationBackGround <String>]
     [-ImageGenerationInputImageMask <String>]
@@ -702,7 +707,52 @@ Position: Named
 ```
 
 ### -ImageGenerationModel
-The image generation model to use.
+The image generation model to use, including `gpt-image-2.6-sunburst` and `gpt-image-2.6-flare`. Completion suggestions do not restrict custom model or deployment names.
+
+```yaml
+Type: String
+Required: False
+Position: Named
+```
+
+### -ImageGenerationComplexity
+Computation spent planning the image: `low`, `medium`, or `high`. Requires `UseImageGenerationTool`. This overrides the outer response's `ReasoningEffort` for image generation only. If omitted, the tool inherits a supported outer reasoning effort or uses the image model's configured default. For SVG output, this controls the reference image, not the SVG author's reasoning.
+
+```yaml
+Type: String
+Required: False
+Position: Named
+```
+
+### -ImageGenerationFrameCount
+Number of GIF frames, from 2 through 16. Requires `UseImageGenerationTool` and GIF output. If omitted, the API defaults to 9.
+
+```yaml
+Type: Int32
+Required: False
+Position: Named
+```
+
+### -ImageGenerationFrameDurationMs
+Duration per GIF frame, from 20 through 2000 milliseconds, rounded by the API to 10 ms. Requires `UseImageGenerationTool` and GIF output. If omitted, the API defaults to 200.
+
+```yaml
+Type: Int32
+Required: False
+Position: Named
+```
+
+### -ImageGenerationSvgModel
+The model used to author SVG output, for example `gpt-6-luna`. Requires `UseImageGenerationTool` and SVG output. When SVG model selection is enabled, omitting this parameter uses the outer response model. Otherwise omit model overrides to use the API's default author. Completed image generation items retain `svg_usage` separately from image rendering usage when returned by the API.
+
+```yaml
+Type: String
+Required: False
+Position: Named
+```
+
+### -ImageGenerationSvgReasoningEffort
+Reasoning effort for the SVG author, independently of `ImageGenerationComplexity` and the outer response's `ReasoningEffort`. Suggested values are `none`, `minimal`, `low`, `medium`, `high`, `xhigh`, and `max`; support depends on the author model. Requires `UseImageGenerationTool` and SVG output. This can be specified without `ImageGenerationSvgModel` to keep the default author selection. Omit this parameter to use the author's default; no reasoning settings are sent when omitted.
 
 ```yaml
 Type: String
@@ -759,7 +809,7 @@ Position: Named
 ```
 
 ### -ImageGenerationOutputFormat
-The output format of the generated image. One of `png`, `webp`, or `jpeg`.
+The output format of the generated image: `png`, `webp`, `jpeg`, `gif`, or `svg`. GIF and SVG require support from the selected model and account. GIF does not support partial images greater than 0, input image masks, or custom output compression. Responses lifecycle events can still be streamed for GIF output.
 
 ```yaml
 Type: String
@@ -788,7 +838,7 @@ Default value: auto
 ```
 
 ### -ImageGenerationSize
-The size of the generated image. Use `auto` or a `WIDTHxHEIGHT` value supported by the selected image model. GPT Image 2 and GPT Image 2.5 accept arbitrary supported resolutions.
+The size of the generated image. Use `auto` or a `WIDTHxHEIGHT` value supported by the selected image model. GPT Image 2, 2.5, and 2.6 accept supported resolutions; GIF frame and pixel limits also apply.
 
 ```yaml
 Type: String

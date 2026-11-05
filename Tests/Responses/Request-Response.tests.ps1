@@ -721,6 +721,44 @@ Describe 'Request-Response' {
             $ImageTool.model | Should -BeExactly 'gpt-image-2.5-sunburst-2026-09-08'
             $ImageTool.quality | Should -BeExactly 'xhigh'
             $ImageTool.size | Should -BeExactly '2048x1024'
+            $ImageTool.ContainsKey('complexity') | Should -BeFalse
+            $ImageTool.ContainsKey('frame_count') | Should -BeFalse
+            $ImageTool.ContainsKey('frame_duration_ms') | Should -BeFalse
+            $ImageTool.ContainsKey('svg') | Should -BeFalse
+        }
+
+        It 'Serializes GPT Image 2.6 <CaseName> tool controls independently of outer reasoning' -TestCases @(
+            @{ CaseName = 'GIF'; Format = 'gif'; ModelName = 'gpt-image-2.6-flare'; Options = @{ ImageGenerationFrameCount = 2; ImageGenerationFrameDurationMs = 2000 } }
+            @{ CaseName = 'SVG with author'; Format = 'svg'; ModelName = 'gpt-image-2.6-sunburst'; Options = @{ ImageGenerationSvgModel = 'gpt-6'; ImageGenerationSvgReasoningEffort = 'LOW' } }
+            @{ CaseName = 'SVG with inherited author'; Format = 'svg'; ModelName = 'gpt-image-2.6-sunburst'; Options = @{ ImageGenerationSvgReasoningEffort = 'MEDIUM' } }
+        ) {
+            param($Format, $ModelName, $Options)
+            $Result = Request-Response -Message 'Draw a circle' -UseImageGenerationTool -ImageGenerationModel $ModelName `
+                -ImageGenerationComplexity LOW -ImageGenerationOutputFormat $Format.ToUpperInvariant() `
+                -ReasoningEffort high @Options -OutputRawResponse -ErrorAction Stop
+
+            # Check JSON serialization, including SVG author settings and omitted fields.
+            $RequestBody = $Result.Body | ConvertTo-Json -Depth 100 | ConvertFrom-Json
+            $RequestBody.reasoning.effort | Should -BeExactly 'high'
+            $ImageTool = $RequestBody.tools | Where-Object type -EQ 'image_generation'
+            $ImageTool.model | Should -BeExactly $ModelName
+            $ImageTool.complexity | Should -BeExactly 'low'
+            $ImageTool.output_format | Should -BeExactly $Format
+            if ($Format -eq 'gif') {
+                $ImageTool.frame_count | Should -Be 2
+                $ImageTool.frame_duration_ms | Should -Be 2000
+                $ImageTool.PSObject.Properties.Name | Should -Not -Contain 'svg'
+            }
+            else {
+                if ($Options.ContainsKey('ImageGenerationSvgModel')) {
+                    $ImageTool.svg.model | Should -BeExactly $Options.ImageGenerationSvgModel
+                }
+                else {
+                    $ImageTool.svg.PSObject.Properties.Name | Should -Not -Contain 'model'
+                }
+                $ImageTool.svg.reasoning.effort | Should -BeExactly $Options.ImageGenerationSvgReasoningEffort.ToLowerInvariant()
+                $ImageTool.PSObject.Properties.Name | Should -Not -Contain 'frame_count'
+            }
         }
 
         It 'Rejects specifying both an MCP server URL and tunnel ID' {

@@ -21,10 +21,13 @@ Request-ImageEdit
     [-NumberOfImages <UInt16>]
     [-Size <String>]
     [-Quality <String>]
+    [-Complexity <String>]
     [-Background <String>]
     [-InputFidelity <String>]
     [-OutputCompression <UInt16>]
     [-OutputFormat <String>]
+    [-FrameCount <Int32>]
+    [-FrameDurationMs <Int32>]
     [-ResponseFormat <String>]
     [-OutputRawResponse]
     [-Stream]
@@ -48,10 +51,13 @@ Request-ImageEdit
     [-NumberOfImages <UInt16>]
     [-Size <String>]
     [-Quality <String>]
+    [-Complexity <String>]
     [-Background <String>]
     [-InputFidelity <String>]
     [-OutputCompression <UInt16>]
     [-OutputFormat <String>]
+    [-FrameCount <Int32>]
+    [-FrameDurationMs <Int32>]
     [-Stream]
     [-PartialImages <UInt16>]
     [-User <String>]
@@ -95,6 +101,11 @@ Request-ImageEdit -Model 'gpt-image-2' -Image @('C:\sand_with_feather.png', 'C:\
 
 
 
+### Example 4: Control edit planning with GPT Image 2.6.
+```PowerShell
+Request-ImageEdit -Model 'gpt-image-2.6-flare' -Image C:\sand_with_feather.png -Prompt 'Make the feather blue' -Complexity low -Quality low -OutFile C:\blue-feather.png
+```
+
 ## PARAMETERS
 
 ### -Image
@@ -128,7 +139,7 @@ Position: Named
 ```
 
 ### -Model
-The model to use for image generation. Defaults to `gpt-image-2`. GPT Image 2.5 models include `gpt-image-2.5-sunburst`, `gpt-image-2.5-flare`.
+The model to use for image editing. Defaults to `gpt-image-2`. Supports `gpt-image-2.6-sunburst` and `gpt-image-2.6-flare`, as well as GPT Image 2.5 and earlier models subject to API availability. Model names and Azure deployment names are not restricted to the completion suggestions.
 
 ```yaml
 Type: String
@@ -159,8 +170,17 @@ Position: Named
 Default value: auto
 ```
 
+### -Complexity
+Computation spent planning the edit, independently of rendering `Quality`. Accepts `low`, `medium`, or `high` on GPT Image 2.6. Omitted values use the image model's configured default.
+
+```yaml
+Type: String
+Required: False
+Position: Named
+```
+
 ### -Size
-The size of the generated images. GPT Image 2 and GPT Image 2.5 accept arbitrary supported `WIDTHxHEIGHT` resolutions or `auto`. Older image models support their documented fixed sizes.
+The size of the generated images. GPT Image 2, 2.5, and 2.6 accept supported `WIDTHxHEIGHT` resolutions or `auto`. Older image models support their documented fixed sizes.
 
 ```yaml
 Type: String
@@ -201,7 +221,9 @@ Default value: 100
 ```
 
 ### -OutputFormat
-The format in which the generated images are returned. This parameter is only supported for the GPT image models. Must be one of `png`, `jpeg`, or `webp`. The default value is `png`.
+The output format for GPT image models: `png`, `jpeg`, `webp`, or `gif`, subject to endpoint and account support. Defaults to `png` unless inferred from `OutFile`. An explicit value overrides the extension. SVG editing is not supported.
+
+The API schema and official SDK expose GIF edit controls, but the image generation guide currently documents GIF output as generation-only. These parameters are forwarded for endpoints with GIF edit support; acceptance is determined by the API. GIF output does not support masks, streaming, partial images, or custom output compression.
 ```yaml
 Type: String
 Aliases: output_format
@@ -210,8 +232,28 @@ Position: Named
 Default value: png
 ```
 
+### -FrameCount
+Number of GIF frames, from 2 through 16 according to the API schema. Use only with GIF output on an endpoint that supports GIF edits. If omitted, the API defaults to 9. Model-specific pixel limits also apply.
+
+```yaml
+Type: Int32
+Aliases: frame_count
+Required: False
+Position: Named
+```
+
+### -FrameDurationMs
+Requested delay per GIF frame in milliseconds, at least 20. Use only with GIF output on an endpoint that supports GIF edits. If omitted, the API defaults to 200. The Images API rounds to 10 ms and caps the encoded delay at 655,350 ms.
+
+```yaml
+Type: Int32
+Aliases: frame_duration_ms
+Required: False
+Position: Named
+```
+
 ### -ResponseFormat
-The format in which the generated images are returned. Must be one of `url`, `base64` or `byte`. This parameter is only supported for `dall-e-2`, as the GPT image models always return images in `base64` format.
+How to return the result: `url`, `base64`, `byte`, or `object`. GPT image models always return base64 data from the API; this command can decode it to bytes or return the full response object. For GPT image models, the default `url` selection falls back to `object`.
 
 ```yaml
 Type: String
@@ -219,7 +261,7 @@ Parameter Sets: Format
 Aliases: response_format
 Required: False
 Position: Named
-Default value: base64
+Default value: url
 ```
 
 ### -OutputRawResponse
@@ -233,7 +275,7 @@ Position: Named
 ```
 
 ### -OutFile
-Specify the file path where the generated images will be saved. This cannot be specified with the `ResponseFormat` parameter.
+Specify the file path where the generated images will be saved. This cannot be specified with the `ResponseFormat` parameter. For GPT image models, `.png`, `.jpg`, `.jpeg`, `.webp`, and `.gif` extensions select the output format unless `OutputFormat` is explicitly supplied. Unrecognized extensions use PNG.
 
 ```yaml
 Type: String

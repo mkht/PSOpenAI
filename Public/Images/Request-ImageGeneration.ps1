@@ -7,6 +7,8 @@ function Request-ImageGeneration {
 
         [Parameter()]
         [Completions(
+            'gpt-image-2.6-sunburst',
+            'gpt-image-2.6-flare',
             'gpt-image-2.5-sunburst',
             'gpt-image-2.5-flare',
             'gpt-image-2',
@@ -31,6 +33,10 @@ function Request-ImageGeneration {
         [string][LowerCaseTransformation()]$Quality = 'auto',
 
         [Parameter()]
+        [Completions('low', 'medium', 'high')]
+        [string]$Complexity,
+
+        [Parameter()]
         [Completions('vivid', 'natural')]
         [string][LowerCaseTransformation()]$Style = 'vivid',
 
@@ -49,8 +55,25 @@ function Request-ImageGeneration {
 
         [Parameter()]
         [Alias('output_format')]
-        [Completions('png', 'jpeg', 'webp')]
-        [string][LowerCaseTransformation()]$OutputFormat = 'png',
+        [Completions('png', 'jpeg', 'webp', 'gif', 'svg')]
+        [string]$OutputFormat = 'png',
+
+        [Parameter()]
+        [Alias('frame_count')]
+        [ValidateRange(2, 16)]
+        [int]$FrameCount,
+
+        [Parameter()]
+        [Alias('frame_duration_ms')]
+        [ValidateRange(20, [int]::MaxValue)]
+        [int]$FrameDurationMs,
+
+        [Parameter()]
+        [string]$SvgModel,
+
+        [Parameter()]
+        [Completions('none', 'minimal', 'low', 'medium', 'high', 'xhigh', 'max')]
+        [string]$SvgReasoningEffort,
 
         [Parameter(ParameterSetName = 'Format')]
         [Alias('response_format')]
@@ -129,6 +152,25 @@ function Request-ImageGeneration {
         if ($PSBoundParameters.ContainsKey('Quality')) {
             $PostBody.quality = $Quality
         }
+        if ($PSBoundParameters.ContainsKey('Complexity')) {
+            $PostBody.complexity = $Complexity.ToLowerInvariant()
+        }
+        if ($PSBoundParameters.ContainsKey('FrameCount')) {
+            $PostBody.frame_count = $FrameCount
+        }
+        if ($PSBoundParameters.ContainsKey('FrameDurationMs')) {
+            $PostBody.frame_duration_ms = $FrameDurationMs
+        }
+        if ($PSBoundParameters.ContainsKey('SvgModel') -or $PSBoundParameters.ContainsKey('SvgReasoningEffort')) {
+            $SvgOptions = @{}
+            if ($PSBoundParameters.ContainsKey('SvgModel')) {
+                $SvgOptions.model = $SvgModel
+            }
+            if ($PSBoundParameters.ContainsKey('SvgReasoningEffort')) {
+                $SvgOptions.reasoning = @{ effort = $SvgReasoningEffort.ToLowerInvariant() }
+            }
+            $PostBody.svg = $SvgOptions
+        }
         if ($PSBoundParameters.ContainsKey('Style')) {
             $PostBody.style = $Style
         }
@@ -186,10 +228,10 @@ function Request-ImageGeneration {
         if ($Model -like '*gpt-image-*') {
             # The output_format parameter is only supported for the GPT image models.
             if ($PSBoundParameters.ContainsKey('OutputFormat')) {
-                $PostBody.output_format = $OutputFormat
+                $PostBody.output_format = $OutputFormat.ToLowerInvariant()
             }
             elseif ($PSCmdlet.ParameterSetName -eq 'OutFile') {
-                $ext = [System.IO.Path]::GetExtension($OutFile).ToLower()
+                $ext = [System.IO.Path]::GetExtension($OutFile).ToLowerInvariant()
                 if ($ext -eq '.png') {
                     $PostBody.output_format = 'png'
                 }
@@ -198,6 +240,12 @@ function Request-ImageGeneration {
                 }
                 elseif ($ext -eq '.webp') {
                     $PostBody.output_format = 'webp'
+                }
+                elseif ($ext -eq '.gif') {
+                    $PostBody.output_format = 'gif'
+                }
+                elseif ($ext -eq '.svg') {
+                    $PostBody.output_format = 'svg'
                 }
                 else {
                     $PostBody.output_format = 'png'

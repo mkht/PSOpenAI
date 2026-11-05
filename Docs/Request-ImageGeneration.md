@@ -19,11 +19,16 @@ Request-ImageGeneration
     [-NumberOfImages <UInt16>]
     [-Size <String>]
     [-Quality <String>]
+    [-Complexity <String>]
     [-Style <String>]
     [-Background <String>]
     [-Moderation <String>]
     [-OutputCompression <UInt16>]
     [-OutputFormat <String>]
+    [-FrameCount <Int32>]
+    [-FrameDurationMs <Int32>]
+    [-SvgModel <String>]
+    [-SvgReasoningEffort <String>]
     [-ResponseFormat <String>]
     [-OutputRawResponse]
     [-User <String>]
@@ -43,11 +48,16 @@ Request-ImageGeneration
     [-NumberOfImages <UInt16>]
     [-Size <String>]
     [-Quality <String>]
+    [-Complexity <String>]
     [-Style <String>]
     [-Background <String>]
     [-Moderation <String>]
     [-OutputCompression <UInt16>]
     [-OutputFormat <String>]
+    [-FrameCount <Int32>]
+    [-FrameDurationMs <Int32>]
+    [-SvgModel <String>]
+    [-SvgReasoningEffort <String>]
     [-User <String>]
     [-TimeoutSec <Int32>]
     [-MaxRetryCount <Int32>]
@@ -81,6 +91,20 @@ https://oaidalleapiprodscus.blob.core.windows.net/private/org-BXLtGIt0xglP9if8FV
 https://oaidalleapiprodscus.blob.core.windows.net/private/org-BXLtGIt0xglP9if8FVhkD...
 ```
 
+### Example 3: Generate an animated GIF with GPT Image 2.6.
+```PowerShell
+Request-ImageGeneration -Model 'gpt-image-2.6-flare' -Prompt 'A bouncing blue ball, seamless loop' -Complexity low -Quality low -Size 512x512 -FrameCount 2 -FrameDurationMs 200 -OutFile C:\ball.gif
+```
+
+The file extension selects GIF output. Availability depends on GIF preview access for the selected model.
+
+### Example 4: Generate an SVG with GPT Image 2.6.
+```PowerShell
+Request-ImageGeneration -Model 'gpt-image-2.6-sunburst' -Prompt 'A simple mountain icon' -Complexity low -Quality low -SvgModel 'gpt-6-luna' -SvgReasoningEffort low -OutFile C:\mountain.svg
+```
+
+This example requires SVG model selection and access to the specified author model. If SVG model selection is disabled for your account, omit `-SvgModel` and `-SvgReasoningEffort` to use the API's default author. With object output, `svg_usage` reports author token usage separately from image `usage`.
+
 ## PARAMETERS
 
 ### -Prompt
@@ -95,7 +119,7 @@ Accept pipeline input: True (ByValue)
 ```
 
 ### -Model
-The model to use for image generation. Defaults to `gpt-image-2`. GPT Image 2.5 models include `gpt-image-2.5-sunburst`, `gpt-image-2.5-flare`.
+The model to use for image generation. Defaults to `gpt-image-2`. Supports `gpt-image-2.6-sunburst` and `gpt-image-2.6-flare`, as well as GPT Image 2.5 and earlier models subject to API availability. Model names and Azure deployment names are not restricted to the completion suggestions.
 
 ```yaml
 Type: String
@@ -116,7 +140,7 @@ Default value: 1
 ```
 
 ### -Size
-The size of the generated images. GPT Image 2 and GPT Image 2.5 accept arbitrary supported `WIDTHxHEIGHT` resolutions or `auto`. Older image models support their documented fixed sizes.
+The size of the generated images. GPT Image 2, 2.5, and 2.6 accept supported `WIDTHxHEIGHT` resolutions or `auto`. GIF sizes must also satisfy the selected model's frame and pixel limits. Older image models support their documented fixed sizes.
 
 ```yaml
 Type: String
@@ -135,6 +159,15 @@ Type: String
 Required: False
 Position: Named
 Default value: auto
+```
+
+### -Complexity
+Computation spent planning the image, independently of rendering `Quality`. Accepts `low`, `medium`, or `high` on GPT Image 2.6. Omitted values use the image model's configured default. For SVG output this controls the reference image, independently of the SVG author's reasoning.
+
+```yaml
+Type: String
+Required: False
+Position: Named
 ```
 
 ### -Style
@@ -176,7 +209,9 @@ Position: Named
 ```
 
 ### -OutputFormat
-The format in which the generated images are returned. This parameter is only supported for the GPT image models. Must be one of `png`, `jpeg`, or `webp`.
+The output file format for GPT image models: `png`, `jpeg`, `webp`, `gif`, or `svg`, subject to model and account support. Defaults to `png` unless inferred from `OutFile`. An explicit value overrides the file extension.
+
+GIF output requires GIF preview access and does not support `Stream`, `PartialImages`, or `OutputCompression`. SVG output requires a single image and does not support `Stream`, `PartialImages`, or `OutputCompression`. Both formats are returned in `b64_json`; SVG content decodes to UTF-8 XML bytes.
 
 ```yaml
 Type: String
@@ -185,8 +220,46 @@ Required: False
 Position: Named
 ```
 
+### -FrameCount
+Number of GIF frames, from 2 through 16 according to the API schema. Use only with GIF output. If omitted, the API defaults to 9. Model-specific pixel limits also apply.
+
+```yaml
+Type: Int32
+Aliases: frame_count
+Required: False
+Position: Named
+```
+
+### -FrameDurationMs
+Requested delay per GIF frame in milliseconds, at least 20. Use only with GIF output. If omitted, the API defaults to 200. The Images API rounds to 10 ms and caps the encoded delay at 655,350 ms; this differs from the Responses tool's 2000 ms maximum.
+
+```yaml
+Type: Int32
+Aliases: frame_duration_ms
+Required: False
+Position: Named
+```
+
+### -SvgModel
+The model used to author SVG output, for example `gpt-6-luna`. Requires SVG output and access to SVG model selection. When selection is enabled, specify this parameter; otherwise omit both SVG author parameters. The top-level `Model` still selects the image model that creates the reference image.
+
+```yaml
+Type: String
+Required: False
+Position: Named
+```
+
+### -SvgReasoningEffort
+Reasoning effort for the SVG author, independently of image `Complexity`. Suggested values are `none`, `minimal`, `low`, `medium`, `high`, `xhigh`, and `max`; support depends on the author model. Requires SVG output and access to SVG model selection. Use with `SvgModel`. Omit this parameter to use the author's default; no reasoning settings are sent when omitted.
+
+```yaml
+Type: String
+Required: False
+Position: Named
+```
+
 ### -ResponseFormat
-The format in which the generated images are returned. Must be one of `url`, `base64` or `byte`. This parameter is only supported for `dall-e-2`, as the GPT image models always return images in `base64` format.
+How to return the result: `url`, `base64`, `byte`, or `object`. GPT image models always return base64 data from the API; this command can decode it to bytes or return the full response object, including `usage` and `svg_usage` when present. For GPT image models, the default `url` selection falls back to `object`.
 
 ```yaml
 Type: String
@@ -208,7 +281,7 @@ Position: Named
 ```
 
 ### -OutFile
-Specify the file path where the generated images will be saved. This cannot be specified with the `ResponseFormat` parameter.
+Specify the file path where the generated images will be saved. This cannot be specified with the `ResponseFormat` parameter. For GPT image models, `.png`, `.jpg`, `.jpeg`, `.webp`, `.gif`, and `.svg` extensions select the output format unless `OutputFormat` is explicitly supplied. Unrecognized extensions use PNG.
 
 ```yaml
 Type: String
