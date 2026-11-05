@@ -70,6 +70,48 @@ Describe 'Request-ImageGeneration' {
             $Result.quality | Should -Be 'low'
             $Result.background | Should -Be 'opaque'
             $Result.data[0].b64_json | Should -Be 'SEVMTE8='
+            Should -Invoke Invoke-OpenAIHttpRequest -ModuleName $script:ModuleName -Times 1 -Exactly -ParameterFilter {
+                -not $Body.Contains('complexity') -and -not $Body.Contains('frame_count') -and
+                -not $Body.Contains('frame_duration_ms') -and -not $Body.Contains('svg')
+            }
+        }
+
+        It 'Infers <Format> output and saves decoded bytes' -TestCases @(
+            @{ Format = 'gif'; ModelName = 'gpt-image-2.6-flare'; Options = @{ FrameCount = 2; FrameDurationMs = 2010 }; Payload = 'R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==' }
+            @{ Format = 'svg'; ModelName = 'gpt-image-2.6-sunburst'; Options = @{ Svg = @{ model = 'gpt-6'; reasoning = @{ effort = 'low' } } }; Payload = 'PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciLz4=' }
+        ) {
+            param($Format, $ModelName, $Options, $Payload)
+            # Synthetic format fixtures; no image generation is performed by these tests.
+            $TestResponse = @{ data = @(@{ b64_json = $Payload }) } | ConvertTo-Json -Depth 5
+            Mock -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } { $TestResponse }
+            $OutPath = Join-Path $TestDrive ('output.' + $Format.ToUpperInvariant())
+
+            Request-ImageGeneration -Prompt 'A circle' -Model $ModelName -Complexity 'LOW' -OutFile $OutPath @Options -ErrorAction Stop
+
+            [Convert]::ToBase64String([IO.File]::ReadAllBytes($OutPath)) | Should -BeExactly $Payload
+            Should -Invoke Invoke-OpenAIHttpRequest -ModuleName $script:ModuleName -Times 1 -Exactly -ParameterFilter {
+                $Body.model -eq $ModelName -and $Body.output_format -eq $Format -and
+                $Body.complexity -ceq 'low' -and -not $Body.Contains('response_format') -and
+                -not $Body.Contains('output_compression') -and -not $Stream -and
+                (($Format -eq 'gif' -and $Body.frame_count -eq 2 -and $Body.frame_duration_ms -eq 2010 -and -not $Body.Contains('svg')) -or
+                    ($Format -eq 'svg' -and $Body.svg.model -eq 'gpt-6' -and $Body.svg.reasoning.effort -eq 'low' -and -not $Body.Contains('frame_count')))
+            }
+        }
+
+        It 'Preserves SVG author usage separately from image usage' {
+            Mock -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } {
+                '{"data":[{"b64_json":"PHN2Zy8+"}],"output_format":"svg","usage":{"total_tokens":30},"svg_usage":{"model":"gpt-6","input_tokens":10,"output_tokens":5,"reasoning_tokens":2,"total_tokens":15}}'
+            }
+            $Result = Request-ImageGeneration -Prompt 'A circle' -Model 'gpt-image-2.6-sunburst' -OutputFormat SVG -ErrorAction Stop
+            $Result.PSObject.TypeNames | Should -Contain 'PSOpenAI.Image'
+            $Result.output_format | Should -BeExactly 'svg'
+            $Result.usage.total_tokens | Should -Be 30
+            $Result.svg_usage.model | Should -BeExactly 'gpt-6'
+            $Result.svg_usage.total_tokens | Should -Be 15
+            $Result.svg_usage.reasoning_tokens | Should -Be 2
+            Should -Invoke Invoke-OpenAIHttpRequest -ModuleName $script:ModuleName -Times 1 -Exactly -ParameterFilter {
+                $Body.output_format -ceq 'svg' -and -not $Body.Contains('svg')
+            }
         }
 
         It 'Generate image. Save to file.' {

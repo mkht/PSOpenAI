@@ -15876,7 +15876,7 @@ https://developers.openai.com/api/reference/resources/images/methods/edit</maml:
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>Model</maml:name>
           <maml:description>
-            <maml:para>The model to use for image generation. Defaults to `gpt-image-2`. GPT Image 2.5 models include `gpt-image-2.5-sunburst`, `gpt-image-2.5-flare`.</maml:para>
+            <maml:para>The model to use for image editing. Defaults to `gpt-image-2`. Supports `gpt-image-2.6-sunburst` and `gpt-image-2.6-flare`, as well as GPT Image 2.5 and earlier models subject to API availability. Model names and Azure deployment names are not restricted to the completion suggestions.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -15912,9 +15912,21 @@ https://developers.openai.com/api/reference/resources/images/methods/edit</maml:
           <dev:defaultValue>auto</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Complexity</maml:name>
+          <maml:description>
+            <maml:para>Computation spent planning the edit, independently of rendering `Quality`. Accepts `low`, `medium`, or `high` on GPT Image 2.6. Omitted values use the image model's configured default.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>Size</maml:name>
           <maml:description>
-            <maml:para>The size of the generated images. GPT Image 2 and GPT Image 2.5 accept arbitrary supported `WIDTHxHEIGHT` resolutions or `auto`. Older image models support their documented fixed sizes.</maml:para>
+            <maml:para>The size of the generated images. GPT Image 2, 2.5, and 2.6 accept supported `WIDTHxHEIGHT` resolutions or `auto`. Older image models support their documented fixed sizes.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -15963,7 +15975,8 @@ Accepts one of the following: `transparent`, `opaque`, and `auto` (default).</ma
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="output_format">
           <maml:name>OutputFormat</maml:name>
           <maml:description>
-            <maml:para>The format in which the generated images are returned. This parameter is only supported for the GPT image models. Must be one of `png`, `jpeg`, or `webp`. The default value is `png`.</maml:para>
+            <maml:para>The output format for GPT image models: `png`, `jpeg`, `webp`, or `gif`, subject to endpoint and account support. Defaults to `png` unless inferred from `OutFile`. An explicit value overrides the extension. SVG editing is not supported.</maml:para>
+            <maml:para>The API schema and official SDK expose GIF edit controls, but the image generation guide currently documents GIF output as generation-only. These parameters are forwarded for endpoints with GIF edit support; acceptance is determined by the API. GIF output does not support masks, streaming, partial images, or custom output compression.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -15972,17 +15985,41 @@ Accepts one of the following: `transparent`, `opaque`, and `auto` (default).</ma
           </dev:type>
           <dev:defaultValue>png</dev:defaultValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="frame_count">
+          <maml:name>FrameCount</maml:name>
+          <maml:description>
+            <maml:para>Number of GIF frames, from 2 through 16 according to the API schema. Use only with GIF output on an endpoint that supports GIF edits. If omitted, the API defaults to 9. Model-specific pixel limits also apply.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="frame_duration_ms">
+          <maml:name>FrameDurationMs</maml:name>
+          <maml:description>
+            <maml:para>Requested delay per GIF frame in milliseconds, at least 20. Use only with GIF output on an endpoint that supports GIF edits. If omitted, the API defaults to 200. The Images API rounds to 10 ms and caps the encoded delay at 655,350 ms.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="response_format">
           <maml:name>ResponseFormat</maml:name>
           <maml:description>
-            <maml:para>The format in which the generated images are returned. Must be one of `url`, `base64` or `byte`. This parameter is only supported for `dall-e-2`, as the GPT image models always return images in `base64` format.</maml:para>
+            <maml:para>How to return the result: `url`, `base64`, `byte`, or `object`. GPT image models always return base64 data from the API; this command can decode it to bytes or return the full response object. For GPT image models, the default `url` selection falls back to `object`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
             <maml:name>String</maml:name>
             <maml:uri />
           </dev:type>
-          <dev:defaultValue>base64</dev:defaultValue>
+          <dev:defaultValue>url</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>OutputRawResponse</maml:name>
@@ -16140,7 +16177,7 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>Model</maml:name>
           <maml:description>
-            <maml:para>The model to use for image generation. Defaults to `gpt-image-2`. GPT Image 2.5 models include `gpt-image-2.5-sunburst`, `gpt-image-2.5-flare`.</maml:para>
+            <maml:para>The model to use for image editing. Defaults to `gpt-image-2`. Supports `gpt-image-2.6-sunburst` and `gpt-image-2.6-flare`, as well as GPT Image 2.5 and earlier models subject to API availability. Model names and Azure deployment names are not restricted to the completion suggestions.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -16176,9 +16213,21 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
           <dev:defaultValue>auto</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Complexity</maml:name>
+          <maml:description>
+            <maml:para>Computation spent planning the edit, independently of rendering `Quality`. Accepts `low`, `medium`, or `high` on GPT Image 2.6. Omitted values use the image model's configured default.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>Size</maml:name>
           <maml:description>
-            <maml:para>The size of the generated images. GPT Image 2 and GPT Image 2.5 accept arbitrary supported `WIDTHxHEIGHT` resolutions or `auto`. Older image models support their documented fixed sizes.</maml:para>
+            <maml:para>The size of the generated images. GPT Image 2, 2.5, and 2.6 accept supported `WIDTHxHEIGHT` resolutions or `auto`. Older image models support their documented fixed sizes.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -16227,7 +16276,8 @@ Accepts one of the following: `transparent`, `opaque`, and `auto` (default).</ma
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="output_format">
           <maml:name>OutputFormat</maml:name>
           <maml:description>
-            <maml:para>The format in which the generated images are returned. This parameter is only supported for the GPT image models. Must be one of `png`, `jpeg`, or `webp`. The default value is `png`.</maml:para>
+            <maml:para>The output format for GPT image models: `png`, `jpeg`, `webp`, or `gif`, subject to endpoint and account support. Defaults to `png` unless inferred from `OutFile`. An explicit value overrides the extension. SVG editing is not supported.</maml:para>
+            <maml:para>The API schema and official SDK expose GIF edit controls, but the image generation guide currently documents GIF output as generation-only. These parameters are forwarded for endpoints with GIF edit support; acceptance is determined by the API. GIF output does not support masks, streaming, partial images, or custom output compression.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -16236,10 +16286,34 @@ Accepts one of the following: `transparent`, `opaque`, and `auto` (default).</ma
           </dev:type>
           <dev:defaultValue>png</dev:defaultValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="frame_count">
+          <maml:name>FrameCount</maml:name>
+          <maml:description>
+            <maml:para>Number of GIF frames, from 2 through 16 according to the API schema. Use only with GIF output on an endpoint that supports GIF edits. If omitted, the API defaults to 9. Model-specific pixel limits also apply.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="frame_duration_ms">
+          <maml:name>FrameDurationMs</maml:name>
+          <maml:description>
+            <maml:para>Requested delay per GIF frame in milliseconds, at least 20. Use only with GIF output on an endpoint that supports GIF edits. If omitted, the API defaults to 200. The Images API rounds to 10 ms and caps the encoded delay at 655,350 ms.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>OutFile</maml:name>
           <maml:description>
-            <maml:para>Specify the file path where the generated images will be saved. This cannot be specified with the `ResponseFormat` parameter.</maml:para>
+            <maml:para>Specify the file path where the generated images will be saved. This cannot be specified with the `ResponseFormat` parameter. For GPT image models, `.png`, `.jpg`, `.jpeg`, `.webp`, and `.gif` extensions select the output format unless `OutputFormat` is explicitly supplied. Unrecognized extensions use PNG.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -16393,7 +16467,7 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>Model</maml:name>
         <maml:description>
-          <maml:para>The model to use for image generation. Defaults to `gpt-image-2`. GPT Image 2.5 models include `gpt-image-2.5-sunburst`, `gpt-image-2.5-flare`.</maml:para>
+          <maml:para>The model to use for image editing. Defaults to `gpt-image-2`. Supports `gpt-image-2.6-sunburst` and `gpt-image-2.6-flare`, as well as GPT Image 2.5 and earlier models subject to API availability. Model names and Azure deployment names are not restricted to the completion suggestions.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -16429,9 +16503,21 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <dev:defaultValue>auto</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Complexity</maml:name>
+        <maml:description>
+          <maml:para>Computation spent planning the edit, independently of rendering `Quality`. Accepts `low`, `medium`, or `high` on GPT Image 2.6. Omitted values use the image model's configured default.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>Size</maml:name>
         <maml:description>
-          <maml:para>The size of the generated images. GPT Image 2 and GPT Image 2.5 accept arbitrary supported `WIDTHxHEIGHT` resolutions or `auto`. Older image models support their documented fixed sizes.</maml:para>
+          <maml:para>The size of the generated images. GPT Image 2, 2.5, and 2.6 accept supported `WIDTHxHEIGHT` resolutions or `auto`. Older image models support their documented fixed sizes.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -16480,7 +16566,8 @@ Accepts one of the following: `transparent`, `opaque`, and `auto` (default).</ma
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="output_format">
         <maml:name>OutputFormat</maml:name>
         <maml:description>
-          <maml:para>The format in which the generated images are returned. This parameter is only supported for the GPT image models. Must be one of `png`, `jpeg`, or `webp`. The default value is `png`.</maml:para>
+          <maml:para>The output format for GPT image models: `png`, `jpeg`, `webp`, or `gif`, subject to endpoint and account support. Defaults to `png` unless inferred from `OutFile`. An explicit value overrides the extension. SVG editing is not supported.</maml:para>
+          <maml:para>The API schema and official SDK expose GIF edit controls, but the image generation guide currently documents GIF output as generation-only. These parameters are forwarded for endpoints with GIF edit support; acceptance is determined by the API. GIF output does not support masks, streaming, partial images, or custom output compression.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -16489,17 +16576,41 @@ Accepts one of the following: `transparent`, `opaque`, and `auto` (default).</ma
         </dev:type>
         <dev:defaultValue>png</dev:defaultValue>
       </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="frame_count">
+        <maml:name>FrameCount</maml:name>
+        <maml:description>
+          <maml:para>Number of GIF frames, from 2 through 16 according to the API schema. Use only with GIF output on an endpoint that supports GIF edits. If omitted, the API defaults to 9. Model-specific pixel limits also apply.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="frame_duration_ms">
+        <maml:name>FrameDurationMs</maml:name>
+        <maml:description>
+          <maml:para>Requested delay per GIF frame in milliseconds, at least 20. Use only with GIF output on an endpoint that supports GIF edits. If omitted, the API defaults to 200. The Images API rounds to 10 ms and caps the encoded delay at 655,350 ms.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="response_format">
         <maml:name>ResponseFormat</maml:name>
         <maml:description>
-          <maml:para>The format in which the generated images are returned. Must be one of `url`, `base64` or `byte`. This parameter is only supported for `dall-e-2`, as the GPT image models always return images in `base64` format.</maml:para>
+          <maml:para>How to return the result: `url`, `base64`, `byte`, or `object`. GPT image models always return base64 data from the API; this command can decode it to bytes or return the full response object. For GPT image models, the default `url` selection falls back to `object`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
           <maml:name>String</maml:name>
           <maml:uri />
         </dev:type>
-        <dev:defaultValue>base64</dev:defaultValue>
+        <dev:defaultValue>url</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>OutputRawResponse</maml:name>
@@ -16516,7 +16627,7 @@ Accepts one of the following: `transparent`, `opaque`, and `auto` (default).</ma
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>OutFile</maml:name>
         <maml:description>
-          <maml:para>Specify the file path where the generated images will be saved. This cannot be specified with the `ResponseFormat` parameter.</maml:para>
+          <maml:para>Specify the file path where the generated images will be saved. This cannot be specified with the `ResponseFormat` parameter. For GPT image models, `.png`, `.jpg`, `.jpeg`, `.webp`, and `.gif` extensions select the output format unless `OutputFormat` is explicitly supplied. Unrecognized extensions use PNG.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -16659,6 +16770,13 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
           <maml:para></maml:para>
         </dev:remarks>
       </command:example>
+      <command:example>
+        <maml:title>----- Example 4: Control edit planning with GPT Image 2.6. -----</maml:title>
+        <dev:code>Request-ImageEdit -Model 'gpt-image-2.6-flare' -Image C:\sand_with_feather.png -Prompt 'Make the feather blue' -Complexity low -Quality low -OutFile C:\blue-feather.png</dev:code>
+        <dev:remarks>
+          <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
     </command:examples>
     <command:relatedLinks>
       <maml:navigationLink>
@@ -16712,7 +16830,7 @@ https://developers.openai.com/api/reference/resources/images/methods/generate</m
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>Model</maml:name>
           <maml:description>
-            <maml:para>The model to use for image generation. Defaults to `gpt-image-2`. GPT Image 2.5 models include `gpt-image-2.5-sunburst`, `gpt-image-2.5-flare`.</maml:para>
+            <maml:para>The model to use for image generation. Defaults to `gpt-image-2`. Supports `gpt-image-2.6-sunburst` and `gpt-image-2.6-flare`, as well as GPT Image 2.5 and earlier models subject to API availability. Model names and Azure deployment names are not restricted to the completion suggestions.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -16736,7 +16854,7 @@ https://developers.openai.com/api/reference/resources/images/methods/generate</m
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>Size</maml:name>
           <maml:description>
-            <maml:para>The size of the generated images. GPT Image 2 and GPT Image 2.5 accept arbitrary supported `WIDTHxHEIGHT` resolutions or `auto`. Older image models support their documented fixed sizes.</maml:para>
+            <maml:para>The size of the generated images. GPT Image 2, 2.5, and 2.6 accept supported `WIDTHxHEIGHT` resolutions or `auto`. GIF sizes must also satisfy the selected model's frame and pixel limits. Older image models support their documented fixed sizes.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -16758,6 +16876,18 @@ https://developers.openai.com/api/reference/resources/images/methods/generate</m
             <maml:uri />
           </dev:type>
           <dev:defaultValue>auto</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Complexity</maml:name>
+          <maml:description>
+            <maml:para>Computation spent planning the image, independently of rendering `Quality`. Accepts `low`, `medium`, or `high` on GPT Image 2.6. Omitted values use the image model's configured default. For SVG output this controls the reference image, independently of the SVG author's reasoning.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>Style</maml:name>
@@ -16810,7 +16940,8 @@ https://developers.openai.com/api/reference/resources/images/methods/generate</m
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="output_format">
           <maml:name>OutputFormat</maml:name>
           <maml:description>
-            <maml:para>The format in which the generated images are returned. This parameter is only supported for the GPT image models. Must be one of `png`, `jpeg`, or `webp`.</maml:para>
+            <maml:para>The output file format for GPT image models: `png`, `jpeg`, `webp`, `gif`, or `svg`, subject to model and account support. Defaults to `png` unless inferred from `OutFile`. An explicit value overrides the file extension.</maml:para>
+            <maml:para>GIF output requires GIF preview access and does not support `Stream`, `PartialImages`, or `OutputCompression`. SVG output requires a single image and does not support `Stream`, `PartialImages`, or `OutputCompression`. Both formats are returned in `b64_json`; SVG content decodes to UTF-8 XML bytes.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -16819,10 +16950,46 @@ https://developers.openai.com/api/reference/resources/images/methods/generate</m
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="frame_count">
+          <maml:name>FrameCount</maml:name>
+          <maml:description>
+            <maml:para>Number of GIF frames, from 2 through 16 according to the API schema. Use only with GIF output. If omitted, the API defaults to 9. Model-specific pixel limits also apply.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="frame_duration_ms">
+          <maml:name>FrameDurationMs</maml:name>
+          <maml:description>
+            <maml:para>Requested delay per GIF frame in milliseconds, at least 20. Use only with GIF output. If omitted, the API defaults to 200. The Images API rounds to 10 ms and caps the encoded delay at 655,350 ms; this differs from the Responses tool's 2000 ms maximum.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Svg</maml:name>
+          <maml:description>
+            <maml:para>SVG author settings as a dictionary, for example `@{ model = 'gpt-6-luna'; reasoning = @{ effort = 'low' } }`. Requires SVG output and access to SVG model selection. When selection is enabled, supply `model`; otherwise omit this parameter. `reasoning` and its `effort` may be omitted or null to use the author's default. Supported efforts depend on the author model. The top-level `Model` still selects the image model that creates the reference image.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">System.Collections.IDictionary</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Collections.IDictionary</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="response_format">
           <maml:name>ResponseFormat</maml:name>
           <maml:description>
-            <maml:para>The format in which the generated images are returned. Must be one of `url`, `base64` or `byte`. This parameter is only supported for `dall-e-2`, as the GPT image models always return images in `base64` format.</maml:para>
+            <maml:para>How to return the result: `url`, `base64`, `byte`, or `object`. GPT image models always return base64 data from the API; this command can decode it to bytes or return the full response object, including `usage` and `svg_usage` when present. For GPT image models, the default `url` selection falls back to `object`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -16940,7 +17107,7 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>Model</maml:name>
           <maml:description>
-            <maml:para>The model to use for image generation. Defaults to `gpt-image-2`. GPT Image 2.5 models include `gpt-image-2.5-sunburst`, `gpt-image-2.5-flare`.</maml:para>
+            <maml:para>The model to use for image generation. Defaults to `gpt-image-2`. Supports `gpt-image-2.6-sunburst` and `gpt-image-2.6-flare`, as well as GPT Image 2.5 and earlier models subject to API availability. Model names and Azure deployment names are not restricted to the completion suggestions.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -16964,7 +17131,7 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>Size</maml:name>
           <maml:description>
-            <maml:para>The size of the generated images. GPT Image 2 and GPT Image 2.5 accept arbitrary supported `WIDTHxHEIGHT` resolutions or `auto`. Older image models support their documented fixed sizes.</maml:para>
+            <maml:para>The size of the generated images. GPT Image 2, 2.5, and 2.6 accept supported `WIDTHxHEIGHT` resolutions or `auto`. GIF sizes must also satisfy the selected model's frame and pixel limits. Older image models support their documented fixed sizes.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -16986,6 +17153,18 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
             <maml:uri />
           </dev:type>
           <dev:defaultValue>auto</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Complexity</maml:name>
+          <maml:description>
+            <maml:para>Computation spent planning the image, independently of rendering `Quality`. Accepts `low`, `medium`, or `high` on GPT Image 2.6. Omitted values use the image model's configured default. For SVG output this controls the reference image, independently of the SVG author's reasoning.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>Style</maml:name>
@@ -17038,7 +17217,8 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="output_format">
           <maml:name>OutputFormat</maml:name>
           <maml:description>
-            <maml:para>The format in which the generated images are returned. This parameter is only supported for the GPT image models. Must be one of `png`, `jpeg`, or `webp`.</maml:para>
+            <maml:para>The output file format for GPT image models: `png`, `jpeg`, `webp`, `gif`, or `svg`, subject to model and account support. Defaults to `png` unless inferred from `OutFile`. An explicit value overrides the file extension.</maml:para>
+            <maml:para>GIF output requires GIF preview access and does not support `Stream`, `PartialImages`, or `OutputCompression`. SVG output requires a single image and does not support `Stream`, `PartialImages`, or `OutputCompression`. Both formats are returned in `b64_json`; SVG content decodes to UTF-8 XML bytes.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -17047,10 +17227,46 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="frame_count">
+          <maml:name>FrameCount</maml:name>
+          <maml:description>
+            <maml:para>Number of GIF frames, from 2 through 16 according to the API schema. Use only with GIF output. If omitted, the API defaults to 9. Model-specific pixel limits also apply.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="frame_duration_ms">
+          <maml:name>FrameDurationMs</maml:name>
+          <maml:description>
+            <maml:para>Requested delay per GIF frame in milliseconds, at least 20. Use only with GIF output. If omitted, the API defaults to 200. The Images API rounds to 10 ms and caps the encoded delay at 655,350 ms; this differs from the Responses tool's 2000 ms maximum.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Svg</maml:name>
+          <maml:description>
+            <maml:para>SVG author settings as a dictionary, for example `@{ model = 'gpt-6-luna'; reasoning = @{ effort = 'low' } }`. Requires SVG output and access to SVG model selection. When selection is enabled, supply `model`; otherwise omit this parameter. `reasoning` and its `effort` may be omitted or null to use the author's default. Supported efforts depend on the author model. The top-level `Model` still selects the image model that creates the reference image.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">System.Collections.IDictionary</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Collections.IDictionary</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>OutFile</maml:name>
           <maml:description>
-            <maml:para>Specify the file path where the generated images will be saved. This cannot be specified with the `ResponseFormat` parameter.</maml:para>
+            <maml:para>Specify the file path where the generated images will be saved. This cannot be specified with the `ResponseFormat` parameter. For GPT image models, `.png`, `.jpg`, `.jpeg`, `.webp`, `.gif`, and `.svg` extensions select the output format unless `OutputFormat` is explicitly supplied. Unrecognized extensions use PNG.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -17157,7 +17373,7 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>Model</maml:name>
         <maml:description>
-          <maml:para>The model to use for image generation. Defaults to `gpt-image-2`. GPT Image 2.5 models include `gpt-image-2.5-sunburst`, `gpt-image-2.5-flare`.</maml:para>
+          <maml:para>The model to use for image generation. Defaults to `gpt-image-2`. Supports `gpt-image-2.6-sunburst` and `gpt-image-2.6-flare`, as well as GPT Image 2.5 and earlier models subject to API availability. Model names and Azure deployment names are not restricted to the completion suggestions.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -17181,7 +17397,7 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>Size</maml:name>
         <maml:description>
-          <maml:para>The size of the generated images. GPT Image 2 and GPT Image 2.5 accept arbitrary supported `WIDTHxHEIGHT` resolutions or `auto`. Older image models support their documented fixed sizes.</maml:para>
+          <maml:para>The size of the generated images. GPT Image 2, 2.5, and 2.6 accept supported `WIDTHxHEIGHT` resolutions or `auto`. GIF sizes must also satisfy the selected model's frame and pixel limits. Older image models support their documented fixed sizes.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -17203,6 +17419,18 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
           <maml:uri />
         </dev:type>
         <dev:defaultValue>auto</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Complexity</maml:name>
+        <maml:description>
+          <maml:para>Computation spent planning the image, independently of rendering `Quality`. Accepts `low`, `medium`, or `high` on GPT Image 2.6. Omitted values use the image model's configured default. For SVG output this controls the reference image, independently of the SVG author's reasoning.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>Style</maml:name>
@@ -17255,7 +17483,8 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="output_format">
         <maml:name>OutputFormat</maml:name>
         <maml:description>
-          <maml:para>The format in which the generated images are returned. This parameter is only supported for the GPT image models. Must be one of `png`, `jpeg`, or `webp`.</maml:para>
+          <maml:para>The output file format for GPT image models: `png`, `jpeg`, `webp`, `gif`, or `svg`, subject to model and account support. Defaults to `png` unless inferred from `OutFile`. An explicit value overrides the file extension.</maml:para>
+          <maml:para>GIF output requires GIF preview access and does not support `Stream`, `PartialImages`, or `OutputCompression`. SVG output requires a single image and does not support `Stream`, `PartialImages`, or `OutputCompression`. Both formats are returned in `b64_json`; SVG content decodes to UTF-8 XML bytes.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -17264,10 +17493,46 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="frame_count">
+        <maml:name>FrameCount</maml:name>
+        <maml:description>
+          <maml:para>Number of GIF frames, from 2 through 16 according to the API schema. Use only with GIF output. If omitted, the API defaults to 9. Model-specific pixel limits also apply.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="frame_duration_ms">
+        <maml:name>FrameDurationMs</maml:name>
+        <maml:description>
+          <maml:para>Requested delay per GIF frame in milliseconds, at least 20. Use only with GIF output. If omitted, the API defaults to 200. The Images API rounds to 10 ms and caps the encoded delay at 655,350 ms; this differs from the Responses tool's 2000 ms maximum.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>Svg</maml:name>
+        <maml:description>
+          <maml:para>SVG author settings as a dictionary, for example `@{ model = 'gpt-6-luna'; reasoning = @{ effort = 'low' } }`. Requires SVG output and access to SVG model selection. When selection is enabled, supply `model`; otherwise omit this parameter. `reasoning` and its `effort` may be omitted or null to use the author's default. Supported efforts depend on the author model. The top-level `Model` still selects the image model that creates the reference image.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">System.Collections.IDictionary</command:parameterValue>
+        <dev:type>
+          <maml:name>System.Collections.IDictionary</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="response_format">
         <maml:name>ResponseFormat</maml:name>
         <maml:description>
-          <maml:para>The format in which the generated images are returned. Must be one of `url`, `base64` or `byte`. This parameter is only supported for `dall-e-2`, as the GPT image models always return images in `base64` format.</maml:para>
+          <maml:para>How to return the result: `url`, `base64`, `byte`, or `object`. GPT image models always return base64 data from the API; this command can decode it to bytes or return the full response object, including `usage` and `svg_usage` when present. For GPT image models, the default `url` selection falls back to `object`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -17291,7 +17556,7 @@ If not specified, it will try to use `$global:OPENAI_ORGANIZATION` or `$env:OPEN
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>OutFile</maml:name>
         <maml:description>
-          <maml:para>Specify the file path where the generated images will be saved. This cannot be specified with the `ResponseFormat` parameter.</maml:para>
+          <maml:para>Specify the file path where the generated images will be saved. This cannot be specified with the `ResponseFormat` parameter. For GPT image models, `.png`, `.jpg`, `.jpeg`, `.webp`, `.gif`, and `.svg` extensions select the output format unless `OutputFormat` is explicitly supplied. Unrecognized extensions use PNG.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -17405,6 +17670,20 @@ https://oaidalleapiprodscus.blob.core.windows.net/private/org-BXLtGIt0xglP9if8FV
 https://oaidalleapiprodscus.blob.core.windows.net/private/org-BXLtGIt0xglP9if8FVhkD...</dev:code>
         <dev:remarks>
           <maml:para></maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>--- Example 3: Generate an animated GIF with GPT Image 2.6. ---</maml:title>
+        <dev:code>Request-ImageGeneration -Model 'gpt-image-2.6-flare' -Prompt 'A bouncing blue ball, seamless loop' -Complexity low -Quality low -Size 512x512 -FrameCount 2 -FrameDurationMs 200 -OutFile C:\ball.gif</dev:code>
+        <dev:remarks>
+          <maml:para>The file extension selects GIF output. Availability depends on GIF preview access for the selected model.</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------- Example 4: Generate an SVG with GPT Image 2.6. --------</maml:title>
+        <dev:code>Request-ImageGeneration -Model 'gpt-image-2.6-sunburst' -Prompt 'A simple mountain icon' -Complexity low -Quality low -Svg @{ model = 'gpt-6-luna'; reasoning = @{ effort = 'low' } } -OutFile C:\mountain.svg</dev:code>
+        <dev:remarks>
+          <maml:para>This example requires SVG model selection and access to the specified author model. If SVG model selection is disabled for your account, omit `-Svg` to use the API's default author. With object output, `svg_usage` reports author token usage separately from image `usage`.</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>
@@ -18641,11 +18920,59 @@ Possible values: `browser`, `mac`, `windows`, `ubuntu`.</maml:para>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>ImageGenerationModel</maml:name>
           <maml:description>
-            <maml:para>The image generation model to use.</maml:para>
+            <maml:para>The image generation model to use, including `gpt-image-2.6-sunburst` and `gpt-image-2.6-flare`. Completion suggestions do not restrict custom model or deployment names.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
             <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>ImageGenerationComplexity</maml:name>
+          <maml:description>
+            <maml:para>Computation spent planning the image: `low`, `medium`, or `high`. Requires `UseImageGenerationTool`. This overrides the outer response's `ReasoningEffort` for image generation only. If omitted, the tool inherits a supported outer reasoning effort or uses the image model's configured default. For SVG output, this controls the reference image, not the SVG author's reasoning.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>ImageGenerationFrameCount</maml:name>
+          <maml:description>
+            <maml:para>Number of GIF frames, from 2 through 16. Requires `UseImageGenerationTool` and GIF output. If omitted, the API defaults to 9.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>ImageGenerationFrameDurationMs</maml:name>
+          <maml:description>
+            <maml:para>Duration per GIF frame, from 20 through 2000 milliseconds, rounded by the API to 10 ms. Requires `UseImageGenerationTool` and GIF output. If omitted, the API defaults to 200.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>ImageGenerationSvg</maml:name>
+          <maml:description>
+            <maml:para>SVG author settings as a dictionary, for example `@{ model = 'gpt-6-luna'; reasoning = @{ effort = 'low' } }`. Requires `UseImageGenerationTool` and SVG output. When SVG model selection is enabled, omitting the author model uses the outer response model. Otherwise omit model overrides to use the API's default author. Omitted reasoning uses the author's default, independently of image complexity. Completed image generation items retain `svg_usage` separately from image rendering usage when returned by the API.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">System.Collections.IDictionary</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Collections.IDictionary</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -18713,7 +19040,7 @@ Possible values: `browser`, `mac`, `windows`, `ubuntu`.</maml:para>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>ImageGenerationOutputFormat</maml:name>
           <maml:description>
-            <maml:para>The output format of the generated image. One of `png`, `webp`, or `jpeg`.</maml:para>
+            <maml:para>The output format of the generated image: `png`, `webp`, `jpeg`, `gif`, or `svg`. GIF and SVG require support from the selected model and account. GIF does not support partial images greater than 0, input image masks, or custom output compression. Responses lifecycle events can still be streamed for GIF output.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -18749,7 +19076,7 @@ Possible values: `browser`, `mac`, `windows`, `ubuntu`.</maml:para>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>ImageGenerationSize</maml:name>
           <maml:description>
-            <maml:para>The size of the generated image. Use `auto` or a `WIDTHxHEIGHT` value supported by the selected image model. GPT Image 2 and GPT Image 2.5 accept arbitrary supported resolutions.</maml:para>
+            <maml:para>The size of the generated image. Use `auto` or a `WIDTHxHEIGHT` value supported by the selected image model. GPT Image 2, 2.5, and 2.6 accept supported resolutions; GIF frame and pixel limits also apply.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -19959,11 +20286,59 @@ Possible values: `browser`, `mac`, `windows`, `ubuntu`.</maml:para>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>ImageGenerationModel</maml:name>
         <maml:description>
-          <maml:para>The image generation model to use.</maml:para>
+          <maml:para>The image generation model to use, including `gpt-image-2.6-sunburst` and `gpt-image-2.6-flare`. Completion suggestions do not restrict custom model or deployment names.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
           <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>ImageGenerationComplexity</maml:name>
+        <maml:description>
+          <maml:para>Computation spent planning the image: `low`, `medium`, or `high`. Requires `UseImageGenerationTool`. This overrides the outer response's `ReasoningEffort` for image generation only. If omitted, the tool inherits a supported outer reasoning effort or uses the image model's configured default. For SVG output, this controls the reference image, not the SVG author's reasoning.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>ImageGenerationFrameCount</maml:name>
+        <maml:description>
+          <maml:para>Number of GIF frames, from 2 through 16. Requires `UseImageGenerationTool` and GIF output. If omitted, the API defaults to 9.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>ImageGenerationFrameDurationMs</maml:name>
+        <maml:description>
+          <maml:para>Duration per GIF frame, from 20 through 2000 milliseconds, rounded by the API to 10 ms. Requires `UseImageGenerationTool` and GIF output. If omitted, the API defaults to 200.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>ImageGenerationSvg</maml:name>
+        <maml:description>
+          <maml:para>SVG author settings as a dictionary, for example `@{ model = 'gpt-6-luna'; reasoning = @{ effort = 'low' } }`. Requires `UseImageGenerationTool` and SVG output. When SVG model selection is enabled, omitting the author model uses the outer response model. Otherwise omit model overrides to use the API's default author. Omitted reasoning uses the author's default, independently of image complexity. Completed image generation items retain `svg_usage` separately from image rendering usage when returned by the API.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">System.Collections.IDictionary</command:parameterValue>
+        <dev:type>
+          <maml:name>System.Collections.IDictionary</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -20031,7 +20406,7 @@ Possible values: `browser`, `mac`, `windows`, `ubuntu`.</maml:para>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>ImageGenerationOutputFormat</maml:name>
         <maml:description>
-          <maml:para>The output format of the generated image. One of `png`, `webp`, or `jpeg`.</maml:para>
+          <maml:para>The output format of the generated image: `png`, `webp`, `jpeg`, `gif`, or `svg`. GIF and SVG require support from the selected model and account. GIF does not support partial images greater than 0, input image masks, or custom output compression. Responses lifecycle events can still be streamed for GIF output.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -20067,7 +20442,7 @@ Possible values: `browser`, `mac`, `windows`, `ubuntu`.</maml:para>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>ImageGenerationSize</maml:name>
         <maml:description>
-          <maml:para>The size of the generated image. Use `auto` or a `WIDTHxHEIGHT` value supported by the selected image model. GPT Image 2 and GPT Image 2.5 accept arbitrary supported resolutions.</maml:para>
+          <maml:para>The size of the generated image. Use `auto` or a `WIDTHxHEIGHT` value supported by the selected image model. GPT Image 2, 2.5, and 2.6 accept supported resolutions; GIF frame and pixel limits also apply.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>

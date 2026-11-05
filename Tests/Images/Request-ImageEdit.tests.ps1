@@ -50,6 +50,26 @@ Describe 'Request-ImageEdit' {
             $Result.Body['image[]'] | Should -HaveCount 2
             $Result.Body['image[]'][0] | Should -BeOfType [System.IO.FileInfo]
             $Result.Body['image[]'][1] | Should -BeOfType [System.IO.FileInfo]
+            $Result.Body.Contains('complexity') | Should -BeFalse
+            $Result.Body.Contains('frame_count') | Should -BeFalse
+            $Result.Body.Contains('frame_duration_ms') | Should -BeFalse
+        }
+
+        It 'Serializes GPT Image 2.6 GIF edit controls and infers the output format' {
+            Mock -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -ParameterFilter { -not $Stream } {
+                '{"data":[{"b64_json":"R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="}]}'
+            }
+            $OutPath = Join-Path $TestDrive 'edit.GIF'
+            Request-ImageEdit -Image ($script:TestImageData + '/fether_mask.png') -Prompt 'Animate the feather' `
+                -Model 'gpt-image-2.6-flare' -Complexity MEDIUM -FrameCount 16 -FrameDurationMs 2010 -OutFile $OutPath -ErrorAction Stop
+
+            [Convert]::ToBase64String([IO.File]::ReadAllBytes($OutPath)) | Should -BeExactly 'R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=='
+            Should -Invoke Invoke-OpenAIHttpRequest -ModuleName $script:ModuleName -Times 1 -Exactly -ParameterFilter {
+                $Body.model -eq 'gpt-image-2.6-flare' -and $Body.complexity -ceq 'medium' -and
+                $Body.frame_count -eq 16 -and $Body.frame_duration_ms -eq 2010 -and $Body.output_format -eq 'gif' -and
+                $Body.image -is [System.IO.FileInfo] -and -not $Body.Contains('response_format') -and
+                -not $Body.Contains('output_compression') -and -not $Stream
+            }
         }
 
         It 'Image edit. one input, one output, save to file' {

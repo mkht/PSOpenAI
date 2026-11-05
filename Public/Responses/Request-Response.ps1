@@ -295,6 +295,8 @@ function Request-Response {
 
         [Parameter()]
         [Completions(
+            'gpt-image-2.6-sunburst',
+            'gpt-image-2.6-flare',
             'gpt-image-2.5-sunburst',
             'gpt-image-2.5-flare',
             'gpt-image-2',
@@ -304,6 +306,21 @@ function Request-Response {
             'chatgpt-image-latest'
         )]
         [string]$ImageGenerationModel,
+
+        [Parameter()]
+        [Completions('low', 'medium', 'high')]
+        [string]$ImageGenerationComplexity,
+
+        [Parameter()]
+        [ValidateRange(2, 16)]
+        [int]$ImageGenerationFrameCount,
+
+        [Parameter()]
+        [ValidateRange(20, 2000)]
+        [int]$ImageGenerationFrameDurationMs,
+
+        [Parameter()]
+        [System.Collections.IDictionary]$ImageGenerationSvg,
 
         [Parameter()]
         [Completions('generate', 'edit', 'auto')]
@@ -324,8 +341,8 @@ function Request-Response {
         [int]$ImageGenerationOutputCompression,
 
         [Parameter()]
-        [Completions('png', 'jpeg', 'webp')]
-        [string][LowerCaseTransformation()]$ImageGenerationOutputFormat = 'png',
+        [Completions('png', 'jpeg', 'webp', 'gif', 'svg')]
+        [string]$ImageGenerationOutputFormat = 'png',
 
         [Parameter()]
         [ValidateRange(0, 3)]
@@ -971,6 +988,18 @@ function Request-Response {
             if ($PSBoundParameters.ContainsKey('ImageGenerationModel')) {
                 $ImageGenerationTool.model = $ImageGenerationModel
             }
+            if ($PSBoundParameters.ContainsKey('ImageGenerationComplexity')) {
+                $ImageGenerationTool.complexity = $ImageGenerationComplexity.ToLowerInvariant()
+            }
+            if ($PSBoundParameters.ContainsKey('ImageGenerationFrameCount')) {
+                $ImageGenerationTool.frame_count = $ImageGenerationFrameCount
+            }
+            if ($PSBoundParameters.ContainsKey('ImageGenerationFrameDurationMs')) {
+                $ImageGenerationTool.frame_duration_ms = $ImageGenerationFrameDurationMs
+            }
+            if ($PSBoundParameters.ContainsKey('ImageGenerationSvg')) {
+                $ImageGenerationTool.svg = $ImageGenerationSvg
+            }
             if ($PSBoundParameters.ContainsKey('ImageGenerationAction')) {
                 $ImageGenerationTool.action = $ImageGenerationAction
             }
@@ -995,7 +1024,7 @@ function Request-Response {
                 $ImageGenerationTool.output_compression = $ImageGenerationOutputCompression
             }
             if ($PSBoundParameters.ContainsKey('ImageGenerationOutputFormat')) {
-                $ImageGenerationTool.output_format = $ImageGenerationOutputFormat
+                $ImageGenerationTool.output_format = $ImageGenerationOutputFormat.ToLowerInvariant()
             }
             if ($PSBoundParameters.ContainsKey('ImageGenerationPartialImages')) {
                 $ImageGenerationTool.partial_images = $ImageGenerationPartialImages
