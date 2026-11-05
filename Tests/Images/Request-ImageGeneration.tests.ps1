@@ -657,6 +657,40 @@ Describe 'Request-ImageGeneration' {
             (Join-Path $TestDrive 'file3-1.png') | Should -Exist
             (Join-Path $TestDrive 'file3.png') | Should -Exist
         }
+
+        It 'Generate GPT Image 2.6 GIF output' {
+            $Result = Request-ImageGeneration `
+                -Prompt 'A simple blue ball bouncing on a white background, two frame loop.' `
+                -Model 'gpt-image-2.6-flare' -Size '512x512' -Quality low -Complexity low `
+                -NumberOfImages 1 -OutputFormat gif -FrameCount 2 -FrameDurationMs 200 `
+                -ResponseFormat object -TimeoutSec 180 -MaxRetryCount 0 -ErrorAction Stop
+
+            $Result.output_format | Should -BeExactly 'gif'
+            $Result.data | Should -HaveCount 1
+            $bytes = [Convert]::FromBase64String($Result.data[0].b64_json)
+            [Text.Encoding]::ASCII.GetString($bytes, 0, 6) | Should -BeIn @('GIF87a', 'GIF89a')
+            # GIF logical screen dimensions are unsigned little-endian 16-bit values.
+            ([int]$bytes[6] + 256 * $bytes[7]) | Should -Be 512
+            ([int]$bytes[8] + 256 * $bytes[9]) | Should -Be 512
+        }
+
+        It 'Generate GPT Image 2.6 SVG output' {
+            $Result = Request-ImageGeneration `
+                -Prompt 'A simple blue circle icon on a white background.' `
+                -Model 'gpt-image-2.6-sunburst' -Size '1024x1024' -Quality low -Complexity low `
+                -NumberOfImages 1 -OutputFormat svg -SvgModel 'gpt-6-luna' -SvgReasoningEffort low `
+                -ResponseFormat object -TimeoutSec 180 -MaxRetryCount 0 -ErrorAction Stop
+
+            $Result.output_format | Should -BeExactly 'svg'
+            $Result.data | Should -HaveCount 1
+            $bytes = [Convert]::FromBase64String($Result.data[0].b64_json)
+            $document = [xml][Text.Encoding]::UTF8.GetString($bytes)
+            $document.DocumentElement.LocalName | Should -BeExactly 'svg'
+            $document.DocumentElement.NamespaceURI | Should -BeExactly 'http://www.w3.org/2000/svg'
+            $Result.svg_usage.model | Should -BeExactly 'gpt-6-luna'
+            $Result.svg_usage.total_tokens | Should -BeGreaterThan 0
+            $Result.usage.total_tokens | Should -BeGreaterThan 0
+        }
     }
 
 

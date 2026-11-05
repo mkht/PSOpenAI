@@ -2,6 +2,21 @@
 
 The Offline tests use fixed, synthetic GIF/SVG base64 payloads and synthetic usage objects. They verify serialization, byte preservation, file-format inference, omitted options, and separate SVG author usage. They do not call the API or regenerate images. Image edit tests reuse the existing files in `Docs/images`.
 
+## Online output tests
+
+`Request-ImageGeneration.tests.ps1` includes two tests under the `Online` context: `Generate GPT Image 2.6 GIF output` and `Generate GPT Image 2.6 SVG output`. They reuse the prompts and low-cost settings recorded below. GIF checks cover the returned format, base64 decoding, signature, and 512x512 logical screen dimensions. SVG checks cover the returned format, base64 decoding, SVG XML root/namespace, and separate image/SVG author usage. Outputs stay in memory, and no fixture files are regenerated. SVG requires access to the selected author model; GIF requires preview access.
+
+To run only these two paid tests, select their full names without an additional tag filter:
+
+```powershell
+$configuration = & ./PesterConfiguration.ps1
+$configuration.Run.Path = './Tests/Images/Request-ImageGeneration.tests.ps1'
+$configuration.Filter.FullName = 'Request-ImageGeneration.Integration tests (online).Generate GPT Image 2.6 * output'
+Invoke-Pester -Configuration $configuration
+```
+
+Normal runs with `Filter.Tag = 'Offline'` exclude both tests. Both Online cases passed on 2026-11-05 with PowerShell 7.6.9, including the flat SVG author parameters.
+
 ## Live checks on 2026-11-05
 
 Executed separately with the `Online` tag using the local module and an environment-provided API key. Each successful request used `Quality=low`, `Complexity=low`, `NumberOfImages=1`, `TimeoutSec=180`, and `MaxRetryCount=0`. Generated outputs were inspected in memory, not added as test fixtures.
