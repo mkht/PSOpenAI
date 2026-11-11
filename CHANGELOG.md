@@ -7,7 +7,6 @@
 - Add `Request-Decision` for the Decisions API, with shared text arrays and inline image input, named predicate/choice/score question parameters, and typed answers.
 
 ### 5.0.0
-
 #### Breaking changes and migration
 
 - **Image variations:** Remove `Request-ImageVariation`. The `/images/variations` endpoint seems to be deprecated by OpenAI.
