@@ -15,15 +15,10 @@ function Request-Response {
 
         [Parameter(ValueFromPipelineByPropertyName)]
         [Completions(
-            'gpt-3.5-turbo',
-            'gpt-4',
             'gpt-4o',
             'gpt-4o-mini',
-            'gpt-3.5-turbo-16k',
-            'gpt-4-turbo',
             'gpt-4.1',
             'gpt-4.1-mini',
-            'gpt-4.1-nano',
             'gpt-5',
             'gpt-5-mini',
             'gpt-5-nano',
@@ -44,12 +39,11 @@ function Request-Response {
             'gpt-6-sol',
             'gpt-6-astra',
             'gpt-6.1-sol',
-            'o1',
-            'o1-pro',
+            'gpt-6.1-terra',
+            'gpt-6.2-astra',
+            'gpt-6.2-sol',
             'o3',
             'o3-pro',
-            'o3-mini',
-            'o4-mini',
             'chat-latest'
         )]
         [string]$Model = 'gpt-6-luna',

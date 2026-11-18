@@ -19,21 +19,10 @@ function Request-ChatCompletion {
 
         [Parameter(ValueFromPipelineByPropertyName)]
         [Completions(
-            'gpt-3.5-turbo',
-            'gpt-4',
             'gpt-4o',
             'gpt-4o-mini',
-            'gpt-4o-search-preview',
-            'gpt-4o-mini-search-preview',
-            'gpt-3.5-turbo-16k',
-            'gpt-3.5-turbo-1106',
-            'gpt-3.5-turbo-0125',
-            'gpt-4-0613',
-            'gpt-4-turbo',
-            'gpt-4-turbo-2024-04-09',
             'gpt-4.1',
             'gpt-4.1-mini',
-            'gpt-4.1-nano',
             'gpt-5',
             'gpt-5-mini',
             'gpt-5-nano',
@@ -51,13 +40,13 @@ function Request-ChatCompletion {
             'gpt-6-sol',
             'gpt-6-astra',
             'gpt-6.1-sol',
+            'gpt-6.1-terra',
+            'gpt-6.2-astra',
+            'gpt-6.2-sol',
             'gpt-audio',
             'gpt-audio-mini',
             'gpt-audio-1.5',
-            'o1',
             'o3',
-            'o3-mini',
-            'o4-mini',
             'chat-latest'
         )]
         [string]$Model = 'gpt-6-luna',
