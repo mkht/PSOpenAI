@@ -1,16 +1,24 @@
 function Request-Decision {
-    [CmdletBinding()]
+    [CmdletBinding(DefaultParameterSetName = 'Message')]
     [OutputType([pscustomobject])]
     param (
-        [Parameter(Position = 0, ValueFromPipeline)]
+        [Parameter(ParameterSetName = 'Message', Position = 0, ValueFromPipeline)]
         [ValidateNotNullOrEmpty()]
         [Alias('Input')]
         [string[]]$Message,
 
-        [Parameter()]
+        [Parameter(ParameterSetName = 'Message')]
         [ValidateCount(1, 128)]
         [ValidateNotNullOrEmpty()]
         [string[]]$Images,
+
+        [Parameter(ParameterSetName = 'Message')]
+        [ValidateNotNull()]
+        [object]$InputJson,
+
+        [Parameter(Mandatory, ParameterSetName = 'InputItem')]
+        [ValidateNotNullOrEmpty()]
+        [object[]]$InputItem,
 
         [Parameter()]
         [Completions('auto', 'low', 'high', 'original')]
@@ -27,14 +35,14 @@ function Request-Decision {
         [string[]]$PredicateQuestionName,
 
         [Parameter()]
-        [string[]]$PredicateQuestionInstructions,
+        [object[]]$PredicateQuestionInstructions,
 
         # Choice
         [Parameter()]
         [string[]]$ChoiceQuestionName,
 
         [Parameter()]
-        [string[]]$ChoiceQuestionInstructions,
+        [object[]]$ChoiceQuestionInstructions,
 
         [Parameter()]
         [object[]]$ChoiceQuestionChoices,
@@ -44,11 +52,27 @@ function Request-Decision {
         [string[]]$ScoreQuestionName,
 
         [Parameter()]
-        [string[]]$ScoreQuestionInstructions,
+        [object[]]$ScoreQuestionInstructions,
 
         [Parameter()]
         [object[]]$ScoreQuestionLevels,
         #endregion
+
+        [Parameter()]
+        [Alias('prompt_cache_key')]
+        [AllowEmptyString()]
+        [ValidateLength(0, 64)]
+        [string]$PromptCacheKey,
+
+        [Parameter()]
+        [Alias('prompt_cache_options.mode')]
+        [Completions('implicit', 'explicit')]
+        [string]$PromptCacheMode,
+
+        [Parameter()]
+        [Alias('prompt_cache_options.ttl')]
+        [Completions('30m')]
+        [string]$PromptCacheTtl,
 
         [Parameter()]
         [AllowEmptyString()]
@@ -272,7 +296,10 @@ function Request-Decision {
         $PostBody.model = $Model
         $PostBody.questions = $Questions
 
-        if ($Images.Count -gt 0 -or $Message.Count -gt 1) {
+        if ($PSBoundParameters.ContainsKey('InputItem')) {
+            $PostBody.input = $InputItem
+        }
+        elseif ($Images.Count -gt 0 -or $Message.Count -gt 1 -or $PSBoundParameters.ContainsKey('InputJson')) {
             $Parts = @()
             foreach ($Text in $Message) {
                 $Parts += @{ type = 'input_text'; text = $Text }
@@ -292,14 +319,31 @@ function Request-Decision {
                 }
                 $Parts += @{ type = 'input_image'; image_url = $ImageUrl; detail = $ImageDetail }
             }
+            if ($PSBoundParameters.ContainsKey('InputJson')) {
+                $Parts += @{ type = 'input_json'; data = $InputJson }
+            }
             $PostBody.input = @(@{ role = 'user'; content = $Parts })
         }
         elseif ($PSBoundParameters.ContainsKey('Message')) {
             $PostBody.input = $Message[0]
         }
         else {
-            Write-Error -Exception ([System.ArgumentException]::new('Message or Images is required.'))
+            Write-Error -Exception ([System.ArgumentException]::new('Message, Images, InputJson, or InputItem is required.'))
             return
+        }
+
+        if ($PSBoundParameters.ContainsKey('PromptCacheKey')) {
+            $PostBody.prompt_cache_key = $PromptCacheKey
+        }
+        $PromptCacheOptions = @{}
+        if ($PSBoundParameters.ContainsKey('PromptCacheMode')) {
+            $PromptCacheOptions.mode = $PromptCacheMode
+        }
+        if ($PSBoundParameters.ContainsKey('PromptCacheTtl')) {
+            $PromptCacheOptions.ttl = $PromptCacheTtl
+        }
+        if ($PromptCacheOptions.Count -gt 0) {
+            $PostBody.prompt_cache_options = $PromptCacheOptions
         }
 
         if ($PSBoundParameters.ContainsKey('SafetyIdentifier')) {

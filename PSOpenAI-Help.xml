@@ -14855,15 +14855,18 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
       <command:verb>Request</command:verb>
       <command:noun>Decision</command:noun>
       <maml:description>
-        <maml:para>Evaluate text and images with the Decisions API.</maml:para>
+        <maml:para>Evaluate text, images, JSON, and conversation history with the Decisions API.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Send shared text or image evidence and questions to POST /v1/decisions. Specify questions with PredicateQuestionInstructions, ChoiceQuestionInstructions, or ScoreQuestionInstructions. At least one question is required.</maml:para>
+      <maml:para>Send shared evidence and questions to the generally available POST /v1/decisions endpoint. Specify questions with PredicateQuestionInstructions, ChoiceQuestionInstructions, or ScoreQuestionInstructions. At least one question is required. The GA API supports up to 400 questions per request, increased from 200 in public beta. The command sends all supplied questions without enforcing an upper limit, leaving limit validation and any error response to the API so future API limit increases can be used without a module update.</maml:para>
       <maml:para>Each instruction array defines the questions of that type. Optional names and required choice/level entries are matched by index. Omitted, null, and empty names are left out of the request. Each choice question requires at least two choices; a question with fewer choices produces an error and is skipped. Each score question requires at least one level.</maml:para>
       <maml:para>Questions are sent in Predicate, Choice, Score order, preserving array order within each type. Each answer corresponds to the question at the same index in the resulting questions array.</maml:para>
       <maml:para>Score level order defines the numeric indices. Use an ordered dictionary (`[ordered]@{ ... }`) or an array for ScoreQuestionLevels when the order matters. A regular hashtable (`@{ ... }`) does not guarantee the order in which its keys are enumerated. Supplying one emits a warning, and the question is still sent using its enumerated key order.</maml:para>
-      <maml:para>Specify Message, Images, or both. A Message array supplies ordered text parts as shared evidence in one request. Pipeline strings are processed separately, with one request per string. Images accepts local image paths, inline base64 data URLs, and publicly accessible HTTP(S) image URLs; images follow text parts when both are supplied.</maml:para>
+      <maml:para>Specify Message, Images, InputJson, or any combination of them. A Message array supplies ordered text parts as shared evidence in one request. Pipeline strings are processed separately, with one request per string. Images accepts local image paths, inline base64 data URLs, and publicly accessible HTTP(S) image URLs. Shared content is sent in text, image, JSON order. InputJson accepts an object or an array of objects without converting it to a JSON string first.</maml:para>
+      <maml:para>Alternatively, use InputItem for an ordered array of API input items: user, developer, system, and assistant messages, function calls and outputs, and custom tool calls and outputs. Tool outputs must match their calls by call_id. InputItem cannot be combined with Message, Images, or InputJson. The Input alias continues to mean Message.</maml:para>
+      <maml:para>Each question instruction can be a string or a nonempty array of input_text, input_image, and input_json parts. Wrap a content-part array with a unary comma to supply it as one question. These parts are forwarded as supplied; image_url must be a data URL or public HTTP(S) URL. Only Images converts local image paths.</maml:para>
+      <maml:para>Prompt caching is automatic for an identical shared input prefix of at least 1,024 tokens. Questions are outside the reusable prefix. Use PromptCacheKey to partition reuse, and PromptCacheMode and PromptCacheTtl to configure caching. To mark an explicit boundary, supply prompt_cache_breakpoint = @{ mode = 'explicit' } on a text or image part through InputItem. Breakpoints cannot be used in question instructions. Explicit mode with no marked boundary does not use caching.</maml:para>
       <maml:para>The returned PSOpenAI.Decision object contains model, answers, and usage. Answer fields, boolean or string choice values, fractional scores, and refusal answers are preserved.</maml:para>
     </maml:description>
     <command:syntax>
@@ -14872,7 +14875,7 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="0" aliases="Input">
           <maml:name>Message</maml:name>
           <maml:description>
-            <maml:para>Shared text evidence. Alias: Input. Either Message or Images is required. A single text string is sent as a string; multiple strings become ordered input_text parts. Pipeline strings each produce a separate request.</maml:para>
+            <maml:para>Shared text evidence. Alias: Input. Supply Message, Images, InputJson, or a combination of them. A single text string is sent as a string; multiple strings become ordered input_text parts. Pipeline strings each produce a separate request. Cannot be combined with InputItem.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
           <dev:type>
@@ -14884,7 +14887,7 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>Images</maml:name>
           <maml:description>
-            <maml:para>One to 128 local image paths, inline base64 image data URLs, or publicly accessible HTTP(S) image URLs, shared by all questions. Local paths are converted to data URLs before sending; HTTP(S) URLs are passed through unchanged. Missing files, directories, and unsupported URI schemes produce an error before the API request. The API must be able to retrieve any supplied URL.</maml:para>
+            <maml:para>One to 128 local image paths, inline base64 image data URLs, or publicly accessible HTTP(S) image URLs, shared by all questions. Local paths are converted to data URLs before sending; HTTP(S) URLs are passed through unchanged. Missing files, directories, and unsupported URI schemes produce an error before the API request. The API must be able to retrieve any supplied URL. Cannot be combined with InputItem. Question images and shared images count toward the same API image limits.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
           <dev:type>
@@ -14908,7 +14911,7 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>Model</maml:name>
           <maml:description>
-            <maml:para>Model to use. The beta API currently supports gpt-6-luna. Completion candidates do not restrict model or deployment names on compatible servers.</maml:para>
+            <maml:para>Model to use. The GA API currently supports gpt-6-luna. Completion candidates do not restrict model or deployment names on compatible servers.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -14932,11 +14935,11 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>PredicateQuestionInstructions</maml:name>
           <maml:description>
-            <maml:para>Instructions for predicate questions that estimate whether a condition is true. Each non-empty entry creates one question; names may be omitted.</maml:para>
+            <maml:para>Instructions for predicate questions that estimate whether a condition is true. Each entry creates one question and can be a string or a nonempty array of input_text, input_image, and input_json parts. Wrap a content-part array with a unary comma to keep it as one question; names may be omitted. Content parts are forwarded without local image conversion or cache breakpoints.</maml:para>
           </maml:description>
-          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Object[]</command:parameterValue>
           <dev:type>
-            <maml:name>String[]</maml:name>
+            <maml:name>Object[]</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -14956,11 +14959,11 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>ChoiceQuestionInstructions</maml:name>
           <maml:description>
-            <maml:para>Instructions for choice questions. Each non-empty entry requires a corresponding choices entry in ChoiceQuestionChoices.</maml:para>
+            <maml:para>Instructions for choice questions. Each entry can be a string or a nonempty content-part array, as described for PredicateQuestionInstructions, and requires a corresponding choices entry in ChoiceQuestionChoices.</maml:para>
           </maml:description>
-          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Object[]</command:parameterValue>
           <dev:type>
-            <maml:name>String[]</maml:name>
+            <maml:name>Object[]</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -14993,11 +14996,11 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>ScoreQuestionInstructions</maml:name>
           <maml:description>
-            <maml:para>Instructions for score questions. Each non-empty entry requires a corresponding levels entry in ScoreQuestionLevels.</maml:para>
+            <maml:para>Instructions for score questions. Each entry can be a string or a nonempty content-part array, as described for PredicateQuestionInstructions, and requires a corresponding levels entry in ScoreQuestionLevels.</maml:para>
           </maml:description>
-          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Object[]</command:parameterValue>
           <dev:type>
-            <maml:name>String[]</maml:name>
+            <maml:name>Object[]</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -15011,6 +15014,299 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
           <command:parameterValue required="true" variableLength="false">Object[]</command:parameterValue>
           <dev:type>
             <maml:name>Object[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>InputJson</maml:name>
+          <maml:description>
+            <maml:para>Shared structured evidence sent as an input_json part after any text and image parts. Supply an object or an array of objects, such as a hashtable or PSCustomObject, without converting it to a JSON string. Nested JSON values are preserved. The API validates JSON size and depth limits. Cannot be combined with InputItem.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
+          <dev:type>
+            <maml:name>Object</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="prompt_cache_key">
+          <maml:name>PromptCacheKey</maml:name>
+          <maml:description>
+            <maml:para>Caller-provided key to partition prompt cache reuse. Maximum length is 64 characters. Sent only when explicitly supplied, including an empty string.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="prompt_cache_options.mode">
+          <maml:name>PromptCacheMode</maml:name>
+          <maml:description>
+            <maml:para>Prompt caching mode. Completion candidates are implicit and explicit. The server defaults to implicit, placing a cache breakpoint at the end of shared input. Explicit mode uses only marked boundaries and does not use caching if there are none. Question content is outside the cacheable prefix. Sent only when supplied; server validation applies.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="prompt_cache_options.ttl">
+          <maml:name>PromptCacheTtl</maml:name>
+          <maml:description>
+            <maml:para>Minimum lifetime of cache entries. Currently only 30m is supported by Decisions, which is also the server default. Sent only when supplied; server validation applies.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="safety_identifier">
+          <maml:name>SafetyIdentifier</maml:name>
+          <maml:description>
+            <maml:para>Opaque end-user identifier, up to 128 characters, sent as safety_identifier only when explicitly supplied. Alias: safety_identifier.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>TimeoutSec</maml:name>
+          <maml:description>
+            <maml:para>Timeout in seconds for each request attempt, including response reading. The default 0 means no timeout. Uses the OpenAI context setting when not explicitly supplied.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>0</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>MaxRetryCount</maml:name>
+          <maml:description>
+            <maml:para>Maximum retry count, from 0 to 100. The default 0 disables retries. Uses the OpenAI context setting when not explicitly supplied.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>0</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>ApiBase</maml:name>
+          <maml:description>
+            <maml:para>Base API URL. Uses the OpenAI context setting, or https://api.openai.com/v1 by default. The configured server must implement the Decisions endpoint.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">System.Uri</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Uri</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>https://api.openai.com/v1</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>ApiKey</maml:name>
+          <maml:description>
+            <maml:para>API key as a string or SecureString. If omitted, the context, global OPENAI_API_KEY variable, or OPENAI_API_KEY environment variable is used. Explicit null supplies an empty key.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">SecureString</command:parameterValue>
+          <dev:type>
+            <maml:name>SecureString</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="OrgId">
+          <maml:name>Organization</maml:name>
+          <maml:description>
+            <maml:para>Optional organization ID. Alias: OrgId. Uses the common OpenAI context and environment settings when omitted.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+      <command:syntaxItem>
+        <maml:name>Request-Decision</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>ImageDetail</maml:name>
+          <maml:description>
+            <maml:para>Image detail for Images. Completion candidates are auto, low, high, and original. Other values can also be supplied and are validated by the server. Values are converted to lowercase before sending.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>auto</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>Model</maml:name>
+          <maml:description>
+            <maml:para>Model to use. The GA API currently supports gpt-6-luna. Completion candidates do not restrict model or deployment names on compatible servers.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>gpt-6-luna</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>PredicateQuestionName</maml:name>
+          <maml:description>
+            <maml:para>Optional predicate question names, matched by index to PredicateQuestionInstructions. Omitted, null, or empty entries do not send a `name` property.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>PredicateQuestionInstructions</maml:name>
+          <maml:description>
+            <maml:para>Instructions for predicate questions that estimate whether a condition is true. Each entry creates one question and can be a string or a nonempty array of input_text, input_image, and input_json parts. Wrap a content-part array with a unary comma to keep it as one question; names may be omitted. Content parts are forwarded without local image conversion or cache breakpoints.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Object[]</command:parameterValue>
+          <dev:type>
+            <maml:name>Object[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>ChoiceQuestionName</maml:name>
+          <maml:description>
+            <maml:para>Optional choice question names, matched by index to ChoiceQuestionInstructions. Omitted, null, or empty entries do not send a `name` property.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>ChoiceQuestionInstructions</maml:name>
+          <maml:description>
+            <maml:para>Instructions for choice questions. Each entry can be a string or a nonempty content-part array, as described for PredicateQuestionInstructions, and requires a corresponding choices entry in ChoiceQuestionChoices.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Object[]</command:parameterValue>
+          <dev:type>
+            <maml:name>Object[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>ChoiceQuestionChoices</maml:name>
+          <maml:description>
+            <maml:para>One entry per ChoiceQuestionInstructions entry. An entry can be a dictionary mapping string or boolean choice values to optional descriptions, or an enumerable of string/boolean values and objects with a `value` property and optional `description` property. The enumerable may contain dictionaries or other property-based objects. A property-based object passed alone produces only one choice, so it does not meet the two-choice minimum. Questions with fewer than two choices produce an error and are skipped; detailed option validation is performed by the API.</maml:para>
+            <maml:para>For one question, pass the dictionary directly or use `, $choices` to wrap an array of values. For multiple questions, use `@($firstChoices, $secondChoices)` with one entry per question.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Object[]</command:parameterValue>
+          <dev:type>
+            <maml:name>Object[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>ScoreQuestionName</maml:name>
+          <maml:description>
+            <maml:para>Optional score question names, matched by index to ScoreQuestionInstructions. Omitted, null, or empty entries do not send a `name` property.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>ScoreQuestionInstructions</maml:name>
+          <maml:description>
+            <maml:para>Instructions for score questions. Each entry can be a string or a nonempty content-part array, as described for PredicateQuestionInstructions, and requires a corresponding levels entry in ScoreQuestionLevels.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Object[]</command:parameterValue>
+          <dev:type>
+            <maml:name>Object[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>ScoreQuestionLevels</maml:name>
+          <maml:description>
+            <maml:para>One entry per ScoreQuestionInstructions entry. An entry can be a dictionary mapping labels to optional descriptions, an enumerable of labels and objects with a `label` property and optional `description` property, or a property-based object that produces one level. The enumerable may contain dictionaries or other property-based objects. Each entry must contain at least one level; detailed level validation is performed by the API. Level order defines indices starting at 0. To preserve the intended order, use `[ordered]@{ ... }` or an array. An ordinary `@{ ... }` emits a warning because its key order is not guaranteed; processing continues.</maml:para>
+            <maml:para>For one question, pass the dictionary directly or use `, $levels` to wrap an array of labels. For multiple questions, use `@($firstLevels, $secondLevels)` with one entry per question.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Object[]</command:parameterValue>
+          <dev:type>
+            <maml:name>Object[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+          <maml:name>InputItem</maml:name>
+          <maml:description>
+            <maml:para>An ordered array of API input items, including messages, function calls and outputs, and custom tool calls and outputs. Items are forwarded unchanged, allowing supported role-specific content and explicit prompt_cache_breakpoint fields on shared text/image parts. Supply API-ready image URLs; local paths are not converted. Cannot be combined with Message (including its Input alias), Images, or InputJson. A single item is still sent as an array.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Object[]</command:parameterValue>
+          <dev:type>
+            <maml:name>Object[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="prompt_cache_key">
+          <maml:name>PromptCacheKey</maml:name>
+          <maml:description>
+            <maml:para>Caller-provided key to partition prompt cache reuse. Maximum length is 64 characters. Sent only when explicitly supplied, including an empty string.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="prompt_cache_options.mode">
+          <maml:name>PromptCacheMode</maml:name>
+          <maml:description>
+            <maml:para>Prompt caching mode. Completion candidates are implicit and explicit. The server defaults to implicit, placing a cache breakpoint at the end of shared input. Explicit mode uses only marked boundaries and does not use caching if there are none. Question content is outside the cacheable prefix. Sent only when supplied; server validation applies.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="prompt_cache_options.ttl">
+          <maml:name>PromptCacheTtl</maml:name>
+          <maml:description>
+            <maml:para>Minimum lifetime of cache entries. Currently only 30m is supported by Decisions, which is also the server default. Sent only when supplied; server validation applies.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -15093,7 +15389,7 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="0" aliases="Input">
         <maml:name>Message</maml:name>
         <maml:description>
-          <maml:para>Shared text evidence. Alias: Input. Either Message or Images is required. A single text string is sent as a string; multiple strings become ordered input_text parts. Pipeline strings each produce a separate request.</maml:para>
+          <maml:para>Shared text evidence. Alias: Input. Supply Message, Images, InputJson, or a combination of them. A single text string is sent as a string; multiple strings become ordered input_text parts. Pipeline strings each produce a separate request. Cannot be combined with InputItem.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
         <dev:type>
@@ -15105,7 +15401,7 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>Images</maml:name>
         <maml:description>
-          <maml:para>One to 128 local image paths, inline base64 image data URLs, or publicly accessible HTTP(S) image URLs, shared by all questions. Local paths are converted to data URLs before sending; HTTP(S) URLs are passed through unchanged. Missing files, directories, and unsupported URI schemes produce an error before the API request. The API must be able to retrieve any supplied URL.</maml:para>
+          <maml:para>One to 128 local image paths, inline base64 image data URLs, or publicly accessible HTTP(S) image URLs, shared by all questions. Local paths are converted to data URLs before sending; HTTP(S) URLs are passed through unchanged. Missing files, directories, and unsupported URI schemes produce an error before the API request. The API must be able to retrieve any supplied URL. Cannot be combined with InputItem. Question images and shared images count toward the same API image limits.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
         <dev:type>
@@ -15129,7 +15425,7 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>Model</maml:name>
         <maml:description>
-          <maml:para>Model to use. The beta API currently supports gpt-6-luna. Completion candidates do not restrict model or deployment names on compatible servers.</maml:para>
+          <maml:para>Model to use. The GA API currently supports gpt-6-luna. Completion candidates do not restrict model or deployment names on compatible servers.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -15153,11 +15449,11 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>PredicateQuestionInstructions</maml:name>
         <maml:description>
-          <maml:para>Instructions for predicate questions that estimate whether a condition is true. Each non-empty entry creates one question; names may be omitted.</maml:para>
+          <maml:para>Instructions for predicate questions that estimate whether a condition is true. Each entry creates one question and can be a string or a nonempty array of input_text, input_image, and input_json parts. Wrap a content-part array with a unary comma to keep it as one question; names may be omitted. Content parts are forwarded without local image conversion or cache breakpoints.</maml:para>
         </maml:description>
-        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">Object[]</command:parameterValue>
         <dev:type>
-          <maml:name>String[]</maml:name>
+          <maml:name>Object[]</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -15177,11 +15473,11 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>ChoiceQuestionInstructions</maml:name>
         <maml:description>
-          <maml:para>Instructions for choice questions. Each non-empty entry requires a corresponding choices entry in ChoiceQuestionChoices.</maml:para>
+          <maml:para>Instructions for choice questions. Each entry can be a string or a nonempty content-part array, as described for PredicateQuestionInstructions, and requires a corresponding choices entry in ChoiceQuestionChoices.</maml:para>
         </maml:description>
-        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">Object[]</command:parameterValue>
         <dev:type>
-          <maml:name>String[]</maml:name>
+          <maml:name>Object[]</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -15214,11 +15510,11 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
         <maml:name>ScoreQuestionInstructions</maml:name>
         <maml:description>
-          <maml:para>Instructions for score questions. Each non-empty entry requires a corresponding levels entry in ScoreQuestionLevels.</maml:para>
+          <maml:para>Instructions for score questions. Each entry can be a string or a nonempty content-part array, as described for PredicateQuestionInstructions, and requires a corresponding levels entry in ScoreQuestionLevels.</maml:para>
         </maml:description>
-        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">Object[]</command:parameterValue>
         <dev:type>
-          <maml:name>String[]</maml:name>
+          <maml:name>Object[]</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -15232,6 +15528,66 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
         <command:parameterValue required="true" variableLength="false">Object[]</command:parameterValue>
         <dev:type>
           <maml:name>Object[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>InputJson</maml:name>
+        <maml:description>
+          <maml:para>Shared structured evidence sent as an input_json part after any text and image parts. Supply an object or an array of objects, such as a hashtable or PSCustomObject, without converting it to a JSON string. Nested JSON values are preserved. The API validates JSON size and depth limits. Cannot be combined with InputItem.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
+        <dev:type>
+          <maml:name>Object</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="none">
+        <maml:name>InputItem</maml:name>
+        <maml:description>
+          <maml:para>An ordered array of API input items, including messages, function calls and outputs, and custom tool calls and outputs. Items are forwarded unchanged, allowing supported role-specific content and explicit prompt_cache_breakpoint fields on shared text/image parts. Supply API-ready image URLs; local paths are not converted. Cannot be combined with Message (including its Input alias), Images, or InputJson. A single item is still sent as an array.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Object[]</command:parameterValue>
+        <dev:type>
+          <maml:name>Object[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="prompt_cache_key">
+        <maml:name>PromptCacheKey</maml:name>
+        <maml:description>
+          <maml:para>Caller-provided key to partition prompt cache reuse. Maximum length is 64 characters. Sent only when explicitly supplied, including an empty string.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="prompt_cache_options.mode">
+        <maml:name>PromptCacheMode</maml:name>
+        <maml:description>
+          <maml:para>Prompt caching mode. Completion candidates are implicit and explicit. The server defaults to implicit, placing a cache breakpoint at the end of shared input. Explicit mode uses only marked boundaries and does not use caching if there are none. Question content is outside the cacheable prefix. Sent only when supplied; server validation applies.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named" aliases="prompt_cache_options.ttl">
+        <maml:name>PromptCacheTtl</maml:name>
+        <maml:description>
+          <maml:para>Minimum lifetime of cache entries. Currently only 30m is supported by Decisions, which is also the server default. Sent only when supplied; server validation applies.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -15331,7 +15687,10 @@ If not specified, it will try to use `$global:OPENAI_API_KEY` or `$env:OPENAI_AP
     </command:returnValues>
     <maml:alertSet>
       <maml:alert>
-        <maml:para>The Decisions API is in beta. This command constructs user messages with input_text/input_image parts when required, with at most 128 Images entries. It does not expose non-user roles, audio, files, tools, or item references. Streaming and Batch integration are not exposed by this command.</maml:para>
+        <maml:para>The Decisions API is generally available. This command supports multimodal question instructions, JSON input, conversation history, and prompt caching. It does not enforce an upper limit on the number of questions; requests exceeding the API's limit are sent for server-side validation. Existing text and image calls continue to work. Public HTTP(S) image URLs were already supported by this command during beta.</maml:para>
+        <maml:para>ImageDetail applies only to Images. Specify detail on individual image parts in InputItem or question instructions. InputItem evaluates supplied tool calls and outputs as evidence; it does not execute tools. Audio, file IDs, item references, streaming, and Batch integration are not exposed by this command.</maml:para>
+        <maml:para>The API reports cache reads in usage.input_tokens_details.cached_tokens and writes in usage.input_tokens_details.cache_write_tokens. Both are included in input_tokens and must not be added again. The command preserves these counters without recalculating totals.</maml:para>
+        <maml:para>Organization usage reporting is a management API and is outside PSOpenAI's supported command scope. Private Link and native GPT-Live delegation are service/integration capabilities, rather than additional fields on POST /v1/decisions.</maml:para>
       </maml:alert>
     </maml:alertSet>
     <command:examples>
@@ -15425,6 +15784,53 @@ Request-Decision -Message 'The item is broken.' `
     -ScoreQuestionInstructions 'How severe is the damage?' -ScoreQuestionLevels (,$levels)</dev:code>
         <dev:remarks>
           <maml:para>The array order is preserved. A choice array needs at least two entries; each score level receives an index according to its position.</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>--------- Example 7: Evaluate structured data directly ---------</maml:title>
+        <dev:code>$order = @{
+    total     = 125.50
+    delivered = $false
+    items     = @(@{ sku = 'A-1'; quantity = 2 })
+}
+Request-Decision -InputJson $order `
+    -PredicateQuestionInstructions 'Is this an undelivered order over 100 dollars?'</dev:code>
+        <dev:remarks>
+          <maml:para>Sends the object in an input_json content part, preserving numbers, booleans, and arrays. InputJson can be combined with Message and Images. The API accepts an object or an array of objects, with at most 32 container levels, 10,000 values, and 256 KiB of compact UTF-8 JSON per part.</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title> Example 8: Compare question images against a shared reference </maml:title>
+        <dev:code>$candidate = @(
+    @{ type = 'input_text'; text = 'Does this candidate match reference A?' }
+    @{ type = 'input_image'; image_url = 'https://example.com/candidate.jpg' }
+)
+Request-Decision -Images 'https://example.com/reference.jpg' `
+    -PredicateQuestionName 'matches' -PredicateQuestionInstructions (,$candidate)</dev:code>
+        <dev:remarks>
+          <maml:para>Replace the example URLs with accessible images. The unary comma keeps the two content parts together as one question. For multiple questions, use an outer array containing one string or content-part array per question. Choice and score instructions accept the same content parts.</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>Example 9: Evaluate a conversation with explicit prompt caching</maml:title>
+        <dev:code>$items = @(
+    @{
+        role = 'developer'
+        content = @(@{
+            type                    = 'input_text'
+            text                    = $policyText
+            prompt_cache_breakpoint = @{ mode = 'explicit' }
+        })
+    }
+    @{ role = 'user'; content = 'What is the status of order 42?' }
+    @{ type = 'function_call'; name = 'lookup_order'; arguments = '{"id":42}'; call_id = 'call_1' }
+    @{ type = 'function_call_output'; call_id = 'call_1'; output = 'The order has shipped.' }
+)
+Request-Decision -InputItem $items -PromptCacheKey 'order-policy-v1' `
+    -PromptCacheMode explicit -PromptCacheTtl '30m' `
+    -PredicateQuestionInstructions 'Has the requested order shipped?'</dev:code>
+        <dev:remarks>
+          <maml:para>Set policyText to the policy your application uses. A reusable prefix needs at least 1,024 tokens to benefit from caching. InputItem preserves API item order and nested fields; the API validates roles, content types, tool call matching, and cache boundaries. User messages can include text, images, and JSON; developer/system messages accept input text, assistant messages accept output_text/refusal parts, and function/custom tool outputs accept text and images. System messages are treated as developer messages.</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>

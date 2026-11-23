@@ -373,6 +373,147 @@ Describe 'Request-Decision' {
             }
         }
 
+        It 'Preserves structured question instructions for every question type' {
+            $Parts = @(
+                @{ type = 'input_text'; text = 'Compare this candidate with the shared reference.' }
+                @{ type = 'input_image'; image_url = 'https://example.test/candidate.jpg'; detail = 'original' }
+                @{ type = 'input_json'; data = @{ candidate_id = 42; approved = $false } }
+            )
+            $Params = @{
+                Message                       = 'Reference evidence'
+                PredicateQuestionInstructions = , $Parts
+                ChoiceQuestionInstructions    = , $Parts
+                ChoiceQuestionChoices         = , @($true, 'other')
+                ScoreQuestionInstructions     = , @(@{ type = 'input_image'; image_url = 'data:image/png;base64,AAAA' })
+                ScoreQuestionLevels           = , @('Low', 'High')
+            }
+            Request-Decision @Params -ErrorAction Stop | Out-Null
+            Should -Invoke -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -Times 1 -Exactly -ParameterFilter {
+                $Wire = $Body | ConvertTo-Json -Depth 30 | ConvertFrom-Json
+                $Wire.questions.Count -eq 3 -and
+                $Wire.questions[0].instructions -is [array] -and
+                ($Wire.questions[0].instructions.type -join ',') -eq 'input_text,input_image,input_json' -and
+                $Wire.questions[1].instructions[1].image_url -eq 'https://example.test/candidate.jpg' -and
+                $Wire.questions[1].instructions[1].detail -eq 'original' -and
+                $Wire.questions[1].instructions[2].data.candidate_id -eq 42 -and
+                $Wire.questions[1].instructions[2].data.approved -is [bool] -and
+                $Wire.questions[2].instructions -is [array] -and
+                $Wire.questions[2].instructions.Count -eq 1
+            }
+        }
+
+        It 'Mixes text and structured instructions without changing question order' {
+            $Parts = @(@{ type = 'input_text'; text = 'Second question' })
+            Request-Decision -Message 'Evidence' -PredicateQuestionInstructions @('First question', $Parts) -ErrorAction Stop | Out-Null
+            Should -Invoke -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -Times 1 -Exactly -ParameterFilter {
+                $Body.questions[0].instructions -is [string] -and
+                $Body.questions[0].instructions -eq 'First question' -and
+                $Body.questions[1].instructions -is [array] -and
+                $Body.questions[1].instructions[0].text -eq 'Second question'
+            }
+        }
+
+        It 'Sends JSON evidence while retaining nested arrays, booleans, nulls, and numbers' {
+            $Data = @(@{ id = 7; tags = @('one'); active = $false; extra = $null })
+            Request-Decision -InputJson $Data @script:PredicateParameters -ErrorAction Stop | Out-Null
+            Should -Invoke -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -Times 1 -Exactly -ParameterFilter {
+                $Wire = $Body | ConvertTo-Json -Depth 30 | ConvertFrom-Json
+                $Wire.input -is [array] -and $Wire.input.Count -eq 1 -and
+                $Wire.input[0].content -is [array] -and $Wire.input[0].content.Count -eq 1 -and
+                $Wire.input[0].content[0].type -eq 'input_json' -and
+                $Wire.input[0].content[0].data -is [array] -and
+                $Wire.input[0].content[0].data[0].tags -is [array] -and
+                $Wire.input[0].content[0].data[0].id -eq 7 -and
+                $Wire.input[0].content[0].data[0].active -is [bool] -and
+                $null -eq $Wire.input[0].content[0].data[0].extra
+            }
+        }
+
+        It 'Combines text, images, and a JSON object in shared input' {
+            Request-Decision -Message 'Evidence' -Images 'https://example.test/image.png' -InputJson @{ count = 2 } @script:PredicateParameters -ErrorAction Stop | Out-Null
+            Should -Invoke -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -Times 1 -Exactly -ParameterFilter {
+                ($Body.input[0].content.type -join ',') -eq 'input_text,input_image,input_json' -and
+                $Body.input[0].content[2].data -is [System.Collections.IDictionary] -and
+                $Body.input[0].content[2].data.count -eq 2
+            }
+        }
+
+        It 'Preserves ordered conversation messages, tool calls, outputs, and explicit cache boundaries' {
+            $Items = @(
+                @{ role = 'system'; content = 'Evaluate the conversation.' }
+                @{ role = 'developer'; content = @(@{ type = 'input_text'; text = 'Shared policy'; prompt_cache_breakpoint = @{ mode = 'explicit' } }) }
+                @{ role = 'user'; content = @(@{ type = 'input_json'; data = @{ order_id = 5 } }) }
+                @{ role = 'assistant'; phase = 'commentary'; content = @(@{ type = 'output_text'; text = 'Checking the order.' }) }
+                @{ type = 'function_call'; name = 'lookup'; arguments = '{"id":5}'; call_id = 'call_1' }
+                @{ type = 'function_call_output'; call_id = 'call_1'; output = @(@{ type = 'input_text'; text = 'Order found' }) }
+                @{ type = 'custom_tool_call'; name = 'audit'; input = 'order 5'; call_id = 'call_2' }
+                @{ type = 'custom_tool_call_output'; call_id = 'call_2'; output = @(@{ type = 'input_image'; image_url = 'https://example.test/order.jpg'; prompt_cache_breakpoint = @{ mode = 'explicit' } }) }
+                @{ role = 'assistant'; content = @(@{ type = 'refusal'; refusal = 'Cannot process.' }) }
+            )
+            Request-Decision -InputItem $Items -PromptCacheKey 'policy-v1' -PromptCacheMode explicit -PromptCacheTtl '30m' @script:PredicateParameters -ErrorAction Stop | Out-Null
+            Should -Invoke -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -Times 1 -Exactly -ParameterFilter {
+                $Wire = $Body | ConvertTo-Json -Depth 30 | ConvertFrom-Json
+                $Wire.input.Count -eq 9 -and
+                $Wire.input[0].role -eq 'system' -and
+                $Wire.input[1].content[0].prompt_cache_breakpoint.mode -eq 'explicit' -and
+                $Wire.input[2].content[0].data.order_id -eq 5 -and
+                $Wire.input[3].phase -eq 'commentary' -and
+                $Wire.input[4].type -eq 'function_call' -and
+                $Wire.input[4].call_id -eq $Wire.input[5].call_id -and
+                $Wire.input[6].type -eq 'custom_tool_call' -and
+                $Wire.input[6].call_id -eq $Wire.input[7].call_id -and
+                $Wire.input[7].output[0].prompt_cache_breakpoint.mode -eq 'explicit' -and
+                $Wire.input[8].content[0].type -eq 'refusal' -and
+                $Wire.prompt_cache_key -eq 'policy-v1' -and
+                $Wire.prompt_cache_options.mode -eq 'explicit' -and
+                $Wire.prompt_cache_options.ttl -eq '30m'
+            }
+        }
+
+        It 'Keeps a single structured input item as an array and omits unspecified cache controls' {
+            Request-Decision -InputItem @{ role = 'user'; content = 'Evidence' } @script:PredicateParameters -ErrorAction Stop | Out-Null
+            Should -Invoke -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -Times 1 -Exactly -ParameterFilter {
+                $Body.input -is [array] -and $Body.input.Count -eq 1 -and
+                -not $Body.Contains('prompt_cache_key') -and -not $Body.Contains('prompt_cache_options')
+            }
+        }
+
+        It 'Sends cache fields only when supplied and preserves cache usage counters' {
+            Mock -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest {
+                '{"model":"gpt-6-luna","answers":[],"usage":{"input_tokens":1500,"input_tokens_details":{"cached_tokens":1024,"cache_write_tokens":200},"total_tokens":1500}}'
+            }
+            $Result = Request-Decision -Message 'Evidence' -PromptCacheKey '' -PromptCacheTtl '30m' @script:PredicateParameters -ErrorAction Stop
+            Should -Invoke -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -Times 1 -Exactly -ParameterFilter {
+                $Body.Contains('prompt_cache_key') -and $Body.prompt_cache_key -eq '' -and
+                $Body.prompt_cache_options.ttl -eq '30m' -and -not $Body.prompt_cache_options.ContainsKey('mode')
+            }
+            $Result.usage.input_tokens | Should -Be 1500
+            $Result.usage.input_tokens_details.cached_tokens | Should -Be 1024
+            $Result.usage.input_tokens_details.cache_write_tokens | Should -Be 200
+        }
+
+        It 'Sends all <QuestionCount> questions without enforcing an upper limit' -TestCases @(
+            @{ QuestionCount = 400 }
+            @{ QuestionCount = 401 }
+        ) {
+            param($QuestionCount)
+            Request-Decision -Message 'Evidence' -PredicateQuestionInstructions (@('Check?') * ($QuestionCount - 1)) -ScoreQuestionInstructions 'Rate?' -ScoreQuestionLevels (,@('Low')) -ErrorAction Stop | Out-Null
+            Should -Invoke -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -Times 1 -Exactly -ParameterFilter {
+                $Body.questions.Count -eq $QuestionCount -and
+                $Body.questions[0].type -eq 'predicate' -and
+                $Body.questions[-1].type -eq 'score' -and
+                $Body.questions[-1].instructions -eq 'Rate?'
+            }
+        }
+
+        It 'Rejects incompatible structured and convenience inputs before HTTP' {
+            { Request-Decision -InputItem @{ role = 'user'; content = 'Evidence' } -Message 'Text' @script:PredicateParameters -ErrorAction Stop } | Should -Throw
+            { Request-Decision -InputItem @{ role = 'user'; content = 'Evidence' } -InputJson @{ value = 1 } @script:PredicateParameters -ErrorAction Stop } | Should -Throw
+            { Request-Decision -InputItem @() @script:PredicateParameters -ErrorAction Stop } | Should -Throw
+            { Request-Decision -Message 'Evidence' -PromptCacheKey ('x' * 65) @script:PredicateParameters -ErrorAction Stop } | Should -Throw
+            Should -Invoke -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest -Times 0 -Exactly
+        }
+
         It 'Does not emit a result when HTTP returns no response' {
             Mock -ModuleName $script:ModuleName Invoke-OpenAIHttpRequest { $null }
             Request-Decision -Message 'Evidence' @script:PredicateParameters -ErrorAction Stop | Should -BeNullOrEmpty

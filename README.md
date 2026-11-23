@@ -135,8 +135,8 @@ Guide: [How to use Batch](/Guides/How_to_use_Batch.md)
 + [Remove-ContainerFile](/Docs/Remove-ContainerFile.md)
 + [Get-ContainerFileContent](/Docs/Get-ContainerFileContent.md)
 
-### Decisions (Beta)
-+ [Request-Decision](/Docs/Request-Decision.md): Evaluate text and images with predicate, choice, and score questions.
+### Decisions
++ [Request-Decision](/Docs/Request-Decision.md): Evaluate text, images, JSON, and conversation history with predicate, choice, and score questions and prompt caching.
 
 ### Others
 + [Get-OpenAIModels](/Docs/Get-OpenAIModels.md)
